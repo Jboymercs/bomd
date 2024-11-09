@@ -56,6 +56,7 @@ public class Main {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         GeckoLib.initialize();
+        SoundsHandler.registerSounds();
         proxy.init();
         ModEntities.registerEntities();
         ModEntities.RegisterEntitySpawns();
@@ -64,11 +65,7 @@ public class Main {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
-        SoundsHandler.registerSounds();
         StructureHandler.handleStructureRegistries();
-        //Sky Stuff Moved to End Expansion
-      //  proxy.registerEventHandlers();
-
     }
 
 }

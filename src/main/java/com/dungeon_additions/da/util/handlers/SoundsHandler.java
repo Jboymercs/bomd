@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.util.handlers;
 
 import com.dungeon_additions.da.util.ModReference;
+import com.sun.media.sound.ModelOscillatorStream;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -32,7 +33,27 @@ public class SoundsHandler {
     public static SoundEvent B_KNIGHT_STOMP;
     public static SoundEvent B_KNIGHT_DASH;
 
+    public static SoundEvent MOSS_BREAK;
+    public static SoundEvent MOSS_STEP;
+    public static SoundEvent MOSS_PLACE;
+    public static SoundEvent MOSS_HIT;
+
+    public static SoundEvent AZA_LEAVES_PLACE;
+    public static SoundEvent AZA_LEAVES_BREAK;
+    public static SoundEvent AZA_LEAVES_HIT;
+    public static SoundEvent AZA_LEAVES_STEP;
     public static void registerSounds() {
+        //
+        MOSS_BREAK = registerSound("moss.break", "block");
+        MOSS_STEP = registerSound("moss.step", "block");
+        MOSS_HIT = registerSound("moss.hit", "block");
+        MOSS_PLACE = registerSound("moss.place", "block");
+        //
+        AZA_LEAVES_BREAK = registerSound("leaves.break", "block");
+        AZA_LEAVES_HIT = registerSound("leaves.hit", "block");
+        AZA_LEAVES_STEP = registerSound("leaves.step", "block");
+        AZA_LEAVES_PLACE = registerSound("leaves.place", "block");
+        //
         VOID_SPIKE_SHOOT = registerSound("spike.shoot", "entity");
         APPEARING_WAVE = registerSound("spike.wave", "entity");
         BLOSSOM_BURROW = registerSound("spike.burrow", "entity");

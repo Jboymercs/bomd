@@ -65,5 +65,6 @@ public class ModItems {
     public static final Item ROT_KNIGHT_INGOT = new ItemCraftingMaterial("knight_ingot", "crafting_material");
     public static final Item ROT_KNIGHT_KEY = new ItemRotKnightKey("knight_key", "rot_knight_key");
     public static final Item ROT_KNIGHT_RAPIER = new ItemKnightRapier("knight_rapier", KNIGHT_RAPIER_MATERIAL, "rapier_desc");
+    public static final Item GLOW_BERRY = new ItemGlowBerry("glow_berry", 4, 4, false, ModBlocks.AZAELA_VINES);
 
 }

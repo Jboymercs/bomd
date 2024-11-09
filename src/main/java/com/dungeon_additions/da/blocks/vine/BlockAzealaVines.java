@@ -4,6 +4,7 @@ import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.IHasModel;
+import com.dungeon_additions.da.util.handlers.BOMDSoundTypes;
 import com.dungeon_additions.da.util.handlers.RegistryHandler;
 import com.dungeon_additions.da.util.mapper.AdvancedStateMap;
 import net.minecraft.block.*;
@@ -46,7 +47,7 @@ public class BlockAzealaVines extends BlockBush implements IGrowable, IHasModel,
         super(materialIn);
         setTranslationKey(name);
         setRegistryName(name);
-        setSoundType(SoundType.PLANT);
+        setSoundType(BOMDSoundTypes.MOSS);
         this.setTickRandomly(true);
         // Add both an item as a block and the block itself
         ModBlocks.BLOCKS.add(this);
@@ -75,7 +76,7 @@ public class BlockAzealaVines extends BlockBush implements IGrowable, IHasModel,
     /** Drops Glow Berries */
     /** TODO: Replace `getItemFromBlock` with the actual Glow Berries when they are added! */
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    { return Items.BEETROOT; }
+    { return ModItems.GLOW_BERRY; }
 
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos)
@@ -198,7 +199,10 @@ public class BlockAzealaVines extends BlockBush implements IGrowable, IHasModel,
         int currentAge = worldIn.getBlockState(pos).getValue(AGE);
 
         if (this != ModBlocks.AZAELA_BERRY_VINES)
-        { worldIn.setBlockState(pos, ModBlocks.AZAELA_BERRY_VINES.getDefaultState().withProperty(AGE, currentAge).withProperty(IS_BOTTOM, isBottom(worldIn, pos))); }
+        {
+
+            worldIn.setBlockState(pos, ModBlocks.AZAELA_BERRY_VINES.getDefaultState().withProperty(AGE, currentAge).withProperty(IS_BOTTOM, isBottom(worldIn, pos)));
+        }
     }
 
     /**

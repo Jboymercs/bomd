@@ -4,6 +4,7 @@ import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.IHasModel;
+import com.dungeon_additions.da.util.handlers.BOMDSoundTypes;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -30,7 +31,7 @@ public class BlockMossCarpet extends Block implements IHasModel {
         setTranslationKey(name);
         setRegistryName(name);
 
-        setSoundType(SoundType.PLANT);
+        setSoundType(BOMDSoundTypes.MOSS);
         ModBlocks.BLOCKS.add(this);
         ModItems.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
     }

@@ -8,6 +8,7 @@ import com.dungeon_additions.da.blocks.base.slab.BlockHalfSlab;
 import com.dungeon_additions.da.blocks.vine.BlockAzealaVines;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
+import com.dungeon_additions.da.util.handlers.BOMDSoundTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
@@ -32,14 +33,14 @@ public class ModBlocks {
     public static final float OBSIDIAN_RESISTANCE = 2000;
     //public static final Block ASH_BRICK = new BlockBase("ash_brick", Material.ROCK, STONE_HARDNESS, STONE_RESISTANCE, SoundType.STONE).setCreativeTab(ModCreativeTabs.ITEMS);
 
-    public static final Block SPORE_BLOSSOM = new BlockSporeBlossom("spore_blossom", PLANTS_HARDNESS, PLANTS_RESISTANCE, SoundType.PLANT).setCreativeTab(DungeonAdditionsTab.ALL);
-    public static final Block MOSS_BLOCK = new BlockMossBlock("moss_block", Material.GRASS, PLANTS_HARDNESS, PLANTS_RESISTANCE, SoundType.GROUND).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block SPORE_BLOSSOM = new BlockSporeBlossom("spore_blossom", PLANTS_HARDNESS, PLANTS_RESISTANCE, BOMDSoundTypes.MOSS).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block MOSS_BLOCK = new BlockMossBlock("moss_block", Material.GRASS, PLANTS_HARDNESS, PLANTS_RESISTANCE, BOMDSoundTypes.MOSS).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block MOSS_CARPET = new BlockMossCarpet("moss_carpet").setCreativeTab(DungeonAdditionsTab.ALL);
 
     public static final Block AZAELA_VINES = new BlockAzealaVines("aza_vines", Material.PLANTS).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block AZAELA_BERRY_VINES = new BlockAzealaVines("aza_vines_berries", Material.PLANTS).setLightLevel(0.9375F);
 
-    public static final Block AZAELA_LEAVES = new BlockAzealaLeaves("azaela_leaf", PLANTS_HARDNESS, PLANTS_RESISTANCE, SoundType.PLANT).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block AZAELA_LEAVES = new BlockAzealaLeaves("azaela_leaf", PLANTS_HARDNESS, PLANTS_RESISTANCE, BOMDSoundTypes.AZA_LEAVES).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block INDESTRUCTABLE_BLOCK = new BlockSpawnFlower("strong_block", Material.GRASS, OBSIDIAN_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.PLANT);
     public static final Block MEGA_STRUCTURE_BLOCK = new BlockMegaStructure("mega_structure");
     public static final Block VINE_WALL = new BlockAzealaFence(Material.GRASS, false, "az_fence").setHardness(STONE_HARDNESS).setResistance(STONE_RESISTANCE).setCreativeTab(DungeonAdditionsTab.ALL);

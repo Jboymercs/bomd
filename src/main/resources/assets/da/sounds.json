@@ -254,5 +254,237 @@
         "steam": true
       }
     ]
+  },
+  "block.moss.break": {
+    "category": "block",
+    "subtitle": "subtitles.block.generic.break",
+    "sounds": [
+      {
+        "name": "da:block/moss/break1",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/break2",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/break3",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/break4",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/break5",
+        "steam": true
+      }
+    ]
+  },
+  "block.moss.hit": {
+    "category": "block",
+    "subtitle": "subtitles.block.generic.hit",
+    "sounds": [
+      {
+        "name": "da:block/moss/break1",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/break2",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/break3",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/break4",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/break5",
+        "steam": true
+      }
+    ]
+  },
+  "block.moss.step": {
+    "category": "block",
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      {
+        "name": "da:block/moss/step1",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/step2",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/step3",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/step4",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/step5",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/step6",
+        "steam": true
+      }
+    ]
+  },
+  "block.moss.place": {
+    "category": "block",
+    "subtitle": "subtitles.block.generic.place",
+    "sounds": [
+      {
+        "name": "da:block/moss/step1",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/step2",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/step3",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/step4",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/step5",
+        "steam": true
+      },
+      {
+        "name": "da:block/moss/step6",
+        "steam": true
+      }
+    ]
+  },
+  "block.leaves.place": {
+    "category": "block",
+    "subtitle": "subtitles.block.generic.place",
+    "sounds": [
+      {
+        "name": "da:block/leaves/step1",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/step2",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/step3",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/step4",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/step5",
+        "steam": true
+      }
+    ]
+  },
+  "block.leaves.step": {
+    "category": "block",
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      {
+        "name": "da:block/leaves/step1",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/step2",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/step3",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/step4",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/step5",
+        "steam": true
+      }
+    ]
+  },
+  "block.leaves.hit": {
+    "category": "block",
+    "subtitle": "subtitles.block.generic.hit",
+    "sounds": [
+      {
+        "name": "da:block/leaves/break1",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/break2",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/break3",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/break4",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/break5",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/break6",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/break7",
+        "steam": true
+      }
+    ]
+  },
+  "block.leaves.break": {
+    "category": "block",
+    "subtitle": "subtitles.block.generic.break",
+    "sounds": [
+      {
+        "name": "da:block/leaves/break1",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/break2",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/break3",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/break4",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/break5",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/break6",
+        "steam": true
+      },
+      {
+        "name": "da:block/leaves/break7",
+        "steam": true
+      }
+    ]
   }
 }
