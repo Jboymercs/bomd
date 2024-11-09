@@ -1,3 +1,5 @@
 {
-  "parent": "da:block/aza_middle"
+  "parent": "item/generated",
+  "textures":
+  { "layer0": "da:blocks/azalea_vine_bottom" }
 }

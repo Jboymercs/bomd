@@ -1,0 +1,5 @@
+{
+  "parent": "item/generated",
+  "textures":
+  { "layer0": "da:blocks/azalea_vine_bottom_berries" }
+}

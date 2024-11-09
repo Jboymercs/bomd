@@ -43,6 +43,7 @@ tile.strong_block.name=Flower Spawning Block
 tile.az_fence.name=Vine Wall
 tile.cave_spawner.name=Boss Spawner
 tile.aza_vines.name=Azaela Vines
+tile.aza_vines_berries.name=Azaela Vines with Berries
 tile.mega_structure.name=Mega Structure Block
 tile.azaela_leaf.name=Azaela Leaves
 tile.fire_stone.name=Fiery Stonebrick

@@ -1,0 +1,7 @@
+{
+  "variants":
+  {
+    "is_bottom=true": { "model": "da:azalea_vine_bottom_berries" },
+    "is_bottom=false": { "model": "da:azalea_vine_berries" }
+  }
+}
