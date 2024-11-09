@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "check_decay=true,decayable=true": { "model": "da:spore_blossom" },
+    "check_decay=true,decayable=false": { "model": "da:spore_blossom" },
+    "check_decay=false,decayable=true": { "model": "da:spore_blossom" },
+    "check_decay=false,decayable=false": { "model": "da:spore_blossom" }
+  }
+}

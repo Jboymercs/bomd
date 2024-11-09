@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV",
+    "VXV",
+    "VRV"
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:red_nether_brick"
+    },
+    "X": {
+      "item": "minecraft:redstone"
+    },
+    "R": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "result": {
+    "item": "da:change_block",
+    "count": 4
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "da:aza_middle"
+  },
+  "variants": {
+    "is_top": {
+      "true": {
+        "model" : "da:aza_top"
+      },
+      "false": { }
+    },
+    "is_glow": {
+      "true": {
+        "model" : "da:aza_glow"
+      },
+      "false": { }
+    },
+    "is_bottom": {
+      "true": {
+        "model": "da:aza_bottom"
+      },
+      "false": { }
+    }
+  }
+}

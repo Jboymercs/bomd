@@ -1,0 +1,16 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "da:inactive_change_block"
+  },
+  "variants": {
+    "activedoor": {
+      "true": {
+        "model" : "da:active_change_block"
+      },
+      "false": {
+        "model" : "da:inactive_change_block"
+      }
+    }
+  }
+}

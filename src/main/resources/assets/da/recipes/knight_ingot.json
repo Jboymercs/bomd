@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RRR",
+    "RRR",
+    "RRR"
+  ],
+  "key": {
+    "R": {
+      "item": "da:knight_shard"
+    }
+  },
+  "result": {
+    "item": "da:knight_ingot"
+  }
+}

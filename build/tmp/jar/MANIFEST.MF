@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+FMLCorePluginContainsFMLMod: false
+FMLAT: da_at.cfg
+Implementation-Timestamp: 2024-11-08T18:02:19-0600
+ForceLoadAsMod: true
+Specification-Version: 1.12.2-0.0.6
+

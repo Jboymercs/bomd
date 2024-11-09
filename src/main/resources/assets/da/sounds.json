@@ -1,0 +1,258 @@
+{
+  "entity.spike.shoot": {
+    "category": "entity",
+    "subtitle": "entity.spike.shoot",
+    "sounds": [
+      {
+        "name": "da:entity/spike/shoot",
+        "steam": true
+      }
+    ]
+  },
+
+  "entity.spike.wave": {
+    "category": "entity",
+    "subtitle": "entity.spike.wave",
+    "sounds": [
+      {
+        "name": "da:entity/spike/wave",
+        "steam": true
+      }
+    ]
+  },
+  "entity.spike.burrow": {
+    "category": "entity",
+    "subtitle": "entity.spike.burrow",
+    "sounds": [
+      {
+        "name": "da:entity/spike/burrow",
+        "steam": true
+      }
+    ]
+  },
+  "entity.spike.prepare": {
+    "category": "entity",
+    "subtitle": "entity.spike.prepare",
+    "sounds": [
+      {
+        "name": "da:entity/spike/prepare",
+        "steam": true
+      }
+    ]
+  },
+  "entity.spike.impact": {
+    "category": "entity",
+    "subtitle": "entity.spike.impact",
+    "sounds": [
+      {
+        "name": "da:entity/spike/impact",
+        "steam": true
+      }
+    ]
+  },
+  "entity.spike.hurt": {
+    "category": "entity",
+    "subtitle": "entity.spike.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/spike/hurt",
+        "steam": true
+      }
+    ]
+  },
+  "entity.spike.summon": {
+    "category": "entity",
+    "subtitle": "entity.spike.summon",
+    "sounds": [
+      {
+        "name": "da:entity/spike/summon",
+        "steam": true
+      }
+    ]
+  },
+  "entity.spike.petal_blade": {
+    "category": "entity",
+    "subtitle": "entity.spike.petal_blade",
+    "sounds": [
+      {
+        "name": "da:entity/spike/petal_blade",
+        "steam": true
+      }
+    ]
+  },
+  "entity.spike.death": {
+    "category": "entity",
+    "subtitle": "entity.spike.death",
+    "sounds": [
+      {
+        "name": "da:entity/spike/death",
+        "steam": true
+      }
+    ]
+  },
+  "entity.b_knight.step": {
+    "category": "entity",
+    "subtitle": "entity.burning_knight.step",
+    "sounds": [
+      {
+        "name": "da:entity/b_knight/step1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/step2",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/step3",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/step4",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/step5",
+        "steam": true
+      }
+    ]
+  },
+  "entity.b_knight.movement": {
+    "category": "entity",
+    "sounds": [
+      {
+        "name": "da:entity/b_knight/movement1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/movement2",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/movement3",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/movement4",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/movement5",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/movement6",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/movement7",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/movement8",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/movement9",
+        "steam": true
+      }
+    ]
+  },
+  "entity.b_knight.prepare": {
+    "category": "entity",
+    "subtitle": "entity.burning_knight.prepare",
+    "sounds": [
+      {
+        "name": "da:entity/b_knight/prepare",
+        "steam": true
+      }
+    ]
+  },
+  "entity.b_knight.sling": {
+    "category": "entity",
+    "subtitle": "entity.burning_knight.shing",
+    "sounds": [
+      {
+        "name": "da:entity/b_knight/sling1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/sling2",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/sling3",
+        "steam": true
+      }
+    ]
+  },
+  "entity.b_knight.hurt": {
+    "category": "entity",
+    "subtitle": "entity.burning_knight.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/b_knight/hurt1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/hurt2",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/hurt3",
+        "steam": true
+      }
+    ]
+  },
+  "entity.b_knight.flame_sling": {
+    "category": "entity",
+    "subtitle": "entity.burning_knight.flame_sling",
+    "sounds": [
+      {
+        "name": "da:entity/b_knight/flame_sling1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/flame_sling2",
+        "steam": true
+      }
+    ]
+  },
+  "entity.b_knight.quick_sling": {
+    "category": "entity",
+    "subtitle": "entity.burning_knight.flame_sling",
+    "sounds": [
+      {
+        "name": "da:entity/b_knight/quick_sling1",
+        "steam": true
+      }
+    ]
+  },
+  "entity.b_knight.stomp": {
+    "category": "entity",
+    "subtitle": "entity.burning_knight.stomp",
+    "sounds": [
+      {
+        "name": "da:entity/b_knight/stomp",
+        "steam": true
+      }
+    ]
+  },
+  "entity.b_knight.dash": {
+    "category": "entity",
+    "subtitle": "entity.burning_knight.dash",
+    "sounds": [
+      {
+        "name": "da:entity/b_knight/dash1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/dash2",
+        "steam": true
+      },
+      {
+        "name": "da:entity/b_knight/dash3",
+        "steam": true
+      }
+    ]
+  }
+}

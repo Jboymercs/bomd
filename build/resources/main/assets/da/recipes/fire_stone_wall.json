@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "item": "da:fire_stone"
+    }
+  },
+  "result": {
+    "item": "da:fire_stone_wall",
+    "count": 6
+  }
+}

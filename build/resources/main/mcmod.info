@@ -1,0 +1,19 @@
+[
+  {
+    "modid": "da",
+    "name": "Dungeon Additions",
+    "description": "Backports some things from Bosses of Mass Destruction + Some of my own added in creatures",
+    "version": "1.12.2-0.0.6",
+    "mcversion": "1.12.2",
+    "url": "modpage",
+    "authorList": [
+      "UnseenDontRun"
+    ],
+    "credits": "Barribob",
+    "logoFile": "modlogo.png",
+    "screenshots": [],
+    "dependencies": [
+      "geckolib"
+    ]
+  }
+]

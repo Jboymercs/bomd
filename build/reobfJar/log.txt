@@ -1,0 +1,1271 @@
+Java Launcher: C:\Users\17857\.jdks\liberica-1.8.0_333\bin\java.exe
+Arguments: '--input, C:\Users\17857\Desktop\Mod Dev\bomd\build\libs\da-1.12.2-0.0.6.jar, --output, C:\Users\17857\Desktop\Mod Dev\bomd\build\reobfJar\output.jar, --names, C:\Users\17857\Desktop\Mod Dev\bomd\build\reobfJar\mappings.tsrg, --lib, C:\Users\17857\.gradle\caches\forge_gradle\deobf_dependencies\software\bernie\geckolib\geckolib-forge-1.12.2\3.0.31_mapped_stable_39-1.12\geckolib-forge-1.12.2-3.0.31_mapped_stable_39-1.12.jar, --lib, C:\Users\17857\.gradle\caches\forge_gradle\deobf_dependencies\curse\maven\deeper-depths-1101129\5753202_mapped_stable_39-1.12\deeper-depths-1101129-5753202_mapped_stable_39-1.12.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\io.github.kostaskougios\cloning\1.10.3\c356a3a8dc50ccb0f9f9c1f5146fdd15cdcdc625\cloning-1.10.3.jar, --lib, C:\Users\17857\Desktop\Mod Dev\bomd\build\fg_cache\net\minecraftforge\forge\1.12.2-14.23.5.2860_mapped_stable_39-1.12\forge-1.12.2-14.23.5.2860_mapped_stable_39-1.12-recomp.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.objenesis\objenesis\3.0.1\11cfac598df9dc48bb9ed9357ed04212694b7808\objenesis-3.0.1.jar, --lib, C:\Users\17857\.gradle\caches\forge_gradle\minecraft_repo\versions\1.12.2\client-extra.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\3.0.1\f7be08ec23c21485b9b5a1cf1654c2ec8c58168d\jsr305-3.0.1.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.minecraftforge\mergetool\1.0.13\c18446ec4d5814f447d7a79b314ba9a27cc8dbc8\mergetool-1.0.13-forge.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-debug-all\5.2\3354e11e2b34215f06dab629ab88e06aca477c19\asm-debug-all-5.2.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.minecraft\launchwrapper\1.12\111e7bea9c968cdb3d06ef4632bf7ff0824d0f36\launchwrapper-1.12.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.jline\jline\3.5.1\51800e9d7a13608894a5a28eed0f5c7fa2f300fb\jline-3.5.1.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.typesafe.akka\akka-actor_2.11\2.3.3\ed62e9fc709ca0f2ff1a3220daa8b70a2870078e\akka-actor_2.11-2.3.3.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.typesafe\config\1.2.1\f771f71fdae3df231bcd54d5ca2d57f0bf93f467\config-1.2.1.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang\scala-actors-migration_2.11\1.1.0\dfa8bc42b181d5b9f1a5dd147f8ae308b893eb6f\scala-actors-migration_2.11-1.1.0.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang\scala-compiler\2.11.1\56ea2e6c025e0821f28d73ca271218b8dd04926a\scala-compiler-2.11.1.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang.plugins\scala-continuations-library_2.11\1.0.2_mc\e517c53a7e9acd6b1668c5a35eccbaa3bab9aac\scala-continuations-library_2.11-1.0.2_mc.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang.plugins\scala-continuations-plugin_2.11.1\1.0.2_mc\f361a3283452c57fa30c1ee69448995de23c60f7\scala-continuations-plugin_2.11.1-1.0.2_mc.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang\scala-reflect\2.11.1\6580347e61cc7f8e802941e7fde40fa83b8badeb\scala-reflect-2.11.1.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang\scala-actors\2.11.0\8ccfb6541de179bb1c4d45cf414acee069b7f78b\scala-actors-2.11.0.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang.modules\scala-xml_2.11\1.0.2\820fbca7e524b530fdadc594c39d49a21ea0337e\scala-xml_2.11-1.0.2.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang.modules\scala-parser-combinators_2.11\1.0.1\f05d7345bf5a58924f2837c6c1f4d73a938e1ff0\scala-parser-combinators_2.11-1.0.1.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang\scala-library\2.11.1\e11da23da3eabab9f4777b9220e60d44c1aab6a\scala-library-2.11.1.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang\scala-parser-combinators_2.11\1.0.1\f05d7345bf5a58924f2837c6c1f4d73a938e1ff0\scala-parser-combinators_2.11-1.0.1.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang\scala-swing_2.11\1.0.1\b1cdd92bd47b1e1837139c1c53020e86bb9112ae\scala-swing_2.11-1.0.1.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang\scala-xml_2.11\1.0.2\7a80ec00aec122fba7cd4e0d4cdd87ff7e4cb6d0\scala-xml_2.11-1.0.2.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\lzma\lzma\0.0.1\521616dc7487b42bef0e803bd2fa3faf668101d7\lzma-0.0.1.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\java3d\vecmath\1.5.2\79846ba34cbd89e2422d74d53752f993dcc2ccaf\vecmath-1.5.2.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.sf.trove4j\trove4j\3.0.3\42ccaf4761f0dfdfa805c9e340d99a755907e2dd\trove4j-3.0.3.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.apache.maven\maven-artifact\3.5.3\7dc72b6d6d8a6dced3d294ed54c2cc3515ade9f4\maven-artifact-3.5.3.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.sf.jopt-simple\jopt-simple\5.0.3\cdd846cfc4e0f7eefafc02c0f5dce32b9303aa2a\jopt-simple-5.0.3.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-core\2.15.0\ba55c13d7ac2fd44df9cc8074455719a33f375b9\log4j-core-2.15.0.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-api\2.15.0\4a5aa7e55a29391c6f66e0b259d5189aa11e45d0\log4j-api-2.15.0.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.minecraftforge\legacydev\0.2.3.1\f2cd4a8c9f09faf1c1e4a9a4c65df36e634f95db\legacydev-0.2.3.1-fatjar.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.mojang\patchy\1.3.9\eb8bb7b66fa0e2152b1b40b3856e82f7619439ee\patchy-1.3.9.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\oshi-project\oshi-core\1.1\9ddf7b048a8d701be231c0f4f95fd986198fd2d8\oshi-core-1.1.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.java.dev.jna\jna\4.4.0\cb208278274bf12ebdb56c61bd7407e6f774d65a\jna-4.4.0.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.java.dev.jna\platform\3.4.0\e3f70017be8100d3d6923f50b3d2ee17714e9c13\platform-3.4.0.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.ibm.icu\icu4j-core-mojang\51.2\63d216a9311cca6be337c1e458e587f99d382b84\icu4j-core-mojang-51.2.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.paulscode\codecjorbis\20101023\c73b5636faf089d9f00e8732a829577de25237ee\codecjorbis-20101023.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.paulscode\codecwav\20101023\12f031cfe88fef5c1dd36c563c0a3a69bd7261da\codecwav-20101023.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.paulscode\libraryjavasound\20101123\5c5e304366f75f9eaa2e8cca546a1fb6109348b3\libraryjavasound-20101123.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.paulscode\librarylwjglopenal\20100824\73e80d0794c39665aec3f62eee88ca91676674ef\librarylwjglopenal-20100824.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.paulscode\soundsystem\20120107\419c05fe9be71f792b2d76cfc9b67f1ed0fec7f6\soundsystem-20120107.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\io.netty\netty-all\4.1.9.Final\97860965d6a0a6b98e7f569f3f966727b8db75\netty-all-4.1.9.Final.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.google.guava\guava\21.0\3a3d111be1be1b745edfa7d91678a12d7ed38709\guava-21.0.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.apache.commons\commons-lang3\3.5\6c6c702c89bfff3cd9e80b04d668c5e190d588c6\commons-lang3-3.5.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\commons-io\commons-io\2.5\2852e6e05fbb95076fc091f6d1780f1f8fe35e0f\commons-io-2.5.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.apache.httpcomponents\httpclient\4.3.3\18f4247ff4572a074444572cee34647c43e7c9c7\httpclient-4.3.3.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\commons-codec\commons-codec\1.10\4b95f4897fa13f2cd904aee711aeafc0c5295cd8\commons-codec-1.10.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.java.jinput\jinput\2.0.5\39c7796b469a600f72380316f6b1f11db6c2c7c4\jinput-2.0.5.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.java.jutils\jutils\1.0.0\e12fe1fda814bd348c1579329c86943d2cd3c6a6\jutils-1.0.0.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.8.0\c4ba5371a29ac9b2ad6129b1d39ea38750043eff\gson-2.8.0.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.mojang\authlib\1.5.25\9834cdf236c22e84b946bba989e2f94ef5897c3c\authlib-1.5.25.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.mojang\realms\1.10.22\bd0dccebdf3744c75f1ca20063f16e8f7d5e663f\realms-1.10.22.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.apache.commons\commons-compress\1.8.1\a698750c16740fd5b3871425f4cb3bbaa87f529d\commons-compress-1.8.1.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\commons-logging\commons-logging\1.1.3\f6f66e966c70a83ffbdb6f17a0919eaf7c8aca7f\commons-logging-1.1.3.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.apache.httpcomponents\httpcore\4.3.2\31fbbff1ddbf98f3aa7377c94d33b0447c646b6e\httpcore-4.3.2.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\it.unimi.dsi\fastutil\7.1.0\9835253257524c1be7ab50c057aa2d418fb72082\fastutil-7.1.0.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.lwjgl.lwjgl\lwjgl\2.9.4-nightly-20150209\697517568c68e78ae0b4544145af031c81082dfe\lwjgl-2.9.4-nightly-20150209.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.lwjgl.lwjgl\lwjgl_util\2.9.4-nightly-20150209\d51a7c040a721d13efdfbd34f8b257b2df882ad0\lwjgl_util-2.9.4-nightly-20150209.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.lwjgl.lwjgl\lwjgl-platform\2.9.4-nightly-20150209\b04f3ee8f5e43fa3b162981b50bb72fe1acabb33\lwjgl-platform-2.9.4-nightly-20150209.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.mojang\text2speech\1.10.3\48fd510879dff266c3815947de66e3d4809f8668\text2speech-1.10.3.jar, --lib, C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.codehaus.plexus\plexus-utils\3.1.0\60eecb6f15abdb1c653ad80abaac6fe188b3feaa\plexus-utils-3.1.0.jar, --disable-abstract-param'
+Classpath:
+ - C:\Users\17857\.gradle\caches\forge_gradle\maven_downloader\net\minecraftforge\ForgeAutoRenamingTool\1.0.6\ForgeAutoRenamingTool-1.0.6-all.jar
+Working directory: C:\Users\17857\Desktop\Mod Dev\bomd\build\reobfJar
+Main class: net.minecraftforge.fart.Main
+====================================
+Forge Auto Renaming Tool v1.0.6
+lib: C:\Users\17857\.gradle\caches\forge_gradle\deobf_dependencies\software\bernie\geckolib\geckolib-forge-1.12.2\3.0.31_mapped_stable_39-1.12\geckolib-forge-1.12.2-3.0.31_mapped_stable_39-1.12.jar
+lib: C:\Users\17857\.gradle\caches\forge_gradle\deobf_dependencies\curse\maven\deeper-depths-1101129\5753202_mapped_stable_39-1.12\deeper-depths-1101129-5753202_mapped_stable_39-1.12.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\io.github.kostaskougios\cloning\1.10.3\c356a3a8dc50ccb0f9f9c1f5146fdd15cdcdc625\cloning-1.10.3.jar
+lib: C:\Users\17857\Desktop\Mod Dev\bomd\build\fg_cache\net\minecraftforge\forge\1.12.2-14.23.5.2860_mapped_stable_39-1.12\forge-1.12.2-14.23.5.2860_mapped_stable_39-1.12-recomp.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.objenesis\objenesis\3.0.1\11cfac598df9dc48bb9ed9357ed04212694b7808\objenesis-3.0.1.jar
+lib: C:\Users\17857\.gradle\caches\forge_gradle\minecraft_repo\versions\1.12.2\client-extra.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\3.0.1\f7be08ec23c21485b9b5a1cf1654c2ec8c58168d\jsr305-3.0.1.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.minecraftforge\mergetool\1.0.13\c18446ec4d5814f447d7a79b314ba9a27cc8dbc8\mergetool-1.0.13-forge.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-debug-all\5.2\3354e11e2b34215f06dab629ab88e06aca477c19\asm-debug-all-5.2.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.minecraft\launchwrapper\1.12\111e7bea9c968cdb3d06ef4632bf7ff0824d0f36\launchwrapper-1.12.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.jline\jline\3.5.1\51800e9d7a13608894a5a28eed0f5c7fa2f300fb\jline-3.5.1.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.typesafe.akka\akka-actor_2.11\2.3.3\ed62e9fc709ca0f2ff1a3220daa8b70a2870078e\akka-actor_2.11-2.3.3.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.typesafe\config\1.2.1\f771f71fdae3df231bcd54d5ca2d57f0bf93f467\config-1.2.1.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang\scala-actors-migration_2.11\1.1.0\dfa8bc42b181d5b9f1a5dd147f8ae308b893eb6f\scala-actors-migration_2.11-1.1.0.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang\scala-compiler\2.11.1\56ea2e6c025e0821f28d73ca271218b8dd04926a\scala-compiler-2.11.1.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang.plugins\scala-continuations-library_2.11\1.0.2_mc\e517c53a7e9acd6b1668c5a35eccbaa3bab9aac\scala-continuations-library_2.11-1.0.2_mc.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang.plugins\scala-continuations-plugin_2.11.1\1.0.2_mc\f361a3283452c57fa30c1ee69448995de23c60f7\scala-continuations-plugin_2.11.1-1.0.2_mc.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang\scala-reflect\2.11.1\6580347e61cc7f8e802941e7fde40fa83b8badeb\scala-reflect-2.11.1.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang\scala-actors\2.11.0\8ccfb6541de179bb1c4d45cf414acee069b7f78b\scala-actors-2.11.0.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang.modules\scala-xml_2.11\1.0.2\820fbca7e524b530fdadc594c39d49a21ea0337e\scala-xml_2.11-1.0.2.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang.modules\scala-parser-combinators_2.11\1.0.1\f05d7345bf5a58924f2837c6c1f4d73a938e1ff0\scala-parser-combinators_2.11-1.0.1.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang\scala-library\2.11.1\e11da23da3eabab9f4777b9220e60d44c1aab6a\scala-library-2.11.1.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang\scala-parser-combinators_2.11\1.0.1\f05d7345bf5a58924f2837c6c1f4d73a938e1ff0\scala-parser-combinators_2.11-1.0.1.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang\scala-swing_2.11\1.0.1\b1cdd92bd47b1e1837139c1c53020e86bb9112ae\scala-swing_2.11-1.0.1.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.scala-lang\scala-xml_2.11\1.0.2\7a80ec00aec122fba7cd4e0d4cdd87ff7e4cb6d0\scala-xml_2.11-1.0.2.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\lzma\lzma\0.0.1\521616dc7487b42bef0e803bd2fa3faf668101d7\lzma-0.0.1.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\java3d\vecmath\1.5.2\79846ba34cbd89e2422d74d53752f993dcc2ccaf\vecmath-1.5.2.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.sf.trove4j\trove4j\3.0.3\42ccaf4761f0dfdfa805c9e340d99a755907e2dd\trove4j-3.0.3.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.apache.maven\maven-artifact\3.5.3\7dc72b6d6d8a6dced3d294ed54c2cc3515ade9f4\maven-artifact-3.5.3.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.sf.jopt-simple\jopt-simple\5.0.3\cdd846cfc4e0f7eefafc02c0f5dce32b9303aa2a\jopt-simple-5.0.3.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-core\2.15.0\ba55c13d7ac2fd44df9cc8074455719a33f375b9\log4j-core-2.15.0.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-api\2.15.0\4a5aa7e55a29391c6f66e0b259d5189aa11e45d0\log4j-api-2.15.0.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.minecraftforge\legacydev\0.2.3.1\f2cd4a8c9f09faf1c1e4a9a4c65df36e634f95db\legacydev-0.2.3.1-fatjar.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.mojang\patchy\1.3.9\eb8bb7b66fa0e2152b1b40b3856e82f7619439ee\patchy-1.3.9.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\oshi-project\oshi-core\1.1\9ddf7b048a8d701be231c0f4f95fd986198fd2d8\oshi-core-1.1.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.java.dev.jna\jna\4.4.0\cb208278274bf12ebdb56c61bd7407e6f774d65a\jna-4.4.0.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.java.dev.jna\platform\3.4.0\e3f70017be8100d3d6923f50b3d2ee17714e9c13\platform-3.4.0.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.ibm.icu\icu4j-core-mojang\51.2\63d216a9311cca6be337c1e458e587f99d382b84\icu4j-core-mojang-51.2.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.paulscode\codecjorbis\20101023\c73b5636faf089d9f00e8732a829577de25237ee\codecjorbis-20101023.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.paulscode\codecwav\20101023\12f031cfe88fef5c1dd36c563c0a3a69bd7261da\codecwav-20101023.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.paulscode\libraryjavasound\20101123\5c5e304366f75f9eaa2e8cca546a1fb6109348b3\libraryjavasound-20101123.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.paulscode\librarylwjglopenal\20100824\73e80d0794c39665aec3f62eee88ca91676674ef\librarylwjglopenal-20100824.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.paulscode\soundsystem\20120107\419c05fe9be71f792b2d76cfc9b67f1ed0fec7f6\soundsystem-20120107.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\io.netty\netty-all\4.1.9.Final\97860965d6a0a6b98e7f569f3f966727b8db75\netty-all-4.1.9.Final.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.google.guava\guava\21.0\3a3d111be1be1b745edfa7d91678a12d7ed38709\guava-21.0.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.apache.commons\commons-lang3\3.5\6c6c702c89bfff3cd9e80b04d668c5e190d588c6\commons-lang3-3.5.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\commons-io\commons-io\2.5\2852e6e05fbb95076fc091f6d1780f1f8fe35e0f\commons-io-2.5.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.apache.httpcomponents\httpclient\4.3.3\18f4247ff4572a074444572cee34647c43e7c9c7\httpclient-4.3.3.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\commons-codec\commons-codec\1.10\4b95f4897fa13f2cd904aee711aeafc0c5295cd8\commons-codec-1.10.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.java.jinput\jinput\2.0.5\39c7796b469a600f72380316f6b1f11db6c2c7c4\jinput-2.0.5.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\net.java.jutils\jutils\1.0.0\e12fe1fda814bd348c1579329c86943d2cd3c6a6\jutils-1.0.0.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.8.0\c4ba5371a29ac9b2ad6129b1d39ea38750043eff\gson-2.8.0.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.mojang\authlib\1.5.25\9834cdf236c22e84b946bba989e2f94ef5897c3c\authlib-1.5.25.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.mojang\realms\1.10.22\bd0dccebdf3744c75f1ca20063f16e8f7d5e663f\realms-1.10.22.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.apache.commons\commons-compress\1.8.1\a698750c16740fd5b3871425f4cb3bbaa87f529d\commons-compress-1.8.1.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\commons-logging\commons-logging\1.1.3\f6f66e966c70a83ffbdb6f17a0919eaf7c8aca7f\commons-logging-1.1.3.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.apache.httpcomponents\httpcore\4.3.2\31fbbff1ddbf98f3aa7377c94d33b0447c646b6e\httpcore-4.3.2.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\it.unimi.dsi\fastutil\7.1.0\9835253257524c1be7ab50c057aa2d418fb72082\fastutil-7.1.0.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.lwjgl.lwjgl\lwjgl\2.9.4-nightly-20150209\697517568c68e78ae0b4544145af031c81082dfe\lwjgl-2.9.4-nightly-20150209.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.lwjgl.lwjgl\lwjgl_util\2.9.4-nightly-20150209\d51a7c040a721d13efdfbd34f8b257b2df882ad0\lwjgl_util-2.9.4-nightly-20150209.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.lwjgl.lwjgl\lwjgl-platform\2.9.4-nightly-20150209\b04f3ee8f5e43fa3b162981b50bb72fe1acabb33\lwjgl-platform-2.9.4-nightly-20150209.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\com.mojang\text2speech\1.10.3\48fd510879dff266c3815947de66e3d4809f8668\text2speech-1.10.3.jar
+lib: C:\Users\17857\.gradle\caches\modules-2\files-2.1\org.codehaus.plexus\plexus-utils\3.1.0\60eecb6f15abdb1c653ad80abaac6fe188b3feaa\plexus-utils-3.1.0.jar
+log: null
+input: C:\Users\17857\Desktop\Mod Dev\bomd\build\libs\da-1.12.2-0.0.6.jar
+output: C:\Users\17857\Desktop\Mod Dev\bomd\build\reobfJar\output.jar
+threads: 20
+Names: C:\Users\17857\Desktop\Mod Dev\bomd\build\reobfJar\mappings.tsrg(reversed: false)
+Fix Annotations: false
+Fix Records: false
+Fix Identifiers: false
+Fix SourceFile: false
+Fix Line Numbers: false
+Strip codesigning signatures: false
+Adding Libraries to Inheritance
+Reading Input: C:\Users\17857\Desktop\Mod Dev\bomd\build\libs\da-1.12.2-0.0.6.jar
+Adding input to inheritance map
+Processing entries
+Conflicting propagated mapping for com/dungeon_additions/da/animation/model/BasicModelEntity/setLivingAnimations(Lnet/minecraft/entity/EntityLivingBase;FFF)V from net/minecraft/client/model/ModelBase/setLivingAnimations(Lnet/minecraft/entity/EntityLivingBase;FFF)V: setLivingAnimations -> func_78086_a
+Conflicting propagated mapping for com/dungeon_additions/da/animation/model/BasicModelEntity/setRotationAngles(FFFFFFLnet/minecraft/entity/Entity;)V from net/minecraft/client/model/ModelBase/setRotationAngles(FFFFFFLnet/minecraft/entity/Entity;)V: setRotationAngles -> func_78087_a
+Conflicting propagated mapping for com/dungeon_additions/da/animation/model/BasicModelEntity/render(Lnet/minecraft/entity/Entity;FFFFFF)V from net/minecraft/client/model/ModelBase/render(Lnet/minecraft/entity/Entity;FFFFFF)V: render -> func_78088_a
+Conflicting propagated mapping for com/dungeon_additions/da/animation/example/ModelExample/setLivingAnimations(Lnet/minecraft/entity/EntityLivingBase;FFF)V from com/dungeon_additions/da/animation/model/BasicModelEntity/setLivingAnimations(Lnet/minecraft/entity/EntityLivingBase;FFF)V: setLivingAnimations -> func_78086_a
+Conflicting propagated mapping for com/dungeon_additions/da/animation/example/exampletwo/ModelEverator/setLivingAnimations(Lnet/minecraft/entity/EntityLivingBase;FFF)V from com/dungeon_additions/da/animation/model/BasicModelEntity/setLivingAnimations(Lnet/minecraft/entity/EntityLivingBase;FFF)V: setLivingAnimations -> func_78086_a
+Conflicting propagated mapping for com/dungeon_additions/da/animation/example/ModelExample/setRotationAngles(FFFFFFLnet/minecraft/entity/Entity;)V from com/dungeon_additions/da/animation/model/BasicModelEntity/setRotationAngles(FFFFFFLnet/minecraft/entity/Entity;)V: setRotationAngles -> func_78087_a
+Conflicting propagated mapping for com/dungeon_additions/da/animation/example/exampletwo/ModelEverator/setRotationAngles(FFFFFFLnet/minecraft/entity/Entity;)V from com/dungeon_additions/da/animation/model/BasicModelEntity/setRotationAngles(FFFFFFLnet/minecraft/entity/Entity;)V: setRotationAngles -> func_78087_a
+Conflicting propagated mapping for com/dungeon_additions/da/animation/example/ModelExample/render(Lnet/minecraft/entity/Entity;FFFFFF)V from com/dungeon_additions/da/animation/model/BasicModelEntity/render(Lnet/minecraft/entity/Entity;FFFFFF)V: render -> func_78088_a
+Conflicting propagated mapping for com/dungeon_additions/da/animation/example/exampletwo/ModelEverator/render(Lnet/minecraft/entity/Entity;FFFFFF)V from com/dungeon_additions/da/animation/model/BasicModelEntity/render(Lnet/minecraft/entity/Entity;FFFFFF)V: render -> func_78088_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderModEntity/doRender(Lnet/minecraft/entity/Entity;DDDFF)V from net/minecraft/client/renderer/entity/RenderLiving/doRender(Lnet/minecraft/entity/Entity;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderModEntity/applyRotations(Lnet/minecraft/entity/EntityLivingBase;FFF)V from net/minecraft/client/renderer/entity/RenderLivingBase/applyRotations(Lnet/minecraft/entity/EntityLivingBase;FFF)V: applyRotations -> func_77043_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderModEntity/doRender(Lnet/minecraft/entity/EntityLiving;DDDFF)V from net/minecraft/client/renderer/entity/RenderLiving/doRender(Lnet/minecraft/entity/EntityLiving;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderModEntity/renderModel(Lnet/minecraft/entity/EntityLivingBase;FFFFFF)V from net/minecraft/client/renderer/entity/RenderLivingBase/renderModel(Lnet/minecraft/entity/EntityLivingBase;FFFFFF)V: renderModel -> func_77036_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderModEntity/doRender(Lnet/minecraft/entity/EntityLivingBase;DDDFF)V from net/minecraft/client/renderer/entity/RenderLiving/doRender(Lnet/minecraft/entity/EntityLivingBase;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderModEntity/getEntityTexture(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/ResourceLocation; from net/minecraft/client/renderer/entity/Render/getEntityTexture(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/ResourceLocation;: getEntityTexture -> func_110775_a
+Conflicting propagated mapping for com/dungeon_additions/da/animation/example/exampletwo/RenderEverator/doRender(Lnet/minecraft/entity/Entity;DDDFF)V from com/dungeon_additions/da/entity/render/RenderModEntity/doRender(Lnet/minecraft/entity/Entity;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/animation/example/exampletwo/RenderEverator/doRender(Lnet/minecraft/entity/EntityLiving;DDDFF)V from com/dungeon_additions/da/entity/render/RenderModEntity/doRender(Lnet/minecraft/entity/EntityLiving;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/animation/example/exampletwo/RenderEverator/doRender(Lnet/minecraft/entity/EntityLivingBase;DDDFF)V from com/dungeon_additions/da/entity/render/RenderModEntity/doRender(Lnet/minecraft/entity/EntityLivingBase;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for net/minecraft/entity/EntityLivingBase/moveRelative(FFFF)V from net/minecraft/entity/Entity/moveRelative(FFFF)V: moveRelative -> func_191958_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityAbstractBase/move(Lnet/minecraft/entity/MoverType;DDD)V from net/minecraft/entity/Entity/move(Lnet/minecraft/entity/MoverType;DDD)V: move -> func_70091_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityAbstractBase/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from net/minecraft/entity/EntityLiving/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: writeEntityToNBT -> func_70014_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityAbstractBase/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z from net/minecraft/entity/EntityLivingBase/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z: attackEntityFrom -> func_70097_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityAbstractBase/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from net/minecraft/entity/EntityLiving/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: readEntityFromNBT -> func_70037_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityAbstractBase/entityInit()V from net/minecraft/entity/EntityLiving/entityInit()V: entityInit -> func_70088_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityAbstractBase/createNavigator(Lnet/minecraft/world/World;)Lnet/minecraft/pathfinding/PathNavigate; from net/minecraft/entity/EntityLiving/createNavigator(Lnet/minecraft/world/World;)Lnet/minecraft/pathfinding/PathNavigate;: createNavigator -> func_175447_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityAbstractBase/onUpdate()V from net/minecraft/entity/EntityLiving/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityAbstractBase/onLivingUpdate()V from net/minecraft/entity/EntityLiving/onLivingUpdate()V: onLivingUpdate -> func_70636_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityAbstractBase/initEntityAI()V from net/minecraft/entity/EntityLiving/initEntityAI()V: initEntityAI -> func_184651_r
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityAbstractBase/applyEntityAttributes()V from net/minecraft/entity/EntityLiving/applyEntityAttributes()V: applyEntityAttributes -> func_110147_ax
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/slab/BlockSlabBase$Variant/getName()Ljava/lang/String; from net/minecraft/util/IStringSerializable/getName()Ljava/lang/String;: getName -> func_176610_l
+Conflicting propagated mapping for com/dungeon_additions/da/animation/example/EntityExample/onUpdate()V from com/dungeon_additions/da/entity/EntityAbstractBase/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/animation/example/exampletwo/EntityEverator/entityInit()V from com/dungeon_additions/da/entity/EntityAbstractBase/entityInit()V: entityInit -> func_70088_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/BlockWallBase/isOpaqueCube(Lnet/minecraft/block/state/IBlockState;)Z from net/minecraft/block/Block/isOpaqueCube(Lnet/minecraft/block/state/IBlockState;)Z: isOpaqueCube -> func_149662_c
+Conflicting propagated mapping for com/dungeon_additions/da/animation/example/exampletwo/EntityEverator/onUpdate()V from com/dungeon_additions/da/entity/EntityAbstractBase/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/animation/example/exampletwo/EntityEverator/initEntityAI()V from com/dungeon_additions/da/entity/EntityAbstractBase/initEntityAI()V: initEntityAI -> func_184651_r
+Conflicting propagated mapping for com/dungeon_additions/da/animation/example/exampletwo/EntityEverator/applyEntityAttributes()V from com/dungeon_additions/da/entity/EntityAbstractBase/applyEntityAttributes()V: applyEntityAttributes -> func_110147_ax
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/BlockWallBase/getBoundingBox(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/AxisAlignedBB; from net/minecraft/block/Block/getBoundingBox(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/AxisAlignedBB;: getBoundingBox -> func_185496_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/BlockWallBase/getCollisionBoundingBox(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/AxisAlignedBB; from net/minecraft/block/Block/getCollisionBoundingBox(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/AxisAlignedBB;: getCollisionBoundingBox -> func_180646_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/BlockWallBase/getActualState(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState; from net/minecraft/block/Block/getActualState(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;: getActualState -> func_176221_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/BlockWallBase/isFullCube(Lnet/minecraft/block/state/IBlockState;)Z from net/minecraft/block/Block/isFullCube(Lnet/minecraft/block/state/IBlockState;)Z: isFullCube -> func_149686_d
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/BlockWallBase/getBlockFaceShape(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Lnet/minecraft/block/state/BlockFaceShape; from net/minecraft/block/Block/getBlockFaceShape(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Lnet/minecraft/block/state/BlockFaceShape;: getBlockFaceShape -> func_193383_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/BlockWallBase/isPassable(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Z from net/minecraft/block/Block/isPassable(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Z: isPassable -> func_176205_b
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/slab/BlockSlabBase/getItem(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)Lnet/minecraft/item/ItemStack; from net/minecraft/block/Block/getItem(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)Lnet/minecraft/item/ItemStack;: getItem -> func_185473_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/BlockWallBase/shouldSideBeRendered(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z from net/minecraft/block/Block/shouldSideBeRendered(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z: shouldSideBeRendered -> func_176225_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/slab/BlockSlabBase/getTranslationKey(I)Ljava/lang/String; from net/minecraft/block/BlockSlab/getTranslationKey(I)Ljava/lang/String;: getTranslationKey -> func_150002_b
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/slab/BlockSlabBase/getVariantProperty()Lnet/minecraft/block/properties/IProperty; from net/minecraft/block/BlockSlab/getVariantProperty()Lnet/minecraft/block/properties/IProperty;: getVariantProperty -> func_176551_l
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/slab/BlockSlabBase/getItemDropped(Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;I)Lnet/minecraft/item/Item; from net/minecraft/block/Block/getItemDropped(Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;I)Lnet/minecraft/item/Item;: getItemDropped -> func_180660_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/slab/BlockSlabBase/getTypeForItem(Lnet/minecraft/item/ItemStack;)Ljava/lang/Comparable; from net/minecraft/block/BlockSlab/getTypeForItem(Lnet/minecraft/item/ItemStack;)Ljava/lang/Comparable;: getTypeForItem -> func_185674_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/BlockWallBase/getStateFromMeta(I)Lnet/minecraft/block/state/IBlockState; from net/minecraft/block/Block/getStateFromMeta(I)Lnet/minecraft/block/state/IBlockState;: getStateFromMeta -> func_176203_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/BlockWallBase/getMetaFromState(Lnet/minecraft/block/state/IBlockState;)I from net/minecraft/block/Block/getMetaFromState(Lnet/minecraft/block/state/IBlockState;)I: getMetaFromState -> func_176201_c
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/BlockWallBase/damageDropped(Lnet/minecraft/block/state/IBlockState;)I from net/minecraft/block/Block/damageDropped(Lnet/minecraft/block/state/IBlockState;)I: damageDropped -> func_180651_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/BlockWallBase/addCollisionBoxToList(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/AxisAlignedBB;Ljava/util/List;Lnet/minecraft/entity/Entity;Z)V from net/minecraft/block/Block/addCollisionBoxToList(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/AxisAlignedBB;Ljava/util/List;Lnet/minecraft/entity/Entity;Z)V: addCollisionBoxToList -> func_185477_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/BlockWallBase/createBlockState()Lnet/minecraft/block/state/BlockStateContainer; from net/minecraft/block/Block/createBlockState()Lnet/minecraft/block/state/BlockStateContainer;: createBlockState -> func_180661_e
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/slab/BlockSlabBase/getStateFromMeta(I)Lnet/minecraft/block/state/IBlockState; from net/minecraft/block/Block/getStateFromMeta(I)Lnet/minecraft/block/state/IBlockState;: getStateFromMeta -> func_176203_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/slab/BlockSlabBase/getMetaFromState(Lnet/minecraft/block/state/IBlockState;)I from net/minecraft/block/Block/getMetaFromState(Lnet/minecraft/block/state/IBlockState;)I: getMetaFromState -> func_176201_c
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/slab/BlockSlabBase/createBlockState()Lnet/minecraft/block/state/BlockStateContainer; from net/minecraft/block/Block/createBlockState()Lnet/minecraft/block/state/BlockStateContainer;: createBlockState -> func_180661_e
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/slab/BlockDoubleSlab/isDouble()Z from net/minecraft/block/BlockSlab/isDouble()Z: isDouble -> func_176552_j
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockChangingDoor/neighborChanged(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/Block;Lnet/minecraft/util/math/BlockPos;)V from net/minecraft/block/Block/neighborChanged(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/Block;Lnet/minecraft/util/math/BlockPos;)V: neighborChanged -> func_189540_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockChangingDoor/updateTick(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;)V from net/minecraft/block/Block/updateTick(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;)V: updateTick -> func_180650_b
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockChangingDoor/isOpaqueCube(Lnet/minecraft/block/state/IBlockState;)Z from net/minecraft/block/Block/isOpaqueCube(Lnet/minecraft/block/state/IBlockState;)Z: isOpaqueCube -> func_149662_c
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/base/slab/BlockHalfSlab/isDouble()Z from net/minecraft/block/BlockSlab/isDouble()Z: isDouble -> func_176552_j
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockLeaveBase/getItemDropped(Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;I)Lnet/minecraft/item/Item; from net/minecraft/block/BlockLeaves/getItemDropped(Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;I)Lnet/minecraft/item/Item;: getItemDropped -> func_180660_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockChangingDoor/onBlockActivated(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;Lnet/minecraft/util/EnumFacing;FFF)Z from net/minecraft/block/Block/onBlockActivated(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;Lnet/minecraft/util/EnumFacing;FFF)Z: onBlockActivated -> func_180639_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockChangingDoor/getBoundingBox(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/AxisAlignedBB; from net/minecraft/block/Block/getBoundingBox(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/AxisAlignedBB;: getBoundingBox -> func_185496_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockChangingDoor/getCollisionBoundingBox(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/AxisAlignedBB; from net/minecraft/block/Block/getCollisionBoundingBox(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/AxisAlignedBB;: getCollisionBoundingBox -> func_180646_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockLeaveBase/getStateFromMeta(I)Lnet/minecraft/block/state/IBlockState; from net/minecraft/block/Block/getStateFromMeta(I)Lnet/minecraft/block/state/IBlockState;: getStateFromMeta -> func_176203_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockLeaveBase/quantityDropped(Ljava/util/Random;)I from net/minecraft/block/BlockLeaves/quantityDropped(Ljava/util/Random;)I: quantityDropped -> func_149745_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockLeaveBase/getMetaFromState(Lnet/minecraft/block/state/IBlockState;)I from net/minecraft/block/Block/getMetaFromState(Lnet/minecraft/block/state/IBlockState;)I: getMetaFromState -> func_176201_c
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockLeaveBase/getWoodType(I)Lnet/minecraft/block/BlockPlanks$EnumType; from net/minecraft/block/BlockLeaves/getWoodType(I)Lnet/minecraft/block/BlockPlanks$EnumType;: getWoodType -> func_176233_b
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockChangingDoor/tickRate(Lnet/minecraft/world/World;)I from net/minecraft/block/Block/tickRate(Lnet/minecraft/world/World;)I: tickRate -> func_149738_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockChangingDoor/isFullCube(Lnet/minecraft/block/state/IBlockState;)Z from net/minecraft/block/Block/isFullCube(Lnet/minecraft/block/state/IBlockState;)Z: isFullCube -> func_149686_d
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockChangingDoor/getRenderLayer()Lnet/minecraft/util/BlockRenderLayer; from net/minecraft/block/Block/getRenderLayer()Lnet/minecraft/util/BlockRenderLayer;: getRenderLayer -> func_180664_k
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockChangingDoor/getBlockFaceShape(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Lnet/minecraft/block/state/BlockFaceShape; from net/minecraft/block/Block/getBlockFaceShape(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Lnet/minecraft/block/state/BlockFaceShape;: getBlockFaceShape -> func_193383_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockLeaveBase/createBlockState()Lnet/minecraft/block/state/BlockStateContainer; from net/minecraft/block/Block/createBlockState()Lnet/minecraft/block/state/BlockStateContainer;: createBlockState -> func_180661_e
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockChangingDoor/isPassable(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Z from net/minecraft/block/Block/isPassable(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Z: isPassable -> func_176205_b
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockChangingDoor/getStateFromMeta(I)Lnet/minecraft/block/state/IBlockState; from net/minecraft/block/Block/getStateFromMeta(I)Lnet/minecraft/block/state/IBlockState;: getStateFromMeta -> func_176203_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockChangingDoor/getMetaFromState(Lnet/minecraft/block/state/IBlockState;)I from net/minecraft/block/Block/getMetaFromState(Lnet/minecraft/block/state/IBlockState;)I: getMetaFromState -> func_176201_c
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockChangingDoor/createBlockState()Lnet/minecraft/block/state/BlockStateContainer; from net/minecraft/block/Block/createBlockState()Lnet/minecraft/block/state/BlockStateContainer;: createBlockState -> func_180661_e
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockFireStoneLit/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V from net/minecraft/block/Block/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V: addInformation -> func_190948_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockFireStoneLit/getItemDropped(Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;I)Lnet/minecraft/item/Item; from net/minecraft/block/Block/getItemDropped(Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;I)Lnet/minecraft/item/Item;: getItemDropped -> func_180660_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockKnightBossKeyBlock/isOpaqueCube(Lnet/minecraft/block/state/IBlockState;)Z from net/minecraft/block/Block/isOpaqueCube(Lnet/minecraft/block/state/IBlockState;)Z: isOpaqueCube -> func_149662_c
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockKnightBossKeyBlock/onBlockActivated(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;Lnet/minecraft/util/EnumFacing;FFF)Z from net/minecraft/block/Block/onBlockActivated(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;Lnet/minecraft/util/EnumFacing;FFF)Z: onBlockActivated -> func_180639_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockKnightBossKeyBlock/getBoundingBox(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/AxisAlignedBB; from net/minecraft/block/Block/getBoundingBox(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/AxisAlignedBB;: getBoundingBox -> func_185496_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockKnightBossKeyBlock/isFullCube(Lnet/minecraft/block/state/IBlockState;)Z from net/minecraft/block/Block/isFullCube(Lnet/minecraft/block/state/IBlockState;)Z: isFullCube -> func_149686_d
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockKnightBossKeyBlock/breakBlock(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)V from net/minecraft/block/Block/breakBlock(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)V: breakBlock -> func_180663_b
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockKnightBossKeyBlock/createNewTileEntity(Lnet/minecraft/world/World;I)Lnet/minecraft/tileentity/TileEntity; from net/minecraft/block/ITileEntityProvider/createNewTileEntity(Lnet/minecraft/world/World;I)Lnet/minecraft/tileentity/TileEntity;: createNewTileEntity -> func_149915_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockDisappearingSpawner/isOpaqueCube(Lnet/minecraft/block/state/IBlockState;)Z from net/minecraft/block/Block/isOpaqueCube(Lnet/minecraft/block/state/IBlockState;)Z: isOpaqueCube -> func_149662_c
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockDisappearingSpawner/hasTileEntity()Z from net/minecraft/block/Block/hasTileEntity()Z: hasTileEntity -> func_149716_u
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockDisappearingSpawner/createNewTileEntity(Lnet/minecraft/world/World;I)Lnet/minecraft/tileentity/TileEntity; from net/minecraft/block/ITileEntityProvider/createNewTileEntity(Lnet/minecraft/world/World;I)Lnet/minecraft/tileentity/TileEntity;: createNewTileEntity -> func_149915_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockDisappearingSpawner/getRenderType(Lnet/minecraft/block/state/IBlockState;)Lnet/minecraft/util/EnumBlockRenderType; from net/minecraft/block/BlockContainer/getRenderType(Lnet/minecraft/block/state/IBlockState;)Lnet/minecraft/util/EnumBlockRenderType;: getRenderType -> func_149645_b
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockDisappearingSpawner/getItemDropped(Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;I)Lnet/minecraft/item/Item; from net/minecraft/block/Block/getItemDropped(Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;I)Lnet/minecraft/item/Item;: getItemDropped -> func_180660_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockDisappearingSpawner/isFullCube(Lnet/minecraft/block/state/IBlockState;)Z from net/minecraft/block/Block/isFullCube(Lnet/minecraft/block/state/IBlockState;)Z: isFullCube -> func_149686_d
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockMegaStructure/createNewTileEntity(Lnet/minecraft/world/World;I)Lnet/minecraft/tileentity/TileEntity; from net/minecraft/block/BlockStructure/createNewTileEntity(Lnet/minecraft/world/World;I)Lnet/minecraft/tileentity/TileEntity;: createNewTileEntity -> func_149915_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockMossCarpet/isOpaqueCube(Lnet/minecraft/block/state/IBlockState;)Z from net/minecraft/block/Block/isOpaqueCube(Lnet/minecraft/block/state/IBlockState;)Z: isOpaqueCube -> func_149662_c
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockMossySpruce/getRenderLayer()Lnet/minecraft/util/BlockRenderLayer; from net/minecraft/block/Block/getRenderLayer()Lnet/minecraft/util/BlockRenderLayer;: getRenderLayer -> func_180664_k
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockMossCarpet/getBoundingBox(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/AxisAlignedBB; from net/minecraft/block/Block/getBoundingBox(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/AxisAlignedBB;: getBoundingBox -> func_185496_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockMossCarpet/isFullCube(Lnet/minecraft/block/state/IBlockState;)Z from net/minecraft/block/Block/isFullCube(Lnet/minecraft/block/state/IBlockState;)Z: isFullCube -> func_149686_d
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockMossCarpet/getBlockFaceShape(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Lnet/minecraft/block/state/BlockFaceShape; from net/minecraft/block/Block/getBlockFaceShape(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Lnet/minecraft/block/state/BlockFaceShape;: getBlockFaceShape -> func_193383_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockMossCarpet/shouldSideBeRendered(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z from net/minecraft/block/Block/shouldSideBeRendered(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z: shouldSideBeRendered -> func_176225_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockSporeBlossom/onBlockAdded(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)V from net/minecraft/block/Block/onBlockAdded(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)V: onBlockAdded -> func_176213_c
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockSporeBlossom/updateTick(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;)V from net/minecraft/block/BlockLeaves/updateTick(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;)V: updateTick -> func_180650_b
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockSporeBlossom/randomDisplayTick(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Ljava/util/Random;)V from net/minecraft/block/BlockLeaves/randomDisplayTick(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Ljava/util/Random;)V: randomDisplayTick -> func_180655_c
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockSporeBlossom/getBoundingBox(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/AxisAlignedBB; from net/minecraft/block/Block/getBoundingBox(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/AxisAlignedBB;: getBoundingBox -> func_185496_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockSporeBlossom/getItemDropped(Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;I)Lnet/minecraft/item/Item; from com/dungeon_additions/da/blocks/BlockLeaveBase/getItemDropped(Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;I)Lnet/minecraft/item/Item;: getItemDropped -> func_180660_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockSporeBlossom/getOffsetType()Lnet/minecraft/block/Block$EnumOffsetType; from net/minecraft/block/Block/getOffsetType()Lnet/minecraft/block/Block$EnumOffsetType;: getOffsetType -> func_176218_Q
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockSporeBlossom/onPlayerDestroy(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)V from net/minecraft/block/Block/onPlayerDestroy(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)V: onPlayerDestroy -> func_176206_d
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/BlockSporeBlossom/createNewTileEntity(Lnet/minecraft/world/World;I)Lnet/minecraft/tileentity/TileEntity; from net/minecraft/block/ITileEntityProvider/createNewTileEntity(Lnet/minecraft/world/World;I)Lnet/minecraft/tileentity/TileEntity;: createNewTileEntity -> func_149915_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAiTimedAttack/shouldExecute()Z from net/minecraft/entity/ai/EntityAIBase/shouldExecute()Z: shouldExecute -> func_75250_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAiTimedAttack/resetTask()V from net/minecraft/entity/ai/EntityAIBase/resetTask()V: resetTask -> func_75251_c
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAiTimedAttack/updateTask()V from net/minecraft/entity/ai/EntityAIBase/updateTask()V: updateTask -> func_75246_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAiTimedAttack/shouldContinueExecuting()Z from net/minecraft/entity/ai/EntityAIBase/shouldContinueExecuting()Z: shouldContinueExecuting -> func_75253_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAIAttackRotKnight/shouldExecute()Z from net/minecraft/entity/ai/EntityAIBase/shouldExecute()Z: shouldExecute -> func_75250_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAIAttackRotKnight/resetTask()V from net/minecraft/entity/ai/EntityAIBase/resetTask()V: resetTask -> func_75251_c
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAIAttackRotKnight/updateTask()V from net/minecraft/entity/ai/EntityAIBase/updateTask()V: updateTask -> func_75246_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAIAttackRotKnightRapier/shouldExecute()Z from net/minecraft/entity/ai/EntityAIBase/shouldExecute()Z: shouldExecute -> func_75250_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAIAttackRotKnightRapier/resetTask()V from net/minecraft/entity/ai/EntityAIBase/resetTask()V: resetTask -> func_75251_c
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAIAttackRotKnightRapier/updateTask()V from net/minecraft/entity/ai/EntityAIBase/updateTask()V: updateTask -> func_75246_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAIAttackRotKnightRapier/shouldContinueExecuting()Z from net/minecraft/entity/ai/EntityAIBase/shouldContinueExecuting()Z: shouldContinueExecuting -> func_75253_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAIAttackRotKnight/shouldContinueExecuting()Z from net/minecraft/entity/ai/EntityAIBase/shouldContinueExecuting()Z: shouldContinueExecuting -> func_75253_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAIBlossom/shouldExecute()Z from net/minecraft/entity/ai/EntityAIBase/shouldExecute()Z: shouldExecute -> func_75250_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAIBlossom/resetTask()V from net/minecraft/entity/ai/EntityAIBase/resetTask()V: resetTask -> func_75251_c
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAIBlossom/updateTask()V from net/minecraft/entity/ai/EntityAIBase/updateTask()V: updateTask -> func_75246_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAIBlossom/shouldContinueExecuting()Z from net/minecraft/entity/ai/EntityAIBase/shouldContinueExecuting()Z: shouldContinueExecuting -> func_75253_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnight/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: writeEntityToNBT -> func_70014_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnight/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z from com/dungeon_additions/da/entity/EntityAbstractBase/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z: attackEntityFrom -> func_70097_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnight/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: readEntityFromNBT -> func_70037_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnight/canBlockDamageSource(Lnet/minecraft/util/DamageSource;)Z from net/minecraft/entity/EntityLivingBase/canBlockDamageSource(Lnet/minecraft/util/DamageSource;)Z: canBlockDamageSource -> func_184583_d
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/vine/BlockAzealaVines/neighborChanged(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/Block;Lnet/minecraft/util/math/BlockPos;)V from net/minecraft/block/BlockBush/neighborChanged(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/Block;Lnet/minecraft/util/math/BlockPos;)V: neighborChanged -> func_189540_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/vine/BlockAzealaVines/updateTick(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;)V from net/minecraft/block/BlockBush/updateTick(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;)V: updateTick -> func_180650_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAIFlameKnightAttack/shouldExecute()Z from net/minecraft/entity/ai/EntityAIBase/shouldExecute()Z: shouldExecute -> func_75250_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/vine/BlockAzealaVines/canSustainBush(Lnet/minecraft/block/state/IBlockState;)Z from net/minecraft/block/BlockBush/canSustainBush(Lnet/minecraft/block/state/IBlockState;)Z: canSustainBush -> func_185514_i
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnightRapier/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: writeEntityToNBT -> func_70014_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnightRapier/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z from com/dungeon_additions/da/entity/EntityAbstractBase/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z: attackEntityFrom -> func_70097_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnightRapier/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: readEntityFromNBT -> func_70037_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAiMiniBlossom/shouldExecute()Z from net/minecraft/entity/ai/EntityAIBase/shouldExecute()Z: shouldExecute -> func_75250_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAiMiniBlossom/resetTask()V from net/minecraft/entity/ai/EntityAIBase/resetTask()V: resetTask -> func_75251_c
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAiMiniBlossom/updateTask()V from net/minecraft/entity/ai/EntityAIBase/updateTask()V: updateTask -> func_75246_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAiMiniBlossom/shouldContinueExecuting()Z from net/minecraft/entity/ai/EntityAIBase/shouldContinueExecuting()Z: shouldContinueExecuting -> func_75253_b
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/vine/BlockAzealaVines/getBoundingBox(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/AxisAlignedBB; from net/minecraft/block/BlockBush/getBoundingBox(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/AxisAlignedBB;: getBoundingBox -> func_185496_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnightRapier/entityInit()V from com/dungeon_additions/da/entity/EntityAbstractBase/entityInit()V: entityInit -> func_70088_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAIFlameKnightAttack/resetTask()V from net/minecraft/entity/ai/EntityAIBase/resetTask()V: resetTask -> func_75251_c
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAIFlameKnightAttack/updateTask()V from net/minecraft/entity/ai/EntityAIBase/updateTask()V: updateTask -> func_75246_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAIFlameKnightAttack/shouldContinueExecuting()Z from net/minecraft/entity/ai/EntityAIBase/shouldContinueExecuting()Z: shouldContinueExecuting -> func_75253_b
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/vine/BlockAzealaVines/getItemDropped(Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;I)Lnet/minecraft/item/Item; from net/minecraft/block/Block/getItemDropped(Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;I)Lnet/minecraft/item/Item;: getItemDropped -> func_180660_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/vine/BlockAzealaVines/canBlockStay(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)Z from net/minecraft/block/BlockBush/canBlockStay(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)Z: canBlockStay -> func_180671_f
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/vine/BlockAzealaVines/canPlaceBlockAt(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)Z from net/minecraft/block/BlockBush/canPlaceBlockAt(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)Z: canPlaceBlockAt -> func_176196_c
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/vine/BlockAzealaVines/getActualState(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState; from net/minecraft/block/Block/getActualState(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;: getActualState -> func_176221_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom/canBeCollidedWith()Z from net/minecraft/entity/EntityLivingBase/canBeCollidedWith()Z: canBeCollidedWith -> func_70067_L
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAiTimedAttackBoss/shouldExecute()Z from net/minecraft/entity/ai/EntityAIBase/shouldExecute()Z: shouldExecute -> func_75250_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAiTimedAttackBoss/resetTask()V from net/minecraft/entity/ai/EntityAIBase/resetTask()V: resetTask -> func_75251_c
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAiTimedAttackBoss/updateTask()V from net/minecraft/entity/ai/EntityAIBase/updateTask()V: updateTask -> func_75246_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityTimedAttackAIImproved/shouldExecute()Z from net/minecraft/entity/ai/EntityAIBase/shouldExecute()Z: shouldExecute -> func_75250_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityTimedAttackAIImproved/resetTask()V from net/minecraft/entity/ai/EntityAIBase/resetTask()V: resetTask -> func_75251_c
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityTimedAttackAIImproved/updateTask()V from net/minecraft/entity/ai/EntityAIBase/updateTask()V: updateTask -> func_75246_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityMiniBlossom/canBeCollidedWith()Z from net/minecraft/entity/EntityLivingBase/canBeCollidedWith()Z: canBeCollidedWith -> func_70067_L
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom/getParts()[Lnet/minecraft/entity/Entity; from net/minecraft/entity/Entity/getParts()[Lnet/minecraft/entity/Entity;: getParts -> func_70021_al
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityTimedAttackAIImproved/shouldContinueExecuting()Z from net/minecraft/entity/ai/EntityAIBase/shouldContinueExecuting()Z: shouldContinueExecuting -> func_75253_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/load(Z)Z from net/minecraft/tileentity/TileEntityStructure/load(Z)Z: load -> func_189714_c
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/filterRelatedCornerBlocks(Ljava/util/List;)Ljava/util/List; from net/minecraft/tileentity/TileEntityStructure/filterRelatedCornerBlocks(Ljava/util/List;)Ljava/util/List;: filterRelatedCornerBlocks -> func_184415_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/setShowBoundingBox(Z)V from net/minecraft/tileentity/TileEntityStructure/setShowBoundingBox(Z)V: setShowBoundingBox -> func_189710_f
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/showsBoundingBox()Z from net/minecraft/tileentity/TileEntityStructure/showsBoundingBox()Z: showsBoundingBox -> func_189721_I
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/setSeed(J)V from net/minecraft/tileentity/TileEntityStructure/setSeed(J)V: setSeed -> func_189725_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/updateBlockState()V from net/minecraft/tileentity/TileEntityStructure/updateBlockState()V: updateBlockState -> func_189704_J
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/setMetadata(Ljava/lang/String;)V from net/minecraft/tileentity/TileEntityStructure/setMetadata(Ljava/lang/String;)V: setMetadata -> func_184410_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/createdBy(Lnet/minecraft/entity/EntityLivingBase;)V from net/minecraft/tileentity/TileEntityStructure/createdBy(Lnet/minecraft/entity/EntityLivingBase;)V: createdBy -> func_189720_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/getIntegrity()F from net/minecraft/tileentity/TileEntityStructure/getIntegrity()F: getIntegrity -> func_189702_n
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/writeCoordinates(Lio/netty/buffer/ByteBuf;)V from net/minecraft/tileentity/TileEntityStructure/writeCoordinates(Lio/netty/buffer/ByteBuf;)V: writeCoordinates -> func_189705_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/setName(Ljava/lang/String;)V from net/minecraft/tileentity/TileEntityStructure/setName(Ljava/lang/String;)V: setName -> func_184404_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/usedBy(Lnet/minecraft/entity/player/EntityPlayer;)Z from net/minecraft/tileentity/TileEntityStructure/usedBy(Lnet/minecraft/entity/player/EntityPlayer;)Z: usedBy -> func_189701_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/readFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from net/minecraft/tileentity/TileEntityStructure/readFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: readFromNBT -> func_145839_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/getUpdateTag()Lnet/minecraft/nbt/NBTTagCompound; from net/minecraft/tileentity/TileEntityStructure/getUpdateTag()Lnet/minecraft/nbt/NBTTagCompound;: getUpdateTag -> func_189517_E_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/getDisplayName()Lnet/minecraft/util/text/ITextComponent; from net/minecraft/tileentity/TileEntityStructure/getDisplayName()Lnet/minecraft/util/text/ITextComponent;: getDisplayName -> func_145748_c_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/save(Z)Z from net/minecraft/tileentity/TileEntityStructure/save(Z)Z: save -> func_189712_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/ignoresEntities()Z from net/minecraft/tileentity/TileEntityStructure/ignoresEntities()Z: ignoresEntities -> func_189713_m
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/setSize(Lnet/minecraft/util/math/BlockPos;)V from net/minecraft/tileentity/TileEntityStructure/setSize(Lnet/minecraft/util/math/BlockPos;)V: setSize -> func_184409_c
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/getNearbyCornerBlocks(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/BlockPos;)Ljava/util/List; from net/minecraft/tileentity/TileEntityStructure/getNearbyCornerBlocks(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/BlockPos;)Ljava/util/List;: getNearbyCornerBlocks -> func_184418_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/getSeed()J from net/minecraft/tileentity/TileEntityStructure/getSeed()J: getSeed -> func_189719_o
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/save()Z from net/minecraft/tileentity/TileEntityStructure/save()Z: save -> func_184419_m
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/unloadStructure()V from net/minecraft/tileentity/TileEntityStructure/unloadStructure()V: unloadStructure -> func_189706_E
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/getPosition()Lnet/minecraft/util/math/BlockPos; from net/minecraft/tileentity/TileEntityStructure/getPosition()Lnet/minecraft/util/math/BlockPos;: getPosition -> func_189711_e
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/getMetadata()Ljava/lang/String; from net/minecraft/tileentity/TileEntityStructure/getMetadata()Ljava/lang/String;: getMetadata -> func_189708_j
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/showsAir()Z from net/minecraft/tileentity/TileEntityStructure/showsAir()Z: showsAir -> func_189707_H
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/writeToNBT(Lnet/minecraft/nbt/NBTTagCompound;)Lnet/minecraft/nbt/NBTTagCompound; from net/minecraft/tileentity/TileEntityStructure/writeToNBT(Lnet/minecraft/nbt/NBTTagCompound;)Lnet/minecraft/nbt/NBTTagCompound;: writeToNBT -> func_189515_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/setMode(Lnet/minecraft/tileentity/TileEntityStructure$Mode;)V from net/minecraft/tileentity/TileEntityStructure/setMode(Lnet/minecraft/tileentity/TileEntityStructure$Mode;)V: setMode -> func_184405_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/setPowered(Z)V from net/minecraft/tileentity/TileEntityStructure/setPowered(Z)V: setPowered -> func_189723_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/isPowered()Z from net/minecraft/tileentity/TileEntityStructure/isPowered()Z: isPowered -> func_189722_G
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/detectSize()Z from net/minecraft/tileentity/TileEntityStructure/detectSize()Z: detectSize -> func_184417_l
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/setMirror(Lnet/minecraft/util/Mirror;)V from net/minecraft/tileentity/TileEntityStructure/setMirror(Lnet/minecraft/util/Mirror;)V: setMirror -> func_184411_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/getMode()Lnet/minecraft/tileentity/TileEntityStructure$Mode; from net/minecraft/tileentity/TileEntityStructure/getMode()Lnet/minecraft/tileentity/TileEntityStructure$Mode;: getMode -> func_189700_k
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/setIntegrity(F)V from net/minecraft/tileentity/TileEntityStructure/setIntegrity(F)V: setIntegrity -> func_189718_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnight/entityInit()V from com/dungeon_additions/da/entity/EntityAbstractBase/entityInit()V: entityInit -> func_70088_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/projectiles/EntityModThrowable/canBeAttackedWithItem()Z from net/minecraft/entity/Entity/canBeAttackedWithItem()Z: canBeAttackedWithItem -> func_70075_an
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/tileEntityMobSpawner/writeToNBT(Lnet/minecraft/nbt/NBTTagCompound;)Lnet/minecraft/nbt/NBTTagCompound; from net/minecraft/tileentity/TileEntity/writeToNBT(Lnet/minecraft/nbt/NBTTagCompound;)Lnet/minecraft/nbt/NBTTagCompound;: writeToNBT -> func_189515_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ai/EntityAiTimedAttackBoss/shouldContinueExecuting()Z from net/minecraft/entity/ai/EntityAIBase/shouldContinueExecuting()Z: shouldContinueExecuting -> func_75253_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/tileEntityMobSpawner/readFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from net/minecraft/tileentity/TileEntity/readFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: readFromNBT -> func_145839_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: writeEntityToNBT -> func_70014_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z from com/dungeon_additions/da/entity/EntityAbstractBase/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z: attackEntityFrom -> func_70097_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/tileEntityMobSpawner/getUpdateTag()Lnet/minecraft/nbt/NBTTagCompound; from net/minecraft/tileentity/TileEntity/getUpdateTag()Lnet/minecraft/nbt/NBTTagCompound;: getUpdateTag -> func_189517_E_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/tileEntityMobSpawner/onlyOpsCanSetNbt()Z from net/minecraft/tileentity/TileEntity/onlyOpsCanSetNbt()Z: onlyOpsCanSetNbt -> func_183000_F
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/tileEntityMobSpawner/getUpdatePacket()Lnet/minecraft/network/play/server/SPacketUpdateTileEntity; from net/minecraft/tileentity/TileEntity/getUpdatePacket()Lnet/minecraft/network/play/server/SPacketUpdateTileEntity;: getUpdatePacket -> func_189518_D_
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/vine/BlockAzealaVines/getOffsetType()Lnet/minecraft/block/Block$EnumOffsetType; from net/minecraft/block/Block/getOffsetType()Lnet/minecraft/block/Block$EnumOffsetType;: getOffsetType -> func_176218_Q
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/vine/BlockAzealaVines/getStateFromMeta(I)Lnet/minecraft/block/state/IBlockState; from net/minecraft/block/Block/getStateFromMeta(I)Lnet/minecraft/block/state/IBlockState;: getStateFromMeta -> func_176203_a
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/vine/BlockAzealaVines/checkAndDropBlock(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)V from net/minecraft/block/BlockBush/checkAndDropBlock(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)V: checkAndDropBlock -> func_176475_e
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/vine/BlockAzealaVines/getMetaFromState(Lnet/minecraft/block/state/IBlockState;)I from net/minecraft/block/Block/getMetaFromState(Lnet/minecraft/block/state/IBlockState;)I: getMetaFromState -> func_176201_c
+Conflicting propagated mapping for com/dungeon_additions/da/blocks/vine/BlockAzealaVines/createBlockState()Lnet/minecraft/block/state/BlockStateContainer; from net/minecraft/block/Block/createBlockState()Lnet/minecraft/block/state/BlockStateContainer;: createBlockState -> func_180661_e
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/tileEntityMobSpawner/update()V from net/minecraft/util/ITickable/update()V: update -> func_73660_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: readEntityFromNBT -> func_70037_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnight/getLootTable()Lnet/minecraft/util/ResourceLocation; from net/minecraft/entity/EntityLiving/getLootTable()Lnet/minecraft/util/ResourceLocation;: getLootTable -> func_184647_J
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom/entityInit()V from com/dungeon_additions/da/entity/EntityAbstractBase/entityInit()V: entityInit -> func_70088_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/projectiles/EntityModThrowable/getEyeHeight()F from net/minecraft/entity/Entity/getEyeHeight()F: getEyeHeight -> func_70047_e
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityAdvancedMover/onLivingUpdate()V from com/dungeon_additions/da/entity/EntityAbstractBase/onLivingUpdate()V: onLivingUpdate -> func_70636_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityVoidSpike/canBeCollidedWith()Z from net/minecraft/entity/EntityLivingBase/canBeCollidedWith()Z: canBeCollidedWith -> func_70067_L
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/isStructureLoadable()Z from net/minecraft/tileentity/TileEntityStructure/isStructureLoadable()Z: isStructureLoadable -> func_189709_F
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/getStructureSize()Lnet/minecraft/util/math/BlockPos; from net/minecraft/tileentity/TileEntityStructure/getStructureSize()Lnet/minecraft/util/math/BlockPos;: getStructureSize -> func_189717_g
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/nextMode()V from net/minecraft/tileentity/TileEntityStructure/nextMode()V: nextMode -> func_189724_l
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/getMirror()Lnet/minecraft/util/Mirror; from net/minecraft/tileentity/TileEntityStructure/getMirror()Lnet/minecraft/util/Mirror;: getMirror -> func_189716_h
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/setRotation(Lnet/minecraft/util/Rotation;)V from net/minecraft/tileentity/TileEntityStructure/setRotation(Lnet/minecraft/util/Rotation;)V: setRotation -> func_184408_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/getName()Ljava/lang/String; from net/minecraft/tileentity/TileEntityStructure/getName()Ljava/lang/String;: getName -> func_189715_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/load()Z from net/minecraft/tileentity/TileEntityStructure/load()Z: load -> func_184412_n
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/setShowAir(Z)V from net/minecraft/tileentity/TileEntityStructure/setShowAir(Z)V: setShowAir -> func_189703_e
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/getUpdatePacket()Lnet/minecraft/network/play/server/SPacketUpdateTileEntity; from net/minecraft/tileentity/TileEntityStructure/getUpdatePacket()Lnet/minecraft/network/play/server/SPacketUpdateTileEntity;: getUpdatePacket -> func_189518_D_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/calculateEnclosingBoundingBox(Lnet/minecraft/util/math/BlockPos;Ljava/util/List;)Lnet/minecraft/world/gen/structure/StructureBoundingBox; from net/minecraft/tileentity/TileEntityStructure/calculateEnclosingBoundingBox(Lnet/minecraft/util/math/BlockPos;Ljava/util/List;)Lnet/minecraft/world/gen/structure/StructureBoundingBox;: calculateEnclosingBoundingBox -> func_184416_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/setIgnoresEntities(Z)V from net/minecraft/tileentity/TileEntityStructure/setIgnoresEntities(Z)V: setIgnoresEntities -> func_184406_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/getRotation()Lnet/minecraft/util/Rotation; from net/minecraft/tileentity/TileEntityStructure/getRotation()Lnet/minecraft/util/Rotation;: getRotation -> func_189726_i
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure/setPosition(Lnet/minecraft/util/math/BlockPos;)V from net/minecraft/tileentity/TileEntityStructure/setPosition(Lnet/minecraft/util/math/BlockPos;)V: setPosition -> func_184414_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/removeTrackingPlayer(Lnet/minecraft/entity/player/EntityPlayerMP;)V from net/minecraft/entity/Entity/removeTrackingPlayer(Lnet/minecraft/entity/player/EntityPlayerMP;)V: removeTrackingPlayer -> func_184203_c
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/onEntityUpdate()V from net/minecraft/entity/EntityLiving/onEntityUpdate()V: onEntityUpdate -> func_70030_z
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/handleStatusUpdate(B)V from net/minecraft/entity/EntityLiving/handleStatusUpdate(B)V: handleStatusUpdate -> func_70103_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityVoidSpike/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z from com/dungeon_additions/da/entity/EntityAbstractBase/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z: attackEntityFrom -> func_70097_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityMiniBlossom/getBrightnessForRender()I from net/minecraft/entity/Entity/getBrightnessForRender()I: getBrightnessForRender -> func_70070_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityMiniBlossom/handleStatusUpdate(B)V from net/minecraft/entity/EntityLiving/handleStatusUpdate(B)V: handleStatusUpdate -> func_70103_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityVoidSpike/onUpdate()V from com/dungeon_additions/da/entity/EntityAbstractBase/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityVoidSpike/applyEntityAttributes()V from com/dungeon_additions/da/entity/EntityAbstractBase/applyEntityAttributes()V: applyEntityAttributes -> func_110147_ax
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnightRapier/getLootTable()Lnet/minecraft/util/ResourceLocation; from net/minecraft/entity/EntityLiving/getLootTable()Lnet/minecraft/util/ResourceLocation;: getLootTable -> func_184647_J
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnightRapier/onUpdate()V from com/dungeon_additions/da/entity/EntityAbstractBase/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnightRapier/canDespawn()Z from net/minecraft/entity/EntityLiving/canDespawn()Z: canDespawn -> func_70692_ba
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnightRapier/initEntityAI()V from com/dungeon_additions/da/entity/EntityAbstractBase/initEntityAI()V: initEntityAI -> func_184651_r
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnightRapier/applyEntityAttributes()V from com/dungeon_additions/da/entity/EntityAbstractBase/applyEntityAttributes()V: applyEntityAttributes -> func_110147_ax
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnightRapier/canDropLoot()Z from net/minecraft/entity/EntityLivingBase/canDropLoot()Z: canDropLoot -> func_146066_aG
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityMiniBlossom/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: writeEntityToNBT -> func_70014_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityMiniBlossom/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z from com/dungeon_additions/da/entity/EntityAbstractBase/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z: attackEntityFrom -> func_70097_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityMiniBlossom/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: readEntityFromNBT -> func_70037_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityMiniBlossom/entityInit()V from com/dungeon_additions/da/entity/EntityAbstractBase/entityInit()V: entityInit -> func_70088_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityMiniBlossom/getHurtSound(Lnet/minecraft/util/DamageSource;)Lnet/minecraft/util/SoundEvent; from net/minecraft/entity/EntityLivingBase/getHurtSound(Lnet/minecraft/util/DamageSource;)Lnet/minecraft/util/SoundEvent;: getHurtSound -> func_184601_bQ
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityMiniBlossom/onUpdate()V from com/dungeon_additions/da/entity/EntityAbstractBase/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: writeEntityToNBT -> func_70014_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/projectiles/EntityModThrowable/entityInit()V from net/minecraft/entity/Entity/entityInit()V: entityInit -> func_70088_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom/onUpdate()V from com/dungeon_additions/da/entity/EntityAbstractBase/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/projectiles/EntityModThrowable/isInRangeToRenderDist(D)Z from net/minecraft/entity/Entity/isInRangeToRenderDist(D)Z: isInRangeToRenderDist -> func_70112_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom/onLivingUpdate()V from com/dungeon_additions/da/entity/EntityAbstractBase/onLivingUpdate()V: onLivingUpdate -> func_70636_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom/canDespawn()Z from net/minecraft/entity/EntityLiving/canDespawn()Z: canDespawn -> func_70692_ba
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom/initEntityAI()V from com/dungeon_additions/da/entity/EntityAbstractBase/initEntityAI()V: initEntityAI -> func_184651_r
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom/applyEntityAttributes()V from com/dungeon_additions/da/entity/EntityAbstractBase/applyEntityAttributes()V: applyEntityAttributes -> func_110147_ax
+Conflicting propagated mapping for com/dungeon_additions/da/util/mapper/AdvancedStateMap/getModelResourceLocation(Lnet/minecraft/block/state/IBlockState;)Lnet/minecraft/client/renderer/block/model/ModelResourceLocation; from net/minecraft/client/renderer/block/statemap/StateMapperBase/getModelResourceLocation(Lnet/minecraft/block/state/IBlockState;)Lnet/minecraft/client/renderer/block/model/ModelResourceLocation;: getModelResourceLocation -> func_178132_a
+Conflicting propagated mapping for com/dungeon_additions/da/util/mapper/AdvancedStateMap/putStateModelLocations(Lnet/minecraft/block/Block;)Ljava/util/Map; from net/minecraft/client/renderer/block/statemap/StateMapperBase/putStateModelLocations(Lnet/minecraft/block/Block;)Ljava/util/Map;: putStateModelLocations -> func_178130_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnight/onUpdate()V from com/dungeon_additions/da/entity/EntityAbstractBase/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom/attackEntityFromPart(Lnet/minecraft/entity/MultiPartEntityPart;Lnet/minecraft/util/DamageSource;F)Z from net/minecraft/entity/IEntityMultiPart/attackEntityFromPart(Lnet/minecraft/entity/MultiPartEntityPart;Lnet/minecraft/util/DamageSource;F)Z: attackEntityFromPart -> func_70965_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom/getWorld()Lnet/minecraft/world/World; from net/minecraft/entity/IEntityMultiPart/getWorld()Lnet/minecraft/world/World;: getWorld -> func_82194_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/boss/EntityWreathKnight/entityInit()V from com/dungeon_additions/da/entity/EntityAbstractBase/entityInit()V: entityInit -> func_70088_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/boss/EntityWreathKnight/onUpdate()V from com/dungeon_additions/da/entity/EntityAbstractBase/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/boss/EntityWreathKnight/initEntityAI()V from com/dungeon_additions/da/entity/EntityAbstractBase/initEntityAI()V: initEntityAI -> func_184651_r
+Conflicting propagated mapping for com/dungeon_additions/da/entity/boss/EntityWreathKnight/applyEntityAttributes()V from com/dungeon_additions/da/entity/EntityAbstractBase/applyEntityAttributes()V: applyEntityAttributes -> func_110147_ax
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntitySporeBlossom/update()V from net/minecraft/util/ITickable/update()V: update -> func_73660_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityVoidBlossom/removeTrackingPlayer(Lnet/minecraft/entity/player/EntityPlayerMP;)V from net/minecraft/entity/Entity/removeTrackingPlayer(Lnet/minecraft/entity/player/EntityPlayerMP;)V: removeTrackingPlayer -> func_184203_c
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityVoidBlossom/getBrightnessForRender()I from net/minecraft/entity/Entity/getBrightnessForRender()I: getBrightnessForRender -> func_70070_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityVoidBlossom/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: readEntityFromNBT -> func_70037_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityVoidBlossom/addTrackingPlayer(Lnet/minecraft/entity/player/EntityPlayerMP;)V from net/minecraft/entity/Entity/addTrackingPlayer(Lnet/minecraft/entity/player/EntityPlayerMP;)V: addTrackingPlayer -> func_184178_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityVoidBlossom/onDeath(Lnet/minecraft/util/DamageSource;)V from net/minecraft/entity/EntityLivingBase/onDeath(Lnet/minecraft/util/DamageSource;)V: onDeath -> func_70645_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityVoidBlossom/getHurtSound(Lnet/minecraft/util/DamageSource;)Lnet/minecraft/util/SoundEvent; from net/minecraft/entity/EntityLivingBase/getHurtSound(Lnet/minecraft/util/DamageSource;)Lnet/minecraft/util/SoundEvent;: getHurtSound -> func_184601_bQ
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityVoidBlossom/setCustomNameTag(Ljava/lang/String;)V from net/minecraft/entity/Entity/setCustomNameTag(Ljava/lang/String;)V: setCustomNameTag -> func_96094_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityVoidBlossom/getLootTable()Lnet/minecraft/util/ResourceLocation; from net/minecraft/entity/EntityLiving/getLootTable()Lnet/minecraft/util/ResourceLocation;: getLootTable -> func_184647_J
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityVoidBlossom/onUpdate()V from com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityVoidBlossom/initEntityAI()V from com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom/initEntityAI()V: initEntityAI -> func_184651_r
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityVoidBlossom/canDropLoot()Z from net/minecraft/entity/EntityLivingBase/canDropLoot()Z: canDropLoot -> func_146066_aG
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFlameHat/canRenderOnFire()Z from net/minecraft/entity/Entity/canRenderOnFire()Z: canRenderOnFire -> func_90999_ad
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFlameHat/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: writeEntityToNBT -> func_70014_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFlameHat/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: readEntityFromNBT -> func_70037_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityNetherAbberrant/fall(FF)V from net/minecraft/entity/EntityLivingBase/fall(FF)V: fall -> func_180430_e
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityNetherAbberrant/onEntityUpdate()V from net/minecraft/entity/EntityLiving/onEntityUpdate()V: onEntityUpdate -> func_70030_z
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFlameHat/onUpdate()V from com/dungeon_additions/da/entity/EntityAbstractBase/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityNetherAbberrant/getCanSpawnHere()Z from net/minecraft/entity/EntityCreature/getCanSpawnHere()Z: getCanSpawnHere -> func_70601_bi
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityNetherAbberrant/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: writeEntityToNBT -> func_70014_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityNetherAbberrant/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z from com/dungeon_additions/da/entity/EntityAbstractBase/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z: attackEntityFrom -> func_70097_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityNetherAbberrant/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: readEntityFromNBT -> func_70037_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityNetherAbberrant/entityInit()V from com/dungeon_additions/da/entity/EntityAbstractBase/entityInit()V: entityInit -> func_70088_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFireResistantItems/setAgeToCreativeDespawnTime()V from net/minecraft/entity/item/EntityItem/setAgeToCreativeDespawnTime()V: setAgeToCreativeDespawnTime -> func_70288_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityNetherAbberrant/getHurtSound(Lnet/minecraft/util/DamageSource;)Lnet/minecraft/util/SoundEvent; from net/minecraft/entity/EntityLivingBase/getHurtSound(Lnet/minecraft/util/DamageSource;)Lnet/minecraft/util/SoundEvent;: getHurtSound -> func_184601_bQ
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityNetherAbberrant/getLootTable()Lnet/minecraft/util/ResourceLocation; from net/minecraft/entity/EntityLiving/getLootTable()Lnet/minecraft/util/ResourceLocation;: getLootTable -> func_184647_J
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFireResistantItems/getAge()I from net/minecraft/entity/item/EntityItem/getAge()I: getAge -> func_174872_o
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFireResistantItems/setNoPickupDelay()V from net/minecraft/entity/item/EntityItem/setNoPickupDelay()V: setNoPickupDelay -> func_174868_q
+Conflicting propagated mapping for com/dungeon_additions/da/entity/projectiles/EntityModThrowable/setVelocity(DDD)V from net/minecraft/entity/Entity/setVelocity(DDD)V: setVelocity -> func_70016_h
+Conflicting propagated mapping for com/dungeon_additions/da/entity/projectiles/EntityModThrowable/onUpdate()V from net/minecraft/entity/Entity/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/projectiles/EntityModThrowable/move(Lnet/minecraft/entity/MoverType;DDD)V from net/minecraft/entity/Entity/move(Lnet/minecraft/entity/MoverType;DDD)V: move -> func_70091_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/projectiles/EntityModThrowable/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from net/minecraft/entity/Entity/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: writeEntityToNBT -> func_70014_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/projectiles/EntityModThrowable/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from net/minecraft/entity/Entity/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: readEntityFromNBT -> func_70037_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/projectiles/EntityModThrowable/canTriggerWalking()Z from net/minecraft/entity/Entity/canTriggerWalking()Z: canTriggerWalking -> func_70041_e_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/projectiles/EntityModThrowable/shoot(DDDFF)V from net/minecraft/entity/IProjectile/shoot(DDDFF)V: shoot -> func_70186_c
+Conflicting propagated mapping for com/dungeon_additions/da/entity/projectiles/Projectile/entityInit()V from com/dungeon_additions/da/entity/projectiles/EntityModThrowable/entityInit()V: entityInit -> func_70088_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/projectiles/Projectile/onUpdate()V from com/dungeon_additions/da/entity/projectiles/EntityModThrowable/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/projectiles/Projectile/handleStatusUpdate(B)V from net/minecraft/entity/Entity/handleStatusUpdate(B)V: handleStatusUpdate -> func_70103_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/pathing/MobGroundNavigate/removeSunnyPath()V from net/minecraft/pathfinding/PathNavigate/removeSunnyPath()V: removeSunnyPath -> func_75487_m
+Conflicting propagated mapping for com/dungeon_additions/da/entity/pathing/MobGroundNavigate/getPathFinder()Lnet/minecraft/pathfinding/PathFinder; from net/minecraft/pathfinding/PathNavigate/getPathFinder()Lnet/minecraft/pathfinding/PathFinder;: getPathFinder -> func_179679_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/pathing/MobGroundNavigate/isDirectPathBetweenPoints(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Vec3d;III)Z from net/minecraft/pathfinding/PathNavigate/isDirectPathBetweenPoints(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Vec3d;III)Z: isDirectPathBetweenPoints -> func_75493_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/pathing/MobGroundNavigate/canNavigate()Z from net/minecraft/pathfinding/PathNavigate/canNavigate()Z: canNavigate -> func_75485_k
+Conflicting propagated mapping for com/dungeon_additions/da/entity/pathing/MobGroundNavigate/getEntityPosition()Lnet/minecraft/util/math/Vec3d; from net/minecraft/pathfinding/PathNavigate/getEntityPosition()Lnet/minecraft/util/math/Vec3d;: getEntityPosition -> func_75502_i
+Conflicting propagated mapping for com/dungeon_additions/da/entity/pathing/MobGroundNavigate/getPathToPos(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/pathfinding/Path; from net/minecraft/pathfinding/PathNavigate/getPathToPos(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/pathfinding/Path;: getPathToPos -> func_179680_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z from com/dungeon_additions/da/entity/EntityAbstractBase/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z: attackEntityFrom -> func_70097_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityMiniBlossom/initEntityAI()V from com/dungeon_additions/da/entity/EntityAbstractBase/initEntityAI()V: initEntityAI -> func_184651_r
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityUpdater/getUpdateTag()Lnet/minecraft/nbt/NBTTagCompound; from net/minecraft/tileentity/TileEntity/getUpdateTag()Lnet/minecraft/nbt/NBTTagCompound;: getUpdateTag -> func_189517_E_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityGenericWave/canBeCollidedWith()Z from net/minecraft/entity/EntityLivingBase/canBeCollidedWith()Z: canBeCollidedWith -> func_70067_L
+Conflicting propagated mapping for com/dungeon_additions/da/entity/pathing/MobGroundNavigate/getPathToEntityLiving(Lnet/minecraft/entity/Entity;)Lnet/minecraft/pathfinding/Path; from net/minecraft/pathfinding/PathNavigate/getPathToEntityLiving(Lnet/minecraft/entity/Entity;)Lnet/minecraft/pathfinding/Path;: getPathToEntityLiving -> func_75494_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityMiniBlossom/applyEntityAttributes()V from com/dungeon_additions/da/entity/EntityAbstractBase/applyEntityAttributes()V: applyEntityAttributes -> func_110147_ax
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityGenericWave/handleStatusUpdate(B)V from net/minecraft/entity/EntityLiving/handleStatusUpdate(B)V: handleStatusUpdate -> func_70103_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: readEntityFromNBT -> func_70037_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/misc/EntityMoveTile/canBeCollidedWith()Z from net/minecraft/entity/Entity/canBeCollidedWith()Z: canBeCollidedWith -> func_70067_L
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/misc/EntityMoveTile/canBePushed()Z from net/minecraft/entity/Entity/canBePushed()Z: canBePushed -> func_70104_M
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/canBlockDamageSource(Lnet/minecraft/util/DamageSource;)Z from net/minecraft/entity/EntityLivingBase/canBlockDamageSource(Lnet/minecraft/util/DamageSource;)Z: canBlockDamageSource -> func_184583_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/addTrackingPlayer(Lnet/minecraft/entity/player/EntityPlayerMP;)V from net/minecraft/entity/Entity/addTrackingPlayer(Lnet/minecraft/entity/player/EntityPlayerMP;)V: addTrackingPlayer -> func_184178_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/entityInit()V from com/dungeon_additions/da/entity/EntityAbstractBase/entityInit()V: entityInit -> func_70088_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFireResistantItems/makeFakeItem()V from net/minecraft/entity/item/EntityItem/makeFakeItem()V: makeFakeItem -> func_174870_v
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityNetherAbberrant/onLivingUpdate()V from com/dungeon_additions/da/entity/EntityAbstractBase/onLivingUpdate()V: onLivingUpdate -> func_70636_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityNetherAbberrant/canDespawn()Z from net/minecraft/entity/EntityLiving/canDespawn()Z: canDespawn -> func_70692_ba
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityNetherAbberrant/initEntityAI()V from com/dungeon_additions/da/entity/EntityAbstractBase/initEntityAI()V: initEntityAI -> func_184651_r
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityNetherAbberrant/applyEntityAttributes()V from com/dungeon_additions/da/entity/EntityAbstractBase/applyEntityAttributes()V: applyEntityAttributes -> func_110147_ax
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityNetherAbberrant/canDropLoot()Z from net/minecraft/entity/EntityLivingBase/canDropLoot()Z: canDropLoot -> func_146066_aG
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnight/canDespawn()Z from net/minecraft/entity/EntityLiving/canDespawn()Z: canDespawn -> func_70692_ba
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFireResistantItems/onUpdate()V from net/minecraft/entity/item/EntityItem/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityPyre/getBrightnessForRender()I from net/minecraft/entity/Entity/getBrightnessForRender()I: getBrightnessForRender -> func_70070_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFireResistantItems/cannotPickup()Z from net/minecraft/entity/item/EntityItem/cannotPickup()Z: cannotPickup -> func_174874_s
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityPyre/onEntityUpdate()V from net/minecraft/entity/EntityLiving/onEntityUpdate()V: onEntityUpdate -> func_70030_z
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFireResistantItems/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from net/minecraft/entity/item/EntityItem/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: writeEntityToNBT -> func_70014_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFireResistantItems/setPickupDelay(I)V from net/minecraft/entity/item/EntityItem/setPickupDelay(I)V: setPickupDelay -> func_174867_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFireResistantItems/setDefaultPickupDelay()V from net/minecraft/entity/item/EntityItem/setDefaultPickupDelay()V: setDefaultPickupDelay -> func_174869_p
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFireResistantItems/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z from net/minecraft/entity/item/EntityItem/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z: attackEntityFrom -> func_70097_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFireResistantItems/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from net/minecraft/entity/item/EntityItem/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: readEntityFromNBT -> func_70037_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFireResistantItems/onCollideWithPlayer(Lnet/minecraft/entity/player/EntityPlayer;)V from net/minecraft/entity/item/EntityItem/onCollideWithPlayer(Lnet/minecraft/entity/player/EntityPlayer;)V: onCollideWithPlayer -> func_70100_b_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFireResistantItems/searchForOtherItemsNearby()V from net/minecraft/entity/item/EntityItem/searchForOtherItemsNearby()V: searchForOtherItemsNearby -> func_85054_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFireResistantItems/setInfinitePickupDelay()V from net/minecraft/entity/item/EntityItem/setInfinitePickupDelay()V: setInfinitePickupDelay -> func_174871_r
+Conflicting propagated mapping for com/dungeon_additions/da/entity/EntityFireResistantItems/setNoDespawn()V from net/minecraft/entity/item/EntityItem/setNoDespawn()V: setNoDespawn -> func_174873_u
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/onDeath(Lnet/minecraft/util/DamageSource;)V from net/minecraft/entity/EntityLivingBase/onDeath(Lnet/minecraft/util/DamageSource;)V: onDeath -> func_70645_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/misc/EntityMoveTile/handleWaterMovement()Z from net/minecraft/entity/Entity/handleWaterMovement()Z: handleWaterMovement -> func_70072_I
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/misc/EntityMoveTile/entityInit()V from net/minecraft/entity/Entity/entityInit()V: entityInit -> func_70088_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/misc/EntityMoveTile/getCollisionBoundingBox()Lnet/minecraft/util/math/AxisAlignedBB; from net/minecraft/entity/Entity/getCollisionBoundingBox()Lnet/minecraft/util/math/AxisAlignedBB;: getCollisionBoundingBox -> func_70046_E
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/misc/EntityMoveTile/setDead()V from net/minecraft/entity/Entity/setDead()V: setDead -> func_70106_y
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityGenericWave/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z from com/dungeon_additions/da/entity/EntityAbstractBase/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z: attackEntityFrom -> func_70097_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityUpdater/getUpdatePacket()Lnet/minecraft/network/play/server/SPacketUpdateTileEntity; from net/minecraft/tileentity/TileEntity/getUpdatePacket()Lnet/minecraft/network/play/server/SPacketUpdateTileEntity;: getUpdatePacket -> func_189518_D_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityUpdater/update()V from net/minecraft/util/ITickable/update()V: update -> func_73660_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/misc/EntityMoveTile/onUpdate()V from net/minecraft/entity/Entity/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/misc/EntityMoveTile/getCollisionBox(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/math/AxisAlignedBB; from net/minecraft/entity/Entity/getCollisionBox(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/math/AxisAlignedBB;: getCollisionBox -> func_70114_g
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/getHurtSound(Lnet/minecraft/util/DamageSource;)Lnet/minecraft/util/SoundEvent; from net/minecraft/entity/EntityLivingBase/getHurtSound(Lnet/minecraft/util/DamageSource;)Lnet/minecraft/util/SoundEvent;: getHurtSound -> func_184601_bQ
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityPyre/handleStatusUpdate(B)V from net/minecraft/entity/EntityLiving/handleStatusUpdate(B)V: handleStatusUpdate -> func_70103_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/setCustomNameTag(Ljava/lang/String;)V from net/minecraft/entity/Entity/setCustomNameTag(Ljava/lang/String;)V: setCustomNameTag -> func_96094_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/getLootTable()Lnet/minecraft/util/ResourceLocation; from net/minecraft/entity/EntityLiving/getLootTable()Lnet/minecraft/util/ResourceLocation;: getLootTable -> func_184647_J
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/onUpdate()V from com/dungeon_additions/da/entity/EntityAbstractBase/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityPyre/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z from com/dungeon_additions/da/entity/EntityAbstractBase/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z: attackEntityFrom -> func_70097_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityPyre/processInteract(Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;)Z from net/minecraft/entity/EntityLiving/processInteract(Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;)Z: processInteract -> func_184645_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/canDespawn()Z from net/minecraft/entity/EntityLiving/canDespawn()Z: canDespawn -> func_70692_ba
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/initEntityAI()V from com/dungeon_additions/da/entity/EntityAbstractBase/initEntityAI()V: initEntityAI -> func_184651_r
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/applyEntityAttributes()V from com/dungeon_additions/da/entity/EntityAbstractBase/applyEntityAttributes()V: applyEntityAttributes -> func_110147_ax
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/canDropLoot()Z from net/minecraft/entity/EntityLivingBase/canDropLoot()Z: canDropLoot -> func_146066_aG
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight/playStepSound(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/Block;)V from net/minecraft/entity/Entity/playStepSound(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/Block;)V: playStepSound -> func_180429_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnight/initEntityAI()V from com/dungeon_additions/da/entity/EntityAbstractBase/initEntityAI()V: initEntityAI -> func_184651_r
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnight/applyEntityAttributes()V from com/dungeon_additions/da/entity/EntityAbstractBase/applyEntityAttributes()V: applyEntityAttributes -> func_110147_ax
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnight/canDropLoot()Z from net/minecraft/entity/EntityLivingBase/canDropLoot()Z: canDropLoot -> func_146066_aG
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/misc/ProjectileTrackingFlame/onUpdate()V from com/dungeon_additions/da/entity/projectiles/Projectile/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/misc/ProjectileFlameSling/onUpdate()V from com/dungeon_additions/da/entity/projectiles/Projectile/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityPyre/onUpdate()V from com/dungeon_additions/da/entity/EntityAbstractBase/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/EntityPyre/canDespawn()Z from net/minecraft/entity/EntityLiving/canDespawn()Z: canDespawn -> func_70692_ba
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/misc/EntityMoveTile/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from net/minecraft/entity/Entity/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: writeEntityToNBT -> func_70014_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/misc/EntityMoveTile/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from net/minecraft/entity/Entity/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: readEntityFromNBT -> func_70037_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/flame_knight/misc/EntityMoveTile/canTriggerWalking()Z from net/minecraft/entity/Entity/canTriggerWalking()Z: canTriggerWalking -> func_70041_e_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityGenericWave/onUpdate()V from com/dungeon_additions/da/entity/EntityAbstractBase/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/blossom/EntityGenericWave/applyEntityAttributes()V from com/dungeon_additions/da/entity/EntityAbstractBase/applyEntityAttributes()V: applyEntityAttributes -> func_110147_ax
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityBlossomDart/setNoGravity(Z)V from net/minecraft/entity/Entity/setNoGravity(Z)V: setNoGravity -> func_189654_d
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityBlossomDart/onUpdate()V from net/minecraft/entity/projectile/EntityArrow/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityBlossomDart/hasNoGravity()Z from net/minecraft/entity/Entity/hasNoGravity()Z: hasNoGravity -> func_189652_ae
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityDart/entityInit()V from net/minecraft/entity/projectile/EntityArrow/entityInit()V: entityInit -> func_70088_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityDart/arrowHit(Lnet/minecraft/entity/EntityLivingBase;)V from net/minecraft/entity/projectile/EntityArrow/arrowHit(Lnet/minecraft/entity/EntityLivingBase;)V: arrowHit -> func_184548_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/mini_blossom/EntityDart/getArrowStack()Lnet/minecraft/item/ItemStack; from net/minecraft/entity/projectile/EntityArrow/getArrowStack()Lnet/minecraft/item/ItemStack;: getArrowStack -> func_184550_j
+Conflicting propagated mapping for software/bernie/geckolib3/renderers/geo/GeoLayerRenderer/doRenderLayer(Lnet/minecraft/entity/EntityLivingBase;FFFFFFF)V from net/minecraft/client/renderer/entity/layers/LayerRenderer/doRenderLayer(Lnet/minecraft/entity/EntityLivingBase;FFFFFFF)V: doRenderLayer -> func_177141_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderDartBase/doRender(Lnet/minecraft/entity/Entity;DDDFF)V from net/minecraft/client/renderer/entity/Render/doRender(Lnet/minecraft/entity/Entity;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderDartBase/getEntityTexture(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/ResourceLocation; from net/minecraft/client/renderer/entity/Render/getEntityTexture(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/ResourceLocation;: getEntityTexture -> func_110775_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ProjectileEndlessEnderpearl/onImpact(Lnet/minecraft/util/math/RayTraceResult;)V from net/minecraft/entity/projectile/EntityThrowable/onImpact(Lnet/minecraft/util/math/RayTraceResult;)V: onImpact -> func_70184_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/ProjectileEndlessEnderpearl/onUpdate()V from net/minecraft/entity/projectile/EntityThrowable/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/pathing/ModNodeProcessor/getStart()Lnet/minecraft/pathfinding/PathPoint; from net/minecraft/pathfinding/NodeProcessor/getStart()Lnet/minecraft/pathfinding/PathPoint;: getStart -> func_186318_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/pathing/ModNodeProcessor/findPathOptions([Lnet/minecraft/pathfinding/PathPoint;Lnet/minecraft/pathfinding/PathPoint;Lnet/minecraft/pathfinding/PathPoint;F)I from net/minecraft/pathfinding/NodeProcessor/findPathOptions([Lnet/minecraft/pathfinding/PathPoint;Lnet/minecraft/pathfinding/PathPoint;Lnet/minecraft/pathfinding/PathPoint;F)I: findPathOptions -> func_186320_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/pathing/ModNodeProcessor/postProcess()V from net/minecraft/pathfinding/NodeProcessor/postProcess()V: postProcess -> func_176163_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/pathing/ModNodeProcessor/getPathPointToCoords(DDD)Lnet/minecraft/pathfinding/PathPoint; from net/minecraft/pathfinding/NodeProcessor/getPathPointToCoords(DDD)Lnet/minecraft/pathfinding/PathPoint;: getPathPointToCoords -> func_186325_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/pathing/ModNodeProcessor/getPathNodeType(Lnet/minecraft/world/IBlockAccess;IIILnet/minecraft/entity/EntityLiving;IIIZZ)Lnet/minecraft/pathfinding/PathNodeType; from net/minecraft/pathfinding/NodeProcessor/getPathNodeType(Lnet/minecraft/world/IBlockAccess;IIILnet/minecraft/entity/EntityLiving;IIIZZ)Lnet/minecraft/pathfinding/PathNodeType;: getPathNodeType -> func_186319_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/pathing/ModNodeProcessor/init(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/entity/EntityLiving;)V from net/minecraft/pathfinding/NodeProcessor/init(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/entity/EntityLiving;)V: init -> func_186315_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/pathing/ModNodeProcessor/getPathNodeType(Lnet/minecraft/world/IBlockAccess;III)Lnet/minecraft/pathfinding/PathNodeType; from net/minecraft/pathfinding/NodeProcessor/getPathNodeType(Lnet/minecraft/world/IBlockAccess;III)Lnet/minecraft/pathfinding/PathNodeType;: getPathNodeType -> func_186330_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/layer/RenderAbstractLayer/shouldCombineTextures()Z from net/minecraft/client/renderer/entity/layers/LayerRenderer/shouldCombineTextures()Z: shouldCombineTextures -> func_177142_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderProjectile/doRender(Lnet/minecraft/entity/Entity;DDDFF)V from net/minecraft/client/renderer/entity/Render/doRender(Lnet/minecraft/entity/Entity;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderProjectile/getEntityTexture(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/ResourceLocation; from net/minecraft/client/renderer/entity/Render/getEntityTexture(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/ResourceLocation;: getEntityTexture -> func_110775_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderMoveTile/doRender(Lnet/minecraft/entity/Entity;DDDFF)V from net/minecraft/client/renderer/entity/Render/doRender(Lnet/minecraft/entity/Entity;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderMoveTile/getEntityTexture(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/ResourceLocation; from net/minecraft/client/renderer/entity/Render/getEntityTexture(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/ResourceLocation;: getEntityTexture -> func_110775_a
+Conflicting propagated mapping for software/bernie/geckolib3/renderers/geo/GeoEntityRenderer/doRender(Lnet/minecraft/entity/Entity;DDDFF)V from net/minecraft/client/renderer/entity/Render/doRender(Lnet/minecraft/entity/Entity;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for software/bernie/geckolib3/renderers/geo/GeoEntityRenderer/getEntityTexture(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/ResourceLocation; from net/minecraft/client/renderer/entity/Render/getEntityTexture(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/ResourceLocation;: getEntityTexture -> func_110775_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/layer/LayerFlameHat/shouldCombineTextures()Z from com/dungeon_additions/da/entity/render/layer/RenderAbstractLayer/shouldCombineTextures()Z: shouldCombineTextures -> func_177142_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderRotKnight/doRender(Lnet/minecraft/entity/Entity;DDDFF)V from software/bernie/geckolib3/renderers/geo/GeoEntityRenderer/doRender(Lnet/minecraft/entity/Entity;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/util/RenderRotExtended/doRender(Lnet/minecraft/entity/Entity;DDDFF)V from software/bernie/geckolib3/renderers/geo/GeoEntityRenderer/doRender(Lnet/minecraft/entity/Entity;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/util/glowLayer/AbstractGlowRender/shouldCombineTextures()Z from net/minecraft/client/renderer/entity/layers/LayerRenderer/shouldCombineTextures()Z: shouldCombineTextures -> func_177142_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderRotKnightRapier/doRender(Lnet/minecraft/entity/Entity;DDDFF)V from com/dungeon_additions/da/entity/render/util/RenderRotExtended/doRender(Lnet/minecraft/entity/Entity;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/util/glowLayer/LayerGenericGlow/shouldCombineTextures()Z from com/dungeon_additions/da/util/glowLayer/AbstractGlowRender/shouldCombineTextures()Z: shouldCombineTextures -> func_177142_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderVoidBlossom/doRender(Lnet/minecraft/entity/Entity;DDDFF)V from software/bernie/geckolib3/renderers/geo/GeoEntityRenderer/doRender(Lnet/minecraft/entity/Entity;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderWreathKnight/doRender(Lnet/minecraft/entity/Entity;DDDFF)V from software/bernie/geckolib3/renderers/geo/GeoEntityRenderer/doRender(Lnet/minecraft/entity/Entity;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderMiniBlossom/doRender(Lnet/minecraft/entity/Entity;DDDFF)V from software/bernie/geckolib3/renderers/geo/GeoEntityRenderer/doRender(Lnet/minecraft/entity/Entity;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/util/RenderGeoExtended/doRender(Lnet/minecraft/entity/Entity;DDDFF)V from software/bernie/geckolib3/renderers/geo/GeoEntityRenderer/doRender(Lnet/minecraft/entity/Entity;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderFlameKnight/doRender(Lnet/minecraft/entity/Entity;DDDFF)V from com/dungeon_additions/da/entity/render/util/RenderGeoExtended/doRender(Lnet/minecraft/entity/Entity;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/render/RenderNetherAbberrant/doRender(Lnet/minecraft/entity/Entity;DDDFF)V from com/dungeon_additions/da/entity/render/util/RenderGeoExtended/doRender(Lnet/minecraft/entity/Entity;DDDFF)V: doRender -> func_76986_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnightBoss/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: writeEntityToNBT -> func_70014_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnightBoss/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: readEntityFromNBT -> func_70037_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnightBoss/entityInit()V from com/dungeon_additions/da/entity/EntityAbstractBase/entityInit()V: entityInit -> func_70088_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnightBoss/getLootTable()Lnet/minecraft/util/ResourceLocation; from net/minecraft/entity/EntityLiving/getLootTable()Lnet/minecraft/util/ResourceLocation;: getLootTable -> func_184647_J
+Conflicting propagated mapping for com/dungeon_additions/da/entity/rot_knights/EntityRotKnightBoss/canDropLoot()Z from net/minecraft/entity/EntityLivingBase/canDropLoot()Z: canDropLoot -> func_146066_aG
+Conflicting propagated mapping for com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure$Mode/getName()Ljava/lang/String; from net/minecraft/util/IStringSerializable/getName()Ljava/lang/String;: getName -> func_176610_l
+Conflicting propagated mapping for com/dungeon_additions/da/entity/util/EntityBossSpawner/canBeCollidedWith()Z from net/minecraft/entity/EntityLivingBase/canBeCollidedWith()Z: canBeCollidedWith -> func_70067_L
+Conflicting propagated mapping for com/dungeon_additions/da/entity/util/EntityBossSpawner/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/writeEntityToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: writeEntityToNBT -> func_70014_b
+Conflicting propagated mapping for com/dungeon_additions/da/entity/util/EntityBossSpawner/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z from com/dungeon_additions/da/entity/EntityAbstractBase/attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z: attackEntityFrom -> func_70097_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/util/EntityBossSpawner/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from com/dungeon_additions/da/entity/EntityAbstractBase/readEntityFromNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: readEntityFromNBT -> func_70037_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/util/EntityBossSpawner/entityInit()V from com/dungeon_additions/da/entity/EntityAbstractBase/entityInit()V: entityInit -> func_70088_a
+Conflicting propagated mapping for com/dungeon_additions/da/entity/util/EntityBossSpawner/onUpdate()V from com/dungeon_additions/da/entity/EntityAbstractBase/onUpdate()V: onUpdate -> func_70071_h_
+Conflicting propagated mapping for com/dungeon_additions/da/entity/util/EntityBossSpawner/canDespawn()Z from net/minecraft/entity/EntityLiving/canDespawn()Z: canDespawn -> func_70692_ba
+Conflicting propagated mapping for net/minecraft/entity/monster/EntityZombieVillager/notifyDataManagerChange(Lnet/minecraft/network/datasync/DataParameter;)V from net/minecraft/entity/monster/EntityZombie/notifyDataManagerChange(Lnet/minecraft/network/datasync/DataParameter;)V: notifyDataManagerChange -> func_184206_a
+Conflicting propagated mapping for com/dungeon_additions/da/util/damage/ModIndirectDamage/getTrueSource()Lnet/minecraft/entity/Entity; from net/minecraft/util/EntityDamageSourceIndirect/getTrueSource()Lnet/minecraft/entity/Entity;: getTrueSource -> func_76346_g
+Conflicting propagated mapping for com/dungeon_additions/da/util/damage/ModIndirectDamage/getDeathMessage(Lnet/minecraft/entity/EntityLivingBase;)Lnet/minecraft/util/text/ITextComponent; from net/minecraft/util/EntityDamageSourceIndirect/getDeathMessage(Lnet/minecraft/entity/EntityLivingBase;)Lnet/minecraft/util/text/ITextComponent;: getDeathMessage -> func_151519_b
+Conflicting propagated mapping for com/dungeon_additions/da/util/glowLayer/AutoGlowingTexture/loadTexture(Lnet/minecraft/client/resources/IResourceManager;)V from net/minecraft/client/renderer/texture/ITextureObject/loadTexture(Lnet/minecraft/client/resources/IResourceManager;)V: loadTexture -> func_110551_a
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemAmbitionFlame/getRarity(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumRarity; from net/minecraft/item/Item/getRarity(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumRarity;: getRarity -> func_77613_e
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemAmbitionFlame/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V from net/minecraft/item/Item/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V: addInformation -> func_77624_a
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemDart/getTranslationKey(Lnet/minecraft/item/ItemStack;)Ljava/lang/String; from net/minecraft/item/Item/getTranslationKey(Lnet/minecraft/item/ItemStack;)Ljava/lang/String;: getTranslationKey -> func_77667_c
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemDart/getSubItems(Lnet/minecraft/creativetab/CreativeTabs;Lnet/minecraft/util/NonNullList;)V from net/minecraft/item/Item/getSubItems(Lnet/minecraft/creativetab/CreativeTabs;Lnet/minecraft/util/NonNullList;)V: getSubItems -> func_150895_a
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemDart/getRarity(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumRarity; from net/minecraft/item/Item/getRarity(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumRarity;: getRarity -> func_77613_e
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemFoodBase/onItemUseFinish(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/EntityLivingBase;)Lnet/minecraft/item/ItemStack; from net/minecraft/item/ItemFood/onItemUseFinish(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/EntityLivingBase;)Lnet/minecraft/item/ItemStack;: onItemUseFinish -> func_77654_b
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemFoodBase/getRarity(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumRarity; from net/minecraft/item/Item/getRarity(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumRarity;: getRarity -> func_77613_e
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemFoodBase/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V from net/minecraft/item/Item/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V: addInformation -> func_77624_a
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemDart$1/getProjectileEntity(Lnet/minecraft/world/World;Lnet/minecraft/dispenser/IPosition;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/entity/IProjectile; from net/minecraft/dispenser/BehaviorProjectileDispense/getProjectileEntity(Lnet/minecraft/world/World;Lnet/minecraft/dispenser/IPosition;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/entity/IProjectile;: getProjectileEntity -> func_82499_a
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemEndlessEnderpearl/onItemRightClick(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;)Lnet/minecraft/util/ActionResult; from net/minecraft/item/Item/onItemRightClick(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;)Lnet/minecraft/util/ActionResult;: onItemRightClick -> func_77659_a
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemEndlessEnderpearl/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V from net/minecraft/item/Item/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V: addInformation -> func_77624_a
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemEnflamedMeat/onItemUseFinish(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/EntityLivingBase;)Lnet/minecraft/item/ItemStack; from net/minecraft/item/ItemFood/onItemUseFinish(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/EntityLivingBase;)Lnet/minecraft/item/ItemStack;: onItemUseFinish -> func_77654_b
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemEnflamedMeat/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V from net/minecraft/item/Item/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V: addInformation -> func_77624_a
+Conflicting propagated mapping for com/dungeon_additions/da/items/armor/ModArmorBase/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V from net/minecraft/item/Item/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V: addInformation -> func_77624_a
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemRotKnightKey/getRarity(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumRarity; from net/minecraft/item/Item/getRarity(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumRarity;: getRarity -> func_77613_e
+Conflicting propagated mapping for com/dungeon_additions/da/items/armor/ModArmorBase/getItemAttributeModifiers(Lnet/minecraft/inventory/EntityEquipmentSlot;)Lcom/google/common/collect/Multimap; from net/minecraft/item/ItemArmor/getItemAttributeModifiers(Lnet/minecraft/inventory/EntityEquipmentSlot;)Lcom/google/common/collect/Multimap;: getItemAttributeModifiers -> func_111205_h
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemCraftingMaterial/getRarity(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumRarity; from net/minecraft/item/Item/getRarity(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumRarity;: getRarity -> func_77613_e
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemRotKnightKey/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V from net/minecraft/item/Item/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V: addInformation -> func_77624_a
+Conflicting propagated mapping for com/dungeon_additions/da/items/ItemCraftingMaterial/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V from net/minecraft/item/Item/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V: addInformation -> func_77624_a
+Conflicting propagated mapping for com/dungeon_additions/da/items/tools/ToolSword/getAttackDamage()F from net/minecraft/item/ItemSword/getAttackDamage()F: getAttackDamage -> func_150931_i
+Conflicting propagated mapping for com/dungeon_additions/da/items/tools/ToolSword/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V from net/minecraft/item/Item/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V: addInformation -> func_77624_a
+Conflicting propagated mapping for com/dungeon_additions/da/items/tools/ToolSword/getItemAttributeModifiers(Lnet/minecraft/inventory/EntityEquipmentSlot;)Lcom/google/common/collect/Multimap; from net/minecraft/item/ItemSword/getItemAttributeModifiers(Lnet/minecraft/inventory/EntityEquipmentSlot;)Lcom/google/common/collect/Multimap;: getItemAttributeModifiers -> func_111205_h
+Conflicting propagated mapping for com/dungeon_additions/da/items/tools/ItemAmbitionSword/getRarity(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumRarity; from net/minecraft/item/Item/getRarity(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumRarity;: getRarity -> func_77613_e
+Conflicting propagated mapping for com/dungeon_additions/da/items/tools/ItemAmbitionSword/onItemRightClick(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;)Lnet/minecraft/util/ActionResult; from net/minecraft/item/Item/onItemRightClick(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;)Lnet/minecraft/util/ActionResult;: onItemRightClick -> func_77659_a
+Conflicting propagated mapping for com/dungeon_additions/da/items/tools/ItemAmbitionSword/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V from com/dungeon_additions/da/items/tools/ToolSword/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V: addInformation -> func_77624_a
+Conflicting propagated mapping for software/bernie/geckolib3/renderers/geo/GeoItemRenderer/renderByItem(Lnet/minecraft/item/ItemStack;F)V from net/minecraft/client/renderer/tileentity/TileEntityItemStackRenderer/renderByItem(Lnet/minecraft/item/ItemStack;F)V: renderByItem -> func_192838_a
+Conflicting propagated mapping for com/dungeon_additions/da/tab/CustomCreativeTab/createIcon()Lnet/minecraft/item/ItemStack; from net/minecraft/creativetab/CreativeTabs/createIcon()Lnet/minecraft/item/ItemStack;: createIcon -> func_78016_d
+Conflicting propagated mapping for com/dungeon_additions/da/items/tools/ItemKnightRapier/getRarity(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumRarity; from net/minecraft/item/Item/getRarity(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumRarity;: getRarity -> func_77613_e
+Conflicting propagated mapping for com/dungeon_additions/da/items/tools/ItemKnightRapier/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V from com/dungeon_additions/da/items/tools/ToolSword/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V: addInformation -> func_77624_a
+Conflicting propagated mapping for com/dungeon_additions/da/util/glowLayer/GlowingMetadataSectionSerializer/getSectionName()Ljava/lang/String; from net/minecraft/client/resources/data/IMetadataSectionSerializer/getSectionName()Ljava/lang/String;: getSectionName -> func_110483_a
+Conflicting propagated mapping for com/dungeon_additions/da/items/tools/ItemBlossomDagger/getRarity(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumRarity; from net/minecraft/item/Item/getRarity(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumRarity;: getRarity -> func_77613_e
+Conflicting propagated mapping for com/dungeon_additions/da/items/tools/ItemBlossomDagger/onItemRightClick(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;)Lnet/minecraft/util/ActionResult; from net/minecraft/item/Item/onItemRightClick(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;)Lnet/minecraft/util/ActionResult;: onItemRightClick -> func_77659_a
+Conflicting propagated mapping for com/dungeon_additions/da/items/tools/ItemBlossomDagger/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V from com/dungeon_additions/da/items/tools/ToolSword/addInformation(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/util/ITooltipFlag;)V: addInformation -> func_77624_a
+Conflicting propagated mapping for com/dungeon_additions/da/util/particle/EffectParticle$Factory/createParticle(ILnet/minecraft/world/World;DDDDDD[I)Lnet/minecraft/client/particle/Particle; from net/minecraft/client/particle/IParticleFactory/createParticle(ILnet/minecraft/world/World;DDDDDD[I)Lnet/minecraft/client/particle/Particle;: createParticle -> func_178902_a
+Conflicting propagated mapping for net/minecraftforge/client/model/ModelLoader/loadItemModels()V from net/minecraft/client/renderer/block/model/ModelBakery/loadItemModels()V: loadItemModels -> func_177590_d
+Conflicting propagated mapping for net/minecraftforge/client/model/ModelLoader/getModelBlockDefinition(Lnet/minecraft/util/ResourceLocation;)Lnet/minecraft/client/renderer/block/model/ModelBlockDefinition; from net/minecraft/client/renderer/block/model/ModelBakery/getModelBlockDefinition(Lnet/minecraft/util/ResourceLocation;)Lnet/minecraft/client/renderer/block/model/ModelBlockDefinition;: getModelBlockDefinition -> func_177586_a
+Conflicting propagated mapping for net/minecraftforge/client/model/ModelLoader/registerVariant(Lnet/minecraft/client/renderer/block/model/ModelBlockDefinition;Lnet/minecraft/client/renderer/block/model/ModelResourceLocation;)V from net/minecraft/client/renderer/block/model/ModelBakery/registerVariant(Lnet/minecraft/client/renderer/block/model/ModelBlockDefinition;Lnet/minecraft/client/renderer/block/model/ModelResourceLocation;)V: registerVariant -> func_177569_a
+Conflicting propagated mapping for net/minecraftforge/client/model/ModelLoader/loadMultipartVariantModels()V from net/minecraft/client/renderer/block/model/ModelBakery/loadMultipartVariantModels()V: loadMultipartVariantModels -> func_188637_e
+Conflicting propagated mapping for net/minecraftforge/client/model/ModelLoader/loadVariantModels()V from net/minecraft/client/renderer/block/model/ModelBakery/loadVariantModels()V: loadVariantModels -> func_177595_c
+Conflicting propagated mapping for net/minecraftforge/client/model/ModelLoader/getModelLocation(Lnet/minecraft/util/ResourceLocation;)Lnet/minecraft/util/ResourceLocation; from net/minecraft/client/renderer/block/model/ModelBakery/getModelLocation(Lnet/minecraft/util/ResourceLocation;)Lnet/minecraft/util/ResourceLocation;: getModelLocation -> func_177580_d
+Conflicting propagated mapping for net/minecraftforge/client/model/ModelLoader/loadBlocks()V from net/minecraft/client/renderer/block/model/ModelBakery/loadBlocks()V: loadBlocks -> func_188640_b
+Conflicting propagated mapping for net/minecraftforge/client/model/ModelLoader/setupModelRegistry()Lnet/minecraft/util/registry/IRegistry; from net/minecraft/client/renderer/block/model/ModelBakery/setupModelRegistry()Lnet/minecraft/util/registry/IRegistry;: setupModelRegistry -> func_177570_a
+Conflicting propagated mapping for com/dungeon_additions/da/world/ModStructureTemplate/readStructureFromNBT(Lnet/minecraft/nbt/NBTTagCompound;Lnet/minecraft/world/gen/structure/template/TemplateManager;)V from net/minecraft/world/gen/structure/StructureComponentTemplate/readStructureFromNBT(Lnet/minecraft/nbt/NBTTagCompound;Lnet/minecraft/world/gen/structure/template/TemplateManager;)V: readStructureFromNBT -> func_143011_b
+Conflicting propagated mapping for com/dungeon_additions/da/world/ModStructureTemplate/handleDataMarker(Ljava/lang/String;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/world/gen/structure/StructureBoundingBox;)V from net/minecraft/world/gen/structure/StructureComponentTemplate/handleDataMarker(Ljava/lang/String;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/world/gen/structure/StructureBoundingBox;)V: handleDataMarker -> func_186175_a
+Conflicting propagated mapping for com/dungeon_additions/da/world/ModStructureTemplate/writeStructureToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V from net/minecraft/world/gen/structure/StructureComponentTemplate/writeStructureToNBT(Lnet/minecraft/nbt/NBTTagCompound;)V: writeStructureToNBT -> func_143012_a
+Conflicting propagated mapping for com/dungeon_additions/da/util/particle/EffectParticle/move(DDD)V from net/minecraft/client/particle/Particle/move(DDD)V: move -> func_187110_a
+Conflicting propagated mapping for com/dungeon_additions/da/util/particle/EffectParticle/onUpdate()V from net/minecraft/client/particle/Particle/onUpdate()V: onUpdate -> func_189213_a
+Conflicting propagated mapping for com/dungeon_additions/da/util/particle/EffectParticle/getBrightnessForRender(F)I from net/minecraft/client/particle/Particle/getBrightnessForRender(F)I: getBrightnessForRender -> func_189214_a
+Conflicting propagated mapping for com/dungeon_additions/da/util/ModParticle/setParticleTextureIndex(I)V from net/minecraft/client/particle/Particle/setParticleTextureIndex(I)V: setParticleTextureIndex -> func_70536_a
+Conflicting propagated mapping for com/dungeon_additions/da/world/blossom/BlossomTemplate/handleDataMarker(Ljava/lang/String;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/world/gen/structure/StructureBoundingBox;)V from com/dungeon_additions/da/world/ModStructureTemplate/handleDataMarker(Ljava/lang/String;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/world/gen/structure/StructureBoundingBox;)V: handleDataMarker -> func_186175_a
+Conflicting propagated mapping for com/dungeon_additions/da/util/ModParticle/onUpdate()V from net/minecraft/client/particle/Particle/onUpdate()V: onUpdate -> func_189213_a
+Conflicting propagated mapping for com/dungeon_additions/da/util/ModParticle/getBrightnessForRender(F)I from net/minecraft/client/particle/Particle/getBrightnessForRender(F)I: getBrightnessForRender -> func_189214_a
+Conflicting propagated mapping for com/dungeon_additions/da/util/ModParticle/getFXLayer()I from net/minecraft/client/particle/Particle/getFXLayer()I: getFXLayer -> func_70537_b
+Conflicting propagated mapping for com/dungeon_additions/da/util/ModParticle/renderParticle(Lnet/minecraft/client/renderer/BufferBuilder;Lnet/minecraft/entity/Entity;FFFFFF)V from net/minecraft/client/particle/Particle/renderParticle(Lnet/minecraft/client/renderer/BufferBuilder;Lnet/minecraft/entity/Entity;FFFFFF)V: renderParticle -> func_180434_a
+Conflicting propagated mapping for com/dungeon_additions/da/util/particle/EffectParticle/renderParticle(Lnet/minecraft/client/renderer/BufferBuilder;Lnet/minecraft/entity/Entity;FFFFFF)V from net/minecraft/client/particle/Particle/renderParticle(Lnet/minecraft/client/renderer/BufferBuilder;Lnet/minecraft/entity/Entity;FFFFFF)V: renderParticle -> func_180434_a
+Conflicting propagated mapping for com/dungeon_additions/da/world/blossom/WorldGenBlossomCave/generate(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Z from net/minecraft/world/gen/feature/WorldGenerator/generate(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Z: generate -> func_180709_b
+Conflicting propagated mapping for com/dungeon_additions/da/world/blossom/WorldGenBlossomCave$Start/isSizeableStructure()Z from net/minecraft/world/gen/structure/StructureStart/isSizeableStructure()Z: isSizeableStructure -> func_75069_d
+Conflicting propagated mapping for com/dungeon_additions/da/world/blossom/WorldGenBlossomCave$Start/generateStructure(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/world/gen/structure/StructureBoundingBox;)V from net/minecraft/world/gen/structure/StructureStart/generateStructure(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/world/gen/structure/StructureBoundingBox;)V: generateStructure -> func_75068_a
+Conflicting propagated mapping for com/dungeon_additions/da/world/nether_arena/WorldGenNetherArena$Start/isSizeableStructure()Z from net/minecraft/world/gen/structure/StructureStart/isSizeableStructure()Z: isSizeableStructure -> func_75069_d
+Conflicting propagated mapping for com/dungeon_additions/da/world/nether_arena/WorldGenNetherArena$Start/generateStructure(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/world/gen/structure/StructureBoundingBox;)V from net/minecraft/world/gen/structure/StructureStart/generateStructure(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/world/gen/structure/StructureBoundingBox;)V: generateStructure -> func_75068_a
+Conflicting propagated mapping for com/dungeon_additions/da/world/WorldGenStructure/generate(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Z from net/minecraft/world/gen/feature/WorldGenerator/generate(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Z: generate -> func_180709_b
+Conflicting propagated mapping for com/dungeon_additions/da/world/nether_arena/WorldGenNetherArena/generate(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Z from net/minecraft/world/gen/feature/WorldGenerator/generate(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Z: generate -> func_180709_b
+Conflicting propagated mapping for com/dungeon_additions/da/world/rot_hold/WorldGenRotHold$Start/isSizeableStructure()Z from net/minecraft/world/gen/structure/StructureStart/isSizeableStructure()Z: isSizeableStructure -> func_75069_d
+Conflicting propagated mapping for com/dungeon_additions/da/world/rot_hold/WorldGenRotHold$Start/generateStructure(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/world/gen/structure/StructureBoundingBox;)V from net/minecraft/world/gen/structure/StructureStart/generateStructure(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/world/gen/structure/StructureBoundingBox;)V: generateStructure -> func_75068_a
+Conflicting propagated mapping for com/dungeon_additions/da/world/rot_hold/WorldGenRotHold/generate(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Z from net/minecraft/world/gen/feature/WorldGenerator/generate(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Z: generate -> func_180709_b
+Conflicting propagated mapping for com/dungeon_additions/da/world/blossom/WorldGenBlossomTop/generate(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Z from com/dungeon_additions/da/world/WorldGenStructure/generate(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Z: generate -> func_180709_b
+Conflicting propagated mapping for com/dungeon_additions/da/world/nether_arena/NetherArenaTemplate/handleDataMarker(Ljava/lang/String;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/world/gen/structure/StructureBoundingBox;)V from com/dungeon_additions/da/world/ModStructureTemplate/handleDataMarker(Ljava/lang/String;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/world/gen/structure/StructureBoundingBox;)V: handleDataMarker -> func_186175_a
+Conflicting propagated mapping for com/dungeon_additions/da/world/nether_arena/WorldGenChain/generate(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Z from com/dungeon_additions/da/world/WorldGenStructure/generate(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Z: generate -> func_180709_b
+Conflicting propagated mapping for com/dungeon_additions/da/world/nether_arena/WorldGenCenterPiece/generate(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Z from com/dungeon_additions/da/world/WorldGenStructure/generate(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Z: generate -> func_180709_b
+Conflicting propagated mapping for com/dungeon_additions/da/world/rot_hold/RottenHoldTemplate/handleDataMarker(Ljava/lang/String;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/world/gen/structure/StructureBoundingBox;)V from com/dungeon_additions/da/world/ModStructureTemplate/handleDataMarker(Ljava/lang/String;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/world/gen/structure/StructureBoundingBox;)V: handleDataMarker -> func_186175_a
+Adding extras
+Sorting
+Writing Output: C:\Users\17857\Desktop\Mod Dev\bomd\build\reobfJar\output.jar
+  META-INF/
+  META-INF/MANIFEST.MF
+  META-INF/da_at.cfg
+  assets/
+  assets/da/
+  assets/da/animations/
+  assets/da/animations/animation.abberrant.json
+  assets/da/animations/animation.blossom.json
+  assets/da/animations/animation.flame_knight.json
+  assets/da/animations/animation.jboss.json
+  assets/da/animations/animation.miniblossom.json
+  assets/da/animations/animation.pyre.json
+  assets/da/animations/animation.rot_knight_r.json
+  assets/da/animations/animation.rotknight.json
+  assets/da/animations/animation.spike.json
+  assets/da/animations/animation.spore.json
+  assets/da/blockstates/
+  assets/da/blockstates/az_fence.json
+  assets/da/blockstates/aza_vines.json
+  assets/da/blockstates/azaela_leaf.json
+  assets/da/blockstates/cave_spawner.json
+  assets/da/blockstates/change_block.json
+  assets/da/blockstates/fire_stone.json
+  assets/da/blockstates/fire_stone_double.json
+  assets/da/blockstates/fire_stone_half.json
+  assets/da/blockstates/fire_stone_lit.json
+  assets/da/blockstates/fire_stone_stairs.json
+  assets/da/blockstates/fire_stone_wall.json
+  assets/da/blockstates/knight_key_block.json
+  assets/da/blockstates/knight_stone.json
+  assets/da/blockstates/mega_structure.json
+  assets/da/blockstates/moss_block.json
+  assets/da/blockstates/moss_carpet.json
+  assets/da/blockstates/moss_spawner.json
+  assets/da/blockstates/mossy_spruce.json
+  assets/da/blockstates/spore_blossom.json
+  assets/da/blockstates/strong_block.json
+  assets/da/geo/
+  assets/da/geo/entity/
+  assets/da/geo/entity/abberrant/
+  assets/da/geo/entity/abberrant/abberrant.geo.json
+  assets/da/geo/entity/blossom/
+  assets/da/geo/entity/blossom/blossom.geo.json
+  assets/da/geo/entity/blossom/geo.miniblossom.json
+  assets/da/geo/entity/flame_knight/
+  assets/da/geo/entity/flame_knight/geo.flame_knight.json
+  assets/da/geo/entity/geo.jboss.json
+  assets/da/geo/entity/pyre/
+  assets/da/geo/entity/pyre/geo.pyre.json
+  assets/da/geo/entity/rotknight/
+  assets/da/geo/entity/rotknight/geo.rot_knight_r.json
+  assets/da/geo/entity/rotknight/geo.rotknight.json
+  assets/da/geo/entity/spike/
+  assets/da/geo/entity/spike/spike.geo.json
+  assets/da/geo/item/
+  assets/da/geo/item/spore.geo.json
+  assets/da/lang/
+  assets/da/lang/en_us.lang
+  assets/da/loot_tables/
+  assets/da/loot_tables/arena_chests.json
+  assets/da/loot_tables/arena_key_chest.json
+  assets/da/loot_tables/flame_knight.json
+  assets/da/loot_tables/nether_abberrant.json
+  assets/da/loot_tables/rot_hold.json
+  assets/da/loot_tables/rot_hold_key.json
+  assets/da/loot_tables/rot_knight.json
+  assets/da/loot_tables/rot_knight_boss.json
+  assets/da/loot_tables/void_blossom.json
+  assets/da/models/
+  assets/da/models/block/
+  assets/da/models/block/active_change_block.json
+  assets/da/models/block/aza_bottom.json
+  assets/da/models/block/aza_glow.json
+  assets/da/models/block/aza_middle.json
+  assets/da/models/block/aza_top.json
+  assets/da/models/block/azaela_leaf.json
+  assets/da/models/block/bars_noside.json
+  assets/da/models/block/bars_noside_alt.json
+  assets/da/models/block/bars_post.json
+  assets/da/models/block/bars_side.json
+  assets/da/models/block/bars_side_alt.json
+  assets/da/models/block/base_inner_stairs.json
+  assets/da/models/block/base_outer_stairs.json
+  assets/da/models/block/base_stairs.json
+  assets/da/models/block/cave_spawner.json
+  assets/da/models/block/fire_stone.json
+  assets/da/models/block/fire_stone_double.json
+  assets/da/models/block/fire_stone_half_bottom.json
+  assets/da/models/block/fire_stone_half_top.json
+  assets/da/models/block/fire_stone_lit.json
+  assets/da/models/block/fire_stone_post.json
+  assets/da/models/block/fire_stone_wall_inventory.json
+  assets/da/models/block/fire_stone_wall_side.json
+  assets/da/models/block/inactive_change_block.json
+  assets/da/models/block/knight_key_block.json
+  assets/da/models/block/knight_stone.json
+  assets/da/models/block/moss_block.json
+  assets/da/models/block/moss_carpet.json
+  assets/da/models/block/moss_spawner.json
+  assets/da/models/block/mossy_spruce.json
+  assets/da/models/block/spore_blossom.json
+  assets/da/models/block/strong_block.json
+  assets/da/models/item/
+  assets/da/models/item/abberrant_eye.json
+  assets/da/models/item/ambition_flame.json
+  assets/da/models/item/ambition_sword.json
+  assets/da/models/item/az_fence.json
+  assets/da/models/item/aza_vines.json
+  assets/da/models/item/azaela_leaf.json
+  assets/da/models/item/cave_spawner.json
+  assets/da/models/item/change_block.json
+  assets/da/models/item/crystal_fruit.json
+  assets/da/models/item/dart_poison.json
+  assets/da/models/item/endless_enderpearl.json
+  assets/da/models/item/enflamed_meat.json
+  assets/da/models/item/fake_healing_potion.json
+  assets/da/models/item/fire_stone.json
+  assets/da/models/item/fire_stone_half.json
+  assets/da/models/item/fire_stone_lit.json
+  assets/da/models/item/fire_stone_stairs.json
+  assets/da/models/item/fire_stone_wall.json
+  assets/da/models/item/flame_boots.json
+  assets/da/models/item/flame_chestplate.json
+  assets/da/models/item/flame_helmet.json
+  assets/da/models/item/flame_leggings.json
+  assets/da/models/item/flame_metal_scrap.json
+  assets/da/models/item/invisible_item.json
+  assets/da/models/item/knight_ingot.json
+  assets/da/models/item/knight_key.json
+  assets/da/models/item/knight_key_block.json
+  assets/da/models/item/knight_rapier.json
+  assets/da/models/item/knight_shard.json
+  assets/da/models/item/knight_stone.json
+  assets/da/models/item/mega_structure.json
+  assets/da/models/item/moss_block.json
+  assets/da/models/item/moss_carpet.json
+  assets/da/models/item/moss_spawner.json
+  assets/da/models/item/mossy_spruce.json
+  assets/da/models/item/projectile_flame.json
+  assets/da/models/item/spore.json
+  assets/da/models/item/spore_blossom.json
+  assets/da/models/item/strong_block.json
+  assets/da/models/item/void_dagger.json
+  assets/da/models/item/void_leaf.json
+  assets/da/models/item/void_thorns.json
+  assets/da/modlogo.png
+  assets/da/recipes/
+  assets/da/recipes/change_block.json
+  assets/da/recipes/endless_enderpearl.json
+  assets/da/recipes/enflamed_meat.json
+  assets/da/recipes/fire_stone_half.json
+  assets/da/recipes/fire_stone_stairs.json
+  assets/da/recipes/fire_stone_wall.json
+  assets/da/recipes/flame_boots.json
+  assets/da/recipes/flame_chestplate.json
+  assets/da/recipes/flame_helmet.json
+  assets/da/recipes/flame_leggings.json
+  assets/da/recipes/knight_ingot.json
+  assets/da/recipes/void_dagger.json
+  assets/da/sounds.json
+  assets/da/sounds/
+  assets/da/sounds/entity/
+  assets/da/sounds/entity/b_knight/
+  assets/da/sounds/entity/b_knight/dash1.ogg
+  assets/da/sounds/entity/b_knight/dash2.ogg
+  assets/da/sounds/entity/b_knight/dash3.ogg
+  assets/da/sounds/entity/b_knight/flame_sling1.ogg
+  assets/da/sounds/entity/b_knight/flame_sling2.ogg
+  assets/da/sounds/entity/b_knight/hurt1.ogg
+  assets/da/sounds/entity/b_knight/hurt2.ogg
+  assets/da/sounds/entity/b_knight/hurt3.ogg
+  assets/da/sounds/entity/b_knight/movement1.ogg
+  assets/da/sounds/entity/b_knight/movement2.ogg
+  assets/da/sounds/entity/b_knight/movement3.ogg
+  assets/da/sounds/entity/b_knight/movement4.ogg
+  assets/da/sounds/entity/b_knight/movement5.ogg
+  assets/da/sounds/entity/b_knight/movement6.ogg
+  assets/da/sounds/entity/b_knight/movement7.ogg
+  assets/da/sounds/entity/b_knight/movement8.ogg
+  assets/da/sounds/entity/b_knight/movement9.ogg
+  assets/da/sounds/entity/b_knight/prepare.ogg
+  assets/da/sounds/entity/b_knight/quick_sling1.ogg
+  assets/da/sounds/entity/b_knight/sling1.ogg
+  assets/da/sounds/entity/b_knight/sling2.ogg
+  assets/da/sounds/entity/b_knight/sling3.ogg
+  assets/da/sounds/entity/b_knight/step1.ogg
+  assets/da/sounds/entity/b_knight/step2.ogg
+  assets/da/sounds/entity/b_knight/step3.ogg
+  assets/da/sounds/entity/b_knight/step4.ogg
+  assets/da/sounds/entity/b_knight/step5.ogg
+  assets/da/sounds/entity/b_knight/stomp.ogg
+  assets/da/sounds/entity/spike/
+  assets/da/sounds/entity/spike/burrow.ogg
+  assets/da/sounds/entity/spike/fall.ogg
+  assets/da/sounds/entity/spike/hurt.ogg
+  assets/da/sounds/entity/spike/impact.ogg
+  assets/da/sounds/entity/spike/petal_blade.ogg
+  assets/da/sounds/entity/spike/prepare.ogg
+  assets/da/sounds/entity/spike/shoot.ogg
+  assets/da/sounds/entity/spike/summon.ogg
+  assets/da/sounds/entity/spike/wave.ogg
+  assets/da/structures/
+  assets/da/structures/blossom/
+  assets/da/structures/blossom/blossom_arena.nbt
+  assets/da/structures/blossom/blossom_arena_dd_compat.nbt
+  assets/da/structures/blossom/blossom_top.nbt
+  assets/da/structures/nether_arena/
+  assets/da/structures/nether_arena/arena/
+  assets/da/structures/nether_arena/arena/arena_1.nbt
+  assets/da/structures/nether_arena/arena/arena_2.nbt
+  assets/da/structures/nether_arena/arena/arena_3.nbt
+  assets/da/structures/nether_arena/arena/arena_4.nbt
+  assets/da/structures/nether_arena/chain.nbt
+  assets/da/structures/nether_arena/cross_1.nbt
+  assets/da/structures/nether_arena/cross_2.nbt
+  assets/da/structures/nether_arena/cross_3.nbt
+  assets/da/structures/nether_arena/end_1.nbt
+  assets/da/structures/nether_arena/end_2.nbt
+  assets/da/structures/nether_arena/end_3.nbt
+  assets/da/structures/nether_arena/hold/
+  assets/da/structures/nether_arena/hold/floor_1.nbt
+  assets/da/structures/nether_arena/hold/floor_2.nbt
+  assets/da/structures/nether_arena/hold/floor_3.nbt
+  assets/da/structures/nether_arena/hold/floor_4.nbt
+  assets/da/structures/nether_arena/hold/floor_5.nbt
+  assets/da/structures/nether_arena/hold/hold_entrance_1.nbt
+  assets/da/structures/nether_arena/hold/key_floor.nbt
+  assets/da/structures/nether_arena/hold/small_room_1.nbt
+  assets/da/structures/nether_arena/hold/small_room_2.nbt
+  assets/da/structures/nether_arena/left_turn_1.nbt
+  assets/da/structures/nether_arena/left_turn_2.nbt
+  assets/da/structures/nether_arena/left_turn_3.nbt
+  assets/da/structures/nether_arena/piece/
+  assets/da/structures/nether_arena/piece/piece_1.nbt
+  assets/da/structures/nether_arena/piece/piece_2.nbt
+  assets/da/structures/nether_arena/piece/piece_3.nbt
+  assets/da/structures/nether_arena/piece/piece_4.nbt
+  assets/da/structures/nether_arena/piece/piece_5.nbt
+  assets/da/structures/nether_arena/piece/piece_6.nbt
+  assets/da/structures/nether_arena/piece/piece_7.nbt
+  assets/da/structures/nether_arena/right_turn_1.nbt
+  assets/da/structures/nether_arena/right_turn_2.nbt
+  assets/da/structures/nether_arena/right_turn_3.nbt
+  assets/da/structures/nether_arena/stairs_1.nbt
+  assets/da/structures/nether_arena/stairs_2.nbt
+  assets/da/structures/nether_arena/stairs_3.nbt
+  assets/da/structures/nether_arena/stairs_4.nbt
+  assets/da/structures/nether_arena/straight_1.nbt
+  assets/da/structures/nether_arena/straight_2.nbt
+  assets/da/structures/nether_arena/straight_3.nbt
+  assets/da/structures/nether_arena/straight_4.nbt
+  assets/da/structures/rot_hold/
+  assets/da/structures/rot_hold/hold_main.nbt
+  assets/da/structures/rot_hold/part_1.nbt
+  assets/da/structures/rot_hold/part_2.nbt
+  assets/da/structures/rot_hold/part_3.nbt
+  assets/da/structures/rot_hold/part_4.nbt
+  assets/da/structures/rot_hold/part_5.nbt
+  assets/da/structures/rot_hold/start.nbt
+  assets/da/structures/rot_hold/tiles/
+  assets/da/structures/rot_hold/tiles/boss_room.nbt
+  assets/da/structures/rot_hold/tiles/chamber_1.nbt
+  assets/da/structures/rot_hold/tiles/chamber_2.nbt
+  assets/da/structures/rot_hold/tiles/chamber_3.nbt
+  assets/da/structures/rot_hold/tiles/chamber_4.nbt
+  assets/da/structures/rot_hold/tiles/cross_1.nbt
+  assets/da/structures/rot_hold/tiles/cross_2.nbt
+  assets/da/structures/rot_hold/tiles/cross_3.nbt
+  assets/da/structures/rot_hold/tiles/cross_4.nbt
+  assets/da/structures/rot_hold/tiles/helper_straight.nbt
+  assets/da/structures/rot_hold/tiles/key_end.nbt
+  assets/da/structures/rot_hold/tiles/m_end_1.nbt
+  assets/da/structures/rot_hold/tiles/m_end_2.nbt
+  assets/da/structures/rot_hold/tiles/m_end_3.nbt
+  assets/da/structures/rot_hold/tiles/q_end_1.nbt
+  assets/da/structures/rot_hold/tiles/q_end_2.nbt
+  assets/da/structures/rot_hold/tiles/stairs_1.nbt
+  assets/da/structures/rot_hold/tiles/stairs_2.nbt
+  assets/da/structures/rot_hold/tiles/straight_1.nbt
+  assets/da/structures/rot_hold/tiles/straight_2.nbt
+  assets/da/structures/rot_hold/tiles/straight_3.nbt
+  assets/da/structures/rot_hold/tiles/straight_4.nbt
+  assets/da/structures/rot_hold/tiles/straight_5.nbt
+  assets/da/textures/
+  assets/da/textures/blocks/
+  assets/da/textures/blocks/active_change_block.png
+  assets/da/textures/blocks/azal_leaf.png
+  assets/da/textures/blocks/bars.png
+  assets/da/textures/blocks/bottom_vine.png
+  assets/da/textures/blocks/cave_spawner.png
+  assets/da/textures/blocks/fire_stone.png
+  assets/da/textures/blocks/fire_stone_lit.png
+  assets/da/textures/blocks/fire_stone_lit.png.mcmeta
+  assets/da/textures/blocks/glow_vine.png
+  assets/da/textures/blocks/inactive_change_block.png
+  assets/da/textures/blocks/knight_key_block.png
+  assets/da/textures/blocks/knight_stone.png
+  assets/da/textures/blocks/moss_block.png
+  assets/da/textures/blocks/moss_vine.png
+  assets/da/textures/blocks/mossy_wood.png
+  assets/da/textures/blocks/spore_blossom.png
+  assets/da/textures/blocks/spore_blossom_base.png
+  assets/da/textures/entity/
+  assets/da/textures/entity/abberrant.png
+  assets/da/textures/entity/abberrant.png.mcmeta
+  assets/da/textures/entity/blossom.png
+  assets/da/textures/entity/dart.png
+  assets/da/textures/entity/everator.png
+  assets/da/textures/entity/example.png
+  assets/da/textures/entity/flame_knight.png
+  assets/da/textures/entity/flame_knight.png.mcmeta
+  assets/da/textures/entity/flame_knight_flame.png
+  assets/da/textures/entity/flame_knight_flame.png.mcmeta
+  assets/da/textures/entity/flame_knight_flame_layer.png
+  assets/da/textures/entity/jboss.png
+  assets/da/textures/entity/miniblossom.png
+  assets/da/textures/entity/pyre.png
+  assets/da/textures/entity/pyre_cracked.png
+  assets/da/textures/entity/pyre_lit.png
+  assets/da/textures/entity/rot_knight_r.png
+  assets/da/textures/entity/rotknight.png
+  assets/da/textures/entity/spike/
+  assets/da/textures/entity/spike/spike.png
+  assets/da/textures/entity/spike/spike2.png
+  assets/da/textures/entity/spike/spike3.png
+  assets/da/textures/entity/spike/spike4.png
+  assets/da/textures/entity/spike/spike5.png
+  assets/da/textures/entity/spike/spike6.png
+  assets/da/textures/entity/spike/spike7.png
+  assets/da/textures/entity/spike/spike8.png
+  assets/da/textures/entity/spike/spike9.png
+  assets/da/textures/entity/wave/
+  assets/da/textures/entity/wave/wave.png
+  assets/da/textures/entity/wave/wave1.png
+  assets/da/textures/entity/wave/wave2.png
+  assets/da/textures/entity/wave/wave3.png
+  assets/da/textures/entity/wave/wave4.png
+  assets/da/textures/entity/wave/wave5.png
+  assets/da/textures/items/
+  assets/da/textures/items/abberrant_eye.png
+  assets/da/textures/items/abberrant_pickaxe.png
+  assets/da/textures/items/ambition_flame.png
+  assets/da/textures/items/ambition_sword.png
+  assets/da/textures/items/crimson_crystal.png
+  assets/da/textures/items/crystal_fruit.png
+  assets/da/textures/items/endless_pearl.png
+  assets/da/textures/items/enflamed_meat.png
+  assets/da/textures/items/fake_healing_potion.png
+  assets/da/textures/items/fire_pie.png
+  assets/da/textures/items/flame_boots.png
+  assets/da/textures/items/flame_chestplate.png
+  assets/da/textures/items/flame_helmet.png
+  assets/da/textures/items/flame_leggings.png
+  assets/da/textures/items/flame_metal_scrap.png
+  assets/da/textures/items/flame_projectile.png
+  assets/da/textures/items/flame_projectile.png.mcmeta
+  assets/da/textures/items/invisible.png
+  assets/da/textures/items/knight_ingot.png
+  assets/da/textures/items/knight_key.png
+  assets/da/textures/items/knight_rapier.png
+  assets/da/textures/items/knight_shard.png
+  assets/da/textures/items/spore.png
+  assets/da/textures/items/void_dagger.png
+  assets/da/textures/items/void_leaf.png
+  assets/da/textures/items/void_thorns.png
+  assets/da/textures/models/
+  assets/da/textures/models/armor/
+  assets/da/textures/models/armor/flame_layer_1.png
+  assets/da/textures/models/armor/flame_layer_2.png
+  assets/da/textures/particle/
+  assets/da/textures/particle/particles.png
+  com/
+  com/dungeon_additions/
+  com/dungeon_additions/da/
+  com/dungeon_additions/da/Main.class
+  com/dungeon_additions/da/animation/
+  com/dungeon_additions/da/animation/AnimationMessage$Handler.class
+  com/dungeon_additions/da/animation/AnimationMessage.class
+  com/dungeon_additions/da/animation/EZAnimation.class
+  com/dungeon_additions/da/animation/EZAnimationEvent$Start.class
+  com/dungeon_additions/da/animation/EZAnimationEvent$Tick.class
+  com/dungeon_additions/da/animation/EZAnimationEvent.class
+  com/dungeon_additions/da/animation/EZAnimationHandler.class
+  com/dungeon_additions/da/animation/EZLegSolver$Leg.class
+  com/dungeon_additions/da/animation/EZLegSolver.class
+  com/dungeon_additions/da/animation/EZLegSolverQuadraped.class
+  com/dungeon_additions/da/animation/IAnimatedEntity.class
+  com/dungeon_additions/da/animation/IScaleable.class
+  com/dungeon_additions/da/animation/example/
+  com/dungeon_additions/da/animation/example/EntityExample.class
+  com/dungeon_additions/da/animation/example/ModelExample.class
+  com/dungeon_additions/da/animation/example/RenderExample.class
+  com/dungeon_additions/da/animation/example/exampletwo/
+  com/dungeon_additions/da/animation/example/exampletwo/EntityEverator.class
+  com/dungeon_additions/da/animation/example/exampletwo/ModelEverator.class
+  com/dungeon_additions/da/animation/example/exampletwo/RenderEverator.class
+  com/dungeon_additions/da/animation/model/
+  com/dungeon_additions/da/animation/model/BasicModelEntity.class
+  com/dungeon_additions/da/animation/model/BasicModelPart.class
+  com/dungeon_additions/da/animation/model/EZModelAnimator.class
+  com/dungeon_additions/da/animation/util/
+  com/dungeon_additions/da/animation/util/EZMath.class
+  com/dungeon_additions/da/animation/util/Transform.class
+  com/dungeon_additions/da/blocks/
+  com/dungeon_additions/da/blocks/BlockAzealaFence.class
+  com/dungeon_additions/da/blocks/BlockAzealaLeaves.class
+  com/dungeon_additions/da/blocks/BlockBase.class
+  com/dungeon_additions/da/blocks/BlockChangingDoor.class
+  com/dungeon_additions/da/blocks/BlockDisappearingSpawner.class
+  com/dungeon_additions/da/blocks/BlockFireStoneLit.class
+  com/dungeon_additions/da/blocks/BlockKnightBossKeyBlock$1.class
+  com/dungeon_additions/da/blocks/BlockKnightBossKeyBlock.class
+  com/dungeon_additions/da/blocks/BlockLeaveBase.class
+  com/dungeon_additions/da/blocks/BlockMegaStructure.class
+  com/dungeon_additions/da/blocks/BlockMossBlock.class
+  com/dungeon_additions/da/blocks/BlockMossCarpet.class
+  com/dungeon_additions/da/blocks/BlockMossySpruce.class
+  com/dungeon_additions/da/blocks/BlockSpawnFlower.class
+  com/dungeon_additions/da/blocks/BlockSporeBlossom.class
+  com/dungeon_additions/da/blocks/base/
+  com/dungeon_additions/da/blocks/base/BlockStairBase.class
+  com/dungeon_additions/da/blocks/base/BlockWallBase.class
+  com/dungeon_additions/da/blocks/base/IBlockUpdater.class
+  com/dungeon_additions/da/blocks/base/slab/
+  com/dungeon_additions/da/blocks/base/slab/BlockDoubleSlab.class
+  com/dungeon_additions/da/blocks/base/slab/BlockHalfSlab.class
+  com/dungeon_additions/da/blocks/base/slab/BlockSlabBase$Variant.class
+  com/dungeon_additions/da/blocks/base/slab/BlockSlabBase.class
+  com/dungeon_additions/da/blocks/vine/
+  com/dungeon_additions/da/blocks/vine/BlockAzealaVines.class
+  com/dungeon_additions/da/capability/
+  com/dungeon_additions/da/capability/DACapability.class
+  com/dungeon_additions/da/config/
+  com/dungeon_additions/da/config/MobConfig.class
+  com/dungeon_additions/da/config/ModConfig.class
+  com/dungeon_additions/da/config/WorldConfig.class
+  com/dungeon_additions/da/entity/
+  com/dungeon_additions/da/entity/EntityAbstractBase$TimedEvent.class
+  com/dungeon_additions/da/entity/EntityAbstractBase.class
+  com/dungeon_additions/da/entity/EntityAdvancedMover.class
+  com/dungeon_additions/da/entity/EntityFireResistantItems.class
+  com/dungeon_additions/da/entity/EntityFlameHat.class
+  com/dungeon_additions/da/entity/EntityNetherAbberrant.class
+  com/dungeon_additions/da/entity/ProjectileEndlessEnderpearl.class
+  com/dungeon_additions/da/entity/ai/
+  com/dungeon_additions/da/entity/ai/EntityAIAttackRotKnight.class
+  com/dungeon_additions/da/entity/ai/EntityAIAttackRotKnightRapier.class
+  com/dungeon_additions/da/entity/ai/EntityAIBlossom.class
+  com/dungeon_additions/da/entity/ai/EntityAIFlameKnightAttack.class
+  com/dungeon_additions/da/entity/ai/EntityAiMiniBlossom.class
+  com/dungeon_additions/da/entity/ai/EntityAiTimedAttack.class
+  com/dungeon_additions/da/entity/ai/EntityAiTimedAttackBoss.class
+  com/dungeon_additions/da/entity/ai/EntityTimedAttackAIImproved.class
+  com/dungeon_additions/da/entity/ai/IAction.class
+  com/dungeon_additions/da/entity/ai/IActionProjectile.class
+  com/dungeon_additions/da/entity/ai/IAttack.class
+  com/dungeon_additions/da/entity/ai/IPitch.class
+  com/dungeon_additions/da/entity/blossom/
+  com/dungeon_additions/da/entity/blossom/EntityAbstractVoidBlossom.class
+  com/dungeon_additions/da/entity/blossom/EntityGenericWave.class
+  com/dungeon_additions/da/entity/blossom/EntityVoidBlossom.class
+  com/dungeon_additions/da/entity/blossom/EntityVoidSpike.class
+  com/dungeon_additions/da/entity/blossom/ProjectileSporeBomb.class
+  com/dungeon_additions/da/entity/blossom/ProjectileVoidLeaf.class
+  com/dungeon_additions/da/entity/blossom/action/
+  com/dungeon_additions/da/entity/blossom/action/ActionInverseCircle.class
+  com/dungeon_additions/da/entity/blossom/action/ActionLeafAttack.class
+  com/dungeon_additions/da/entity/blossom/action/ActionLongRangeWave.class
+  com/dungeon_additions/da/entity/blossom/action/ActionMediumRangeWave.class
+  com/dungeon_additions/da/entity/blossom/action/ActionShortRangeWave.class
+  com/dungeon_additions/da/entity/blossom/action/ActionSporeBomb.class
+  com/dungeon_additions/da/entity/boss/
+  com/dungeon_additions/da/entity/boss/EntityWreathKnight.class
+  com/dungeon_additions/da/entity/flame_knight/
+  com/dungeon_additions/da/entity/flame_knight/ActionTileAOE.class
+  com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight$HEAD_REPLACEMENT.class
+  com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight$KNIGHT_HAND.class
+  com/dungeon_additions/da/entity/flame_knight/EntityFlameKnight.class
+  com/dungeon_additions/da/entity/flame_knight/EntityPyre.class
+  com/dungeon_additions/da/entity/flame_knight/misc/
+  com/dungeon_additions/da/entity/flame_knight/misc/ActionFlameSling.class
+  com/dungeon_additions/da/entity/flame_knight/misc/ActionQuickFlameSling.class
+  com/dungeon_additions/da/entity/flame_knight/misc/ActionReleaseFlames.class
+  com/dungeon_additions/da/entity/flame_knight/misc/ActionSummonTrackFlame.class
+  com/dungeon_additions/da/entity/flame_knight/misc/EntityMoveTile.class
+  com/dungeon_additions/da/entity/flame_knight/misc/ProjectileFlameSling.class
+  com/dungeon_additions/da/entity/flame_knight/misc/ProjectileTrackingFlame.class
+  com/dungeon_additions/da/entity/logic/
+  com/dungeon_additions/da/entity/logic/DisappearingSpawnerLogic.class
+  com/dungeon_additions/da/entity/logic/MobSpawnerLogic$MobSpawnData.class
+  com/dungeon_additions/da/entity/logic/MobSpawnerLogic.class
+  com/dungeon_additions/da/entity/mini_blossom/
+  com/dungeon_additions/da/entity/mini_blossom/EntityBlossomDart.class
+  com/dungeon_additions/da/entity/mini_blossom/EntityDart.class
+  com/dungeon_additions/da/entity/mini_blossom/EntityMiniBlossom.class
+  com/dungeon_additions/da/entity/model/
+  com/dungeon_additions/da/entity/model/ModelFlameKnight.class
+  com/dungeon_additions/da/entity/model/ModelGenericWave.class
+  com/dungeon_additions/da/entity/model/ModelMiniBlossom.class
+  com/dungeon_additions/da/entity/model/ModelNetherAbberrant.class
+  com/dungeon_additions/da/entity/model/ModelPyre.class
+  com/dungeon_additions/da/entity/model/ModelRotKnight.class
+  com/dungeon_additions/da/entity/model/ModelRotKnightRapier.class
+  com/dungeon_additions/da/entity/model/ModelVoidBlossom.class
+  com/dungeon_additions/da/entity/model/ModelVoidSpike.class
+  com/dungeon_additions/da/entity/model/ModelWreathKnight.class
+  com/dungeon_additions/da/entity/model/extended/
+  com/dungeon_additions/da/entity/model/extended/GeoModelExtended.class
+  com/dungeon_additions/da/entity/pathing/
+  com/dungeon_additions/da/entity/pathing/MobGroundNavigate.class
+  com/dungeon_additions/da/entity/pathing/ModNodeProcessor.class
+  com/dungeon_additions/da/entity/projectiles/
+  com/dungeon_additions/da/entity/projectiles/EntityModThrowable$1.class
+  com/dungeon_additions/da/entity/projectiles/EntityModThrowable.class
+  com/dungeon_additions/da/entity/projectiles/Projectile.class
+  com/dungeon_additions/da/entity/projectiles/ProjectileAbberrantAttack.class
+  com/dungeon_additions/da/entity/render/
+  com/dungeon_additions/da/entity/render/RenderAbstractGeoEntity.class
+  com/dungeon_additions/da/entity/render/RenderDartBase.class
+  com/dungeon_additions/da/entity/render/RenderFlameKnight.class
+  com/dungeon_additions/da/entity/render/RenderGenericWave.class
+  com/dungeon_additions/da/entity/render/RenderMiniBlossom.class
+  com/dungeon_additions/da/entity/render/RenderModEntity.class
+  com/dungeon_additions/da/entity/render/RenderMoveTile.class
+  com/dungeon_additions/da/entity/render/RenderNetherAbberrant.class
+  com/dungeon_additions/da/entity/render/RenderProjectile.class
+  com/dungeon_additions/da/entity/render/RenderPyre.class
+  com/dungeon_additions/da/entity/render/RenderRotKnight.class
+  com/dungeon_additions/da/entity/render/RenderRotKnightRapier.class
+  com/dungeon_additions/da/entity/render/RenderVoidBlossom.class
+  com/dungeon_additions/da/entity/render/RenderVoidSpike.class
+  com/dungeon_additions/da/entity/render/RenderWreathKnight.class
+  com/dungeon_additions/da/entity/render/layer/
+  com/dungeon_additions/da/entity/render/layer/GeoSpecificGlow.class
+  com/dungeon_additions/da/entity/render/layer/LayerFlameHat.class
+  com/dungeon_additions/da/entity/render/layer/RenderAbstractLayer.class
+  com/dungeon_additions/da/entity/render/util/
+  com/dungeon_additions/da/entity/render/util/BlockRenderUtil.class
+  com/dungeon_additions/da/entity/render/util/BlockRenderer$1.class
+  com/dungeon_additions/da/entity/render/util/BlockRenderer$AmbientOcclusionFace.class
+  com/dungeon_additions/da/entity/render/util/BlockRenderer$AmbientOcclusionProvider.class
+  com/dungeon_additions/da/entity/render/util/BlockRenderer$EnumNeighborInfo.class
+  com/dungeon_additions/da/entity/render/util/BlockRenderer$LightingProvider.class
+  com/dungeon_additions/da/entity/render/util/BlockRenderer$OcclusionCuller.class
+  com/dungeon_additions/da/entity/render/util/BlockRenderer$Orientation.class
+  com/dungeon_additions/da/entity/render/util/BlockRenderer$TintProvider.class
+  com/dungeon_additions/da/entity/render/util/BlockRenderer$VertexTranslations.class
+  com/dungeon_additions/da/entity/render/util/BlockRenderer.class
+  com/dungeon_additions/da/entity/render/util/MatrixUtil.class
+  com/dungeon_additions/da/entity/render/util/RenderGeoExtended.class
+  com/dungeon_additions/da/entity/render/util/RenderRotExtended.class
+  com/dungeon_additions/da/entity/rot_knights/
+  com/dungeon_additions/da/entity/rot_knights/EntityRotKnight.class
+  com/dungeon_additions/da/entity/rot_knights/EntityRotKnightBoss.class
+  com/dungeon_additions/da/entity/rot_knights/EntityRotKnightRapier$ROT_KNIGHT_HAND.class
+  com/dungeon_additions/da/entity/rot_knights/EntityRotKnightRapier.class
+  com/dungeon_additions/da/entity/tileEntity/
+  com/dungeon_additions/da/entity/tileEntity/TileEntityDisappearingSpawner.class
+  com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure$1.class
+  com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure$2.class
+  com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure$Mode.class
+  com/dungeon_additions/da/entity/tileEntity/TileEntityMegaStructure.class
+  com/dungeon_additions/da/entity/tileEntity/TileEntitySporeBlossom.class
+  com/dungeon_additions/da/entity/tileEntity/TileEntityUpdater.class
+  com/dungeon_additions/da/entity/tileEntity/tileEntityMobSpawner.class
+  com/dungeon_additions/da/entity/util/
+  com/dungeon_additions/da/entity/util/EntityBossSpawner.class
+  com/dungeon_additions/da/event/
+  com/dungeon_additions/da/event/EntityShieldHandler.class
+  com/dungeon_additions/da/event/Event.class
+  com/dungeon_additions/da/event/EventScheduler.class
+  com/dungeon_additions/da/event/EventSwordResistance.class
+  com/dungeon_additions/da/event/EventWearFlameArmor.class
+  com/dungeon_additions/da/event/IEvent.class
+  com/dungeon_additions/da/event/Services.class
+  com/dungeon_additions/da/event/TimedEvent.class
+  com/dungeon_additions/da/init/
+  com/dungeon_additions/da/init/ModBlocks.class
+  com/dungeon_additions/da/init/ModEntities.class
+  com/dungeon_additions/da/init/ModItems.class
+  com/dungeon_additions/da/integration/
+  com/dungeon_additions/da/integration/ModIntegration.class
+  com/dungeon_additions/da/items/
+  com/dungeon_additions/da/items/AnimatedSporeItem.class
+  com/dungeon_additions/da/items/ItemAmbitionFlame.class
+  com/dungeon_additions/da/items/ItemBase.class
+  com/dungeon_additions/da/items/ItemCraftingMaterial.class
+  com/dungeon_additions/da/items/ItemDart$1.class
+  com/dungeon_additions/da/items/ItemDart.class
+  com/dungeon_additions/da/items/ItemEndlessEnderpearl.class
+  com/dungeon_additions/da/items/ItemEnflamedMeat.class
+  com/dungeon_additions/da/items/ItemFoodBase.class
+  com/dungeon_additions/da/items/ItemRotKnightKey.class
+  com/dungeon_additions/da/items/armor/
+  com/dungeon_additions/da/items/armor/ModArmorBase.class
+  com/dungeon_additions/da/items/model/
+  com/dungeon_additions/da/items/model/ModelSpore.class
+  com/dungeon_additions/da/items/render/
+  com/dungeon_additions/da/items/render/RenderSpore.class
+  com/dungeon_additions/da/items/tools/
+  com/dungeon_additions/da/items/tools/ItemAmbitionSword.class
+  com/dungeon_additions/da/items/tools/ItemBlossomDagger.class
+  com/dungeon_additions/da/items/tools/ItemKnightRapier.class
+  com/dungeon_additions/da/items/tools/ToolSword.class
+  com/dungeon_additions/da/items/util/
+  com/dungeon_additions/da/items/util/EnumDartType.class
+  com/dungeon_additions/da/packets/
+  com/dungeon_additions/da/packets/HealBossPacket.class
+  com/dungeon_additions/da/proxy/
+  com/dungeon_additions/da/proxy/ClientProxy.class
+  com/dungeon_additions/da/proxy/CommonProxy.class
+  com/dungeon_additions/da/tab/
+  com/dungeon_additions/da/tab/CustomCreativeTab.class
+  com/dungeon_additions/da/tab/DungeonAdditionsTab.class
+  com/dungeon_additions/da/util/
+  com/dungeon_additions/da/util/DALogger.class
+  com/dungeon_additions/da/util/IHasModel.class
+  com/dungeon_additions/da/util/MiscUtils.class
+  com/dungeon_additions/da/util/ModColors.class
+  com/dungeon_additions/da/util/ModParticle.class
+  com/dungeon_additions/da/util/ModRand$RandomCollection.class
+  com/dungeon_additions/da/util/ModRand.class
+  com/dungeon_additions/da/util/ModReference.class
+  com/dungeon_additions/da/util/ModUtils.class
+  com/dungeon_additions/da/util/ServerScaleUtil.class
+  com/dungeon_additions/da/util/damage/
+  com/dungeon_additions/da/util/damage/Element.class
+  com/dungeon_additions/da/util/damage/IElement.class
+  com/dungeon_additions/da/util/damage/IShieldArmorDamage.class
+  com/dungeon_additions/da/util/damage/ModDamageSource$DamageSourceBuilder.class
+  com/dungeon_additions/da/util/damage/ModDamageSource.class
+  com/dungeon_additions/da/util/damage/ModDirectDamage.class
+  com/dungeon_additions/da/util/damage/ModIndirectDamage.class
+  com/dungeon_additions/da/util/glowLayer/
+  com/dungeon_additions/da/util/glowLayer/AbstractGlowRender.class
+  com/dungeon_additions/da/util/glowLayer/AutoGlowingTexture.class
+  com/dungeon_additions/da/util/glowLayer/EmissiveLighting.class
+  com/dungeon_additions/da/util/glowLayer/GlowingMetadataSection.class
+  com/dungeon_additions/da/util/glowLayer/GlowingMetadataSectionSerializer.class
+  com/dungeon_additions/da/util/glowLayer/LayerGenericGlow.class
+  com/dungeon_additions/da/util/handlers/
+  com/dungeon_additions/da/util/handlers/ParticleManager.class
+  com/dungeon_additions/da/util/handlers/RegistryHandler$IStateMappedBlock.class
+  com/dungeon_additions/da/util/handlers/RegistryHandler.class
+  com/dungeon_additions/da/util/handlers/RenderHandler$1.class
+  com/dungeon_additions/da/util/handlers/RenderHandler$2.class
+  com/dungeon_additions/da/util/handlers/RenderHandler.class
+  com/dungeon_additions/da/util/handlers/SoundsHandler.class
+  com/dungeon_additions/da/util/handlers/StructureHandler.class
+  com/dungeon_additions/da/util/interfaces/
+  com/dungeon_additions/da/util/interfaces/IModUtilsHandler.class
+  com/dungeon_additions/da/util/mapper/
+  com/dungeon_additions/da/util/mapper/AdvancedStateMap$1.class
+  com/dungeon_additions/da/util/mapper/AdvancedStateMap$Builder.class
+  com/dungeon_additions/da/util/mapper/AdvancedStateMap$PropertiesMap.class
+  com/dungeon_additions/da/util/mapper/AdvancedStateMap$UnmodifiablePropertiesMap.class
+  com/dungeon_additions/da/util/mapper/AdvancedStateMap.class
+  com/dungeon_additions/da/util/particle/
+  com/dungeon_additions/da/util/particle/EffectParticle$Factory.class
+  com/dungeon_additions/da/util/particle/EffectParticle.class
+  com/dungeon_additions/da/world/
+  com/dungeon_additions/da/world/IStructure.class
+  com/dungeon_additions/da/world/ModStructureTemplate.class
+  com/dungeon_additions/da/world/ModWorldGen.class
+  com/dungeon_additions/da/world/WorldGenStructure.class
+  com/dungeon_additions/da/world/blossom/
+  com/dungeon_additions/da/world/blossom/BlossomCave.class
+  com/dungeon_additions/da/world/blossom/BlossomTemplate.class
+  com/dungeon_additions/da/world/blossom/WorldGenBlossomCave$Start.class
+  com/dungeon_additions/da/world/blossom/WorldGenBlossomCave.class
+  com/dungeon_additions/da/world/blossom/WorldGenBlossomTop.class
+  com/dungeon_additions/da/world/nether_arena/
+  com/dungeon_additions/da/world/nether_arena/NetherArena.class
+  com/dungeon_additions/da/world/nether_arena/NetherArenaTemplate.class
+  com/dungeon_additions/da/world/nether_arena/WorldGenCenterPiece.class
+  com/dungeon_additions/da/world/nether_arena/WorldGenChain.class
+  com/dungeon_additions/da/world/nether_arena/WorldGenNetherArena$Start.class
+  com/dungeon_additions/da/world/nether_arena/WorldGenNetherArena.class
+  com/dungeon_additions/da/world/rot_hold/
+  com/dungeon_additions/da/world/rot_hold/RottenHold.class
+  com/dungeon_additions/da/world/rot_hold/RottenHoldTemplate.class
+  com/dungeon_additions/da/world/rot_hold/WorldGenRotHold$Start.class
+  com/dungeon_additions/da/world/rot_hold/WorldGenRotHold.class
+  mcmod.info
+  pack.mcmeta

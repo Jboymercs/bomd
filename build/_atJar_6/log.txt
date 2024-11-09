@@ -1,0 +1,7 @@
+Java Launcher: C:\Users\17857\.jdks\liberica-1.8.0_333\bin\java.exe
+Arguments: '--inJar, C:\Users\17857\Desktop\Mod Dev\bomd\build\fg_cache\net\minecraftforge\forge\1.12.2-14.23.5.2860\forge-1.12.2-14.23.5.2860-injected.jar, --outJar, C:\Users\17857\Desktop\Mod Dev\bomd\build\fg_cache\net\minecraftforge\forge\1.12.2-14.23.5.2860_mapped_stable_39-1.12\forge-1.12.2-14.23.5.2860_mapped_stable_39-1.12.jar, --logFile, accesstransform.log, --atFile, C:\Users\17857\Desktop\Mod Dev\bomd\src\main\resources\META-INF\da_at.cfg, --atFile, C:\Users\17857\Desktop\Mod Dev\bomd\build\_atJar_6\parent_at.cfg'
+Classpath:
+ - C:\Users\17857\.gradle\caches\forge_gradle\maven_downloader\net\minecraftforge\accesstransformers\8.2.0\accesstransformers-8.2.0-fatjar.jar
+Working directory: C:\Users\17857\Desktop\Mod Dev\bomd\build\_atJar_6
+Main class: net.minecraftforge.accesstransformer.TransformerProcessor
+====================================

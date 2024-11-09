@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV",
+    "VXV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:cooked_beef"
+    },
+    "X": {
+      "item": "da:flame_metal_scrap"
+    }
+  },
+  "result": {
+    "item": "da:enflamed_meat",
+    "count": 8
+  }
+}

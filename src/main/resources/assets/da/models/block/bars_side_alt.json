@@ -1,0 +1,7 @@
+{
+  "parent": "block/pane_side_alt",
+  "textures": {
+    "edge": "da:blocks/bars",
+    "pane": "da:blocks/bars"
+  }
+}

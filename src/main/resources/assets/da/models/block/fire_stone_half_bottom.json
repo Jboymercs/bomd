@@ -1,0 +1,9 @@
+{
+  "parent": "block/half_slab",
+  "textures":
+  {
+    "bottom": "da:blocks/fire_stone",
+    "top": "da:blocks/fire_stone",
+    "side": "da:blocks/fire_stone"
+  }
+}

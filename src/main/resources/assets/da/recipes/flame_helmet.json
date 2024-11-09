@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VXV",
+    "R R"
+  ],
+  "key": {
+    "V": {
+      "item": "da:abberrant_eye"
+    },
+    "X": {
+      "item": "da:flame_metal_scrap"
+    },
+    "R": {
+      "item": "da:knight_ingot"
+    }
+  },
+  "result": {
+    "item": "da:flame_helmet"
+  }
+}

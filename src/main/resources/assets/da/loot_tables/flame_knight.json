@@ -1,0 +1,65 @@
+{
+  "pools": [
+    {
+      "name" : "da:flame_knight",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:ambition_sword",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "enchant_with_levels",
+              "treasure": true,
+              "levels": {
+                "min": 10,
+                "max": 20
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "da:flame_knight",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:enflamed_meat",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 5,
+                "max": 8
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "da:flame_knight",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:flame_metal_scrap",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
