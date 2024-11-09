@@ -9,7 +9,6 @@ import com.dungeon_additions.da.blocks.vine.BlockAzealaVines;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockPane;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -34,7 +33,7 @@ public class ModBlocks {
     //public static final Block ASH_BRICK = new BlockBase("ash_brick", Material.ROCK, STONE_HARDNESS, STONE_RESISTANCE, SoundType.STONE).setCreativeTab(ModCreativeTabs.ITEMS);
 
     public static final Block SPORE_BLOSSOM = new BlockSporeBlossom("spore_blossom", PLANTS_HARDNESS, PLANTS_RESISTANCE, SoundType.PLANT).setCreativeTab(DungeonAdditionsTab.ALL);
-    public static final Block MOSS_BLOCK = new BlockBase("moss_block", Material.GRASS, PLANTS_HARDNESS, PLANTS_RESISTANCE, SoundType.GROUND).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block MOSS_BLOCK = new BlockMossBlock("moss_block", Material.GRASS, PLANTS_HARDNESS, PLANTS_RESISTANCE, SoundType.GROUND).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block MOSS_CARPET = new BlockMossCarpet("moss_carpet").setCreativeTab(DungeonAdditionsTab.ALL);
 
     public static final Block AZAELA_VINES = new BlockAzealaVines("aza_vines", Material.PLANTS).setCreativeTab(DungeonAdditionsTab.ALL);
