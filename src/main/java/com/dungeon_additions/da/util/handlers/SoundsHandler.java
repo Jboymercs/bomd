@@ -33,6 +33,9 @@ public class SoundsHandler {
     public static SoundEvent B_KNIGHT_STOMP;
     public static SoundEvent B_KNIGHT_DASH;
 
+    //Rot Knight
+    public static SoundEvent ROT_SPIKE_SHOOT;
+
     public static SoundEvent MOSS_BREAK;
     public static SoundEvent MOSS_STEP;
     public static SoundEvent MOSS_PLACE;
@@ -73,6 +76,8 @@ public class SoundsHandler {
         B_KNIGHT_FLAME_SLING_FAST =registerSound("b_knight.quick_sling", "entity");
         B_KNIGHT_STOMP = registerSound("b_knight.stomp", "entity");
         B_KNIGHT_DASH = registerSound("b_knight.dash", "entity");
+        //
+        ROT_SPIKE_SHOOT = registerSound("rot_spike.shoot", "entity");
     }
 
 

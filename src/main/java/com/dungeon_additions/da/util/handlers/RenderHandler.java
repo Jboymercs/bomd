@@ -18,7 +18,9 @@ import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.projectiles.ProjectileAbberrantAttack;
 import com.dungeon_additions.da.entity.render.*;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
+import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
+import com.dungeon_additions.da.entity.rot_knights.EntityRotSpike;
 import com.dungeon_additions.da.entity.util.EntityBossSpawner;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
@@ -109,6 +111,10 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityRotKnight.class, RenderRotKnight::new);
         //Ancient Knight Rapier
         RenderingRegistry.registerEntityRenderingHandler(EntityRotKnightRapier.class, RenderRotKnightRapier::new);
+        //Ancient Fallen Knight
+        RenderingRegistry.registerEntityRenderingHandler(EntityRotKnightBoss.class, RenderRotKnightBoss::new);
+        //Rot Spike
+        RenderingRegistry.registerEntityRenderingHandler(EntityRotSpike.class, RenderRotSpike::new);
     }
 
 }

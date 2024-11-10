@@ -255,6 +255,16 @@
       }
     ]
   },
+  "entity.rot_spike.shoot": {
+    "category": "entity",
+    "subtitle": "entity.rot_spike.shoot",
+    "sounds": [
+      {
+        "name": "da:entity/rot_spike/shoot",
+        "steam": true
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",

@@ -33,15 +33,13 @@ public class ModelFlameKnight extends GeoModelExtended<EntityFlameKnight> {
 
     @Override
     public void setLivingAnimations(EntityFlameKnight entity, Integer uniqueID, AnimationEvent customPredicate) {
+        super.setLivingAnimations(entity, uniqueID, customPredicate);
             if(!entity.isSummonFlame() && !entity.isComboWaterFoul() && !entity.isBeginCombo()) {
                 IBone head = this.getAnimationProcessor().getBone("HeadJ");
                 EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
                 head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
                 head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
-                super.setLivingAnimations(entity, uniqueID, customPredicate);
             }
-
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
     }
 
     @Override

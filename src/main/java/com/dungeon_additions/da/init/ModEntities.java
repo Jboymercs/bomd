@@ -18,7 +18,9 @@ import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.projectiles.ProjectileAbberrantAttack;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
+import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
+import com.dungeon_additions.da.entity.rot_knights.EntityRotSpike;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityDisappearingSpawner;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityMegaStructure;
 import com.dungeon_additions.da.entity.tileEntity.TileEntitySporeBlossom;
@@ -75,6 +77,8 @@ public class ModEntities {
             registerEntityWithID("flame_knight", EntityFlameKnight.class, ENTITY_START_ID++, 50, nether);
             registerEntityWithID("ancient_knight", EntityRotKnight.class, ENTITY_START_ID++, 50, rot_knights);
             registerEntityWithID("ancient_knight_rapier", EntityRotKnightRapier.class, ENTITY_START_ID++, 50 ,rot_knights);
+            registerEntityWithID("ancient_fallen", EntityRotKnightBoss.class, ENTITY_START_ID++, 50, rot_knights);
+            registerEntity("rot_spike", EntityRotSpike.class, ENTITY_START_ID++, 60);
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
         registerTileEntity(TileEntityMegaStructure.class, "mega_structure");

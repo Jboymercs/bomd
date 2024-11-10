@@ -125,4 +125,24 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static double rot_knights_attack_damage = 7;
 
+    @Config.Name("Stormvier Fallen Health")
+    @Config.Comment("Change the health of the Stormvier Fallen")
+    @Config.RequiresMcRestart
+    public static double fallen_health = 150;
+
+    @Config.Name("Stormvier Fallen Attack Damage")
+    @Config.Comment("Change the Attack Damage of the Stormvier Fallen")
+    @Config.RequiresMcRestart
+    public static double fallen_attack_damage = 10;
+
+    @Config.Name("Stormvier Fallen Armor")
+    @Config.Comment("Change the Armor value of the Stormvier Fallen")
+    @Config.RequiresMcRestart
+    public static double fallen_armor = 10;
+
+    @Config.Name("Stormvier Fallen Attack Cooldown")
+    @Config.Comment("Change the Cooldown value of the Stormvier Fallen in ticks (20 tick = 1 second)")
+    @Config.RequiresMcRestart
+    public static int fallen_cool_down = 50;
+
 }
