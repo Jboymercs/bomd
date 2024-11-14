@@ -1,7 +1,6 @@
 package com.dungeon_additions.da.util.handlers;
 
 import com.dungeon_additions.da.util.ModReference;
-import com.sun.media.sound.ModelOscillatorStream;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;

@@ -31,7 +31,7 @@ public class WorldGenRotHold extends WorldGenerator {
         {
             if(!world.isAirBlock(pos.add(0, currentY, 0)) && !world.isRemote && world.getBlockState(pos.add(0, currentY, 0)).isFullBlock() && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LEAVES
                     && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LEAVES2 && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LOG && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LOG2 &&
-            world.isAirBlock(pos.add(0, currentY + 1, 0))) {
+            world.isAirBlock(pos.add(0, currentY + 1, 0)) && world.getBlockState(pos.add(0, currentY, 0)) != Blocks.WATER.getDefaultState()) {
                 return currentY;
             }
 
@@ -43,10 +43,10 @@ public class WorldGenRotHold extends WorldGenerator {
 
     @Override
     public boolean generate(World world, Random random, BlockPos pos) {
-        BlockPos pos2 = pos.add(30, 0, 30);
-        int yVar1 = getSurfaceHeight(world, pos, WorldConfig.rot_hold_min_y, WorldConfig.rot_hold_max_y);
+        BlockPos pos2 = pos.add(7, 0, 7);
+        int yVar1 = getSurfaceHeight(world, pos.add(-6, 0, -6), WorldConfig.rot_hold_min_y, WorldConfig.rot_hold_max_y);
         int yVar2 = getSurfaceHeight(world, pos2, WorldConfig.rot_hold_min_y, WorldConfig.rot_hold_max_y);
-        if(spacing > WorldConfig.rot_hold_spacing * 16 && world.getBlockState(pos).isFullBlock() && world.getBlockState(pos2).isFullBlock() && yVar1 != 0 && yVar2 != 0) {
+        if(spacing > WorldConfig.rot_hold_spacing * 16 && world.getBlockState(pos.add(-6, 0, -6)).isFullBlock() && world.getBlockState(pos2).isFullBlock() && yVar1 != 0 && yVar2 != 0) {
             getStructureStart(world, pos.getX() >> 4, pos.getZ() >> 4, random).generateStructure(world, random, new StructureBoundingBox(pos.getX() - 150, pos.getZ() - 150, pos.getX() + 150, pos.getZ() + 150));
             return true;
 
@@ -113,7 +113,8 @@ public class WorldGenRotHold extends WorldGenerator {
             while(currentY >= min)
             {
                 if(!world.isAirBlock(pos.add(0, currentY, 0)) && !world.isRemote && world.getBlockState(pos.add(0, currentY, 0)).isFullBlock() && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LEAVES
-                        && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LEAVES2 && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LOG && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LOG2) {
+                        && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LEAVES2 && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LOG && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LOG2
+                        && world.getBlockState(pos.add(0, currentY, 0)) != Blocks.WATER.getDefaultState()) {
                     return currentY;
                 }
 
