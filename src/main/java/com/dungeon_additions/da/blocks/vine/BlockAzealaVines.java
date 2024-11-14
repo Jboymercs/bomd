@@ -80,7 +80,7 @@ public class BlockAzealaVines extends BlockBush implements IGrowable, IHasModel,
 
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos)
-    { return canBlockStay(world, pos, world.getBlockState(pos)); }
+    { return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && canBlockStay(world, pos, world.getBlockState(pos)); }
 
     /** Overrides the Creative Player's Pick Block with the dropped item */
     @Override
