@@ -314,7 +314,7 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
 
             Vec3d targetPos = target.getPositionVector().add(ModUtils.yVec(target.getEyeHeight()));
             Vec3d velocity = targetPos.subtract(Pos).scale(0.15D);
-            dart.setVelocity(velocity.x, velocity.y, velocity.z);
+            ModUtils.setEntityVelocity(dart, velocity);
             world.spawnEntity(dart);
         }
 

@@ -255,14 +255,16 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
         this.setSporeAttack(true);
         addEvent(()-> playSound(SoundsHandler.SPORE_PREPARE, 1.0f, 1.0f), 30);
         addEvent(()-> {
-            ProjectileSporeBomb projectile = new ProjectileSporeBomb(this.world);
-            Vec3d pos = this.getPositionVector().add(ModUtils.yVec(12.0D));
-            Vec3d targetPos = target.getPositionVector().add(ModUtils.yVec(14));
-            Vec3d velocity = targetPos.subtract(pos).normalize().scale(0.7);
-            projectile.setVelocity(velocity.x, velocity.y -0.5, velocity.z);
-            projectile.setPosition(pos.x, pos.y, pos.z);
-            projectile.setTravelRange(40F);
-            world.spawnEntity(projectile);
+            if(target.isEntityAlive()) {
+                ProjectileSporeBomb projectile = new ProjectileSporeBomb(this.world);
+                Vec3d pos = this.getPositionVector().add(ModUtils.yVec(12.0D));
+                Vec3d targetPos = target.getPositionVector().add(ModUtils.yVec(14));
+                Vec3d velocity = targetPos.subtract(pos).normalize().scale(0.7);
+                projectile.setPosition(pos.x, pos.y, pos.z);
+                ModUtils.setEntityVelocity(projectile, new Vec3d(velocity.x, velocity.y - 0.5D, velocity.z));
+                projectile.setTravelRange(40F);
+                world.spawnEntity(projectile);
+            }
         }, 46);
 
         addEvent(()-> {
