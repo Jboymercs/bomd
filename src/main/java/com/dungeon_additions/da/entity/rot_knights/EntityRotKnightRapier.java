@@ -9,6 +9,7 @@ import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -27,6 +28,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -225,7 +227,7 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
                     (distance <= 3 && prevAttack != basic_swing) ? 1/distance : 0,
                     (distance <= 5 && prevAttack != pierce && prevAttack != pierce_combo) ? 1/distance : 0,
                     (distance <= 5 && prevAttack != pierce_combo) ? 1/distance : 0,
-                    (healthF <= 0.5 && !hasDrankPotion) ? 1/distance : 0
+                    (healthF <= 0.8 && !hasDrankPotion) ? 1/distance : 0
             };
 
             prevAttack = ModRand.choice(attacks, rand, weights).next();
@@ -554,6 +556,11 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
         if (head == ROT_KNIGHT_HAND.HAND) {
             this.dataManager.set(ITEM_HAND, state);
         }
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundsHandler.ROT_KNIGHT_HURT;
     }
 
 

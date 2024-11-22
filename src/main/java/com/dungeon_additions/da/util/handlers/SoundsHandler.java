@@ -33,6 +33,7 @@ public class SoundsHandler {
     public static SoundEvent B_KNIGHT_DASH;
 
     //Rot Knight
+    public static SoundEvent ROT_KNIGHT_HURT;
     public static SoundEvent ROT_SPIKE_SHOOT;
 
     public static SoundEvent MOSS_BREAK;
@@ -77,6 +78,7 @@ public class SoundsHandler {
         B_KNIGHT_DASH = registerSound("b_knight.dash", "entity");
         //
         ROT_SPIKE_SHOOT = registerSound("rot_spike.shoot", "entity");
+        ROT_KNIGHT_HURT = registerSound("rot_knight.hurt", "entity");
     }
 
 

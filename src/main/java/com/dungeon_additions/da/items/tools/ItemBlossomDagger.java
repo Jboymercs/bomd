@@ -75,6 +75,6 @@ public class ItemBlossomDagger extends ToolSword{
 
     @Override
     protected double getAttackSpeed() {
-        return -2.2000000953674316D;
+        return -2.1000000953674316D;
     }
 }

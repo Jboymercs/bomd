@@ -32,8 +32,7 @@ public class EventWearFlameArmor {
             if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.FLAME_HELMET && base.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.FLAME_CHESTPLATE &&
             base.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.FLAME_LEGGINGS && base.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.FLAME_BOOTS) {
                 if(base.ticksExisted % 40 == 0) {
-                    base.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 60, 0));
-                    base.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 60, 0));
+                    base.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 60, 0, true, false));
                 }
             }
         }

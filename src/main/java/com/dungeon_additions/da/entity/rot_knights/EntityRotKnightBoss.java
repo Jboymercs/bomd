@@ -34,6 +34,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
@@ -746,6 +747,11 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
                 world.setEntityState(this, ModUtils.PARTICLE_BYTE);
             }
         }
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundsHandler.ROT_KNIGHT_HURT;
     }
 
     @Override

@@ -128,7 +128,7 @@ public class MobConfig {
     @Config.Name("Stormvier Fallen Health")
     @Config.Comment("Change the health of the Stormvier Fallen")
     @Config.RequiresMcRestart
-    public static double fallen_health = 150;
+    public static double fallen_health = 180;
 
     @Config.Name("Stormvier Fallen Attack Damage")
     @Config.Comment("Change the Attack Damage of the Stormvier Fallen")

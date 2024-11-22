@@ -45,15 +45,12 @@ public class ItemGlowBerry extends ItemFood implements IHasModel, IPlantable {
 
         if (facing == EnumFacing.DOWN && player.canPlayerEdit(blockpos, facing, itemstack) && crops.canPlaceBlockAt(worldIn, blockpos))
         {
-            if (worldIn.isRemote)
-            { return EnumActionResult.SUCCESS; }
-            else
-            {
+            if (!worldIn.isRemote) {
                 worldIn.setBlockState(blockpos, this.crops.getDefaultState());
-                worldIn.playSound((EntityPlayer)null, pos, SoundsHandler.MOSS_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                worldIn.playSound((EntityPlayer) null, pos, SoundsHandler.MOSS_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
                 if (!player.capabilities.isCreativeMode) itemstack.shrink(1);
-                return EnumActionResult.SUCCESS;
             }
+            return EnumActionResult.SUCCESS;
         }
         return EnumActionResult.FAIL;
     }

@@ -265,6 +265,20 @@
       }
     ]
   },
+  "entity.rot_knight.hurt": {
+    "category": "entity",
+    "subtitle": "entity.rot_knight.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/rot_knight/hurt_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/rot_knight/hurt_2",
+        "steam": true
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",

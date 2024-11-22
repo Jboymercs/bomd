@@ -1,7 +1,6 @@
 package com.dungeon_additions.da.entity.blossom;
 
 import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.IPitch;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
@@ -24,10 +23,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.lwjgl.Sys;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase implements IEntityMultiPart, IPitch {

@@ -165,6 +165,6 @@ public class ItemAmbitionSword extends ToolSword{
 
     @Override
     protected double getAttackSpeed() {
-        return -2.7000000953674316D;
+        return -2.9000000953674316D;
     }
 }

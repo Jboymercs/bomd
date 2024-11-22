@@ -36,12 +36,12 @@ public class ModConfig {
     @Config.Name("Greatsword Of Ambition Damage")
     @Config.Comment("Change the damage factor")
     @Config.RequiresMcRestart
-    public static float sword_of_ambition_damage = 10;
+    public static float sword_of_ambition_damage = 9;
 
     @Config.Name("Void Dagger Damage")
     @Config.Comment("Change the damage factor of the Void Dagger")
     @Config.RequiresMcRestart
-    public static float void_dagger_damage = 5;
+    public static double void_dagger_damage = 5;
 
     @Config.Name("Stormvier Rapier Damage")
     @Config.Comment("Change the damage factor of the Stormvier Rapier")

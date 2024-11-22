@@ -21,19 +21,6 @@ import java.util.Random;
 @Mod.EventBusSubscriber(modid = ModReference.MOD_ID)
 public class EventSwordResistance {
 
-    @SubscribeEvent
-    public void onPlayerHoldItem(LivingEvent.LivingUpdateEvent event) {
-        EntityLivingBase base = event.getEntityLiving();
-
-            if (base.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == ModItems.SWORN_OF_AMBITION) {
-                if (!base.world.isRemote && base.ticksExisted % 40 == 0) {
-                    base.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 60, 0));
-                }
-            }
-
-
-    }
-
 
     @SubscribeEvent
     public static void turnItemsFireproof(EntityJoinWorldEvent event) {

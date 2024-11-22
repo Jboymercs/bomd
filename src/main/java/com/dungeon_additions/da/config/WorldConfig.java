@@ -104,7 +104,7 @@ public class WorldConfig {
     @Config.Name("Rotten Hold Spawn Weight")
     @Config.Comment("Spacing of Rotten Hold between the next one, Higher means further apart, lower means closer. This number will not add to spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int rot_hold_spacing = 95;
+    public static int rot_hold_spacing = 180;
 
     @Config.Name("Rotten Hold Minimum Y")
     @Config.Comment("Change the minimum y the surface part of this structure can spawn at, the dungeon will always follow along with what the surface part is")
