@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "da:blocks/gloom_smooth",
+    "side": "da:blocks/gloom_pillar_side"
+  }
+}

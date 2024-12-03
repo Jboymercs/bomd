@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "axis=y":  { "model": "da:gloom_carved" },
+    "axis=z":   { "model": "da:gloom_carved", "x": 90 },
+    "axis=x":   { "model": "da:gloom_carved", "x": 90, "y": 90 },
+    "axis=none": { "model": "da:gloom_rough" }
+  }
+}

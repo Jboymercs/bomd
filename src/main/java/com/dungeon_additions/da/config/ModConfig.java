@@ -48,6 +48,10 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static double rapier_damage = 5.5;
 
+    @Config.Name("Crafting Material ToolTip")
+    @Config.Comment("Should Items listed as Crafting Material state that is a crafting material. False will disable the tool tip")
+    @Config.RequiresMcRestart
+    public static boolean enable_crafting_tooltips = true;
 
 
 }

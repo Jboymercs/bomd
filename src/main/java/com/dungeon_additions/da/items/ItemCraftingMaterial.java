@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.items;
 
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.util.ModUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -28,6 +29,8 @@ public class ItemCraftingMaterial extends ItemBase {
 
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        if(ModConfig.enable_crafting_tooltips) {
+            tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        }
     }
 }

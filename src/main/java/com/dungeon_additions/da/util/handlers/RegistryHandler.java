@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.util.handlers;
 
 
+import com.dungeon_additions.da.blocks.lich.LichStateMapper;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.render.RenderSpore;
@@ -56,6 +57,8 @@ public class RegistryHandler {
                 ((IHasModel) block).registerModels();
             }
         }
+
+        ModelLoader.setCustomStateMapper(ModBlocks.LICH_SOUL_STAR_BLOCK, new LichStateMapper());
     }
 
 

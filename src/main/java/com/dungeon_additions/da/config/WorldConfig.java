@@ -77,6 +77,11 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static int burning_arena_y_level = 75;
 
+
+    @Config.Name("Rotten Hold Dimensions allowed in!")
+    @Config.Comment("Take note that any ocean type biomes this structure will NOT spawn in, but you can select which dimension you'd like the structure to spawn in")
+    @Config.RequiresMcRestart
+    public static int[] list_of_dimensions_rotten_hold = {0};
     @Config.Name("Rotten Hold Mob Spawn Chance")
     @Config.Comment("Change the spawn weight of mob spawns in the Rotten Hold, higher is lesser chance")
     @Config.RangeInt(min = 1, max = 10)

@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.flame_knight.misc;
 
+import com.dungeon_additions.da.config.MobConfig;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -56,12 +57,14 @@ public class EntityMoveTile extends Entity implements IEntityAdditionalSpawnData
         this.blockMeta = blockMeta;
     }
 
+    private int damageTime = 0;
+
     @Override
     public void onUpdate() {
         super.onUpdate();
 
         this.world.profiler.startSection("entityBaseTick");
-
+        damageTime--;
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
@@ -95,7 +98,7 @@ public class EntityMoveTile extends Entity implements IEntityAdditionalSpawnData
             this.move(MoverType.SELF, 0, this.motionY, 0);
         }
 
-        if(this.motionY > 0.1D && !this.world.isRemote) {
+        if(this.motionY > 0.1D && !this.world.isRemote && damageTime <= 0) {
             DamageSource damageSource;
             Entity owner = getOwner();
             if(owner instanceof EntityLivingBase) {
@@ -111,13 +114,14 @@ public class EntityMoveTile extends Entity implements IEntityAdditionalSpawnData
             for(EntityLivingBase entity : entities) {
                 if (entity != null) {
                     if (entity instanceof EntityLivingBase && entity != getOwner()) { // needs null check on owner?
-                        if(entity.attackEntityFrom(damageSource, 10F)) {
+                        if(entity.attackEntityFrom(damageSource, MobConfig.aoe_block_damage)) {
                             float knockback = 1.5F;
                             Vec3d dir = new Vec3d(this.posX - this.waveStartX, 0, this.posZ - this.waveStartZ);
                             dir = dir.normalize();
                             entity.motionX = dir.x * knockback;
                             entity.motionY = 0.5D;
                             entity.motionZ = dir.z * knockback;
+                            damageTime = 20;
                         }
                     }
                 }

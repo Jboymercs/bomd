@@ -21,10 +21,7 @@ import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotSpike;
-import com.dungeon_additions.da.entity.tileEntity.TileEntityDisappearingSpawner;
-import com.dungeon_additions.da.entity.tileEntity.TileEntityMegaStructure;
-import com.dungeon_additions.da.entity.tileEntity.TileEntitySporeBlossom;
-import com.dungeon_additions.da.entity.tileEntity.TileEntityUpdater;
+import com.dungeon_additions.da.entity.tileEntity.*;
 import com.dungeon_additions.da.entity.util.EntityBossSpawner;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraft.entity.Entity;
@@ -84,6 +81,7 @@ public class ModEntities {
         registerTileEntity(TileEntityMegaStructure.class, "mega_structure");
         registerTileEntity(TileEntityDisappearingSpawner.class, "disappearing_spawner_entity");
         registerTileEntity(TileEntityUpdater.class, "block_updates_entity");
+        registerTileEntity(TileEntityLichSpawner.class, "lich_spawner_blocks");
 
     }
 

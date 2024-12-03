@@ -15,7 +15,9 @@ import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import com.dungeon_additions.da.world.ModStructureTemplate;
 import com.sun.jna.platform.win32.WinBase;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -35,6 +37,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
@@ -231,6 +234,8 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
 
         addEvent(()-> this.setHideArmState(false), 54);
 
+        addEvent(()-> this.playSound(SoundsHandler.ROT_KNIGHT_ARM_BREAK, 1.5f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f)), 55);
+
         addEvent(()-> {
             this.setImmovable(false);
             this.hasDonePhaseTransition = true;
@@ -274,6 +279,7 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
       this.setCastLine(true);
       this.setFightMode(true);
 
+      addEvent(()-> this.playSound(SoundsHandler.ROT_KNIGHT_CAST, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f)), 10);
       addEvent(()-> new ActionRotLineAOE().performAction(this, target), 20);
 
       addEvent(()-> {
@@ -304,7 +310,7 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.getAttack();
           ModUtils.handleAreaImpact(3.0f, (e) -> damage, this, offset, source, 0.8f, 0, false);
-          this.playSound(SoundEvents.ENTITY_BLAZE_SHOOT, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.playSound(SoundsHandler.ROT_SELF_AOE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
       }, 23);
 
@@ -532,6 +538,8 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
                 }, 8);
             }, 47);
 
+            addEvent(()-> this.playSound(SoundsHandler.ROT_KNIGHT_CAST, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f)), 45);
+
             addEvent(()-> {
             this.lockLook = false;
             }, 70);
@@ -750,8 +758,19 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
     }
 
     @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(SoundsHandler.ROT_KNIGHT_WALK, 0.4F, 0.4f + ModRand.getFloat(0.3F));
+    }
+
+    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return SoundsHandler.ROT_KNIGHT_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundsHandler.ROT_KNIGHT_DEATH;
     }
 
     @Override

@@ -1666,7 +1666,7 @@ public class EntityFlameKnight extends EntityAbstractBase implements IAnimatable
                 for(int i = 0; i <= 80; i+=5) {
                     if(!world.isRemote) {
                         addEvent(() -> {
-                            EntityXPOrb orb = new EntityXPOrb(world, this.posX, this.posY, this.posZ, 8);
+                            EntityXPOrb orb = new EntityXPOrb(world, this.posX, this.posY, this.posZ, MobConfig.kobf_experience_orb_value);
                             orb.setPosition(this.posX, this.posY + 1, this.posZ);
                             world.spawnEntity(orb);
                         }, i);

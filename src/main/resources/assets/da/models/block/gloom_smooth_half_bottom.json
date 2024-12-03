@@ -1,0 +1,9 @@
+{
+  "parent": "block/half_slab",
+  "textures":
+  {
+    "bottom": "da:blocks/gloom_smooth",
+    "top": "da:blocks/gloom_smooth",
+    "side": "da:blocks/gloom_smooth"
+  }
+}

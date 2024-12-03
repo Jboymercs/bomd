@@ -11,4 +11,7 @@ public class BOMDSoundTypes {
 
     public static final SoundType AZA_LEAVES = new SoundType(1, 1, SoundsHandler.AZA_LEAVES_BREAK, SoundsHandler.AZA_LEAVES_STEP,
             SoundsHandler.AZA_LEAVES_PLACE, SoundsHandler.AZA_LEAVES_HIT, SoundsHandler.AZA_LEAVES_HIT);
+
+    public static final SoundType PETRO_GLOOM = new SoundType(0.75F, 1, SoundsHandler.GLOOM_BREAK, SoundsHandler.GLOOM_STEP,
+            SoundsHandler.GLOOM_PLACE, SoundsHandler.GLOOM_BREAK, SoundsHandler.GLOOM_BREAK);
 }

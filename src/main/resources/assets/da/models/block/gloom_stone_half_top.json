@@ -1,0 +1,9 @@
+{
+  "parent": "block/upper_slab",
+  "textures":
+  {
+    "bottom": "da:blocks/gloom_stone",
+    "top": "da:blocks/gloom_stone",
+    "side": "da:blocks/gloom_stone"
+  }
+}

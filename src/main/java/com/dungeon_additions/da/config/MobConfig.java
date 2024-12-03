@@ -110,6 +110,16 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static int knight_aggrivate_state_cooldown = 10;
 
+    @Config.Name("Knight of Burning Flame Experience Drop")
+    @Config.Comment("Take in mind, this boss drops x number of experience 16 times, you can change the value of the given orb summoned below")
+    @Config.RequiresMcRestart
+    public static int kobf_experience_orb_value = 8;
+
+    @Config.Name("Knight of Burning Flame AOE Damage")
+    @Config.Comment("How much damage is dealt by the magma blocks popping out of the ground, note this takes affect to the sword as well")
+    @Config.RequiresMcRestart
+    public static float aoe_block_damage = 10;
+
     @Config.Name("Stormvier/Galvonizer Health")
     @Config.Comment("Change the Health of the Stormvier/Galvonizer")
     @Config.RequiresMcRestart

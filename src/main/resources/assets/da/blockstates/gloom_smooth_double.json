@@ -1,0 +1,6 @@
+{
+  "variants":
+  {
+    "variant=default": { "model": "da:gloom_smooth_double" }
+  }
+}

@@ -35,6 +35,11 @@ public class SoundsHandler {
     //Rot Knight
     public static SoundEvent ROT_KNIGHT_HURT;
     public static SoundEvent ROT_SPIKE_SHOOT;
+    public static SoundEvent ROT_SELF_AOE;
+    public static SoundEvent ROT_KNIGHT_WALK;
+    public static SoundEvent ROT_KNIGHT_ARM_BREAK;
+    public static SoundEvent ROT_KNIGHT_DEATH;
+    public static SoundEvent ROT_KNIGHT_CAST;
 
     public static SoundEvent MOSS_BREAK;
     public static SoundEvent MOSS_STEP;
@@ -45,6 +50,11 @@ public class SoundsHandler {
     public static SoundEvent AZA_LEAVES_BREAK;
     public static SoundEvent AZA_LEAVES_HIT;
     public static SoundEvent AZA_LEAVES_STEP;
+
+    //PetroGloom
+    public static SoundEvent GLOOM_STEP;
+    public static SoundEvent GLOOM_BREAK;
+    public static SoundEvent GLOOM_PLACE;
     public static void registerSounds() {
         //
         MOSS_BREAK = registerSound("moss.break", "block");
@@ -56,6 +66,10 @@ public class SoundsHandler {
         AZA_LEAVES_HIT = registerSound("leaves.hit", "block");
         AZA_LEAVES_STEP = registerSound("leaves.step", "block");
         AZA_LEAVES_PLACE = registerSound("leaves.place", "block");
+        //
+        GLOOM_BREAK = registerSound("gloom.break", "block");
+        GLOOM_PLACE = registerSound("gloom.place", "block");
+        GLOOM_STEP = registerSound("gloom.step", "block");
         //
         VOID_SPIKE_SHOOT = registerSound("spike.shoot", "entity");
         APPEARING_WAVE = registerSound("spike.wave", "entity");
@@ -79,6 +93,11 @@ public class SoundsHandler {
         //
         ROT_SPIKE_SHOOT = registerSound("rot_spike.shoot", "entity");
         ROT_KNIGHT_HURT = registerSound("rot_knight.hurt", "entity");
+        ROT_SELF_AOE = registerSound("rot_knight.self_aoe", "entity");
+        ROT_KNIGHT_WALK = registerSound("rot_knight.step", "entity");
+        ROT_KNIGHT_ARM_BREAK = registerSound("rot_knight.break_arm", "entity");
+        ROT_KNIGHT_DEATH = registerSound("rot_knight.death", "entity");
+        ROT_KNIGHT_CAST = registerSound("rot_knight.cast", "entity");
     }
 
 

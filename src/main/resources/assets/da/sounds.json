@@ -279,6 +279,72 @@
       }
     ]
   },
+  "entity.rot_knight.self_aoe": {
+    "category": "entity",
+    "subtitle": "entity.rot_knight.self_aoe",
+    "sounds": [
+      {
+        "name": "da:entity/rot_knight/self_aoe",
+        "steam": true
+      }
+    ]
+  },
+  "entity.rot_knight.step": {
+    "category": "entity",
+    "subtitle": "entity.rot_knight.step",
+    "sounds": [
+      {
+        "name": "da:entity/rot_knight/step_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/rot_knight/step_2",
+        "steam": true
+      },
+      {
+        "name": "da:entity/rot_knight/step_3",
+        "steam": true
+      },
+      {
+        "name": "da:entity/rot_knight/step_4",
+        "steam": true
+      }
+    ]
+  },
+  "entity.rot_knight.break_arm": {
+    "category": "entity",
+    "subtitle": "entity.rot_knight.break_arm",
+    "sounds": [
+      {
+        "name": "da:entity/rot_knight/break_arm",
+        "steam": true
+      }
+    ]
+  },
+  "entity.rot_knight.death": {
+    "category": "entity",
+    "subtitle": "entity.rot_knight.death",
+    "sounds": [
+      {
+        "name": "da:entity/rot_knight/death_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/rot_knight/death_2",
+        "steam": true
+      }
+    ]
+  },
+  "entity.rot_knight.cast": {
+    "category": "entity",
+    "subtitle": "entity.rot_knight.cast",
+    "sounds": [
+      {
+        "name": "da:entity/rot_knight/cast",
+        "steam": true
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",
@@ -507,6 +573,68 @@
       },
       {
         "name": "da:block/leaves/break7",
+        "steam": true
+      }
+    ]
+  },
+  "block.gloom.break": {
+    "category": "block",
+    "subtitle": "subtitles.block.generic.break",
+    "sounds": [
+      {
+        "name": "da:block/gloom/break1",
+        "steam": true
+      },
+      {
+        "name": "da:block/gloom/break2",
+        "steam": true
+      },
+      {
+        "name": "da:block/gloom/break3",
+        "steam": true
+      },
+      {
+        "name": "da:block/gloom/break4",
+        "steam": true
+      }
+    ]
+  },
+  "block.gloom.place": {
+    "category": "block",
+    "subtitle": "subtitles.block.generic.place",
+    "sounds": [
+      {
+        "name": "da:block/gloom/place1",
+        "steam": true
+      },
+      {
+        "name": "da:block/gloom/place2",
+        "steam": true
+      },
+      {
+        "name": "da:block/gloom/place3",
+        "steam": true
+      }
+    ]
+  },
+  "block.gloom.step": {
+    "category": "block",
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      {
+        "name": "da:block/gloom/step1",
+        "steam": true
+      },
+      {
+        "name": "da:block/gloom/step2",
+        "steam": true
+      },
+      {
+        "name": "da:block/gloom/step3",
+        "steam": true
+      },
+      {
+        "name": "da:block/gloom/step4",
         "steam": true
       }
     ]

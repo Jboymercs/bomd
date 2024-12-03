@@ -1,0 +1,9 @@
+{
+  "parent": "block/half_slab",
+  "textures":
+  {
+    "bottom": "da:blocks/gloom_brick",
+    "top": "da:blocks/gloom_brick",
+    "side": "da:blocks/gloom_brick"
+  }
+}

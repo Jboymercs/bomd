@@ -66,5 +66,9 @@ public class ModItems {
     public static final Item ROT_KNIGHT_KEY = new ItemRotKnightKey("knight_key", "rot_knight_key").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ROT_KNIGHT_RAPIER = new ItemKnightRapier("knight_rapier", KNIGHT_RAPIER_MATERIAL, "rapier_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item GLOW_BERRY = new ItemGlowBerry("glow_berry", 4, 4, false, ModBlocks.AZAELA_VINES).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item SOUL_STAR = new ItemBase("soul_star").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item MAGIC_PROJECTILE = new ItemBase("magic_projectile");
+    public static final Item ANCIENT_MANA = new ItemCraftingMaterial("ancient_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+
 
 }

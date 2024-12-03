@@ -79,7 +79,7 @@ public class RottenHold {
      * @return
      */
     private boolean generateStrongholdPart(RottenHoldTemplate parent, BlockPos pos, Rotation rot) {
-        String[] parts = {"part_1", "part_2", "part_3", "part_4", "part_5"};
+        String[] parts = {"part_1", "part_2", "part_3", "part_4", "part_5", "part_6"};
         RottenHoldTemplate piece_template = addAdjustedPieceWithoutDistance(parent, pos, ModRand.choice(parts), rot);
         components.add(piece_template);
         return true;
@@ -95,7 +95,6 @@ public class RottenHold {
     private boolean generateDungeonStart(RottenHoldTemplate parent, BlockPos pos, Rotation rot) {
         RottenHoldTemplate startPiece = addAdjustedPieceWithoutDistance(parent, BlockPos.ORIGIN.add(-31, -17,0), "start", rot);
         components.add(startPiece);
-        System.out.println("Generating Dungeon Piece");
 
         List<StructureComponent> structures = new ArrayList<>(components);
         int failedHalls = 0;

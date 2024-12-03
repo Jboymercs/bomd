@@ -55,14 +55,17 @@ public class ModWorldGen implements IWorldGenerator {
                             blossomCave.generate(world, random, posModified);
                     }
                 }
-                //Rotten Hold
-                if(world.provider.getBiomeForCoords(pos) != Biomes.DEEP_OCEAN && world.provider.getBiomeForCoords(pos) != Biomes.OCEAN) {
-                    if(WorldConfig.rotten_hold_is_blacklist == (world.provider.getBiomeForCoords(pos) != getSpawnBiomesRottenHold().iterator())) {
-                        BlockPos posModified = new BlockPos(pos.getX(), 0, pos.getZ());
-                        rotten_hold.generate(world, random, posModified);
-                    }
+            }
+        //Rotten Hold
+        if (isAllowedDimensionTooSpawnInRottenHold(world.provider.getDimension())) {
+            if(world.provider.getBiomeForCoords(pos) != Biomes.DEEP_OCEAN && world.provider.getBiomeForCoords(pos) != Biomes.OCEAN) {
+                if(WorldConfig.rotten_hold_is_blacklist == (world.provider.getBiomeForCoords(pos) != getSpawnBiomesRottenHold().iterator())) {
+                    BlockPos posModified = new BlockPos(pos.getX(), 0, pos.getZ());
+                    rotten_hold.generate(world, random, posModified);
                 }
             }
+        }
+
         }
 
 
@@ -104,6 +107,15 @@ public class ModWorldGen implements IWorldGenerator {
 
     public static boolean isAllowedDimensionTooSpawnIn(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInRottenHold(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_rotten_hold) {
             if(i == dimensionIn)
                 return true;
         }
