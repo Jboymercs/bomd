@@ -51,7 +51,6 @@ public class WorldGenRotHold extends WorldGenerator {
             return true;
 
         }
-        System.out.println("Spacing is at" + spacing);
         spacing++;
         return false;
     }

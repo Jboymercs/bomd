@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
@@ -26,7 +27,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockSoulStar extends BlockBase implements ITileEntityProvider, IBlockUpdater {
-
+    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
     public static final PropertyEnum<EnumLichSpawner> STATE = PropertyEnum.create("state", EnumLichSpawner.class);
     int counter = 0;
     private Item activationItem;
@@ -34,6 +35,12 @@ public class BlockSoulStar extends BlockBase implements ITileEntityProvider, IBl
     public BlockSoulStar(String name, Item item) {
         super(name, Material.ROCK, 1000, 10000, SoundType.STONE);
         this.activationItem = item;
+        this.setBlockUnbreakable();
+    }
+
+    public BlockSoulStar(String name, Material material, float hardness, float resistance, SoundType soundType, Item item1) {
+        super(name, material, hardness, resistance, soundType);
+        this.activationItem = item1;
         this.setBlockUnbreakable();
     }
 
@@ -62,6 +69,7 @@ public class BlockSoulStar extends BlockBase implements ITileEntityProvider, IBl
             List<EntityPlayerSP> list = world.<EntityPlayerSP>getPlayers(EntityPlayerSP.class, new Predicate<EntityPlayerSP>() {
                 @Override
                 public boolean apply(@Nullable EntityPlayerSP player) {
+                    System.out.println("UPDATING");
                     return player.getHeldItem(EnumHand.MAIN_HAND).getItem() == activationItem;
                 }
             });
@@ -86,12 +94,13 @@ public class BlockSoulStar extends BlockBase implements ITileEntityProvider, IBl
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        ItemStack stack = player.getHeldItem(hand);
         TileEntity te = world.getTileEntity(pos);
 
         if(te instanceof TileEntityLichSpawner) {
             TileEntityLichSpawner spawner = (TileEntityLichSpawner) te;
-            if(player.getHeldItemMainhand() != null && stack.getItem() == this.activationItem && !world.isRemote){
+            System.out.println("Checking Here");
+            if(player.getHeldItemMainhand().getItem() == this.activationItem){
+                System.out.println("Checked if correct Hand");
                 if (spawner.getState() != EnumLichSpawner.ACTIVE) {
                     //Consume Item and set this state to active
                     player.getHeldItemMainhand().shrink(1);
@@ -112,5 +121,20 @@ public class BlockSoulStar extends BlockBase implements ITileEntityProvider, IBl
         super.breakBlock(worldIn, pos, state);
         worldIn.removeTileEntity(pos);
 
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return AABB;
     }
 }

@@ -120,4 +120,44 @@ public class WorldConfig {
     @Config.Comment("Change the maximum y of the surface part of this structure can spawn at, the dungeon will always follow along with what the surface part is")
     @Config.RequiresMcRestart
     public static int rot_hold_max_y = 70;
+
+    @Config.Name("Night Lich Tower Dimensions allowed in!")
+    @Config.Comment("Take note that any ocean type biomes this structure will NOT spawn in, but you can select which dimension you'd like the structure to spawn in")
+    @Config.RequiresMcRestart
+    public static int[] list_of_dimensions_lich_tower = {0};
+
+    @Config.Name("Night Lich Tower Minimum Y")
+    @Config.Comment("Change the minimum y the surface part of this structure can spawn at")
+    @Config.RequiresMcRestart
+    public static int lich_tower_min_y = 55;
+
+    @Config.Name("Night Lich Tower Maximum Y")
+    @Config.Comment("Change the maximum y the surface part of this structure can spawn at")
+    @Config.RequiresMcRestart
+    public static int lich_tower_max_y = 75;
+
+    @Config.Name("Night Lich Tower Spacing")
+    @Config.Comment("Change the spacing between each Night Lich tower, higher means further apart, lower means closer. This number will not add to spacing if not in the correct biome")
+    @Config.RequiresMcRestart
+    public static int lich_tower_spacing = 350;
+
+    @Config.Name("Night Lich Allowed Biomes to spawn in")
+    @Config.Comment("Ocean Biomes will automatically be blacklisted, this is cause of the way the cave spawns it will intefere and flood it. Otherwise, check the whitelist/blacklist if you want this list to be either or.")
+    @Config.RequiresMcRestart
+    public static String[] biome_allowed_lich = {
+            "minecraft:ice_flats",
+            "minecraft:frozen_ocean",
+            "minecraft:frozen_river",
+            "minecraft:stone_beach",
+            "minecraft:mesa",
+            "minecraft:mesa_rock",
+            "minecraft:mutated_extreme_hills",
+            "minecraft:extreme_hills_with_trees",
+            "minecraft:redwood_taiga_hills"
+    };
+
+    @Config.Name("Night Lich Tower Whitelist/Blacklist")
+    @Config.Comment("Change if the list of biomes is a whitelist for biomes for it too only spawn in, otherwise it is a blacklist of biomes too not spawn in")
+    @Config.RequiresMcRestart
+    public static boolean night_lich_is_blacklist = true;
 }

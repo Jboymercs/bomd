@@ -6,6 +6,7 @@ import com.dungeon_additions.da.util.DALogger;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.world.blossom.WorldGenBlossomCave;
+import com.dungeon_additions.da.world.lich_tower.WorldGenLichTower;
 import com.dungeon_additions.da.world.nether_arena.WorldGenNetherArena;
 import com.dungeon_additions.da.world.rot_hold.WorldGenRotHold;
 import com.google.common.collect.Lists;
@@ -29,11 +30,12 @@ public class ModWorldGen implements IWorldGenerator {
     public static final WorldGenBlossomCave blossomCave = new WorldGenBlossomCave();
     public static final WorldGenRotHold rotten_hold = new WorldGenRotHold();
 
+    public static final WorldGenLichTower lich_tower = new WorldGenLichTower();
     private static final WorldGenNetherArena netherArena = new WorldGenNetherArena();
     private static List<Biome> spawnBiomes;
     private static List<Biome> spawnBiomesRottenHold;
 
-    private static List<Biome> spawnBiomesNether;
+    private static List<Biome> spawnBiomesLichTower;
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
 
@@ -62,6 +64,15 @@ public class ModWorldGen implements IWorldGenerator {
                 if(WorldConfig.rotten_hold_is_blacklist == (world.provider.getBiomeForCoords(pos) != getSpawnBiomesRottenHold().iterator())) {
                     BlockPos posModified = new BlockPos(pos.getX(), 0, pos.getZ());
                     rotten_hold.generate(world, random, posModified);
+                }
+            }
+        }
+        //Night Lich Tower
+        if(isAllowedDimensionTooSpawnInNightLich(world.provider.getDimension())) {
+            if(world.provider.getBiomeForCoords(pos) != Biomes.DEEP_OCEAN && world.provider.getBiomeForCoords(pos) != Biomes.OCEAN) {
+                if(WorldConfig.night_lich_is_blacklist == (world.provider.getBiomeForCoords(pos) != getSpawnBiomesLichTower().iterator())) {
+                    BlockPos posModified = new BlockPos(pos.getX(), 0, pos.getZ());
+                    lich_tower.generate(world, random, posModified);
                 }
             }
         }
@@ -105,6 +116,22 @@ public class ModWorldGen implements IWorldGenerator {
         return spawnBiomesRottenHold;
     }
 
+    public static List<Biome> getSpawnBiomesLichTower() {
+        if (spawnBiomesLichTower == null) {
+            spawnBiomesLichTower = Lists.newArrayList();
+            for (String str : WorldConfig.biome_allowed_lich) {
+                try {
+                    Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(str));
+                    if (biome != null) spawnBiomesLichTower.add(biome);
+                    else DALogger.logError("Biome " + str + " is not registered", new NullPointerException());
+                } catch (Exception e) {
+                    DALogger.logError(str + " is not a valid registry name", e);
+                }
+            }
+        }
+        return spawnBiomesLichTower;
+    }
+
     public static boolean isAllowedDimensionTooSpawnIn(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions) {
             if(i == dimensionIn)
@@ -116,6 +143,15 @@ public class ModWorldGen implements IWorldGenerator {
 
     public static boolean isAllowedDimensionTooSpawnInRottenHold(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions_rotten_hold) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInNightLich(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_lich_tower) {
             if(i == dimensionIn)
                 return true;
         }

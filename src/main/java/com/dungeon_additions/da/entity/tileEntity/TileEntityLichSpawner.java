@@ -30,6 +30,11 @@ public class TileEntityLichSpawner extends TileEntity implements ITickable {
 
     @Override
     public void update() {
+
+        if (world.isRemote && this.getBlockType() instanceof IBlockUpdater) {
+            ((IBlockUpdater) this.getBlockType()).update(world, pos);
+        }
+
         if(world == null) {
             return;
         }
