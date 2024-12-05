@@ -6,7 +6,7 @@ public enum EnumLichSpawner implements IStringSerializable {
 
 
     INACTIVE("inactive", 0, false),
-    ACTIVE("active", 4, true);
+    ACTIVE("active", 10, true);
 
     private final String name;
     private final int light_level;

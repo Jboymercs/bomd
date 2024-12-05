@@ -3,6 +3,11 @@ package com.dungeon_additions.da.blocks.lich;
 import com.dungeon_additions.da.blocks.BlockBase;
 import com.dungeon_additions.da.blocks.base.IBlockUpdater;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityLichSpawner;
+import com.dungeon_additions.da.items.ItemSoulStar;
+import com.dungeon_additions.da.util.ModColors;
+import com.dungeon_additions.da.util.ModRand;
+import com.dungeon_additions.da.util.handlers.ParticleManager;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.google.common.base.Predicate;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -17,14 +22,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 public class BlockSoulStar extends BlockBase implements ITileEntityProvider, IBlockUpdater {
     protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
@@ -99,10 +109,11 @@ public class BlockSoulStar extends BlockBase implements ITileEntityProvider, IBl
         if(te instanceof TileEntityLichSpawner) {
             TileEntityLichSpawner spawner = (TileEntityLichSpawner) te;
             System.out.println("Checking Here");
-            if(player.getHeldItemMainhand().getItem() == this.activationItem){
+            if(player.getHeldItemMainhand().getItem() instanceof ItemSoulStar){
                 System.out.println("Checked if correct Hand");
                 if (spawner.getState() != EnumLichSpawner.ACTIVE) {
                     //Consume Item and set this state to active
+                    world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundsHandler.SOUL_STAR_ACTIVATE, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.7F + 0.3F, false);
                     player.getHeldItemMainhand().shrink(1);
                     spawner.setState(EnumLichSpawner.ACTIVE);
                     System.out.println("Sensing Correctly");
@@ -121,6 +132,31 @@ public class BlockSoulStar extends BlockBase implements ITileEntityProvider, IBl
         super.breakBlock(worldIn, pos, state);
         worldIn.removeTileEntity(pos);
 
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+        TileEntity te = worldIn.getTileEntity(pos);
+        if(te instanceof TileEntityLichSpawner) {
+            TileEntityLichSpawner spawner = ((TileEntityLichSpawner) te);
+            if (spawner.getState() == EnumLichSpawner.INACTIVE) {
+                if (rand.nextInt(2) == 0) {
+                    for(int i = 0; i < 20; i++) {
+                        Vec3d particlePos = new Vec3d(pos.getX() + 0.4 + ModRand.getFloat(0.3F), pos.getY() + 1.5, pos.getZ() + 0.4 + ModRand.getFloat(0.3F));
+                        ParticleManager.spawnColoredSmoke(worldIn, particlePos, ModColors.GREY, new Vec3d(0, -0.1, 0));
+                    }
+                }
+            } else if (spawner.getState() == EnumLichSpawner.ACTIVE) {
+                if (rand.nextInt(2) == 0) {
+                    for(int i = 0; i < 20; i++) {
+                        Vec3d particlePos = new Vec3d(pos.getX() + 0.4 + ModRand.getFloat(0.3F), pos.getY() + 0.6, pos.getZ() + 0.4 + ModRand.getFloat(0.3F));
+                        ParticleManager.spawnColoredSmoke(worldIn, particlePos, ModColors.AZURE, new Vec3d(0, 0.1, 0));
+                    }
+                }
+            }
+
+        }
     }
 
     @Override

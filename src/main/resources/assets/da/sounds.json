@@ -638,5 +638,15 @@
         "steam": true
       }
     ]
+  },
+  "block.soul_star.activate": {
+    "category": "block",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:block/soul_star/activate",
+        "steam": true
+      }
+    ]
   }
 }

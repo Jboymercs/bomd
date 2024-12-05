@@ -55,6 +55,8 @@ public class SoundsHandler {
     public static SoundEvent GLOOM_STEP;
     public static SoundEvent GLOOM_BREAK;
     public static SoundEvent GLOOM_PLACE;
+    //Soul Star Block
+    public static SoundEvent SOUL_STAR_ACTIVATE;
     public static void registerSounds() {
         //
         MOSS_BREAK = registerSound("moss.break", "block");
@@ -70,6 +72,8 @@ public class SoundsHandler {
         GLOOM_BREAK = registerSound("gloom.break", "block");
         GLOOM_PLACE = registerSound("gloom.place", "block");
         GLOOM_STEP = registerSound("gloom.step", "block");
+        //
+        SOUL_STAR_ACTIVATE = registerSound("soul_star.activate", "block");
         //
         VOID_SPIKE_SHOOT = registerSound("spike.shoot", "entity");
         APPEARING_WAVE = registerSound("spike.wave", "entity");

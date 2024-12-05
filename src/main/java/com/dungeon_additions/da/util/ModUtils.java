@@ -1,7 +1,9 @@
 package com.dungeon_additions.da.util;
 
+import com.dungeon_additions.da.blocks.lich.EnumLichSpawner;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
+import com.dungeon_additions.da.entity.tileEntity.TileEntityLichSpawner;
 import com.dungeon_additions.da.event.EventScheduler;
 import com.dungeon_additions.da.event.Services;
 import com.dungeon_additions.da.init.ModBlocks;
@@ -12,6 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MultiPartEntityPart;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -147,8 +150,44 @@ public class ModUtils {
         return null;
     }
 
+    public static boolean searchForInactiveTileEntities(AxisAlignedBB box, World world, IBlockState block) {
+        int i = MathHelper.floor(box.minX);
+        int j = MathHelper.floor(box.minY);
+        int k = MathHelper.floor(box.minZ);
+        int l = MathHelper.floor(box.maxX);
+        int i1 = MathHelper.floor(box.maxY);
+        int j1 = MathHelper.floor(box.maxZ);
+        int counter = 0;
+        for (int x = i; x <= l; ++x) {
+            for (int y = j; y <= i1; ++y) {
+                for (int z = k; z <= j1; ++z) {
+                    BlockPos blockpos = new BlockPos(x, y, z);
+                    IBlockState iblockstate = world.getBlockState(blockpos);
 
-    public static BlockPos searchForBlocksTileEntity(AxisAlignedBB box, World world, IBlockState block) {
+                    if(iblockstate == block && world.getBlockState(blockpos) == ModBlocks.LICH_SOUL_STAR_BLOCK.getDefaultState()) {
+                        TileEntity te = world.getTileEntity(blockpos);
+                        if(te instanceof TileEntityLichSpawner) {
+                            TileEntityLichSpawner entityToo = ((TileEntityLichSpawner) te);
+                            if(entityToo.getState() == EnumLichSpawner.ACTIVE) {
+                                counter++;
+                            }
+                            if(counter >= 4) {
+                                return true;
+                            }
+
+                            if(entityToo.getState() == EnumLichSpawner.INACTIVE) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean createBlockPriotity(AxisAlignedBB box, World world, IBlockState block) {
         int i = MathHelper.floor(box.minX);
         int j = MathHelper.floor(box.minY);
         int k = MathHelper.floor(box.minZ);
@@ -162,17 +201,54 @@ public class ModUtils {
                     IBlockState iblockstate = world.getBlockState(blockpos);
 
 
-                    if(iblockstate == block && world.getBlockState(blockpos.up()) != ModBlocks.SPORE_BLOSSOM.getDefaultState()) {
-                        System.out.println("Found BlockPos for Changing");
-
-                        return blockpos;
+                    if(iblockstate == block && world.getBlockState(blockpos) == ModBlocks.LICH_SOUL_STAR_BLOCK.getDefaultState()) {
+                        TileEntity te = world.getTileEntity(blockpos);
+                        if(te instanceof TileEntityLichSpawner) {
+                            TileEntityLichSpawner entityToo = ((TileEntityLichSpawner) te);
+                            if(entityToo.getState() == EnumLichSpawner.ACTIVE && !entityToo.hasPriority) {
+                                return true;
+                            }
+                        }
                     }
                 }
             }
         }
 
+        return false;
+    }
+
+
+    public static BlockPos findBossSpawnLocation(AxisAlignedBB box, World world, EntityLivingBase entityIn, int minSpawnHeight, int maxSpawnHeight) {
+        int i = MathHelper.floor(box.minX);
+        int j = MathHelper.floor(box.minY);
+        int k = MathHelper.floor(box.minZ);
+        int l = MathHelper.floor(box.maxX);
+        int i1 = MathHelper.floor(box.maxY);
+        int j1 = MathHelper.floor(box.maxZ);
+        for (int x = i; x <= l; ++x) {
+            for (int y = j; y <= i1; ++y) {
+                for (int z = k; z <= j1; ++z) {
+                    BlockPos blockpos = new BlockPos(x, y, z);
+
+                    //checks for nearby air blocks to ensure the boss doesn't spawn in a wall
+                    if(!world.getBlockState(blockpos).causesSuffocation() && !world.getBlockState(blockpos.add(0, 1, 0)).causesSuffocation() &&
+                    !world.getBlockState(blockpos.add(1,0,0)).causesSuffocation() && !world.getBlockState(blockpos.add(-1,0,0)).causesSuffocation() &&
+                    !world.getBlockState(blockpos.add(0, 0, 1)).causesSuffocation() && !world.getBlockState(blockpos.add(0,0,-1)).causesSuffocation() &&
+                    !world.getBlockState(blockpos.add(2, 0, 0)).causesSuffocation() && !world.getBlockState(blockpos.add(-2, 0, 0)).causesSuffocation() &&
+                    !world.getBlockState(blockpos.add(0,0,-2)).causesSuffocation() && !world.getBlockState(blockpos.add(0,0,2)).causesSuffocation()) {
+
+                        //Next we need to check to see if the current Position can see the sky
+                        if(entityIn.getEntityWorld().canSeeSky(blockpos) && blockpos.getY() > minSpawnHeight && blockpos.getY() < maxSpawnHeight) {
+                            return blockpos;
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("Failed to find a location for the boss to spawn at");
         return null;
     }
+
 
 
     public static BlockPos searchForBlocksAfterAbility(AxisAlignedBB box, World world, Entity entity, IBlockState block) {

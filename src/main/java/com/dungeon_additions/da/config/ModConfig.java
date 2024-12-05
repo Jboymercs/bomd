@@ -53,5 +53,21 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static boolean enable_crafting_tooltips = true;
 
+    @Config.Name("Soul Star Block Deletion")
+    @Config.Comment("Do Soul Star Altar blocks disappear when all are activated, set to false to disable")
+    @Config.RequiresMcRestart
+    public static boolean soul_star_blocks_remove = true;
+
+    @Config.Name("Soul Star Drop Chance")
+    @Config.Comment("Change the drop chance of Soul Star from anything that extends off of EntityMob, Like Zombies, Skeletons, and so on")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 0, max = 100)
+    public static int soul_star_drop_chance = 5;
+
+    @Config.Name("Soul Star Drops everywhere")
+    @Config.Comment("Change if the Soul Star should drop from anything that extends from EntityMob, setting to true will enable this setting")
+    @Config.RequiresMcRestart
+    public static boolean soul_star_drops_everywhere = false;
+
 
 }
