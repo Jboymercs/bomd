@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "V"
+  ],
+  "key": {
+    "V": {
+      "item": "da:gloom_brick_half",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "da:gloom_carved",
+    "count": 1
+  }
+}

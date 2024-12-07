@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "V"
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:red_flower",
+      "data": 2
+    },
+    "X": {
+      "item": "minecraft:dye",
+      "data" : 9
+    }
+  },
+  "result": {
+    "item": "da:void_lily",
+    "count": 1
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VV",
+    "VV"
+  ],
+  "key": {
+    "V": {
+      "item": "da:gloom_smooth"
+    }
+  },
+  "result": {
+    "item": "da:gloom_brick",
+    "count": 4
+  }
+}

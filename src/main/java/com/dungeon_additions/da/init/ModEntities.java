@@ -16,6 +16,9 @@ import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileTrackingFlame;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
+import com.dungeon_additions.da.entity.night_lich.EntityNightLich;
+import com.dungeon_additions.da.entity.projectiles.EntityLily;
+import com.dungeon_additions.da.entity.projectiles.EntitySoulStar;
 import com.dungeon_additions.da.entity.projectiles.ProjectileAbberrantAttack;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
@@ -76,6 +79,9 @@ public class ModEntities {
             registerEntityWithID("ancient_knight_rapier", EntityRotKnightRapier.class, ENTITY_START_ID++, 50 ,rot_knights);
             registerEntityWithID("ancient_fallen", EntityRotKnightBoss.class, ENTITY_START_ID++, 50, rot_knights);
             registerEntity("rot_spike", EntityRotSpike.class, ENTITY_START_ID++, 60);
+            registerEntity("soul_star", EntitySoulStar.class, ENTITY_START_ID++, 60);
+            registerEntity("lily_locator", EntityLily.class, ENTITY_START_ID++, 60);
+            registerEntityWithID("night_lich", EntityNightLich.class, ENTITY_START_ID++, 60, knight_mobs);
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
         registerTileEntity(TileEntityMegaStructure.class, "mega_structure");

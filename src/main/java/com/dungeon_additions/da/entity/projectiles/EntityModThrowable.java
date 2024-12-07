@@ -33,6 +33,8 @@ public abstract class EntityModThrowable  extends Entity implements IProjectile 
     private int xTile;
     private int yTile;
     private int zTile;
+
+    public boolean isLocatorItem = false;
     private Block inTile;
     protected boolean inGround;
     protected int timeInGround;
@@ -172,7 +174,7 @@ public abstract class EntityModThrowable  extends Entity implements IProjectile 
             --this.throwableShake;
         }
 
-        if (this.inGround) {
+        if (this.inGround && !isLocatorItem) {
             if (this.world.getBlockState(new BlockPos(this.xTile, this.yTile, this.zTile)).getBlock() == this.inTile) {
                 ++this.ticksInGround;
 
@@ -198,7 +200,7 @@ public abstract class EntityModThrowable  extends Entity implements IProjectile 
             vec3d1 = new Vec3d(this.posX, this.posY, this.posZ);
             vec3d = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
-            if (raytraceresult != null) {
+            if (raytraceresult != null && !isLocatorItem) {
                 vec3d = new Vec3d(raytraceresult.hitVec.x, raytraceresult.hitVec.y, raytraceresult.hitVec.z);
             }
 

@@ -16,6 +16,9 @@ entity.ancient_knight.name=Ancient Stormvier
 entity.ancient_knight_rapier.name=Ancient Galvonizer
 entity.ancient_fallen.name=Fallen Stormvier
 entity.rot_spike.name=Fallen Spike
+entity.soul_star.name=Soul Star
+entity.lily_locator.name=Lily Locator
+entity.night_lich.name=Night Lich
 item.void_leaf.name=Void Leaf
 item.spore.name=Void Blossom Spore
 item.crystal_fruit.name=Crystal Fruit
@@ -82,10 +85,12 @@ tile.gloom_stone_wall.name=Petrogloom Cobblestone Wall
 tile.gloom_smooth_wall.name=Smooth Petrogloom Wall
 tile.gloom_brick_wall.name=Petrogloom Brick Wall
 tile.soul_star_block.name=Chiseled Stone Altar Block
+tile.void_lily.name=Void Lily
 
 itemGroup.dungeon_additions=BOMD + Dungeon Additions
 
-da.lich_spawn.soul_star=You need a Soul Star to activate this
+da.lich_spawn.soul_star=Maybe something of a star like shape?
+da.within_bounds=You are within the radius of the structure, item locator resetting
 
 da.desc.regen_fruit=Grants brief regen and resistance
 da.desc.crafting_material=Crafting material
@@ -98,7 +103,8 @@ da.desc.flame_armor_desc=Full set gives Fire Resistance 1 and boosts AOE range b
 da.desc.fire_stone_desc=When mined it drops various Nether related items
 da.desc.rot_knight_key=Used to unlock the keyed block in the Rotten Hold
 da.desc.rapier_desc=Well crafted, faster, and slightly better than iron
-da.desc.soul_star_desc=Used to light the altars in the tall tower.
+da.desc.soul_star_desc=Where does it lead?
+da.desc.void_lily_desc=Where does the Pollen Lead? Place & Right click to pollinate.
 death.attack.da:maelstrom=%1$s succumbed to the void
 death.attack.da:mobMaelstrom=%1$s was killed by a %2$s
 death.attack.da:playerMaelstrom=%1$s was killed by %2$s

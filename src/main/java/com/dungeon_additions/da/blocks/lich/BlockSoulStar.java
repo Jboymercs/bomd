@@ -79,7 +79,6 @@ public class BlockSoulStar extends BlockBase implements ITileEntityProvider, IBl
             List<EntityPlayerSP> list = world.<EntityPlayerSP>getPlayers(EntityPlayerSP.class, new Predicate<EntityPlayerSP>() {
                 @Override
                 public boolean apply(@Nullable EntityPlayerSP player) {
-                    System.out.println("UPDATING");
                     return player.getHeldItem(EnumHand.MAIN_HAND).getItem() == activationItem;
                 }
             });
@@ -108,15 +107,12 @@ public class BlockSoulStar extends BlockBase implements ITileEntityProvider, IBl
 
         if(te instanceof TileEntityLichSpawner) {
             TileEntityLichSpawner spawner = (TileEntityLichSpawner) te;
-            System.out.println("Checking Here");
             if(player.getHeldItemMainhand().getItem() instanceof ItemSoulStar){
-                System.out.println("Checked if correct Hand");
                 if (spawner.getState() != EnumLichSpawner.ACTIVE) {
                     //Consume Item and set this state to active
                     world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundsHandler.SOUL_STAR_ACTIVATE, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.7F + 0.3F, false);
                     player.getHeldItemMainhand().shrink(1);
                     spawner.setState(EnumLichSpawner.ACTIVE);
-                    System.out.println("Sensing Correctly");
                     return true;
                 }
             } else {

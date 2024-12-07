@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "V"
+  ],
+  "key": {
+    "V": {
+      "item": "da:gloom_stone_half",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "da:gloom_triangle",
+    "count": 1
+  }
+}

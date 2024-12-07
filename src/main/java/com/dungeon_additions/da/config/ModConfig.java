@@ -69,5 +69,15 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static boolean soul_star_drops_everywhere = false;
 
+    @Config.Name("Enable Experimental Features")
+    @Config.Comment("All this does is enable Lich towers to spawn, and allow Soul Stars to drop from mobs")
+    @Config.RequiresMcRestart
+    public static boolean enable_experimental = false;
+
+    @Config.Name("Structure Location Resetting")
+    @Config.Comment("At what radius must any structure locating item will reset and find another one. Like getting close to a current Lich Tower in x blocks, will reset the item and find another one")
+    @Config.RequiresMcRestart
+    public static int locator_reset_pos = 60;
+
 
 }

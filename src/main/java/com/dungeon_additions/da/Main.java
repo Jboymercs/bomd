@@ -3,9 +3,11 @@ package com.dungeon_additions.da;
 
 import com.dungeon_additions.da.blocks.BlockLeaveBase;
 import com.dungeon_additions.da.init.ModEntities;
+import com.dungeon_additions.da.init.ModRecipes;
 import com.dungeon_additions.da.proxy.CommonProxy;
 import com.dungeon_additions.da.util.DALogger;
 import com.dungeon_additions.da.util.ModReference;
+import com.dungeon_additions.da.util.commands.CommandLocateLich;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.dungeon_additions.da.util.handlers.StructureHandler;
 import com.dungeon_additions.da.world.ModWorldGen;
@@ -18,6 +20,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkCheckHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -66,6 +69,13 @@ public class Main {
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
         StructureHandler.handleStructureRegistries();
+        ModRecipes.init();
     }
 
+    @Mod.EventHandler
+    public void serverLoad(FMLServerStartingEvent event)
+    {
+        // register server commands
+        event.registerServerCommand(new CommandLocateLich());
+    }
 }

@@ -1,0 +1,211 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 4,
+				"visible_bounds_height": 4.5,
+				"visible_bounds_offset": [0, 1.75, 0]
+			},
+			"bones": [
+				{
+					"name": "Ground",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "Torso",
+					"parent": "Ground",
+					"pivot": [0, 24, 0],
+					"cubes": [
+						{"origin": [-5, 19, -3], "size": [10, 8, 6], "uv": [32, 54]}
+					]
+				},
+				{
+					"name": "RibCage",
+					"parent": "Torso",
+					"pivot": [0, 19, 0],
+					"cubes": [
+						{"origin": [-4, 11, -2], "size": [8, 8, 4], "uv": [28, 68]},
+						{"origin": [-4.5, 9, -2.5], "size": [9, 10, 5], "uv": [0, 55]}
+					]
+				},
+				{
+					"name": "GhostLegs",
+					"parent": "RibCage",
+					"pivot": [0, 11, 0],
+					"cubes": [
+						{"origin": [-3.5, -6, -2], "size": [7, 17, 4], "uv": [64, 39]}
+					]
+				},
+				{
+					"name": "RobePoint",
+					"parent": "RibCage",
+					"pivot": [-4.5, 9, 0],
+					"cubes": [
+						{"origin": [-4, -7, -1.5], "size": [0, 16, 3], "pivot": [-4.5, 9, 0], "rotation": [0, -30, 12.5], "uv": [68, 86]}
+					]
+				},
+				{
+					"name": "RobePointTwo",
+					"parent": "RibCage",
+					"pivot": [4.5, 9, 0],
+					"cubes": [
+						{"origin": [4, -7, -1.5], "size": [0, 16, 3], "pivot": [4.5, 9, 0], "rotation": [0, 30, -12.5], "uv": [62, 86]}
+					]
+				},
+				{
+					"name": "LArm",
+					"parent": "Torso",
+					"pivot": [5, 26, 0],
+					"cubes": [
+						{"origin": [5, 19, -2.5], "size": [5, 9, 5], "uv": [0, 70]},
+						{"origin": [6, 24, -3], "size": [5, 6, 6], "uv": [52, 74]},
+						{"origin": [6, 11, -1], "size": [2, 16, 2], "uv": [54, 86]},
+						{"origin": [5.5, 16, -1.5], "size": [3, 5, 3], "uv": [92, 57]}
+					]
+				},
+				{
+					"name": "LJoint",
+					"parent": "LArm",
+					"pivot": [7, 12, 0],
+					"cubes": [
+						{"origin": [6.5, 11.5, -22], "size": [1, 1, 38], "uv": [0, 0]},
+						{"origin": [5.5, 10.5, -23], "size": [3, 3, 1], "uv": [78, 30]},
+						{"origin": [4.5, 9.5, -24], "size": [5, 5, 1], "uv": [52, 68]},
+						{"origin": [6, 11, -29], "size": [2, 2, 5], "uv": [16, 90]},
+						{"origin": [6, 8.5, -30], "size": [2, 7, 6], "uv": [0, 84]},
+						{"origin": [3.5, 11, -30], "size": [7, 2, 6], "uv": [74, 74]}
+					]
+				},
+				{
+					"name": "WeaponJ",
+					"parent": "LJoint",
+					"pivot": [7, 12, -31]
+				},
+				{
+					"name": "Spear",
+					"parent": "WeaponJ",
+					"pivot": [7, 12, -31],
+					"rotation": [0, 45, 0],
+					"cubes": [
+						{"origin": [6, 12, -33], "size": [1, 1, 2], "uv": [86, 57]},
+						{"origin": [7, 12, -34], "size": [1, 1, 4], "uv": [92, 92]},
+						{"origin": [5, 12, -33], "size": [1, 1, 1], "uv": [28, 55]},
+						{"origin": [8, 12, -34], "size": [1, 1, 5], "uv": [40, 80]},
+						{"origin": [9, 12, -34], "size": [1, 1, 3], "uv": [78, 34]},
+						{"origin": [10, 12, -35], "size": [1, 1, 3], "uv": [94, 82]},
+						{"origin": [8, 12, -35], "size": [2, 1, 1], "uv": [94, 90]},
+						{"origin": [11, 12, -36], "size": [1, 1, 3], "uv": [94, 86]},
+						{"origin": [9, 12, -36], "size": [2, 1, 1], "uv": [6, 97]},
+						{"origin": [12, 12, -37], "size": [1, 1, 2], "uv": [0, 97]},
+						{"origin": [11, 12, -37], "size": [1, 1, 1], "uv": [28, 57]},
+						{"origin": [13, 12, -38], "size": [1, 1, 1], "uv": [28, 59]}
+					]
+				},
+				{
+					"name": "RArm",
+					"parent": "Torso",
+					"pivot": [-5, 26, 0],
+					"cubes": [
+						{"origin": [-8, 18.5, -1.5], "size": [3, 9, 3], "uv": [86, 45]},
+						{"origin": [-7.5, 19, -1], "size": [2, 8, 2], "uv": [20, 70]}
+					]
+				},
+				{
+					"name": "RElbowJ",
+					"parent": "RArm",
+					"pivot": [-6.5, 19, 0],
+					"cubes": [
+						{"origin": [-7.5, 11, -1], "size": [2, 8, 2], "uv": [84, 92]}
+					]
+				},
+				{
+					"name": "RJoint",
+					"parent": "RElbowJ",
+					"pivot": [-6.5, 12, 0],
+					"cubes": [
+						{"origin": [-8.5, 6, -6.5], "size": [1, 9, 6], "pivot": [-6.5, 12, 0], "rotation": [0, 15, 0], "uv": [86, 30]},
+						{"origin": [-8.5, 6, 0.5], "size": [1, 9, 6], "pivot": [-6.5, 12, 0], "rotation": [0, -15, 0], "uv": [40, 86]}
+					]
+				},
+				{
+					"name": "PageOne",
+					"parent": "RJoint",
+					"pivot": [-8.5, 12, 0],
+					"cubes": [
+						{"origin": [-13.5, 6, 0], "size": [5, 9, 0], "pivot": [-8.5, 12, 0], "rotation": [0, -62.5, 0], "uv": [30, 90]}
+					]
+				},
+				{
+					"name": "PageTwo",
+					"parent": "RJoint",
+					"pivot": [-8.5, 12, 0],
+					"cubes": [
+						{"origin": [-13.5, 6, 0], "size": [5, 9, 0], "pivot": [-8.5, 12, 0], "rotation": [0, -57.5, 0], "uv": [92, 65]}
+					]
+				},
+				{
+					"name": "PageThree",
+					"parent": "RJoint",
+					"pivot": [-8.5, 12, 0],
+					"cubes": [
+						{"origin": [-13.5, 6, 0], "size": [5, 9, 0], "pivot": [-8.5, 12, 0], "rotation": [0, -52.5, 0], "uv": [74, 92]}
+					]
+				},
+				{
+					"name": "HeadJ",
+					"parent": "Torso",
+					"pivot": [0, 27, 0],
+					"cubes": [
+						{"origin": [-3.5, 27, -3.5], "size": [7, 7, 7], "uv": [64, 60]},
+						{"origin": [-4, 27, -4], "size": [8, 8, 8], "uv": [0, 39]},
+						{"origin": [-4, 32, -4], "size": [8, 7, 8], "inflate": 0.25, "uv": [32, 39]}
+					]
+				},
+				{
+					"name": "SigilOne",
+					"parent": "Ground",
+					"pivot": [0, 44, 10],
+					"cubes": [
+						{"origin": [-5, 44, 10], "size": [10, 10, 0], "uv": [78, 0]}
+					]
+				},
+				{
+					"name": "SigilTwo",
+					"parent": "Ground",
+					"pivot": [11, 40, 10],
+					"cubes": [
+						{"origin": [6, 40, 10], "size": [10, 10, 0], "uv": [78, 10]}
+					]
+				},
+				{
+					"name": "SigilThree",
+					"parent": "Ground",
+					"pivot": [-11, 40, 10],
+					"cubes": [
+						{"origin": [-16, 40, 10], "size": [10, 10, 0], "uv": [78, 20]}
+					]
+				},
+				{
+					"name": "SigilFour",
+					"parent": "Ground",
+					"pivot": [22, 36, 10],
+					"cubes": [
+						{"origin": [17, 36, 10], "size": [10, 10, 0], "uv": [20, 80]}
+					]
+				},
+				{
+					"name": "SigilFive",
+					"parent": "Ground",
+					"pivot": [-22, 36, 10],
+					"cubes": [
+						{"origin": [-27, 36, 10], "size": [10, 10, 0], "uv": [74, 82]}
+					]
+				}
+			]
+		}
+	]
+}

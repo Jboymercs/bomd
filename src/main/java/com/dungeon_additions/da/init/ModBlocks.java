@@ -6,6 +6,7 @@ import com.dungeon_additions.da.blocks.base.BlockStairBase;
 import com.dungeon_additions.da.blocks.base.BlockWallBase;
 import com.dungeon_additions.da.blocks.base.slab.BlockDoubleSlab;
 import com.dungeon_additions.da.blocks.base.slab.BlockHalfSlab;
+import com.dungeon_additions.da.blocks.blossom.BlockVoidLily;
 import com.dungeon_additions.da.blocks.lich.BlockSoulStar;
 import com.dungeon_additions.da.blocks.vine.BlockAzealaVines;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
@@ -68,7 +69,7 @@ public class ModBlocks {
     public static final Block PETROGLOOM_SMOOTH = new BlockBase("gloom_smooth", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_CARVED = new BlockPillarBase("gloom_carved", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_PILLAR = new BlockPillarBase("gloom_pillar", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
-    public static final Block PETROGLOOM_ROUGH = new BlockBase("gloom_rough", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, SoundType.STONE).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block PETROGLOOM_ROUGH = new BlockPetroGloom("gloom_rough", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, SoundType.STONE).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_TRIANGLE = new BlockBase("gloom_triangle", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_STAIRS = new BlockStairBase("gloom_stone_stairs", PETROGLOOM.getDefaultState(), GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_BRICK_STAIRS = new BlockStairBase("gloom_brick_stairs", PETROGLOOM_BRICKS.getDefaultState(), GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
@@ -83,8 +84,7 @@ public class ModBlocks {
     public static final Block PETROGLOOM_SMOOTH_WALL = new BlockWallBase("gloom_smooth_wall", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_BRICK_WALL = new BlockWallBase("gloom_brick_wall", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block LICH_SOUL_STAR_BLOCK = new BlockSoulStar("soul_star_block", ModItems.SOUL_STAR).setCreativeTab(DungeonAdditionsTab.ALL);
-
-
+    public static final Block VOID_LILY_BLOCK = new BlockVoidLily("void_lily", "void_lily_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final BlockSlab FIRE_STONE_SLAB_DOUBLE = new BlockDoubleSlab("fire_stone_double", Material.ROCK, CreativeTabs.SEARCH, ModBlocks.FIRE_STONE_SLAB_HALF, STONE_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE);
     public static final BlockSlab FIRE_STONE_SLAB_HALF = new BlockHalfSlab("fire_stone_half", Material.ROCK, DungeonAdditionsTab.ALL, ModBlocks.FIRE_STONE_SLAB_HALF, ModBlocks.FIRE_STONE_SLAB_DOUBLE, STONE_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE);
 

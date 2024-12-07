@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "R"
+  ],
+  "key": {
+    "V": {
+      "item": "da:moss_block"
+    },
+    "R": {
+      "item": "minecraft:planks",
+      "data": 1
+    }
+  },
+  "result": {
+    "item": "da:mossy_spruce",
+    "count": 1
+  }
+}

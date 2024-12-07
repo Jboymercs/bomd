@@ -8,7 +8,7 @@ public class WorldConfig {
     @Config.Name("Void Blossom Cave Weight")
     @Config.Comment("Change the spacing between Void Blossom caves, lower means more frequent, higher means less")
     @Config.RequiresMcRestart
-    public static int void_blossom_cave_weight = 300;
+    public static int void_blossom_cave_weight = 70;
 
     @Config.Name("Void Blossom Arena Dimensions allowed in!")
     @Config.Comment("Take note that any ocean type biomes this structure will NOT spawn in, but you can select which dimension you'd like the structure to spawn in")
@@ -16,9 +16,13 @@ public class WorldConfig {
     public static int[] list_of_dimensions = {0};
 
     @Config.Name("Void Blossom Arena Allowed Biomes to spawn in")
-    @Config.Comment("Ocean Biomes will automatically be blacklisted, this is cause of the way the cave spawns it will intefere and flood it. Otherwise, check the whitelist/blacklist if you want this list to be either or.")
+    @Config.Comment(" Block certain biomes for the Void Blossom Cave, Otherwise, check the whitelist/blacklist if you want this list to be either or.")
     @Config.RequiresMcRestart
-    public static String[] biome_allowed = {"minecraft:ice_flats"};
+    public static String[] biome_allowed = {
+            "minecraft:ice_flats",
+            "minecraft:ocean",
+            "minecraft:deep_ocean"
+    };
 
     @Config.Name("Void Blossom Arena Biome Whitelist/Blacklist")
     @Config.Comment("When set too true, the biome list in this config becomes a blacklist of biomes for it to not spawn in, if set to false it becomes a white list. Default: true")
@@ -129,7 +133,7 @@ public class WorldConfig {
     @Config.Name("Night Lich Tower Minimum Y")
     @Config.Comment("Change the minimum y the surface part of this structure can spawn at")
     @Config.RequiresMcRestart
-    public static int lich_tower_min_y = 55;
+    public static int lich_tower_min_y = 50;
 
     @Config.Name("Night Lich Tower Maximum Y")
     @Config.Comment("Change the maximum y the surface part of this structure can spawn at")
@@ -139,10 +143,10 @@ public class WorldConfig {
     @Config.Name("Night Lich Tower Spacing")
     @Config.Comment("Change the spacing between each Night Lich tower, higher means further apart, lower means closer. This number will not add to spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int lich_tower_spacing = 350;
+    public static int lich_tower_spacing = 100;
 
     @Config.Name("Night Lich Allowed Biomes to spawn in")
-    @Config.Comment("Ocean Biomes will automatically be blacklisted, this is cause of the way the cave spawns it will intefere and flood it. Otherwise, check the whitelist/blacklist if you want this list to be either or.")
+    @Config.Comment("Add Biomes to be blacklisted/whitelisted. Otherwise, check the whitelist/blacklist if you want this list to be either or.")
     @Config.RequiresMcRestart
     public static String[] biome_allowed_lich = {
             "minecraft:ice_flats",
@@ -153,7 +157,11 @@ public class WorldConfig {
             "minecraft:mesa_rock",
             "minecraft:mutated_extreme_hills",
             "minecraft:extreme_hills_with_trees",
-            "minecraft:redwood_taiga_hills"
+            "minecraft:redwood_taiga_hills",
+            "minecraft:ocean",
+            "minecraft:deep_ocean",
+            "minecraft:ice_mountains",
+            "minecraft:extreme_hills"
     };
 
     @Config.Name("Night Lich Tower Whitelist/Blacklist")
