@@ -90,6 +90,86 @@
       }
     ]
   },
+  "entity.night_lich.prepare_fireball": {
+    "category": "entity",
+    "subtitle": "entity.night_lich.prepare_fireball",
+    "sounds": [
+      {
+        "name": "da:entity/night_lich/fireball_prepare",
+        "steam": true
+      }
+    ]
+  },
+  "entity.night_lich.shoot_fireball": {
+    "category": "entity",
+    "subtitle": "entity.night_lich.shoot_fireball",
+    "sounds": [
+      {
+        "name": "da:entity/night_lich/fireball_shoot",
+        "steam": true
+      }
+    ]
+  },
+  "entity.night_lich.shoot_missile": {
+    "category": "entity",
+    "subtitle": "entity.night_lich.shoot_missile",
+    "sounds": [
+      {
+        "name": "da:entity/night_lich/missile_shoot",
+        "steam": true
+      }
+    ]
+  },
+  "entity.night_lich.prepare_missile": {
+    "category": "entity",
+    "subtitle": "entity.night_lich.prepare_missile",
+    "sounds": [
+      {
+        "name": "da:entity/night_lich/missile_prepare",
+        "steam": true
+      }
+    ]
+  },
+  "entity.night_lich.minion_rune": {
+    "category": "entity",
+    "subtitle": "entity.night_lich.minion_rune",
+    "sounds": [
+      {
+        "name": "da:entity/night_lich/minion_rune",
+        "steam": true
+      }
+    ]
+  },
+  "entity.night_lich.summon": {
+    "category": "entity",
+    "subtitle": "entity.night_lich.summon",
+    "sounds": [
+      {
+        "name": "da:entity/night_lich/summon",
+        "steam": true
+      }
+    ]
+  },
+  "entity.night_lich.shoot_staff": {
+    "category": "entity",
+    "subtitle": "entity.night_lich.shoot_staff",
+    "sounds": [
+      {
+        "name": "da:entity/night_lich/shoot",
+        "steam": true
+      }
+    ]
+  },
+  "entity.night_lich.staff_impact": {
+    "category": "entity",
+    "subtitle": "entity.night_lich.staff_impact",
+    "sounds": [
+      {
+        "name": "da:entity/night_lich/staff_impact",
+        "steam": true
+      }
+    ]
+  },
   "entity.b_knight.step": {
     "category": "entity",
     "subtitle": "entity.burning_knight.step",

@@ -8,14 +8,17 @@ import com.dungeon_additions.da.event.EventScheduler;
 import com.dungeon_additions.da.event.Services;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.interfaces.IModUtilsHandler;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.MultiPartEntityPart;
+import net.minecraft.entity.*;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -23,11 +26,13 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -218,6 +223,8 @@ public class ModUtils {
     }
 
 
+
+
     public static BlockPos findBossSpawnLocation(AxisAlignedBB box, World world, EntityLivingBase entityIn, int minSpawnHeight, int maxSpawnHeight) {
         int i = MathHelper.floor(box.minX);
         int j = MathHelper.floor(box.minY);
@@ -249,6 +256,14 @@ public class ModUtils {
         return null;
     }
 
+
+    public static void addEntityVelocity(Entity entity, Vec3d vec) {
+        entity.addVelocity(vec.x, vec.y, vec.z);
+    }
+
+    public static Vec3d direction(Vec3d from, Vec3d to) {
+        return to.subtract(from).normalize();
+    }
 
 
     public static BlockPos searchForBlocksAfterAbility(AxisAlignedBB box, World world, Entity entity, IBlockState block) {
@@ -403,6 +418,43 @@ public class ModUtils {
     public static void handleAreaImpact(float radius, Function<Entity, Float> maxDamage, Entity source, Vec3d pos, DamageSource damageSource,
                                         float knockbackFactor, int fireFactor) {
         handleAreaImpact(radius, maxDamage, source, pos, damageSource, knockbackFactor, fireFactor, true);
+    }
+
+    public static void handleBulletImpact(Entity hitEntity, Projectile projectile, float damage, DamageSource damageSource) {
+        handleBulletImpact(hitEntity, projectile, damage, damageSource, 0);
+    }
+
+    public static void handleBulletImpact(Entity hitEntity, Projectile projectile, float damage, DamageSource damageSource, int knockback) {
+        handleBulletImpact(hitEntity, projectile, damage, damageSource, knockback, (p, e) -> {
+        }, (p, e) -> {
+        });
+    }
+
+    public static void handleBulletImpact(Entity hitEntity, Projectile projectile, float damage, DamageSource damageSource, int knockback,
+                                          BiConsumer<Projectile, Entity> beforeHit, BiConsumer<Projectile, Entity> afterHit) {
+        handleBulletImpact(hitEntity, projectile, damage, damageSource, knockback, beforeHit, afterHit, true);
+    }
+
+    public static void handleBulletImpact(Entity hitEntity, Projectile projectile, float damage, DamageSource damageSource, int knockback,
+                                          BiConsumer<Projectile, Entity> beforeHit, BiConsumer<Projectile, Entity> afterHit, Boolean resetHurtTime) {
+        if (hitEntity != null && projectile != null && projectile.shootingEntity != null && hitEntity != projectile.shootingEntity) {
+            beforeHit.accept(projectile, hitEntity);
+            if (projectile.isBurning() && !(hitEntity instanceof EntityEnderman)) {
+                hitEntity.setFire(5);
+            }
+            if (resetHurtTime) {
+                hitEntity.hurtResistantTime = 0;
+            }
+            hitEntity.attackEntityFrom(damageSource, damage);
+            if (knockback > 0) {
+                float f1 = MathHelper.sqrt(projectile.motionX * projectile.motionX + projectile.motionZ * projectile.motionZ);
+
+                if (f1 > 0.0F) {
+                    hitEntity.addVelocity(projectile.motionX * knockback * 0.6000000238418579D / f1, 0.1D, projectile.motionZ * knockback * 0.6000000238418579D / f1);
+                }
+            }
+            afterHit.accept(projectile, hitEntity);
+        }
     }
 
 
@@ -567,6 +619,160 @@ public class ModUtils {
             double radians = Math.toRadians(i * degrees);
             Vec3d offset = new Vec3d(Math.sin(radians), Math.cos(radians), 0).scale(radius);
             particleSpawner.accept(offset);
+        }
+    }
+
+    public static void aerialTravel(EntityLivingBase entity, float strafe, float vertical, float forward) {
+        if (entity.isInWater()) {
+            entity.moveRelative(strafe, vertical, forward, 0.02F);
+            entity.move(MoverType.SELF, entity.motionX, entity.motionY, entity.motionZ);
+            entity.motionX *= 0.800000011920929D;
+            entity.motionY *= 0.800000011920929D;
+            entity.motionZ *= 0.800000011920929D;
+        } else if (entity.isInLava()) {
+            entity.moveRelative(strafe, vertical, forward, 0.02F);
+            entity.move(MoverType.SELF, entity.motionX, entity.motionY, entity.motionZ);
+            entity.motionX *= 0.5D;
+            entity.motionY *= 0.5D;
+            entity.motionZ *= 0.5D;
+        } else {
+            float f = 0.91F;
+
+            if (entity.onGround) {
+                BlockPos underPos = new BlockPos(MathHelper.floor(entity.posX), MathHelper.floor(entity.getEntityBoundingBox().minY) - 1, MathHelper.floor(entity.posZ));
+                IBlockState underState = entity.world.getBlockState(underPos);
+                f = underState.getBlock().getSlipperiness(underState, entity.world, underPos, entity) * 0.91F;
+            }
+
+            float f1 = 0.16277136F / (f * f * f);
+            entity.moveRelative(strafe, vertical, forward, entity.onGround ? 0.1F * f1 : 0.02F);
+            f = 0.91F;
+
+            if (entity.onGround) {
+                BlockPos underPos = new BlockPos(MathHelper.floor(entity.posX), MathHelper.floor(entity.getEntityBoundingBox().minY) - 1, MathHelper.floor(entity.posZ));
+                IBlockState underState = entity.world.getBlockState(underPos);
+                f = underState.getBlock().getSlipperiness(underState, entity.world, underPos, entity) * 0.91F;
+            }
+
+            entity.move(MoverType.SELF, entity.motionX, entity.motionY, entity.motionZ);
+            entity.motionX *= f;
+            entity.motionY *= f;
+            entity.motionZ *= f;
+        }
+
+        entity.prevLimbSwingAmount = entity.limbSwingAmount;
+        double d1 = entity.posX - entity.prevPosX;
+        double d0 = entity.posZ - entity.prevPosZ;
+        float f2 = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
+
+        if (f2 > 1.0F) {
+            f2 = 1.0F;
+        }
+
+        entity.limbSwingAmount += (f2 - entity.limbSwingAmount) * 0.4F;
+        entity.limbSwing += entity.limbSwingAmount;
+    }
+
+
+    public static boolean attemptTeleport(Vec3d pos, EntityLivingBase entity)
+    {
+        double d0 = entity.posX;
+        double d1 = entity.posY;
+        double d2 = entity.posZ;
+        ModUtils.setEntityPosition(entity, pos);
+        boolean flag = false;
+        BlockPos blockpos = new BlockPos(entity);
+        World world = entity.world;
+        Random random = entity.getRNG();
+
+        if (world.isBlockLoaded(blockpos))
+        {
+            entity.setPositionAndUpdate(entity.posX, entity.posY, entity.posZ);
+
+            if (world.getCollisionBoxes(entity, entity.getEntityBoundingBox()).isEmpty() && !world.containsAnyLiquid(entity.getEntityBoundingBox()))
+            {
+                flag = true;
+            }
+        }
+
+        if (!flag)
+        {
+            entity.setPositionAndUpdate(d0, d1, d2);
+            return false;
+        }
+        else
+        {
+            for (int j = 0; j < 128; ++j)
+            {
+                double d6 = (double)j / 127.0D;
+                float f = (random.nextFloat() - 0.5F) * 0.2F;
+                float f1 = (random.nextFloat() - 0.5F) * 0.2F;
+                float f2 = (random.nextFloat() - 0.5F) * 0.2F;
+                double d3 = d0 + (entity.posX - d0) * d6 + (random.nextDouble() - 0.5D) * (double)entity.width * 2.0D;
+                double d4 = d1 + (entity.posY - d1) * d6 + random.nextDouble() * (double)entity.height;
+                double d5 = d2 + (entity.posZ - d2) * d6 + (random.nextDouble() - 0.5D) * (double)entity.width * 2.0D;
+                world.spawnParticle(EnumParticleTypes.PORTAL, d3, d4, d5, f, f1, f2);
+            }
+
+            if (entity instanceof EntityCreature)
+            {
+                ((EntityCreature)entity).getNavigator().clearPath();
+            }
+
+            return true;
+        }
+    }
+
+    public static int getSurfaceHeightLich(World world, BlockPos pos, int min, int max)
+    {
+        int currentY = max;
+
+        while(currentY >= min)
+        {
+            if(!world.isAirBlock(pos.add(0, currentY, 0)) && !world.isRemote && world.getBlockState(pos.add(0, currentY, 0)).isFullBlock()) {
+                return currentY;
+            }
+
+            currentY--;
+        }
+
+        return 0;
+    }
+
+
+    public static void destroyBlocksInAABB(AxisAlignedBB box, World world, Entity entity) {
+        int i = MathHelper.floor(box.minX);
+        int j = MathHelper.floor(box.minY);
+        int k = MathHelper.floor(box.minZ);
+        int l = MathHelper.floor(box.maxX);
+        int i1 = MathHelper.floor(box.maxY);
+        int j1 = MathHelper.floor(box.maxZ);
+
+        for (int x = i; x <= l; ++x) {
+            for (int y = j; y <= i1; ++y) {
+                for (int z = k; z <= j1; ++z) {
+                    BlockPos blockpos = new BlockPos(x, y, z);
+                    IBlockState iblockstate = world.getBlockState(blockpos);
+                    Block block = iblockstate.getBlock();
+
+                    if (!block.isAir(iblockstate, world, blockpos) && iblockstate.getMaterial() != Material.FIRE) {
+                        if (ForgeEventFactory.getMobGriefingEvent(world, entity)) {
+                            if (block != Blocks.COMMAND_BLOCK &&
+                                    block != Blocks.REPEATING_COMMAND_BLOCK &&
+                                    block != Blocks.CHAIN_COMMAND_BLOCK &&
+                                    block != Blocks.BEDROCK &&
+                                    block != ModBlocks.LICH_SOUL_STAR_BLOCK &&
+                                    !(block instanceof BlockLiquid)) {
+                                if (world.getClosestPlayer(blockpos.getX(), blockpos.getY(), blockpos.getZ(), 20, false) != null) {
+                                    world.destroyBlock(blockpos, false);
+                                } else {
+                                    world.setBlockToAir(blockpos);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -38,6 +38,7 @@ public abstract class EntityAbstractBase extends EntityCreature {
     public boolean isFullBodyUsage() {return this.dataManager.get(FULL_BODY_USAGE);}
     protected float sizeScaling = 1.0F;
 
+    protected int playersNearbyAmount = 0;
     public boolean iAmBossMob = false;
     public boolean lockLook = false;
 
@@ -162,6 +163,8 @@ public abstract class EntityAbstractBase extends EntityCreature {
                 this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(maxHealthCurrently);
                 this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(changeAttackDamage);
                 this.setHealth(this.getMaxHealth());
+                //This is a static int that will affect cooldowns or other areas of the boss for multiplayer play and make it equally as challenging
+                playersNearbyAmount = ServerScaleUtil.getPlayers(this, world);
                 hasStartedScaling = true;
             }
         }

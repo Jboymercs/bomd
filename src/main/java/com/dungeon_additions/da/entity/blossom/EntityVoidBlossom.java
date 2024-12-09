@@ -162,6 +162,7 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
     @Override
     public int startAttack(EntityLivingBase target, float distanceSq, boolean strafingBackwards) {
         double distance = Math.sqrt(distanceSq);
+        int cooldown_degradation = MobConfig.blossom_degradation_cooldown * playersNearbyAmount;
         double HealthChange = this.getHealth() / this.getMaxHealth();
         if(!this.isFightMode()) {
             List<Consumer<EntityLivingBase>> attacksMelee = new ArrayList<>(Arrays.asList(spikeAttack, spikeWave, leafAttack, sporeBomb, summonMinion));
@@ -176,7 +177,7 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
             prevAttacks = ModRand.choice(attacksMelee, rand, weights).next();
             prevAttacks.accept(target);
         }
-        return (HealthChange < 0.5) ? 80 : 100;
+        return (HealthChange < 0.5) ? (MobConfig.blossom_cooldown_one * 20) - cooldown_degradation : (MobConfig.blossom_cooldown_two * 20) - cooldown_degradation;
     }
 
     //Summon Minion

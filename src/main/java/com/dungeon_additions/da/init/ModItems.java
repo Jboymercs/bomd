@@ -37,6 +37,7 @@ public class ModItems {
     public static final Item VOID_LEAF = new ItemBase("void_leaf", null);
 
     public static final Item SPORE_BALL = new AnimatedSporeItem("spore", null);
+    public static final Item MAGIC_FIREBALL = new ItemMagicFireball("magic_fireball", null);
 
     public static final Item POISON_DART = new ItemDart("dart");
 
@@ -68,6 +69,7 @@ public class ModItems {
     public static final Item GLOW_BERRY = new ItemGlowBerry("glow_berry", 4, 4, false, ModBlocks.AZAELA_VINES).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item SOUL_STAR = new ItemSoulStar("soul_star_item", "soul_star_desc");
     public static final Item MAGIC_PROJECTILE = new ItemBase("magic_projectile");
+    public static final Item MAGIC_TRACK_PROJECTILE = new ItemBase("missile_projectile");
     public static final Item ANCIENT_MANA = new ItemCraftingMaterial("ancient_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
 
 

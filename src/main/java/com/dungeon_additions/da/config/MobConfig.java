@@ -15,6 +15,21 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static double blossom_armor = 4;
 
+    @Config.Name("Void Blossom Attack Cooldown One")
+    @Config.Comment("Change the attack cooldown of the Void Blossom in seconds with it having above 50% health")
+    @Config.RequiresMcRestart
+    public static int blossom_cooldown_one = 5;
+
+    @Config.Name("Void Blossom Attack Cooldown Two")
+    @Config.Comment("Change the attack cooldown of the Void Blossom in seconds with it having below 50% health")
+    @Config.RequiresMcRestart
+    public static int blossom_cooldown_two = 4;
+
+    @Config.Name("Void Blossom Cooldown Multiplayer")
+    @Config.Comment("Change the cooldown degradation per player not counting the first one. This basically makes the cooldown faster when there are more players around, in ticks")
+    @Config.RequiresMcRestart
+    public static int blossom_degradation_cooldown = 8;
+
     @Config.Name("Void Blossom New Attacks Enable/Disalbe")
     @Config.Comment("For those that don't want minions to spawn during the fight, when set to false minions will not spawn from the void blossom")
     @Config.RequiresMcRestart
@@ -154,5 +169,55 @@ public class MobConfig {
     @Config.Comment("Change the Cooldown value of the Stormvier Fallen in ticks (20 tick = 1 second)")
     @Config.RequiresMcRestart
     public static int fallen_cool_down = 50;
+
+    @Config.Name("Night Lich Active Mob Count")
+    @Config.Comment("Change the active mob count the Night Lich can have, try to do it in multiples of 4")
+    @Config.RequiresMcRestart
+    public static int lich_active_mob_count = 12;
+
+    @Config.Name("Night Lich Active Mob Count Multiplayer")
+    @Config.Comment("Per player not including one, the Night Lich can have x additional mobs in active mob count. This does not affect the progressive cooldown when it reaches cap. Change to 0 to disable")
+    @Config.RequiresMcRestart
+    public static int lich_active_mob_count_multiplayer = 4;
+
+    @Config.Name("Night Lich Active Mob Count Distance")
+    @Config.Comment("Change the distance from the Lich for that mob too not be counted as an active mob")
+    @Config.RequiresMcRestart
+    public static int lich_active_mob_distance = 70;
+
+    @Config.Name("Night Lich Cooldown static")
+    @Config.Comment("Change the static cooldown of the Night Lich inbetween attacks, this is an unchanged cooldown in ticks (20 ticks = 1 second)")
+    @Config.RequiresMcRestart
+    public static int lich_static_cooldown = 10;
+
+    @Config.Name("Night Lich Cooldown Progressive")
+    @Config.Comment("In ticks change the progressive cooldown of the Night Lich, this basically increases the cooldown for each mob that is active and summoned by the Lich. EX: 2 active mobs * x = x * 2 + static cooldown. CAPS at active mob count")
+    @Config.RequiresMcRestart
+    public static int lich_progressive_cooldown = 4;
+
+    @Config.Name("Night Lich Magic Missile Speed")
+    @Config.Comment("Change the speed of the Magic Missile Projectile used by the Night Lich")
+    @Config.RequiresMcRestart
+    public static double magic_missile_velocity = 1.6;
+
+    @Config.Name("Night Lich Magic Fireball Speed")
+    @Config.Comment("Change the speed of the Magic Fireball Projectiles used by the Night Lich")
+    @Config.RequiresMcRestart
+    public static double magic_fireball_velocity = 1.4;
+
+    @Config.Name("Night Lich Health")
+    @Config.Comment("Change the Health of the Night Lich")
+    @Config.RequiresMcRestart
+    public static double night_lich_health = 400;
+
+    @Config.Name("Night Lich Armor")
+    @Config.Comment("Change the armor value of the Night Lich")
+    @Config.RequiresMcRestart
+    public static double night_lich_armor = 6;
+
+    @Config.Name("Night Lich Armor Toughness")
+    @Config.Comment("Change the Night Lich Armor Toughness")
+    @Config.RequiresMcRestart
+    public static double night_lich_armor_toughness = 2;
 
 }

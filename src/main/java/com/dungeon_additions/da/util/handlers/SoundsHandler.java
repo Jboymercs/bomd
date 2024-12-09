@@ -57,6 +57,16 @@ public class SoundsHandler {
     public static SoundEvent GLOOM_PLACE;
     //Soul Star Block
     public static SoundEvent SOUL_STAR_ACTIVATE;
+
+    //Night Lich
+    public static SoundEvent LICH_PREPARE_MISSILE;
+    public static SoundEvent LICH_SHOOT_MISSILE;
+    public static SoundEvent LICH_PREPARE_FIREBALL;
+    public static SoundEvent LICH_SHOOT_FIREBALL;
+    public static SoundEvent LICH_MINION_RUNE;
+    public static SoundEvent LICH_SUMMON_MINION;
+    public static SoundEvent LICH_SHOOT_STAFF;
+    public static SoundEvent LICH_STAFF_IMPACT;
     public static void registerSounds() {
         //
         MOSS_BREAK = registerSound("moss.break", "block");
@@ -102,6 +112,15 @@ public class SoundsHandler {
         ROT_KNIGHT_ARM_BREAK = registerSound("rot_knight.break_arm", "entity");
         ROT_KNIGHT_DEATH = registerSound("rot_knight.death", "entity");
         ROT_KNIGHT_CAST = registerSound("rot_knight.cast", "entity");
+        //
+        LICH_MINION_RUNE = registerSound("night_lich.minion_rune", "entity");
+        LICH_PREPARE_FIREBALL = registerSound("night_lich.prepare_fireball", "entity");
+        LICH_SHOOT_FIREBALL = registerSound("night_lich.shoot_fireball", "entity");
+        LICH_PREPARE_MISSILE = registerSound("night_lich.prepare_missile", "entity");
+        LICH_SHOOT_MISSILE = registerSound("night_lich.shoot_missile", "entity");
+        LICH_SUMMON_MINION = registerSound("night_lich.summon", "entity");
+        LICH_SHOOT_STAFF = registerSound("night_lich.shoot_staff", "entity");
+        LICH_STAFF_IMPACT = registerSound("night_lich.staff_impact", "entity");
     }
 
 

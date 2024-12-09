@@ -38,6 +38,33 @@ public class ServerScaleUtil {
        return actor.getHealth();
     }
 
+    //This method allows for a multitude of things, such as making the cooldown for the void blossom shorter when more players are around
+    //Or adding more mobs that the lich can summon with more players around
+    //used in Abstract Base and just connects it with playersNearby int
+    public static int getPlayers(EntityLivingBase actor, World world) {
+
+        int playersNearby = 0;
+
+        if(!world.isRemote) {
+            List<EntityPlayer> nearbyPlayers = actor.world.getEntitiesWithinAABB(EntityPlayer.class, actor.getEntityBoundingBox().grow(60D), e -> !e.getIsInvulnerable());
+            if (!nearbyPlayers.isEmpty()) {
+                for (EntityPlayer playerCap : nearbyPlayers) {
+                    if (!playerCap.isCreative() && !playerCap.isSpectator()) {
+                        playersNearby++;
+                    }
+                }
+            }
+        }
+
+        if(playersNearby > 1) {
+            //subtract one for the first player, the first player is always base stats, and it only adds after the first player is accounted for
+            return playersNearby - 1;
+        } else {
+            return 0;
+        }
+    }
+
+
     //This sets the Max Health of an Entity in accordance with how many players are nearby
     //Why we need to adjust the max health is to show little to no difference in health bar when a player joins the fight
 

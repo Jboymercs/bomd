@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.model.lich;
 
+import com.dungeon_additions.da.entity.ai.IPitch;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
 import com.dungeon_additions.da.entity.model.extended.GeoModelExtended;
 import com.dungeon_additions.da.entity.night_lich.EntityNightLich;
@@ -25,9 +26,13 @@ public class ModelNightLich extends GeoModelExtended<EntityNightLich> {
     public void setLivingAnimations(EntityNightLich entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
             IBone head = this.getAnimationProcessor().getBone("HeadJ");
+            IBone Body = this.getAnimationProcessor().getBone("Ground");
             EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
             head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
             head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
+            if(entity != null) {
+                Body.setRotationX((float) Math.toRadians(((IPitch) entity).getPitch()));
+            }
     }
 
     @Override

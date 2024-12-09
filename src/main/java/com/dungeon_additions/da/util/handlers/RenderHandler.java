@@ -15,11 +15,12 @@ import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileTrackingFlame;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
-import com.dungeon_additions.da.entity.night_lich.EntityNightLich;
+import com.dungeon_additions.da.entity.night_lich.*;
 import com.dungeon_additions.da.entity.projectiles.EntityLily;
 import com.dungeon_additions.da.entity.projectiles.EntitySoulStar;
 import com.dungeon_additions.da.entity.projectiles.ProjectileAbberrantAttack;
 import com.dungeon_additions.da.entity.render.*;
+import com.dungeon_additions.da.entity.render.lich.RenderLichStaff;
 import com.dungeon_additions.da.entity.render.lich.RenderNightLich;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
@@ -82,6 +83,9 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileTrackingFlame.class, ModItems.PROJECTILE_FLAME);
         registerProjectileRenderer(EntitySoulStar.class, ModItems.SOUL_STAR);
         registerProjectileRenderer(EntityLily.class, ModItems.VOID_LEAF);
+        registerProjectileRenderer(ProjectileMagicMissile.class, ModItems.MAGIC_PROJECTILE);
+        registerProjectileRenderer(ProjectileMagicFireBall.class, ModItems.MAGIC_FIREBALL);
+        registerProjectileRenderer(ProjectileTrackingMagicMissile.class, ModItems.MAGIC_TRACK_PROJECTILE);
     }
 
     //Handles Rendering
@@ -123,6 +127,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityRotSpike.class, RenderRotSpike::new);
         //Night Lich
         RenderingRegistry.registerEntityRenderingHandler(EntityNightLich.class, RenderNightLich::new);
+        //Lich Staff AOE
+        RenderingRegistry.registerEntityRenderingHandler(EntityLichStaffAOE.class, RenderLichStaff::new);
     }
 
 }
