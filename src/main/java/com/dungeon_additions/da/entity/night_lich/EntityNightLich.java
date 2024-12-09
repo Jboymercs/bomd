@@ -78,6 +78,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     //it either equals 30 or 3
     public int wantedDistance;
 
+    public int lich_cooldown = 0;
     private boolean enableRedParticles = false;
 
     private boolean destroyCloseBlocks = false;
@@ -88,6 +89,8 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.moveHelper = new FlyingMoveHelper(this);
         this.navigator = new PathNavigateFlying(this, worldIn);
         this.wantedDistance = 30;
+        this.isImmuneToFire = true;
+        this.isImmuneToExplosions();
         if(!world.isRemote) {
             initLichAI();
         }
@@ -99,6 +102,8 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.navigator = new PathNavigateFlying(this, worldIn);
         this.setSize(1.1F, 2.5F);
         this.wantedDistance = 30;
+        this.isImmuneToFire = true;
+        this.isImmuneToExplosions();
         if(!world.isRemote) {
             initLichAI();
         }
@@ -118,6 +123,8 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     public boolean clearCurrentVelocity = false;
     public boolean standbyOnVel = false;
 
+    public double melee_degradation = 5;
+
     @Override
     public void onUpdate() {
         super.onUpdate();
@@ -127,8 +134,12 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
         if(target != null) {
             double healthCurr = this.getHealth() / this.getMaxHealth();
-            //change me later after testing
-            if(healthCurr <= 0.01) {
+            System.out.println("Wanted Distance at" + wantedDistance);
+            if(healthCurr > 0.75) {
+                this.setAngeredState(false);
+            }
+
+            if(healthCurr <= 0.75) {
                 if(wantedDistance == 30) {
                     if(world.rand.nextInt(40) == 0 || this.hurtTime > 0) {
                         this.damageTaken++;
@@ -138,17 +149,19 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                         this.wantedDistance = 3;
                         if(!this.isAngeredState()) {
                             this.setAngeredState(true);
+                            this.setStateChange = true;
                         }
                     }
                 }
                 if(wantedDistance == 3) {
-                    if(this.hurtTime > 0 || world.rand.nextInt(20) == 0) {
-                        this.damageTaken -=2;
+                    if(this.hurtTime > 0 || world.rand.nextInt(15) == 0) {
+                        this.damageTaken--;
                     }
                     if(damageTaken <= 0) {
                         this.wantedDistance = 30;
                         if(this.isAngeredState()) {
                             this.setAngeredState(false);
+                            this.setStateChange = true;
                         }
                     }
                 }
@@ -180,11 +193,13 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
     }
 
+    private boolean setStateChange = false;
     @Override
     public int startAttack(EntityLivingBase target, float distanceSq, boolean strafingBackwards) {
         double distance = Math.sqrt(distanceSq);
-        int cooldown;
 
+        int cooldown;
+        int additive = 0;
         //this allows it so that the more mobs that are active, the slower the cooldown, but to a cap of the current mob limit
 
         if(current_mobs.size() >= MobConfig.lich_active_mob_count) {
@@ -206,9 +221,9 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                     //PHASE THREE 0-50% HP
                     (throw_staff != prevAttack && !this.isAngeredState() && HealthChange <= 0.5) ? distance * 0.02 : 0,
                     //PHASE ONE 0-100% HP
-                    (dash_attack_red != prevAttack && this.isAngeredState() && distance > 5) ? distance * 0.02 : (dash_attack_red != prevAttack && !this.isAngeredState()) ? distance * 0.02 : 0,
+                    (dash_attack_red != prevAttack && this.isAngeredState() && distance > 5) ? distance * 0.02 : (dash_attack_red != prevAttack && !this.isAngeredState() && distance >= 15) ? distance * 0.02 : 0,
                     //PHASE TWO 0-75% HP MELEE STUFF
-                    (green_attack != prevAttack && this.isAngeredState() && distance > 4 && HealthChange <= 0.75) ? 1/distance : (green_attack != prevAttack && !this.isAngeredState() && HealthChange <= 0.75) ? distance * 0.01 : 0,
+                    (green_attack != prevAttack && this.isAngeredState() && distance > 4 && HealthChange <= 0.75) ? 1/distance : (green_attack != prevAttack && !this.isAngeredState() && HealthChange <= 0.75 && HealthChange >= 0.5) ? distance * 0.01 : 0,
                     (regular_swing != prevAttack && this.isAngeredState() && distance <= 5 && HealthChange <= 0.75) ? 1/distance : 0,
                     (double_swing != prevAttack && this.isAngeredState() && distance <= 6 && HealthChange <= 0.75) ? 1/distance : 0,
                     //PHASE THREE 0-50% HP
@@ -216,10 +231,16 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                     (track_projectiles != prevAttack && !this.isAngeredState() && HealthChange <= 0.5) ? distance * 0.02 : 0
 
             };
+
+            if(setStateChange) {
+                additive = MobConfig.lich_additive_cooldown * 20;
+                setStateChange = false;
+            }
+
             prevAttack = ModRand.choice(close_attacks, rand, weights).next();
             prevAttack.accept(target);
         }
-        return (this.isAngeredState()) ? MobConfig.lich_static_cooldown : cooldown;
+        return (this.isAngeredState()) ? MobConfig.lich_static_cooldown + additive : cooldown + additive;
     }
 
 
@@ -385,7 +406,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                 this.setImmovable(false);
                 this.lockLook = true;
                 double distance = this.getPositionVector().distanceTo(targetedPos);
-                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.18),0F);
+                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.13),0F);
             }, 8);
         }, 7);
       }, 40);
@@ -419,7 +440,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
               this.setImmovable(false);
               this.lockLook = true;
               double distance = this.getPositionVector().distanceTo(targetedPos);
-              ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.18),0F);
+              ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.13),0F);
           }, 7);
       }, 20);
 
@@ -504,6 +525,9 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
           this.lockLook = false;
           this.standbyOnVel = false;
           this.destroyCloseBlocks = false;
+          if(!this.isAngeredState()) {
+              this.setStateChange = true;
+          }
       }, 80);
 
 
@@ -586,6 +610,9 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
           standbyOnVel = false;
         this.setFightMode(false);
         this.setRedAttack(false);
+          if(!this.isAngeredState()) {
+              this.setStateChange = true;
+          }
       }, 95);
     };
     private final Consumer<EntityLivingBase> throw_staff = (target) -> {
@@ -599,6 +626,10 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             for(EntityPlayer player : targets) {
                 new ActionBeginStaffThrow().performAction(this, player);
             }
+          }
+
+          if(!(target instanceof EntityPlayer)) {
+              new ActionBeginStaffThrow().performAction(this, target);
           }
       }, 70);
 
@@ -634,6 +665,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
       addEvent(()-> {
         this.setFightMode(false);
         this.setPurpleAttack(false);
+        this.setStateChange = true;
       }, 85);
     };
     private final Consumer<EntityLivingBase> shoot_magic_fireball = (target) -> {

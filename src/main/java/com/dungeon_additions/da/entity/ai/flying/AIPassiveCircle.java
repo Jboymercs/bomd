@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 
@@ -32,41 +33,49 @@ public class AIPassiveCircle <T extends EntityNightLich> extends EntityAIBase {
     public void updateTask() {
         if(entity.getAttackTarget() != null && !this.entity.lockLook) {
 
-
             if (this.entity.wantedDistance == 30 && !this.entity.isAngeredState() && !this.entity.standbyOnVel) {
-
                 Vec3d target = entity.getAttackTarget().getPositionVector();
                 Vec3d nextPointToFollow = getNextPoint(target);
                 Vec3d direction = nextPointToFollow.subtract(entity.getPositionVector()).normalize();
                 double speed = entity.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).getAttributeValue();
-                ModUtils.addEntityVelocity(entity, direction.scale(0.05f * speed));
+                ModUtils.addEntityVelocity(entity, direction.scale(0.1f * speed));
 
                 double distSq = this.entity.getDistanceSq(target.x, target.y, target.z);
                 double distanceFrom = distSq * distSq;
 
                 if(distanceFrom <= 15) {
                     EntityLivingBase targetI = this.entity.getAttackTarget();
-                    double d0 = (this.entity.posX - targetI.posX) * 0.009;
+                    double d0 = (this.entity.posX - targetI.posX) * 0.015;
                     double d1 = (this.entity.posY - targetI.posY) * 0.009;
-                    double d2 = (this.entity.posZ - targetI.posZ) * 0.009;
+                    double d2 = (this.entity.posZ - targetI.posZ) * 0.015;
                     this.entity.addVelocity(d0, d1, d2);
                 }
+
                 if (!hasClearPath(nextPointToFollow) || lineBlocked(nextPointToFollow, target)) {
                     planeVectorPath = getNewPlaneVector();
                 }
+
                 ModUtils.facePosition(nextPointToFollow, entity, 10, 10);
                 entity.getLookHelper().setLookPosition(nextPointToFollow.x, nextPointToFollow.y, nextPointToFollow.z, 3, 3);
             }
 
-            if(this.entity.wantedDistance == 3) {
+            if(this.entity.wantedDistance == 3 && this.entity.isAngeredState()) {
                 Vec3d target = entity.getAttackTarget().getPositionVector();
                 double distSq = this.entity.getDistanceSq(target.x, target.y, target.z);
                 double distanceFrom = distSq * distSq;
                 double speed = entity.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).getAttributeValue();
-                if(distanceFrom > 3) {
-                    this.entity.getNavigator().tryMoveToEntityLiving(entity.getAttackTarget(), speed);
-                } else {
-                    this.entity.getNavigator().clearPath();
+                Vec3d dir = target.subtract(this.entity.getPositionVector()).normalize();
+                if(distanceFrom > 4) {
+                   // this.entity.getNavigator().tryMoveToEntityLiving(this.entity.getAttackTarget(), speed);
+                    ModUtils.addEntityVelocity(entity, dir.scale(0.07F * speed));
+
+                    Vec3d currPos = this.entity.getPositionVector();
+                    EntityLivingBase targetFrom = this.entity.getAttackTarget();
+                    int yToHoverToo = ModUtils.getSurfaceHeightLich(entity.world, new BlockPos(currPos.x, 0, currPos.z), (int) targetFrom.posY - 2, (int) targetFrom.posY + 2);
+
+                    if(currPos.y > yToHoverToo + 2.5 && yToHoverToo != 0) {
+                        this.entity.motionY -= 0.015;
+                    }
                 }
             }
         }

@@ -77,10 +77,10 @@ public class EntityAIAerialAttack extends EntityAIBase {
             this.entity.getLookHelper().setLookPositionWithEntity(target, this.lookSpeed, this.lookSpeed);
             this.entity.faceEntity(target, this.lookSpeed, this.lookSpeed);
             if (this.entity instanceof IPitch) {
-                Vec3d targetPos = target.getPositionEyes(1);
-                Vec3d entityPos = this.entity.getPositionEyes(1);
-                Vec3d forwardVec = ModUtils.direction(entityPos, targetPos);
-                ((IPitch) this.entity).setPitch(forwardVec);
+                    Vec3d targetPos = target.getPositionEyes(1);
+                    Vec3d entityPos = this.entity.getPositionEyes(1);
+                    Vec3d forwardVec = ModUtils.direction(entityPos, targetPos);
+                    ((IPitch) this.entity).setPitch(forwardVec);
             }
         }
 

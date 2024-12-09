@@ -188,12 +188,17 @@ public class MobConfig {
     @Config.Name("Night Lich Cooldown static")
     @Config.Comment("Change the static cooldown of the Night Lich inbetween attacks, this is an unchanged cooldown in ticks (20 ticks = 1 second)")
     @Config.RequiresMcRestart
-    public static int lich_static_cooldown = 10;
+    public static int lich_static_cooldown = 20;
 
     @Config.Name("Night Lich Cooldown Progressive")
     @Config.Comment("In ticks change the progressive cooldown of the Night Lich, this basically increases the cooldown for each mob that is active and summoned by the Lich. EX: 2 active mobs * x = x * 2 + static cooldown. CAPS at active mob count")
     @Config.RequiresMcRestart
     public static int lich_progressive_cooldown = 4;
+
+    @Config.Name("Night Lich Cooldown Additive")
+    @Config.Comment("This value basically is another static, however it only adds onto the cooldown of certain attacks in areas, mostly between switching melee mode and ranged mode to give breathing room in seconds")
+    @Config.RequiresMcRestart
+    public static int lich_additive_cooldown = 4;
 
     @Config.Name("Night Lich Magic Missile Speed")
     @Config.Comment("Change the speed of the Magic Missile Projectile used by the Night Lich")

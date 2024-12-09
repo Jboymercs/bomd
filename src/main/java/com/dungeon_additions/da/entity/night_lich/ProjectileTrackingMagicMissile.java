@@ -50,7 +50,15 @@ public class ProjectileTrackingMagicMissile extends Projectile {
     public void onUpdate() {
         super.onUpdate();
 
-        this.onTrackUpdate();
+        if(ticksExisted < 6) {
+            ModUtils.setEntityPosition(this, new Vec3d(this.posX, this.posY, this.posZ));
+            this.motionX = 0;
+            this.motionY = 0;
+            this.motionZ = 0;
+        } else {
+            this.onTrackUpdate();
+        }
+
     }
 
     public static final int PARTICLE_AMOUNT = 1;
@@ -80,10 +88,13 @@ public class ProjectileTrackingMagicMissile extends Projectile {
         //this.setFire(3);
         if(selectedPlayer != null) {
             Vec3d posToTravelToo = selectedPlayer.getPositionVector().add(ModUtils.yVec(1.0D));
-            double d0 = ((posToTravelToo.x - this.posX) * 0.0015);
-            double d1 = (((posToTravelToo.y + 1) - this.posY) * 0.008);
-            double d2 = ((posToTravelToo.z - this.posZ) * 0.0015);
-            this.addVelocity(d0, d1, d2);
+            Vec3d currPos = this.getPositionVector();
+            Vec3d dir = posToTravelToo.subtract(currPos).normalize();
+            ModUtils.addEntityVelocity(this, dir.scale(0.07 * 0.4));
+         //   double d0 = ((posToTravelToo.x - this.posX) * 0.0010);
+         //   double d1 = (((posToTravelToo.y + 1) - this.posY) * 0.006);
+         //   double d2 = ((posToTravelToo.z - this.posZ) * 0.0010);
+         //   this.addVelocity(d0, d1, d2);
         }
     }
 

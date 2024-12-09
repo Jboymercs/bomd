@@ -45,6 +45,7 @@ public class ActionSummonMobs implements IActionLich{
             if(new_mob instanceof EntitySkeleton) {
                 new_mob.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
             }
+
             actor.world.spawnEntity(new_mob);
             actor.current_mobs.add(new WeakReference<>(new_mob));
         }, 1);

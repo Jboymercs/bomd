@@ -89,6 +89,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
             this.clearInvalidEntities();
 
 
+
     }
 
     @Override
@@ -178,7 +179,13 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
         float newLook = (float) ModUtils.toPitch(look);
         float deltaLook = 5;
         float clampedLook = MathHelper.clamp(newLook, prevLook - deltaLook, prevLook + deltaLook);
-        this.dataManager.set(LOOK, clampedLook);
+        //we want our boy to be stable while he's slinging melee attack or in a angered State
+        if(this.isAngeredState() || this.isRedAttack() || this.isGreenAttack() || this.isComboAOEAttack()) {
+            this.dataManager.set(LOOK, 0F);
+        } else {
+            this.dataManager.set(LOOK, clampedLook);
+        }
+
     }
 
     @Override
