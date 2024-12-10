@@ -170,6 +170,78 @@
       }
     ]
   },
+  "entity.night_lich.magic_swing": {
+    "category": "entity",
+    "subtitle": "entity.night_lich.magic_swing",
+    "sounds": [
+      {
+        "name": "da:entity/night_lich/magic_swing",
+        "steam": true
+      }
+    ]
+  },
+  "entity.night_lich.hurt": {
+    "category": "entity",
+    "subtitle": "entity.night_lich.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/night_lich/hurt_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/night_lich/hurt_2",
+        "steam": true
+      },
+      {
+        "name": "da:entity/night_lich/hurt_3",
+        "steam": true
+      },
+      {
+        "name": "da:entity/night_lich/hurt_4",
+        "steam": true
+      }
+    ]
+  },
+  "entity.night_lich.spear": {
+    "category": "entity",
+    "subtitle": "entity.night_lich.spear",
+    "sounds": [
+      {
+        "name": "da:entity/night_lich/spear",
+        "steam": true
+      }
+    ]
+  },
+  "entity.night_lich.prepare_spell": {
+    "category": "entity",
+    "subtitle": "entity.night_lich.prepare_spell",
+    "sounds": [
+      {
+        "name": "da:entity/night_lich/prepare_spell",
+        "steam": true
+      }
+    ]
+  },
+  "entity.night_lich.prepare_combo": {
+    "category": "entity",
+    "subtitle": "entity.night_lich.prepare_combo",
+    "sounds": [
+      {
+        "name": "da:entity/night_lich/prepare_combo",
+        "steam": true
+      }
+    ]
+  },
+  "entity.night_lich.rage_prepare": {
+    "category": "entity",
+    "subtitle": "entity.night_lich.rage_prepare",
+    "sounds": [
+      {
+        "name": "da:entity/night_lich/rage_prepare",
+        "steam": true
+      }
+    ]
+  },
   "entity.b_knight.step": {
     "category": "entity",
     "subtitle": "entity.burning_knight.step",

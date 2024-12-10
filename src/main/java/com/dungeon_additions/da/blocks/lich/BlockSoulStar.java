@@ -2,6 +2,7 @@ package com.dungeon_additions.da.blocks.lich;
 
 import com.dungeon_additions.da.blocks.BlockBase;
 import com.dungeon_additions.da.blocks.base.IBlockUpdater;
+import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityLichSpawner;
 import com.dungeon_additions.da.items.ItemSoulStar;
 import com.dungeon_additions.da.util.ModColors;
@@ -104,7 +105,10 @@ public class BlockSoulStar extends BlockBase implements ITileEntityProvider, IBl
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         TileEntity te = world.getTileEntity(pos);
-
+        if(MobConfig.lich_enable_daylight && world.getWorldTime() < MobConfig.lich_summon_time) {
+            player.sendStatusMessage(new TextComponentTranslation("da.lich_wrong_time", new Object[0]), true);
+            return false;
+        }
         if(te instanceof TileEntityLichSpawner) {
             TileEntityLichSpawner spawner = (TileEntityLichSpawner) te;
             if(player.getHeldItemMainhand().getItem() instanceof ItemSoulStar){

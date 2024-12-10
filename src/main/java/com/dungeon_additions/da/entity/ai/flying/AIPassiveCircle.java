@@ -38,8 +38,11 @@ public class AIPassiveCircle <T extends EntityNightLich> extends EntityAIBase {
                 Vec3d nextPointToFollow = getNextPoint(target);
                 Vec3d direction = nextPointToFollow.subtract(entity.getPositionVector()).normalize();
                 double speed = entity.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).getAttributeValue();
-                ModUtils.addEntityVelocity(entity, direction.scale(0.1f * speed));
-
+                if(this.entity.isRageMode()) {
+                    ModUtils.addEntityVelocity(entity, direction.scale(0.13f * speed));
+                } else {
+                    ModUtils.addEntityVelocity(entity, direction.scale(0.09f * speed));
+                }
                 double distSq = this.entity.getDistanceSq(target.x, target.y, target.z);
                 double distanceFrom = distSq * distSq;
 
@@ -67,7 +70,7 @@ public class AIPassiveCircle <T extends EntityNightLich> extends EntityAIBase {
                 Vec3d dir = target.subtract(this.entity.getPositionVector()).normalize();
                 if(distanceFrom > 4) {
                    // this.entity.getNavigator().tryMoveToEntityLiving(this.entity.getAttackTarget(), speed);
-                    ModUtils.addEntityVelocity(entity, dir.scale(0.07F * speed));
+                    ModUtils.addEntityVelocity(entity, dir.scale(0.045F * speed));
 
                     Vec3d currPos = this.entity.getPositionVector();
                     EntityLivingBase targetFrom = this.entity.getAttackTarget();

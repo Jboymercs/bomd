@@ -173,7 +173,7 @@ public class CommandLocateLich implements ICommand {
 
         if (i == k && j == l && isAllowedDimensionTooSpawnIn(world.provider.getDimension())) {
             BlockPos pos = new BlockPos((i << 4), 0, (j << 4));
-                return WorldConfig.isBlacklist == (world.provider.getBiomeForCoords(pos) != getSpawnBiomes().iterator());
+                return isBiomeValidBlossom(pos, world);
         } else {
 
             return false;
@@ -204,32 +204,24 @@ public class CommandLocateLich implements ICommand {
 
         if (i == k && j == l && isAllowedDimensionTooSpawnInNightLich(world.provider.getDimension())) {
             BlockPos pos = new BlockPos((i << 4), 0, (j << 4));
-                    return WorldConfig.night_lich_is_blacklist == (world.provider.getBiomeForCoords(pos) != getSpawnBiomesLichTower().iterator());
+            return isBiomeValid(pos, world);
         } else {
 
             return false;
         }
     }
 
-
-
-    private static int getSurfaceHeight(World world, BlockPos pos, int min, int max)
-    {
-        int currentY = max;
-
-        while(currentY >= min)
-        {
-            if(!world.isAirBlock(pos.add(0, currentY, 0)) && !world.isRemote && world.getBlockState(pos.add(0, currentY, 0)).isFullBlock() && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LEAVES
-                    && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LEAVES2 && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LOG && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LOG2 &&
-                    world.isAirBlock(pos.add(0, currentY + 1, 0)) && world.getBlockState(pos.add(0, currentY, 0)) != Blocks.WATER.getDefaultState()) {
-                return currentY;
+    public static boolean isBiomeValid(BlockPos pos, World world) {
+        for(Biome biome : getSpawnBiomesLichTower()) {
+            if(world.provider.getBiomeForCoords(pos) == biome) {
+                return true;
             }
-
-            currentY--;
         }
-        //returns 0 if out of bounds
-        return 0;
+
+        return false;
     }
+
+
 
     public static List<Biome> getSpawnBiomesLichTower() {
         if (spawnBiomesLichTower == null) {
@@ -245,6 +237,21 @@ public class CommandLocateLich implements ICommand {
             }
         }
         return spawnBiomesLichTower;
+    }
+
+    public static boolean isBiomeValidBlossom(BlockPos pos, World world) {
+        for(Biome biome : getSpawnBiomes()) {
+            if(WorldConfig.isBlacklist) {
+                if(world.provider.getBiomeForCoords(pos) != biome) {
+                    return true;
+                }
+            } else {
+                if(world.provider.getBiomeForCoords(pos) == biome) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static List<Biome> getSpawnBiomes() {

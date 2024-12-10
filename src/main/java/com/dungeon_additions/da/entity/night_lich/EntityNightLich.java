@@ -1,17 +1,22 @@
 package com.dungeon_additions.da.entity.night_lich;
 
 import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.flying.EntityAIAerialAttack;
 import com.dungeon_additions.da.entity.ai.flying.FlyingMoveHelper;
 import com.dungeon_additions.da.entity.ai.flying.TimedAttackInitiator;
+import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
 import com.dungeon_additions.da.entity.night_lich.action.*;
+import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
+import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -24,6 +29,9 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigateFlying;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -44,13 +52,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class EntityNightLich extends EntityAbstractNightLich implements IAnimatable, IAttack, IAnimationTickable {
 
 
     private Consumer<EntityLivingBase> prevAttack;
 
-
+    Supplier<Projectile> ground_projectiles = () -> new ProjectileMagicGround(world, this, (float) MobConfig.night_lich_attack_damage, null);
     //Boss info Stuff
     private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.NOTCHED_6));
 
@@ -69,17 +78,18 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     private final String ANIM_SHOOT_PATTERN = "shoot_projectiles_pattern";
     private final String ANIM_COMBO_AOE = "combo_aoe";
     private final String ANIM_THROW_STAFF = "throw_staff";
+    private final String ANIM_RAGE_MODE = "rage_mode";
     //Non Colored
     private final String ANIM_SWING = "swing";
     private final String ANIM_DOUBLE_SWING = "double_swing";
+
 
     private AnimationFactory factory = new AnimationFactory(this);
 
     //it either equals 30 or 3
     public int wantedDistance;
-
-    public int lich_cooldown = 0;
     private boolean enableRedParticles = false;
+    private boolean enableFireballParticles = false;
 
     private boolean destroyCloseBlocks = false;
 
@@ -91,6 +101,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.wantedDistance = 30;
         this.isImmuneToFire = true;
         this.isImmuneToExplosions();
+        this.experienceValue = MobConfig.lich_experience_value;
         if(!world.isRemote) {
             initLichAI();
         }
@@ -104,6 +115,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.wantedDistance = 30;
         this.isImmuneToFire = true;
         this.isImmuneToExplosions();
+        this.experienceValue = MobConfig.lich_experience_value;
         if(!world.isRemote) {
             initLichAI();
         }
@@ -123,7 +135,15 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     public boolean clearCurrentVelocity = false;
     public boolean standbyOnVel = false;
 
-    public double melee_degradation = 5;
+    private int counterStateTimer = 1200;
+    private int meleeCooldown = 400;
+    private int animationLength = 0;
+
+    private int resetWorldTimer = 60;
+    private int timeTooDieTimer = 60;
+
+    private int rageModeTimer = 0;
+    private boolean hasRagedRecently = false;
 
     @Override
     public void onUpdate() {
@@ -132,21 +152,64 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
         EntityLivingBase target = this.getAttackTarget();
 
-        if(target != null) {
+        if(MobConfig.lich_enable_daylight && world.getWorldTime() < MobConfig.lich_summon_time && !world.isRemote) {
+            if(timeTooDieTimer > 0) {
+                timeTooDieTimer--;
+            }
+
+            if(timeTooDieTimer < 5) {
+                this.setDead();
+            }
+        }
+
+        if(target != null && !world.isRemote) {
+            if(world.getWorldTime() > 17000 && MobConfig.lich_enable_daylight) {
+                if(resetWorldTimer > 0) {
+                  resetWorldTimer--;
+                }
+
+                if(resetWorldTimer < 1) {
+                    world.setWorldTime(17000);
+                    resetWorldTimer = 60;
+                }
+            }
             double healthCurr = this.getHealth() / this.getMaxHealth();
-            System.out.println("Wanted Distance at" + wantedDistance);
+            //Performs Rage Mode and handles timer
+
+            if(healthCurr <= 0.25  && hasRagedRecently) {
+                if(rageModeTimer > 0) {
+                    rageModeTimer--;
+                }
+
+                if(rageModeTimer <= 1) {
+                    hasRagedRecently = false;
+                    rageModeTimer = 1400 + ModRand.range(5, 200);
+                }
+            }
+
             if(healthCurr > 0.75) {
                 this.setAngeredState(false);
             }
 
+            if(meleeCooldown > 0 && !this.isAngeredState()) {
+                meleeCooldown--;
+            }
+
             if(healthCurr <= 0.75) {
+
+                //allows for a different way of switching between melee and ranged mode with less things
+                if(counterStateTimer > 0) {
+                    counterStateTimer--;
+                }
+
                 if(wantedDistance == 30) {
-                    if(world.rand.nextInt(40) == 0 || this.hurtTime > 0) {
+                    if(this.hurtTime > 0 || counterStateTimer <= 0) {
                         this.damageTaken++;
                     }
 
-                    if(damageTaken >= 60) {
+                    if(damageTaken >= 100 && !this.isFightMode()) {
                         this.wantedDistance = 3;
+                        this.counterStateTimer = 1200 + ModRand.range(5, 60);
                         if(!this.isAngeredState()) {
                             this.setAngeredState(true);
                             this.setStateChange = true;
@@ -154,11 +217,12 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                     }
                 }
                 if(wantedDistance == 3) {
-                    if(this.hurtTime > 0 || world.rand.nextInt(15) == 0) {
+                    if(this.hurtTime > 0 || counterStateTimer <= 0) {
                         this.damageTaken--;
                     }
-                    if(damageTaken <= 0) {
+                    if(damageTaken <= 0 && !this.isFightMode()) {
                         this.wantedDistance = 30;
+                        this.counterStateTimer = 1200 + ModRand.range(5, 200);
                         if(this.isAngeredState()) {
                             this.setAngeredState(false);
                             this.setStateChange = true;
@@ -210,7 +274,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         double HealthChange = this.getHealth() / this.getMaxHealth();
 
         if(!this.isFightMode()) {
-            List<Consumer<EntityLivingBase>> close_attacks = new ArrayList<>(Arrays.asList(shoot_magic_projectiles, shoot_magic_fireball, summon_mobs, combo_magic, throw_staff, dash_attack_red, green_attack, regular_swing, double_swing, combo_aoe_dash, track_projectiles));
+            List<Consumer<EntityLivingBase>> close_attacks = new ArrayList<>(Arrays.asList(shoot_magic_projectiles, shoot_magic_fireball, summon_mobs, combo_magic, throw_staff, dash_attack_red, green_attack, regular_swing, double_swing, combo_aoe_dash, track_projectiles, rage_mode_attack));
             double[] weights = {
                     //PHASE ONE 0-100% HP
                     (shoot_magic_projectiles != prevAttack && !this.isAngeredState()) ? distance * 0.02 : 0,
@@ -221,30 +285,77 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                     //PHASE THREE 0-50% HP
                     (throw_staff != prevAttack && !this.isAngeredState() && HealthChange <= 0.5) ? distance * 0.02 : 0,
                     //PHASE ONE 0-100% HP
-                    (dash_attack_red != prevAttack && this.isAngeredState() && distance > 5) ? distance * 0.02 : (dash_attack_red != prevAttack && !this.isAngeredState() && distance >= 15) ? distance * 0.02 : 0,
+                    (dash_attack_red != prevAttack && this.isAngeredState() && distance > 5) ? distance * 0.02 : (dash_attack_red != prevAttack && !this.isAngeredState() && distance >= 15 && meleeCooldown <= 0) ? distance * 0.02 : 0,
                     //PHASE TWO 0-75% HP MELEE STUFF
-                    (green_attack != prevAttack && this.isAngeredState() && distance > 4 && HealthChange <= 0.75) ? 1/distance : (green_attack != prevAttack && !this.isAngeredState() && HealthChange <= 0.75 && HealthChange >= 0.5) ? distance * 0.01 : 0,
+                    (green_attack != prevAttack && this.isAngeredState() && distance > 4 && HealthChange <= 0.75) ? 1/distance : (green_attack != prevAttack && !this.isAngeredState() && HealthChange <= 0.75 && HealthChange >= 0.5 && meleeCooldown <= 0) ? distance * 0.01 : 0,
                     (regular_swing != prevAttack && this.isAngeredState() && distance <= 5 && HealthChange <= 0.75) ? 1/distance : 0,
                     (double_swing != prevAttack && this.isAngeredState() && distance <= 6 && HealthChange <= 0.75) ? 1/distance : 0,
                     //PHASE THREE 0-50% HP
-                    (combo_aoe_dash != prevAttack && green_attack != prevAttack && this.isAngeredState() && HealthChange <= 0.5) ? 1/distance : (combo_aoe_dash != prevAttack && green_attack != prevAttack && !this.isAngeredState() && HealthChange <= 0.5) ? distance * 0.02 : 0,
-                    (track_projectiles != prevAttack && !this.isAngeredState() && HealthChange <= 0.5) ? distance * 0.02 : 0
+                    (combo_aoe_dash != prevAttack && green_attack != prevAttack && this.isAngeredState() && HealthChange <= 0.5) ? 1/distance : (combo_aoe_dash != prevAttack && green_attack != prevAttack && !this.isAngeredState() && HealthChange <= 0.5 && meleeCooldown <= 0) ? distance * 0.02 : 0,
+                    (track_projectiles != prevAttack && !this.isAngeredState() && HealthChange <= 0.5) ? distance * 0.02 : 0,
+                    //BIG ATTACK
+                    (rage_mode_attack != prevAttack && !this.isAngeredState() && !this.hasRagedRecently && HealthChange <= 0.5) ? distance * 0.05 : (rage_mode_attack != prevAttack && !this.isAngeredState() && !hasRagedRecently && HealthChange <= 0.25) ? distance * 0.03 : 0
 
             };
 
-            if(setStateChange) {
-                additive = MobConfig.lich_additive_cooldown * 20;
-                setStateChange = false;
-            }
-
             prevAttack = ModRand.choice(close_attacks, rand, weights).next();
             prevAttack.accept(target);
+
         }
-        return (this.isAngeredState()) ? MobConfig.lich_static_cooldown + additive : cooldown + additive;
+        if(setStateChange) {
+            additive = MobConfig.lich_additive_cooldown * 20;
+            setStateChange = false;
+        }
+        return (this.isAngeredState()) ? (MobConfig.lich_static_cooldown/2) + animationLength : cooldown + additive + animationLength;
     }
 
+    private final Consumer<EntityLivingBase> rage_mode_attack = (target) -> {
+        double HealthCurr = this.getHealth() / this.getMaxHealth();
+      this.setRageMode(true);
+      this.hasRagedRecently = true;
+      this.animationLength = 130;
+      this.setFightMode(true);
+        List<EntityPlayer> soundSender = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue()), e -> !e.getIsInvulnerable());
+        if(!soundSender.isEmpty()) {
+            for(EntityPlayer player : soundSender) {
+                //play world sound
+                if(!player.isSpectator() && !player.isCreative()) {
+                    BlockPos pos = player.getPosition();
+                    world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundsHandler.LICH_RAGE_PREPARE, SoundCategory.HOSTILE, 1.5F, world.rand.nextFloat() * 0.7F + 0.4F, false);
+                }}
+        }
+      //some silly sounds and a crazy attack
+        addEvent(()-> {
+            List<EntityPlayer> targets = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue()), e -> !e.getIsInvulnerable());
+
+            if(!targets.isEmpty()) {
+                int maxPlayersTooUse = 0;
+                for(EntityPlayer player : targets) {
+                    if(maxPlayersTooUse <= 3 && !player.isCreative() && !player.isSpectator()) {
+                        new ActionLichRageMode().performAction(this, player);
+                        maxPlayersTooUse++;
+                    }
+                }
+            }
+
+            if(!(target instanceof EntityPlayer)) {
+                new ActionLichRageMode().performAction(this, target);
+            }
+
+        }, 10);
+
+      addEvent(()-> {
+          this.setRageMode(false);
+          this.setFightMode(false);
+          if(HealthCurr <= 0.5 && HealthCurr >= 0.3) {
+              rageModeTimer = 60;
+          }
+      }, 130);
+    };
 
     private final Consumer<EntityLivingBase> track_projectiles = (target) -> {
+        this.animationLength = 60;
+        this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       this.setComboTrackProjectiles(true);
       this.setFightMode(true);
 
@@ -260,6 +371,8 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     };
 
     private final Consumer<EntityLivingBase> combo_aoe_dash = (target) -> {
+        this.animationLength = 125;
+        this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       this.setComboAoeAttack(true);
       this.setFightMode(true);
 
@@ -268,6 +381,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             this.clearCurrentVelocity = true;
         }, 20);
 
+        addEvent(()-> this.playSound(SoundsHandler.LICH_USE_SPEAR, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 25);
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
             Vec3d softTargetPos = target.getPositionVector().add(posSet.scale(-4));
@@ -287,7 +401,8 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                             addEvent(()-> {
                                 //AOE ACTION
                                 float distance = this.getDistance(target);
-                                new ActionSelfAOE((int) distance + 4).performAction(this, target);
+                                this.playSound(SoundsHandler.LICH_STAFF_IMPACT, 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
+                                new ActionSelfAOE((int) distance + 3).performAction(this, target);
                             }, 5);
                         }, 5);
                     }, 5);
@@ -305,7 +420,8 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                             addEvent(()-> {
                                 //AOE ACTION
                                 float distance = this.getDistance(target);
-                                new ActionSelfAOE((int) distance + 4).performAction(this, target);
+                                this.playSound(SoundsHandler.LICH_STAFF_IMPACT, 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
+                                new ActionSelfAOE((int) distance + 3).performAction(this, target);
                             }, 5);
                         }, 5);
                     }, 5);
@@ -355,7 +471,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                 addEvent(()-> {
                     Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.0, 1.5, 0)));
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
-                    float damage = this.getAttack();
+                    float damage = (float) (this.getAttack() * MobConfig.night_lich_dash_multiplier);
                     ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.6f, 0, false);
                 }, b);
             }
@@ -373,12 +489,17 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
           this.setImmovable(false);
         this.setComboAoeAttack(false);
         this.setFightMode(false);
+        if(!this.isAngeredState()) {
+            this.meleeCooldown = 400;
+        }
       }, 125);
     };
     private final Consumer<EntityLivingBase> double_swing = (target) -> {
+        this.animationLength = 95;
       this.setDoubleSwing(true);
       this.setFightMode(true);
 
+        addEvent(()-> this.playSound(SoundsHandler.LICH_USE_SPEAR, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 13);
       addEvent(()-> {
           this.setImmovable(true);
           Vec3d targetedPos = target.getPositionVector();
@@ -391,6 +512,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
       }, 17);
 
       addEvent(()-> {
+          this.playSound(SoundsHandler.LICH_MAGIC_SWING, 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.5, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.getAttack();
@@ -412,11 +534,14 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
       }, 40);
 
       addEvent(()-> {
+          this.playSound(SoundsHandler.LICH_MAGIC_SWING, 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.5, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage = this.getAttack();
           ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.8f, 0, false);
       }, 61);
+
+      addEvent(()-> new ActionShootGroundProjectiles(ground_projectiles).performAction(this, target), 65);
 
       addEvent(()-> {
         this.setImmovable(true);
@@ -430,9 +555,11 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
       }, 95);
     };
     private final Consumer<EntityLivingBase> regular_swing = (target) -> {
+        this.animationLength = 55;
       this.setSwingAttack(true);
       this.setFightMode(true);
 
+        addEvent(()-> this.playSound(SoundsHandler.LICH_USE_SPEAR, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 15);
       addEvent(()-> {
           this.setImmovable(true);
           Vec3d targetedPos = target.getPositionVector();
@@ -445,6 +572,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
       }, 20);
 
       addEvent(()-> {
+          this.playSound(SoundsHandler.LICH_MAGIC_SWING, 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.5, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage = this.getAttack();
@@ -467,6 +595,12 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     };
 
     private final Consumer<EntityLivingBase> green_attack = (target) -> {
+        double healthCurr = this.getHealth() / this.getMaxHealth();
+        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+        if(!this.isAngeredState() && healthCurr >= 0.5) {
+            this.setStateChange = true;
+        }
+        this.animationLength = 90;
       this.setGreenAttack(true);
       this.setFightMode(true);
 
@@ -474,7 +608,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
           this.lockLook = true;
           this.clearCurrentVelocity = true;
       }, 20);
-
+        addEvent(()-> this.playSound(SoundsHandler.LICH_USE_SPEAR, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 25);
       addEvent(()-> {
           Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
         Vec3d softTargetPos = target.getPositionVector().add(posSet.scale(-4));
@@ -494,7 +628,8 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                     addEvent(()-> {
                         //AOE ACTION
                         float distance = this.getDistance(target);
-                        new ActionSelfAOE((int) distance + 4).performAction(this, target);
+                        this.playSound(SoundsHandler.LICH_STAFF_IMPACT, 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
+                        new ActionSelfAOE((int) distance + 3).performAction(this, target);
                     }, 5);
                 }, 5);
             }, 5);
@@ -512,7 +647,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                     addEvent(()-> {
                         //AOE ACTION
                         float distance = this.getDistance(target);
-                        new ActionSelfAOE((int) distance + 4).performAction(this, target);
+                        new ActionSelfAOE((int) distance + 3).performAction(this, target);
                     }, 5);
                 }, 5);
             }, 5);
@@ -527,6 +662,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
           this.destroyCloseBlocks = false;
           if(!this.isAngeredState()) {
               this.setStateChange = true;
+              this.meleeCooldown = 400;
           }
       }, 80);
 
@@ -537,6 +673,12 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
       }, 90);
     };
     private final Consumer<EntityLivingBase> dash_attack_red = (target) -> {
+        this.animationLength = 95;
+        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+        double healthCurr = this.getHealth() / this.getMaxHealth();
+        if(!this.isAngeredState() && healthCurr >= 0.75) {
+            this.setStateChange = true;
+        }
       this.setFightMode(true);
       this.setRedAttack(true);
 
@@ -545,6 +687,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.clearCurrentVelocity = true;
       }, 15);
 
+        addEvent(()-> this.playSound(SoundsHandler.LICH_USE_SPEAR, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 23);
       addEvent(()-> {
           Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
           addEvent(()-> {
@@ -588,7 +731,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
               addEvent(()-> {
                   Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.0, 1.5, 0)));
                   DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
-                  float damage = this.getAttack();
+                  float damage = (float) (this.getAttack() * MobConfig.night_lich_dash_multiplier);
                   ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.6f, 0, false);
               }, b);
           }
@@ -611,20 +754,23 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.setFightMode(false);
         this.setRedAttack(false);
           if(!this.isAngeredState()) {
-              this.setStateChange = true;
+              this.meleeCooldown = 400;
           }
       }, 95);
     };
     private final Consumer<EntityLivingBase> throw_staff = (target) -> {
+        this.animationLength = 110;
+        this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       this.setFightMode(true);
       this.setThrowStaff(true);
 
+      addEvent(()-> this.playSound(SoundsHandler.LICH_USE_SPEAR, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 40);
       addEvent(()-> {
           List<EntityPlayer> targets = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue()), e -> !e.getIsInvulnerable());
 
           if(!targets.isEmpty()) {
             for(EntityPlayer player : targets) {
-                new ActionBeginStaffThrow().performAction(this, player);
+                    new ActionBeginStaffThrow().performAction(this, player);
             }
           }
 
@@ -640,6 +786,8 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
       }, 110);
     };
     private final Consumer<EntityLivingBase> combo_magic = (target) -> {
+        this.animationLength = 105;
+        this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       this.setFightMode(true);
       this.setComboShootProjectiles(true);
 
@@ -654,6 +802,9 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
       }, 105);
     };
     private final Consumer<EntityLivingBase> summon_mobs = (target) -> {
+        this.setStateChange = true;
+        this.animationLength = 85;
+        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       this.setFightMode(true);
       this.setPurpleAttack(true);
 
@@ -665,17 +816,20 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
       addEvent(()-> {
         this.setFightMode(false);
         this.setPurpleAttack(false);
-        this.setStateChange = true;
       }, 85);
     };
     private final Consumer<EntityLivingBase> shoot_magic_fireball = (target) -> {
+        this.animationLength = 85;
+        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       this.setFightMode(true);
       this.setYellowAttack(true);
 
-      addEvent(()-> this.setImmovable(true), 25);
+      addEvent(()-> this.enableFireballParticles = true, 20);
+      addEvent(()-> this.enableFireballParticles = false, 50);
+     // addEvent(()-> this.setImmovable(true), 25);
       addEvent(()-> this.playSound(SoundsHandler.LICH_PREPARE_FIREBALL, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 30);
       addEvent(()-> new ActionShootFireball().performAction(this, target), 60);
-      addEvent(()-> this.setImmovable(false), 80);
+    //  addEvent(()-> this.setImmovable(false), 80);
 
       addEvent(()-> {
           this.setFightMode(false);
@@ -684,6 +838,8 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     };
 
     private final Consumer<EntityLivingBase> shoot_magic_projectiles = (target) -> {
+        this.animationLength = 85;
+        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
         this.setFightMode(true);
         this.setBlueAttack(true);
 
@@ -705,6 +861,26 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(1)), ModColors.RED, Vec3d.ZERO, ModRand.range(10, 15));
             ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(2)), ModColors.RED, Vec3d.ZERO, ModRand.range(10, 15));
         }
+        if(id == ModUtils.SECOND_PARTICLE_BYTE) {
+            ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(1)), ModColors.AZURE, Vec3d.ZERO, ModRand.range(10, 15));
+            ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(2)), ModColors.AZURE, Vec3d.ZERO, ModRand.range(10, 15));
+            ModUtils.circleCallback(1, 20, (pos)-> {
+                pos = new Vec3d(pos.x, 0, pos.y);
+                ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(1)), ModColors.AZURE, pos.normalize().scale(0.1), ModRand.range(10, 15));
+                ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(2)), ModColors.AZURE, pos.normalize().scale(0.1), ModRand.range(10, 15));
+            });
+        }
+
+        if(id == ModUtils.THIRD_PARTICLE_BYTE) {
+            ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(4)), ModColors.AZURE, Vec3d.ZERO, ModRand.range(10, 15));
+        }
+
+        if(id == ModUtils.FOURTH_PARTICLE_BYTE) {
+            ModUtils.circleCallback(1, 30, (pos)-> {
+                pos = new Vec3d(pos.x, 0, pos.z);
+                ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.5, 0))), ModColors.WHITE, pos.normalize().scale(0.1), ModRand.range(8, 10));
+            });
+        }
     }
 
     public void onEntityUpdate() {
@@ -712,6 +888,12 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
         if(this.enableRedParticles && world.rand.nextInt(2) == 0) {
             world.setEntityState(this, ModUtils.PARTICLE_BYTE);
+        }
+        if(this.enableFireballParticles && world.rand.nextInt(2) == 0) {
+            world.setEntityState(this, ModUtils.THIRD_PARTICLE_BYTE);
+        }
+        if(this.isRageMode() && world.rand.nextInt(2) == 0) {
+            world.setEntityState(this, ModUtils.FOURTH_PARTICLE_BYTE);
         }
     }
 
@@ -767,6 +949,10 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             }
             if(this.isThrowStaff()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_THROW_STAFF, false));
+                return PlayState.CONTINUE;
+            }
+            if(this.isRageMode()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_RAGE_MODE, false));
                 return PlayState.CONTINUE;
             }
 
@@ -832,6 +1018,17 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         }
     }
 
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundsHandler.LICH_HURT;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+
+    }
+
     //CHANGE THIS TO THAT WHEN ITS DAY IT DESPAWNS
     @Override
     protected boolean canDespawn() {
@@ -854,5 +1051,56 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     public void removeTrackingPlayer(@Nonnull EntityPlayerMP player) {
         super.removeTrackingPlayer(player);
         this.bossInfo.removePlayer(player);
+    }
+
+
+    /**
+     * Teleports the Night Lich if its cooldown is done to try and dodge attacks
+     * @return
+     */
+    private boolean attemptTeleportFrom() {
+        EntityLivingBase target = this.getAttackTarget();
+        if(target != null && !world.isRemote) {
+            new ActionRandomLichTeleport(ModColors.AZURE).performAction(this, target);
+            this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.6F));
+            return true;
+          //  Vec3d pos = ModRand.randVec().normalize().scale(12)
+         //           .add(target.getPositionVector());
+         //   boolean canSee = this.world.rayTraceBlocks(target.getPositionEyes(1), pos, false, true, false) == null;
+         //   if(canSee) {
+         //       ModUtils.attemptTeleport(pos, this);
+         //       this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.6F));
+         //       return true;
+        //    }
+        }
+        return false;
+    }
+
+
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if(teleportCooldownTimer < 1 && !this.isAngeredState() && !this.isFightMode()) {
+            if(attemptTeleportFrom()) {
+                teleportCooldownTimer = MobConfig.lich_teleport_timer * 20;
+                return false;
+            }
+        }
+        if (!source.isProjectile()) {
+            return super.attackEntityFrom(source, (float) (amount * MobConfig.lich_melee_resistance));
+        }
+        return super.attackEntityFrom(source, amount);
+    }
+
+    private static final ResourceLocation LOOT_BOSS = new ResourceLocation(ModReference.MOD_ID, "night_lich");
+
+    @Override
+    protected ResourceLocation getLootTable() {
+        return LOOT_BOSS;
+    }
+
+
+    @Override
+    protected boolean canDropLoot() {
+        return true;
     }
 }

@@ -143,29 +143,37 @@ public class WorldConfig {
     @Config.Name("Night Lich Tower Spacing")
     @Config.Comment("Change the spacing between each Night Lich tower, higher means further apart, lower means closer. This number will not add to spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int lich_tower_spacing = 100;
+    public static int lich_tower_spacing = 90;
 
     @Config.Name("Night Lich Allowed Biomes to spawn in")
-    @Config.Comment("Add Biomes to be blacklisted/whitelisted. Otherwise, check the whitelist/blacklist if you want this list to be either or.")
+    @Config.Comment("Add Biomes to be applicable to spawning the Night Lich's Tower, must be ModID:biome_name")
     @Config.RequiresMcRestart
-    public static String[] biome_allowed_lich = {
-            "minecraft:ice_flats",
-            "minecraft:frozen_ocean",
-            "minecraft:frozen_river",
-            "minecraft:stone_beach",
-            "minecraft:mesa",
-            "minecraft:mesa_rock",
-            "minecraft:mutated_extreme_hills",
-            "minecraft:extreme_hills_with_trees",
-            "minecraft:redwood_taiga_hills",
-            "minecraft:ocean",
-            "minecraft:deep_ocean",
-            "minecraft:ice_mountains",
-            "minecraft:extreme_hills"
+    public static String[] biome_allowed_lich = {"minecraft:plains", "minecraft:forest", "minecraft:birch_forest", "minecraft:desert", "minecraft:mesa", "minecraft:desert_hills", "minecraft:savanna", "minecraft:ice_flats", "minecraft:mutated_plains", "minecraft:mutated_ice_flats", "minecraft:jungle", "minecraft:mutated_forest", "minecraft:mutated_swampland", "minecraft:swampland"
     };
 
-    @Config.Name("Night Lich Tower Whitelist/Blacklist")
-    @Config.Comment("Change if the list of biomes is a whitelist for biomes for it too only spawn in, otherwise it is a blacklist of biomes too not spawn in")
+    @Config.Name("Petrogloom Ore Gen")
+    @Config.Comment("Allowed Dimension for Petrogloom to spawn in")
     @Config.RequiresMcRestart
-    public static boolean night_lich_is_blacklist = true;
+    public static int[] list_of_dimensions_petrogloom = {0};
+
+    @Config.Name("Petrogloom Ore Gen Enabled/Disabled")
+    @Config.Comment("Change if Petrogloom can generate throughout the world. default : true")
+    @Config.RequiresMcRestart
+    public static boolean enabled_petrogloom = true;
+
+    @Config.Name("Petrogloom Ore Gen Spawn Chances")
+    @Config.Comment("Spawn chances of Petrogloom")
+    @Config.RequiresMcRestart
+    public static int gloom_chances = 1;
+
+    @Config.Name("Petrogloom Ore Gen Min Height")
+    @Config.Comment("Minimum Spawn Height of Petrogloom")
+    @Config.RequiresMcRestart
+    public static int gloom_min_height = 15;
+
+    @Config.Name("Petrogloom Ore Gen Max Height")
+    @Config.Comment("Maximum Spawn Height of Petrogloom")
+    @Config.RequiresMcRestart
+    public static int gloom_max_height = 30;
+
 }

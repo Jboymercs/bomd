@@ -38,6 +38,20 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static float sword_of_ambition_damage = 9;
 
+    @Config.Name("Soul Spear Damage")
+    @Config.Comment("Change the damage of the Soul Spear")
+    @Config.RequiresMcRestart
+    public static float soul_spear_damage = 6;
+
+    @Config.Name("Soul Spear RED Damange")
+    @Config.Comment("Change the damage of the Soul Spear RED")
+    public static float soul_weapon_damage = 7;
+
+    @Config.Name("Soul Spear Ability Cooldown")
+    @Config.Comment("Change the cooldown of the Soul Spears ability in seconds Both types!")
+    @Config.RequiresMcRestart
+    public static int soul_spear_cooldown = 10;
+
     @Config.Name("Void Dagger Damage")
     @Config.Comment("Change the damage factor of the Void Dagger")
     @Config.RequiresMcRestart
@@ -62,7 +76,7 @@ public class ModConfig {
     @Config.Comment("Change the drop chance of Soul Star from anything that extends off of EntityMob, Like Zombies, Skeletons, and so on")
     @Config.RequiresMcRestart
     @Config.RangeInt(min = 0, max = 100)
-    public static int soul_star_drop_chance = 5;
+    public static int soul_star_drop_chance = 3;
 
     @Config.Name("Soul Star Drops everywhere")
     @Config.Comment("Change if the Soul Star should drop from anything that extends from EntityMob, setting to true will enable this setting")

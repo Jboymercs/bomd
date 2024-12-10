@@ -1,18 +1,13 @@
 package com.dungeon_additions.da.entity.tileEntity;
 
 import com.dungeon_additions.da.blocks.base.IBlockUpdater;
-import com.dungeon_additions.da.blocks.lich.BlockSoulStar;
 import com.dungeon_additions.da.blocks.lich.EnumLichSpawner;
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.entity.blossom.EntityAbstractVoidBlossom;
-import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
+import com.dungeon_additions.da.entity.night_lich.EntityNightLich;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.ModUtils;
 import com.google.common.collect.Lists;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -52,7 +47,7 @@ public class TileEntityLichSpawner extends TileEntity implements ITickable {
 
         if(!world.isRemote && state == EnumLichSpawner.ACTIVE) {
             AxisAlignedBB box = new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
-            List<EntityZombie> nearbyBossFrom = this.world.getEntitiesWithinAABB(EntityZombie.class, box.grow(60D), e -> !e.getIsInvulnerable());
+            List<EntityNightLich> nearbyBossFrom = this.world.getEntitiesWithinAABB(EntityNightLich.class, box.grow(60D), e -> !e.getIsInvulnerable());
             if (!nearbyBossFrom.isEmpty()) {
                 if(ModConfig.soul_star_blocks_remove) {
                     world.setBlockToAir(pos);
@@ -73,9 +68,9 @@ public class TileEntityLichSpawner extends TileEntity implements ITickable {
                 if(ModUtils.createBlockPriotity(box.grow(20), world, ModBlocks.LICH_SOUL_STAR_BLOCK.getDefaultState())) {
                     hasPriority = true;
                     //Summon Boss
-                    List<EntityZombie> nearbyBoss = this.world.getEntitiesWithinAABB(EntityZombie.class, box.grow(60D), e -> !e.getIsInvulnerable());
+                    List<EntityNightLich> nearbyBoss = this.world.getEntitiesWithinAABB(EntityNightLich.class, box.grow(60D), e -> !e.getIsInvulnerable());
                     if(nearbyBoss.isEmpty()) {
-                        EntityZombie knight = new EntityZombie(world);
+                        EntityNightLich knight = new EntityNightLich(world);
                         BlockPos pos1 = ModUtils.findBossSpawnLocation(box.grow(8),world, knight,pos.getY() - 3, pos.getY() + 3);
                         if(pos1 != null && !world.isRemote) {
                             knight.setPosition(pos1.getX(), pos1.getY(), pos1.getZ());
@@ -96,23 +91,6 @@ public class TileEntityLichSpawner extends TileEntity implements ITickable {
             }
         }
 
-    }
-
-
-    public boolean areAllActivated() {
-        for(WeakReference<TileEntityLichSpawner> tiles : current_altars) {
-            if(tiles == null && !hasPriority && this.getState() == EnumLichSpawner.ACTIVE) {
-                world.setBlockToAir(pos);
-                return false;
-            }
-            //returns false if any tiles are inactive
-            assert tiles != null;
-            if(tiles.get().getState() == EnumLichSpawner.INACTIVE) {
-                return false;
-            }
-
-        }
-        return true;
     }
 
 

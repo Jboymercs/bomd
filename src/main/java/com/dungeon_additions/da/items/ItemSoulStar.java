@@ -128,12 +128,22 @@ public class ItemSoulStar extends ItemBase{
         if (i == k && j == l && isAllowedDimensionTooSpawnInNightLich(world.provider.getDimension())) {
             BlockPos pos = new BlockPos((i << 4), 0, (j << 4));
 
-                    return WorldConfig.night_lich_is_blacklist == (world.provider.getBiomeForCoords(pos) != getSpawnBiomesLichTower().iterator());
+                    return isBiomeValid(pos, world);
 
         } else {
 
             return false;
         }
+    }
+
+    public static boolean isBiomeValid(BlockPos pos, World world) {
+        for(Biome biome : getSpawnBiomesLichTower()) {
+            if(world.provider.getBiomeForCoords(pos) == biome) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static boolean isWithinRadius(BlockPos setPos, BlockPos pos) {

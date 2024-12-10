@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " V ",
+    "VRV",
+    " B "
+  ],
+  "key": {
+    "V": {
+      "item": "da:abberrant_eye"
+    },
+    "R": {
+      "item": "da:ancient_mana"
+    },
+    "B": {
+      "item": "da:flame_metal_scrap"
+    }
+  },
+  "result": {
+    "item": "da:red_ancient_mana"
+  }
+}

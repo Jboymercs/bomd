@@ -16,6 +16,7 @@ import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -84,6 +85,25 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
         }
     }
 
+    public EntityPlayer owner;
+    public float damageFromOwner;
+
+    public EntityLichStaffAOE(World worldIn, EntityPlayer owner, float damage) {
+        super(worldIn);
+        this.isFromSky = false;
+        this.noClip = true;
+        this.setImmovable(true);
+        this.setNoAI(true);
+        this.setSize(0.7f, 2.0f);
+        this.owner = owner;
+        this.damageFromOwner = damage;
+        if(isFromSky) {
+            ANIM_FROM_SELECTION = "from_sky";
+        } else {
+            selectAnimationTooPlay();
+        }
+    }
+
     private boolean impactParticles = false;
 
     @Override
@@ -139,18 +159,36 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
 
             if(ticksExisted == 18) {
                 //damage Entities
-                List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntityLichStaffAOE || e instanceof EntityNightLich | e instanceof EntityMob)));
+                if(owner != null) {
+                    List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntityPlayer)));
 
-                if(!targets.isEmpty()) {
-                    for(EntityLivingBase base : targets) {
-                        if(base != this && !(base instanceof EntityNightLich) && !(base instanceof EntityMob)) {
-                            Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
-                            DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
-                            float damage = this.getAttack();
-                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.8f, 0, false);
+
+                    if(!targets.isEmpty()) {
+                        for(EntityLivingBase base : targets) {
+                            if(base != this && base != owner) {
+                                Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
+                                DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.PLAYER).directEntity(owner).build();
+                                float damage = damageFromOwner;
+                                ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.8f, 0, false);
+                            }
                         }
-                    }
 
+                    }
+                } else {
+                    List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntityLichStaffAOE || e instanceof EntityNightLich | e instanceof EntityMob)));
+
+
+                    if(!targets.isEmpty()) {
+                        for(EntityLivingBase base : targets) {
+                            if(base != this && !(base instanceof EntityNightLich) && !(base instanceof EntityMob)) {
+                                Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
+                                DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
+                                float damage = this.getAttack();
+                                ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.8f, 0, false);
+                            }
+                        }
+
+                    }
                 }
             }
 
@@ -181,7 +219,12 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
                 ParticleManager.spawnDust(world, this.getPositionVector().add(0, 0.5, 0), ModColors.AZURE, pos.normalize().scale(0.25).add(ModUtils.yVec(0)), ModRand.range(10, 15));
             });
         } else if (id == ModUtils.SECOND_PARTICLE_BYTE) {
-            ParticleManager.spawnDust(world, this.getPositionVector().add(0, 0.5, 0), ModColors.AZURE, Vec3d.ZERO, ModRand.range(10, 15));
+            if(owner != null) {
+                ParticleManager.spawnDust(world, this.getPositionVector().add(0, 0.5, 0), ModColors.RED, Vec3d.ZERO, ModRand.range(10, 15));
+            } else {
+                ParticleManager.spawnDust(world, this.getPositionVector().add(0, 0.5, 0), ModColors.AZURE, Vec3d.ZERO, ModRand.range(10, 15));
+            }
+
         }
     }
 
@@ -189,7 +232,7 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(10D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.night_lich_attack_damage * MobConfig.night_lich_staff_multiplier);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5D);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);

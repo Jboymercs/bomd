@@ -3,6 +3,7 @@ package com.dungeon_additions.da.items.tools;
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.IHasModel;
+import com.dungeon_additions.da.util.ModUtils;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.util.ITooltipFlag;
@@ -86,6 +87,7 @@ public class ToolSword extends ItemSword implements IHasModel {
 
         information.accept(tooltip);
     }
+
 
 
     public static UUID getAttackDamageModifier() {

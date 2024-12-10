@@ -20,6 +20,6 @@ public class ActionShootFireball implements IActionLich{
         fireBall.setTravelRange(50);
         fireBall.setNoGravity(true);
         ModUtils.throwProjectile(actor, targetedPos, fireBall, 0, (float) MobConfig.magic_fireball_velocity);
-        actor.playSound(SoundsHandler.LICH_PREPARE_FIREBALL, 2.0f, 0.8f / (new Random().nextFloat() * 0.4f + 0.6f));
+        actor.playSound(SoundsHandler.LICH_SHOOT_FIREBALL, 2.0f, 0.8f / (new Random().nextFloat() * 0.4f + 0.6f));
     }
 }

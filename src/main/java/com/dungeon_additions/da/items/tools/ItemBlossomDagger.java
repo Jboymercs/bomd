@@ -3,6 +3,7 @@ package com.dungeon_additions.da.items.tools;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -56,7 +57,7 @@ public class ItemBlossomDagger extends ToolSword{
             float inaccuracy = 0.0f;
             float speed = 1.4f;
             float pitch = player.rotationPitch; // Projectiles aim straight ahead always
-
+            worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.BLOSSOM_PETAL_WAVE, SoundCategory.NEUTRAL, 1.0f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
             // Shoots projectiles in a small arc
             for (int i = 0; i < 5; i++) {
                 EntityDart projectile = new EntityDart(worldIn, player);

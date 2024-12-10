@@ -16,25 +16,24 @@ import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileTrackingFlame
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
+import com.dungeon_additions.da.entity.night_lich.EntityLichSpawn;
 import com.dungeon_additions.da.entity.projectiles.EntityLily;
 import com.dungeon_additions.da.entity.projectiles.EntitySoulStar;
 import com.dungeon_additions.da.entity.projectiles.ProjectileAbberrantAttack;
 import com.dungeon_additions.da.entity.render.*;
+import com.dungeon_additions.da.entity.render.lich.RenderLichSpawn;
 import com.dungeon_additions.da.entity.render.lich.RenderLichStaff;
 import com.dungeon_additions.da.entity.render.lich.RenderNightLich;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotSpike;
-import com.dungeon_additions.da.entity.util.EntityBossSpawner;
-import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -86,6 +85,7 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileMagicMissile.class, ModItems.MAGIC_PROJECTILE);
         registerProjectileRenderer(ProjectileMagicFireBall.class, ModItems.MAGIC_FIREBALL);
         registerProjectileRenderer(ProjectileTrackingMagicMissile.class, ModItems.MAGIC_TRACK_PROJECTILE);
+        registerProjectileRenderer(ProjectileMagicGround.class, ModItems.INVISISBLE_ITEM);
     }
 
     //Handles Rendering
@@ -129,6 +129,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityNightLich.class, RenderNightLich::new);
         //Lich Staff AOE
         RenderingRegistry.registerEntityRenderingHandler(EntityLichStaffAOE.class, RenderLichStaff::new);
+        //Lich Spawn
+        RenderingRegistry.registerEntityRenderingHandler(EntityLichSpawn.class, RenderLichSpawn::new);
     }
 
 }

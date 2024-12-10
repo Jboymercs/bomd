@@ -4,6 +4,7 @@ import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.util.DALogger;
 import com.google.common.collect.Lists;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -72,11 +73,23 @@ public class WorldGenLichTower extends WorldGenerator {
         if (i == k && j == l)
         {
             BlockPos pos = new BlockPos(i << 4, 0, j << 4);
-            return WorldConfig.night_lich_is_blacklist == (world.provider.getBiomeForCoords(pos) != getSpawnBiomesLichTower().iterator());
+            return isBiomeValid(pos, world);
         } else {
 
             return false;
         }
+
+    }
+
+
+    public boolean isBiomeValid(BlockPos pos, World world) {
+        for(Biome biome : getSpawnBiomesLichTower()) {
+            if(world.provider.getBiomeForCoords(pos) == biome) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static List<Biome> getSpawnBiomesLichTower() {

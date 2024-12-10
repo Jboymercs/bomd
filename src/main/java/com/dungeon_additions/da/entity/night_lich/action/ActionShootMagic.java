@@ -18,11 +18,11 @@ public class ActionShootMagic implements IActionLich {
 
     @Override
     public void performAction(EntityNightLich actor, EntityLivingBase target) {
-        ProjectileMagicMissile missile = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_2 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_3 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_4 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_5 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
+        ProjectileMagicMissile missile = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_2 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_3 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_4 = new ProjectileMagicMissile(actor.world, actor,(float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_5 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
         Vec3d relPos = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(1.3,3.0,0)));
         Vec3d relPos2 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(1.3,2.8,0.8)));
         Vec3d relPos3 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(1.3,2.8,-0.8)));
@@ -72,14 +72,75 @@ public class ActionShootMagic implements IActionLich {
         //Shoot Projectiles
         actor.addEvent(()-> {
             actor.playSound(SoundsHandler.LICH_SHOOT_MISSILE, 2.0f, 0.8f / (new Random().nextFloat() * 0.4f + 0.6f));
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0, -0.5, 0)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
 
             float speed = (float) MobConfig.magic_missile_velocity;
-            float pitch = -actor.getPitch() + 7;
-            missile.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_2.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_3.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_4.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_5.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile,0F, speed);
+                    });
         }, 39);
+
+        actor.addEvent(()-> {
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0, -0.5, 0.8)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            float speed = (float) MobConfig.magic_missile_velocity;
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_2,0F, speed);
+            });
+        }, 39);
+
+        actor.addEvent(()-> {
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0, -0.5, -0.8)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            float speed = (float) MobConfig.magic_missile_velocity;
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_3,0F, speed);
+            });
+        }, 39);
+
+        actor.addEvent(()-> {
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0, -0.5, -1.6)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            float speed = (float) MobConfig.magic_missile_velocity;
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_4,0F, speed);
+            });
+        }, 39);
+
+        actor.addEvent(()-> {
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0, -0.5, 1.6)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            float speed = (float) MobConfig.magic_missile_velocity;
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_5,0F, speed);
+            });
+        }, 39);
+
     }
 }

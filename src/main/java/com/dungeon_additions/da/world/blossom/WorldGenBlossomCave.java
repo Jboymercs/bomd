@@ -60,11 +60,26 @@ public class WorldGenBlossomCave extends WorldGenerator {
 
         if (i == k && j == l) {
             BlockPos pos = new BlockPos((i << 4), 0, (j << 4));
-            return WorldConfig.isBlacklist == (world.provider.getBiomeForCoords(pos) != getSpawnBiomes().iterator());
+            return isBiomeValid(pos, world);
         } else {
 
             return false;
         }
+    }
+
+    public static boolean isBiomeValid(BlockPos pos, World world) {
+        for(Biome biome : getSpawnBiomes()) {
+            if(WorldConfig.isBlacklist) {
+                if(world.provider.getBiomeForCoords(pos) != biome) {
+                    return true;
+                }
+            } else {
+                if(world.provider.getBiomeForCoords(pos) == biome) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static List<Biome> getSpawnBiomes() {

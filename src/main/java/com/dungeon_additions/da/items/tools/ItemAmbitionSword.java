@@ -132,7 +132,7 @@ public class ItemAmbitionSword extends ToolSword{
                     worldIn.spawnEntity(spike);
                 });
             }
-            stack.damageItem(2, player);
+            stack.damageItem(5, player);
             player.getCooldownTracker().setCooldown(this, SwordCoolDown);
         }
 

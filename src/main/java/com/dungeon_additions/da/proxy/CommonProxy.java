@@ -14,12 +14,11 @@ import net.minecraftforge.fml.relauncher.Side;
 public class CommonProxy{
 
     public void init() {
-
+        MinecraftForge.EVENT_BUS.register(new EventSwordResistance());
         int packetId = 0;
         Main.network = NetworkRegistry.INSTANCE.newSimpleChannel(ModReference.CHANNEL_NETWORK_NAME);
         Main.network.registerMessage(AnimationMessage.Handler.class, AnimationMessage.class, packetId++, Side.SERVER);
         Main.network.registerMessage(MessageModParticles.MessageHandler.class, MessageModParticles.class, packetId++, Side.CLIENT);
-        MinecraftForge.EVENT_BUS.register(new EventSwordResistance());
     }
 
     public void registerEventHandlers() {

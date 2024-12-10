@@ -21,6 +21,7 @@ public class ActionLichTeleport implements IActionLich{
     @Override
     public void performAction(EntityNightLich actor, EntityLivingBase target) {
         ModUtils.attemptTeleport(posToo, actor);
+        actor.world.setEntityState(actor, ModUtils.SECOND_PARTICLE_BYTE);
      //   for(int i = 0; i < 30; i++) {
       //      Vec3d pos = (posToo);
 

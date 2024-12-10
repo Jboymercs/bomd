@@ -15,19 +15,20 @@ public class ActionComboMagic implements IActionLich{
 
     @Override
     public void performAction(EntityNightLich actor, EntityLivingBase target) {
-        ProjectileMagicMissile missile = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_2 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_3 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_4 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_5 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_6 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_7 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_8 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_9 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_10 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_11 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_12 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_13 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
+        actor.playSound(SoundsHandler.LICH_PREPARE_MISSILE, 2.0f, 0.8f / (new Random().nextFloat() * 0.4f + 0.6f));
+        ProjectileMagicMissile missile = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_2 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_3 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_4 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_5 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_6 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_7 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_8 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_9 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_10 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_11 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_12 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_13 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
 
         Vec3d relPos = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(2.0,1.5,0)));
         Vec3d relPos2 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(2.0,2.25,0)));
@@ -139,44 +140,207 @@ public class ActionComboMagic implements IActionLich{
                 ModUtils.setEntityPosition(missile_13, pos);
             }, i);
         }
-
         actor.addEvent(()-> {
             actor.playSound(SoundsHandler.LICH_SHOOT_MISSILE, 2.0f, 0.8f / (new Random().nextFloat() * 0.4f + 0.6f));
             float speed = (float) MobConfig.magic_missile_velocity;
-            float pitch = -actor.getPitch() + 7;
-            missile.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_2.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_3.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_4.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_5.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_6.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_7.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_8.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_9.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_10.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_11.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_12.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_13.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
+            Vec3d targetPos = target.getPositionEyes(1.0F);
 
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,0.75,0)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_2,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,1.5,0)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_3,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,2.25,0)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_4,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,-0.75,0)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_5,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,-1.5,0)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_6,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,-2.25,0)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_7,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,0,0.75)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_8,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,0,1.5)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_9,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,0,2.25)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_10,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,0,-0.75)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_11,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,0,-1.5)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_12,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,0,-2.25)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_13,0F, speed);
+            });
             actor.addEvent(() -> this.doSecondArray(actor, target), 15);
         }, 20);
     }
 
 
     private void doSecondArray(EntityNightLich actor, EntityLivingBase target) {
-        ProjectileMagicMissile missile = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_2 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_3 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_4 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_5 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_6 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_7 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_8 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_9 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_10 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_11 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_12 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
-        ProjectileMagicMissile missile_13 = new ProjectileMagicMissile(actor.world, actor, actor.getAttack());
+        actor.playSound(SoundsHandler.LICH_PREPARE_MISSILE, 2.0f, 0.8f / (new Random().nextFloat() * 0.4f + 0.6f));
+        ProjectileMagicMissile missile = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_2 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_3 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_4 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_5 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_6 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_7 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_8 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_9 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_10 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_11 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_12 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
+        ProjectileMagicMissile missile_13 = new ProjectileMagicMissile(actor.world, actor, (float) (actor.getAttack() * 0.8));
 
         Vec3d relPos = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(2.0,1.5,0)));
 
@@ -296,21 +460,185 @@ public class ActionComboMagic implements IActionLich{
         actor.addEvent(()-> {
             actor.playSound(SoundsHandler.LICH_SHOOT_MISSILE, 2.0f, 0.8f / (new Random().nextFloat() * 0.4f + 0.6f));
             float speed = (float) MobConfig.magic_missile_velocity;
-            float pitch = -actor.getPitch() + 7;
-            missile.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_2.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_3.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_4.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_5.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_6.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_7.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_8.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_9.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_10.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_11.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_12.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-            missile_13.shoot(actor, pitch, actor.rotationYaw, 0.0F, speed, 0);
-        }, 26);
+            Vec3d targetPos = target.getPositionEyes(1.0F);
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,0.75,0.75)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_2,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,1.5,1.5)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_3,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,2.25,2.25)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_4,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,0.75,-0.75)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_5,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,1.5,-1.5)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_6,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,2.25,-2.25)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_7,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,-0.75,0.75)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_8,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,-1.5,1.5)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_9,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,-2.25,2.25)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_10,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,-0.75,-0.75)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_11,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,-1.5,-1.5)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_12,0F, speed);
+            });
+        }, 20);
+
+        actor.addEvent(()-> {
+            float speed = (float) MobConfig.magic_missile_velocity;
+            Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0,-2.25,-2.25)));
+
+            Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);
+            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+            Vec3d lineStart = targetPos.subtract(lineDir);
+            Vec3d lineEnd = targetPos.add(lineDir);
+
+            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                ModUtils.throwProjectileNoSpawn(pos,missile_13,0F, speed);
+            });
+        }, 20);
     }
 
 }

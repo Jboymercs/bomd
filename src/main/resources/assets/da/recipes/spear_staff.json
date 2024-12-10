@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "R",
+    "B"
+  ],
+  "key": {
+    "V": {
+      "item": "da:ancient_mana"
+    },
+    "R": {
+      "item": "minecraft:stick"
+    },
+    "B": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "result": {
+    "item": "da:spear_staff"
+  }
+}

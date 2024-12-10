@@ -11,6 +11,7 @@ import com.dungeon_additions.da.util.commands.CommandLocateLich;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.dungeon_additions.da.util.handlers.StructureHandler;
 import com.dungeon_additions.da.world.ModWorldGen;
+import com.dungeon_additions.da.world.ore_gen.BOMDOreGen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -64,6 +65,7 @@ public class Main {
         ModEntities.registerEntities();
         ModEntities.RegisterEntitySpawns();
         GameRegistry.registerWorldGenerator(new ModWorldGen(), 1);
+        GameRegistry.registerWorldGenerator(new BOMDOreGen(), 1);
     }
 
     @Mod.EventHandler

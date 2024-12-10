@@ -90,7 +90,7 @@ public class ProjectileTrackingMagicMissile extends Projectile {
             Vec3d posToTravelToo = selectedPlayer.getPositionVector().add(ModUtils.yVec(1.0D));
             Vec3d currPos = this.getPositionVector();
             Vec3d dir = posToTravelToo.subtract(currPos).normalize();
-            ModUtils.addEntityVelocity(this, dir.scale(0.07 * 0.4));
+            ModUtils.addEntityVelocity(this, dir.scale(0.04 * 0.4));
          //   double d0 = ((posToTravelToo.x - this.posX) * 0.0010);
          //   double d1 = (((posToTravelToo.y + 1) - this.posY) * 0.006);
          //   double d2 = ((posToTravelToo.z - this.posZ) * 0.0010);

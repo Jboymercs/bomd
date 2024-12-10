@@ -4,16 +4,20 @@ import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.IPitch;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
+import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -37,10 +41,10 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
     private static final DataParameter<Boolean> COMBO_AOE_ATTACK = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> COMBO_SHOOT_PROJECTILES = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> THROW_STAFF = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> RAGE_MODE = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
 
     public List<WeakReference<Entity>> current_mobs = Lists.newArrayList();
 
-    private int mob_count = MobConfig.lich_active_mob_count;
     private static final DataParameter<Boolean> ANGERED_STATE = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
 
     protected static final DataParameter<Float> LOOK = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.FLOAT);
@@ -56,6 +60,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
     public void setComboShootProjectiles(boolean value) {this.dataManager.set(COMBO_SHOOT_PROJECTILES, Boolean.valueOf(value));}
     public void setAngeredState(boolean value) {this.dataManager.set(ANGERED_STATE, Boolean.valueOf(value));}
     public void setThrowStaff(boolean value) {this.dataManager.set(THROW_STAFF, Boolean.valueOf(value));}
+    public void setRageMode(boolean value) {this.dataManager.set(RAGE_MODE, Boolean.valueOf(value));}
 
     public boolean isGreenAttack() {return this.dataManager.get(GREEN_ATTACK);}
     public boolean isRedAttack() {return this.dataManager.get(RED_ATTACK);}
@@ -69,6 +74,9 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
     public boolean isComboAOEAttack() {return this.dataManager.get(COMBO_AOE_ATTACK);}
     public boolean isAngeredState() {return this.dataManager.get(ANGERED_STATE);}
     public boolean isThrowStaff() {return this.dataManager.get(THROW_STAFF);}
+    public boolean isRageMode() {return this.dataManager.get(RAGE_MODE);}
+
+    protected int teleportCooldownTimer = MobConfig.lich_teleport_timer * 20;
 
     public EntityAbstractNightLich(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -87,6 +95,12 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
 
         //updates the mobs currently summoned by the lich
             this.clearInvalidEntities();
+
+            if(!world.isRemote) {
+                if(teleportCooldownTimer > 0) {
+                    teleportCooldownTimer--;
+                }
+            }
 
 
 
@@ -107,6 +121,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
         nbt.setBoolean("Combo_Aoe", this.isComboAOEAttack());
         nbt.setBoolean("Angry_State", this.isAngeredState());
         nbt.setBoolean("Throw_Staff", this.isThrowStaff());
+        nbt.setBoolean("Rage_Mode", this.isRageMode());
         nbt.setFloat("Look", this.getPitch());
         NBTTagList mobs = new NBTTagList();
         for (WeakReference<Entity> ref : current_mobs) {
@@ -131,6 +146,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
         this.setComboAoeAttack(nbt.getBoolean("Combo_Aoe"));
         this.setAngeredState(nbt.getBoolean("Angry_State"));
         this.setThrowStaff(nbt.getBoolean("Throw_Staff"));
+        this.setRageMode(nbt.getBoolean("Rage_Mode"));
         this.dataManager.set(LOOK, nbt.getFloat("Look"));
     }
 
@@ -150,6 +166,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
         this.dataManager.register(COMBO_AOE_ATTACK, Boolean.valueOf(false));
         this.dataManager.register(ANGERED_STATE, Boolean.valueOf(false));
         this.dataManager.register(THROW_STAFF, Boolean.valueOf(false));
+        this.dataManager.register(RAGE_MODE, Boolean.valueOf(false));
     }
 
 
@@ -170,7 +187,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(MobConfig.night_lich_armor);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(MobConfig.night_lich_armor_toughness);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0.8D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(10D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.night_lich_attack_damage);
     }
 
     @Override

@@ -20,7 +20,7 @@ public class EventDropSoulStar {
     {
         EntityLivingBase target = event.getEntityLiving();
 
-        if (target != null && ModConfig.enable_experimental)
+        if (target != null)
         {
             if(ModConfig.soul_star_drops_everywhere) {
 

@@ -1,9 +1,12 @@
 package com.dungeon_additions.da.event;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.EntityFireResistantItems;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.items.util.ISweepAttackOverride;
 import com.dungeon_additions.da.util.ModReference;
+import com.dungeon_additions.da.util.player.PlayerMeleeAttack;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.MobEffects;
@@ -13,8 +16,12 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
@@ -40,4 +47,18 @@ public class EventSwordResistance {
             }
         }
     }
+
+
+    @SubscribeEvent(receiveCanceled = true)
+    public static void onAttackEntityEvent(AttackEntityEvent event) {
+        // Overrides the melee attack of the player if the item used is the sweep attack
+        // override interface
+        if (event.getEntityPlayer().getHeldItemMainhand().getItem() instanceof ISweepAttackOverride) {
+            PlayerMeleeAttack.attackTargetEntityWithCurrentItem(event.getEntityPlayer(), event.getTarget());
+            event.setCanceled(true);
+        } else {
+            event.setCanceled(false);
+        }
+    }
+
 }

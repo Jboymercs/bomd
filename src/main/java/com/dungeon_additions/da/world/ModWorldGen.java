@@ -58,7 +58,7 @@ public class ModWorldGen implements IWorldGenerator {
         //Rotten Hold
         if (isAllowedDimensionTooSpawnInRottenHold(world.provider.getDimension())) {
             if(world.provider.getBiomeForCoords(pos) != Biomes.DEEP_OCEAN && world.provider.getBiomeForCoords(pos) != Biomes.OCEAN) {
-                if(WorldConfig.rotten_hold_is_blacklist == (world.provider.getBiomeForCoords(pos) != getSpawnBiomesRottenHold().iterator())) {
+                if(isBiomeValidRottenHold(pos, world)) {
                     BlockPos posModified = new BlockPos(pos.getX(), 0, pos.getZ());
                     rotten_hold.generate(world, random, posModified);
                 }
@@ -78,6 +78,20 @@ public class ModWorldGen implements IWorldGenerator {
      * @return
      */
 
+    public boolean isBiomeValidRottenHold(BlockPos pos, World world) {
+        for(Biome biome : getSpawnBiomesRottenHold()) {
+            if(WorldConfig.rotten_hold_is_blacklist) {
+                if(world.provider.getBiomeForCoords(pos) != biome) {
+                    return true;
+                }
+            } else {
+                if(world.provider.getBiomeForCoords(pos) == biome) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public static List<Biome> getSpawnBiomesRottenHold() {
         if (spawnBiomesRottenHold == null) {
             spawnBiomesRottenHold = Lists.newArrayList();

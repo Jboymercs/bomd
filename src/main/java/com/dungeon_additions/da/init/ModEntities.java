@@ -1,14 +1,10 @@
 package com.dungeon_additions.da.init;
 
 import com.dungeon_additions.da.Main;
-import com.dungeon_additions.da.animation.example.EntityExample;
-import com.dungeon_additions.da.animation.example.exampletwo.EntityEverator;
-import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.EntityFireResistantItems;
 import com.dungeon_additions.da.entity.EntityNetherAbberrant;
 import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
-import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
 import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
@@ -17,6 +13,7 @@ import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileTrackingFlame
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
+import com.dungeon_additions.da.entity.night_lich.EntityLichSpawn;
 import com.dungeon_additions.da.entity.projectiles.EntityLily;
 import com.dungeon_additions.da.entity.projectiles.EntitySoulStar;
 import com.dungeon_additions.da.entity.projectiles.ProjectileAbberrantAttack;
@@ -30,7 +27,6 @@ import com.dungeon_additions.da.util.ModReference;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3i;
@@ -50,6 +46,7 @@ public class ModEntities {
     public static Vec3i void_blossom = new Vec3i(6433126, 8111156, 0);
     public static Vec3i nether = new Vec3i(6433126, 0xeb4034, 0);
     public static Vec3i rot_knights = new Vec3i(0x63615e,0x66005,0);
+    public static Vec3i night_lich = new Vec3i(0x021a1a,0x6eebeb,0);
     public static void registerEntities() {
       //  registerEntityWithID("wreath_knight", EntityWreathKnight.class, ENTITY_START_ID++, 50, knight_mobs);
         registerEntityWithID("void_blossom", EntityVoidBlossom.class, ENTITY_START_ID++, 50, void_blossom);
@@ -81,11 +78,13 @@ public class ModEntities {
             registerEntity("rot_spike", EntityRotSpike.class, ENTITY_START_ID++, 60);
             registerEntity("soul_star", EntitySoulStar.class, ENTITY_START_ID++, 60);
             registerEntity("lily_locator", EntityLily.class, ENTITY_START_ID++, 60);
-            registerEntityWithID("night_lich", EntityNightLich.class, ENTITY_START_ID++, 60, knight_mobs);
+            registerEntityWithID("night_lich", EntityNightLich.class, ENTITY_START_ID++, 60, night_lich);
             registerEntity("magic_missile", ProjectileMagicMissile.class, ENTITY_START_ID++, 60);
             registerEntity("magic_fireball", ProjectileMagicFireBall.class, ENTITY_START_ID++, 60);
             registerEntity("lich_staff", EntityLichStaffAOE.class, ENTITY_START_ID++, 60);
             registerEntity("track_missile", ProjectileTrackingMagicMissile.class, ENTITY_START_ID++, 60);
+            registerEntity("ground_missile", ProjectileMagicGround.class, ENTITY_START_ID++, 60);
+            registerEntity("lich_spawn", EntityLichSpawn.class, ENTITY_START_ID++, 60);
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
         registerTileEntity(TileEntityMegaStructure.class, "mega_structure");

@@ -128,7 +128,7 @@ public class MobConfig {
     @Config.Name("Knight of Burning Flame Experience Drop")
     @Config.Comment("Take in mind, this boss drops x number of experience 16 times, you can change the value of the given orb summoned below")
     @Config.RequiresMcRestart
-    public static int kobf_experience_orb_value = 8;
+    public static int kobf_experience_orb_value = 10;
 
     @Config.Name("Knight of Burning Flame AOE Damage")
     @Config.Comment("How much damage is dealt by the magma blocks popping out of the ground, note this takes affect to the sword as well")
@@ -198,7 +198,7 @@ public class MobConfig {
     @Config.Name("Night Lich Cooldown Additive")
     @Config.Comment("This value basically is another static, however it only adds onto the cooldown of certain attacks in areas, mostly between switching melee mode and ranged mode to give breathing room in seconds")
     @Config.RequiresMcRestart
-    public static int lich_additive_cooldown = 4;
+    public static int lich_additive_cooldown = 3;
 
     @Config.Name("Night Lich Magic Missile Speed")
     @Config.Comment("Change the speed of the Magic Missile Projectile used by the Night Lich")
@@ -213,16 +213,81 @@ public class MobConfig {
     @Config.Name("Night Lich Health")
     @Config.Comment("Change the Health of the Night Lich")
     @Config.RequiresMcRestart
-    public static double night_lich_health = 400;
+    public static double night_lich_health = 425;
+
+    @Config.Name("Night Lich Attack Damage")
+    @Config.Comment("Change the Attack Damage of the Night Lich")
+    @Config.RequiresMcRestart
+    public static double night_lich_attack_damage = 26;
+
+    @Config.Name("Night Lich Staff AOE Damage Multiplier")
+    @Config.Comment("Change the damage done by the Lich's staffs in the AOE attacks, used by baseAttackDamage * x")
+    @Config.RequiresMcRestart
+    public static double night_lich_staff_multiplier = 1.25;
+
+    @Config.Name("Night Lich Red Dash Damage Multiplier")
+    @Config.Comment("Change the damage done by the Red Dash attack, used by baseAttackDamage * x")
+    @Config.RequiresMcRestart
+    public static double night_lich_dash_multiplier = 1.4;
 
     @Config.Name("Night Lich Armor")
     @Config.Comment("Change the armor value of the Night Lich")
     @Config.RequiresMcRestart
-    public static double night_lich_armor = 6;
+    public static double night_lich_armor = 10;
 
     @Config.Name("Night Lich Armor Toughness")
     @Config.Comment("Change the Night Lich Armor Toughness")
     @Config.RequiresMcRestart
     public static double night_lich_armor_toughness = 2;
+
+    @Config.Name("Night Lich Melee Damage Reduction")
+    @Config.Comment("Night Lich's resistance to melee damage, used as damage * x = damageDone.")
+    @Config.RequiresMcRestart
+    public static double lich_melee_resistance = 0.5;
+
+    @Config.Name("Night Lich Experience Value")
+    @Config.Comment("Change the Experience dropped by the Night Lich")
+    @Config.RequiresMcRestart
+    public static int lich_experience_value = 225;
+
+    @Config.Name("Night Lich Teleport Cooldown Timer")
+    @Config.Comment("Change how often the Night Lich can attempt to teleport away from projectiles while not in a melee state, and not casting a spell. In Seconds")
+    @Config.RequiresMcRestart
+    public static int lich_teleport_timer = 10;
+
+    @Config.Name("Night Lich Mob Spawn List One")
+    @Config.Comment("Add or remove possible mob spawns that the Night Lich can summon, must be ModID:entity_name")
+    @Config.RequiresMcRestart
+    public static String[] mob_list_one = {
+            "minecraft:zombie",
+            "minecraft:skeleton",
+            "minecraft:spider"
+    };
+
+    @Config.Name("Night Lich Mob Spawn List Two")
+    @Config.Comment("Add or remove possible mob spawns that the Night Lich can summon, this list only takes effect when below 50% Health. Must be ModID:entity_name")
+    @Config.RequiresMcRestart
+    public static String[] mob_list_two = {
+            "minecraft:zombie",
+            "minecraft:skeleton",
+            "minecraft:cave_spider",
+            "minecraft:blaze"
+    };
+
+    @Config.Name("Night Lich Enable Mob Gear")
+    @Config.Comment("When enabled, Zombies or anything that extends off of zombies will be given gear such as an Iron Sword and Helmet")
+    @Config.RequiresMcRestart
+    public static boolean lich_enable_gear = true;
+
+    @Config.Name("Night Lich Enable Disappearance")
+    @Config.Comment("When enabled, the Night Lich will disappear and essentially be gone. Usually only occurs when it's daylight. This also disables the Night Lich forcing night time")
+    @Config.RequiresMcRestart
+    public static boolean lich_enable_daylight = true;
+
+    @Config.Name("Night Lich Evening Disappearance Evening")
+    @Config.Comment("Change the evening time for when the Night Lich can be summoned, take note that official day time is at 0")
+    @Config.RequiresMcRestart
+    public static int lich_summon_time = 12000;
+
 
 }

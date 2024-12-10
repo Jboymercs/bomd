@@ -67,6 +67,14 @@ public class SoundsHandler {
     public static SoundEvent LICH_SUMMON_MINION;
     public static SoundEvent LICH_SHOOT_STAFF;
     public static SoundEvent LICH_STAFF_IMPACT;
+    public static SoundEvent LICH_MAGIC_SWING;
+    public static SoundEvent LICH_HURT;
+    public static SoundEvent LICH_USE_SPEAR;
+
+    public static SoundEvent LICH_PREPARE_SPELL;
+    public static SoundEvent LICH_PREPARE_COMBO;
+    public static SoundEvent LICH_RAGE_PREPARE;
+
     public static void registerSounds() {
         //
         MOSS_BREAK = registerSound("moss.break", "block");
@@ -121,6 +129,12 @@ public class SoundsHandler {
         LICH_SUMMON_MINION = registerSound("night_lich.summon", "entity");
         LICH_SHOOT_STAFF = registerSound("night_lich.shoot_staff", "entity");
         LICH_STAFF_IMPACT = registerSound("night_lich.staff_impact", "entity");
+        LICH_MAGIC_SWING = registerSound("night_lich.magic_swing", "entity");
+        LICH_HURT = registerSound("night_lich.hurt", "entity");
+        LICH_USE_SPEAR = registerSound("night_lich.spear", "entity");
+        LICH_PREPARE_COMBO = registerSound("night_lich.prepare_combo", "entity");
+        LICH_PREPARE_SPELL = registerSound("night_lich.prepare_spell", "entity");
+        LICH_RAGE_PREPARE = registerSound("night_lich.rage_prepare", "entity");
     }
 
 

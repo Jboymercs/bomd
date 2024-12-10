@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.util;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.blocks.lich.EnumLichSpawner;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
@@ -7,15 +8,23 @@ import com.dungeon_additions.da.entity.tileEntity.TileEntityLichSpawner;
 import com.dungeon_additions.da.event.EventScheduler;
 import com.dungeon_additions.da.event.Services;
 import com.dungeon_additions.da.init.ModBlocks;
+import com.dungeon_additions.da.packets.EnumModParticles;
+import com.dungeon_additions.da.packets.MessageModParticles;
+import com.dungeon_additions.da.util.damage.Element;
+import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.interfaces.IModUtilsHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -737,6 +746,48 @@ public class ModUtils {
         }
 
         return 0;
+    }
+
+
+    public static void doSweepAttack(EntityPlayer player, @Nullable EntityLivingBase target, Consumer<EntityLivingBase> perEntity) {
+        doSweepAttack(player, target, perEntity, 9, 1);
+    }
+
+    public static void doSweepAttack(EntityPlayer player, @Nullable EntityLivingBase target, Consumer<EntityLivingBase> perEntity, float maxDistanceSq, float areaSize) {
+        float attackDamage = (float) player.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+        float sweepDamage = Math.min(0.15F + EnchantmentHelper.getSweepingDamageRatio(player), 1) * attackDamage;
+
+        AxisAlignedBB box;
+
+        if (target != null) {
+            box = target.getEntityBoundingBox();
+        } else {
+            Vec3d center = ModUtils.getAxisOffset(player.getLookVec(), new Vec3d(areaSize * 1.5, 0, 0)).add(player.getPositionEyes(1));
+            box = makeBox(center, center).grow(areaSize * 0.5, areaSize, areaSize * 0.5);
+        }
+
+        for (EntityLivingBase entitylivingbase : player.world.getEntitiesWithinAABB(EntityLivingBase.class, box.grow(areaSize, 0.25D, areaSize))) {
+            if (entitylivingbase != player && entitylivingbase != target && !player.isOnSameTeam(entitylivingbase) && player.getDistanceSq(entitylivingbase) < maxDistanceSq) {
+                entitylivingbase.knockBack(player, 0.4F, MathHelper.sin(player.rotationYaw * 0.017453292F), (-MathHelper.cos(player.rotationYaw * 0.017453292F)));
+                entitylivingbase.attackEntityFrom(ModDamageSource.causeElementalPlayerDamage(player, Element.NONE), sweepDamage);
+                perEntity.accept(entitylivingbase);
+            }
+        }
+
+        player.world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, player.getSoundCategory(), 1.0F, 0.9F);
+
+        // Spawn colored sweep particles
+        if (!player.world.isRemote && player instanceof EntityPlayerMP) {
+            Main.network.sendTo(new MessageModParticles(EnumModParticles.SWEEP_ATTACK, getCenter(box), Vec3d.ZERO, ModColors.WHITE), (EntityPlayerMP) player);
+        }
+    }
+
+
+    /**
+     * Because the stupid constructor is client side only
+     */
+    public static AxisAlignedBB makeBox(Vec3d pos1, Vec3d pos2) {
+        return new AxisAlignedBB(pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z);
     }
 
 
