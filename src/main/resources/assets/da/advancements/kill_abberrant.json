@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:abberrant_eye"
+    },
+    "title": {
+      "translate": "advancements.da.kill_abberrant.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_abberrant.description"
+    }
+  },
+  "parent": "da:root",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:nether_aberant"
+        }
+      }
+    }
+  }
+}

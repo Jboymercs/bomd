@@ -1,12 +1,15 @@
 package com.dungeon_additions.da.entity.night_lich;
 
 import com.dungeon_additions.da.entity.projectiles.Projectile;
+import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -18,6 +21,12 @@ public class ProjectileMagicFireBall extends Projectile {
 
     public ProjectileMagicFireBall(World worldIn, EntityLivingBase throwerIn, float damage) {
         super(worldIn, throwerIn, damage);
+    }
+
+    protected EntityPlayer player;
+    public ProjectileMagicFireBall(World worldIn, EntityLivingBase throwerIn, float damage, EntityPlayer owner) {
+        super(worldIn, throwerIn, damage);
+        this.player = owner;
     }
 
     public ProjectileMagicFireBall(World worldIn) {
@@ -39,7 +48,15 @@ public class ProjectileMagicFireBall extends Projectile {
     protected void onHit(RayTraceResult result) {
         //Spawns an Explosion on Impact
         if(!world.isRemote) {
-            world.newExplosion(this, this.posX, this.posY, this.posZ, 2, false, false);
+            if(player != null) {
+                if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.NIGHT_LICH_HELMET) {
+                    world.newExplosion(this, this.posX, this.posY, this.posZ, 2, false, false);
+                } else {
+                    world.newExplosion(this, this.posX, this.posY, this.posZ, 1, false, false);
+                }
+            } else {
+                world.newExplosion(this, this.posX, this.posY, this.posZ, 2, false, false);
+            }
         }
 
         DamageSource source = ModDamageSource.builder()

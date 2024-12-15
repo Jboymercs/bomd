@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:crystal_fruit"
+    },
+    "title": {
+      "translate": "advancements.da.kill_void_blossom.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_void_blossom.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "da:craft_void_lily",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:void_blossom"
+        }
+      }
+    }
+  }
+}

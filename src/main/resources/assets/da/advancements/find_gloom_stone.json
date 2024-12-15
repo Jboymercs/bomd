@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:gloom_brick"
+    },
+    "title": {
+      "translate": "advancements.da.find_gloom_stone.title"
+    },
+    "description": {
+      "translate": "advancements.da.find_gloom_stone.description"
+    }
+  },
+  "parent": "da:root",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:gloom_stone"
+          }
+        ]
+      }
+    }
+  }
+}

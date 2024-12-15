@@ -72,6 +72,15 @@ public class RottenHoldTemplate extends ModStructureTemplate {
             }
         }
 
+        //flower
+        if(function.startsWith("flower")) {
+            if(generateFlowerSpawn()) {
+                world.setBlockState(pos, ModBlocks.VOID_LILY_BLOCK.getDefaultState());
+            } else {
+                world.setBlockToAir(pos);
+            }
+        }
+
         //loot
         if(function.startsWith("key_chest")) {
             BlockPos blockPos = pos.down();
@@ -113,6 +122,14 @@ public class RottenHoldTemplate extends ModStructureTemplate {
     public boolean generateChestSpawn() {
         int randomNumberGenerator = ModRand.range(0, 10);
         if (randomNumberGenerator >= WorldConfig.rot_hold_chest_spawns) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean generateFlowerSpawn() {
+        int randomNumberGenerator = ModRand.range(0, 10);
+        if (randomNumberGenerator >= 7) {
             return false;
         }
         return true;

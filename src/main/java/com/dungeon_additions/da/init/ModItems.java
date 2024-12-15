@@ -3,6 +3,7 @@ package com.dungeon_additions.da.init;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.items.*;
 import com.dungeon_additions.da.items.armor.ModArmorBase;
+import com.dungeon_additions.da.items.armor.ModLichArmor;
 import com.dungeon_additions.da.items.tools.*;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.ModColors;
@@ -28,7 +29,8 @@ public class ModItems {
     private static final Item.ToolMaterial SOUL_SPEAR_WEAPON_MATERIAL = EnumHelper.addToolMaterial("soul_spear_weapon_material", 2, 1200, 5.0F, ModConfig.soul_weapon_damage, 20);
     private static final Item.ToolMaterial KNIGHT_RAPIER_MATERIAL = EnumHelper.addToolMaterial("knight_rapier_material", 2, 502, 5.0F, (float) ModConfig.rapier_damage, 10);
 
-    private static final ItemArmor.ArmorMaterial FLAME_ARMOR = EnumHelper.addArmorMaterial("flame", ModReference.MOD_ID + ":flame", 450, new int[]{4, 7,9,4}, 70, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2F);
+    private static final ItemArmor.ArmorMaterial FLAME_ARMOR = EnumHelper.addArmorMaterial("flame", ModReference.MOD_ID + ":flame", 320, new int[]{4, 7,9,4}, 70, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2F);
+    private static final ItemArmor.ArmorMaterial LICH_HELMET = EnumHelper.addArmorMaterial("night_lich", ModReference.MOD_ID +":night_lich", 275, new int[] {3,6,8,3}, 70, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1F);
     public ModItems() {
 
 
@@ -64,6 +66,7 @@ public class ModItems {
     public static final Item FLAME_CHESTPLATE = new ModArmorBase("flame_chestplate", FLAME_ARMOR, 1, EntityEquipmentSlot.CHEST, "flame", "flame_armor_desc");
     public static final Item FLAME_LEGGINGS = new ModArmorBase("flame_leggings", FLAME_ARMOR, 2, EntityEquipmentSlot.LEGS, "flame", "flame_armor_desc");
     public static final ItemArmor FLAME_BOOTS = new ModArmorBase("flame_boots", FLAME_ARMOR, 1, EntityEquipmentSlot.FEET, "flame", "flame_armor_desc");
+    public static final ItemArmor NIGHT_LICH_HELMET = new ModLichArmor("lich_helmet", LICH_HELMET, 1, EntityEquipmentSlot.HEAD,"night_lich", "night_lich_desc");
 
     public static final Item ROT_KNIGHT_FRAGMENT = new ItemCraftingMaterial("knight_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ROT_KNIGHT_INGOT = new ItemCraftingMaterial("knight_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -77,6 +80,8 @@ public class ModItems {
     public static final Item SPEAR_OF_SOULS = new ItemSoulSpear("spear_staff", SOUL_SPEAR_MATERIAL, "soul_spear_desc");
     public static final Item SPEAR_OF_WARRIOR = new ItemWeaponSpear("spear_weapon", SOUL_SPEAR_WEAPON_MATERIAL, "soul_weapon_desc");
     public static final Item RED_ANICIENT_MANA = new ItemCraftingMaterial("red_ancient_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+
+    public static final Item MOD_LOGO = new ItemBase("bomd_mod_logo", null);
 
 
 }

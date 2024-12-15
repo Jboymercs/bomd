@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:ambition_flame"
+    },
+    "title": {
+      "translate": "advancements.da.kill_kobf.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_kobf.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "da:kill_abberrant",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:flame_knight"
+        }
+      }
+    }
+  }
+}

@@ -7,7 +7,9 @@ import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -17,6 +19,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.List;
 
@@ -33,7 +36,7 @@ public class ItemSoulSpear extends ToolSword {
 
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(TextFormatting.BLUE + ModUtils.translateDesc(info_loc));
+        tooltip.add(TextFormatting.AQUA + ModUtils.translateDesc(info_loc));
     }
 
     @Override

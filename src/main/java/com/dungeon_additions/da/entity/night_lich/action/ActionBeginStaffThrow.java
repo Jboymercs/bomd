@@ -29,19 +29,19 @@ public class ActionBeginStaffThrow implements IActionLich{
         }, 30);
 
         actor.addEvent(()-> {
-            EntityLichStaffAOE staff_1 = new EntityLichStaffAOE(actor.world, true);
+            EntityLichStaffAOE staff_2 = new EntityLichStaffAOE(actor.world, true);
             Vec3d posToo = target.getPositionVector().add(ModRand.range(-4, 4), 0, ModRand.range(-4, 4));
             int y2 = getSurfaceHeight(actor.world, new BlockPos(posToo.x, 0, posToo.z), (int) posToo.x - 6, (int) posToo.z + 3);
-            staff_1.setPosition(posToo.x, y2, posToo.z);
-            actor.world.spawnEntity(staff_1);
+            staff_2.setPosition(posToo.x, y2, posToo.z);
+            actor.world.spawnEntity(staff_2);
         }, 60);
 
         actor.addEvent(()-> {
-            EntityLichStaffAOE staff_1 = new EntityLichStaffAOE(actor.world, true);
+            EntityLichStaffAOE staff_3 = new EntityLichStaffAOE(actor.world, true);
             Vec3d posToo = target.getPositionVector().add(ModRand.range(-4, 4), 0, ModRand.range(-4, 4));
             int y2 = getSurfaceHeight(actor.world, new BlockPos(posToo.x, 0, posToo.z), (int) posToo.x - 6, (int) posToo.z + 3);
-            staff_1.setPosition(posToo.x, y2, posToo.z);
-            actor.world.spawnEntity(staff_1);
+            staff_3.setPosition(posToo.x, y2, posToo.z);
+            actor.world.spawnEntity(staff_3);
         }, 90);
     }
 

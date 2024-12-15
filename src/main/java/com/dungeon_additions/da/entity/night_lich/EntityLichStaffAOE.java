@@ -161,8 +161,6 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
                 //damage Entities
                 if(owner != null) {
                     List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntityPlayer)));
-
-
                     if(!targets.isEmpty()) {
                         for(EntityLivingBase base : targets) {
                             if(base != this && base != owner) {
@@ -219,13 +217,8 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
                 ParticleManager.spawnDust(world, this.getPositionVector().add(0, 0.5, 0), ModColors.AZURE, pos.normalize().scale(0.25).add(ModUtils.yVec(0)), ModRand.range(10, 15));
             });
         } else if (id == ModUtils.SECOND_PARTICLE_BYTE) {
-            if(owner != null) {
-                ParticleManager.spawnDust(world, this.getPositionVector().add(0, 0.5, 0), ModColors.RED, Vec3d.ZERO, ModRand.range(10, 15));
-            } else {
                 ParticleManager.spawnDust(world, this.getPositionVector().add(0, 0.5, 0), ModColors.AZURE, Vec3d.ZERO, ModRand.range(10, 15));
             }
-
-        }
     }
 
     @Override

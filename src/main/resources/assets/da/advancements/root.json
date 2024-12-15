@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:bomd_mod_logo"
+    },
+    "title": {
+      "translate": "advancements.da.root.title"
+    },
+    "description": {
+      "translate": "advancements.da.root.description"
+    },
+    "background": "da:textures/blocks/gloom_stone.png",
+    "show_toast": true,
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

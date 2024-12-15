@@ -20,6 +20,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -40,6 +41,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -52,7 +54,6 @@ public class BlockVoidLily extends BlockBush implements IHasModel, ITileEntityPr
      * Plant for Locating Void Blossom Cave
      */
     private String info_loc;
-    private static List<Biome> spawnBiomes;
 
     private BlockPos particlePosToo;
     protected static final AxisAlignedBB CRYSTAL_AABB = new AxisAlignedBB(0.35D, 0.0D, 0.35D, 0.65D, 0.8D, 0.65D);
@@ -84,20 +85,28 @@ public class BlockVoidLily extends BlockBush implements IHasModel, ITileEntityPr
 
     @Override
     public void update(World world, BlockPos pos) {
-
-
     }
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(!world.isRemote && player.getHeldItemMainhand().isEmpty()) {
+            if(particlePosToo != null) {
+                if (isWithinRadius(particlePosToo, pos)) {
+                    particlePosToo = null;
+                    player.sendStatusMessage(new TextComponentTranslation("da.within_bounds", new Object[0]), true);
+                }
+            }
+        }
+
+        return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
+    }
+
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    {
+        if(!world.isRemote) {
             if(particlePosToo == null) {
                 particlePosToo = findNearestPos(pos, world);
-            }
-
-            if(isWithinRadius(particlePosToo, pos)) {
-                particlePosToo = null;
-                player.sendStatusMessage(new TextComponentTranslation("da.within_bounds", new Object[0]), true);
             }
 
             if(particlePosToo != null) {
@@ -105,12 +114,10 @@ public class BlockVoidLily extends BlockBush implements IHasModel, ITileEntityPr
                 entityendereye.moveTowards(particlePosToo);
                 world.spawnEntity(entityendereye);
                 world.playSound((EntityPlayer) null, pos.getX(), pos.getY(), pos.getZ(), SoundsHandler.BLOSSOM_PETAL_WAVE, SoundCategory.NEUTRAL, 0.3F, 0.2F / (world.rand.nextFloat() * 0.4F + 0.4F));
-                return true;
             }
         }
-
-        return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
     }
+
 
     public static boolean isWithinRadius(BlockPos setPos, BlockPos pos) {
         if(setPos != null) {
@@ -170,7 +177,7 @@ public class BlockVoidLily extends BlockBush implements IHasModel, ITileEntityPr
 
         int k = chunkX / spacing;
         int l = chunkZ / spacing;
-        Random random = world.setRandomSeed(k, l, 10387312);
+        Random random = world.setRandomSeed(k, l, 10383709);
         k = k * spacing;
         l = l * spacing;
         k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
@@ -178,42 +185,42 @@ public class BlockVoidLily extends BlockBush implements IHasModel, ITileEntityPr
 
         if (i == k && j == l && isAllowedDimensionTooSpawnIn(world.provider.getDimension())) {
             BlockPos pos = new BlockPos((i << 4), 0, (j << 4));
-            return isBiomeValid(pos, world);
+            return isAbleToSpawnHereBlossom(pos, world);
         } else {
 
             return false;
         }
     }
 
-    public static boolean isBiomeValid(BlockPos pos, World world) {
-        for(Biome biome : getSpawnBiomes()) {
-            if(WorldConfig.isBlacklist) {
-                if(world.provider.getBiomeForCoords(pos) != biome) {
-                    return true;
-                }
-            } else {
-                if(world.provider.getBiomeForCoords(pos) == biome) {
-                    return true;
-                }
+    public static boolean isAbleToSpawnHereBlossom(BlockPos pos, World world) {
+        for(BiomeDictionary.Type types : getSpawnBiomeTypesBlossom()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
-    public static List<Biome> getSpawnBiomes() {
-        if (spawnBiomes == null) {
-            spawnBiomes = Lists.newArrayList();
-            for (String str : WorldConfig.biome_allowed) {
+    private static List<BiomeDictionary.Type> blossomTowerBiomeTypes;
+
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypesBlossom() {
+        if(blossomTowerBiomeTypes == null) {
+            blossomTowerBiomeTypes = Lists.newArrayList();
+
+            for(String str : WorldConfig.biome_types_blossom) {
                 try {
-                    Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(str));
-                    if (biome != null) spawnBiomes.add(biome);
-                    else DALogger.logError("Biome " + str + " is not registered", new NullPointerException());
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) blossomTowerBiomeTypes.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
                 } catch (Exception e) {
-                    DALogger.logError(str + " is not a valid registry name", e);
+                    DALogger.logError(str + " is not a valid type name", e);
                 }
             }
         }
-        return spawnBiomes;
+
+        return blossomTowerBiomeTypes;
     }
 
     @Override

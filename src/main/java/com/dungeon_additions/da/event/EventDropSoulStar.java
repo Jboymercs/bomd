@@ -25,19 +25,19 @@ public class EventDropSoulStar {
             if(ModConfig.soul_star_drops_everywhere) {
 
                 if (target instanceof EntityMob) {
-                    if (target.world.rand.nextFloat() <= ((float) ModConfig.soul_star_drop_chance * 0.01) + (0.05 * event.getLootingLevel())) {
+                    if (target.world.rand.nextFloat() <= ((float) ModConfig.soul_star_drop_chance * 0.01) + (0.01 * event.getLootingLevel())) {
                         event.getDrops().add(new EntityItem(target.world, target.posX, target.posY, target.posZ, new ItemStack(ModItems.SOUL_STAR)));
                     }
                 }
 
             } else {
                 if (target instanceof EntityZombie) {
-                    if (target.world.rand.nextFloat() <= ((float) ModConfig.soul_star_drop_chance * 0.01) + (0.05 * event.getLootingLevel())) {
+                    if (target.world.rand.nextFloat() <= ((float) ModConfig.soul_star_drop_chance * 0.01) + (0.01 * event.getLootingLevel())) {
                         event.getDrops().add(new EntityItem(target.world, target.posX, target.posY, target.posZ, new ItemStack(ModItems.SOUL_STAR)));
                     }
                 }
                 if (target instanceof AbstractSkeleton) {
-                    if (target.world.rand.nextFloat() <= ((float) ModConfig.soul_star_drop_chance * 0.01) + (0.5 * event.getLootingLevel())) {
+                    if (target.world.rand.nextFloat() <= ((float) ModConfig.soul_star_drop_chance * 0.01) + (0.1 * event.getLootingLevel())) {
                         event.getDrops().add(new EntityItem(target.world, target.posX, target.posY, target.posZ, new ItemStack(ModItems.SOUL_STAR)));
                     }
                 }

@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:spear_weapon"
+    },
+    "title": {
+      "translate": "advancements.da.craft_spear_warrior.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_spear_warrior.description"
+    }
+  },
+  "parent": "da:kill_kobf",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:spear_weapon"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -274,7 +274,7 @@
         {
           "type": "item",
           "name": "minecraft:iron_ingot",
-          "weight": 5,
+          "weight": 7,
           "functions": [
             {
               "function": "set_count",
@@ -377,7 +377,7 @@
         {
           "type": "item",
           "name": "da:knight_shard",
-          "weight": 8,
+          "weight": 14,
           "functions": [
             {
               "function": "set_count",

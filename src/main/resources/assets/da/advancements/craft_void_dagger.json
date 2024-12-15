@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:void_dagger"
+    },
+    "title": {
+      "translate": "advancements.da.craft_void_dagger.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_void_dagger.description"
+    }
+  },
+  "parent": "da:kill_void_blossom",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:void_dagger"
+          }
+        ]
+      }
+    }
+  }
+}

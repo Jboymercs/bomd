@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VBV",
+    "R R"
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:leather"
+    },
+    "V": {
+      "item": "da:knight_ingot"
+    },
+    "B": {
+      "item": "da:ancient_mana"
+    }
+  },
+  "result": {
+    "item": "da:lich_helmet"
+  }
+}

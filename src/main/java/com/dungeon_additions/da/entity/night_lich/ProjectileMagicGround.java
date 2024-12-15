@@ -57,22 +57,13 @@ public class ProjectileMagicGround extends Projectile {
             for (int i = 0; i < 5; i++) {
                 ParticleManager.spawnBreak(world, this.getPositionVector().add(ModRand.randVec().scale(1.0f).add(ModUtils.yVec(0.75f))), Item.getItemFromBlock(block.getBlock()), ModRand.randVec().scale(0.1).add(ModUtils.yVec(0.1f)));
             }
-            if(player != null) {
-                for (int i = 0; i < this.PARTICLE_AMOUNT; i++) {
-                    float height = 2 + ModRand.getFloat(0.5f);
-                    for (float y = 0; y < height; y += 0.2f) {
-                        Vec3d pos = ModUtils.entityPos(this).add(new Vec3d(this.motionX * ModRand.getFloat(0.5f), y, this.motionZ * ModRand.getFloat(0.5f)));
-                        ParticleManager.spawnDust(world, pos, ModColors.RED, Vec3d.ZERO, ModRand.range(10, 15));
-                    }
-                }
-            } else {
                 for (int i = 0; i < this.PARTICLE_AMOUNT; i++) {
                     float height = 2 + ModRand.getFloat(0.5f);
                     for (float y = 0; y < height; y += 0.2f) {
                         Vec3d pos = ModUtils.entityPos(this).add(new Vec3d(this.motionX * ModRand.getFloat(0.5f), y, this.motionZ * ModRand.getFloat(0.5f)));
                         ParticleManager.spawnDust(world, pos, ModColors.AZURE, Vec3d.ZERO, ModRand.range(10, 15));
                     }
-                }
+
             }
         }
     }
@@ -111,7 +102,7 @@ public class ProjectileMagicGround extends Projectile {
                         .directEntity(this)
                         .stoppedByArmorNotShields().disablesShields().build();
 
-                entity.attackEntityFrom(source, (float) MobConfig.night_lich_attack_damage);
+                entity.attackEntityFrom(source, (float) getDamage());
 
             }
         }

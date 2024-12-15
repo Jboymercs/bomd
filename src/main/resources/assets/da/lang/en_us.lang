@@ -25,6 +25,7 @@ entity.lich_staff.name=Night Lich's Magic Staff
 entity.track_missile.name=Lich Tracking Missile
 entity.ground_missile.name=Lich Ground Magic
 entity.lich_spawn.name=Lich Mob Spawn
+entity.levitation_block_entity=Levitation Block Entity
 item.void_leaf.name=Void Leaf
 item.spore.name=Void Blossom Spore
 item.crystal_fruit.name=Crystal Fruit
@@ -55,6 +56,8 @@ item.missile_projectile.name=Magic Tracking Projectile
 item.spear_staff.name=Spear of the Soulless Mage
 item.spear_weapon.name=Spear of the Soulless Warrior
 item.red_ancient_mana.name=Inflamed Ancient Anima
+item.lich_helmet.name=Crown of the Soulless
+item.bomd_mod_logo.name=BOMD + DA Mod Logo
 tile.spore_blossom.name=Void Blossom
 tile.moss_block.name=Moss Block
 tile.moss_carpet.name=Moss Carpet
@@ -97,6 +100,7 @@ tile.gloom_smooth_wall.name=Smooth Petrogloom Wall
 tile.gloom_brick_wall.name=Petrogloom Brick Wall
 tile.soul_star_block.name=Chiseled Stone Altar Block
 tile.void_lily.name=Void Lily
+tile.levitation_block.name=Levitation Altar
 
 itemGroup.dungeon_additions=BOMD + Dungeon Additions
 
@@ -116,9 +120,11 @@ da.desc.fire_stone_desc=When mined it drops various Nether related items
 da.desc.rot_knight_key=Used to unlock the keyed block in the Rotten Hold
 da.desc.rapier_desc=Well crafted, faster, and slightly better than iron
 da.desc.soul_star_desc=Where does it lead?
-da.desc.void_lily_desc=Where does the Pollen Lead? Place & Right click to pollinate.
+da.desc.void_lily_desc=Where does the Pollen Lead?
 da.desc.soul_spear_desc=Right click shoots missiles, Shift + Right click launches a comet
 da.desc.soul_weapon_desc=Right click launches ground missiles, Shift + Right click launches an AOE
+da.desc.night_lich_desc=Grants Resistance to Poison and boosts damage of Soulless Spear abilities greatly
+da.desc.levitation_block_desc=Gives Levitation to nearby mobs if not powered, when powered gives it to players
 death.attack.da:maelstrom=%1$s succumbed to the void
 death.attack.da:mobMaelstrom=%1$s was killed by a %2$s
 death.attack.da:playerMaelstrom=%1$s was killed by %2$s
@@ -126,3 +132,48 @@ death.attack.da:thrownMaelstrom=%1$s was pummeled to death by a %2$s
 death.attack.da:explosionMaelstrom=%1$s was blown up
 death.attack.da:explosionMaelstrom.player=%1$s was blown up while fighting a %2$s
 death.attack.da:magicMaelstrom=%1$s was magicked by a %2$s
+
+advancements.da.root.title=Bosses Of Mass Destruction
+advancements.da.root.description=Welcome to BOMD + DA, bringing new bosses and dungeons!
+#Stormvier
+advancements.da.kill_fallen_stormvier.title=And so the Journey Begins!
+advancements.da.kill_fallen_stormvier.description=Slay A Fallen Stormvier in the Rotten Hold
+#Void Blossom
+advancements.da.kill_void_blossom.title=The Plant of the Void
+advancements.da.kill_void_blossom.description=Slay a Void Blossom
+#Night Lich
+advancements.da.kill_night_lich.title=He who roams in the darkness...
+advancements.da.kill_night_lich.description=Slay the Night Lich
+#Aberrant Spirit
+advancements.da.kill_abberrant.title=Enter the arena of Hell
+advancements.da.kill_abberrant.description=Find a Burning Flame Arena
+#Knight of Burning Flame
+advancements.da.kill_kobf.title=The Flame that takes all
+advancements.da.kill_kobf.description=Slay the Knight of Burning Flame
+#Find Soul Star
+advancements.da.find_soul_star.title=The stars lead the way
+advancements.da.find_soul_star.description=Obtain a Soul Star
+#Find Gloom Stone
+advancements.da.find_gloom_stone.title=The stone under the moon
+advancements.da.find_gloom_stone.description=Mine Petrogloom
+#Craft Void Lily
+advancements.da.craft_void_lily.title=Plant Problem
+advancements.da.craft_void_lily.description=Craft a Void Lily
+#Craft Flame Metal
+advancements.da.craft_flame_metal.title=The Flame Burns Again!
+advancements.da.craft_flame_metal.description=Craft the Flame Metal armor set
+#Craft Soulless Spear of the Warrior
+advancements.da.craft_spear_warrior.title=Magic & Fire Manipulation
+advancements.da.craft_spear_warrior.description=Craft Spear of the Soulless Warrior
+#Craft Soulless Spear of the Mage
+advancements.da.craft_spear_staff.title=The Lich and its Studies
+advancements.da.craft_spear_staff.description=Craft Spear of the Soulless Mage
+#Craft Levitation Altar
+advancements.da.craft_lich_altar.title=Now Fly!
+advancements.da.craft_lich_altar.description=Craft the Levitation Altar
+#Craft Endless EnderPearl
+advancements.da.craft_endless_pearl.title=Limitless Technique
+advancements.da.craft_endless_pearl.description=Craft a Charged Enderpearl
+#Craft Void Dagger
+advancements.da.craft_void_dagger.title=How do you like your poison? Sharp or Slow?
+advancements.da.craft_void_dagger.description=Craft the Void Dagger

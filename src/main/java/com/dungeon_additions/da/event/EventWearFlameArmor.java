@@ -35,6 +35,12 @@ public class EventWearFlameArmor {
                     base.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 60, 0, true, false));
                 }
             }
+
+            if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.NIGHT_LICH_HELMET) {
+                if(base.ticksExisted % 40 == 0 && base.isPotionActive(MobEffects.POISON)) {
+                    base.removePotionEffect(MobEffects.POISON);
+                }
+            }
         }
     }
 }

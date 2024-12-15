@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:spear_staff"
+    },
+    "title": {
+      "translate": "advancements.da.craft_spear_staff.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_spear_staff.description"
+    }
+  },
+  "parent": "da:kill_night_lich",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:spear_staff"
+          }
+        ]
+      }
+    }
+  }
+}

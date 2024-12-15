@@ -23,8 +23,6 @@ public class WorldGenLichTower extends WorldGenerator {
 
     private int spacing;
     private int separation;
-
-    private static List<Biome> spawnBiomesLichTower;
     public WorldGenLichTower() {
     this.spacing = WorldConfig.lich_tower_spacing;
     this.separation = 16;
@@ -73,7 +71,7 @@ public class WorldGenLichTower extends WorldGenerator {
         if (i == k && j == l)
         {
             BlockPos pos = new BlockPos(i << 4, 0, j << 4);
-            return isBiomeValid(pos, world);
+            return isAbleToSpawnHere(pos, world);
         } else {
 
             return false;
@@ -81,32 +79,38 @@ public class WorldGenLichTower extends WorldGenerator {
 
     }
 
-
-    public boolean isBiomeValid(BlockPos pos, World world) {
-        for(Biome biome : getSpawnBiomesLichTower()) {
-            if(world.provider.getBiomeForCoords(pos) == biome) {
-                return true;
+    public static boolean isAbleToSpawnHere(BlockPos pos, World world) {
+        for(BiomeDictionary.Type types : getSpawnBiomeTypes()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                return false;
             }
         }
-
-        return false;
+        return true;
     }
 
-    public static List<Biome> getSpawnBiomesLichTower() {
-        if (spawnBiomesLichTower == null) {
-            spawnBiomesLichTower = Lists.newArrayList();
-            for (String str : WorldConfig.biome_allowed_lich) {
+    private static List<BiomeDictionary.Type> lichTowerBiomeTypes;
+
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypes() {
+        if(lichTowerBiomeTypes == null) {
+            lichTowerBiomeTypes = Lists.newArrayList();
+
+            for(String str : WorldConfig.biome_types_blacklist_lich) {
                 try {
-                    Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(str));
-                    if (biome != null) spawnBiomesLichTower.add(biome);
-                    else DALogger.logError("Biome " + str + " is not registered", new NullPointerException());
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) lichTowerBiomeTypes.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
                 } catch (Exception e) {
-                    DALogger.logError(str + " is not a valid registry name", e);
+                    DALogger.logError(str + " is not a valid type name", e);
                 }
             }
         }
-        return spawnBiomesLichTower;
+
+        return lichTowerBiomeTypes;
     }
+
+
 
     public static class Start extends StructureStart {
 

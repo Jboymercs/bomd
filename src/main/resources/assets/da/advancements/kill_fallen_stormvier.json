@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:knight_key"
+    },
+    "title": {
+      "translate": "advancements.da.kill_fallen_stormvier.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_fallen_stormvier.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "da:root",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:ancient_fallen"
+        }
+      }
+    }
+  }
+}

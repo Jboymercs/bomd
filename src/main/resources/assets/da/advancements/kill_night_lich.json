@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:ancient_mana"
+    },
+    "title": {
+      "translate": "advancements.da.kill_night_lich.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_night_lich.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "da:find_soul_star",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:night_lich"
+        }
+      }
+    }
+  }
+}

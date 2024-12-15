@@ -61,7 +61,7 @@ public class AutoGlowingTexture extends AbstractTexture {
                         flag1 = texturemetadatasection.getTextureClamp();
                     }
 
-                    GlowingMetadataSection glowInformation = (GlowingMetadataSection) iresource.getMetadata("glowsections");
+                    GlowingMetadataSection glowInformation = (GlowingMetadataSection) iresource.getMetadata("glowsections_bomd");
                     if (glowInformation != null) {
                         for (Tuple<Tuple<Integer, Integer>, Tuple<Integer, Integer>> area : glowInformation.getGlowingSections()) {
                             for (int ix = area.getFirst().getFirst(); ix < area.getSecond().getFirst(); ix++) {

@@ -48,6 +48,17 @@ public class EntityMoveTile extends Entity implements IEntityAdditionalSpawnData
         this.ownerType = ownerType;
     }
 
+    private float damage = 0;
+
+    public EntityMoveTile(World worldIn, Entity ownerType, float damage) {
+        super(worldIn);
+        this.setSize(1.0F, 1.0F);
+        this.setBlock(Blocks.STONE, 0);
+        this.noClip = true;
+        this.ownerType = ownerType;
+        this.damage = damage;
+    }
+
     public Entity getOwner() {
         return this.ownerType;
     }
@@ -114,7 +125,7 @@ public class EntityMoveTile extends Entity implements IEntityAdditionalSpawnData
             for(EntityLivingBase entity : entities) {
                 if (entity != null) {
                     if (entity instanceof EntityLivingBase && entity != getOwner()) { // needs null check on owner?
-                        if(entity.attackEntityFrom(damageSource, MobConfig.aoe_block_damage)) {
+                        if(entity.attackEntityFrom(damageSource, (damage != 0) ? damage : MobConfig.aoe_block_damage)) {
                             float knockback = 1.5F;
                             Vec3d dir = new Vec3d(this.posX - this.waveStartX, 0, this.posZ - this.waveStartZ);
                             dir = dir.normalize();

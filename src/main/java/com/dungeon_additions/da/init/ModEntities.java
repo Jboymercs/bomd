@@ -42,16 +42,20 @@ public class ModEntities {
     private static final Map<Class<? extends Entity>, String> ID_MAP = new HashMap<>();
     private static int ENTITY_START_ID = 123;
     private static int PROJECTILE_START_ID = 230;
-    public static Vec3i knight_mobs = new Vec3i(0x6B0103, 0xd8d295, 0);
+
     public static Vec3i void_blossom = new Vec3i(6433126, 8111156, 0);
-    public static Vec3i nether = new Vec3i(6433126, 0xeb4034, 0);
+    public static Vec3i mini_void_blossom = new Vec3i(0x9e02e0, 8111156, 0);
+    public static Vec3i nether_spirit = new Vec3i(0x3b0009, 0xeb4034, 0);
     public static Vec3i rot_knights = new Vec3i(0x63615e,0x66005,0);
+    public static Vec3i kobf = new Vec3i(0xbf922a, 0xeb4034, 0);
+    public static Vec3i rot_knight_rapier = new Vec3i(0x63615e,0xc7a548,0);
+    public static Vec3i rot_knight_boss = new Vec3i(0x63615e, 0x03ff18, 0);
     public static Vec3i night_lich = new Vec3i(0x021a1a,0x6eebeb,0);
     public static void registerEntities() {
       //  registerEntityWithID("wreath_knight", EntityWreathKnight.class, ENTITY_START_ID++, 50, knight_mobs);
         registerEntityWithID("void_blossom", EntityVoidBlossom.class, ENTITY_START_ID++, 50, void_blossom);
-        registerEntityWithID("mini_blossom", EntityMiniBlossom.class, ENTITY_START_ID++, 50, void_blossom);
-        registerEntityWithID("nether_aberant", EntityNetherAbberrant.class, ENTITY_START_ID++, 50, nether);
+        registerEntityWithID("mini_blossom", EntityMiniBlossom.class, ENTITY_START_ID++, 50, mini_void_blossom);
+        registerEntityWithID("nether_aberant", EntityNetherAbberrant.class, ENTITY_START_ID++, 50, nether_spirit);
 
         //Example Entity
       //  registerEntity("example_entity", EntityExample.class, ENTITY_START_ID++, 50, knight_mobs);
@@ -71,10 +75,10 @@ public class ModEntities {
             registerEntity("flame_projectile", ProjectileTrackingFlame.class, ENTITY_START_ID++, 60);
             registerEntity("nether_pyre", EntityPyre.class, ENTITY_START_ID++, 50);
             registerEntity("fire_resist_item", EntityFireResistantItems.class, ENTITY_START_ID++, 60);
-            registerEntityWithID("flame_knight", EntityFlameKnight.class, ENTITY_START_ID++, 50, nether);
+            registerEntityWithID("flame_knight", EntityFlameKnight.class, ENTITY_START_ID++, 50, kobf);
             registerEntityWithID("ancient_knight", EntityRotKnight.class, ENTITY_START_ID++, 50, rot_knights);
-            registerEntityWithID("ancient_knight_rapier", EntityRotKnightRapier.class, ENTITY_START_ID++, 50 ,rot_knights);
-            registerEntityWithID("ancient_fallen", EntityRotKnightBoss.class, ENTITY_START_ID++, 50, rot_knights);
+            registerEntityWithID("ancient_knight_rapier", EntityRotKnightRapier.class, ENTITY_START_ID++, 50 ,rot_knight_rapier);
+            registerEntityWithID("ancient_fallen", EntityRotKnightBoss.class, ENTITY_START_ID++, 50, rot_knight_boss);
             registerEntity("rot_spike", EntityRotSpike.class, ENTITY_START_ID++, 60);
             registerEntity("soul_star", EntitySoulStar.class, ENTITY_START_ID++, 60);
             registerEntity("lily_locator", EntityLily.class, ENTITY_START_ID++, 60);
@@ -91,6 +95,7 @@ public class ModEntities {
         registerTileEntity(TileEntityDisappearingSpawner.class, "disappearing_spawner_entity");
         registerTileEntity(TileEntityUpdater.class, "block_updates_entity");
         registerTileEntity(TileEntityLichSpawner.class, "lich_spawner_blocks");
+        registerTileEntity(TileEntityLevitationBlock.class, "levitation_block_entity");
 
     }
 

@@ -1,0 +1,56 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:flame_helmet"
+    },
+    "title": {
+      "translate": "advancements.da.craft_flame_metal.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_flame_metal.description"
+    }
+  },
+  "parent": "da:kill_kobf",
+  "criteria": {
+    "flameHelmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:flame_helmet"
+          }
+        ]
+      }
+    },
+    "flameChestplate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:flame_chestplate"
+          }
+        ]
+      }
+    },
+    "flameLeggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:flame_leggings"
+          }
+        ]
+      }
+    },
+    "flameBoots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:flame_boots"
+          }
+        ]
+      }
+    }
+  }
+}

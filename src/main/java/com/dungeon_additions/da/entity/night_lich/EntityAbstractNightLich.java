@@ -8,8 +8,12 @@ import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -42,6 +46,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
     private static final DataParameter<Boolean> COMBO_SHOOT_PROJECTILES = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> THROW_STAFF = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> RAGE_MODE = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> MELEE_COMBO = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
 
     public List<WeakReference<Entity>> current_mobs = Lists.newArrayList();
 
@@ -61,6 +66,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
     public void setAngeredState(boolean value) {this.dataManager.set(ANGERED_STATE, Boolean.valueOf(value));}
     public void setThrowStaff(boolean value) {this.dataManager.set(THROW_STAFF, Boolean.valueOf(value));}
     public void setRageMode(boolean value) {this.dataManager.set(RAGE_MODE, Boolean.valueOf(value));}
+    public void setMeleeCombo(boolean value) {this.dataManager.set(MELEE_COMBO, Boolean.valueOf(value));}
 
     public boolean isGreenAttack() {return this.dataManager.get(GREEN_ATTACK);}
     public boolean isRedAttack() {return this.dataManager.get(RED_ATTACK);}
@@ -75,6 +81,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
     public boolean isAngeredState() {return this.dataManager.get(ANGERED_STATE);}
     public boolean isThrowStaff() {return this.dataManager.get(THROW_STAFF);}
     public boolean isRageMode() {return this.dataManager.get(RAGE_MODE);}
+    public boolean isMeleeCombo() {return this.dataManager.get(MELEE_COMBO);}
 
     protected int teleportCooldownTimer = MobConfig.lich_teleport_timer * 20;
 
@@ -100,11 +107,18 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
                 if(teleportCooldownTimer > 0) {
                     teleportCooldownTimer--;
                 }
+
+                if(this.isPotionActive(MobEffects.POISON)) {
+                    this.removePotionEffect(MobEffects.POISON);
+                }
             }
 
 
 
     }
+
+
+
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
@@ -122,6 +136,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
         nbt.setBoolean("Angry_State", this.isAngeredState());
         nbt.setBoolean("Throw_Staff", this.isThrowStaff());
         nbt.setBoolean("Rage_Mode", this.isRageMode());
+        nbt.setBoolean("Melee_Combo", this.isMeleeCombo());
         nbt.setFloat("Look", this.getPitch());
         NBTTagList mobs = new NBTTagList();
         for (WeakReference<Entity> ref : current_mobs) {
@@ -147,6 +162,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
         this.setAngeredState(nbt.getBoolean("Angry_State"));
         this.setThrowStaff(nbt.getBoolean("Throw_Staff"));
         this.setRageMode(nbt.getBoolean("Rage_Mode"));
+        this.setMeleeCombo(nbt.getBoolean("Melee_Combo"));
         this.dataManager.set(LOOK, nbt.getFloat("Look"));
     }
 
@@ -167,6 +183,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
         this.dataManager.register(ANGERED_STATE, Boolean.valueOf(false));
         this.dataManager.register(THROW_STAFF, Boolean.valueOf(false));
         this.dataManager.register(RAGE_MODE, Boolean.valueOf(false));
+        this.dataManager.register(MELEE_COMBO, Boolean.valueOf(false));
     }
 
 
@@ -181,7 +198,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(45D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(1.20590D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MobConfig.night_lich_health);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(MobConfig.night_lich_armor);

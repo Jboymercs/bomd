@@ -2,9 +2,11 @@ package com.dungeon_additions.da.entity.player;
 
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.night_lich.ProjectileMagicMissile;
+import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 
@@ -15,11 +17,17 @@ public class ActionPlayerShootSpead implements IActionPlayer{
 
     @Override
     public void performAction(EntityPlayer actor) {
-        ProjectileMagicMissile missile = new ProjectileMagicMissile(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * 0.5));
-        ProjectileMagicMissile missile_2 = new ProjectileMagicMissile(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * 0.5));
-        ProjectileMagicMissile missile_3 = new ProjectileMagicMissile(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * 0.5));
-        ProjectileMagicMissile missile_4 = new ProjectileMagicMissile(actor.world, actor,(float) (MobConfig.night_lich_attack_damage * 0.5));
-        ProjectileMagicMissile missile_5 = new ProjectileMagicMissile(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * 0.5));
+
+        double additionalDamage = 0.2;
+        if(actor.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.NIGHT_LICH_HELMET) {
+            additionalDamage = 0.45;
+        }
+
+        ProjectileMagicMissile missile = new ProjectileMagicMissile(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage));
+        ProjectileMagicMissile missile_2 = new ProjectileMagicMissile(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage));
+        ProjectileMagicMissile missile_3 = new ProjectileMagicMissile(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage));
+        ProjectileMagicMissile missile_4 = new ProjectileMagicMissile(actor.world, actor,(float) (MobConfig.night_lich_attack_damage * additionalDamage));
+        ProjectileMagicMissile missile_5 = new ProjectileMagicMissile(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage));
 
         Vec3d relPos = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0,3.0,0)));
         Vec3d relPos2 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0,2.8,0.8)));

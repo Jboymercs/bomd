@@ -69,7 +69,7 @@ public class ModBlocks {
     public static final Block PETROGLOOM_SMOOTH = new BlockBase("gloom_smooth", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_CARVED = new BlockPillarBase("gloom_carved", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_PILLAR = new BlockPillarBase("gloom_pillar", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
-    public static final Block PETROGLOOM_ROUGH = new BlockPetroGloom("gloom_rough", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, SoundType.STONE).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block PETROGLOOM_ROUGH = new BlockPetroGloom("gloom_rough", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_TRIANGLE = new BlockBase("gloom_triangle", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_STAIRS = new BlockStairBase("gloom_stone_stairs", PETROGLOOM.getDefaultState(), GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_BRICK_STAIRS = new BlockStairBase("gloom_brick_stairs", PETROGLOOM_BRICKS.getDefaultState(), GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
@@ -90,6 +90,7 @@ public class ModBlocks {
 
     public static final Block CHANGE_BLOCK = new BlockChangingDoor("change_block", Material.ROCK, OBSIDIAN_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE).setCreativeTab(DungeonAdditionsTab.ALL);
 
+    public static final Block LEVITATION_BLOCK = new BlockLevitationAltar("levitation_block", Material.ROCK, STONE_HARDNESS, OBSIDIAN_RESISTANCE, BOMDSoundTypes.PETRO_GLOOM, "levitation_block_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block DISAPPEARING_SPAWNER = new BlockDisappearingSpawner("cave_spawner", Material.ROCK);
     public static final Block DISAPPEARING_SPAWNER_MOSS = new BlockDisappearingSpawner("moss_spawner", Material.ROCK);
 }

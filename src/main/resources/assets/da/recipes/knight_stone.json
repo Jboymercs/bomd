@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "R",
+    "V",
+    "V"
+  ],
+  "key": {
+    "R": {
+      "item": "da:knight_shard"
+    },
+    "V": {
+      "item": "minecraft:stone_slab",
+      "data": 5
+    }
+  },
+  "result": {
+    "item": "da:knight_stone"
+  }
+}

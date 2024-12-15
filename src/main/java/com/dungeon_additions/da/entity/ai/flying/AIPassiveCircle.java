@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.ai.flying;
 
+import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.night_lich.EntityNightLich;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
@@ -41,7 +42,11 @@ public class AIPassiveCircle <T extends EntityNightLich> extends EntityAIBase {
                 if(this.entity.isRageMode()) {
                     ModUtils.addEntityVelocity(entity, direction.scale(0.13f * speed));
                 } else {
-                    ModUtils.addEntityVelocity(entity, direction.scale(0.09f * speed));
+                    if(this.entity.doesBossSlowDown) {
+                        ModUtils.addEntityVelocity(entity, direction.scale(MobConfig.lich_movement_speed_combat * speed));
+                    } else {
+                        ModUtils.addEntityVelocity(entity, direction.scale(MobConfig.lich_movement_speed * speed));
+                    }
                 }
                 double distSq = this.entity.getDistanceSq(target.x, target.y, target.z);
                 double distanceFrom = distSq * distSq;

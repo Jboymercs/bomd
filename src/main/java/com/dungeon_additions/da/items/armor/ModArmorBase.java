@@ -77,7 +77,7 @@ public class ModArmorBase extends ItemArmor implements IHasModel {
 
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(TextFormatting.LIGHT_PURPLE + ModUtils.translateDesc(info_loc));
+        tooltip.add(TextFormatting.RED + ModUtils.translateDesc(info_loc));
         if (!this.armorBonusDesc.isEmpty()) {
             tooltip.add(ModUtils.translateDesc(this.armorBonusDesc));
         }

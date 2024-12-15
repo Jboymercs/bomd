@@ -17,6 +17,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.BiomeDictionary;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -24,8 +25,6 @@ import java.util.*;
 public class CommandLocateLich implements ICommand {
 
     private final List<String> aliases;
-    private static List<Biome> spawnBiomesLichTower;
-    private static List<Biome> spawnBiomes;
     public CommandLocateLich() {
         aliases = new ArrayList<>();
         aliases.add("locateBOMD");
@@ -165,7 +164,7 @@ public class CommandLocateLich implements ICommand {
 
         int k = chunkX / spacing;
         int l = chunkZ / spacing;
-        Random random = world.setRandomSeed(k, l, 10387312);
+        Random random = world.setRandomSeed(k, l, 10383709);
         k = k * spacing;
         l = l * spacing;
         k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
@@ -173,7 +172,7 @@ public class CommandLocateLich implements ICommand {
 
         if (i == k && j == l && isAllowedDimensionTooSpawnIn(world.provider.getDimension())) {
             BlockPos pos = new BlockPos((i << 4), 0, (j << 4));
-                return isBiomeValidBlossom(pos, world);
+                return isAbleToSpawnHereBlossom(pos, world);
         } else {
 
             return false;
@@ -204,71 +203,75 @@ public class CommandLocateLich implements ICommand {
 
         if (i == k && j == l && isAllowedDimensionTooSpawnInNightLich(world.provider.getDimension())) {
             BlockPos pos = new BlockPos((i << 4), 0, (j << 4));
-            return isBiomeValid(pos, world);
+            return isAbleToSpawnHere(pos, world);
         } else {
 
             return false;
         }
     }
 
-    public static boolean isBiomeValid(BlockPos pos, World world) {
-        for(Biome biome : getSpawnBiomesLichTower()) {
-            if(world.provider.getBiomeForCoords(pos) == biome) {
-                return true;
+    public static boolean isAbleToSpawnHere(BlockPos pos, World world) {
+        for(BiomeDictionary.Type types : getSpawnBiomeTypes()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                return false;
             }
         }
-
-        return false;
+        return true;
     }
 
+    private static List<BiomeDictionary.Type> lichTowerBiomeTypes;
 
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypes() {
+        if(lichTowerBiomeTypes == null) {
+            lichTowerBiomeTypes = Lists.newArrayList();
 
-    public static List<Biome> getSpawnBiomesLichTower() {
-        if (spawnBiomesLichTower == null) {
-            spawnBiomesLichTower = Lists.newArrayList();
-            for (String str : WorldConfig.biome_allowed_lich) {
+            for(String str : WorldConfig.biome_types_blossom) {
                 try {
-                    Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(str));
-                    if (biome != null) spawnBiomesLichTower.add(biome);
-                    else DALogger.logError("Biome " + str + " is not registered", new NullPointerException());
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) lichTowerBiomeTypes.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
                 } catch (Exception e) {
-                    DALogger.logError(str + " is not a valid registry name", e);
+                    DALogger.logError(str + " is not a valid type name", e);
                 }
             }
         }
-        return spawnBiomesLichTower;
+
+        return lichTowerBiomeTypes;
     }
 
-    public static boolean isBiomeValidBlossom(BlockPos pos, World world) {
-        for(Biome biome : getSpawnBiomes()) {
-            if(WorldConfig.isBlacklist) {
-                if(world.provider.getBiomeForCoords(pos) != biome) {
-                    return true;
-                }
-            } else {
-                if(world.provider.getBiomeForCoords(pos) == biome) {
-                    return true;
-                }
+    public static boolean isAbleToSpawnHereBlossom(BlockPos pos, World world) {
+        for(BiomeDictionary.Type types : getSpawnBiomeTypesBlossom()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
-    public static List<Biome> getSpawnBiomes() {
-        if (spawnBiomes == null) {
-            spawnBiomes = Lists.newArrayList();
-            for (String str : WorldConfig.biome_allowed) {
+    private static List<BiomeDictionary.Type> blossomTowerBiomeTypes;
+
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypesBlossom() {
+        if(blossomTowerBiomeTypes == null) {
+            blossomTowerBiomeTypes = Lists.newArrayList();
+
+            for(String str : WorldConfig.biome_types_blacklist_lich) {
                 try {
-                    Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(str));
-                    if (biome != null) spawnBiomes.add(biome);
-                    else DALogger.logError("Biome " + str + " is not registered", new NullPointerException());
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) blossomTowerBiomeTypes.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
                 } catch (Exception e) {
-                    DALogger.logError(str + " is not a valid registry name", e);
+                    DALogger.logError(str + " is not a valid type name", e);
                 }
             }
         }
-        return spawnBiomes;
+
+        return blossomTowerBiomeTypes;
     }
+
 
     public static boolean isAllowedDimensionTooSpawnInNightLich(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions_lich_tower) {

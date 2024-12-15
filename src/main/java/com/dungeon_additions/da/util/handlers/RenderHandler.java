@@ -81,7 +81,7 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileFlameSling.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(ProjectileTrackingFlame.class, ModItems.PROJECTILE_FLAME);
         registerProjectileRenderer(EntitySoulStar.class, ModItems.SOUL_STAR);
-        registerProjectileRenderer(EntityLily.class, ModItems.VOID_LEAF);
+        registerProjectileRenderer(EntityLily.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(ProjectileMagicMissile.class, ModItems.MAGIC_PROJECTILE);
         registerProjectileRenderer(ProjectileMagicFireBall.class, ModItems.MAGIC_FIREBALL);
         registerProjectileRenderer(ProjectileTrackingMagicMissile.class, ModItems.MAGIC_TRACK_PROJECTILE);

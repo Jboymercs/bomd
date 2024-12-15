@@ -53,6 +53,7 @@ public class ModUtils {
     public static byte SECOND_PARTICLE_BYTE = 14;
     public static byte THIRD_PARTICLE_BYTE = 15;
     public static byte FOURTH_PARTICLE_BYTE = 16;
+    public static byte FIFTH_PARTICLE_BYTE = 17;
 
     public static final String LANG_DESC = ModReference.MOD_ID + ".desc.";
     public static Vec3d Z_AXIS = new Vec3d(0, 0, 1);
@@ -813,6 +814,8 @@ public class ModUtils {
                                     block != Blocks.CHAIN_COMMAND_BLOCK &&
                                     block != Blocks.BEDROCK &&
                                     block != ModBlocks.LICH_SOUL_STAR_BLOCK &&
+                                    block != Blocks.CHEST &&
+                                    block != Blocks.BED &&
                                     !(block instanceof BlockLiquid)) {
                                 if (world.getClosestPlayer(blockpos.getX(), blockpos.getY(), blockpos.getZ(), 20, false) != null) {
                                     world.destroyBlock(blockpos, false);

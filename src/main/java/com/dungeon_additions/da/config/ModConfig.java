@@ -76,17 +76,12 @@ public class ModConfig {
     @Config.Comment("Change the drop chance of Soul Star from anything that extends off of EntityMob, Like Zombies, Skeletons, and so on")
     @Config.RequiresMcRestart
     @Config.RangeInt(min = 0, max = 100)
-    public static int soul_star_drop_chance = 3;
+    public static int soul_star_drop_chance = 1;
 
     @Config.Name("Soul Star Drops everywhere")
     @Config.Comment("Change if the Soul Star should drop from anything that extends from EntityMob, setting to true will enable this setting")
     @Config.RequiresMcRestart
     public static boolean soul_star_drops_everywhere = false;
-
-    @Config.Name("Enable Experimental Features")
-    @Config.Comment("All this does is enable Lich towers to spawn, and allow Soul Stars to drop from mobs")
-    @Config.RequiresMcRestart
-    public static boolean enable_experimental = false;
 
     @Config.Name("Structure Location Resetting")
     @Config.Comment("At what radius must any structure locating item will reset and find another one. Like getting close to a current Lich Tower in x blocks, will reset the item and find another one")

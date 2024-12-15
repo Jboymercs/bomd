@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "triggered=false":    { "model": "da:levitation_block_off" },
+    "triggered=true":    { "model": "da:levitation_block_on" }
+  }
+}

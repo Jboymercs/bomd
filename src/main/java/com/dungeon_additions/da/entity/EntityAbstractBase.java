@@ -11,6 +11,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -171,9 +172,17 @@ public abstract class EntityAbstractBase extends EntityCreature {
 
         if(this.iAmBossMob) {
             List<EntityEnderCrystal> nearbyEyes = this.world.getEntitiesWithinAABB(EntityEnderCrystal.class, this.getEntityBoundingBox().grow(30D), e -> !e.getIsInvulnerable());
+            List<EntityBoat> nearbyBoat = this.world.getEntitiesWithinAABB(EntityBoat.class, this.getEntityBoundingBox().grow(10D), e -> !e.getIsInvulnerable());
+
             if(!nearbyEyes.isEmpty()) {
                 for(EntityEnderCrystal eye: nearbyEyes) {
                     eye.setDead();
+                }
+            }
+
+            if(!nearbyBoat.isEmpty()) {
+                for(EntityBoat boat : nearbyBoat) {
+                    boat.setDead();
                 }
             }
         }

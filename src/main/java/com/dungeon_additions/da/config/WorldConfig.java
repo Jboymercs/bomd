@@ -8,26 +8,18 @@ public class WorldConfig {
     @Config.Name("Void Blossom Cave Weight")
     @Config.Comment("Change the spacing between Void Blossom caves, lower means more frequent, higher means less")
     @Config.RequiresMcRestart
-    public static int void_blossom_cave_weight = 70;
+    public static int void_blossom_cave_weight = 60;
 
     @Config.Name("Void Blossom Arena Dimensions allowed in!")
     @Config.Comment("Take note that any ocean type biomes this structure will NOT spawn in, but you can select which dimension you'd like the structure to spawn in")
     @Config.RequiresMcRestart
     public static int[] list_of_dimensions = {0};
 
-    @Config.Name("Void Blossom Arena Allowed Biomes to spawn in")
-    @Config.Comment(" Block certain biomes for the Void Blossom Cave, Otherwise, check the whitelist/blacklist if you want this list to be either or.")
+    @Config.Name("Void Blossom Cave Blacklisted Biome Types")
+    @Config.Comment("Block certain biome types from the Void Blossom Cave spawning in, Examples being HOT, COLD, OCEAN")
     @Config.RequiresMcRestart
-    public static String[] biome_allowed = {
-            "minecraft:ice_flats",
-            "minecraft:ocean",
-            "minecraft:deep_ocean"
+    public static String[] biome_types_blossom = {"OCEAN","COLD"
     };
-
-    @Config.Name("Void Blossom Arena Biome Whitelist/Blacklist")
-    @Config.Comment("When set too true, the biome list in this config becomes a blacklist of biomes for it to not spawn in, if set to false it becomes a white list. Default: true")
-    @Config.RequiresMcRestart
-    public static boolean isBlacklist = true;
 
     @Config.Name("Void Blossom Top Part Enable/Disalbe")
     @Config.Comment("Change if the top part to indicate a Void Blossom Cave is underneath to not spawn, Default: true")
@@ -143,12 +135,12 @@ public class WorldConfig {
     @Config.Name("Night Lich Tower Spacing")
     @Config.Comment("Change the spacing between each Night Lich tower, higher means further apart, lower means closer. This number will not add to spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int lich_tower_spacing = 90;
+    public static int lich_tower_spacing = 70;
 
-    @Config.Name("Night Lich Allowed Biomes to spawn in")
-    @Config.Comment("Add Biomes to be applicable to spawning the Night Lich's Tower, must be ModID:biome_name")
+    @Config.Name("Night Lich Blacklisted Biome Types")
+    @Config.Comment("Add Biome types that DISALLOW the Night Lich Tower from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
     @Config.RequiresMcRestart
-    public static String[] biome_allowed_lich = {"minecraft:plains", "minecraft:forest", "minecraft:birch_forest", "minecraft:desert", "minecraft:mesa", "minecraft:desert_hills", "minecraft:savanna", "minecraft:ice_flats", "minecraft:mutated_plains", "minecraft:mutated_ice_flats", "minecraft:jungle", "minecraft:mutated_forest", "minecraft:mutated_swampland", "minecraft:swampland"
+    public static String[] biome_types_blacklist_lich = {"DENSE","NETHER","END","MUSHROOM","OCEAN","RIVER","MESA","MOUNTAIN","HILLS","BEACH"
     };
 
     @Config.Name("Petrogloom Ore Gen")

@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
 public class GlowingMetadataSectionSerializer extends BaseMetadataSectionSerializer<GlowingMetadataSection> implements JsonSerializer<GlowingMetadataSection> {
     @Override
     public String getSectionName() {
-        return "glowsections";
+        return "glowsections_bomd";
     }
 
     @Override

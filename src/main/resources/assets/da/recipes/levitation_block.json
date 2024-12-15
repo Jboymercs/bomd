@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RRR",
+    "RVR",
+    "RRR"
+  ],
+  "key": {
+    "R": {
+      "item": "da:gloom_brick"
+    },
+    "V": {
+      "item": "da:ancient_mana"
+    }
+  },
+  "result": {
+    "item": "da:levitation_block"
+  }
+}

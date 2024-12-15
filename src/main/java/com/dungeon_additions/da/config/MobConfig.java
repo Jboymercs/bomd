@@ -131,9 +131,9 @@ public class MobConfig {
     public static int kobf_experience_orb_value = 10;
 
     @Config.Name("Knight of Burning Flame AOE Damage")
-    @Config.Comment("How much damage is dealt by the magma blocks popping out of the ground, note this takes affect to the sword as well")
+    @Config.Comment("How much damage is dealt by the magma blocks popping out of the ground")
     @Config.RequiresMcRestart
-    public static float aoe_block_damage = 10;
+    public static float aoe_block_damage = 15;
 
     @Config.Name("Stormvier/Galvonizer Health")
     @Config.Comment("Change the Health of the Stormvier/Galvonizer")
@@ -188,12 +188,12 @@ public class MobConfig {
     @Config.Name("Night Lich Cooldown static")
     @Config.Comment("Change the static cooldown of the Night Lich inbetween attacks, this is an unchanged cooldown in ticks (20 ticks = 1 second)")
     @Config.RequiresMcRestart
-    public static int lich_static_cooldown = 20;
+    public static int lich_static_cooldown = 15;
 
     @Config.Name("Night Lich Cooldown Progressive")
     @Config.Comment("In ticks change the progressive cooldown of the Night Lich, this basically increases the cooldown for each mob that is active and summoned by the Lich. EX: 2 active mobs * x = x * 2 + static cooldown. CAPS at active mob count")
     @Config.RequiresMcRestart
-    public static int lich_progressive_cooldown = 4;
+    public static int lich_progressive_cooldown = 5;
 
     @Config.Name("Night Lich Cooldown Additive")
     @Config.Comment("This value basically is another static, however it only adds onto the cooldown of certain attacks in areas, mostly between switching melee mode and ranged mode to give breathing room in seconds")
@@ -213,7 +213,7 @@ public class MobConfig {
     @Config.Name("Night Lich Health")
     @Config.Comment("Change the Health of the Night Lich")
     @Config.RequiresMcRestart
-    public static double night_lich_health = 425;
+    public static double night_lich_health = 450;
 
     @Config.Name("Night Lich Attack Damage")
     @Config.Comment("Change the Attack Damage of the Night Lich")
@@ -233,17 +233,17 @@ public class MobConfig {
     @Config.Name("Night Lich Armor")
     @Config.Comment("Change the armor value of the Night Lich")
     @Config.RequiresMcRestart
-    public static double night_lich_armor = 10;
+    public static double night_lich_armor = 12;
 
     @Config.Name("Night Lich Armor Toughness")
     @Config.Comment("Change the Night Lich Armor Toughness")
     @Config.RequiresMcRestart
     public static double night_lich_armor_toughness = 2;
 
-    @Config.Name("Night Lich Melee Damage Reduction")
-    @Config.Comment("Night Lich's resistance to melee damage, used as damage * x = damageDone.")
+    @Config.Name("Night Lich Angered State Damage Reduction")
+    @Config.Comment("Night Lich has a resistance to all damage while in melee state, you can change that value here")
     @Config.RequiresMcRestart
-    public static double lich_melee_resistance = 0.5;
+    public static double lich_melee_resistance = 0.6;
 
     @Config.Name("Night Lich Experience Value")
     @Config.Comment("Change the Experience dropped by the Night Lich")
@@ -253,7 +253,7 @@ public class MobConfig {
     @Config.Name("Night Lich Teleport Cooldown Timer")
     @Config.Comment("Change how often the Night Lich can attempt to teleport away from projectiles while not in a melee state, and not casting a spell. In Seconds")
     @Config.RequiresMcRestart
-    public static int lich_teleport_timer = 10;
+    public static int lich_teleport_timer = 12;
 
     @Config.Name("Night Lich Mob Spawn List One")
     @Config.Comment("Add or remove possible mob spawns that the Night Lich can summon, must be ModID:entity_name")
@@ -289,5 +289,14 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static int lich_summon_time = 12000;
 
+    @Config.Name("Night Lich Flying Speed")
+    @Config.Comment("Change the Night Lich's speed when in the air and not doing a spell or attack, this value might seem small but trust me its fast")
+    @Config.RequiresMcRestart
+    public static double lich_movement_speed = 0.1;
+
+    @Config.Name("Night Lich Flying Speed Combat")
+    @Config.Comment("Change the Night Lich's speed when doing certain attacks in the air, this will make the boss slower so its easier to hit")
+    @Config.RequiresMcRestart
+    public static double lich_movement_speed_combat = 0.055;
 
 }

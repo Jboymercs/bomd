@@ -6,6 +6,7 @@ import com.dungeon_additions.da.blocks.BlockLeaveBase;
 import com.dungeon_additions.da.event.EventSwordResistance;
 import com.dungeon_additions.da.packets.MessageModParticles;
 import com.dungeon_additions.da.util.ModReference;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -25,7 +26,9 @@ public class CommonProxy{
 
     }
 
-
+    public Object getArmorModel(Item item, EntityLivingBase entity) {
+        return null;
+    }
 
     public void setFancyGraphics(BlockLeaveBase block, boolean isFancy) {
     }
