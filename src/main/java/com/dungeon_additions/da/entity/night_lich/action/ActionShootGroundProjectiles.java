@@ -17,6 +17,7 @@ public class ActionShootGroundProjectiles implements IActionLich{
     public ActionShootGroundProjectiles(Supplier<Projectile> p) {
         supplier = p;
     }
+
     @Override
     public void performAction(EntityNightLich actor, EntityLivingBase target) {
         float inaccuracy = 0.0f;

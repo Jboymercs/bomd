@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "axis=y":  { "model": "da:cold_pillar" },
+    "axis=z":   { "model": "da:cold_pillar", "x": 90 },
+    "axis=x":   { "model": "da:cold_pillar", "x": 90, "y": 90 },
+    "axis=none": { "model": "da:cold_rough" }
+  }
+}

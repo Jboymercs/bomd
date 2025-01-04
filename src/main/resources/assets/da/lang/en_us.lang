@@ -101,6 +101,26 @@ tile.gloom_brick_wall.name=Petrogloom Brick Wall
 tile.soul_star_block.name=Chiseled Stone Altar Block
 tile.void_lily.name=Void Lily
 tile.levitation_block.name=Levitation Altar
+tile.cold_stone.name=Chilled Petrogloom Cobblestone
+tile.cold_brick.name=Chilled Petrogloom Brick
+tile.cold_smooth.name=Smooth Chilled Petrogloom
+tile.cold_carved.name=Chilled Carved Petrogloom
+tile.cold_rough.name=Chilled Petrogloom
+tile.cold_pillar.name=Chilled Petrogloom Pillar
+tile.cold_triangle.name=Chilled Petrogloom Decoration Stone
+tile.snow_cold_brick.name=Snowy Chilled Petrogloom Bricks
+tile.cold_brick_stairs.name=Chilled Petrogloom Brick Stairs
+tile.cold_stone_stairs.name=Chilled Petrogloom Cobblestone Stairs
+tile.cold_smooth_stairs.name=Smooth Chilled Petrogloom Stairs
+tile.cold_stone_half.name=Chilled Petrogloom Cobblestone Slab
+tile.cold_stone_double.name=Double Chilled Petrogloom Cobblestone Slab
+tile.cold_smooth_half.name=Smooth Chilled Petrogloom Slab
+tile.cold_smooth_double.name=Double Smooth Chilled Petrogloom Slab
+tile.cold_brick_half.name=Chilled Petrogloom Brick Slab
+tile.cold_brick_double.name=Double Chilled Petrogloom Brick Slab
+tile.cold_stone_wall.name=Chilled Petrogloom Cobblestone Wall
+tile.cold_smooth_wall.name=Smooth Chilled Petrogloom Wall
+tile.cold_brick_wall.name=Chilled Petrogloom Brick Wall
 
 itemGroup.dungeon_additions=BOMD + Dungeon Additions
 

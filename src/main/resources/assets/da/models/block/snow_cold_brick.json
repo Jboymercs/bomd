@@ -1,0 +1,10 @@
+{
+  "parent": "block/grass",
+  "textures": {
+    "particle": "da:blocks/snow_cold_brick",
+    "top": "da:blocks/snow_gloom",
+    "side": "da:blocks/snow_cold_brick",
+    "bottom": "da:blocks/cold_brick",
+    "overlay": "da:blocks/snow_cold_brick"
+  }
+}

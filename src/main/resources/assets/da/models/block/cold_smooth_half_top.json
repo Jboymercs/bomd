@@ -1,0 +1,9 @@
+{
+  "parent": "block/upper_slab",
+  "textures":
+  {
+    "bottom": "da:blocks/cold_smooth",
+    "top": "da:blocks/cold_smooth",
+    "side": "da:blocks/cold_smooth"
+  }
+}

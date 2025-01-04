@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "da:blocks/cold_smooth",
+    "side": "da:blocks/cold_pillar_side"
+  }
+}
