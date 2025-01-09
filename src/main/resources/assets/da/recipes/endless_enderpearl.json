@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "VX",
-    "R "
+    "RT"
   ],
   "key": {
     "V": {
@@ -13,6 +13,9 @@
     },
     "X": {
       "item": "minecraft:ender_pearl"
+    },
+    "T": {
+      "item": "da:frost_ingot"
     }
   },
   "result": {

@@ -6,6 +6,7 @@ import com.dungeon_additions.da.util.DALogger;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.world.blossom.WorldGenBlossomCave;
+import com.dungeon_additions.da.world.frozen_castle.WorldGenFrozenCastle;
 import com.dungeon_additions.da.world.lich_tower.WorldGenLichTower;
 import com.dungeon_additions.da.world.nether_arena.WorldGenNetherArena;
 import com.dungeon_additions.da.world.rot_hold.WorldGenRotHold;
@@ -34,6 +35,8 @@ public class ModWorldGen implements IWorldGenerator {
 
     public static final WorldGenLichTower lich_tower = new WorldGenLichTower();
     private static final WorldGenNetherArena netherArena = new WorldGenNetherArena();
+
+    private static final WorldGenFrozenCastle frozen_castle = new WorldGenFrozenCastle();
 
     private static List<Biome> spawnBiomesRottenHold;
     @Override
@@ -68,6 +71,10 @@ public class ModWorldGen implements IWorldGenerator {
         if(isAllowedDimensionTooSpawnInNightLich(world.provider.getDimension())) {
                         //After doing solid ground checks it can signal for the lich tower to try and generate
                         lich_tower.generate(world, random, pos);
+        }
+
+        if(world.provider.getDimension() == 0) {
+            frozen_castle.generate(world, random, pos);
         }
 
         }

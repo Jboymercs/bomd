@@ -13,6 +13,11 @@ import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileTrackingFlame;
+import com.dungeon_additions.da.entity.frost_dungeon.EntityIcicleSpike;
+import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
+import com.dungeon_additions.da.entity.frost_dungeon.ProjectileFrostBullet;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
@@ -21,6 +26,10 @@ import com.dungeon_additions.da.entity.projectiles.EntityLily;
 import com.dungeon_additions.da.entity.projectiles.EntitySoulStar;
 import com.dungeon_additions.da.entity.projectiles.ProjectileAbberrantAttack;
 import com.dungeon_additions.da.entity.render.*;
+import com.dungeon_additions.da.entity.render.frost_dungeon.RenderDraugr;
+import com.dungeon_additions.da.entity.render.frost_dungeon.RenderDraugrRanger;
+import com.dungeon_additions.da.entity.render.frost_dungeon.RenderIceSpike;
+import com.dungeon_additions.da.entity.render.frost_dungeon.RenderWyrk;
 import com.dungeon_additions.da.entity.render.lich.RenderLichSpawn;
 import com.dungeon_additions.da.entity.render.lich.RenderLichStaff;
 import com.dungeon_additions.da.entity.render.lich.RenderNightLich;
@@ -86,6 +95,7 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileMagicFireBall.class, ModItems.MAGIC_FIREBALL);
         registerProjectileRenderer(ProjectileTrackingMagicMissile.class, ModItems.MAGIC_TRACK_PROJECTILE);
         registerProjectileRenderer(ProjectileMagicGround.class, ModItems.INVISISBLE_ITEM);
+        registerProjectileRenderer(ProjectileFrostBullet.class, ModItems.FROST_PROJECTILE);
     }
 
     //Handles Rendering
@@ -131,6 +141,14 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityLichStaffAOE.class, RenderLichStaff::new);
         //Lich Spawn
         RenderingRegistry.registerEntityRenderingHandler(EntityLichSpawn.class, RenderLichSpawn::new);
+        //Wyrk
+        RenderingRegistry.registerEntityRenderingHandler(EntityWyrk.class, RenderWyrk::new);
+        //Icicle Spike
+        RenderingRegistry.registerEntityRenderingHandler(EntityIcicleSpike.class, RenderIceSpike::new);
+        //Frost Draugr
+        RenderingRegistry.registerEntityRenderingHandler(EntityDraugr.class, RenderDraugr::new);
+        //Frost Draugr Ranger
+        RenderingRegistry.registerEntityRenderingHandler(EntityDraugrRanger.class, RenderDraugrRanger::new);
     }
 
 }

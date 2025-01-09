@@ -800,5 +800,15 @@
         "steam": true
       }
     ]
+  },
+  "block.icicle.drop": {
+    "category": "block",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:block/icicle/drop",
+        "steam": true
+      }
+    ]
   }
 }

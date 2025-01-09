@@ -2,6 +2,8 @@ package com.dungeon_additions.da.util.handlers;
 
 import com.dungeon_additions.da.world.blossom.BlossomTemplate;
 import com.dungeon_additions.da.world.blossom.WorldGenBlossomCave;
+import com.dungeon_additions.da.world.frozen_castle.FrozenCastleTemplate;
+import com.dungeon_additions.da.world.frozen_castle.WorldGenFrozenCastle;
 import com.dungeon_additions.da.world.lich_tower.LichTowerTemplate;
 import com.dungeon_additions.da.world.lich_tower.WorldGenLichTower;
 import com.dungeon_additions.da.world.nether_arena.NetherArenaTemplate;
@@ -24,5 +26,8 @@ public class StructureHandler {
         //Night Lich
         MapGenStructureIO.registerStructure(WorldGenLichTower.Start.class, "NightLichTower");
         MapGenStructureIO.registerStructureComponent(LichTowerTemplate.class, "LTP");
+        //Frozen Castle
+        MapGenStructureIO.registerStructure(WorldGenFrozenCastle.Start.class, "FrozenCastle");
+        MapGenStructureIO.registerStructureComponent(FrozenCastleTemplate.class, "FCP");
     }
 }

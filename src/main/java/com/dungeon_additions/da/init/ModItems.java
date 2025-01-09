@@ -76,10 +76,15 @@ public class ModItems {
     public static final Item SOUL_STAR = new ItemSoulStar("soul_star_item", "soul_star_desc");
     public static final Item MAGIC_PROJECTILE = new ItemBase("magic_projectile");
     public static final Item MAGIC_TRACK_PROJECTILE = new ItemBase("missile_projectile");
+    public static final Item FROST_PROJECTILE = new ItemBase("frost_bullet");
     public static final Item ANCIENT_MANA = new ItemCraftingMaterial("ancient_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item SPEAR_OF_SOULS = new ItemSoulSpear("spear_staff", SOUL_SPEAR_MATERIAL, "soul_spear_desc");
     public static final Item SPEAR_OF_WARRIOR = new ItemWeaponSpear("spear_weapon", SOUL_SPEAR_WEAPON_MATERIAL, "soul_weapon_desc");
     public static final Item RED_ANICIENT_MANA = new ItemCraftingMaterial("red_ancient_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item FROST_SHARD = new ItemCraftingMaterial("frost_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item FROST_INGOT = new ItemCraftingMaterial("frost_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item FROST_KEY = new ItemFrostKey("frost_key", "frost_key_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item FROST_SWORD = new ToolSword("frost_sword", DAGGER_MATERIAL);
 
     public static final Item MOD_LOGO = new ItemBase("bomd_mod_logo", null);
 

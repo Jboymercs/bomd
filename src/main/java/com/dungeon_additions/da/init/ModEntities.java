@@ -10,6 +10,11 @@ import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileTrackingFlame;
+import com.dungeon_additions.da.entity.frost_dungeon.EntityIcicleSpike;
+import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
+import com.dungeon_additions.da.entity.frost_dungeon.ProjectileFrostBullet;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
@@ -89,6 +94,11 @@ public class ModEntities {
             registerEntity("track_missile", ProjectileTrackingMagicMissile.class, ENTITY_START_ID++, 60);
             registerEntity("ground_missile", ProjectileMagicGround.class, ENTITY_START_ID++, 60);
             registerEntity("lich_spawn", EntityLichSpawn.class, ENTITY_START_ID++, 60);
+            registerEntityWithID("wyrk", EntityWyrk.class, ENTITY_START_ID++, 70, night_lich);
+            registerEntity("ice_spike", EntityIcicleSpike.class, ENTITY_START_ID++, 70);
+            registerEntity("ice_bullet", ProjectileFrostBullet.class, ENTITY_START_ID++, 70);
+            registerEntityWithID("frost_draugr", EntityDraugr.class, ENTITY_START_ID++, 70, night_lich);
+            registerEntityWithID("frost_draugr_ranger", EntityDraugrRanger.class, ENTITY_START_ID++, 70, night_lich);
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
         registerTileEntity(TileEntityMegaStructure.class, "mega_structure");
