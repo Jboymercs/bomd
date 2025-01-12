@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VX",
+    "VR",
+    " V"
+  ],
+  "key": {
+    "V": {
+      "item": "da:draugr_ingot"
+    },
+    "R": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "item": "da:frost_ingot"
+    }
+  },
+  "result": {
+    "item": "da:champion_axe"
+  }
+}

@@ -41,6 +41,14 @@ public class EventWearFlameArmor {
                     base.removePotionEffect(MobEffects.POISON);
                 }
             }
+
+            if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DRAUGR_HELMET && base.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DRAUGR_CHESTPLATE) {
+                double healthCurr = base.getHealth() / base.getMaxHealth();
+                double bonusAdditive = 2 / healthCurr;
+                if(base.hurtTime == 1 && bonusAdditive + base.world.rand.nextInt(7) >= 1) {
+                    base.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 200, 0));
+                }
+            }
         }
     }
 }

@@ -23,7 +23,7 @@ public class WorldGenFrozenCastle extends WorldGenerator {
     private int separation;
 
     public WorldGenFrozenCastle() {
-        this.spacing = 60;
+        this.spacing = WorldConfig.frozen_castle_spacing;
         this.separation = 16;
     }
 
@@ -70,8 +70,7 @@ public class WorldGenFrozenCastle extends WorldGenerator {
         if (i == k && j == l)
         {
             BlockPos pos = new BlockPos(i << 4, 0, j << 4);
-            return true;
-            //return isAbleToSpawnHere(pos, world);
+            return isAbleToSpawnHere(pos, world);
         } else {
 
             return false;
@@ -83,31 +82,31 @@ public class WorldGenFrozenCastle extends WorldGenerator {
         for(BiomeDictionary.Type types : getSpawnBiomeTypes()) {
             Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
             if(BiomeDictionary.hasType(biomeCurrently, types)) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
-    private static List<BiomeDictionary.Type> lichTowerBiomeTypes;
+    private static List<BiomeDictionary.Type> frozenCastleBiomeTypes;
 
     public static List<BiomeDictionary.Type> getSpawnBiomeTypes() {
-        if(lichTowerBiomeTypes == null) {
-            lichTowerBiomeTypes = Lists.newArrayList();
+        if(frozenCastleBiomeTypes == null) {
+            frozenCastleBiomeTypes = Lists.newArrayList();
 
-            for(String str : WorldConfig.biome_types_blacklist_lich) {
+            for(String str : WorldConfig.frozen_castle_blacklist) {
                 try {
                     BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
 
-                    if (type != null) lichTowerBiomeTypes.add(type);
+                    if (type != null) frozenCastleBiomeTypes.add(type);
                     else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
                 } catch (Exception e) {
-                    DALogger.logError(str + " is not a valid type name", e);
+                    DALogger.logError(str + " is not a valid biome type name", e);
                 }
             }
         }
 
-        return lichTowerBiomeTypes;
+        return frozenCastleBiomeTypes;
     }
 
 
@@ -141,7 +140,7 @@ public class WorldGenFrozenCastle extends WorldGenerator {
                         BlockPos blockpos = posI.add(0, y, 0);
 
                             FrozenCastle castle = new FrozenCastle(worldIn, worldIn.getSaveHandler().getStructureTemplateManager(), components);
-                            castle.startCastle(new BlockPos(posI.getX(), 28, posI.getZ()), Rotation.NONE);
+                            castle.startCastle(new BlockPos(posI.getX(), WorldConfig.frozen_castle_y_height, posI.getZ()), Rotation.NONE);
                         this.updateBoundingBox();
 
                         this.valid = true;

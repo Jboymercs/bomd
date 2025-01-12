@@ -497,6 +497,252 @@
       }
     ]
   },
+  "entity.draugr.idle": {
+    "category": "entity",
+    "subtitle": "entity.draugr.idle",
+    "sounds": [
+      {
+        "name": "da:entity/draugr/idle_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/draugr/idle_2",
+        "steam": true
+      },
+      {
+        "name": "da:entity/draugr/idle_3",
+        "steam": true
+      },
+      {
+        "name": "da:entity/draugr/idle_4",
+        "steam": true
+      },
+      {
+        "name": "da:entity/draugr/idle_5",
+        "steam": true
+      }
+    ]
+  },
+  "entity.draugr.hurt": {
+    "category": "entity",
+    "subtitle": "entity.draugr.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/draugr/hurt_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/draugr/hurt_2",
+        "steam": true
+      },
+      {
+        "name": "da:entity/draugr/hurt_3",
+        "steam": true
+      }
+    ]
+  },
+  "entity.draugr.death": {
+    "category": "entity",
+    "subtitle": "entity.draugr.death",
+    "sounds": [
+      {
+        "name": "da:entity/draugr/death_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/draugr/death_2",
+        "steam": true
+      }
+    ]
+  },
+  "entity.draugr.step": {
+    "category": "entity",
+    "subtitle": "entity.draugr.step",
+    "sounds": [
+      {
+        "name": "da:entity/draugr/step_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/draugr/step_2",
+        "steam": true
+      },
+      {
+        "name": "da:entity/draugr/step_3",
+        "steam": true
+      },
+      {
+        "name": "da:entity/draugr/step_4",
+        "steam": true
+      }
+    ]
+  },
+  "entity.draugr_elite.hurt": {
+    "category": "entity",
+    "subtitle": "entity.draugr.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/draugr_elite/hurt_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/draugr_elite/hurt_2",
+        "steam": true
+      }
+    ]
+  },
+  "entity.draugr_elite.step": {
+    "category": "entity",
+    "subtitle": "entity.draugr.step",
+    "sounds": [
+      {
+        "name": "da:entity/draugr_elite/step_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/draugr_elite/step_2",
+        "steam": true
+      },
+      {
+        "name": "da:entity/draugr_elite/step_3",
+        "steam": true
+      }
+    ]
+  },
+  "entity.draugr_elite.idle": {
+    "category": "entity",
+    "subtitle": "entity.draugr.idle",
+    "sounds": [
+      {
+        "name": "da:entity/draugr_elite/idle_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/draugr_elite/idle_2",
+        "steam": true
+      },
+      {
+        "name": "da:entity/draugr_elite/idle_3",
+        "steam": true
+      }
+    ]
+  },
+  "entity.draugr_elite.stomp": {
+    "category": "entity",
+    "subtitle": "entity.draugr.stomp",
+    "sounds": [
+      {
+        "name": "da:entity/draugr_elite/stomp",
+        "steam": true
+      }
+    ]
+  },
+  "entity.draugr_elite.swing": {
+    "category": "entity",
+    "subtitle": "entity.draugr.swing",
+    "sounds": [
+      {
+        "name": "da:entity/draugr_elite/swing",
+        "steam": true
+      }
+    ]
+  },
+  "entity.draugr_elite.swing_impact": {
+    "category": "entity",
+    "subtitle": "entity.draugr.swing_impact",
+    "sounds": [
+      {
+        "name": "da:entity/draugr_elite/swing_impact",
+        "steam": true
+      }
+    ]
+  },
+  "entity.draugr_elite.war_cry": {
+    "category": "entity",
+    "subtitle": "entity.draugr.screams",
+    "sounds": [
+      {
+        "name": "da:entity/draugr_elite/war_cry",
+        "steam": true
+      }
+    ]
+  },
+  "entity.draugr_elite.death": {
+    "category": "entity",
+    "subtitle": "entity.draugr.death",
+    "sounds": [
+      {
+        "name": "da:entity/draugr_elite/death",
+        "steam": true
+      }
+    ]
+  },
+  "entity.ice_spike.summon": {
+    "category": "entity",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:entity/ice_spike/summon",
+        "steam": true
+      }
+    ]
+  },
+  "entity.wyrk.step": {
+    "category": "entity",
+    "subtitle": "entity.wyrk.step",
+    "sounds": [
+      {
+        "name": "da:entity/wyrk/step_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/wyrk/step_2",
+        "steam": true
+      }
+    ]
+  },
+  "entity.wyrk.hurt": {
+    "category": "entity",
+    "subtitle": "entity.wyrk.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/wyrk/hurt_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/wyrk/hurt_2",
+        "steam": true
+      }
+    ]
+  },
+  "entity.wyrk.idle": {
+    "category": "entity",
+    "subtitle": "entity.wyrk.idle",
+    "sounds": [
+      {
+        "name": "da:entity/wyrk/idle_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/wyrk/idle_2",
+        "steam": true
+      },
+      {
+        "name": "da:entity/wyrk/idle_3",
+        "steam": true
+      }
+    ]
+  },
+  "entity.wyrk.cast": {
+    "category": "entity",
+    "subtitle": "entity.wyrk.cast",
+    "sounds": [
+      {
+        "name": "da:entity/wyrk/cast",
+        "steam": true
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",

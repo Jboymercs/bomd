@@ -75,7 +75,7 @@ public class FrozenCastle {
             if(!generatedKeyRoom) {
                 genSuccess = generateCrossWayKeyRoom(straightPiece, BlockPos.ORIGIN, rot);
             } else {
-                genSuccess = generateCrossWay(straightPiece, BlockPos.ORIGIN, rot);
+                    genSuccess = generateCrossWay(straightPiece, BlockPos.ORIGIN, rot);
             }
         }
 
@@ -94,6 +94,7 @@ public class FrozenCastle {
 
         return true;
     }
+
 
     private boolean generateCrossWay(FrozenCastleTemplate parent, BlockPos pos, Rotation rot) {
         String[] cross_types = {"tiles/cross_1", "tiles/cross_2", "tiles/cross_3"};
@@ -148,7 +149,7 @@ public class FrozenCastle {
      * @return
      */
     private boolean generateCrossWayKeyRoom(FrozenCastleTemplate parent, BlockPos pos, Rotation rot) {
-        FrozenCastleTemplate crossPiece = addAdjustedPiece(parent, pos, "tiles/cross_3", rot);
+        FrozenCastleTemplate crossPiece = addAdjustedPiece(parent, pos, "tiles/cross_4", rot);
 
         if (crossPiece.isCollidingExcParent(manager, parent, components)) {
             return false;

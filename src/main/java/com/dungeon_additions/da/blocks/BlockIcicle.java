@@ -71,7 +71,6 @@ public class BlockIcicle extends BlockFalling implements IHasModel {
         if (!worldIn.isRemote)
         {
             this.checkFallable(worldIn, pos);
-            worldIn.scheduleUpdate(pos, this, 10);
         }
     }
 
@@ -100,6 +99,7 @@ public class BlockIcicle extends BlockFalling implements IHasModel {
                     }
                 }
             }
+            worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
         }
         if ((worldIn.isAirBlock(pos.down()) || canFallThrough(worldIn.getBlockState(pos.down()))) && pos.getY() >= 0)
         {

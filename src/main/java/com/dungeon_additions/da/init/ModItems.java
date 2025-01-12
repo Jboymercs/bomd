@@ -2,8 +2,11 @@ package com.dungeon_additions.da.init;
 
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.items.*;
+import com.dungeon_additions.da.items.armor.DraugrArmorBase;
 import com.dungeon_additions.da.items.armor.ModArmorBase;
+import com.dungeon_additions.da.items.armor.ModDraugrHelmet;
 import com.dungeon_additions.da.items.armor.ModLichArmor;
+import com.dungeon_additions.da.items.shield.ItemDraugrShield;
 import com.dungeon_additions.da.items.tools.*;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.ModColors;
@@ -20,8 +23,10 @@ import java.util.List;
 
 public class ModItems {
 
-
+    private static final Item.ToolMaterial CHAMPION_AXE_MATERIAL = EnumHelper.addToolMaterial("champion_set", 3, 874, 7.0F, 9, 15);
     private static final Item.ToolMaterial DAGGER_MATERIAL = EnumHelper.addToolMaterial("void_material", 2, 320, 6.0F, (float) ModConfig.void_dagger_damage, 45);
+
+    private static final Item.ToolMaterial DRAUGR_SWORD = EnumHelper.addToolMaterial("void_material", 2, 974, 6.0F, (float) 6.5, 45);
     private static final Item.ToolMaterial FLAME_SWORD_MATERIAL = EnumHelper.addToolMaterial("flame_sword_material", 2, 988, 6.0F, ModConfig.sword_of_ambition_damage, 70);
 
     private static final Item.ToolMaterial SOUL_SPEAR_MATERIAL = EnumHelper.addToolMaterial("soul_spear_material", 2, 1200, 5.0F, ModConfig.soul_spear_damage, 10);
@@ -30,6 +35,7 @@ public class ModItems {
     private static final Item.ToolMaterial KNIGHT_RAPIER_MATERIAL = EnumHelper.addToolMaterial("knight_rapier_material", 2, 502, 5.0F, (float) ModConfig.rapier_damage, 10);
 
     private static final ItemArmor.ArmorMaterial FLAME_ARMOR = EnumHelper.addArmorMaterial("flame", ModReference.MOD_ID + ":flame", 320, new int[]{4, 7,9,4}, 70, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2F);
+    private static final ItemArmor.ArmorMaterial DRAUGR_ARMOR = EnumHelper.addArmorMaterial("draugr", ModReference.MOD_ID + "draugr", 400, new int[]{3, 6, 8,3}, 20, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2F);
     private static final ItemArmor.ArmorMaterial LICH_HELMET = EnumHelper.addArmorMaterial("night_lich", ModReference.MOD_ID +":night_lich", 275, new int[] {3,6,8,3}, 70, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1F);
     public ModItems() {
 
@@ -67,6 +73,8 @@ public class ModItems {
     public static final Item FLAME_LEGGINGS = new ModArmorBase("flame_leggings", FLAME_ARMOR, 2, EntityEquipmentSlot.LEGS, "flame", "flame_armor_desc");
     public static final ItemArmor FLAME_BOOTS = new ModArmorBase("flame_boots", FLAME_ARMOR, 1, EntityEquipmentSlot.FEET, "flame", "flame_armor_desc");
     public static final ItemArmor NIGHT_LICH_HELMET = new ModLichArmor("lich_helmet", LICH_HELMET, 1, EntityEquipmentSlot.HEAD,"night_lich", "night_lich_desc");
+    public static final ItemArmor DRAUGR_HELMET = new ModDraugrHelmet("draugr_helmet", DRAUGR_ARMOR, 1, EntityEquipmentSlot.HEAD, "draugr_helmet", "draugr_armor_desc");
+    public static final ItemArmor DRAUGR_CHESTPLATE = new DraugrArmorBase("draugr_chestplate", DRAUGR_ARMOR, 1, EntityEquipmentSlot.CHEST, "draugr", "draugr_armor_desc");
 
     public static final Item ROT_KNIGHT_FRAGMENT = new ItemCraftingMaterial("knight_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ROT_KNIGHT_INGOT = new ItemCraftingMaterial("knight_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -84,7 +92,13 @@ public class ModItems {
     public static final Item FROST_SHARD = new ItemCraftingMaterial("frost_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_INGOT = new ItemCraftingMaterial("frost_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_KEY = new ItemFrostKey("frost_key", "frost_key_desc").setCreativeTab(DungeonAdditionsTab.ALL);
-    public static final Item FROST_SWORD = new ToolSword("frost_sword", DAGGER_MATERIAL);
+    public static final Item FROST_SWORD = new ItemDraugrSword("frost_sword", DRAUGR_SWORD, "draugr_sword_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item DRAUGR_SHIELD = new ItemDraugrShield("draugr_shield", DungeonAdditionsTab.ALL, "draugr_shield_desc");
+    public static final Item CHAMPION_AXE = new ItemChampionAxe("champion_axe", CHAMPION_AXE_MATERIAL, "champion_axe_desc");
+    public static final Item DRAUGR_METAL = new ItemCraftingMaterial("draugr_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item DRAUGR_INGOT = new ItemCraftingMaterial("draugr_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item FROZEN_CASTLE_LOCATOR = new ItemFrozenCastleLocator("frost_locator", "frost_locator_desc");
+    public static final Item FAKE_BOW = new ItemBase("fake_bow");
 
     public static final Item MOD_LOGO = new ItemBase("bomd_mod_logo", null);
 

@@ -18,18 +18,18 @@ import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.ProjectileFrostBullet;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityEliteDraugr;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.ProjectileSoul;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
 import com.dungeon_additions.da.entity.night_lich.EntityLichSpawn;
+import com.dungeon_additions.da.entity.projectiles.EntityFrozenCastleLocator;
 import com.dungeon_additions.da.entity.projectiles.EntityLily;
 import com.dungeon_additions.da.entity.projectiles.EntitySoulStar;
 import com.dungeon_additions.da.entity.projectiles.ProjectileAbberrantAttack;
 import com.dungeon_additions.da.entity.render.*;
-import com.dungeon_additions.da.entity.render.frost_dungeon.RenderDraugr;
-import com.dungeon_additions.da.entity.render.frost_dungeon.RenderDraugrRanger;
-import com.dungeon_additions.da.entity.render.frost_dungeon.RenderIceSpike;
-import com.dungeon_additions.da.entity.render.frost_dungeon.RenderWyrk;
+import com.dungeon_additions.da.entity.render.frost_dungeon.*;
 import com.dungeon_additions.da.entity.render.lich.RenderLichSpawn;
 import com.dungeon_additions.da.entity.render.lich.RenderLichStaff;
 import com.dungeon_additions.da.entity.render.lich.RenderNightLich;
@@ -96,6 +96,8 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileTrackingMagicMissile.class, ModItems.MAGIC_TRACK_PROJECTILE);
         registerProjectileRenderer(ProjectileMagicGround.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(ProjectileFrostBullet.class, ModItems.FROST_PROJECTILE);
+        registerProjectileRenderer(ProjectileSoul.class, ModItems.INVISISBLE_ITEM);
+        registerProjectileRenderer(EntityFrozenCastleLocator.class, ModItems.FROZEN_CASTLE_LOCATOR);
     }
 
     //Handles Rendering
@@ -149,6 +151,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityDraugr.class, RenderDraugr::new);
         //Frost Draugr Ranger
         RenderingRegistry.registerEntityRenderingHandler(EntityDraugrRanger.class, RenderDraugrRanger::new);
+        //Draugr Elite
+        RenderingRegistry.registerEntityRenderingHandler(EntityEliteDraugr.class, RenderDraugrElite::new);
     }
 
 }

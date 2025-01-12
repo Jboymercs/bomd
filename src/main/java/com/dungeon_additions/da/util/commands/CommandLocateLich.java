@@ -67,6 +67,14 @@ public class CommandLocateLich implements ICommand {
                 } else {
                     throw new CommandException("commands.locate.failure", s);
                 }
+            } else if (s.equals("FrozenCastle")) {
+                BlockPos blockpos = findNearestPosFrozenCastle(sender);
+
+                if (blockpos != null) {
+                    sender.sendMessage(new TextComponentTranslation("commands.locate.success", new Object[]{s, blockpos.getX(), blockpos.getZ()}));
+                } else {
+                    throw new CommandException("commands.locate.failure", s);
+                }
             }
         }
     }
@@ -82,7 +90,7 @@ public class CommandLocateLich implements ICommand {
 
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "NightLichTower", "BlossomCave") : Collections.emptyList();
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "NightLichTower", "BlossomCave", "FrozenCastle") : Collections.emptyList();
     }
 
     public static List<String> getListOfStringsMatchingLastWord(String[] args, String... possibilities) {
@@ -146,6 +154,55 @@ public class CommandLocateLich implements ICommand {
             }
         }
         return resultpos;
+    }
+
+    public static BlockPos findNearestPosFrozenCastle(ICommandSender sender) {
+        BlockPos resultpos = null;
+        BlockPos pos = sender.getPosition();
+        World world = sender.getEntityWorld();
+        Chunk chunk = world.getChunk(pos);
+        //probably laggy as hell but hey it works
+        for (int i = -150; i < 151; i++) {
+            for (int j = -150; j < 151; j++) {
+                boolean c = IsFrozenCastleAtPos(world, chunk.x + i, chunk.z + j);
+                if (c) {
+                    resultpos = new BlockPos((chunk.x + i) << 4, 100, (chunk.z + j) << 4);
+                    break;
+                }
+            }
+        }
+        return resultpos;
+    }
+
+    protected static boolean IsFrozenCastleAtPos(World world, int chunkX, int chunkZ) {
+        int spacing = WorldConfig.frozen_castle_spacing;
+        int separation = 16;
+        int i = chunkX;
+        int j = chunkZ;
+
+        if (chunkX < 0) {
+            chunkX -= spacing - 1;
+        }
+
+        if (chunkZ < 0) {
+            chunkZ -= spacing - 1;
+        }
+
+        int k = chunkX / spacing;
+        int l = chunkZ / spacing;
+        Random random = world.setRandomSeed(k, l, 10383709);
+        k = k * spacing;
+        l = l * spacing;
+        k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+        l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+
+        if (i == k && j == l && isAllowedDimensionTooSpawnInFrozenCastle(world.provider.getDimension())) {
+            BlockPos pos = new BlockPos((i << 4), 0, (j << 4));
+            return isAbleToSpawnHereFrozenCastle(pos, world);
+        } else {
+
+            return false;
+        }
     }
 
     protected static boolean IsBlossomCaveAtPos(World world, int chunkX, int chunkZ) {
@@ -241,6 +298,37 @@ public class CommandLocateLich implements ICommand {
         return lichTowerBiomeTypes;
     }
 
+    public static boolean isAbleToSpawnHereFrozenCastle(BlockPos pos, World world) {
+        for(BiomeDictionary.Type types : getSpawnBiomeTypesFrozenCastle()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static List<BiomeDictionary.Type> frozenCastleBiomeTypes;
+
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypesFrozenCastle() {
+        if(frozenCastleBiomeTypes == null) {
+            frozenCastleBiomeTypes = Lists.newArrayList();
+
+            for(String str : WorldConfig.frozen_castle_blacklist) {
+                try {
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) frozenCastleBiomeTypes.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
+                } catch (Exception e) {
+                    DALogger.logError(str + " is not a valid type name", e);
+                }
+            }
+        }
+
+        return frozenCastleBiomeTypes;
+    }
+
     public static boolean isAbleToSpawnHereBlossom(BlockPos pos, World world) {
         for(BiomeDictionary.Type types : getSpawnBiomeTypesBlossom()) {
             Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
@@ -284,6 +372,15 @@ public class CommandLocateLich implements ICommand {
 
     public static boolean isAllowedDimensionTooSpawnIn(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInFrozenCastle(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_frozen_castle) {
             if(i == dimensionIn)
                 return true;
         }

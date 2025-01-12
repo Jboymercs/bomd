@@ -15,10 +15,13 @@ import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.ProjectileFrostBullet;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityEliteDraugr;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.ProjectileSoul;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
 import com.dungeon_additions.da.entity.night_lich.EntityLichSpawn;
+import com.dungeon_additions.da.entity.projectiles.EntityFrozenCastleLocator;
 import com.dungeon_additions.da.entity.projectiles.EntityLily;
 import com.dungeon_additions.da.entity.projectiles.EntitySoulStar;
 import com.dungeon_additions.da.entity.projectiles.ProjectileAbberrantAttack;
@@ -99,6 +102,9 @@ public class ModEntities {
             registerEntity("ice_bullet", ProjectileFrostBullet.class, ENTITY_START_ID++, 70);
             registerEntityWithID("frost_draugr", EntityDraugr.class, ENTITY_START_ID++, 70, night_lich);
             registerEntityWithID("frost_draugr_ranger", EntityDraugrRanger.class, ENTITY_START_ID++, 70, night_lich);
+            registerEntity("soul_bullet", ProjectileSoul.class, ENTITY_START_ID++, 70);
+            registerEntityWithID("frost_draugr_elite", EntityEliteDraugr.class, ENTITY_START_ID++, 70, night_lich);
+            registerEntity("frost_locator", EntityFrozenCastleLocator.class, ENTITY_START_ID++, 70);
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
         registerTileEntity(TileEntityMegaStructure.class, "mega_structure");

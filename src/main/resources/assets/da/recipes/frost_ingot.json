@@ -1,9 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "VVV",
-    "VVV",
-    "VVV"
+    "VV",
+    "VV"
   ],
   "key": {
     "V": {

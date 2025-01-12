@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.render.frost_dungeon;
 
 import com.dungeon_additions.da.entity.EntityAbstractBase;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
 import com.dungeon_additions.da.entity.render.util.BlockRenderUtil;
 import com.dungeon_additions.da.entity.render.util.MatrixUtil;
 import net.minecraft.block.state.IBlockState;
@@ -12,7 +13,9 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -27,7 +30,7 @@ import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
 import java.util.function.Function;
 
-public abstract class RenderDraugrExtended <T extends EntityAbstractBase & IAnimatable> extends GeoEntityRenderer<T> {
+public abstract class RenderDraugrExtended <T extends EntityDraugrRanger & IAnimatable> extends GeoEntityRenderer<T> {
     //In hopes of getting more usage with rendering extra stuff with Geckolib and not be a pain
     //Copied from CQR Dev Team https://github.com/TeamChocoQuest/ChocolateQuestRepoured/blob/1.12.2/src/main/java/team/cqr/cqrepoured/client/render/entity/RenderCQREntityGeo.java
 
@@ -123,13 +126,12 @@ public abstract class RenderDraugrExtended <T extends EntityAbstractBase & IAnim
                     GlStateManager.pushMatrix();
                     multiplyMatrix(IGeoRenderer.MATRIX_STACK, bone);
                     GlStateManager.scale(1f, 1f, 1f);
-                    GlStateManager.translate(0.f, 0.f, -0.4f);
+                    GlStateManager.translate(-0.1f, 0.125f, 0f);
                     //float angle = (System.currentTimeMillis() / 40) % 360;
-                    GlStateManager.rotate(90, -0.5F, 0, 0);
+                    GlStateManager.rotate(180, -1.0F, -0.5F, 1.0F);
                     this.preRenderItem(boneItem, bone.getName(), this.currentEntityBeingRendered);
 
                     Minecraft.getMinecraft().getItemRenderer().renderItem(this.currentEntityBeingRendered, boneItem, this.getCameraTransformForItemAtBone(boneItem, bone.getName()));
-
                     this.postRenderItem(boneItem, bone.getName(), this.currentEntityBeingRendered);
 
                     GlStateManager.popMatrix();

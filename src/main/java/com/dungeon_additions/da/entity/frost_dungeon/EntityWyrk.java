@@ -2,13 +2,17 @@ package com.dungeon_additions.da.entity.frost_dungeon;
 
 import com.dungeon_additions.da.entity.ai.EntityWyrkAttackAI;
 import com.dungeon_additions.da.entity.ai.IAttack;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.wyrk.ActionShootProjectileWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.wyrk.ActionSummonAOEWyrk;
+import com.dungeon_additions.da.entity.night_lich.EntityLichSpawn;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -16,11 +20,15 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -46,10 +54,15 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
     private boolean doSummonParticles = false;
     private Consumer<EntityLivingBase> prevAttack;
     private static final DataParameter<Boolean> STOMP = EntityDataManager.createKey(EntityWyrk.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> SUMMON_COUNT = EntityDataManager.createKey(EntityWyrk.class, DataSerializers.VARINT);
 
     private boolean isStomp() {return this.dataManager.get(STOMP);}
 
     private void setStomp(boolean value) {this.dataManager.set(STOMP, Boolean.valueOf(value));}
+
+    public int getSummonCount() {return this.dataManager.get(SUMMON_COUNT);}
+
+    public void setSummonCount(int value) {this.dataManager.set(SUMMON_COUNT, value);}
 
 
     public EntityWyrk(World worldIn, float x, float y, float z) {
@@ -66,12 +79,14 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
+        nbt.setInteger("Summon_Count", this.getSummonCount());
         nbt.setBoolean("Stomp", this.isStomp());
         super.writeEntityToNBT(nbt);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
+        this.setSummonCount(nbt.getInteger("Summon_Count"));
         this.setStomp(nbt.getBoolean("Stomp"));
         super.readEntityFromNBT(nbt);
     }
@@ -79,7 +94,56 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
     @Override
     public void entityInit() {
         super.entityInit();
+        this.dataManager.register(SUMMON_COUNT, 0);
         this.dataManager.register(STOMP, Boolean.valueOf(false));
+    }
+
+    public int summonDraugrTimer = 300;
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+
+        EntityLivingBase target = this.getAttackTarget();
+
+        if(!world.isRemote) {
+            if(target != null && this.getSummonCount() > 0) {
+                if(summonDraugrTimer > 1) {
+                    summonDraugrTimer--;
+                } else if (summonDraugrTimer < 4) {
+                    //summons Draugr
+                    this.summonDraugrByCount();
+                }
+            }
+        }
+    }
+
+
+    private void summonDraugrByCount() {
+        this.summonDraugrTimer = 150;
+        world.setEntityState(this, ModUtils.THIRD_PARTICLE_BYTE);
+        BlockPos randIPos = new BlockPos(this.posX + ModRand.range(-4, 4), this.posY, this.posZ + ModRand.range(-4, 4));
+        int y = getSurfaceHeight(world, new BlockPos(randIPos.getX(), 0, randIPos.getZ()), (int) this.posY - 2, (int) this.posY + 2);
+        EntityLivingBase new_mob = new EntityLichSpawn(world, this);
+        new_mob.setPosition(randIPos.getX() + 0.5, y + 1, randIPos.getZ() + 0.5);
+        world.spawnEntity(new_mob);
+        this.setSummonCount(this.getSummonCount() - 1);
+    }
+
+    private int getSurfaceHeight(World world, BlockPos pos, int min, int max)
+    {
+        int currentY = max;
+
+        while(currentY >= min)
+        {
+            if(!world.isAirBlock(pos.add(0, currentY, 0)) && !world.isRemote) {
+                return currentY;
+            }
+
+            currentY--;
+        }
+
+        return 0;
     }
 
 
@@ -124,14 +188,15 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
     private final Consumer<EntityLivingBase> ranged_attack = (target) -> {
         this.setFightMode(true);
         this.doSummonParticles =  true;
-
         addEvent(()-> {
             this.doSummonParticles = false;
             world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
             new ActionShootProjectileWyrk().performAction(this, target);
         }, 40);
 
-        addEvent(()-> this.setFightMode(false), 100);
+        addEvent(()-> this.playSound(SoundsHandler.WYRK_CAST, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f)), 50);
+
+        addEvent(()-> this.setFightMode(false), 110);
     };
 
     private final Consumer<EntityLivingBase> stomp_attack = (target) -> {
@@ -147,6 +212,7 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
 
         addEvent(()-> {
             //do shockwave AOE
+            this.playSound(SoundsHandler.DRAUGR_ELITE_STOMP, 0.75f, 1.3f / (rand.nextFloat() * 0.4F + 0.4f));
             new ActionSummonAOEWyrk(6).performAction(this, target);
         }, 40);
 
@@ -176,6 +242,13 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
             ModUtils.circleCallback(1, 20, (pos)-> {
                 pos = new Vec3d(pos.x, 0, pos.y);
                 ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(2.4)), ModColors.WHITE, pos.normalize().scale(0.1), ModRand.range(10, 15));
+            });
+        }
+
+        if(id == ModUtils.THIRD_PARTICLE_BYTE) {
+            ModUtils.circleCallback(1, 20, (pos)-> {
+                pos = new Vec3d(pos.x, 0, pos.y);
+                ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(2.4)), ModColors.AZURE, pos.normalize().scale(0.1), ModRand.range(10, 15));
             });
         }
     }
@@ -231,6 +304,27 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
     @Override
     public void tick() {
 
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundsHandler.WYRK_HURT;
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundsHandler.WYRK_IDLE;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundsHandler.WYRK_HURT;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(SoundsHandler.WYRK_STEP, 0.25F, 0.4f + ModRand.getFloat(0.3F));
     }
 
     @Override

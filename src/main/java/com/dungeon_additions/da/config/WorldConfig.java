@@ -143,6 +143,27 @@ public class WorldConfig {
     public static String[] biome_types_blacklist_lich = {"DENSE","NETHER","END","MUSHROOM","OCEAN","RIVER","MESA","MOUNTAIN","HILLS","BEACH"
     };
 
+    @Config.Name("Frozen Castle WhiteList Biome Types")
+    @Config.Comment("Add Biome types that ALLOW the Frozen Castle from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
+    @Config.RequiresMcRestart
+    public static String[] frozen_castle_blacklist = {"COLD","SNOWY","MOUNTAIN","WASTELAND"
+    };
+
+    @Config.Name("Frozen Castle Spacing")
+    @Config.Comment("Change the spacing between each Frozen Castle, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
+    @Config.RequiresMcRestart
+    public static int frozen_castle_spacing = 40;
+
+    @Config.Name("Frozen Castle Y Height")
+    @Config.Comment("Change the value that the Frozen Castle generates at Y level")
+    @Config.RequiresMcRestart
+    public static int frozen_castle_y_height = 26;
+
+    @Config.Name("Frozen Castle Allowed Dimensions")
+    @Config.Comment("Select what dimensions this structure is allowed to spawn in")
+    @Config.RequiresMcRestart
+    public static int[] list_of_dimensions_frozen_castle = {0};
+
     @Config.Name("Petrogloom Ore Gen")
     @Config.Comment("Allowed Dimension for Petrogloom to spawn in")
     @Config.RequiresMcRestart

@@ -78,6 +78,31 @@ public class SoundsHandler {
     public static SoundEvent LICH_PREPARE_COMBO;
     public static SoundEvent LICH_RAGE_PREPARE;
 
+    //Draugr
+    public static SoundEvent DRAUGR_IDLE;
+    public static SoundEvent DRAUGR_HURT;
+    public static SoundEvent DRAUGR_DEATH;
+    public static SoundEvent DRAUGR_STEP;
+
+    //Draugr Elite
+    public static SoundEvent DRAUGR_ELITE_IDLE;
+    public static SoundEvent DRAUGR_ELITE_HURT;
+    public static SoundEvent DRAUGR_ELITE_STEP;
+    public static SoundEvent DRAUGR_ELITE_STOMP;
+    public static SoundEvent DRAUGR_ELITE_SWING;
+    public static SoundEvent DRAUGR_ELITE_SWING_IMPACT;
+    public static SoundEvent DRAUGR_ELITE_WAR_CRY;
+    public static SoundEvent DRAUGR_ELITE_DEATH;
+
+    //Ice Spike
+    public static SoundEvent ICE_SPIKE_SUMMON;
+
+    //WYRK
+    public static SoundEvent WYRK_IDLE;
+    public static SoundEvent WYRK_HURT;
+    public static SoundEvent WYRK_STEP;
+    public static SoundEvent WYRK_CAST;
+
     public static void registerSounds() {
         //
         MOSS_BREAK = registerSound("moss.break", "block");
@@ -140,6 +165,27 @@ public class SoundsHandler {
         LICH_PREPARE_COMBO = registerSound("night_lich.prepare_combo", "entity");
         LICH_PREPARE_SPELL = registerSound("night_lich.prepare_spell", "entity");
         LICH_RAGE_PREPARE = registerSound("night_lich.rage_prepare", "entity");
+        //
+        DRAUGR_IDLE = registerSound("draugr.idle", "entity");
+        DRAUGR_HURT = registerSound("draugr.hurt", "entity");
+        DRAUGR_DEATH = registerSound("draugr.death", "entity");
+        DRAUGR_STEP = registerSound("draugr.step", "entity");
+        //
+        DRAUGR_ELITE_HURT = registerSound("draugr_elite.hurt", "entity");
+        DRAUGR_ELITE_IDLE = registerSound("draugr_elite.idle", "entity");
+        DRAUGR_ELITE_STEP = registerSound("draugr_elite.step", "entity");
+        DRAUGR_ELITE_STOMP = registerSound("draugr_elite.stomp", "entity");
+        DRAUGR_ELITE_SWING = registerSound("draugr_elite.swing", "entity");
+        DRAUGR_ELITE_SWING_IMPACT = registerSound("draugr_elite.swing_impact", "entity");
+        DRAUGR_ELITE_WAR_CRY = registerSound("draugr_elite.war_cry", "entity");
+        DRAUGR_ELITE_DEATH = registerSound("draugr_elite.death", "entity");
+        //
+        ICE_SPIKE_SUMMON = registerSound("ice_spike.summon", "entity");
+        //
+        WYRK_CAST = registerSound("wyrk.cast", "entity");
+        WYRK_HURT = registerSound("wyrk.hurt", "entity");
+        WYRK_IDLE = registerSound("wyrk.idle", "entity");
+        WYRK_STEP = registerSound("wyrk.step", "entity");
     }
 
 

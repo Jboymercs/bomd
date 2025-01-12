@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VXV",
+    "V V"
+  ],
+  "key": {
+    "V": {
+      "item": "da:draugr_ingot"
+    },
+    "X": {
+      "item": "da:frost_ingot"
+    }
+  },
+  "result": {
+    "item": "da:draugr_helmet"
+  }
+}

@@ -259,8 +259,8 @@ public class MobConfig {
     @Config.Comment("Add or remove possible mob spawns that the Night Lich can summon, must be ModID:entity_name")
     @Config.RequiresMcRestart
     public static String[] mob_list_one = {
-            "minecraft:zombie",
-            "minecraft:skeleton",
+            "da:draugr",
+            "da:draugr_ranger",
             "minecraft:spider"
     };
 
@@ -268,8 +268,8 @@ public class MobConfig {
     @Config.Comment("Add or remove possible mob spawns that the Night Lich can summon, this list only takes effect when below 50% Health. Must be ModID:entity_name")
     @Config.RequiresMcRestart
     public static String[] mob_list_two = {
-            "minecraft:zombie",
-            "minecraft:skeleton",
+            "da:draugr",
+            "da:draugr_ranger",
             "minecraft:cave_spider",
             "minecraft:blaze"
     };

@@ -6,9 +6,12 @@ import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityFrostBase;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.util.ModRand;
+import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.sun.jna.platform.win32.WinBase;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -24,6 +27,9 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
@@ -37,6 +43,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnimationTickable, IAttack {
@@ -86,12 +93,14 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
         super(worldIn, x, y, z);
         this.setSize(0.7F, 1.95F);
         this.experienceValue = 8;
+        this.setSkin(rand.nextInt(5));
     }
 
     public EntityDraugr(World worldIn) {
         super(worldIn);
         this.setSize(0.7F, 1.95F);
         this.experienceValue = 8;
+        this.setSkin(rand.nextInt(5));
     }
 
 
@@ -260,14 +269,14 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
 
         addEvent(()-> {
             this.setImmovable(false);
-        }, 50);
+        }, 65);
 
-        addEvent(()-> this.hasShieldLowered = false, 55);
+        addEvent(()-> this.hasShieldLowered = false, 70);
 
         addEvent(()-> {
             this.setSwingShield(false);
             this.setFightMode(false);
-        }, 60);
+        }, 75);
     };
 
     @Override
@@ -388,6 +397,58 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
         return false;
     }
 
+    private boolean hasFoundWyrk = false;
+
+    @Override
+    public void onDeath(DamageSource cause) {
+        List<EntityWyrk> nearbyWyrk = this.world.getEntitiesWithinAABB(EntityWyrk.class, this.getEntityBoundingBox().grow(20.0D), e -> !e.getIsInvulnerable());
+        if(!nearbyWyrk.isEmpty()) {
+            for(EntityWyrk wyrk : nearbyWyrk) {
+                if(!hasFoundWyrk && !world.isRemote) {
+                    ProjectileSoul soul = new ProjectileSoul(world, this, 0, wyrk);
+                    soul.setPosition(this.posX, this.posY + 1.5D, this.posZ);
+                    soul.setTravelRange(40F);
+                    this.world.spawnEntity(soul);
+                    this.hasFoundWyrk = true;
+                }
+            }
+        }
+
+        super.onDeath(cause);
+    }
+
+    private static final ResourceLocation LOOT_MOB = new ResourceLocation(ModReference.MOD_ID, "draugr");
+
+    @Override
+    protected ResourceLocation getLootTable() {
+        return LOOT_MOB;
+    }
+
+    @Override
+    protected boolean canDropLoot() {
+        return true;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundsHandler.DRAUGR_HURT;
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundsHandler.DRAUGR_IDLE;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundsHandler.DRAUGR_DEATH;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(SoundsHandler.DRAUGR_STEP, 0.5F, 0.4f + ModRand.getFloat(0.3F));
+    }
 
     @Override
     public AnimationFactory getFactory() {

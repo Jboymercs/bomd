@@ -3,22 +3,29 @@ package com.dungeon_additions.da.proxy;
 import com.dungeon_additions.da.animation.IAnimatedEntity;
 import com.dungeon_additions.da.blocks.BlockLeaveBase;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.items.model.ModelDraugrHelmet;
 import com.dungeon_additions.da.items.model.ModelLichHelmet;
 import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSection;
 import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSectionSerializer;
 import com.dungeon_additions.da.util.handlers.RenderHandler;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.multiplayer.ClientAdvancementManager;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ClientProxy extends CommonProxy{
 
     private final ModelBiped MODEL_LICH_HELMET = new ModelLichHelmet(0F);
+    private final ModelBiped MODEL_DRAUGR_HELMET = new ModelDraugrHelmet(0F);
 
     @Override
     public void init() {
@@ -58,7 +65,25 @@ public class ClientProxy extends CommonProxy{
         if(item == ModItems.NIGHT_LICH_HELMET){
             return MODEL_LICH_HELMET;
         }
+        if(item == ModItems.DRAUGR_HELMET) {
+            return MODEL_DRAUGR_HELMET;
+        }
         return null;
+    }
+
+    @Override
+    public boolean doesPlayerHaveXAdvancement(EntityPlayer player, ResourceLocation Id) {
+        if(player instanceof EntityPlayerSP) {
+            ClientAdvancementManager manager = ((EntityPlayerSP) player).connection.getAdvancementManager();
+            Advancement advancement = manager.getAdvancementList().getAdvancement(Id);
+            if(advancement == null) {
+                return false;
+            }
+            AdvancementProgress progress = manager.advancementToProgress.get(advancement);
+            return progress != null && progress.isDone();
+        }
+
+        return super.doesPlayerHaveXAdvancement(player, Id);
     }
 
     @Override

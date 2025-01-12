@@ -7,6 +7,7 @@ import com.dungeon_additions.da.entity.blossom.EntityVoidSpike;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -73,6 +74,7 @@ public class EntityIcicleSpike extends EntityFrostBase implements IAnimatable, I
 
         if(this.ticksExisted == 2 && rand.nextInt(3) == 0) {
             //play sounds
+            this.playSound(SoundsHandler.ICE_SPIKE_SUMMON, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }
 
         if(this.ticksExisted >= 7 && this.ticksExisted <= 12) {

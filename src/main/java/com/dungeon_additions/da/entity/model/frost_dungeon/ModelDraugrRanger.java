@@ -35,10 +35,17 @@ public class ModelDraugrRanger extends GeoModelExtended<EntityDraugrRanger> {
     public void setLivingAnimations(EntityDraugrRanger entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         IBone head = this.getAnimationProcessor().getBone("HeadJ");
+        IBone LArm = this.getAnimationProcessor().getBone("LArm");
+        IBone RArm = this.getAnimationProcessor().getBone("RArm");
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
         head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
         head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
-
+        if(entity.isRangedAttack()) {
+            RArm.setRotationX(((float)Math.PI / 2F) + head.getRotationX() + 0.1F);
+            RArm.setRotationY(0.3F + head.getRotationY());
+            LArm.setRotationX(1.5F + head.getRotationX());
+            LArm.setRotationY(-0.6F + head.getRotationY());
+        }
     }
 
     @Override

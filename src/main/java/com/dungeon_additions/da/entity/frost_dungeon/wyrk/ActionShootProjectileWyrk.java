@@ -4,8 +4,11 @@ import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.IAction;
 import com.dungeon_additions.da.entity.frost_dungeon.ProjectileFrostBullet;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.Vec3d;
+
+import java.util.Random;
 
 public class ActionShootProjectileWyrk implements IAction {
 
@@ -26,7 +29,7 @@ public class ActionShootProjectileWyrk implements IAction {
         }
 
         actor.addEvent(()-> {
-          //  actor.playSound(SoundsHandler.LICH_SHOOT_MISSILE, 2.0f, 0.8f / (new Random().nextFloat() * 0.4f + 0.6f));
+            actor.playSound(SoundsHandler.LICH_SHOOT_MISSILE, 2.0f, 0.8f / (new Random().nextFloat() * 0.4f + 0.6f));
             Vec3d targetPos = target.getPositionEyes(1.0F).add(ModUtils.getRelativeOffset(actor, new Vec3d(0, -0.5, 0)));
 
             Vec3d fromTargetTooActor = actor.getPositionVector().subtract(targetPos);

@@ -2,6 +2,7 @@ package com.dungeon_additions.da.util;
 
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.blocks.lich.EnumLichSpawner;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityLichSpawner;
@@ -27,6 +28,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -791,6 +793,9 @@ public class ModUtils {
         return new AxisAlignedBB(pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z);
     }
 
+    public static DamageSource causeAxeDamage(Entity source)
+    { return (new EntityDamageSource(ModReference.MOD_ID + "." + "champion_axe", source)); }
+
 
     public static void destroyBlocksInAABB(AxisAlignedBB box, World world, Entity entity) {
         int i = MathHelper.floor(box.minX);
@@ -828,6 +833,24 @@ public class ModUtils {
                 }
             }
         }
+    }
+
+    public static boolean getAdvancementCompletionAsList(EntityPlayer currentPlayer, String[] advancementNamesList) {
+        if(!ModConfig.advancements_block_soul_stars) {
+            return true;
+        }
+
+        for(String adv : advancementNamesList) {
+            ResourceLocation loc = new ResourceLocation(adv);
+            boolean isCompleted = Main.proxy.doesPlayerHaveXAdvancement(currentPlayer, loc);
+
+            if(!isCompleted) {
+                break;
+            }
+
+            return true;
+        }
+        return false;
     }
 
 }

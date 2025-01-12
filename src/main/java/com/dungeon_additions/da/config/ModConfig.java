@@ -88,5 +88,15 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static int locator_reset_pos = 60;
 
+    @Config.Name("Soul Star Drops Advancement Requirements")
+    @Config.Comment("What advancements are required for players to use and unlock Soul Stars dropping from Mobs")
+    @Config.RequiresMcRestart
+    public static String[] soul_star_progress = {
+            "da:kill_kobf"
+    };
 
+    @Config.Name("Soul Star Advancement Requirement Enable/Disable")
+    @Config.Comment("Change to false to disable advancement requirements for Soul Stars to drop")
+    @Config.RequiresMcRestart
+    public static boolean advancements_block_soul_stars = true;
 }
