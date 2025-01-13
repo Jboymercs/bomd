@@ -39,6 +39,17 @@
           ]
         }
       ]
+    },
+    {
+      "name" : "da:void_blossom",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:frost_locator",
+          "weight": 1
+        }
+      ]
     }
   ]
 }

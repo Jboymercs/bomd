@@ -34,6 +34,7 @@ entity.frost_draugr_ranger.name=Frostborn Draugr Ranger
 entity.soul_bullet.name=Draugr Soul
 entity.frost_draugr_elite.name=Frostborn Draugr Champion
 entity.frost_locator.name=Frostborn Crystal
+entity.great_wyrk.name=Ancient Wyrk
 item.void_leaf.name=Void Leaf
 item.spore.name=Void Blossom Spore
 item.crystal_fruit.name=Crystal Fruit
@@ -78,7 +79,7 @@ item.draugr_shield.name=Frostborn Shield
 item.draugr_helmet.name=Frostborn Helmet
 item.draugr_chestplate.name=Frostborn Chestplate
 da.desc.draugr_shield_name=Frostborn Shield
-item.frost_locator.name=Frostborn Soul Star
+item.frost_locator.name=Frozen Soul Star
 tile.spore_blossom.name=Void Blossom
 tile.moss_block.name=Moss Block
 tile.moss_carpet.name=Moss Carpet
@@ -200,9 +201,24 @@ advancements.da.kill_abberrant.description=Find a Burning Flame Arena
 #Knight of Burning Flame
 advancements.da.kill_kobf.title=The Flame that takes all
 advancements.da.kill_kobf.description=Slay the Knight of Burning Flame
+#Draugr Champion
+advancements.da.kill_elite_draugr.title=Champion of the Vikings
+advancements.da.kill_elite_draugr.description=Slay a Frostborn Draugr Champion
 #Find Soul Star
 advancements.da.find_soul_star.title=The stars lead the way
 advancements.da.find_soul_star.description=Obtain a Soul Star
+#Find Draugr Ingot
+advancements.da.craft_draugr_ingot.title=The dead speaks to me.
+advancements.da.craft_draugr_ingot.description=Craft or Find a Frostborn Ingot
+#Craft Champion Axe
+advancements.da.craft_draugr_axe.title=Who's the Champion Now!
+advancements.da.craft_draugr_axe.description=Craft the Axe of the Frostborn Champion
+#Craft Draugr Shield
+advancements.da.craft_draugr_shield.title=I like a shield with style, do you?
+advancements.da.craft_draugr_shield.description=Craft the Frostborn Shield
+#Craft Draugr Armor
+advancements.da.craft_draugr_armor.title=The true way to play
+advancements.da.craft_draugr_armor.description=Craft the Frostborn Armor
 #Find Gloom Stone
 advancements.da.find_gloom_stone.title=The stone under the moon
 advancements.da.find_gloom_stone.description=Mine Petrogloom
@@ -227,3 +243,4 @@ advancements.da.craft_endless_pearl.description=Craft a Charged Enderpearl
 #Craft Void Dagger
 advancements.da.craft_void_dagger.title=How do you like your poison? Sharp or Slow?
 advancements.da.craft_void_dagger.description=Craft the Void Dagger
+

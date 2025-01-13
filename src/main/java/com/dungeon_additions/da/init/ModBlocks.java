@@ -18,13 +18,13 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModBlocks {
     public static final List<Block> BLOCKS = new ArrayList<Block>();
-
     public static final float STONE_HARDNESS = 1.7f;
     public static final float GLOOM_STONE_HARDNESS = 3.0F;
     public static final float STONE_RESISTANCE = 10f;

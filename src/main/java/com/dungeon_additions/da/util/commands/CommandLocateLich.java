@@ -190,7 +190,7 @@ public class CommandLocateLich implements ICommand {
 
         int k = chunkX / spacing;
         int l = chunkZ / spacing;
-        Random random = world.setRandomSeed(k, l, 10383709);
+        Random random = world.setRandomSeed(k, l, 10387289);
         k = k * spacing;
         l = l * spacing;
         k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
@@ -299,10 +299,14 @@ public class CommandLocateLich implements ICommand {
     }
 
     public static boolean isAbleToSpawnHereFrozenCastle(BlockPos pos, World world) {
+        int staggerCounter = 0;
         for(BiomeDictionary.Type types : getSpawnBiomeTypesFrozenCastle()) {
             Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
-            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+            if(staggerCounter > 1) {
                 return true;
+            }
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                staggerCounter++;
             }
         }
         return false;

@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:draugr_helmet"
+    },
+    "title": {
+      "translate": "advancements.da.kill_elite_draugr.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_elite_draugr.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "da:root",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:frost_draugr_elite"
+        }
+      }
+    }
+  }
+}

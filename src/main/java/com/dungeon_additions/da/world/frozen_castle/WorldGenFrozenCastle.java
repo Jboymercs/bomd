@@ -61,7 +61,7 @@ public class WorldGenFrozenCastle extends WorldGenerator {
 
         int k = chunkX / this.spacing;
         int l = chunkZ / this.spacing;
-        Random random =  world.setRandomSeed(k, l, 10387312);
+        Random random =  world.setRandomSeed(k, l, 10387289);
         k = k * this.spacing;
         l = l * this.spacing;
         k = k + (random.nextInt(this.spacing - this.separation) + random.nextInt(this.spacing - this.separation)) / 2;
@@ -78,11 +78,17 @@ public class WorldGenFrozenCastle extends WorldGenerator {
 
     }
 
+
     public static boolean isAbleToSpawnHere(BlockPos pos, World world) {
+        //Counter to make sure that two of the Biome Types Match
+        int staggerCounter = 0;
         for(BiomeDictionary.Type types : getSpawnBiomeTypes()) {
             Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
-            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+            if(staggerCounter > 1) {
                 return true;
+            }
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                staggerCounter++;
             }
         }
         return false;

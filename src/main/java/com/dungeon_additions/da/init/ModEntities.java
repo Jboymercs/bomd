@@ -10,6 +10,7 @@ import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileTrackingFlame;
+import com.dungeon_additions.da.entity.frost_dungeon.EntityGreatWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityIcicleSpike;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.ProjectileFrostBullet;
@@ -105,6 +106,7 @@ public class ModEntities {
             registerEntity("soul_bullet", ProjectileSoul.class, ENTITY_START_ID++, 70);
             registerEntityWithID("frost_draugr_elite", EntityEliteDraugr.class, ENTITY_START_ID++, 70, night_lich);
             registerEntity("frost_locator", EntityFrozenCastleLocator.class, ENTITY_START_ID++, 70);
+            registerEntityWithID("great_wyrk", EntityGreatWyrk.class, ENTITY_START_ID++, 70, night_lich);
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
         registerTileEntity(TileEntityMegaStructure.class, "mega_structure");

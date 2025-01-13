@@ -105,7 +105,7 @@ public class FrozenCastle {
         }
 
         components.add(crossPiece);
-        generateBaseTower(crossPiece, BlockPos.ORIGIN, rot);
+        generateBaseTower(crossPiece, pos, rot);
         int failedHalls = 0;
         List<StructureComponent> structures = new ArrayList<>(components);
         for (Tuple<Rotation, BlockPos> tuple : DUNGEON_CROSS) {
@@ -185,9 +185,6 @@ public class FrozenCastle {
         String[] base_types = {"tower/base_1", "tower/base_2"};
         FrozenCastleTemplate basePiece = addAdjustedPieceWithoutDistance(parent, BlockPos.ORIGIN.add(-21, 12, 0), ModRand.choice(base_types), rot);
 
-        if(basePiece.isCollidingExcParent(manager, parent, components)) {
-            return false;
-        }
 
         components.add(basePiece);
         generateMiddleTower(basePiece, pos, rot);

@@ -12,9 +12,13 @@ import com.dungeon_additions.da.entity.tileEntity.tileEntityMobSpawner;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModEntities;
 import com.dungeon_additions.da.util.ModRand;
+import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.world.ModStructureTemplate;
 import com.dungeon_additions.da.world.WorldGenStructure;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -25,7 +29,10 @@ import java.util.Random;
 
 public class FrozenCastleTemplate extends ModStructureTemplate {
 
+    private static final ResourceLocation LOOT = new ResourceLocation(ModReference.MOD_ID, "frozen_castle");
+    private static final ResourceLocation LOOT_KEY = new ResourceLocation(ModReference.MOD_ID, "frozen_castle_key");
 
+    private static final ResourceLocation LOOT_SECRET = new ResourceLocation(ModReference.MOD_ID, "frozen_castle_secret");
     private WorldGenCenterPiece[] structure_piece = {new WorldGenCenterPiece("piece_1"),new WorldGenCenterPiece("piece_2"),new WorldGenCenterPiece("piece_3"),
             new WorldGenCenterPiece("piece_4"),new WorldGenCenterPiece("piece_5")};
 
@@ -80,7 +87,9 @@ public class FrozenCastleTemplate extends ModStructureTemplate {
             } else {
                 world.setBlockToAir(pos);
             }
-        } else if (function.startsWith("big_mob_set")) {
+        }
+        //Set Big Mob
+        if (function.startsWith("big_mob_set")) {
             world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_MOSS.getDefaultState(), 2);
             TileEntity tileentity = world.getTileEntity(pos);
             if (tileentity instanceof tileEntityMobSpawner) {
@@ -96,11 +105,44 @@ public class FrozenCastleTemplate extends ModStructureTemplate {
 
         //loot
         if(function.startsWith("chest")) {
-
+            BlockPos blockPos = pos.down();
+            if(generateChestSpawn() && sbb.isVecInside(blockPos)) {
+                TileEntity tileEntity = world.getTileEntity(blockPos);
+                world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+                if (tileEntity instanceof TileEntityChest) {
+                    TileEntityChest chest = (TileEntityChest) tileEntity;
+                    chest.setLootTable(LOOT, rand.nextLong());
+                }
+            } else {
+                world.setBlockToAir(pos);
+                world.setBlockToAir(pos.down());
+            }
         } else if (function.startsWith("secret_chest")) {
-
+            BlockPos blockPos = pos.down();
+            if(sbb.isVecInside(blockPos)) {
+                TileEntity tileEntity = world.getTileEntity(blockPos);
+                world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+                if (tileEntity instanceof TileEntityChest) {
+                    TileEntityChest chest = (TileEntityChest) tileEntity;
+                    chest.setLootTable(LOOT_SECRET, rand.nextLong());
+                }
+            } else {
+                world.setBlockToAir(pos);
+                world.setBlockToAir(pos.down());
+            }
         } else if (function.startsWith("key_chest")) {
-
+            BlockPos blockPos = pos.down();
+            if(sbb.isVecInside(blockPos)) {
+                TileEntity tileEntity = world.getTileEntity(blockPos);
+                world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+                if (tileEntity instanceof TileEntityChest) {
+                    TileEntityChest chest = (TileEntityChest) tileEntity;
+                    chest.setLootTable(LOOT_KEY, rand.nextLong());
+                }
+            } else {
+                world.setBlockToAir(pos);
+                world.setBlockToAir(pos.down());
+            }
         }
 
         //function blocks
@@ -110,6 +152,14 @@ public class FrozenCastleTemplate extends ModStructureTemplate {
                 WorldGenCenterPiece piece = ModRand.choice(structure_piece);
                 piece.generate(world, rand, pos.add(-4, 0, -4));
         }
+    }
+
+    public boolean generateChestSpawn() {
+        int randomNumberGenerator = ModRand.range(0, 10);
+        if (randomNumberGenerator >= 6) {
+            return false;
+        }
+        return true;
     }
 
     public boolean generateBigMob() {

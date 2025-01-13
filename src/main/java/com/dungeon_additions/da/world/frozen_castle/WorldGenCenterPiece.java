@@ -9,8 +9,12 @@ import com.dungeon_additions.da.entity.tileEntity.tileEntityMobSpawner;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModEntities;
 import com.dungeon_additions.da.util.ModRand;
+import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.world.WorldGenStructure;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -21,12 +25,23 @@ public class WorldGenCenterPiece extends WorldGenStructure {
         super("frozen_castle/" + structureName);
     }
 
-
+    private static final ResourceLocation LOOT = new ResourceLocation(ModReference.MOD_ID, "frozen_castle");
     @Override
     protected void handleDataMarker(String function, BlockPos pos, World world, Random random) {
         //loot
         if (function.startsWith("chest")) {
-
+            BlockPos blockPos = pos.down();
+            if(generateChestSpawn()) {
+                TileEntity tileEntity = world.getTileEntity(blockPos);
+                world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+                if (tileEntity instanceof TileEntityChest) {
+                    TileEntityChest chest = (TileEntityChest) tileEntity;
+                    chest.setLootTable(LOOT, random.nextLong());
+                }
+            } else {
+                world.setBlockToAir(pos);
+                world.setBlockToAir(pos.down());
+            }
         }
 
         //mobs
@@ -78,6 +93,14 @@ public class WorldGenCenterPiece extends WorldGenStructure {
             }
         }
 
+    }
+
+    public boolean generateChestSpawn() {
+        int randomNumberGenerator = ModRand.range(0, 10);
+        if (randomNumberGenerator >= 6) {
+            return false;
+        }
+        return true;
     }
 
 

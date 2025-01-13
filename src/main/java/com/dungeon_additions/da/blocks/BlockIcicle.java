@@ -40,12 +40,14 @@ import java.util.Random;
 
 public class BlockIcicle extends BlockFalling implements IHasModel {
 
-    protected static final AxisAlignedBB CRYSTAL_AABB = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.8D, 0.9D);
+    protected static final AxisAlignedBB CRYSTAL_AABB = new AxisAlignedBB(0.2D, 0.1D, 0.2D, 0.8D, 1.0D, 0.8D);
 
     public BlockIcicle() {
         super(Material.GLASS);
 
     }
+
+    private int standByTick = 0;
 
     public BlockIcicle(String name, float hardness, float resistance, SoundType soundType) {
         super(Material.GLASS);
@@ -54,7 +56,6 @@ public class BlockIcicle extends BlockFalling implements IHasModel {
         setHardness(hardness);
         setResistance(resistance);
         setSoundType(soundType);
-
         // Add both an item as a block and the block itself
         ModBlocks.BLOCKS.add(this);
         ModItems.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
@@ -70,34 +71,43 @@ public class BlockIcicle extends BlockFalling implements IHasModel {
     {
         if (!worldIn.isRemote)
         {
-            this.checkFallable(worldIn, pos);
+            if(worldIn.getBlockState(pos.add(0, 1, 0)) == Blocks.AIR.getDefaultState()) {
+                this.checkFallable(worldIn, pos, true);
+            } else {
+                this.checkFallable(worldIn, pos, false);
+            }
         }
     }
 
-    private void checkFallable(World worldIn, BlockPos pos)
+    private void checkFallable(World worldIn, BlockPos pos, boolean fall_current)
     {
          boolean fallInstantly = false;
          boolean fallFromPlayers = false;
 
         if(!worldIn.isRemote) {
-            AxisAlignedBB box = new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
-            List<EntityFrostBase> nearbyBoss = worldIn.getEntitiesWithinAABB(EntityFrostBase.class, box.grow(20D));
-            List<EntityPlayer> nearbyPlayer= worldIn.getEntitiesWithinAABB(EntityPlayer.class, box.grow(4D, 12D, 4D));
-            if(!nearbyBoss.isEmpty()) {
-                for(EntityFrostBase base : nearbyBoss) {
-                    //only when the mob is in this state can icicles drop
-                    if(base.setUpdateIcicles) {
-                        fallInstantly = true;
+            if(standByTick > 50) {
+                AxisAlignedBB box = new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
+                List<EntityFrostBase> nearbyBoss = worldIn.getEntitiesWithinAABB(EntityFrostBase.class, box.grow(20D));
+                List<EntityPlayer> nearbyPlayer = worldIn.getEntitiesWithinAABB(EntityPlayer.class, box.grow(4D, 12D, 4D));
+                if (!nearbyBoss.isEmpty()) {
+                    for (EntityFrostBase base : nearbyBoss) {
+                        //only when the mob is in this state can icicles drop
+                        if (base.setUpdateIcicles) {
+                            fallInstantly = true;
+                        }
                     }
                 }
-            }
 
-            if(!nearbyPlayer.isEmpty()) {
-                for(EntityPlayer player : nearbyPlayer) {
-                    if(player.isSprinting() && !player.isCreative() && !player.isSpectator()) {
-                        fallFromPlayers = true;
+
+                if (!nearbyPlayer.isEmpty()) {
+                    for (EntityPlayer player : nearbyPlayer) {
+                        if (player.isSprinting() && !player.isCreative() && !player.isSpectator()) {
+                            fallFromPlayers = true;
+                        }
                     }
                 }
+            } else {
+                standByTick++;
             }
             worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
         }
@@ -106,7 +116,7 @@ public class BlockIcicle extends BlockFalling implements IHasModel {
 
             if (worldIn.isAreaLoaded(pos.add(-16, -16, -16), pos.add(16, 16, 16)))
             {
-                if (worldIn.rand.nextInt(3) == 0 && fallInstantly || worldIn.rand.nextInt(5) == 0 && fallFromPlayers)
+                if (worldIn.rand.nextInt(3) == 0 && fallInstantly || worldIn.rand.nextInt(5) == 0 && fallFromPlayers || fall_current)
                 {
                     EntityFallingBlock entityfallingblock = new EntityFallingBlock(worldIn, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, worldIn.getBlockState(pos));
                     this.onStartFalling(entityfallingblock);
@@ -131,9 +141,6 @@ public class BlockIcicle extends BlockFalling implements IHasModel {
         worldIn.playSound(null, pos, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS,
                 1, 0.5f + worldIn.rand.nextFloat() * 1.2f);
 
-        if(worldIn.isRemote) {
-            this.doEndParticles(worldIn, new Vec3d(pos.getX(), pos.getY(), pos.getZ()));
-        }
 
     }
 
@@ -165,9 +172,15 @@ public class BlockIcicle extends BlockFalling implements IHasModel {
         return CRYSTAL_AABB;
     }
 
+    @Nullable
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        return NULL_AABB;
+    }
+
     @SideOnly(Side.CLIENT)
     public Block.EnumOffsetType getOffsetType() {
-        return EnumOffsetType.XZ;
+        return EnumOffsetType.NONE;
     }
 
     @Override
@@ -186,6 +199,11 @@ public class BlockIcicle extends BlockFalling implements IHasModel {
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return BlockFaceShape.UNDEFINED;
+    }
+    @Override
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
     }
 
     @Override

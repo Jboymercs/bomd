@@ -13,6 +13,7 @@ import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileTrackingFlame;
+import com.dungeon_additions.da.entity.frost_dungeon.EntityGreatWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityIcicleSpike;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.ProjectileFrostBullet;
@@ -153,6 +154,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityDraugrRanger.class, RenderDraugrRanger::new);
         //Draugr Elite
         RenderingRegistry.registerEntityRenderingHandler(EntityEliteDraugr.class, RenderDraugrElite::new);
+        //Great Wyrk
+        RenderingRegistry.registerEntityRenderingHandler(EntityGreatWyrk.class, RenderGreatWyrk::new);
     }
 
 }

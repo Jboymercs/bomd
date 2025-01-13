@@ -146,13 +146,13 @@ public class WorldConfig {
     @Config.Name("Frozen Castle WhiteList Biome Types")
     @Config.Comment("Add Biome types that ALLOW the Frozen Castle from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
     @Config.RequiresMcRestart
-    public static String[] frozen_castle_blacklist = {"COLD","SNOWY","MOUNTAIN","WASTELAND"
+    public static String[] frozen_castle_blacklist = {"COLD","SNOWY","WASTELAND","MOUNTAIN"
     };
 
     @Config.Name("Frozen Castle Spacing")
     @Config.Comment("Change the spacing between each Frozen Castle, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int frozen_castle_spacing = 40;
+    public static int frozen_castle_spacing = 30;
 
     @Config.Name("Frozen Castle Y Height")
     @Config.Comment("Change the value that the Frozen Castle generates at Y level")
