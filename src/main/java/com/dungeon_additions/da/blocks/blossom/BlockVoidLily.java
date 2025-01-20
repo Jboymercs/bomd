@@ -134,8 +134,8 @@ public class BlockVoidLily extends BlockBush implements IHasModel, ITileEntityPr
         BlockPos resultpos = null;
         Chunk chunk = world.getChunk(pos);
         //probably laggy as hell but hey it works
-        for (int i = -100; i < 101; i++) {
-            for (int j = -100; j < 101; j++) {
+        for (int i = -ModConfig.void_blosom_search_distance; i < ModConfig.void_blosom_search_distance + 1; i++) {
+            for (int j = -ModConfig.void_blosom_search_distance; j < ModConfig.void_blosom_search_distance + 1; j++) {
                 // boolean validspawn = this.IsVillageAtPos(world, (pos.getX() - 8)  >> 4 + i, (pos.getZ() - 8)  >> 4 + j);
                 //if(validspawn){
                 //Chunk chunk = world.getChunkFromBlockCoords(pos);

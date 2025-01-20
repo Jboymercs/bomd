@@ -82,8 +82,8 @@ public class ItemFrozenCastleLocator extends ItemBase{
         World world = player.getEntityWorld();
         Chunk chunk = world.getChunk(pos);
         //probably laggy as hell but hey it works
-        for (int i = -150; i < 151; i++) {
-            for (int j = -150; j < 151; j++) {
+        for (int i = -ModConfig.frozen_castle_search_distance; i < ModConfig.frozen_castle_search_distance + 1; i++) {
+            for (int j = -ModConfig.frozen_castle_search_distance; j < ModConfig.frozen_castle_search_distance + 1; j++) {
                 boolean c = IsFrozenCastleAtPos(world, chunk.x + i, chunk.z + j);
                 if (c) {
                     resultpos = new BlockPos((chunk.x + i) << 4, 100, (chunk.z + j) << 4);

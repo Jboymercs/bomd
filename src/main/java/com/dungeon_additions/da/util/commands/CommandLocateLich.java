@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.util.commands;
 
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.util.DALogger;
 import com.google.common.base.Functions;
@@ -126,8 +127,8 @@ public class CommandLocateLich implements ICommand {
         World world = sender.getEntityWorld();
         Chunk chunk = world.getChunk(pos);
         //probably laggy as hell but hey it works
-        for (int i = -100; i < 101; i++) {
-            for (int j = -100; j < 101; j++) {
+        for (int i = -ModConfig.lich_search_distance; i < ModConfig.lich_search_distance + 1; i++) {
+            for (int j = -ModConfig.lich_search_distance; j < ModConfig.lich_search_distance + 1; j++) {
                 boolean c = IsLichTowerAtPos(world, chunk.x + i, chunk.z + j);
                 if (c) {
                     resultpos = new BlockPos((chunk.x + i) << 4, 100, (chunk.z + j) << 4);
@@ -144,8 +145,8 @@ public class CommandLocateLich implements ICommand {
         World world = sender.getEntityWorld();
         Chunk chunk = world.getChunk(pos);
         //probably laggy as hell but hey it works
-        for (int i = -100; i < 101; i++) {
-            for (int j = -100; j < 101; j++) {
+        for (int i = -ModConfig.void_blosom_search_distance; i < ModConfig.void_blosom_search_distance + 1; i++) {
+            for (int j = -ModConfig.void_blosom_search_distance; j < ModConfig.void_blosom_search_distance + 1; j++) {
                 boolean c = IsBlossomCaveAtPos(world, chunk.x + i, chunk.z + j);
                 if (c) {
                     resultpos = new BlockPos((chunk.x + i) << 4, 100, (chunk.z + j) << 4);
@@ -162,8 +163,8 @@ public class CommandLocateLich implements ICommand {
         World world = sender.getEntityWorld();
         Chunk chunk = world.getChunk(pos);
         //probably laggy as hell but hey it works
-        for (int i = -150; i < 151; i++) {
-            for (int j = -150; j < 151; j++) {
+        for (int i = -ModConfig.frozen_castle_search_distance; i < ModConfig.frozen_castle_search_distance + 1; i++) {
+            for (int j = -ModConfig.frozen_castle_search_distance; j < ModConfig.frozen_castle_search_distance + 1; j++) {
                 boolean c = IsFrozenCastleAtPos(world, chunk.x + i, chunk.z + j);
                 if (c) {
                     resultpos = new BlockPos((chunk.x + i) << 4, 100, (chunk.z + j) << 4);

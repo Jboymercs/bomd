@@ -87,8 +87,8 @@ public class ItemSoulStar extends ItemBase{
         World world = player.getEntityWorld();
         Chunk chunk = world.getChunk(pos);
         //probably laggy as hell but hey it works
-        for (int i = -100; i < 101; i++) {
-            for (int j = -100; j < 101; j++) {
+        for (int i = -ModConfig.lich_search_distance; i < ModConfig.lich_search_distance + 1; i++) {
+            for (int j = -ModConfig.lich_search_distance; j < ModConfig.lich_search_distance + 1; j++) {
                 // boolean validspawn = this.IsVillageAtPos(world, (pos.getX() - 8)  >> 4 + i, (pos.getZ() - 8)  >> 4 + j);
                 //if(validspawn){
                 //Chunk chunk = world.getChunkFromBlockCoords(pos);

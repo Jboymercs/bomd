@@ -128,6 +128,22 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static int locator_reset_pos = 60;
 
+    @Config.Name("Night Lich Tower Search Radius")
+    @Config.Comment("Change how far the Soul Star and Locate command searches for a Night Lich's Tower. In chunks not blocks!")
+    @Config.RequiresMcRestart
+    public static int lich_search_distance = 100;
+
+    @Config.Name("Void Blossom Cave Search Radius")
+    @Config.Comment("Change how far the Void Lily and Locate command searches for a Void Blossoms Cave. In chunks not blocks!")
+    @Config.RequiresMcRestart
+    public static int void_blosom_search_distance = 100;
+
+    @Config.Name("Frozen Castle Search Radius")
+    @Config.Comment("Change how far the Frozen Soul Star and Locate command searches for a Frozen Castle. In chunks not blocks!")
+    @Config.RequiresMcRestart
+    public static int frozen_castle_search_distance = 175;
+
+
     @Config.Name("Soul Star Drops Advancement Requirements")
     @Config.Comment("What advancements are required for players to use and unlock Soul Stars dropping from Mobs")
     @Config.RequiresMcRestart

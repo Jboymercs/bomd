@@ -77,6 +77,8 @@ public class WorldGenCenterPiece extends WorldGenStructure {
                         1,
                         16);
             }
+            } else {
+                world.setBlockToAir(pos);
             }
         } else if (function.startsWith("big_mob_double")) {
             if(generateBigMob()) {
