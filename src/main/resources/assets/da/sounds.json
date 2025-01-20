@@ -743,6 +743,186 @@
       }
     ]
   },
+  "entity.great_wyrk.step": {
+    "category": "entity",
+    "subtitle": "entity.great_wyrk.step",
+    "sounds": [
+      {
+        "name": "da:entity/great_wyrk/step_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/great_wyrk/step_2",
+        "steam": true
+      },
+      {
+        "name": "da:entity/great_wyrk/step_3",
+        "steam": true
+      }
+    ]
+  },
+  "entity.great_wyrk.idle": {
+    "category": "entity",
+    "subtitle": "entity.great_wyrk.idle",
+    "sounds": [
+      {
+        "name": "da:entity/great_wyrk/idle_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/great_wyrk/idle_2",
+        "steam": true
+      }
+    ]
+  },
+  "entity.great_wyrk.hurt": {
+    "category": "entity",
+    "subtitle": "entity.great_wyrk.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/great_wyrk/hurt_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/great_wyrk/hurt_2",
+        "steam": true
+      }
+    ]
+  },
+  "entity.great_wyrk.barrage": {
+    "category": "entity",
+    "subtitle": "entity.great_wyrk.barrage",
+    "sounds": [
+      {
+        "name": "da:entity/great_wyrk/barrage",
+        "steam": true
+      }
+    ]
+  },
+  "entity.great_wyrk.roll": {
+    "category": "entity",
+    "subtitle": "entity.great_wyrk.roll",
+    "sounds": [
+      {
+        "name": "da:entity/great_wyrk/roll",
+        "steam": true
+      }
+    ]
+  },
+  "entity.great_wyrk.arise": {
+    "category": "entity",
+    "subtitle": "entity.great_wyrk.arise",
+    "sounds": [
+      {
+        "name": "da:entity/great_wyrk/arise",
+        "steam": true
+      }
+    ]
+  },
+  "entity.great_wyrk.strike": {
+    "category": "entity",
+    "subtitle": "entity.great_wyrk.strike",
+    "sounds": [
+      {
+        "name": "da:entity/great_wyrk/strike",
+        "steam": true
+      }
+    ]
+  },
+  "entity.great_wyrk.drop": {
+    "category": "entity",
+    "subtitle": "entity.great_wyrk.drop",
+    "sounds": [
+      {
+        "name": "da:entity/great_wyrk/drop",
+        "steam": true
+      }
+    ]
+  },
+  "entity.great_wyrk.lazer": {
+    "category": "entity",
+    "subtitle": "entity.great_wyrk.lazer",
+    "sounds": [
+      {
+        "name": "da:entity/great_wyrk/lazer",
+        "steam": true
+      }
+    ]
+  },
+  "entity.great_wyrk.summon": {
+    "category": "entity",
+    "subtitle": "entity.great_wyrk.summon",
+    "sounds": [
+      {
+        "name": "da:entity/great_wyrk/summon",
+        "steam": true
+      }
+    ]
+  },
+  "entity.great_wyrk.foot": {
+    "category": "entity",
+    "subtitle": "entity.great_wyrk.foot",
+    "sounds": [
+      {
+        "name": "da:entity/great_wyrk/foot",
+        "steam": true
+      }
+    ]
+  },
+  "entity.great_wyrk.summon_boss": {
+    "category": "entity",
+    "subtitle": "entity.great_wyrk.summon_boss",
+    "sounds": [
+      {
+        "name": "da:entity/great_wyrk/summon_boss",
+        "steam": true
+      }
+    ]
+  },
+  "entity.great_wyrk.deflect": {
+    "category": "entity",
+    "subtitle": "entity.great_wyrk.deflect",
+    "sounds": [
+      {
+        "name": "da:entity/great_wyrk/deflect_1",
+        "steam": true
+      },
+      {
+        "name": "da:entity/great_wyrk/deflect_2",
+        "steam": true
+      }
+    ]
+  },
+  "entity.great_wyrk.player_charge": {
+    "category": "entity",
+    "subtitle": "entity.wyrk_staff.player_charge",
+    "sounds": [
+      {
+        "name": "da:entity/great_wyrk/player_charge",
+        "steam": true
+      }
+    ]
+  },
+  "entity.great_wyrk.player_shoot": {
+    "category": "entity",
+    "subtitle": "entity.wyrk_staff.player_shoot",
+    "sounds": [
+      {
+        "name": "da:entity/great_wyrk/player_shoot",
+        "steam": true
+      }
+    ]
+  },
+  "entity.great_wyrk.player_lazer": {
+    "category": "entity",
+    "subtitle": "entity.wyrk_staff.player_lazer",
+    "sounds": [
+      {
+        "name": "da:entity/great_wyrk/player_lazer",
+        "steam": true
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",

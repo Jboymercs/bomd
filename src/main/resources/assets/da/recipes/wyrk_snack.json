@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "R",
+    "X"
+  ],
+  "key": {
+    "V": {
+      "item": "da:ancient_mana"
+    },
+    "R": {
+      "item": "da:great_wyrk_mana"
+    },
+    "X": {
+      "item": "da:draugr_shard"
+    }
+  },
+  "result": {
+    "item": "da:wyrk_snack"
+  }
+}

@@ -62,6 +62,46 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static double rapier_damage = 5.5;
 
+    @Config.Name("Frostborn Sword Damage")
+    @Config.Comment("Change the damage factor of the Frostborn Sword")
+    @Config.RequiresMcRestart
+    public static double frost_sword_damage = 6.5;
+
+    @Config.Name("Frostborn Champion Axe Damage")
+    @Config.Comment("Change the damage factor of the Frostborn Champion Axe")
+    @Config.RequiresMcRestart
+    public static double champion_axe_damage = 9;
+
+    @Config.Name("Frostborn Armor Ability Chance")
+    @Config.Comment("Change the chance of the Strength being given with the Frostborn's armor, higher means better chance at higher health")
+    @Config.RequiresMcRestart
+    public static int champion_armor_chance = 7;
+
+    @Config.Name("Ancient Wyrk Armor Ability Chance")
+    @Config.Comment("Change the chance of the Regeneration being given with the Ancient Wyrks armor, higher means better chance at higher health")
+    @Config.RequiresMcRestart
+    public static int wyrk_armor_chance = 7;
+
+    @Config.Name("Ancient Wyrk Staff Cooldown")
+    @Config.Comment("Change the staff cooldown for the frost bullet attack, this scales the alternative attack additionally")
+    @Config.RequiresMcRestart
+    public static int wyrk_staff_cooldown = 3;
+
+    @Config.Name("Ancient Wyrk Staff Frost Bullet damage")
+    @Config.Comment("Change the Ancient Wyrk staff frost bullet damage")
+    @Config.RequiresMcRestart
+    public static float wyrk_staff_bullet_damage = 6;
+
+    @Config.Name("Ancient Wyrk Staff Lazer Damage")
+    @Config.Comment("change the Ancient Wyrk staff's max lazer damage, this scales with how long the staff has been charged")
+    @Config.RequiresMcRestart
+    public static int wyrk_staff_lazer_damage = 18;
+
+    @Config.Name("Frostborn Champion Axe Chance")
+    @Config.Comment("Change the damage scaling the champion axe can do. Higher the number, the more damage it does the lower the health of the player")
+    @Config.RequiresMcRestart
+    public static float champion_axe_damage_scaling = 4;
+
     @Config.Name("Crafting Material ToolTip")
     @Config.Comment("Should Items listed as Crafting Material state that is a crafting material. False will disable the tool tip")
     @Config.RequiresMcRestart

@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.frost_dungeon.draugr;
 
+import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.EntityDraugrMeleeAI;
 import com.dungeon_additions.da.entity.ai.EntityDraugrRangedAI;
 import com.dungeon_additions.da.entity.ai.IAttack;
@@ -135,9 +136,9 @@ public class EntityDraugrRanger extends EntityFrostBase implements IAttack, IAni
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(12D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.draugr_attack_damage);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.26D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MobConfig.draugr_health);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(14D);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0.5D);
     }

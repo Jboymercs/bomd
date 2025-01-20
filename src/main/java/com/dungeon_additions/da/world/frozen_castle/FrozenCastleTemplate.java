@@ -156,7 +156,7 @@ public class FrozenCastleTemplate extends ModStructureTemplate {
 
     public boolean generateChestSpawn() {
         int randomNumberGenerator = ModRand.range(0, 10);
-        if (randomNumberGenerator >= 6) {
+        if (randomNumberGenerator >= WorldConfig.frozen_castle_chest_spawns) {
             return false;
         }
         return true;
@@ -164,14 +164,14 @@ public class FrozenCastleTemplate extends ModStructureTemplate {
 
     public boolean generateBigMob() {
         int randomNumberGenerator = ModRand.range(0, 10);
-        if (randomNumberGenerator >= 3) {
+        if (randomNumberGenerator > WorldConfig.frozen_castle_big_mob_chance) {
             return false;
         }
         return true;
     }
     public boolean generateMobSpawn() {
         int randomNumberGenerator = ModRand.range(0, 10);
-        if (randomNumberGenerator >= 7) {
+        if (randomNumberGenerator >= WorldConfig.frozen_castle_mob_spawns) {
             return false;
         }
         return true;

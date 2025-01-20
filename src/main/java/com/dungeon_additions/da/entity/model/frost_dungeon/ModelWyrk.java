@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.model.frost_dungeon;
 
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
 import com.dungeon_additions.da.entity.model.extended.GeoModelExtended;
 import com.dungeon_additions.da.entity.night_lich.EntityNightLich;
 import com.dungeon_additions.da.util.ModReference;
@@ -16,4 +17,5 @@ public class ModelWyrk extends GeoModelExtended<EntityWyrk> {
     public ResourceLocation getAnimationFileLocation(EntityWyrk animatable) {
         return new ResourceLocation(ModReference.MOD_ID, "animations/animation.wyrk.json");
     }
+
 }

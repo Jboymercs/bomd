@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.frost_dungeon.draugr;
 
+import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.EntityDraugrMeleeAI;
 import com.dungeon_additions.da.entity.ai.EntityWyrkAttackAI;
 import com.dungeon_additions.da.entity.ai.IAttack;
@@ -94,6 +95,12 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
         this.setSize(0.7F, 1.95F);
         this.experienceValue = 8;
         this.setSkin(rand.nextInt(5));
+        int randI = ModRand.range(1, 10);
+        if(randI >= 7) {
+            this.setHasShield(true);
+        } else {
+            this.setHasShield(false);
+        }
     }
 
     public EntityDraugr(World worldIn) {
@@ -101,6 +108,12 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
         this.setSize(0.7F, 1.95F);
         this.experienceValue = 8;
         this.setSkin(rand.nextInt(5));
+        int randI = ModRand.range(1, 10);
+        if(randI >= 7) {
+            this.setHasShield(true);
+        } else {
+            this.setHasShield(false);
+        }
     }
 
 
@@ -147,9 +160,9 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(12D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.draugr_attack_damage);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.26D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MobConfig.draugr_health);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(14D);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0.5D);
     }

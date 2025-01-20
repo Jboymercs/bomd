@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV",
+    "R R"
+  ],
+  "key": {
+    "V": {
+      "item": "da:frost_ingot"
+    },
+    "R": {
+      "item": "da:great_wyrk_mana"
+    }
+  },
+  "result": {
+    "item": "da:wyrk_helmet"
+  }
+}

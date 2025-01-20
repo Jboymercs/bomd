@@ -20,7 +20,7 @@ public class ModelGreatWyrk extends GeoModelExtended<EntityGreatWyrk> {
 
     @Override
     public ResourceLocation getTextureLocation(EntityGreatWyrk animatable) {
-        if(animatable.hurtTime > 0) {
+        if(animatable.hurtTime > 0 || animatable.isSummonBoss()) {
             return new ResourceLocation(ModReference.MOD_ID, "textures/entity/great_wyrk_hurt.png");
         }
         return new ResourceLocation(ModReference.MOD_ID, "textures/entity/great_wyrk.png");

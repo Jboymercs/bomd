@@ -210,11 +210,11 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(30D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(26D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.champion_attack_damage);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200D);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(18D);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(8D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MobConfig.champion_health);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(MobConfig.champion_armor);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(MobConfig.champion_armor_toughness);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }
 
@@ -231,7 +231,6 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
     @Override
     public int startAttack(EntityLivingBase target, float distanceSq, boolean strafingBackwards) {
         double distance = Math.sqrt(distanceSq);
-        int cooldown_degradation = 3 * playersNearbyAmount;
         double healthChange = this.getHealth() / this.getMaxHealth();
         if(!this.isFightMode() && !this.isDeathState()) {
             List<Consumer<EntityLivingBase>> close_attacks = new ArrayList<>(Arrays.asList(swing_action, stomp_action, spike_arise, magic_wave, bezerk_action));

@@ -23,7 +23,7 @@ public class ActionShootProjectileWyrk implements IAction {
 
         for(int i = 0; i < 50; i++) {
             actor.addEvent(()-> {
-                Vec3d pos = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(1.3,3.0,0)));
+                Vec3d pos = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0,2.3,0)));
                 ModUtils.setEntityPosition(missile, pos);
             }, i);
         }

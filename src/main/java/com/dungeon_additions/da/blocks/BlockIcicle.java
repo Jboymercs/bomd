@@ -64,7 +64,7 @@ public class BlockIcicle extends BlockFalling implements IHasModel {
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
-        worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+        worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn) * 120);
     }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
@@ -109,7 +109,10 @@ public class BlockIcicle extends BlockFalling implements IHasModel {
             } else {
                 standByTick++;
             }
-            worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+
+            if(worldIn.isAreaLoaded(pos.add(-16, -16, -16), pos.add(16, 16, 16))) {
+                worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+            }
         }
         if ((worldIn.isAirBlock(pos.down()) || canFallThrough(worldIn.getBlockState(pos.down()))) && pos.getY() >= 0)
         {
@@ -152,6 +155,12 @@ public class BlockIcicle extends BlockFalling implements IHasModel {
             pos = new Vec3d(pos.x, 0, pos.y);
             ParticleManager.spawnDust(world, posFrom.add(0.5D, 0.15D, 0.5D), ModColors.WHITE, pos.normalize().scale(0.1), ModRand.range(15, 20));
         });
+    }
+
+    @Override
+    public int tickRate(World worldIn)
+    {
+        return 2;
     }
 
     public static boolean canFallThrough(IBlockState state)

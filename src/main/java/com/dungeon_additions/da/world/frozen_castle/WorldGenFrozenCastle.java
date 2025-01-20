@@ -36,7 +36,7 @@ public class WorldGenFrozenCastle extends WorldGenerator {
 
         //Checks to see if all biomes are valid in this region before selecting and spawning the structure
         if(canSpawnStructureAtPos(world, position.getX() >> 4, position.getZ() >> 4)) {
-            getStructureStart(world, position.getX() >> 4, position.getZ() >> 4, rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - 450, position.getZ() - 450, position.getX() + 450, position.getZ() + 450));
+            getStructureStart(world, position.getX() >> 4, position.getZ() >> 4, rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - 400, position.getZ() - 400, position.getX() + 400, position.getZ() + 400));
             System.out.println("Generated Frozen Castle at" + position);
             return true;
         }
@@ -186,7 +186,7 @@ public class WorldGenFrozenCastle extends WorldGenerator {
 
         @Override
         public boolean isSizeableStructure() {
-            return components.size() >= 5;
+            return components.size() >= WorldConfig.frozen_castle_size;
         }
 
 

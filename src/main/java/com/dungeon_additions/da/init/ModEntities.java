@@ -10,10 +10,7 @@ import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileTrackingFlame;
-import com.dungeon_additions.da.entity.frost_dungeon.EntityGreatWyrk;
-import com.dungeon_additions.da.entity.frost_dungeon.EntityIcicleSpike;
-import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
-import com.dungeon_additions.da.entity.frost_dungeon.ProjectileFrostBullet;
+import com.dungeon_additions.da.entity.frost_dungeon.*;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityEliteDraugr;
@@ -22,6 +19,7 @@ import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
 import com.dungeon_additions.da.entity.night_lich.EntityLichSpawn;
+import com.dungeon_additions.da.entity.player.EntityWyrkLazer;
 import com.dungeon_additions.da.entity.projectiles.EntityFrozenCastleLocator;
 import com.dungeon_additions.da.entity.projectiles.EntityLily;
 import com.dungeon_additions.da.entity.projectiles.EntitySoulStar;
@@ -60,6 +58,12 @@ public class ModEntities {
     public static Vec3i rot_knight_rapier = new Vec3i(0x63615e,0xc7a548,0);
     public static Vec3i rot_knight_boss = new Vec3i(0x63615e, 0x03ff18, 0);
     public static Vec3i night_lich = new Vec3i(0x021a1a,0x6eebeb,0);
+
+    public static Vec3i wyrk_mob = new Vec3i(0x6eebeb,0x021a1a,0);
+    public static Vec3i ancient_wyrk = new Vec3i(0x021a1a,0xedc12f,0);
+    public static Vec3i draugr_champion = new Vec3i(0xa3a19b,0x6eebeb,0);
+    public static Vec3i draugr_melee = new Vec3i(0x00338c,0x6eebeb,0);
+    public static Vec3i draugr_ranged = new Vec3i(0x62117d,0x6eebeb,0);
     public static void registerEntities() {
       //  registerEntityWithID("wreath_knight", EntityWreathKnight.class, ENTITY_START_ID++, 50, knight_mobs);
         registerEntityWithID("void_blossom", EntityVoidBlossom.class, ENTITY_START_ID++, 50, void_blossom);
@@ -98,20 +102,24 @@ public class ModEntities {
             registerEntity("track_missile", ProjectileTrackingMagicMissile.class, ENTITY_START_ID++, 60);
             registerEntity("ground_missile", ProjectileMagicGround.class, ENTITY_START_ID++, 60);
             registerEntity("lich_spawn", EntityLichSpawn.class, ENTITY_START_ID++, 60);
-            registerEntityWithID("wyrk", EntityWyrk.class, ENTITY_START_ID++, 70, night_lich);
+            registerEntityWithID("wyrk", EntityWyrk.class, ENTITY_START_ID++, 70, wyrk_mob);
             registerEntity("ice_spike", EntityIcicleSpike.class, ENTITY_START_ID++, 70);
             registerEntity("ice_bullet", ProjectileFrostBullet.class, ENTITY_START_ID++, 70);
-            registerEntityWithID("frost_draugr", EntityDraugr.class, ENTITY_START_ID++, 70, night_lich);
-            registerEntityWithID("frost_draugr_ranger", EntityDraugrRanger.class, ENTITY_START_ID++, 70, night_lich);
+            registerEntityWithID("frost_draugr", EntityDraugr.class, ENTITY_START_ID++, 70, draugr_melee);
+            registerEntityWithID("frost_draugr_ranger", EntityDraugrRanger.class, ENTITY_START_ID++, 70, draugr_ranged);
             registerEntity("soul_bullet", ProjectileSoul.class, ENTITY_START_ID++, 70);
-            registerEntityWithID("frost_draugr_elite", EntityEliteDraugr.class, ENTITY_START_ID++, 70, night_lich);
+            registerEntityWithID("frost_draugr_elite", EntityEliteDraugr.class, ENTITY_START_ID++, 70, draugr_champion);
             registerEntity("frost_locator", EntityFrozenCastleLocator.class, ENTITY_START_ID++, 70);
-            registerEntityWithID("great_wyrk", EntityGreatWyrk.class, ENTITY_START_ID++, 70, night_lich);
+            registerEntityWithID("great_wyrk", EntityGreatWyrk.class, ENTITY_START_ID++, 70, ancient_wyrk);
+            registerEntity("frost_magic", ProjectileFrostGround.class, ENTITY_START_ID++, 80);
+            registerEntity("wyrk_foot", EntityWyrkFoot.class, ENTITY_START_ID++, 80);
+            registerEntity("wyrk_lazer", EntityWyrkLazer.class, ENTITY_START_ID++, 80);
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
         registerTileEntity(TileEntityMegaStructure.class, "mega_structure");
         registerTileEntity(TileEntityDisappearingSpawner.class, "disappearing_spawner_entity");
         registerTileEntity(TileEntityUpdater.class, "block_updates_entity");
+        registerTileEntity(TileEntityUpdaterFrost.class, "block_updates_entity_frost");
         registerTileEntity(TileEntityLichSpawner.class, "lich_spawner_blocks");
         registerTileEntity(TileEntityLevitationBlock.class, "levitation_block_entity");
 

@@ -48,7 +48,7 @@ public class Main {
 
 
     public static <MSG extends IMessage> void sendNonLocal(MSG message, EntityPlayerMP playerMP) {
-        network.sendTo(message, playerMP);
+     //   network.sendTo(message, playerMP);
     }
     @Mod.Instance
     public static Main instance;

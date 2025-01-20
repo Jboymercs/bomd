@@ -103,6 +103,25 @@ public class SoundsHandler {
     public static SoundEvent WYRK_STEP;
     public static SoundEvent WYRK_CAST;
 
+    //Ancient Wyrk
+    public static SoundEvent BIG_WYRK_IDLE;
+    public static SoundEvent BIG_WYRK_STEP;
+    public static SoundEvent BIG_WYRK_HURT;
+    public static SoundEvent BIG_WYRK_BARRAGE;
+    public static SoundEvent BIG_WYRK_ROLL;
+    public static SoundEvent BIG_WYRK_RISE;
+    public static SoundEvent BIG_WYRK_STRIKE;
+    public static SoundEvent BIG_WYRK_DROP;
+    public static SoundEvent BIG_WYRK_LAZER;
+    public static SoundEvent BIG_WYRK_SUMMON_FOOT;
+    public static SoundEvent BIG_WYRK_FOOT_IMPACT;
+    public static SoundEvent BIG_WYRK_DEFLECT;
+    public static SoundEvent BIG_WYRK_SUMMON;
+
+    public static SoundEvent WYRK_STAFF_SHOOT;
+    public static SoundEvent WYRK_STAFF_CHARGE;
+    public static SoundEvent WYRK_STAFF_LAZER;
+
     public static void registerSounds() {
         //
         MOSS_BREAK = registerSound("moss.break", "block");
@@ -186,6 +205,23 @@ public class SoundsHandler {
         WYRK_HURT = registerSound("wyrk.hurt", "entity");
         WYRK_IDLE = registerSound("wyrk.idle", "entity");
         WYRK_STEP = registerSound("wyrk.step", "entity");
+        //
+        BIG_WYRK_HURT = registerSound("great_wyrk.hurt", "entity");
+        BIG_WYRK_IDLE = registerSound("great_wyrk.idle", "entity");
+        BIG_WYRK_STEP = registerSound("great_wyrk.step", "entity");
+        BIG_WYRK_BARRAGE = registerSound("great_wyrk.barrage", "entity");
+        BIG_WYRK_ROLL = registerSound("great_wyrk.roll", "entity");
+        BIG_WYRK_RISE = registerSound("great_wyrk.arise", "entity");
+        BIG_WYRK_STRIKE = registerSound("great_wyrk.strike", "entity");
+        BIG_WYRK_DROP = registerSound("great_wyrk.drop", "entity");
+        BIG_WYRK_LAZER = registerSound("great_wyrk.lazer", "entity");
+        BIG_WYRK_SUMMON_FOOT = registerSound("great_wyrk.summon", "entity");
+        BIG_WYRK_FOOT_IMPACT = registerSound("great_wyrk.foot", "entity");
+        BIG_WYRK_DEFLECT = registerSound("great_wyrk.deflect", "entity");
+        BIG_WYRK_SUMMON = registerSound("great_wyrk.summon_boss", "entity");
+        WYRK_STAFF_SHOOT = registerSound("great_wyrk.player_shoot", "entity");
+        WYRK_STAFF_CHARGE = registerSound("great_wyrk.player_charge", "entity");
+        WYRK_STAFF_LAZER = registerSound("great_wyrk.player_lazer", "entity");
     }
 
 

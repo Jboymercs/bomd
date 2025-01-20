@@ -4,6 +4,7 @@ import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.animation.AnimationMessage;
 import com.dungeon_additions.da.blocks.BlockLeaveBase;
 import com.dungeon_additions.da.event.EventSwordResistance;
+import com.dungeon_additions.da.packets.MessageDirectionForRender;
 import com.dungeon_additions.da.packets.MessageModParticles;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraft.advancements.Advancement;
@@ -22,9 +23,11 @@ public class CommonProxy{
         MinecraftForge.EVENT_BUS.register(new EventSwordResistance());
         int packetId = 0;
         Main.network = NetworkRegistry.INSTANCE.newSimpleChannel(ModReference.CHANNEL_NETWORK_NAME);
-        Main.network.registerMessage(AnimationMessage.Handler.class, AnimationMessage.class, packetId++, Side.SERVER);
         Main.network.registerMessage(MessageModParticles.MessageHandler.class, MessageModParticles.class, packetId++, Side.CLIENT);
+        Main.network.registerMessage(MessageDirectionForRender.Handler.class, MessageDirectionForRender.class, packetId++, Side.CLIENT);
     }
+
+
 
     public void registerEventHandlers() {
 

@@ -152,12 +152,32 @@ public class WorldConfig {
     @Config.Name("Frozen Castle Spacing")
     @Config.Comment("Change the spacing between each Frozen Castle, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int frozen_castle_spacing = 30;
+    public static int frozen_castle_spacing = 25;
 
     @Config.Name("Frozen Castle Y Height")
     @Config.Comment("Change the value that the Frozen Castle generates at Y level")
     @Config.RequiresMcRestart
     public static int frozen_castle_y_height = 26;
+
+    @Config.Name("Frozen Castle Size")
+    @Config.Comment("Change the size of the Frozen Castle")
+    @Config.RequiresMcRestart
+    public static int frozen_castle_size = 5;
+
+    @Config.Name("Frozen Castle Mob Spawn Weight")
+    @Config.Comment("Change the chance of mob spawns throughout the Frozen Castle, higher number means more spawns.")
+    @Config.RangeInt(min = 1, max = 10)
+    public static int frozen_castle_mob_spawns = 5;
+
+    @Config.Name("Frozen Castle Chest Chance Weight")
+    @Config.Comment("Change the chance of chest spawns throughout the Frozen Castle, higher number means more chests")
+    @Config.RangeInt(min = 1, max = 10)
+    public static int frozen_castle_chest_spawns = 5;
+
+    @Config.Name("Frozen Castle Secondary Champion Spawn Chances")
+    @Config.Comment("Change the chance of the Draugr Champion spawning more than once, there is always a guarantee for one to spawn per dungeon. Higher number means more spawns")
+    @Config.RangeInt(min = 1, max = 10)
+    public static int frozen_castle_big_mob_chance = 2;
 
     @Config.Name("Frozen Castle Allowed Dimensions")
     @Config.Comment("Select what dimensions this structure is allowed to spawn in")

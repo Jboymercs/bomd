@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "da:blocks/frost_key_block_top",
+    "side": "da:blocks/frost_key_block"
+  }
+}

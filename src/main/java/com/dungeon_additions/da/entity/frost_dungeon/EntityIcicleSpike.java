@@ -9,6 +9,7 @@ import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -56,7 +57,7 @@ public class EntityIcicleSpike extends EntityFrostBase implements IAnimatable, I
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.blossom_attack_damange * 0.75);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(18D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5D);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
@@ -72,7 +73,7 @@ public class EntityIcicleSpike extends EntityFrostBase implements IAnimatable, I
         this.rotationYawHead = 0;
         this.renderYawOffset = 0;
 
-        if(this.ticksExisted == 2 && rand.nextInt(3) == 0) {
+        if(this.ticksExisted == 2 && rand.nextInt(5) == 0) {
             //play sounds
             this.playSound(SoundsHandler.ICE_SPIKE_SUMMON, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }
@@ -83,7 +84,7 @@ public class EntityIcicleSpike extends EntityFrostBase implements IAnimatable, I
 
             if(!targets.isEmpty()) {
                 for(EntityLivingBase base : targets) {
-                    if(!(base instanceof EntityFrostBase)) {
+                    if(!(base instanceof EntityFrostBase) && !(base instanceof IEntityMultiPart) && !(base instanceof EntityIcicleSpike)) {
                         Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.5D));
                         DamageSource source;
                         source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();

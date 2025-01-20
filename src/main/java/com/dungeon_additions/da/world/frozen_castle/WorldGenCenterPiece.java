@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.world.frozen_castle;
 
+import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
@@ -64,6 +65,7 @@ public class WorldGenCenterPiece extends WorldGenStructure {
                 world.setBlockToAir(pos);
             }
         } else if (function.startsWith("big_mob")) {
+            if(generateBigMob()) {
             world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_MOSS.getDefaultState(), 2);
             TileEntity tileentity = world.getTileEntity(pos);
             if (tileentity instanceof tileEntityMobSpawner) {
@@ -74,6 +76,7 @@ public class WorldGenCenterPiece extends WorldGenStructure {
                         new int[]{1},
                         1,
                         16);
+            }
             }
         } else if (function.startsWith("big_mob_double")) {
             if(generateBigMob()) {
@@ -97,7 +100,7 @@ public class WorldGenCenterPiece extends WorldGenStructure {
 
     public boolean generateChestSpawn() {
         int randomNumberGenerator = ModRand.range(0, 10);
-        if (randomNumberGenerator >= 6) {
+        if (randomNumberGenerator >= WorldConfig.frozen_castle_chest_spawns) {
             return false;
         }
         return true;
@@ -106,14 +109,14 @@ public class WorldGenCenterPiece extends WorldGenStructure {
 
     public boolean generateBigMob() {
         int randomNumberGenerator = ModRand.range(0, 10);
-        if (randomNumberGenerator >= 3) {
+        if (randomNumberGenerator > WorldConfig.frozen_castle_big_mob_chance) {
             return false;
         }
         return true;
     }
     public boolean generateMobSpawn() {
         int randomNumberGenerator = ModRand.range(0, 10);
-        if (randomNumberGenerator >= 7) {
+        if (randomNumberGenerator >= WorldConfig.frozen_castle_mob_spawns) {
             return false;
         }
         return true;

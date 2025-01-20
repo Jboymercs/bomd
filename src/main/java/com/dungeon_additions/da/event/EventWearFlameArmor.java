@@ -1,12 +1,14 @@
 package com.dungeon_additions.da.event;
 
 
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -41,14 +43,38 @@ public class EventWearFlameArmor {
                     base.removePotionEffect(MobEffects.POISON);
                 }
             }
-
+            //Draugr Gear
             if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DRAUGR_HELMET && base.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DRAUGR_CHESTPLATE) {
                 double healthCurr = base.getHealth() / base.getMaxHealth();
                 double bonusAdditive = 2 / healthCurr;
-                if(base.hurtTime == 1 && bonusAdditive + base.world.rand.nextInt(7) >= 1) {
+                if(base.hurtTime == 1 && bonusAdditive + base.world.rand.nextInt(ModConfig.champion_armor_chance) >= 11) {
                     base.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 200, 0));
                 }
             }
+            //Wyrk Helmet
+            if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.WYRK_HELMET) {
+                if(base.ticksExisted % 40 == 0 && base.isPotionActive(MobEffects.SLOWNESS)) {
+                    base.removePotionEffect(MobEffects.SLOWNESS);
+                }
+            }
+            //Wyrk Boots
+            if(base.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.WYRK_BOOTS) {
+                if(base.ticksExisted % 40 == 0 && base.world.getBlockState(base.getPosition().down()).getBlock() == Blocks.ICE ||
+                        base.ticksExisted % 40 == 0 && base.world.getBlockState(base.getPosition().down()).getBlock() == Blocks.PACKED_ICE ||
+                        base.ticksExisted % 40 == 0 && base.world.getBlockState(base.getPosition().down()).getBlock() == Blocks.FROSTED_ICE) {
+                    base.addPotionEffect(new PotionEffect(MobEffects.SPEED, 100, 0));
+                }
+            }
+
+            //Wyrk Boots and Wyrk Helmet
+            if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.WYRK_HELMET && base.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.WYRK_BOOTS) {
+                double healthCurr = base.getHealth() / base.getMaxHealth();
+                double bonusAdditive = 2 / healthCurr;
+                if(base.hurtTime == 1 && bonusAdditive + base.world.rand.nextInt(ModConfig.wyrk_armor_chance) >= 11) {
+                    base.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 1));
+                }
+            }
+
         }
     }
 }

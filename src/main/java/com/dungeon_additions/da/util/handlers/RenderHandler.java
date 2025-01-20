@@ -13,10 +13,7 @@ import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileTrackingFlame;
-import com.dungeon_additions.da.entity.frost_dungeon.EntityGreatWyrk;
-import com.dungeon_additions.da.entity.frost_dungeon.EntityIcicleSpike;
-import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
-import com.dungeon_additions.da.entity.frost_dungeon.ProjectileFrostBullet;
+import com.dungeon_additions.da.entity.frost_dungeon.*;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityEliteDraugr;
@@ -25,6 +22,7 @@ import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
 import com.dungeon_additions.da.entity.night_lich.EntityLichSpawn;
+import com.dungeon_additions.da.entity.player.EntityWyrkLazer;
 import com.dungeon_additions.da.entity.projectiles.EntityFrozenCastleLocator;
 import com.dungeon_additions.da.entity.projectiles.EntityLily;
 import com.dungeon_additions.da.entity.projectiles.EntitySoulStar;
@@ -99,6 +97,7 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileFrostBullet.class, ModItems.FROST_PROJECTILE);
         registerProjectileRenderer(ProjectileSoul.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(EntityFrozenCastleLocator.class, ModItems.FROZEN_CASTLE_LOCATOR);
+        registerProjectileRenderer(ProjectileFrostGround.class, ModItems.INVISISBLE_ITEM);
     }
 
     //Handles Rendering
@@ -156,6 +155,10 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityEliteDraugr.class, RenderDraugrElite::new);
         //Great Wyrk
         RenderingRegistry.registerEntityRenderingHandler(EntityGreatWyrk.class, RenderGreatWyrk::new);
+        //Wyrk Foot
+        RenderingRegistry.registerEntityRenderingHandler(EntityWyrkFoot.class, RenderWyrkFoot::new);
+        //Wyrk Lazer
+        registerModEntityRenderer(EntityWyrkLazer.class, RenderWyrkLazer::new);
     }
 
 }

@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:wyrk_totem"
+    },
+    "title": {
+      "translate": "advancements.da.craft_wyrk_totem.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_wyrk_totem.description"
+    }
+  },
+  "parent": "da:kill_great_wyrk",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:wyrk_totem"
+          }
+        ]
+      }
+    }
+  }
+}

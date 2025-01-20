@@ -80,7 +80,7 @@ public class ItemChampionAxe extends ItemSword implements IAnimatable, IHasModel
         int axeCoolDown = (int) 2 * 20;
         stack.damageItem(1, attacker);
         float realAttackDamage = this.getAttackDamage() + 1;
-        float bonus_damage = (4F /(attacker.getHealth() / attacker.getMaxHealth()) ) - 4F;
+        float bonus_damage = (ModConfig.champion_axe_damage_scaling /(attacker.getHealth() / attacker.getMaxHealth()) ) - ModConfig.champion_axe_damage_scaling;
         float regular_damage = (realAttackDamage / 2) + bonus_damage;
         float armor_damage = (realAttackDamage / 2);
         System.out.println("Detecting Damage Dealing, bonus Damage is at" + bonus_damage);

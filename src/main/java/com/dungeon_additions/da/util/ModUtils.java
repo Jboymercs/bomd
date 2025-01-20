@@ -31,10 +31,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -796,6 +793,8 @@ public class ModUtils {
     public static DamageSource causeAxeDamage(Entity source)
     { return (new EntityDamageSource(ModReference.MOD_ID + "." + "champion_axe", source)); }
 
+    public static DamageSource causeStaffDamage(Entity source)
+    { return (new EntityDamageSource(ModReference.MOD_ID + "." + "wyrk_staff", source)); }
 
     public static void destroyBlocksInAABB(AxisAlignedBB box, World world, Entity entity) {
         int i = MathHelper.floor(box.minX);
@@ -822,6 +821,63 @@ public class ModUtils {
                                     block != Blocks.CHEST &&
                                     block != Blocks.BED &&
                                     !(block instanceof BlockLiquid)) {
+                                if (world.getClosestPlayer(blockpos.getX(), blockpos.getY(), blockpos.getZ(), 20, false) != null) {
+                                    world.destroyBlock(blockpos, false);
+                                } else {
+                                    world.setBlockToAir(blockpos);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Finds all entities that collide with the line specified by two vectors, excluding a certain entity
+     *
+     * @param start
+     * @param end
+     * @param world
+     * @param toExclude
+     * @return
+     */
+    public static List<Entity> findEntitiesInLine(Vec3d start, Vec3d end, World world, @Nullable Entity toExclude) {
+        return world.getEntitiesInAABBexcluding(toExclude, new AxisAlignedBB(start.x, start.y, start.z, end.x, end.y, end.z), (e) -> {
+            RayTraceResult raytraceresult = e.getEntityBoundingBox().calculateIntercept(start, end);
+            return raytraceresult != null;
+        });
+    }
+
+
+    public static boolean mobGriefing(World world, Entity entity){
+        return ForgeEventFactory.getMobGriefingEvent(world, entity);
+    }
+
+    public static AxisAlignedBB vecBox(Vec3d vec1, Vec3d vec2) {
+        return new AxisAlignedBB(vec1.x, vec1.y, vec1.z, vec2.x, vec2.y, vec2.z);
+    }
+
+    public static void destroyBlocksInAABBWyrk(AxisAlignedBB box, World world, Entity entity) {
+        int i = MathHelper.floor(box.minX);
+        int j = MathHelper.floor(box.minY);
+        int k = MathHelper.floor(box.minZ);
+        int l = MathHelper.floor(box.maxX);
+        int i1 = MathHelper.floor(box.maxY);
+        int j1 = MathHelper.floor(box.maxZ);
+
+        for (int x = i; x <= l; ++x) {
+            for (int y = j; y <= i1; ++y) {
+                for (int z = k; z <= j1; ++z) {
+                    BlockPos blockpos = new BlockPos(x, y, z);
+                    IBlockState iblockstate = world.getBlockState(blockpos);
+                    Block block = iblockstate.getBlock();
+
+                    if (!block.isAir(iblockstate, world, blockpos) && iblockstate.getMaterial() != Material.FIRE) {
+                        if (ForgeEventFactory.getMobGriefingEvent(world, entity)) {
+                            if (block == Blocks.ICE || block == Blocks.SNOW || block == Blocks.SNOW_LAYER || block == Blocks.PACKED_ICE ||
+                            block == Blocks.FROSTED_ICE || block == ModBlocks.ICICLE_BLOCK) {
                                 if (world.getClosestPlayer(blockpos.getX(), blockpos.getY(), blockpos.getZ(), 20, false) != null) {
                                     world.destroyBlock(blockpos, false);
                                 } else {

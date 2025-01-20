@@ -78,12 +78,12 @@ public class MobConfig {
     @Config.Name("Knight of Burning Flame Attack Damage")
     @Config.Comment("Change the attack damage of this boss (Knight of Burning Flame)")
     @Config.RequiresMcRestart
-    public static double burning_knight_damage = 18;
+    public static double burning_knight_damage = 22;
 
     @Config.Name("Knight of Burning Flame Health")
     @Config.Comment("Change the health of this boss (Knight of Burning Flame)")
     @Config.RequiresMcRestart
-    public static double burning_knight_health = 300;
+    public static double burning_knight_health = 350;
 
     @Config.Name("Knight of Burning Flame Block Cooldown")
     @Config.Comment("Change the timer that the Knight of Burning Flame can block attacks, take not this is only fired between cool downs of each attack in seconds")
@@ -259,8 +259,8 @@ public class MobConfig {
     @Config.Comment("Add or remove possible mob spawns that the Night Lich can summon, must be ModID:entity_name")
     @Config.RequiresMcRestart
     public static String[] mob_list_one = {
-            "da:draugr",
-            "da:draugr_ranger",
+            "da:frost_draugr",
+            "da:frost_draugr_ranger",
             "minecraft:spider"
     };
 
@@ -268,8 +268,8 @@ public class MobConfig {
     @Config.Comment("Add or remove possible mob spawns that the Night Lich can summon, this list only takes effect when below 50% Health. Must be ModID:entity_name")
     @Config.RequiresMcRestart
     public static String[] mob_list_two = {
-            "da:draugr",
-            "da:draugr_ranger",
+            "da:frost_draugr",
+            "da:frost_draugr_ranger",
             "minecraft:cave_spider",
             "minecraft:blaze"
     };
@@ -298,5 +298,80 @@ public class MobConfig {
     @Config.Comment("Change the Night Lich's speed when doing certain attacks in the air, this will make the boss slower so its easier to hit")
     @Config.RequiresMcRestart
     public static double lich_movement_speed_combat = 0.055;
+
+    @Config.Name("Frostborn Draugr Health")
+    @Config.Comment("Change the Health of the Frostborn Draugr")
+    @Config.RequiresMcRestart
+    public static double draugr_health = 25;
+
+    @Config.Name("Frostborn Draugr Attack Damage")
+    @Config.Comment("Change the Attack Daamge of the Frostborn Draugr")
+    @Config.RequiresMcRestart
+    public static double draugr_attack_damage = 16;
+
+    @Config.Name("Wyrk Health")
+    @Config.Comment("Change the Health of the Mini Wyrks")
+    @Config.RequiresMcRestart
+    public static double wyrk_health = 35;
+
+    @Config.Name("Wyrk Attack Damage")
+    @Config.Comment("Change the Attack damage of the Mini Wyrks")
+    @Config.RequiresMcRestart
+    public static double wyrk_attack_damage = 14;
+
+    @Config.Name("Wyrk Starter Souls")
+    @Config.Comment("Change the amount of souls the Mini Wyrk can start with for summoning Draugr, take in the mind the system is set up so that every Draugr that dies nearby, the Wyrk can re-summon them. Default : 0")
+    @Config.RequiresMcRestart
+    public static int wyrk_starter_souls = 0;
+
+    @Config.Name("Frostborn Draugr Champion Health")
+    @Config.Comment("Change the health of the Frostborn Draugr Champion")
+    @Config.RequiresMcRestart
+    public static double champion_health = 200;
+
+    @Config.Name("Frostborn Draugr Champion Attack Damage")
+    @Config.Comment("Change the attack damage of the Frostborn Draugr Champion")
+    @Config.RequiresMcRestart
+    public static double champion_attack_damage = 26;
+
+    @Config.Name("Frostborn Draugr Champion Armor")
+    @Config.Comment("Change the armor value of the Frostborn Draugr Champion")
+    @Config.RequiresMcRestart
+    public static double champion_armor = 18;
+
+    @Config.Name("Frostborn Draugr Champion Armor Toughness")
+    @Config.Comment("Change the armor toughness value of the Frostborn Draugr Champion")
+    @Config.RequiresMcRestart
+    public static double champion_armor_toughness = 4;
+
+    @Config.Name("Ancient Wyrk Health")
+    @Config.Comment("Change the health of the Ancient Wyrk")
+    @Config.RequiresMcRestart
+    public static double great_wyrk_health = 290;
+
+    @Config.Name("Ancient Wyrk Attack Damage")
+    @Config.Comment("Change the attack damage of the Ancient Wyrk")
+    @Config.RequiresMcRestart
+    public static double great_wyrk_attack_damage = 30;
+
+    @Config.Name("Ancient Wyrk Armor")
+    @Config.Comment("Change the armor value of the Ancient Wyrk")
+    @Config.RequiresMcRestart
+    public static double great_wyrk_armor = 18;
+
+    @Config.Name("Ancient Wyrk Armor Toughness")
+    @Config.Comment("Change the armor toughness of the Ancient Wyrk")
+    @Config.RequiresMcRestart
+    public static double great_wyrk_armor_toughness = 6;
+
+    @Config.Name("Ancient Wyrk Cooldown Degradation")
+    @Config.Comment("Change the cooldown degradation in tick for multiplayer, basically when more or one players are fighting this boss. This bosses cooldown will decrease by x ticks per player. 20 ticks = 1 second")
+    @Config.RequiresMcRestart
+    public static int great_wyrk_cooldown_degradation = 4;
+
+    @Config.Name("Ancient Wyrk Cooldown")
+    @Config.Comment("Change the cooldown of the Ancient Wyrk, in seconds")
+    @Config.RequiresMcRestart
+    public static int great_wyrk_cooldown = 2;
 
 }

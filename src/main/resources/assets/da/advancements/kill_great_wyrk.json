@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:great_wyrk_mana"
+    },
+    "title": {
+      "translate": "advancements.da.kill_great_wyrk.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_great_wyrk.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "da:craft_frost_locator",
+  "criteria": {
+    "AncientWyrk": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:great_wyrk"
+        }
+      }
+    }
+  }
+}

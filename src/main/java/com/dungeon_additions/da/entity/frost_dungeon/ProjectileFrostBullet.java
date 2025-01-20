@@ -31,6 +31,7 @@ public class ProjectileFrostBullet extends Projectile {
         super(worldIn, x, y, z);
     }
 
+
     @Override
     protected void spawnParticles() {
         ParticleManager.spawnDust(world, this.getPositionVector(), ModColors.WHITE, Vec3d.ZERO, ModRand.range(10, 15));
@@ -46,8 +47,8 @@ public class ProjectileFrostBullet extends Projectile {
 
         if(result.entityHit != null && !world.isRemote) {
             Entity base = result.entityHit;
-            if (base instanceof EntityPlayer) {
-                ((EntityPlayer) base).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 200, 2));
+            if (!(base instanceof EntityFrostBase) && base instanceof EntityLivingBase) {
+                ((EntityLivingBase)base).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 200, 2));
             }
         }
         ModUtils.handleBulletImpact(result.entityHit, this, this.getDamage(), source);

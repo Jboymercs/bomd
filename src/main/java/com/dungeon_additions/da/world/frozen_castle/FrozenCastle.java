@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.world.frozen_castle;
 
+import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.world.rot_hold.RottenHoldTemplate;
 import com.google.common.collect.Lists;
@@ -19,7 +20,7 @@ public class FrozenCastle {
     private World world;
     private TemplateManager manager;
 
-    private int SIZE = 5;
+    private int SIZE = WorldConfig.frozen_castle_size;
     protected BlockPos posIdentified;
 
     private boolean generatedKeyRoom = false;
@@ -60,7 +61,7 @@ public class FrozenCastle {
         FrozenCastleTemplate straightPiece = addAdjustedPiece(parent, pos, ModRand.choice(straight_types), rot);
 
         if(straightPiece.getDistance() > SIZE || straightPiece.isCollidingExcParent(manager, parent, components)) {
-            return false;
+                return generateRoom(parent, pos, rot);
         }
 
         components.add(straightPiece);
@@ -101,7 +102,7 @@ public class FrozenCastle {
         FrozenCastleTemplate crossPiece = addAdjustedPiece(parent, pos, ModRand.choice(cross_types), rot);
 
         if (crossPiece.getDistance() > SIZE || crossPiece.isCollidingExcParent(manager, parent, components)) {
-            return false;
+                return generateRoom(parent, pos, rot);
         }
 
         components.add(crossPiece);
@@ -152,7 +153,8 @@ public class FrozenCastle {
         FrozenCastleTemplate crossPiece = addAdjustedPiece(parent, pos, "tiles/cross_4", rot);
 
         if (crossPiece.isCollidingExcParent(manager, parent, components)) {
-            return false;
+
+            return generateRoom(parent, pos, rot);
         }
 
         components.add(crossPiece);
@@ -181,10 +183,29 @@ public class FrozenCastle {
         return true;
     }
 
+    private boolean generateRoom(FrozenCastleTemplate parent, BlockPos pos, Rotation rot) {
+        String[] base_types = {"tiles/room_1", "tiles/room_2","tiles/room_3","tiles/room_4","tiles/room_5"};
+        FrozenCastleTemplate crossPiece = addAdjustedPieceWithoutDistance(parent, pos, ModRand.choice(base_types), rot);
+
+        if(SIZE > 1 && !generatedBossRoom) {
+            return generateBossRoom(parent, pos, rot);
+        }
+
+        if(crossPiece.isCollidingExcParent(manager, parent, components)) {
+            return generateEndPiece(parent, pos, rot);
+        }
+
+        components.add(crossPiece);
+        return true;
+    }
+
     private boolean generateBaseTower(FrozenCastleTemplate parent, BlockPos pos, Rotation rot) {
-        String[] base_types = {"tower/base_1", "tower/base_2"};
+        String[] base_types = {"tower/base_1", "tower/base_3"};
         FrozenCastleTemplate basePiece = addAdjustedPieceWithoutDistance(parent, BlockPos.ORIGIN.add(-21, 12, 0), ModRand.choice(base_types), rot);
 
+        if(basePiece.isCollidingExcParent(manager, parent, components)) {
+            return false;
+        }
 
         components.add(basePiece);
         generateMiddleTower(basePiece, pos, rot);

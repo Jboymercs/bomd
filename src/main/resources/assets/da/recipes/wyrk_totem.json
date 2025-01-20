@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "R",
+    "X"
+  ],
+  "key": {
+    "V": {
+      "item": "da:frost_ingot"
+    },
+    "R": {
+      "item": "da:great_wyrk_mana"
+    },
+    "X": {
+      "item": "da:knight_shard"
+    }
+  },
+  "result": {
+    "item": "da:wyrk_totem"
+  }
+}

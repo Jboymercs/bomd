@@ -5,6 +5,7 @@ import com.dungeon_additions.da.blocks.BlockLeaveBase;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.model.ModelDraugrHelmet;
 import com.dungeon_additions.da.items.model.ModelLichHelmet;
+import com.dungeon_additions.da.items.model.ModelWyrkHelmet;
 import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSection;
 import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSectionSerializer;
 import com.dungeon_additions.da.util.handlers.RenderHandler;
@@ -27,6 +28,8 @@ public class ClientProxy extends CommonProxy{
     private final ModelBiped MODEL_LICH_HELMET = new ModelLichHelmet(0F);
     private final ModelBiped MODEL_DRAUGR_HELMET = new ModelDraugrHelmet(0F);
 
+    private final ModelBiped MODEL_WYRK_HELMET = new ModelWyrkHelmet(0F);
+
     @Override
     public void init() {
         RenderHandler.registerProjectileRenderers();
@@ -35,8 +38,10 @@ public class ClientProxy extends CommonProxy{
         // Add custom metadataserializers
         Minecraft mc = Minecraft.getMinecraft();
         mc.metadataSerializer.registerMetadataSectionType(new GlowingMetadataSectionSerializer(), GlowingMetadataSection.class);
-
+        super.init();
     }
+
+
 
     @Override
     public void registerEventHandlers() {
@@ -67,6 +72,9 @@ public class ClientProxy extends CommonProxy{
         }
         if(item == ModItems.DRAUGR_HELMET) {
             return MODEL_DRAUGR_HELMET;
+        }
+        if(item == ModItems.WYRK_HELMET) {
+            return MODEL_WYRK_HELMET;
         }
         return null;
     }

@@ -35,6 +35,9 @@ entity.soul_bullet.name=Draugr Soul
 entity.frost_draugr_elite.name=Frostborn Draugr Champion
 entity.frost_locator.name=Frostborn Crystal
 entity.great_wyrk.name=Ancient Wyrk
+entity.frost_magic.name=Ancient Wyrk's Frost Magic
+entity.wyrk_foot.name=Wyrk's Foot
+entity.wyrk_lazer.name=Wyrk's Lazer Beam
 item.void_leaf.name=Void Leaf
 item.spore.name=Void Blossom Spore
 item.crystal_fruit.name=Crystal Fruit
@@ -78,8 +81,14 @@ item.draugr_ingot.name=Frostborn Ingot
 item.draugr_shield.name=Frostborn Shield
 item.draugr_helmet.name=Frostborn Helmet
 item.draugr_chestplate.name=Frostborn Chestplate
+item.great_wyrk_mana.name=Ancient Wyrk Anima
 da.desc.draugr_shield_name=Frostborn Shield
 item.frost_locator.name=Frozen Soul Star
+item.wyrk_helmet.name=Ancient Wyrk Helmet
+item.wyrk_boots.name=Ancient Wyrk Boots
+item.wyrk_snack.name=The Survivor's Endless Hunger
+item.wyrk_staff.name=Ancient Wyrk Staff
+item.wyrk_totem.name=Wyrk Elemental Totem
 tile.spore_blossom.name=Void Blossom
 tile.moss_block.name=Moss Block
 tile.moss_carpet.name=Moss Carpet
@@ -144,12 +153,14 @@ tile.cold_stone_wall.name=Chilled Petrogloom Cobblestone Wall
 tile.cold_smooth_wall.name=Smooth Chilled Petrogloom Wall
 tile.cold_brick_wall.name=Chilled Petrogloom Brick Wall
 tile.frost_icicle.name=Frozen Icicle
+tile.frost_key_block.name=Frozen Castle Key Block
 
 itemGroup.dungeon_additions=BOMD + Dungeon Additions
 
 da.lich_spawn.soul_star=Maybe something of a star like shape?
 da.lich_wrong_time=The sun must set first
 da.within_bounds=You are within the radius of the structure, item locator resetting
+da.friend_wyrk=You already have a Friendly Wyrk under your command near you!
 
 da.desc.regen_fruit=Grants brief regen and resistance
 da.desc.crafting_material=Crafting material
@@ -168,12 +179,17 @@ da.desc.soul_spear_desc=Right click shoots missiles, Shift + Right click launche
 da.desc.soul_weapon_desc=Right click launches ground missiles, Shift + Right click launches an AOE
 da.desc.night_lich_desc=Grants Resistance to Poison and boosts damage of Soulless Spear abilities greatly
 da.desc.levitation_block_desc=Gives Levitation to nearby mobs if not powered, when powered gives it to players
-da.desc.frost_key_desc=Used in the giant room in the Frozen Castle
+da.desc.dungeon_frost_key_desc=Used in the giant room in the Frozen Castle
 da.desc.champion_axe_desc=You deal more damage the lower your health is, jumping crits negate this effect.
 da.desc.draugr_sword_desc=Applies slowness to creatures hit by this sword.
 da.desc.draugr_shield_desc=Once used by those that conquered the oceans
 da.desc.draugr_armor_desc=Full set allows for a chance of strength to be given when taking damage, increasing that chance the lower your health is.
+da.desc.wyrk_helmet_desc=Grants Resistance to Slowness. Full set bonus grants a chance of regeneration the lower your health is.
+da.desc.wyrk_boots_desc=Grants speed when on ice. Full set bonus grants a chance of regeneration the lower your health is.
 da.desc.frost_locator_desc=It's cold touch seems to guide you somewhere.
+da.desc.wyrk_snack_desc=A food that loses durability rather than consumption.
+da.desc.wyrk_staff_desc=Sneaking and holding right click will charge a lazer, scaling damage with how long it is charged. If not sneaking, shoots a Frost Bullet.
+da.desc.wyrk_totem_desc=Right clicking will summon a friendly Wyrk to follow and aid you.
 death.attack.da:maelstrom=%1$s succumbed to the void
 death.attack.da:mobMaelstrom=%1$s was killed by a %2$s
 death.attack.da:playerMaelstrom=%1$s was killed by %2$s
@@ -183,6 +199,8 @@ death.attack.da:explosionMaelstrom.player=%1$s was blown up while fighting a %2$
 death.attack.da:magicMaelstrom=%1$s was magicked by a %2$s
 death.attack.da.champion_axe=%1$s died too %2$s endless rage
 death.attack.da.champion_axe.item=%1$s was smashed by %2$s using %3$s
+death.attadk.da.wyrk_staff=%1$s died too %2$s
+death.attack.da.wyrk_staff.item=%1$s was magicked by %2$s using %3$s
 
 advancements.da.root.title=Bosses Of Mass Destruction
 advancements.da.root.description=Welcome to BOMD + DA, bringing new bosses and dungeons!
@@ -204,6 +222,9 @@ advancements.da.kill_kobf.description=Slay the Knight of Burning Flame
 #Draugr Champion
 advancements.da.kill_elite_draugr.title=Champion of the Vikings
 advancements.da.kill_elite_draugr.description=Slay a Frostborn Draugr Champion
+#Ancient Wyrk
+advancements.da.kill_great_wyrk.title=The Depths of the Frost
+advancements.da.kill_great_wyrk.description=Slay an Ancient Wyrk
 #Find Soul Star
 advancements.da.find_soul_star.title=The stars lead the way
 advancements.da.find_soul_star.description=Obtain a Soul Star
@@ -243,4 +264,19 @@ advancements.da.craft_endless_pearl.description=Craft a Charged Enderpearl
 #Craft Void Dagger
 advancements.da.craft_void_dagger.title=How do you like your poison? Sharp or Slow?
 advancements.da.craft_void_dagger.description=Craft the Void Dagger
+#Craft Frost Locator
+advancements.da.craft_frost_locator.title=The blizzard roars with excitement!
+advancements.da.craft_frost_locator.description=Craft or find the Frozen Soul Star
+#Craft Wyrk Staff
+advancements.da.craft_wyrk_staff.title=We like to do a little wizardry around here
+advancements.da.craft_wyrk_staff.description=Craft the Ancient Wyrk Staff
+#Craft Wyrk Armor
+advancements.da.craft_wyrk_armor.title=Path of the ice mage
+advancements.da.craft_wyrk_armor.description=Craft both pieces of the Wyrk Armor
+#Craft Wyrk Snack
+advancements.da.craft_wyrk_snack.title=Hungry Jack!
+advancements.da.craft_wyrk_snack.description=Craft the Survivor's Endless Hunger
+#Craft Wyrk Totem
+advancements.da.craft_wyrk_totem.title=Sometimes friends can be cold
+advancements.da.craft_wyrk_totem.description=Craft the Wyrk Elemental Totem
 

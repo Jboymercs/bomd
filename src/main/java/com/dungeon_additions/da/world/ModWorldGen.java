@@ -73,7 +73,7 @@ public class ModWorldGen implements IWorldGenerator {
                         lich_tower.generate(world, random, pos);
         }
 
-        if(world.provider.getDimension() == 0) {
+        if(isAllowedDimensionTooSpawnInFrozenCastle(world.provider.getDimension())) {
             frozen_castle.generate(world, random, pos);
         }
 
@@ -117,6 +117,15 @@ public class ModWorldGen implements IWorldGenerator {
 
     public static boolean isAllowedDimensionTooSpawnIn(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInFrozenCastle(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_frozen_castle) {
             if(i == dimensionIn)
                 return true;
         }

@@ -19,6 +19,7 @@ public class ItemDraugrSword extends ToolSword{
     public ItemDraugrSword(String name, ToolMaterial material, String info_loc) {
         super(name, material);
         this.info_loc = info_loc;
+        this.setMaxDamage(874);
     }
 
     @Override
@@ -31,6 +32,7 @@ public class ItemDraugrSword extends ToolSword{
     {
         if (attacker.world.isRemote) return false;
         target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 0));
+        stack.damageItem(1, attacker);
         return true;
     }
 
