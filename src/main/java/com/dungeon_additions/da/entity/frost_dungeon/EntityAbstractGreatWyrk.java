@@ -1,29 +1,34 @@
 package com.dungeon_additions.da.entity.frost_dungeon;
 
 import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IPitch;
 import com.dungeon_additions.da.entity.blossom.EntityAbstractVoidBlossom;
 import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.ActionWyrkLazer;
 import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.IMultiAction;
+import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.ModRand;
+import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.ServerScaleUtil;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.IEntityMultiPart;
-import net.minecraft.entity.MultiPartEntityPart;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -60,6 +65,10 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
     private static final DataParameter<Boolean> SUMMON_AID = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SUMMON_BOSS = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
 
+    private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
+
+    public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BLOCK_POS);
+    public static DataParameter<Boolean> SET_SPAWN_LOC = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
 
     public void setMegaStomp(boolean value) {this.dataManager.set(MEGA_STOMP, Boolean.valueOf(value));}
     public void setRoll(boolean value) {this.dataManager.set(ROLL, Boolean.valueOf(value));}
@@ -80,6 +89,22 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
     public boolean isLazerAttack() {return this.dataManager.get(LAZER_ATTACK);}
     public boolean isSummonAid() {return this.dataManager.get(SUMMON_AID);}
     public boolean isSummonBoss() {return this.dataManager.get(SUMMON_BOSS);}
+    public boolean isHadPreviousTarget() {return this.dataManager.get(HAD_PREVIOUS_TARGET);}
+    public void setHadPreviousTarget(boolean value) {this.dataManager.set(HAD_PREVIOUS_TARGET, Boolean.valueOf(value));}
+
+    public boolean isSetSpawnLoc() {
+        return this.dataManager.get(SET_SPAWN_LOC);
+    }
+    public void setSetSpawnLoc(boolean value) {
+        this.dataManager.set(SET_SPAWN_LOC, Boolean.valueOf(value));
+    }
+    public void setSpawnLocation(BlockPos pos) {
+        this.dataManager.set(SPAWN_LOCATION, pos);
+    }
+
+    public BlockPos getSpawnLocation() {
+        return this.dataManager.get(SPAWN_LOCATION);
+    }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
@@ -92,6 +117,11 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
         nbt.setBoolean("Lazer_Attack", this.isLazerAttack());
         nbt.setBoolean("Summon_Aid", this.isSummonAid());
         nbt.setBoolean("Summon_Boss", this.isSummonBoss());
+        nbt.setBoolean("Had_Target", this.dataManager.get(HAD_PREVIOUS_TARGET));
+        nbt.setInteger("Spawn_Loc_X", this.getSpawnLocation().getX());
+        nbt.setInteger("Spawn_Loc_Y", this.getSpawnLocation().getY());
+        nbt.setInteger("Spawn_Loc_Z", this.getSpawnLocation().getZ());
+        nbt.setBoolean("Set_Spawn_Loc", this.dataManager.get(SET_SPAWN_LOC));
         nbt.setFloat("Look", this.getPitch());
         super.writeEntityToNBT(nbt);
     }
@@ -107,6 +137,9 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
         this.setLazerAttack(nbt.getBoolean("Lazer_Attack"));
         this.setSummonAid(nbt.getBoolean("Summon_Aid"));
         this.setSummonBoss(nbt.getBoolean("Summon_Boss"));
+        this.setHadPreviousTarget(nbt.getBoolean("Had_Target"));
+        this.dataManager.set(SET_SPAWN_LOC, nbt.getBoolean("Set_Spawn_Loc"));
+        this.setSpawnLocation(new BlockPos(nbt.getInteger("Spawn_Loc_X"), nbt.getInteger("Spawn_Loc_Y"), nbt.getInteger("Spawn_Loc_Z")));
         this.dataManager.set(LOOK, nbt.getFloat("Look"));
         super.readEntityFromNBT(nbt);
     }
@@ -123,6 +156,70 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
     }
 
     @Override
+    public void onUpdate() {
+        super.onUpdate();
+        EntityLivingBase target = this.getAttackTarget();
+        //Target Tracking
+        if(!world.isRemote) {
+            if (this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
+                if (target != null) {
+                    if (target instanceof EntityPlayer) {
+                        this.setHadPreviousTarget(true);
+                    }
+                }
+
+                //Creates a Target tracking to ensure if it can despawn or not
+                if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled) {
+                    int nearbyPlayers = ServerScaleUtil.getPlayersForReset(this, world);
+                    if (nearbyPlayers == 0) {
+                        if (targetTrackingTimer > 0) {
+                            targetTrackingTimer--;
+                        }
+                        if (targetTrackingTimer < 1) {
+                            this.resetBossTask();
+                        }
+                    }
+                }
+            }
+
+            //Spawn Telporting Location
+            //This is too keep the boss at it's starting location and keep it from getting too far away
+
+            if(this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
+                Vec3d SpawnLoc = new Vec3d(this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
+
+                double distSq = this.getDistanceSq(SpawnLoc.x, SpawnLoc.y, SpawnLoc.z);
+                double distance = Math.sqrt(distSq);
+                //This basically makes it so the Wyrk will be teleported if they are too far away from the Arena
+                if(!world.isRemote) {
+                    if (distance > 40) {
+                        this.teleportTarget(SpawnLoc.x, SpawnLoc.y, SpawnLoc.z);
+                    }
+                }
+            }
+        }
+    }
+
+
+    private static final ResourceLocation LOO_RESET = new ResourceLocation(ModReference.MOD_ID, "frozen_castle_reset");
+
+    private void resetBossTask() {
+        this.setImmovable(true);
+        this.setHadPreviousTarget(false);
+        BlockPos pos = this.getSpawnLocation();
+        world.setBlockState(pos, ModBlocks.FROZEN_CASTLE_KEY_BLOCK.getDefaultState());
+        world.setBlockState(pos.add(0, 1, 0), Blocks.CHEST.getDefaultState());
+        TileEntity te = world.getTileEntity(pos.add(0, 1, 0));
+        if(te instanceof TileEntityChest) {
+            TileEntityChest chest = (TileEntityChest) te;
+            chest.setLootTable(LOO_RESET, rand.nextLong());
+        }
+        this.experienceValue = 0;
+        this.setDropItemsWhenDead(false);
+        this.setDead();
+    }
+
+    @Override
     public void entityInit() {
         this.dataManager.register(LOOK, 0f);
         this.dataManager.register(MEGA_STOMP, Boolean.valueOf(false));
@@ -134,13 +231,17 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
         this.dataManager.register(LAZER_ATTACK, Boolean.valueOf(false));
         this.dataManager.register(SUMMON_AID, Boolean.valueOf(false));
         this.dataManager.register(SUMMON_BOSS, Boolean.valueOf(false));
+        this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
+        this.dataManager.register(SET_SPAWN_LOC, Boolean.valueOf(false));
+        //
+        this.dataManager.register(SPAWN_LOCATION, new BlockPos(this.getPositionVector().x, this.getPositionVector().y, this.getPositionVector().z));
         super.entityInit();
     }
 
     @Override
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(50D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(45D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.great_wyrk_attack_damage);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.24D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MobConfig.great_wyrk_health);

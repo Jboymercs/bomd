@@ -18,7 +18,7 @@ public class ActionSummonFrostBarrage implements IAction {
     public void performAction(EntityAbstractBase actor, EntityLivingBase target) {
         for(int i = 0; i < 66; i += 3) {
             actor.addEvent(()-> {
-                ProjectileFrostBullet bullet = new ProjectileFrostBullet(actor.world, actor, actor.getAttack() * 0.6F);
+                ProjectileFrostBullet bullet = new ProjectileFrostBullet(actor.world, actor, actor.getAttack() * 0.4F);
                 Vec3d posRand = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(ModRand.range(-3, 3), 4.5 + ModRand.getFloat(1.5F), ModRand.range(-3, 3))));
                 bullet.setPosition(posRand.x, posRand.y, posRand.z);
                 actor.world.spawnEntity(bullet);

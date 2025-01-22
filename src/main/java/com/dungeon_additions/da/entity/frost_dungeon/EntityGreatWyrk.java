@@ -64,7 +64,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
     protected boolean performLazerAttack = false;
     public boolean roll_state_active = false;
 
-    Supplier<Projectile> ground_projectiles = () -> new ProjectileFrostGround(world, this, (float) this.getAttack() * 0.75F, null);
+    Supplier<Projectile> ground_projectiles = () -> new ProjectileFrostGround(world, this, (float) this.getAttack() * 0.55F, null);
     public Vec3d chargePos;
     private boolean destroyBlocks = false;
 
@@ -79,6 +79,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
     public EntityGreatWyrk(World worldIn) {
         super(worldIn);
         this.iAmBossMob = true;
+        this.iAmBossMobWyrkNerf = true;
         this.experienceValue = 200;
         onSummonBoss();
     }
@@ -86,7 +87,11 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
     public EntityGreatWyrk(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
         this.iAmBossMob = true;
+        this.iAmBossMobWyrkNerf = true;
         this.experienceValue = 200;
+        BlockPos offset = new BlockPos(x, y, z);
+        this.setSpawnLocation(offset);
+        this.setSetSpawnLoc(true);
         onSummonBoss();
     }
 
@@ -177,7 +182,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
     @Override
     public int startAttack(EntityLivingBase target, float distanceSq, boolean strafingBackwards) {
         double distance = Math.sqrt(distanceSq);
-        int cooldown_degradation = MobConfig.great_wyrk_cooldown_degradation * playersNearbyAmount;
+
         double HealthChange = this.getHealth() / this.getMaxHealth();
         if(!this.isFightMode() && !this.isSummonBoss()) {
             List<Consumer<EntityLivingBase>> attacksMelee = new ArrayList<>(Arrays.asList(mega_stomp_action, roll_action, melee_attack, shake_attack, small_stomps_attack, drop_attack, lazer_action, summon_aid));
@@ -194,7 +199,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
             prevAttacks = ModRand.choice(attacksMelee, rand, weights).next();
             prevAttacks.accept(target);
         }
-        return prevAttacks == roll_action ? (MobConfig.great_wyrk_cooldown * 20) + 140 : (MobConfig.great_wyrk_cooldown * 20) - cooldown_degradation;
+        return prevAttacks == roll_action ? (MobConfig.great_wyrk_cooldown * 20) + 80 : (MobConfig.great_wyrk_cooldown * 20);
     }
 
     private Consumer<EntityLivingBase> summon_aid = (target) -> {

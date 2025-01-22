@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity;
 
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.pathing.MobGroundNavigate;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.ServerScaleUtil;
@@ -31,6 +32,7 @@ import java.util.PriorityQueue;
 public abstract class EntityAbstractBase extends EntityCreature {
     private float regenTimer;
 
+    protected int targetTrackingTimer = ModConfig.boss_reset_timer * 20;
     private static final DataParameter<Boolean> FIGHT_MODE = EntityDataManager.createKey(EntityAbstractBase.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> FULL_BODY_USAGE = EntityDataManager.createKey(EntityAbstractBase.class, DataSerializers.BOOLEAN);
     public void setFightMode(boolean value) {this.dataManager.set(FIGHT_MODE, Boolean.valueOf(value));}
@@ -41,6 +43,7 @@ public abstract class EntityAbstractBase extends EntityCreature {
 
     protected int playersNearbyAmount = 0;
     public boolean iAmBossMob = false;
+    public boolean iAmBossMobWyrkNerf = false;
     public boolean lockLook = false;
 
     public boolean holdPosition = false;
@@ -158,11 +161,16 @@ public abstract class EntityAbstractBase extends EntityCreature {
         if(this.iAmBossMob && target != null) {
             if(!this.hasStartedScaling && target instanceof EntityPlayer && !this.world.isRemote) {
                 double changeAttackDamage = ServerScaleUtil.scaleAttackDamageInAccordanceWithPlayers(this, world);
+                double changeAttackDamageWyrk = ServerScaleUtil.scaleAttackDamageInAccordanceWithPlayersWyrk(this, world);
                 float healthCurrently = ServerScaleUtil.changeHealthAccordingToPlayers(this, world);
                 double maxHealthCurrently = ServerScaleUtil.setMaxHealthWithPlayers(this, world);
                 //This is change the Health in accordance with how many players are currently nearby // TEST
                 this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(maxHealthCurrently);
-                this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(changeAttackDamage);
+                if(this.iAmBossMobWyrkNerf) {
+                    this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(changeAttackDamageWyrk);
+                } else {
+                    this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(changeAttackDamage);
+                }
                 this.setHealth(this.getMaxHealth());
                 //This is a static int that will affect cooldowns or other areas of the boss for multiplayer play and make it equally as challenging
                 playersNearbyAmount = ServerScaleUtil.getPlayers(this, world);
@@ -244,6 +252,11 @@ public abstract class EntityAbstractBase extends EntityCreature {
 
 
     public void doRender(RenderManager renderManager, double x, double y, double z, float entityYaw, float partialTicks) {
+    }
+
+    public void teleportTarget(double x, double y, double z) {
+        this.setPosition(x , y, z);
+
     }
 
     @Override

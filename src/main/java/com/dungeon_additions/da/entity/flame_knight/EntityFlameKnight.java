@@ -7,13 +7,12 @@ import com.dungeon_additions.da.entity.ai.EntityAIFlameKnightAttack;
 import com.dungeon_additions.da.entity.ai.EntityTimedAttackAIImproved;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.flame_knight.misc.*;
+import com.dungeon_additions.da.entity.frost_dungeon.EntityAbstractGreatWyrk;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
+import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
-import com.dungeon_additions.da.util.ModColors;
-import com.dungeon_additions.da.util.ModRand;
-import com.dungeon_additions.da.util.ModReference;
-import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -36,6 +35,8 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.Path;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -102,6 +103,7 @@ public class EntityFlameKnight extends EntityAbstractBase implements IAnimatable
     public static DataParameter<Boolean> SET_SPAWN_LOC = EntityDataManager.createKey(EntityFlameKnight.class, DataSerializers.BOOLEAN);
     private static final DataParameter<ItemStack> ITEM_HAND = EntityDataManager.<ItemStack>createKey(EntityFlameKnight.class, DataSerializers.ITEM_STACK);
 
+    private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntityFlameKnight.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Optional<IBlockState>> BLOCK_HEAD = EntityDataManager.<Optional<IBlockState>>createKey(EntityFlameKnight.class, DataSerializers.OPTIONAL_BLOCK_STATE);
 
     public void setComboMode(boolean value) {this.dataManager.set(COMBO_MODE, Boolean.valueOf(value));}
@@ -171,6 +173,8 @@ public class EntityFlameKnight extends EntityAbstractBase implements IAnimatable
     public BlockPos getSpawnLocation() {
         return this.dataManager.get(SPAWN_LOCATION);
     }
+    public boolean isHadPreviousTarget() {return this.dataManager.get(HAD_PREVIOUS_TARGET);}
+    public void setHadPreviousTarget(boolean value) {this.dataManager.set(HAD_PREVIOUS_TARGET, Boolean.valueOf(value));}
 
     public boolean isLostHead() {return this.dataManager.get(LOST_HEAD);}
     public boolean isPhaseTransition() {return this.dataManager.get(PHASE_TRANSISTION);}
@@ -332,6 +336,7 @@ public class EntityFlameKnight extends EntityAbstractBase implements IAnimatable
         this.dataManager.register(DEATH_PlAY, Boolean.valueOf(false));
         this.dataManager.register(SPAM_DETECTED, Boolean.valueOf(false));
         this.dataManager.register(SET_SPAWN_LOC, Boolean.valueOf(false));
+        this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
         //
         this.dataManager.register(SPAWN_LOCATION, new BlockPos(this.getPositionVector().x, this.getPositionVector().y, this.getPositionVector().z));
     }
@@ -366,6 +371,7 @@ public class EntityFlameKnight extends EntityAbstractBase implements IAnimatable
         nbt.setBoolean("Jump_Without", this.isJumpWithoutAttack());
         nbt.setBoolean("Summon", this.isSummon());
         nbt.setBoolean("Death_Play", this.isDeathPlay());
+        nbt.setBoolean("Had_Target", this.isHadPreviousTarget());
         nbt.setBoolean("Spam_Detected", this.isSpamDetected());
         nbt.setInteger("Spawn_Loc_X", this.getSpawnLocation().getX());
         nbt.setInteger("Spawn_Loc_Y", this.getSpawnLocation().getY());
@@ -402,6 +408,7 @@ public class EntityFlameKnight extends EntityAbstractBase implements IAnimatable
         this.setJumpWithoutAttack(nbt.getBoolean("Jump_Without"));
         this.setJumpWithAttack(nbt.getBoolean("Jump_With_Attack"));
         this.setSummon(nbt.getBoolean("Summon"));
+        this.setHadPreviousTarget(nbt.getBoolean("Had_Target"));
         this.setDeathPlay(nbt.getBoolean("Death_Play"));
         this.setSpamDetected(nbt.getBoolean("Spam_Detected"));
         this.dataManager.set(SET_SPAWN_LOC, nbt.getBoolean("Set_Spawn_Loc"));
@@ -624,6 +631,29 @@ public class EntityFlameKnight extends EntityAbstractBase implements IAnimatable
         }
 
         EntityLivingBase target = this.getAttackTarget();
+        //Target Tracking
+        if(!world.isRemote) {
+            if (this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
+                if (target != null) {
+                    if (target instanceof EntityPlayer) {
+                        this.setHadPreviousTarget(true);
+                    }
+                }
+
+                //Creates a Target tracking to ensure if it can despawn or not
+                if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled) {
+                    int nearbyPlayers = ServerScaleUtil.getPlayersForReset(this, world);
+                    if (nearbyPlayers == 0) {
+                        if (targetTrackingTimer > 0) {
+                            targetTrackingTimer--;
+                        }
+                        if (targetTrackingTimer < 1) {
+                            this.resetBossTask();
+                        }
+                    }
+                }
+            }
+        }
 
         if(target != null && !world.isRemote) {
             double HealthChange = this.getHealth()/this.getMaxHealth();
@@ -726,6 +756,26 @@ public class EntityFlameKnight extends EntityAbstractBase implements IAnimatable
         }
     }
 
+    private static final ResourceLocation LOO_RESET = new ResourceLocation(ModReference.MOD_ID, "burning_arena_reset");
+
+    private void resetBossTask() {
+        this.setImmovable(true);
+        this.setHadPreviousTarget(false);
+        BlockPos pos = this.getSpawnLocation();
+        EntityPyre pyre_reset = new EntityPyre(world);
+        pyre_reset.setPosition(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
+        world.spawnEntity(pyre_reset);
+        world.setBlockState(pos.add(0, 2, 0), Blocks.CHEST.getDefaultState());
+        TileEntity te = world.getTileEntity(pos.add(0, 2, 0));
+        if(te instanceof TileEntityChest) {
+            TileEntityChest chest = (TileEntityChest) te;
+            chest.setLootTable(LOO_RESET, rand.nextLong());
+        }
+        this.experienceValue = 0;
+        this.setDropItemsWhenDead(false);
+        this.setDead();
+    }
+
     private void performPhaseTransition() {
         this.setFightMode(true);
         this.setFullBodyUsage(true);
@@ -762,10 +812,7 @@ public class EntityFlameKnight extends EntityAbstractBase implements IAnimatable
         }, 220);
     }
 
-    public void teleportTarget(double x, double y, double z) {
-        this.setPosition(x , y, z);
 
-    }
 
     private void healWithPotion() {
         this.setFightMode(true);

@@ -327,12 +327,12 @@ public class MobConfig {
     @Config.Name("Frostborn Draugr Champion Health")
     @Config.Comment("Change the health of the Frostborn Draugr Champion")
     @Config.RequiresMcRestart
-    public static double champion_health = 200;
+    public static double champion_health = 175;
 
     @Config.Name("Frostborn Draugr Champion Attack Damage")
     @Config.Comment("Change the attack damage of the Frostborn Draugr Champion")
     @Config.RequiresMcRestart
-    public static double champion_attack_damage = 26;
+    public static double champion_attack_damage = 22;
 
     @Config.Name("Frostborn Draugr Champion Armor")
     @Config.Comment("Change the armor value of the Frostborn Draugr Champion")
@@ -347,12 +347,12 @@ public class MobConfig {
     @Config.Name("Ancient Wyrk Health")
     @Config.Comment("Change the health of the Ancient Wyrk")
     @Config.RequiresMcRestart
-    public static double great_wyrk_health = 290;
+    public static double great_wyrk_health = 250;
 
     @Config.Name("Ancient Wyrk Attack Damage")
     @Config.Comment("Change the attack damage of the Ancient Wyrk")
     @Config.RequiresMcRestart
-    public static double great_wyrk_attack_damage = 30;
+    public static double great_wyrk_attack_damage = 28;
 
     @Config.Name("Ancient Wyrk Armor")
     @Config.Comment("Change the armor value of the Ancient Wyrk")
@@ -362,16 +362,11 @@ public class MobConfig {
     @Config.Name("Ancient Wyrk Armor Toughness")
     @Config.Comment("Change the armor toughness of the Ancient Wyrk")
     @Config.RequiresMcRestart
-    public static double great_wyrk_armor_toughness = 6;
-
-    @Config.Name("Ancient Wyrk Cooldown Degradation")
-    @Config.Comment("Change the cooldown degradation in tick for multiplayer, basically when more or one players are fighting this boss. This bosses cooldown will decrease by x ticks per player. 20 ticks = 1 second")
-    @Config.RequiresMcRestart
-    public static int great_wyrk_cooldown_degradation = 4;
+    public static double great_wyrk_armor_toughness = 7;
 
     @Config.Name("Ancient Wyrk Cooldown")
     @Config.Comment("Change the cooldown of the Ancient Wyrk, in seconds")
     @Config.RequiresMcRestart
-    public static int great_wyrk_cooldown = 2;
+    public static int great_wyrk_cooldown = 5;
 
 }

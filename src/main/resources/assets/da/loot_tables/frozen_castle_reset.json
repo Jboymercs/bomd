@@ -1,0 +1,15 @@
+{
+  "pools": [
+    {
+      "name" : "da:frozen_castle_reset",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:frost_key",
+          "weight": 10
+        }
+      ]
+    }
+  ]
+}

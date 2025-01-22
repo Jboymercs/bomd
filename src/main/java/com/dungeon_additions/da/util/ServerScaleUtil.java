@@ -119,6 +119,30 @@ public class ServerScaleUtil {
         return currentAttackDamage;
     }
 
+    public static double scaleAttackDamageInAccordanceWithPlayersWyrk(EntityLivingBase actor, World world) {
+        double currentAttackDamage = actor.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+        int playersNearby = 0;
+        if(!world.isRemote) {
+            List<EntityPlayer> nearbyPlayers = actor.world.getEntitiesWithinAABB(EntityPlayer.class, actor.getEntityBoundingBox().grow(60D), e -> !e.getIsInvulnerable());
+            if (!nearbyPlayers.isEmpty()) {
+                for (EntityPlayer playerCap : nearbyPlayers) {
+                    if (!playerCap.isCreative() && !playerCap.isSpectator()) {
+                        playersNearby++;
+                    }
+                }
+            }
+
+            if (playersNearby > 1) {
+                double additiveAttackDamage = currentAttackDamage * ((playersNearby * (ModConfig.boss_attack_damage_scaling * 0.5)) - (ModConfig.boss_attack_damage_scaling * 0.5));
+
+                return currentAttackDamage + additiveAttackDamage;
+            } else {
+                return currentAttackDamage;
+            }
+        }
+        return currentAttackDamage;
+    }
+
     //This functions allows us to switch between targets and allow everyone to get a bit of the fun
 
     public static EntityLivingBase targetSwitcher(EntityAbstractBase actor, World world) {
@@ -149,5 +173,24 @@ public class ServerScaleUtil {
         }
 
         return currentTarget;
+    }
+
+    public static int getPlayersForReset(EntityLivingBase actor, World world) {
+
+        int playersNearby = 0;
+
+        if(!world.isRemote) {
+            double range = actor.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
+            List<EntityPlayer> nearbyPlayers = actor.world.getEntitiesWithinAABB(EntityPlayer.class, actor.getEntityBoundingBox().grow(range), e -> !e.getIsInvulnerable());
+            if (!nearbyPlayers.isEmpty()) {
+                for (EntityPlayer playerCap : nearbyPlayers) {
+                    if (!playerCap.isCreative() && !playerCap.isSpectator()) {
+                        playersNearby++;
+                    }
+                }
+            }
+        }
+
+        return playersNearby;
     }
 }

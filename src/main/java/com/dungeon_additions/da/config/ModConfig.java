@@ -142,14 +142,22 @@ public class ModConfig {
     @Config.Comment("Change how far the Frozen Soul Star and Locate command searches for a Frozen Castle. In chunks not blocks!")
     @Config.RequiresMcRestart
     public static int frozen_castle_search_distance = 175;
-
-
     @Config.Name("Soul Star Drops Advancement Requirements")
     @Config.Comment("What advancements are required for players to use and unlock Soul Stars dropping from Mobs")
     @Config.RequiresMcRestart
     public static String[] soul_star_progress = {
             "da:kill_kobf"
     };
+
+    @Config.Name("Boss Reset Enabled/Disabled")
+    @Config.Comment("This setting makes it so that if bosses killed all players around them, they will reset back into a key block with a chest above with the respective key. Allowing players to recover there loot more easily and try again. default: true")
+    @Config.RequiresMcRestart
+    public static boolean boss_reset_enabled = true;
+
+    @Config.Name("Boss Reset Timer")
+    @Config.Comment("A timer before boss reset occurs in seconds, basically if any players are not within the bosses follow radius (sight is not needed) and the boss has engaged any player in the past. This timer will countdown till reset")
+    @Config.RequiresMcRestart
+    public static int boss_reset_timer = 25;
 
     @Config.Name("Soul Star Advancement Requirement Enable/Disable")
     @Config.Comment("Change to false to disable advancement requirements for Soul Stars to drop")

@@ -107,9 +107,7 @@ public class ProjectileFrostGround extends Projectile {
     protected void onHit(RayTraceResult result) {
         if(result.entityHit != null && !world.isRemote) {
             Entity base = result.entityHit;
-            if (base instanceof EntityPlayer) {
-                ((EntityPlayer) base).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 200, 2));
-            }
+
         }
     }
 }

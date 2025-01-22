@@ -1,0 +1,15 @@
+{
+  "pools": [
+    {
+      "name" : "da:night_lich_reset",
+      "rolls": 4,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:soul_star_item",
+          "weight": 10
+        }
+      ]
+    }
+  ]
+}

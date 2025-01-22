@@ -58,6 +58,8 @@ public class EntityPyre extends EntityAbstractBase implements IAnimatable, IAnim
         ItemStack stack = player.getHeldItem(hand);
         if(stack.getItem() == ModItems.FLAME_OF_AMBITION && !world.isRemote) {
             stack.shrink(1);
+            world.setBlockToAir(this.getPosition().add(0, 1, 0));
+            world.setBlockToAir(this.getPosition().add(0, 2, 0));
             this.beginBossCreation();
         }
 

@@ -1,17 +1,17 @@
 package com.dungeon_additions.da.entity.rot_knights;
 
 import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.EntityAIAttackRotKnight;
 import com.dungeon_additions.da.entity.ai.EntityAIFallenAttack;
 import com.dungeon_additions.da.entity.ai.IAttack;
+import com.dungeon_additions.da.entity.frost_dungeon.EntityAbstractGreatWyrk;
 import com.dungeon_additions.da.entity.rot_knights.actions.ActionRotFarAOE;
 import com.dungeon_additions.da.entity.rot_knights.actions.ActionRotLineAOE;
 import com.dungeon_additions.da.entity.rot_knights.actions.ActionRotShortAOE;
-import com.dungeon_additions.da.util.ModColors;
-import com.dungeon_additions.da.util.ModRand;
-import com.dungeon_additions.da.util.ModReference;
-import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.init.ModBlocks;
+import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -29,11 +29,14 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -89,6 +92,10 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
     public static final DataParameter<Boolean> CAST_LINE = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SUMMON = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
 
+    private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
+
+    public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BLOCK_POS);
+    public static DataParameter<Boolean> SET_SPAWN_LOC = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
     private boolean isPhaseTransition() {return this.dataManager.get(PHASE_TRANSITION);}
     private boolean isPierce() {return this.dataManager.get(PIERCE);}
     private boolean isSwing() {return this.dataManager.get(SWING);}
@@ -109,11 +116,31 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
     private void setAura(boolean value) {this.dataManager.set(AURA, Boolean.valueOf(value));}
     private void setCastLine(boolean value) {this.dataManager.set(CAST_LINE, Boolean.valueOf(value));}
     private void setSummon(boolean value) {this.dataManager.set(SUMMON, Boolean.valueOf(value));}
+
+    public boolean isHadPreviousTarget() {return this.dataManager.get(HAD_PREVIOUS_TARGET);}
+    public void setHadPreviousTarget(boolean value) {this.dataManager.set(HAD_PREVIOUS_TARGET, Boolean.valueOf(value));}
+
+    public boolean isSetSpawnLoc() {
+        return this.dataManager.get(SET_SPAWN_LOC);
+    }
+    public void setSetSpawnLoc(boolean value) {
+        this.dataManager.set(SET_SPAWN_LOC, Boolean.valueOf(value));
+    }
+    public void setSpawnLocation(BlockPos pos) {
+        this.dataManager.set(SPAWN_LOCATION, pos);
+    }
+
+    public BlockPos getSpawnLocation() {
+        return this.dataManager.get(SPAWN_LOCATION);
+    }
     public EntityRotKnightBoss(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
         this.setSize(0.75F, 1.95F);
         this.setHideArmState(true);
         this.iAmBossMob = true;
+        BlockPos offset = new BlockPos(x, y, z);
+        this.setSpawnLocation(offset);
+        this.setSetSpawnLoc(true);
         this.onSummonBoss();
     }
 
@@ -150,6 +177,11 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
         nbt.setBoolean("Aura", this.isAura());
         nbt.setBoolean("Cast_Line", this.isCastLine());
         nbt.setBoolean("Summon", this.isSummon());
+        nbt.setBoolean("Had_Target", this.dataManager.get(HAD_PREVIOUS_TARGET));
+        nbt.setInteger("Spawn_Loc_X", this.getSpawnLocation().getX());
+        nbt.setInteger("Spawn_Loc_Y", this.getSpawnLocation().getY());
+        nbt.setInteger("Spawn_Loc_Z", this.getSpawnLocation().getZ());
+        nbt.setBoolean("Set_Spawn_Loc", this.dataManager.get(SET_SPAWN_LOC));
         super.writeEntityToNBT(nbt);
     }
 
@@ -165,6 +197,9 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
         this.setAura(nbt.getBoolean("Aura"));
         this.setCastLine(nbt.getBoolean("Cast_Line"));
         this.setSummon(nbt.getBoolean("Summon"));
+        this.setHadPreviousTarget(nbt.getBoolean("Had_Target"));
+        this.dataManager.set(SET_SPAWN_LOC, nbt.getBoolean("Set_Spawn_Loc"));
+        this.setSpawnLocation(new BlockPos(nbt.getInteger("Spawn_Loc_X"), nbt.getInteger("Spawn_Loc_Y"), nbt.getInteger("Spawn_Loc_Z")));
         if (this.hasCustomName()) {
             this.bossInfo.setName(this.getDisplayName());
         }
@@ -184,6 +219,10 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
         this.dataManager.register(CAST_LINE, Boolean.valueOf(false));
         this.dataManager.register(AURA, Boolean.valueOf(false));
         this.dataManager.register(SUMMON, Boolean.valueOf(false));
+        this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
+        this.dataManager.register(SET_SPAWN_LOC, Boolean.valueOf(false));
+        //
+        this.dataManager.register(SPAWN_LOCATION, new BlockPos(this.getPositionVector().x, this.getPositionVector().y, this.getPositionVector().z));
     }
 
 
@@ -222,6 +261,63 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
                 this.hasDonePhaseTransition = false;
             }
         }
+
+        if(!world.isRemote) {
+            if (this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
+                if (target != null) {
+                    if (target instanceof EntityPlayer) {
+                        this.setHadPreviousTarget(true);
+                    }
+                }
+
+                //Creates a Target tracking to ensure if it can despawn or not
+                if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled) {
+                    int nearbyPlayers = ServerScaleUtil.getPlayersForReset(this, world);
+                    if (nearbyPlayers == 0) {
+                        if (targetTrackingTimer > 0) {
+                            targetTrackingTimer--;
+                        }
+                        if (targetTrackingTimer < 1) {
+                            this.resetBossTask();
+                        }
+                    }
+                }
+            }
+
+            //Spawn Telporting Location
+            //This is too keep the boss at it's starting location and keep it from getting too far away
+
+            if(this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
+                Vec3d SpawnLoc = new Vec3d(this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
+
+                double distSq = this.getDistanceSq(SpawnLoc.x, SpawnLoc.y, SpawnLoc.z);
+                double distance = Math.sqrt(distSq);
+                //This basically makes it so the Wyrk will be teleported if they are too far away from the Arena
+                if(!world.isRemote) {
+                    if (distance > 25) {
+                        this.teleportTarget(SpawnLoc.x, SpawnLoc.y, SpawnLoc.z);
+                    }
+                }
+            }
+        }
+    }
+
+    private static final ResourceLocation LOO_RESET = new ResourceLocation(ModReference.MOD_ID, "rot_fort_reset");
+
+    private void resetBossTask() {
+        this.setImmovable(true);
+        this.setHadPreviousTarget(false);
+        BlockPos pos = this.getSpawnLocation();
+        world.setBlockState(pos, ModBlocks.KNIGHT_KEY_BLOCK.getDefaultState());
+        world.setBlockState(pos.add(0, 1, 0), Blocks.CHEST.getDefaultState());
+        TileEntity te = world.getTileEntity(pos.add(0, 1, 0));
+        if(te instanceof TileEntityChest) {
+            TileEntityChest chest = (TileEntityChest) te;
+            chest.setLootTable(LOO_RESET, rand.nextLong());
+        }
+        this.experienceValue = 0;
+        this.setDropItemsWhenDead(false);
+        this.setDead();
     }
 
     private void doPhaseTransition() {
