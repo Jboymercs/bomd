@@ -10,6 +10,7 @@ import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -52,13 +53,13 @@ public class ModItems {
     public static final Item POISON_DART = new ItemDart("dart");
 
     //Findable Items
-    public static final Item VOID_FRUIT = new ItemFoodBase("crystal_fruit", "regen_fruit", 5, 3, false).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item VOID_FRUIT = new ItemFoodBase("crystal_fruit", "regen_fruit", 5, 1, false).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item VOID_THORNS = new ItemCraftingMaterial("void_thorns", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ABBERRANT_ETE = new ItemCraftingMaterial("abberrant_eye", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ENDLESS_PEARL = new ItemEndlessEnderpearl("endless_enderpearl", "pearl_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item VOID_DAGGER = new ItemBlossomDagger("void_dagger", "dagger_desc", DAGGER_MATERIAL).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FLAME_OF_AMBITION = new ItemAmbitionFlame("ambition_flame", "flame_of_ambition").setCreativeTab(DungeonAdditionsTab.ALL);
-    public static final Item ENFLAMED_MEAT = new ItemEnflamedMeat("enflamed_meat", "flame_meat", 10, 1, false).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item ENFLAMED_MEAT = new ItemEnflamedMeat("enflamed_meat", "flame_meat", 10, 0.8F, false).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item SWORN_OF_AMBITION = new ItemAmbitionSword("ambition_sword", "flame_sword", FLAME_SWORD_MATERIAL).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item INVISISBLE_ITEM = new ItemBase("invisible_item").setCreativeTab(CreativeTabs.SEARCH);
     public static final Item PROJECTILE_FLAME = new ItemBase("projectile_flame").setCreativeTab(CreativeTabs.SEARCH);
@@ -83,10 +84,11 @@ public class ModItems {
     public static final Item ROT_KNIGHT_INGOT = new ItemCraftingMaterial("knight_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ROT_KNIGHT_KEY = new ItemRotKnightKey("knight_key", "rot_knight_key").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ROT_KNIGHT_RAPIER = new ItemKnightRapier("knight_rapier", KNIGHT_RAPIER_MATERIAL, "rapier_desc").setCreativeTab(DungeonAdditionsTab.ALL);
-    public static final Item GLOW_BERRY = new ItemGlowBerry("glow_berry", 4, 2, false, ModBlocks.AZAELA_VINES).setCreativeTab(DungeonAdditionsTab.ALL);
-    public static final Item WYRK_SNACK = new ItemWyrkSnack("wyrk_snack", "wyrk_snack_desc", 6, 4, false).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item GLOW_BERRY = new ItemGlowBerry("glow_berry", 4, 0.4F, false, ModBlocks.AZAELA_VINES).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item WYRK_SNACK = new ItemWyrkSnack("wyrk_snack", "wyrk_snack_desc", 6, 0.7F, false).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item WYRK_STAFF = new ItemWyrkStaff("wyrk_staff", "wyrk_staff_desc", DungeonAdditionsTab.ALL);
     public static final Item WYRK_TOTEM = new ItemWyrkTotem("wyrk_totem", "wyrk_totem_desc", DungeonAdditionsTab.ALL);
+
 
     public static final Item SOUL_STAR = new ItemSoulStar("soul_star_item", "soul_star_desc");
     public static final Item MAGIC_PROJECTILE = new ItemBase("magic_projectile");

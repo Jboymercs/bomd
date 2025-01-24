@@ -14,6 +14,7 @@ import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -692,6 +693,12 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundsHandler.DRAUGR_ELITE_STEP, 0.7F, 0.4f + ModRand.getFloat(0.3F));
+    }
+
+    @Override
+    public EnumCreatureAttribute getCreatureAttribute()
+    {
+        return EnumCreatureAttribute.UNDEAD;
     }
 
     @Override

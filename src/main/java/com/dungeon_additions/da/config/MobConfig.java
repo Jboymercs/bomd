@@ -78,7 +78,7 @@ public class MobConfig {
     @Config.Name("Knight of Burning Flame Attack Damage")
     @Config.Comment("Change the attack damage of this boss (Knight of Burning Flame)")
     @Config.RequiresMcRestart
-    public static double burning_knight_damage = 22;
+    public static double burning_knight_damage = 24;
 
     @Config.Name("Knight of Burning Flame Health")
     @Config.Comment("Change the health of this boss (Knight of Burning Flame)")
@@ -319,6 +319,11 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static double wyrk_attack_damage = 14;
 
+    @Config.Name("Friendly Wyrk Heal Amount")
+    @Config.Comment("When the friendly Wyrk collects souls, it will heal itself this amount when it's health reaches a 95% threshold")
+    @Config.RequiresMcRestart
+    public static float wyrk_heal_amount = 5;
+
     @Config.Name("Wyrk Starter Souls")
     @Config.Comment("Change the amount of souls the Mini Wyrk can start with for summoning Draugr, take in the mind the system is set up so that every Draugr that dies nearby, the Wyrk can re-summon them. Default : 0")
     @Config.RequiresMcRestart
@@ -352,7 +357,7 @@ public class MobConfig {
     @Config.Name("Ancient Wyrk Attack Damage")
     @Config.Comment("Change the attack damage of the Ancient Wyrk")
     @Config.RequiresMcRestart
-    public static double great_wyrk_attack_damage = 28;
+    public static double great_wyrk_attack_damage = 30;
 
     @Config.Name("Ancient Wyrk Armor")
     @Config.Comment("Change the armor value of the Ancient Wyrk")

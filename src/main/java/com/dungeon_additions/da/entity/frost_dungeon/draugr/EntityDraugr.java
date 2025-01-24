@@ -13,10 +13,7 @@ import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.sun.jna.platform.win32.WinBase;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -410,24 +407,15 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
         return false;
     }
 
-    private boolean hasFoundWyrk = false;
-
     @Override
     public void onDeath(DamageSource cause) {
-        List<EntityWyrk> nearbyWyrk = this.world.getEntitiesWithinAABB(EntityWyrk.class, this.getEntityBoundingBox().grow(20.0D), e -> !e.getIsInvulnerable());
-        if(!nearbyWyrk.isEmpty()) {
-            for(EntityWyrk wyrk : nearbyWyrk) {
-                if(!hasFoundWyrk && !world.isRemote) {
-                    ProjectileSoul soul = new ProjectileSoul(world, this, 0, wyrk);
-                    soul.setPosition(this.posX, this.posY + 1.5D, this.posZ);
-                    soul.setTravelRange(40F);
-                    this.world.spawnEntity(soul);
-                    this.hasFoundWyrk = true;
-                }
-            }
-        }
-
         super.onDeath(cause);
+    }
+
+    @Override
+    public EnumCreatureAttribute getCreatureAttribute()
+    {
+        return EnumCreatureAttribute.UNDEAD;
     }
 
     private static final ResourceLocation LOOT_MOB = new ResourceLocation(ModReference.MOD_ID, "draugr");

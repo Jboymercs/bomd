@@ -33,7 +33,7 @@ public class ItemFoodBase extends ItemFood implements IHasModel {
     public ItemStack onItemUseFinish(ItemStack itemStack, World world, EntityLivingBase living) {
         if (living instanceof EntityPlayer && !world.isRemote) {
             living.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 300, 1));
-            living.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 600, 0));
+            living.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 400, 0));
         }
         return super.onItemUseFinish(itemStack, world, living);
     }

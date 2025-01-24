@@ -44,6 +44,7 @@ public abstract class EntityAbstractBase extends EntityCreature {
     protected int playersNearbyAmount = 0;
     public boolean iAmBossMob = false;
     public boolean iAmBossMobWyrkNerf = false;
+    public boolean isFriendlyCreature = false;
     public boolean lockLook = false;
 
     public boolean holdPosition = false;
@@ -222,7 +223,7 @@ public abstract class EntityAbstractBase extends EntityCreature {
 
 
         if (!world.isRemote) {
-            if (this.getAttackTarget() == null) {
+            if (this.getAttackTarget() == null && !this.isFriendlyCreature) {
                 if (this.regenTimer > this.regenStartTimer) {
                     if (this.ticksExisted % 20 == 0) {
                         this.heal(this.getMaxHealth() * 0.015f);

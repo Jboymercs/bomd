@@ -26,7 +26,7 @@ public class ItemWyrkTotem extends ItemBase {
     public ItemWyrkTotem(String name, String info_loc, CreativeTabs tab) {
         super(name, tab);
         this.setMaxStackSize(1);
-        this.setMaxDamage(20);
+        this.setMaxDamage(15);
         this.info_loc = info_loc;
     }
 

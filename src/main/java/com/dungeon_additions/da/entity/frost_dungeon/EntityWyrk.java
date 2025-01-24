@@ -46,6 +46,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -80,6 +81,8 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
         this.experienceValue = 12;
         if(this.getOwner() == null) {
             this.setUpRegularAI();
+        } else {
+            this.isFriendlyCreature = true;
         }
     }
 
@@ -89,6 +92,8 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
         this.experienceValue = 12;
         if(this.getOwner() == null) {
             this.setUpRegularAI();
+        } else {
+            this.isFriendlyCreature = true;
         }
     }
 
@@ -124,6 +129,7 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
             return null;
         }
         else {
+            this.isFriendlyCreature = true;
             return this.world.getPlayerEntityByUUID(uuid);
         }
     }
@@ -186,9 +192,49 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
             if(target != null && this.getSummonCount() > 0 && this.getOwner() == null) {
                 if(summonDraugrTimer > 1) {
                     summonDraugrTimer--;
-                } else if (summonDraugrTimer < 4) {
+                }
+                //I love Intellij's false logic
+                if (summonDraugrTimer < 4) {
                     //summons Draugr
                     this.summonDraugrByCount();
+                }
+            } else if (this.getOwner() != null) {
+
+                if(this.getSummonCount() > 5) {
+                    this.setSummonCount(this.getSummonCount() - 1);
+                }
+                double healthFac = this.getHealth() / this.getMaxHealth();
+                //instead have the Wyrk heal itself upon gaining souls, allowing for more depth with the friendly summons
+                if(healthFac <= 0.95 && this.getSummonCount() > 0) {
+                    if(summonDraugrTimer > 1) {
+                        summonDraugrTimer--;
+                    }
+                    if (summonDraugrTimer < 4) {
+                        this.heal(MobConfig.wyrk_heal_amount);
+                        this.setSummonCount(this.getSummonCount() - 1);
+                        this.summonDraugrTimer = 150;
+                        world.setEntityState(this, ModUtils.FOURTH_PARTICLE_BYTE);
+                        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 0.7f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+                    }
+                } else {
+                    List<EntityPlayer> nearbyplayer = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(8.0D), e -> !e.getIsInvulnerable());
+
+                    if(summonDraugrTimer > 1) {
+                        summonDraugrTimer--;
+                    }
+                    if(!nearbyplayer.isEmpty() && this.getSummonCount() > 0) {
+                        for(EntityPlayer player : nearbyplayer) {
+                            double playerHealth = player.getHealth() / player.getMaxHealth();
+
+                            if(playerHealth < 1 && summonDraugrTimer < 4) {
+                                player.heal(MobConfig.wyrk_heal_amount * 0.5F);
+                                world.setEntityState(this, ModUtils.FOURTH_PARTICLE_BYTE);
+                                this.setSummonCount(this.getSummonCount() - 1);
+                                this.summonDraugrTimer = 400;
+                                this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 1.2f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -243,7 +289,7 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
     }
 
     protected void setUpOwnerAttributes() {
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MobConfig.wyrk_health * 0.8);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MobConfig.wyrk_health);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.wyrk_attack_damage * 0.9);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(24D);
     }
@@ -342,6 +388,13 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
             ModUtils.circleCallback(1, 20, (pos)-> {
                 pos = new Vec3d(pos.x, 0, pos.y);
                 ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(2.4)), ModColors.AZURE, pos.normalize().scale(0.1), ModRand.range(10, 15));
+            });
+        }
+
+        if(id == ModUtils.FOURTH_PARTICLE_BYTE) {
+            ModUtils.circleCallback(1, 20, (pos)-> {
+                pos = new Vec3d(pos.x, 0, pos.y);
+                ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(2.4)), ModColors.PINK, pos.normalize().scale(0.1), ModRand.range(10, 15));
             });
         }
     }

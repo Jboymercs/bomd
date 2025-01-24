@@ -12,10 +12,7 @@ import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.ServerScaleUtil;
 import com.google.common.collect.Lists;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -301,6 +298,12 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
             this.dataManager.set(LOOK, clampedLook);
         }
 
+    }
+
+    @Override
+    public EnumCreatureAttribute getCreatureAttribute()
+    {
+        return EnumCreatureAttribute.UNDEAD;
     }
 
     @Override

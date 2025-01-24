@@ -7,6 +7,7 @@ import com.dungeon_additions.da.blocks.base.BlockWallBase;
 import com.dungeon_additions.da.blocks.base.slab.BlockDoubleSlab;
 import com.dungeon_additions.da.blocks.base.slab.BlockHalfSlab;
 import com.dungeon_additions.da.blocks.blossom.BlockVoidLily;
+import com.dungeon_additions.da.blocks.ice_generator.BlockFrostBrick;
 import com.dungeon_additions.da.blocks.lich.BlockSoulStar;
 import com.dungeon_additions.da.blocks.vine.BlockAzealaVines;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityGreatWyrk;
@@ -69,7 +70,7 @@ public class ModBlocks {
     public static final Block COLD_PETROGLOOM = new BlockBase("cold_stone", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_BRICKS = new BlockBase("gloom_brick", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block COLD_PETROGLOOM_BRICKS = new BlockBase("cold_brick", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
-    public static final Block SNOW_COLD_PETROGLOOM_BRICKS = new BlockBase("snow_cold_brick", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block SNOW_COLD_PETROGLOOM_BRICKS = new BlockFrostBrick("snow_cold_brick", "snow_cold_brick_desc", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_SMOOTH = new BlockBase("gloom_smooth", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block COLD_PETROGLOOM_SMOOTH = new BlockBase("cold_smooth", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_CARVED = new BlockPillarBase("gloom_carved", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
