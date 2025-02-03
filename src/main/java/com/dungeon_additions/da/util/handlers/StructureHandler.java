@@ -4,6 +4,8 @@ import com.dungeon_additions.da.world.blossom.BlossomTemplate;
 import com.dungeon_additions.da.world.blossom.WorldGenBlossomCave;
 import com.dungeon_additions.da.world.frozen_castle.FrozenCastleTemplate;
 import com.dungeon_additions.da.world.frozen_castle.WorldGenFrozenCastle;
+import com.dungeon_additions.da.world.high_city.HighCityTemplate;
+import com.dungeon_additions.da.world.high_city.WorldGenHighCity;
 import com.dungeon_additions.da.world.lich_tower.LichTowerTemplate;
 import com.dungeon_additions.da.world.lich_tower.WorldGenLichTower;
 import com.dungeon_additions.da.world.nether_arena.NetherArenaTemplate;
@@ -29,5 +31,8 @@ public class StructureHandler {
         //Frozen Castle
         MapGenStructureIO.registerStructure(WorldGenFrozenCastle.Start.class, "FrozenCastle");
         MapGenStructureIO.registerStructureComponent(FrozenCastleTemplate.class, "FCP");
+        //High City
+        MapGenStructureIO.registerStructure(WorldGenHighCity.Start.class, "HighCourtCity");
+        MapGenStructureIO.registerStructureComponent(HighCityTemplate.class, "HCP");
     }
 }

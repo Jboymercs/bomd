@@ -7,6 +7,8 @@ import com.dungeon_additions.da.blocks.base.BlockWallBase;
 import com.dungeon_additions.da.blocks.base.slab.BlockDoubleSlab;
 import com.dungeon_additions.da.blocks.base.slab.BlockHalfSlab;
 import com.dungeon_additions.da.blocks.blossom.BlockVoidLily;
+import com.dungeon_additions.da.blocks.faurm.BlockFarumRope;
+import com.dungeon_additions.da.blocks.faurm.BlockFaurmLantern;
 import com.dungeon_additions.da.blocks.ice_generator.BlockFrostBrick;
 import com.dungeon_additions.da.blocks.lich.BlockSoulStar;
 import com.dungeon_additions.da.blocks.vine.BlockAzealaVines;
@@ -20,6 +22,7 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.ArrayList;
@@ -71,6 +74,16 @@ public class ModBlocks {
     public static final Block PETROGLOOM_BRICKS = new BlockBase("gloom_brick", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block COLD_PETROGLOOM_BRICKS = new BlockBase("cold_brick", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block SNOW_COLD_PETROGLOOM_BRICKS = new BlockFrostBrick("snow_cold_brick", "snow_cold_brick_desc", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block CITY_BRICK = new BlockBase("city_brick", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block CITY_BRICK_ALT = new BlockBase("city_brick_alt", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block CITY_BRICK_DECOR = new BlockBase("city_decoration", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block CITY_DECORATION = new BlockBase("city_chisled", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block CITY_BRICK_TILE = new BlockBase("city_tile", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block CITY_SMOOTH = new BlockBase("city_smooth", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block CITY_PILLAR = new BlockPillarBase("city_pillar", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block CITY_PILLAR_CHISLED = new BlockPillarBase("city_pillar_chisled", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block GOLD_CITY_BRICK = new BlockBase("gold_city_brick", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+
     public static final Block PETROGLOOM_SMOOTH = new BlockBase("gloom_smooth", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block COLD_PETROGLOOM_SMOOTH = new BlockBase("cold_smooth", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_CARVED = new BlockPillarBase("gloom_carved", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
@@ -88,6 +101,22 @@ public class ModBlocks {
     public static final Block COLD_PETROGLOOM_BRICK_STAIRS = new BlockStairBase("cold_brick_stairs", PETROGLOOM_BRICKS.getDefaultState(), GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_SMOOTH_STAIRS = new BlockStairBase("gloom_smooth_stairs", PETROGLOOM_SMOOTH.getDefaultState(), GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block COLD_PETROGLOOM_SMOOTH_STAIRS = new BlockStairBase("cold_smooth_stairs", PETROGLOOM_SMOOTH.getDefaultState(), GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block CITY_BRICK_STAIRS = new BlockStairBase("city_brick_stairs", CITY_BRICK.getDefaultState(), GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block CITY_BRICK_STAIRS_ALT = new BlockStairBase("city_brick_stairs_alt", CITY_BRICK_ALT.getDefaultState(), GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block CITY_TILE_STAIRS = new BlockStairBase("city_tile_stairs", CITY_BRICK_TILE.getDefaultState(), GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block GOLD_CITY_BRICK_STAIRS = new BlockStairBase("gold_city_brick_stairs", GOLD_CITY_BRICK.getDefaultState(), GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+
+
+    public static final BlockSlab CITY_BRICK_SLAB_DOUBLE = new BlockDoubleSlab("city_brick_double", Material.ROCK, CreativeTabs.SEARCH, ModBlocks.CITY_BRICK_SLAB_HALF, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
+    public static final BlockSlab CITY_BRICK_SLAB_HALF = new BlockHalfSlab("city_brick_half", Material.ROCK, DungeonAdditionsTab.ALL, ModBlocks.CITY_BRICK_SLAB_HALF, ModBlocks.CITY_BRICK_SLAB_DOUBLE, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
+    public static final BlockSlab CITY_BRICK_SLAB_DOUBLE_ALT = new BlockDoubleSlab("city_brick_alt_double", Material.ROCK, CreativeTabs.SEARCH, ModBlocks.CITY_BRICK_SLAB_HALF_ALT, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
+    public static final BlockSlab CITY_BRICK_SLAB_HALF_ALT = new BlockHalfSlab("city_brick_alt_half", Material.ROCK, DungeonAdditionsTab.ALL, ModBlocks.CITY_BRICK_SLAB_HALF_ALT, ModBlocks.CITY_BRICK_SLAB_DOUBLE_ALT, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
+    public static final BlockSlab CITY_TILE_SLAB_DOUBLE = new BlockDoubleSlab("city_tile_double", Material.ROCK, CreativeTabs.SEARCH, ModBlocks.CITY_TILE_SLAB_HALF, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
+    public static final BlockSlab CITY_TILE_SLAB_HALF = new BlockHalfSlab("city_tile_half", Material.ROCK, DungeonAdditionsTab.ALL, ModBlocks.CITY_TILE_SLAB_HALF, ModBlocks.CITY_TILE_SLAB_DOUBLE, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
+
+    public static final BlockSlab GOLD_CITY_BRICK_SLAB_DOUBLE = new BlockDoubleSlab("gold_city_brick_double", Material.ROCK, CreativeTabs.SEARCH, ModBlocks.GOLD_CITY_BRICK_SlAB_HALF, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
+    public static final BlockSlab GOLD_CITY_BRICK_SlAB_HALF = new BlockHalfSlab("gold_city_brick_half", Material.ROCK, DungeonAdditionsTab.ALL, ModBlocks.GOLD_CITY_BRICK_SlAB_HALF, ModBlocks.GOLD_CITY_BRICK_SLAB_DOUBLE, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
+
     public static final BlockSlab PETROGLOOM_STONE_SLAB_DOUBLE = new BlockDoubleSlab("gloom_stone_double", Material.ROCK, CreativeTabs.SEARCH, ModBlocks.PETROGLOOM_STONE_SlAB_HALF, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
     public static final BlockSlab PETROGLOOM_STONE_SlAB_HALF = new BlockHalfSlab("gloom_stone_half", Material.ROCK, DungeonAdditionsTab.ALL, ModBlocks.PETROGLOOM_STONE_SlAB_HALF, ModBlocks.PETROGLOOM_STONE_SLAB_DOUBLE, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
     public static final BlockSlab COLD_PETROGLOOM_STONE_SLAB_DOUBLE = new BlockDoubleSlab("cold_stone_double", Material.ROCK, CreativeTabs.SEARCH, ModBlocks.COLD_PETROGLOOM_STONE_SlAB_HALF, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
@@ -106,6 +135,14 @@ public class ModBlocks {
     public static final Block COLD_PETROGLOOM_SMOOTH_WALL = new BlockWallBase("cold_smooth_wall", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block PETROGLOOM_BRICK_WALL = new BlockWallBase("gloom_brick_wall", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block COLD_PETROGLOOM_BRICK_WALL = new BlockWallBase("cold_brick_wall", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block CITY_BRICK_WALL = new BlockWallBase("city_brick_wall", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block CITY_BRICK_WALL_ALT = new BlockWallBase("city_brick_wall_alt", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block CITY_TILE_WALL = new BlockWallBase("city_tile_wall", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block CITY_SMOOTH_WALL = new BlockWallBase("city_smooth_wall", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block GOLD_CITY_WALL = new BlockWallBase("gold_city_brick_wall", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block FARUM_ROPE = new BlockFarumRope("farum_rope", Material.GROUND, PLANTS_HARDNESS, PLANTS_RESISTANCE, SoundType.CLOTH).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Block FARUM_LANTERN = new BlockFaurmLantern("farum_lantern", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.ALL).setLightLevel(1.0F);
+
     public static final Block ICICLE_BLOCK = new BlockIcicle("frost_icicle", PLANTS_HARDNESS, PLANTS_RESISTANCE, SoundType.GLASS).setCreativeTab(DungeonAdditionsTab.ALL).setLightLevel(0.5F);
     public static final Block LICH_SOUL_STAR_BLOCK = new BlockSoulStar("soul_star_block", ModItems.SOUL_STAR).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block VOID_LILY_BLOCK = new BlockVoidLily("void_lily", "void_lily_desc").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -117,4 +154,5 @@ public class ModBlocks {
     public static final Block LEVITATION_BLOCK = new BlockLevitationAltar("levitation_block", Material.ROCK, STONE_HARDNESS, OBSIDIAN_RESISTANCE, BOMDSoundTypes.PETRO_GLOOM, "levitation_block_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Block DISAPPEARING_SPAWNER = new BlockDisappearingSpawner("cave_spawner", Material.ROCK);
     public static final Block DISAPPEARING_SPAWNER_MOSS = new BlockDisappearingSpawner("moss_spawner", Material.ROCK);
+    public static final Block DISAPPEARING_SPAWNER_HIGH_CITY = new BlockDisappearingSpawner("high_spawner", Material.ROCK);
 }

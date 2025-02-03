@@ -1,0 +1,7 @@
+{
+  "parent": "da:base/chain",
+  "textures": {
+    "all": "da:blocks/rope",
+    "particle": "da:blocks/rope"
+  }
+}

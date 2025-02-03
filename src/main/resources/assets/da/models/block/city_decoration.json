@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "da:blocks/city_decoration_top",
+    "side": "da:blocks/city_decoration"
+  }
+}

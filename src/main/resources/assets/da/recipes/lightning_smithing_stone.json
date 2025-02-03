@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VR",
+    "VR"
+  ],
+  "key": {
+    "R": {
+      "item": "da:lightning_ingot"
+    },
+    "V": {
+      "item": "da:abberrant_eye"
+    }
+  },
+  "result": {
+    "item": "da:lightning_smithing_stone"
+  }
+}

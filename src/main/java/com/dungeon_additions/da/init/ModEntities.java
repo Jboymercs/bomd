@@ -28,6 +28,7 @@ import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotSpike;
+import com.dungeon_additions.da.entity.sky_dungeon.*;
 import com.dungeon_additions.da.entity.tileEntity.*;
 import com.dungeon_additions.da.entity.util.EntityBossSpawner;
 import com.dungeon_additions.da.util.ModReference;
@@ -114,6 +115,11 @@ public class ModEntities {
             registerEntity("frost_magic", ProjectileFrostGround.class, ENTITY_START_ID++, 80);
             registerEntity("wyrk_foot", EntityWyrkFoot.class, ENTITY_START_ID++, 80);
             registerEntity("wyrk_lazer", EntityWyrkLazer.class, ENTITY_START_ID++, 80);
+            registerEntityWithID("imperial_halberd", EntityImperialHalberd.class, ENTITY_START_ID++, 80, night_lich);
+            registerEntity("sky_lightning_bolt", EntitySkyBolt.class, ENTITY_START_ID++, 80);
+            registerEntityWithID("imperial_sword", EntityImperialSword.class, ENTITY_START_ID++, 80, night_lich);
+            registerEntity("sky_arrow", EntitySkyArrow.class, ENTITY_START_ID++, 80);
+            registerEntity("sky_tornado", EntitySkyTornado.class, ENTITY_START_ID++, 80);
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
         registerTileEntity(TileEntityMegaStructure.class, "mega_structure");

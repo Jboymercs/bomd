@@ -142,6 +142,12 @@ public class ModConfig {
     @Config.Comment("Change how far the Frozen Soul Star and Locate command searches for a Frozen Castle. In chunks not blocks!")
     @Config.RequiresMcRestart
     public static int frozen_castle_search_distance = 175;
+
+    @Config.Name("High Court City Search Radius")
+    @Config.Comment("Change how far the locator item and command searches for the High Court City. In chunks not blocks!")
+    @Config.RequiresMcRestart
+    public static int high_court_city_search_distance = 175;
+
     @Config.Name("Soul Star Drops Advancement Requirements")
     @Config.Comment("What advancements are required for players to use and unlock Soul Stars dropping from Mobs")
     @Config.RequiresMcRestart

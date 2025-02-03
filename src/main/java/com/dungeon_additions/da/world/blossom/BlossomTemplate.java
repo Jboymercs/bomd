@@ -39,7 +39,7 @@ public class BlossomTemplate extends ModStructureTemplate {
 
         if(function.startsWith("boss")) {
             //Spawns a temp entity that will spawn the boss when a player is close enough
-            EntityBossSpawner blossom = new EntityBossSpawner(world, 1);
+            EntityBossSpawner blossom = new EntityBossSpawner(world, 1, 30);
             blossom.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             world.spawnEntity(blossom);
             //Generates the top part of the Blossom Cave, that sticks out in the surface

@@ -7,6 +7,7 @@ import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.world.blossom.WorldGenBlossomCave;
 import com.dungeon_additions.da.world.frozen_castle.WorldGenFrozenCastle;
+import com.dungeon_additions.da.world.high_city.WorldGenHighCity;
 import com.dungeon_additions.da.world.lich_tower.WorldGenLichTower;
 import com.dungeon_additions.da.world.nether_arena.WorldGenNetherArena;
 import com.dungeon_additions.da.world.rot_hold.WorldGenRotHold;
@@ -37,6 +38,8 @@ public class ModWorldGen implements IWorldGenerator {
     private static final WorldGenNetherArena netherArena = new WorldGenNetherArena();
 
     private static final WorldGenFrozenCastle frozen_castle = new WorldGenFrozenCastle();
+
+    private static final WorldGenHighCity high_court_city = new WorldGenHighCity();
 
     private static List<Biome> spawnBiomesRottenHold;
     @Override
@@ -72,9 +75,13 @@ public class ModWorldGen implements IWorldGenerator {
                         //After doing solid ground checks it can signal for the lich tower to try and generate
                         lich_tower.generate(world, random, pos);
         }
-
+        //Frozen City
         if(isAllowedDimensionTooSpawnInFrozenCastle(world.provider.getDimension())) {
             frozen_castle.generate(world, random, pos);
+        }
+        //High Court City
+        if(isAllowedDimensionTooSpawnInHighCourtCity(world.provider.getDimension())) {
+            high_court_city.generate(world, random, pos);
         }
 
         }
@@ -126,6 +133,15 @@ public class ModWorldGen implements IWorldGenerator {
 
     public static boolean isAllowedDimensionTooSpawnInFrozenCastle(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions_frozen_castle) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInHighCourtCity(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_high_court_city) {
             if(i == dimensionIn)
                 return true;
         }

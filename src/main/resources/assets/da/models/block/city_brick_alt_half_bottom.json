@@ -1,0 +1,9 @@
+{
+  "parent": "block/half_slab",
+  "textures":
+  {
+    "bottom": "da:blocks/city_brick_alt",
+    "top": "da:blocks/city_brick_alt",
+    "side": "da:blocks/city_brick_alt"
+  }
+}

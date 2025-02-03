@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "da:blocks/city_brick_alt"
+  }
+}

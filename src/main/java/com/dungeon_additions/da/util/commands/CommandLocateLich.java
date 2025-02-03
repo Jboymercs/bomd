@@ -76,6 +76,14 @@ public class CommandLocateLich implements ICommand {
                 } else {
                     throw new CommandException("commands.locate.failure", s);
                 }
+            } else if (s.equals("HighCourtCity")) {
+                BlockPos blockpos = findNearestPosHighCity(sender);
+
+                if (blockpos != null) {
+                    sender.sendMessage(new TextComponentTranslation("commands.locate.success", new Object[]{s, blockpos.getX(), blockpos.getZ()}));
+                } else {
+                    throw new CommandException("commands.locate.failure", s);
+                }
             }
         }
     }
@@ -91,7 +99,7 @@ public class CommandLocateLich implements ICommand {
 
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "NightLichTower", "BlossomCave", "FrozenCastle") : Collections.emptyList();
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "NightLichTower", "BlossomCave", "FrozenCastle", "HighCourtCity") : Collections.emptyList();
     }
 
     public static List<String> getListOfStringsMatchingLastWord(String[] args, String... possibilities) {
@@ -173,6 +181,55 @@ public class CommandLocateLich implements ICommand {
             }
         }
         return resultpos;
+    }
+
+    public static BlockPos findNearestPosHighCity(ICommandSender sender) {
+        BlockPos resultpos = null;
+        BlockPos pos = sender.getPosition();
+        World world = sender.getEntityWorld();
+        Chunk chunk = world.getChunk(pos);
+        //probably laggy as hell but hey it works
+        for (int i = -ModConfig.high_court_city_search_distance; i < ModConfig.high_court_city_search_distance + 1; i++) {
+            for (int j = -ModConfig.high_court_city_search_distance; j < ModConfig.high_court_city_search_distance + 1; j++) {
+                boolean c = IsHighCityAtPos(world, chunk.x + i, chunk.z + j);
+                if (c) {
+                    resultpos = new BlockPos((chunk.x + i) << 4, 100, (chunk.z + j) << 4);
+                    break;
+                }
+            }
+        }
+        return resultpos;
+    }
+
+    protected static boolean IsHighCityAtPos(World world, int chunkX, int chunkZ) {
+        int spacing = WorldConfig.high_city_spacing;
+        int separation = 16;
+        int i = chunkX;
+        int j = chunkZ;
+
+        if (chunkX < 0) {
+            chunkX -= spacing - 1;
+        }
+
+        if (chunkZ < 0) {
+            chunkZ -= spacing - 1;
+        }
+
+        int k = chunkX / spacing;
+        int l = chunkZ / spacing;
+        Random random = world.setRandomSeed(k, l, 10387672);
+        k = k * spacing;
+        l = l * spacing;
+        k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+        l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+
+        if (i == k && j == l && isAllowedDimensionTooSpawnInHighCastle(world.provider.getDimension())) {
+            BlockPos pos = new BlockPos((i << 4), 0, (j << 4));
+            return isAbleToSpawnHereHighCity(pos, world);
+        } else {
+
+            return false;
+        }
     }
 
     protected static boolean IsFrozenCastleAtPos(World world, int chunkX, int chunkZ) {
@@ -334,6 +391,37 @@ public class CommandLocateLich implements ICommand {
         return frozenCastleBiomeTypes;
     }
 
+    public static boolean isAbleToSpawnHereHighCity(BlockPos pos, World world) {
+        for(BiomeDictionary.Type types : getSpawnBiomeTypesHighCity()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static List<BiomeDictionary.Type> highCityBiomeTypes;
+
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypesHighCity() {
+        if(highCityBiomeTypes == null) {
+            highCityBiomeTypes = Lists.newArrayList();
+
+            for(String str : WorldConfig.biome_types_blacklist_high_city) {
+                try {
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) highCityBiomeTypes.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
+                } catch (Exception e) {
+                    DALogger.logError(str + " is not a valid type name", e);
+                }
+            }
+        }
+
+        return highCityBiomeTypes;
+    }
+
     public static boolean isAbleToSpawnHereBlossom(BlockPos pos, World world) {
         for(BiomeDictionary.Type types : getSpawnBiomeTypesBlossom()) {
             Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
@@ -386,6 +474,15 @@ public class CommandLocateLich implements ICommand {
 
     public static boolean isAllowedDimensionTooSpawnInFrozenCastle(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions_frozen_castle) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInHighCastle(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_high_court_city) {
             if(i == dimensionIn)
                 return true;
         }

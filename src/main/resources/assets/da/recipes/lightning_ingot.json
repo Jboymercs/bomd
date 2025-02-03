@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RRR",
+    "RRR",
+    "RRR"
+  ],
+  "key": {
+    "R": {
+      "item": "da:lightning_shard"
+    }
+  },
+  "result": {
+    "item": "da:lightning_ingot"
+  }
+}

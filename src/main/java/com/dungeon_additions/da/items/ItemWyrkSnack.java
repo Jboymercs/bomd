@@ -32,7 +32,7 @@ public class ItemWyrkSnack extends ItemFood implements IHasModel {
         setTranslationKey(name);
         setRegistryName(name);
         this.setMaxStackSize(1);
-        this.setMaxDamage(250);
+        this.setMaxDamage(200);
         ModItems.ITEMS.add(this);
         this.info_loc = info_loc;
     }

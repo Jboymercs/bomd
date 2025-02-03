@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "axis=y":  { "model": "da:farum_rope" },
+    "axis=z":   { "model": "da:farum_rope", "x": 90 },
+    "axis=x":   { "model": "da:farum_rope", "x": 90, "y": 90 },
+    "axis=none": { "model": "da:farum_rope" }
+  }
+}

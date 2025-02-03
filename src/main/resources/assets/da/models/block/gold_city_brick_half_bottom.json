@@ -1,0 +1,9 @@
+{
+  "parent": "block/half_slab",
+  "textures":
+  {
+    "bottom": "da:blocks/gold_city_brick",
+    "top": "da:blocks/gold_city_brick",
+    "side": "da:blocks/gold_city_brick"
+  }
+}

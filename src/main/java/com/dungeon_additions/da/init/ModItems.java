@@ -23,6 +23,7 @@ import java.util.List;
 public class ModItems {
 
     private static final Item.ToolMaterial CHAMPION_AXE_MATERIAL = EnumHelper.addToolMaterial("champion_set", 3, 874, 7.0F, (float) ModConfig.champion_axe_damage, 15);
+    private static final Item.ToolMaterial IMPERIAL_HALBERD_MATERIAL = EnumHelper.addToolMaterial("imperial_halberd_set", 3, 1263, 8.0F, (float) 10, 20);
     private static final Item.ToolMaterial DAGGER_MATERIAL = EnumHelper.addToolMaterial("void_material", 2, 320, 6.0F, (float) ModConfig.void_dagger_damage, 45);
 
     private static final Item.ToolMaterial DRAUGR_SWORD = EnumHelper.addToolMaterial("void_material", 2, 974, 6.0F, (float) ModConfig.frost_sword_damage, 45);
@@ -51,6 +52,7 @@ public class ModItems {
     public static final Item MAGIC_FIREBALL = new ItemMagicFireball("magic_fireball", null);
 
     public static final Item POISON_DART = new ItemDart("dart");
+    public static final Item SKY_ARROW = new ItemGoldenArrow("sky_arrow", "sky_arrow_desc", DungeonAdditionsTab.ALL);
 
     //Findable Items
     public static final Item VOID_FRUIT = new ItemFoodBase("crystal_fruit", "regen_fruit", 5, 1, false).setCreativeTab(DungeonAdditionsTab.ALL);
@@ -88,6 +90,10 @@ public class ModItems {
     public static final Item WYRK_SNACK = new ItemWyrkSnack("wyrk_snack", "wyrk_snack_desc", 6, 0.7F, false).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item WYRK_STAFF = new ItemWyrkStaff("wyrk_staff", "wyrk_staff_desc", DungeonAdditionsTab.ALL);
     public static final Item WYRK_TOTEM = new ItemWyrkTotem("wyrk_totem", "wyrk_totem_desc", DungeonAdditionsTab.ALL);
+    public static final Item LITIC_SHARD = new ItemCraftingMaterial("lightning_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item LITIC_INGOT = new ItemCraftingMaterial("lightning_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item LITIC_SMITHING_STONE = new ItemCraftingMaterial("lightning_smithing_stone", "lightning_stone_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+
 
 
     public static final Item SOUL_STAR = new ItemSoulStar("soul_star_item", "soul_star_desc");
@@ -102,8 +108,10 @@ public class ModItems {
     public static final Item FROST_INGOT = new ItemCraftingMaterial("frost_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_KEY = new ItemFrostKey("frost_key", "dungeon_frost_key_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_SWORD = new ItemDraugrSword("frost_sword", DRAUGR_SWORD, "draugr_sword_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item LIGHTNING_KEY = new ItemLightningKey("lightning_key", "lighting_key_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item DRAUGR_SHIELD = new ItemDraugrShield("draugr_shield", DungeonAdditionsTab.ALL, "draugr_shield_desc");
     public static final Item CHAMPION_AXE = new ItemChampionAxe("champion_axe", CHAMPION_AXE_MATERIAL, "champion_axe_desc");
+    public static final Item IMPERIAL_HALBERD_ITEM = new ItemImperialHalberd("imperial_halberd_item", IMPERIAL_HALBERD_MATERIAL, "imperial_halberd_desc");
     public static final Item DRAUGR_METAL = new ItemCraftingMaterial("draugr_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item DRAUGR_INGOT = new ItemCraftingMaterial("draugr_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item GREAT_WYRK_CRYSTAL = new ItemCraftingMaterial("great_wyrk_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);

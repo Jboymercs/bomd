@@ -32,10 +32,12 @@ import com.dungeon_additions.da.entity.render.frost_dungeon.*;
 import com.dungeon_additions.da.entity.render.lich.RenderLichSpawn;
 import com.dungeon_additions.da.entity.render.lich.RenderLichStaff;
 import com.dungeon_additions.da.entity.render.lich.RenderNightLich;
+import com.dungeon_additions.da.entity.render.sky_dungeon.*;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotSpike;
+import com.dungeon_additions.da.entity.sky_dungeon.*;
 import com.dungeon_additions.da.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -121,6 +123,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityMiniBlossom.class, RenderMiniBlossom::new);
         //Dart
         RenderingRegistry.registerEntityRenderingHandler(EntityDart.class, RenderDartBase::new);
+        //Sky Arrow
+        RenderingRegistry.registerEntityRenderingHandler(EntitySkyArrow.class, RenderSkyArrow::new);
         //Nether Abberrant
         RenderingRegistry.registerEntityRenderingHandler(EntityNetherAbberrant.class, RenderNetherAbberrant::new);
         //Flame Knight
@@ -159,6 +163,14 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityWyrkFoot.class, RenderWyrkFoot::new);
         //Wyrk Lazer
         registerModEntityRenderer(EntityWyrkLazer.class, RenderWyrkLazer::new);
+        //Imperial Halberd
+        registerModEntityRenderer(EntityImperialHalberd.class, RenderImperialHalberd::new);
+        //Sky Bolt
+        RenderingRegistry.registerEntityRenderingHandler(EntitySkyBolt.class, RenderSkyBolt::new);
+        //Imperial Sword
+        RenderingRegistry.registerEntityRenderingHandler(EntityImperialSword.class, RenderImperialSword::new);
+        //Sky Tornado
+        RenderingRegistry.registerEntityRenderingHandler(EntitySkyTornado.class, RenderSkyTornado::new);
     }
 
 }

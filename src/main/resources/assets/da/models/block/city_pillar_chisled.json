@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "da:blocks/city_pillar_top",
+    "side": "da:blocks/city_pillar_chisled"
+  }
+}

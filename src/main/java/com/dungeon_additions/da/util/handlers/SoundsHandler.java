@@ -122,6 +122,19 @@ public class SoundsHandler {
     public static SoundEvent WYRK_STAFF_CHARGE;
     public static SoundEvent WYRK_STAFF_LAZER;
 
+    //Imperial Knights
+    public static SoundEvent SKY_LIGHTNING_CAST;
+    public static SoundEvent IMPERIAL_COUNTER;
+    public static SoundEvent IMPERIAL_HALBERD_CAST;
+    public static SoundEvent IMPERIAL_START_MAGIC;
+    public static SoundEvent IMPERIAL_HURT;
+    public static SoundEvent IMPERIAL_IDLE;
+    public static SoundEvent IMPERIAL_STORM_STOMP;
+    public static SoundEvent IMPERIAL_STORM_LONG;
+    public static SoundEvent IMPERIAL_STORM_SHORT;
+
+    public static SoundEvent IMPERIAL_SHOOT_ARROW;
+
     public static void registerSounds() {
         //
         MOSS_BREAK = registerSound("moss.break", "block");
@@ -222,6 +235,17 @@ public class SoundsHandler {
         WYRK_STAFF_SHOOT = registerSound("great_wyrk.player_shoot", "entity");
         WYRK_STAFF_CHARGE = registerSound("great_wyrk.player_charge", "entity");
         WYRK_STAFF_LAZER = registerSound("great_wyrk.player_lazer", "entity");
+        //
+        IMPERIAL_COUNTER = registerSound("imperial_knight.counter", "entity");
+        SKY_LIGHTNING_CAST = registerSound("imperial_knight.cast_lightning", "entity");
+        IMPERIAL_HALBERD_CAST = registerSound("imperial_knight.cast_halberd", "entity");
+        IMPERIAL_START_MAGIC = registerSound("imperial_knight.start_magic", "entity");
+        IMPERIAL_HURT = registerSound("imperial_knight.hurt", "entity");
+        IMPERIAL_IDLE = registerSound("imperial_knight.idle", "entity");
+        IMPERIAL_STORM_STOMP = registerSound("imperial_knight.storm_stomp", "entity");
+        IMPERIAL_STORM_LONG = registerSound("imperial_knight.storm_long", "entity");
+        IMPERIAL_STORM_SHORT = registerSound("imperial_knight.storm_short", "entity");
+        IMPERIAL_SHOOT_ARROW = registerSound("imperial_knight.shoot_arrow", "entity");
     }
 
 

@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "hanging=false": {"model": "da:farum_lantern"},
+    "hanging=true": {"model": "da:farum_lantern_hanging"}
+  }
+}

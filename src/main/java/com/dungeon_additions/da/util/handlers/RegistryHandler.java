@@ -4,10 +4,7 @@ package com.dungeon_additions.da.util.handlers;
 import com.dungeon_additions.da.blocks.lich.LichStateMapper;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
-import com.dungeon_additions.da.items.render.RenderChampionAxe;
-import com.dungeon_additions.da.items.render.RenderDraugrShield;
-import com.dungeon_additions.da.items.render.RenderMagicFireball;
-import com.dungeon_additions.da.items.render.RenderSpore;
+import com.dungeon_additions.da.items.render.*;
 import com.dungeon_additions.da.util.IHasModel;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.mapper.AdvancedStateMap;
@@ -45,10 +42,12 @@ public class RegistryHandler {
         ModelLoader.setCustomModelResourceLocation(ModItems.MAGIC_FIREBALL, 0, new ModelResourceLocation(ModReference.MOD_ID + ":magic_fireball", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.CHAMPION_AXE, 0, new ModelResourceLocation(ModReference.MOD_ID + ":champion_axe", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.DRAUGR_SHIELD, 0, new ModelResourceLocation(ModReference.MOD_ID + ":draugr_shield", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.IMPERIAL_HALBERD_ITEM, 0, new ModelResourceLocation(ModReference.MOD_ID + ":imperial_halberd_item", "inventory"));
         ModItems.SPORE_BALL.setTileEntityItemStackRenderer(new RenderSpore());
         ModItems.MAGIC_FIREBALL.setTileEntityItemStackRenderer(new RenderMagicFireball());
         ModItems.CHAMPION_AXE.setTileEntityItemStackRenderer(new RenderChampionAxe());
         ModItems.DRAUGR_SHIELD.setTileEntityItemStackRenderer(new RenderDraugrShield());
+        ModItems.IMPERIAL_HALBERD_ITEM.setTileEntityItemStackRenderer(new RenderImperialHalberdItem());
         for (Item item : ModItems.ITEMS) {
             if (item instanceof IHasModel) {
                 ((IHasModel) item).registerModels();

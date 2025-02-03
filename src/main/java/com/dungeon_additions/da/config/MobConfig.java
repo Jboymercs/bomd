@@ -18,12 +18,12 @@ public class MobConfig {
     @Config.Name("Void Blossom Attack Cooldown One")
     @Config.Comment("Change the attack cooldown of the Void Blossom in seconds with it having above 50% health")
     @Config.RequiresMcRestart
-    public static int blossom_cooldown_one = 5;
+    public static int blossom_cooldown_one = 6;
 
     @Config.Name("Void Blossom Attack Cooldown Two")
     @Config.Comment("Change the attack cooldown of the Void Blossom in seconds with it having below 50% health")
     @Config.RequiresMcRestart
-    public static int blossom_cooldown_two = 4;
+    public static int blossom_cooldown_two = 5;
 
     @Config.Name("Void Blossom Cooldown Multiplayer")
     @Config.Comment("Change the cooldown degradation per player not counting the first one. This basically makes the cooldown faster when there are more players around, in ticks")

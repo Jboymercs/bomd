@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "axis=y":  { "model": "da:city_pillar" },
+    "axis=z":   { "model": "da:city_pillar", "x": 90 },
+    "axis=x":   { "model": "da:city_pillar", "x": 90, "y": 90 },
+    "axis=none": { "model": "da:city_rough" }
+  }
+}

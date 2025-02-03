@@ -1,0 +1,7 @@
+{
+  "forge_marker": 1,
+  "parent":"da:block/base_stairs",
+  "textures": {
+    "all": "da:blocks/city_brick_alt"
+  }
+}

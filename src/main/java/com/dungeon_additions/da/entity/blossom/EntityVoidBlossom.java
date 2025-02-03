@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.blossom;
 
+import com.dungeon_additions.da.blocks.BlockBase;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
@@ -75,6 +76,11 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
         this.setImmovable(true);
         this.setNoGravity(true);
         this.iAmBossMob = true;
+    }
+
+    public void onSummonBoss(BlockPos offset) {
+        this.setSpawnLocation(offset);
+        this.setSetSpawnLoc(true);
     }
 
 
@@ -202,11 +208,34 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
 
             addEvent(()-> {
                 if(!world.isRemote) {
-                    for(int i = 0; i < 120; i += 40) {
-                        addEvent(this::spawnSpikeAction, i);
-                    }
+                    addEvent(()-> {
+                        Vec3d targetOldPos = target.getPositionVector();
+                        addEvent(()-> {
+                            Vec3d targetedPos = target.getPositionVector();
+                            Vec3d predictedPosition = ModUtils.predictPlayerPosition(targetOldPos, targetedPos, 4);
+                            this.spawnSpikeAction(predictedPosition);
+                        }, 3);
+                    }, 1);
+
+                    addEvent(()-> {
+                        Vec3d targetOldPos = target.getPositionVector();
+                        addEvent(()-> {
+                            Vec3d targetedPos = target.getPositionVector();
+                            Vec3d predictedPosition = ModUtils.predictPlayerPosition(targetOldPos, targetedPos, 4);
+                            this.spawnSpikeAction(predictedPosition);
+                        }, 3);
+                    }, 37);
+
+                    addEvent(()-> {
+                        Vec3d targetOldPos = target.getPositionVector();
+                        addEvent(()-> {
+                            Vec3d targetedPos = target.getPositionVector();
+                            Vec3d predictedPosition = ModUtils.predictPlayerPosition(targetOldPos, targetedPos, 4);
+                            this.spawnSpikeAction(predictedPosition);
+                        }, 3);
+                    }, 77);
                 }
-            }, 25);
+            }, 21);
         addEvent(()-> {
             this.setFightMode(false);
             this.setSpikeAttack(false);
@@ -290,84 +319,84 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
         return 0;
     }
 
-    public void spawnSpikeAction() {
+    public void spawnSpikeAction(Vec3d predictedPos) {
         EntityLivingBase target = this.getAttackTarget();
         //1
         if(target != null) {
             EntityVoidSpike spike = new EntityVoidSpike(this.world);
-            BlockPos area = target.getPosition();
+            BlockPos area = new BlockPos(predictedPos.x, predictedPos.y, predictedPos.z);
             int y = getSurfaceHeight(this.world, new BlockPos(target.posX, 0, target.posZ), (int) this.posY - 5, (int) this.posY + 7);
             spike.setPosition(area.getX(), y + 1, area.getZ());
             world.spawnEntity(spike);
             //2
             EntityVoidSpike spike2 = new EntityVoidSpike(this.world);
-            BlockPos area2 = new BlockPos(target.posX + 1, target.posY, target.posZ);
+            BlockPos area2 = new BlockPos(predictedPos.x + 1, predictedPos.y, predictedPos.z);
             int y2 = getSurfaceHeight(this.world, new BlockPos(area2.getX(), 0, area2.getZ()), (int) this.posY - 5, (int) this.posY + 7);
             spike2.setPosition(area2.getX(), y2 + 1, area2.getZ());
             world.spawnEntity(spike2);
             //3
             EntityVoidSpike spike3 = new EntityVoidSpike(this.world);
-            BlockPos area3 = new BlockPos(target.posX - 1, target.posY, target.posZ);
+            BlockPos area3 = new BlockPos(predictedPos.x - 1, predictedPos.y, predictedPos.z);
             int y3 = getSurfaceHeight(this.world, new BlockPos(area3.getX(), 0, area3.getZ()), (int) this.posY - 5, (int) this.posY + 7);
             spike3.setPosition(area3.getX(), y3 + 1, area3.getZ());
             world.spawnEntity(spike3);
             //4
             EntityVoidSpike spike4 = new EntityVoidSpike(this.world);
-            BlockPos area4 = new BlockPos(target.posX , target.posY, target.posZ + 1);
+            BlockPos area4 = new BlockPos(predictedPos.x , predictedPos.y, predictedPos.z + 1);
             int y4 = getSurfaceHeight(this.world, new BlockPos(area4.getX(), 0, area4.getZ()), (int) this.posY - 5, (int) this.posY + 7);
             spike4.setPosition(area4.getX(),y4 + 1, area4.getZ());
             world.spawnEntity(spike4);
             //5
             EntityVoidSpike spike5 = new EntityVoidSpike(this.world);
-            BlockPos area5 = new BlockPos(target.posX , target.posY, target.posZ - 1);
+            BlockPos area5 = new BlockPos(predictedPos.x , predictedPos.y, predictedPos.z - 1);
             int y5 = getSurfaceHeight(this.world, new BlockPos(area5.getX(), 0, area5.getZ()), (int) this.posY - 5, (int) this.posY + 7);
             spike5.setPosition(area5.getX(), y5 + 1, area5.getZ());
             world.spawnEntity(spike5);
             //6
             EntityVoidSpike spike6 = new EntityVoidSpike(this.world);
-            BlockPos area6 = new BlockPos(target.posX + 1, target.posY, target.posZ + 1);
+            BlockPos area6 = new BlockPos(predictedPos.x + 1, predictedPos.y, predictedPos.z + 1);
             int y6 = getSurfaceHeight(this.world, new BlockPos(area6.getX(), 0, area6.getZ()), (int) this.posY - 5, (int) this.posY + 7);
             spike6.setPosition(area6.getX(), y6 + 1, area6.getZ());
             world.spawnEntity(spike6);
             //7
             EntityVoidSpike spike7 = new EntityVoidSpike(this.world);
-            BlockPos area7 = new BlockPos(target.posX +1 , target.posY, target.posZ - 1);
+            BlockPos area7 = new BlockPos(predictedPos.x +1 , predictedPos.y, predictedPos.z - 1);
             int y7 = getSurfaceHeight(this.world, new BlockPos(area7.getX(), 0, area7.getZ()), (int) this.posY - 5, (int) this.posY + 7);
             spike7.setPosition(area7.getX(), y7 + 1, area7.getZ());
             world.spawnEntity(spike7);
             //8
             EntityVoidSpike spike8 = new EntityVoidSpike(this.world);
-            BlockPos area8 = new BlockPos(target.posX -1, target.posY, target.posZ - 1);
+            BlockPos area8 = new BlockPos(predictedPos.x -1, predictedPos.y, predictedPos.z - 1);
             int y8 = getSurfaceHeight(this.world, new BlockPos(area8.getX(), 0, area8.getZ()), (int) this.posY - 5, (int) this.posY + 7);
             spike8.setPosition(area8.getX(), y8 + 1, area8.getZ());
             world.spawnEntity(spike8);
             //9
             EntityVoidSpike spike9 = new EntityVoidSpike(this.world);
-            BlockPos area9 = new BlockPos(target.posX -1, target.posY, target.posZ + 1);
+            BlockPos area9 = new BlockPos(predictedPos.x -1, predictedPos.y, predictedPos.z + 1);
             int y9 = getSurfaceHeight(this.world, new BlockPos(area9.getX(), 0, area9.getZ()), (int) this.posY - 5, (int) this.posY + 7);
             spike9.setPosition(area9.getX(), y9 + 1, area9.getZ());
             world.spawnEntity(spike9);
             //10
             EntityVoidSpike spike10 = new EntityVoidSpike(this.world);
-            BlockPos area10 = new BlockPos(target.posX +2, target.posY, target.posZ );
+            BlockPos area10 = new BlockPos(predictedPos.x +2, predictedPos.y, predictedPos.z );
             int y10 = getSurfaceHeight(this.world, new BlockPos(area10.getX(), 0, area10.getZ()), (int) this.posY - 5, (int) this.posY + 7);
             spike10.setPosition(area10.getX(), y10 + 1, area10.getZ());
             world.spawnEntity(spike10);
             //11
             EntityVoidSpike spike11 = new EntityVoidSpike(this.world);
-            BlockPos area11 = new BlockPos(target.posX - 2, target.posY, target.posZ );
+            BlockPos area11 = new BlockPos(predictedPos.x - 2, predictedPos.y, predictedPos.z );
             int y11 = getSurfaceHeight(this.world, new BlockPos(area11.getX(), 0, area11.getZ()), (int) this.posY - 5, (int) this.posY + 7);
             spike11.setPosition(area11.getX(), y11 + 1, area11.getZ());
             world.spawnEntity(spike11);
             //12
             EntityVoidSpike spike12 = new EntityVoidSpike(this.world);
-            BlockPos area12 = new BlockPos(target.posX , target.posY, target.posZ + 2);
+            BlockPos area12 = new BlockPos(predictedPos.x , predictedPos.y, predictedPos.z + 2);
             int y12 = getSurfaceHeight(this.world, new BlockPos(area12.getX(), 0, area12.getZ()), (int) this.posY - 5, (int) this.posY + 7);
             spike12.setPosition(area12.getX(), y12 + 1, area12.getZ());
             world.spawnEntity(spike12);
             //13
             EntityVoidSpike spike13 = new EntityVoidSpike(this.world);
-            BlockPos area13 = new BlockPos(target.posX , target.posY, target.posZ -2);
+            BlockPos area13 = new BlockPos(predictedPos.x , predictedPos.y, predictedPos.z -2);
             int y13 = getSurfaceHeight(this.world, new BlockPos(area13.getX(), 0, area13.getZ()), (int) this.posY - 5, (int) this.posY + 7);
             spike13.setPosition(area13.getX(), y13 + 1, area13.getZ());
             world.spawnEntity(spike13);

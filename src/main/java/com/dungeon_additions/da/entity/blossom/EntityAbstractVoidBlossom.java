@@ -1,22 +1,29 @@
 package com.dungeon_additions.da.entity.blossom;
 
 import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.IPitch;
+import com.dungeon_additions.da.entity.frost_dungeon.EntityAbstractGreatWyrk;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
+import com.dungeon_additions.da.entity.util.EntityBossSpawner;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.ServerScaleUtil;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -36,10 +43,30 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
 
     private static final DataParameter<Boolean> DEATH_STATE = EntityDataManager.createKey(EntityAbstractVoidBlossom.class, DataSerializers.BOOLEAN);
 
+    private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntityAbstractVoidBlossom.class, DataSerializers.BOOLEAN);
+
+    public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntityAbstractVoidBlossom.class, DataSerializers.BLOCK_POS);
+    public static DataParameter<Boolean> SET_SPAWN_LOC = EntityDataManager.createKey(EntityAbstractVoidBlossom.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Float> STAT_LINE = EntityDataManager.createKey(EntityAbstractVoidBlossom.class, DataSerializers.FLOAT);
 
     protected static final DataParameter<Float> LOOK = EntityDataManager.createKey(EntityAbstractVoidBlossom.class, DataSerializers.FLOAT);
 
+    public boolean isHadPreviousTarget() {return this.dataManager.get(HAD_PREVIOUS_TARGET);}
+    public void setHadPreviousTarget(boolean value) {this.dataManager.set(HAD_PREVIOUS_TARGET, Boolean.valueOf(value));}
+
+    public boolean isSetSpawnLoc() {
+        return this.dataManager.get(SET_SPAWN_LOC);
+    }
+    public void setSetSpawnLoc(boolean value) {
+        this.dataManager.set(SET_SPAWN_LOC, Boolean.valueOf(value));
+    }
+    public void setSpawnLocation(BlockPos pos) {
+        this.dataManager.set(SPAWN_LOCATION, pos);
+    }
+
+    public BlockPos getSpawnLocation() {
+        return this.dataManager.get(SPAWN_LOCATION);
+    }
     private final MultiPartEntityPart[] hitboxParts;
 
     private final MultiPartEntityPart model = new MultiPartEntityPart(this, "model", 0.0f, 0.0f);
@@ -67,6 +94,10 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
         this.dataManager.register(LEAF_ATTACK, Boolean.valueOf(false));
         this.dataManager.register(SPORE_ATTACK, Boolean.valueOf(false));
         this.dataManager.register(DEATH_STATE, Boolean.valueOf(false));
+        this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
+        this.dataManager.register(SET_SPAWN_LOC, Boolean.valueOf(false));
+        //
+        this.dataManager.register(SPAWN_LOCATION, new BlockPos(this.getPositionVector().x, this.getPositionVector().y, this.getPositionVector().z));
         this.dataManager.register(STAT_LINE,  0.75F);
         super.entityInit();
     }
@@ -78,8 +109,14 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
         nbt.setBoolean("Leaf_Attack", this.isLeafAttack());
         nbt.setBoolean("Spore_Attack", this.isSporeAttack());
         nbt.setBoolean("Death_State", this.isDeathState());
+        nbt.setBoolean("Had_Target", this.dataManager.get(HAD_PREVIOUS_TARGET));
+        nbt.setInteger("Spawn_Loc_X", this.getSpawnLocation().getX());
+        nbt.setInteger("Spawn_Loc_Y", this.getSpawnLocation().getY());
+        nbt.setInteger("Spawn_Loc_Z", this.getSpawnLocation().getZ());
+        nbt.setBoolean("Set_Spawn_Loc", this.dataManager.get(SET_SPAWN_LOC));
         nbt.setFloat("Look", this.getPitch());
         nbt.setFloat("Stat_Line", this.getStatLine());
+
         super.writeEntityToNBT(nbt);
     }
 
@@ -90,6 +127,9 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
         this.setLeafAttack(nbt.getBoolean("Leaf_Attack"));
         this.setSporeAttack(nbt.getBoolean("Spore_Attack"));
         this.setDeathState(nbt.getBoolean("Death_State"));
+        this.setHadPreviousTarget(nbt.getBoolean("Had_Target"));
+        this.dataManager.set(SET_SPAWN_LOC, nbt.getBoolean("Set_Spawn_Loc"));
+        this.setSpawnLocation(new BlockPos(nbt.getInteger("Spawn_Loc_X"), nbt.getInteger("Spawn_Loc_Y"), nbt.getInteger("Spawn_Loc_Z")));
         this.dataManager.set(LOOK, nbt.getFloat("Look"));
         this.setStateLine(nbt.getFloat("Stat_Line"));
         super.readEntityFromNBT(nbt);
@@ -99,6 +139,7 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
     protected boolean hasLaunchedFlowersThree = false;
 
 
+    protected int targetTrackingTimer = (ModConfig.boss_reset_timer * 20) * 2;
     public int minionCooldown = 400;
     @Override
     public void onUpdate() {
@@ -188,6 +229,43 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
                 }
             }
         }
+
+        if(!world.isRemote) {
+            EntityLivingBase target = this.getAttackTarget();
+
+            if (this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
+                if (target != null) {
+                    if (target instanceof EntityPlayer) {
+                        this.setHadPreviousTarget(true);
+                    }
+                }
+
+                //Creates a Target tracking to ensure if it can despawn or not
+                if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled) {
+                    int nearbyPlayers = ServerScaleUtil.getPlayersForReset(this, world);
+                    if (nearbyPlayers == 0) {
+                        if (targetTrackingTimer > 0) {
+                            targetTrackingTimer--;
+                        }
+                        if (targetTrackingTimer < 1) {
+                            this.resetBossTask();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void resetBossTask() {
+        this.setImmovable(true);
+        this.setHadPreviousTarget(false);
+        BlockPos pos = this.getSpawnLocation();
+        EntityBossSpawner spawner = new EntityBossSpawner(world, 1, 8);
+        spawner.setPosition(pos.getX(), pos.getY(), pos.getZ());
+        world.spawnEntity(spawner);
+        this.experienceValue = 0;
+        this.setDropItemsWhenDead(false);
+        this.setDead();
     }
 
 

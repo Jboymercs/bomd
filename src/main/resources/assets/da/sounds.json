@@ -923,6 +923,122 @@
       }
     ]
   },
+  "entity.imperial_knight.counter": {
+    "category": "entity",
+    "subtitle": "entity.imperial_knight.counter",
+    "sounds": [
+      {
+        "name": "da:entity/imperial_knight/counter",
+        "steam": false
+      }
+    ]
+  },
+  "entity.imperial_knight.cast_lightning": {
+    "category": "entity",
+    "subtitle": "entity.lightning_bolt.strike",
+    "sounds": [
+      {
+        "name": "da:entity/imperial_knight/cast_lightning",
+        "steam": false
+      }
+    ]
+  },
+  "entity.imperial_knight.cast_halberd": {
+    "category": "entity",
+    "subtitle": "entity.imperial_knight.cast_halberd",
+    "sounds": [
+      {
+        "name": "da:entity/imperial_knight/halberd_cast",
+        "steam": false
+      }
+    ]
+  },
+  "entity.imperial_knight.start_magic": {
+    "category": "entity",
+    "subtitle": "entity.imperial_knight.start_magic_combo",
+    "sounds": [
+      {
+        "name": "da:entity/imperial_knight/start_magic",
+        "steam": false
+      }
+    ]
+  },
+  "entity.imperial_knight.hurt": {
+    "category": "entity",
+    "subtitle": "entity.imperial_knight.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/imperial_knight/hurt1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/imperial_knight/hurt2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/imperial_knight/hurt3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.imperial_knight.idle": {
+    "category": "entity",
+    "subtitle": "entity.imperial_knight.idle",
+    "sounds": [
+      {
+        "name": "da:entity/imperial_knight/idle1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/imperial_knight/idle2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/imperial_knight/idle3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.imperial_knight.storm_stomp": {
+    "category": "entity",
+    "subtitle": "entity.imperial_knight.storm_stomp",
+    "sounds": [
+      {
+        "name": "da:entity/imperial_knight/storm_stomp",
+        "steam": false
+      }
+    ]
+  },
+  "entity.imperial_knight.storm_short": {
+    "category": "entity",
+    "subtitle": "entity.imperial_knight.storm_short",
+    "sounds": [
+      {
+        "name": "da:entity/imperial_knight/storm_short",
+        "steam": false
+      }
+    ]
+  },
+  "entity.imperial_knight.storm_long": {
+    "category": "entity",
+    "subtitle": "entity.imperial_knight.storm_long",
+    "sounds": [
+      {
+        "name": "da:entity/imperial_knight/storm_long",
+        "steam": false
+      }
+    ]
+  },
+  "entity.imperial_knight.shoot_arrow": {
+    "category": "entity",
+    "subtitle": "entity.imperial_knight.shoot_arrow",
+    "sounds": [
+      {
+        "name": "da:entity/imperial_knight/shoot_arrow",
+        "steam": false
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",

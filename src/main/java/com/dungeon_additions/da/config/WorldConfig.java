@@ -184,6 +184,27 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static int[] list_of_dimensions_frozen_castle = {0};
 
+    @Config.Name("High Court City Blacklisted Biome Types")
+    @Config.Comment("Add Biome types that DISALLOW the High City from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
+    @Config.RequiresMcRestart
+    public static String[] biome_types_blacklist_high_city = {"MOUNTAIN"
+    };
+
+    @Config.Name("High Court City Spacing")
+    @Config.Comment("Change the spacing between each High Court City, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
+    @Config.RequiresMcRestart
+    public static int high_city_spacing = 60;
+
+    @Config.Name("High Court City Size")
+    @Config.Comment("Change the size of the High Court City")
+    @Config.RequiresMcRestart
+    public static int high_court_city_size = 4;
+
+    @Config.Name("High Court City Allowed Dimensions")
+    @Config.Comment("Select what dimensions this structure is allowed to spawn in")
+    @Config.RequiresMcRestart
+    public static int[] list_of_dimensions_high_court_city = {0};
+
     @Config.Name("Petrogloom Ore Gen")
     @Config.Comment("Allowed Dimension for Petrogloom to spawn in")
     @Config.RequiresMcRestart

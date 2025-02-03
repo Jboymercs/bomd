@@ -35,6 +35,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.lwjgl.Sys;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -682,6 +683,15 @@ public class ModUtils {
         entity.limbSwing += entity.limbSwingAmount;
     }
 
+    public static Vec3d predictPlayerPosition(Vec3d oldPosition, Vec3d targetCurrentPosition, int predictAheadTime) {
+        Vec3d predictB = oldPosition.subtract(targetCurrentPosition);
+        double pX = oldPosition.x - targetCurrentPosition.x;
+        double pZ = oldPosition.z - targetCurrentPosition.z;
+        System.out.println("X Factor at" + pX * -predictAheadTime);
+        System.out.println("Z Factor at" + pZ * -predictAheadTime);
+       // predictB.scale(predictAheadTime * 8);
+        return targetCurrentPosition.add(new Vec3d(pX * -predictAheadTime, 0, pZ * -predictAheadTime));
+    }
 
     public static boolean attemptTeleport(Vec3d pos, EntityLivingBase entity)
     {
@@ -746,6 +756,22 @@ public class ModUtils {
         }
 
         return 0;
+    }
+
+    public static int getSurfaceHeightGeneral(World world, BlockPos pos, int min, int max)
+    {
+        int currentY = max;
+
+        while(currentY >= min)
+        {
+            if(!world.isAirBlock(pos.add(0, currentY, 0)) && !world.isRemote) {
+                return currentY;
+            }
+
+            currentY--;
+        }
+
+        return pos.getY();
     }
 
 
