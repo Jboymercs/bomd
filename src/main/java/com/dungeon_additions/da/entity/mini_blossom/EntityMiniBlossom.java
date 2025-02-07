@@ -6,6 +6,7 @@ import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.EntityAIBlossom;
 import com.dungeon_additions.da.entity.ai.EntityAiMiniBlossom;
 import com.dungeon_additions.da.entity.ai.IAttack;
+import com.dungeon_additions.da.entity.sky_dungeon.EntityFarumSpike;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
@@ -308,7 +309,7 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
 
         if(!world.isRemote && target != null) {
             Vec3d Pos = this.getPositionVector().add(0, 3.7, 0);
-            EntityDart dart = new EntityDart(this.world);
+            EntityFarumSpike dart = new EntityFarumSpike(this.world);
             dart.setPosition(Pos.x, Pos.y, Pos.z);
 
 

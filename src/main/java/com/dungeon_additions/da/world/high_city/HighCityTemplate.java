@@ -5,9 +5,7 @@ import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
-import com.dungeon_additions.da.entity.sky_dungeon.EntityImperialHalberd;
-import com.dungeon_additions.da.entity.sky_dungeon.EntityImperialSword;
-import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
+import com.dungeon_additions.da.entity.sky_dungeon.*;
 import com.dungeon_additions.da.entity.tileEntity.tileEntityMobSpawner;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModEntities;
@@ -41,7 +39,22 @@ public class HighCityTemplate extends ModStructureTemplate {
     @Override
     protected void handleDataMarker(String function, BlockPos pos, World world, Random rand, StructureBoundingBox sbb) {
         if(function.startsWith("mob")) {
-
+            if (generateMobSpawn()) {
+                world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_HIGH_CITY.getDefaultState(), 2);
+                TileEntity tileentity = world.getTileEntity(pos);
+                if (tileentity instanceof tileEntityMobSpawner) {
+                    ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
+                            new MobSpawnerLogic.MobSpawnData[]{
+                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityTridentGargoyle.class), 1),
+                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityMageGargoyle.class), 1)
+                            },
+                            new int[]{3,1},
+                            ModRand.range(1, 4),
+                            30);
+                }
+            } else {
+                world.setBlockToAir(pos);
+            }
         } else if (function.startsWith("knight_ranged")) {
             if (generateKnightSpawn()) {
                 world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_HIGH_CITY.getDefaultState(), 2);

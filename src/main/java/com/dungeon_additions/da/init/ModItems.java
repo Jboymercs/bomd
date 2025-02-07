@@ -4,6 +4,7 @@ import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.items.*;
 import com.dungeon_additions.da.items.armor.*;
+import com.dungeon_additions.da.items.projectile.ItemLightRing;
 import com.dungeon_additions.da.items.shield.ItemDraugrShield;
 import com.dungeon_additions.da.items.tools.*;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
@@ -93,7 +94,7 @@ public class ModItems {
     public static final Item LITIC_SHARD = new ItemCraftingMaterial("lightning_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item LITIC_INGOT = new ItemCraftingMaterial("lightning_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item LITIC_SMITHING_STONE = new ItemCraftingMaterial("lightning_smithing_stone", "lightning_stone_desc").setCreativeTab(DungeonAdditionsTab.ALL);
-
+    public static final Item LIGHT_RING_PROJECTILE = new ItemLightRing("light_ring");
 
 
     public static final Item SOUL_STAR = new ItemSoulStar("soul_star_item", "soul_star_desc");

@@ -117,11 +117,15 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
     public EntityImperialSword(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
         this.setSize(0.7F, 2.40F);
+        this.experienceValue = 40;
+        hasFallTpOverride = true;
     }
 
     public EntityImperialSword(World worldIn) {
         super(worldIn);
         this.setSize(0.7F, 2.40F);
+        this.experienceValue = 40;
+        hasFallTpOverride = true;
     }
 
     @Override
@@ -173,9 +177,9 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(24D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(32D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(70);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(95);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(16D);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }

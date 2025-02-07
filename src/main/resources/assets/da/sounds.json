@@ -1039,6 +1039,146 @@
       }
     ]
   },
+  "entity.gargoyle.flap": {
+    "category": "entity",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:entity/gargoyle/flap1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/gargoyle/flap2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/gargoyle/flap3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.gargoyle.shoot": {
+    "category": "entity",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:entity/gargoyle/shoot",
+        "steam": false
+      }
+    ]
+  },
+  "entity.gargoyle.idle": {
+    "category": "entity",
+    "subtitle": "entity.gargoyle.idle",
+    "sounds": [
+      {
+        "name": "da:entity/gargoyle/idle1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/gargoyle/idle2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/gargoyle/idle3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.gargoyle.hurt": {
+    "category": "entity",
+    "subtitle": "entity.gargoyle.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/gargoyle/hurt1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/gargoyle/hurt2",
+        "steam": false
+      }
+    ]
+  },
+  "entity.gargoyle.move": {
+    "category": "entity",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:entity/gargoyle/move",
+        "steam": false
+      }
+    ]
+  },
+  "entity.gargoyle.cast_special": {
+    "category": "entity",
+    "subtitle": "entity.gargoyle.cast_special",
+    "sounds": [
+      {
+        "name": "da:entity/gargoyle/cast_special",
+        "steam": false
+      }
+    ]
+  },
+  "entity.gargoyle.cast_basic": {
+    "category": "entity",
+    "subtitle": "entity.gargoyle.cast_basic",
+    "sounds": [
+      {
+        "name": "da:entity/gargoyle/cast_basic",
+        "steam": false
+      }
+    ]
+  },
+  "entity.gargoyle.lazer": {
+    "category": "entity",
+    "subtitle": "entity.gargoyle.lazer",
+    "sounds": [
+      {
+        "name": "da:entity/gargoyle/lazer",
+        "steam": false
+      }
+    ]
+  },
+  "entity.gargoyle.ring_summon": {
+    "category": "entity",
+    "subtitle": "entity.light_ring.ring_summon",
+    "sounds": [
+      {
+        "name": "da:entity/gargoyle/ring_summon",
+        "steam": false
+      }
+    ]
+  },
+  "entity.gargoyle.ring_idle": {
+    "category": "entity",
+    "subtitle": "entity.light_ring.ring_idle",
+    "sounds": [
+      {
+        "name": "da:entity/gargoyle/ring_idle",
+        "steam": false
+      }
+    ]
+  },
+  "entity.gargoyle.step": {
+    "category": "entity",
+    "subtitle": "entity.light_ring.step",
+    "sounds": [
+      {
+        "name": "da:entity/gargoyle/step1",
+        "steam": false
+      }
+    ]
+  },
+  "entity.gargoyle.summon_lazer": {
+    "category": "entity",
+    "subtitle": "entity.light_ring.summon_lazer",
+    "sounds": [
+      {
+        "name": "da:entity/gargoyle/summon_lazer",
+        "steam": false
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",

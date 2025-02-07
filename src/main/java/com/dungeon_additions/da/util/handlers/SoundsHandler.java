@@ -135,6 +135,21 @@ public class SoundsHandler {
 
     public static SoundEvent IMPERIAL_SHOOT_ARROW;
 
+    //Gargoyles
+    public static SoundEvent GARGOYLE_WING_FLAP;
+    public static SoundEvent GARGOYLE_SHOOT_WINGS;
+    public static SoundEvent GARGOYLE_HURT;
+    public static SoundEvent GARGOYLE_IDLE;
+    public static SoundEvent GARGOYLE_MOVE;
+    public static SoundEvent GARGOYLE_CAST_BASIC;
+    public static SoundEvent GARGOYLE_CAST_SPECIAL;
+    public static SoundEvent GARGOYLE_RING_SUMMON;
+    public static SoundEvent GARGOYLE_RING_IDLE;
+    public static SoundEvent GARGOYLE_LAZER;
+
+    public static SoundEvent GARGOYLE_STEP;
+    public static SoundEvent GARGOYLE_SUMMON_LAZER;
+
     public static void registerSounds() {
         //
         MOSS_BREAK = registerSound("moss.break", "block");
@@ -246,6 +261,19 @@ public class SoundsHandler {
         IMPERIAL_STORM_LONG = registerSound("imperial_knight.storm_long", "entity");
         IMPERIAL_STORM_SHORT = registerSound("imperial_knight.storm_short", "entity");
         IMPERIAL_SHOOT_ARROW = registerSound("imperial_knight.shoot_arrow", "entity");
+        //
+        GARGOYLE_WING_FLAP = registerSound("gargoyle.flap", "entity");
+        GARGOYLE_SHOOT_WINGS = registerSound("gargoyle.shoot", "entity");
+        GARGOYLE_HURT = registerSound("gargoyle.hurt", "entity");
+        GARGOYLE_IDLE = registerSound("gargoyle.idle", "entity");
+        GARGOYLE_MOVE = registerSound("gargoyle.move", "entity");
+        GARGOYLE_CAST_BASIC = registerSound("gargoyle.cast_basic", "entity");
+        GARGOYLE_CAST_SPECIAL = registerSound("gargoyle.cast_special", "entity");
+        GARGOYLE_LAZER = registerSound("gargoyle.lazer", "entity");
+        GARGOYLE_RING_IDLE = registerSound("gargoyle.ring_idle", "entity");
+        GARGOYLE_RING_SUMMON = registerSound("gargoyle.ring_summon", "entity");
+        GARGOYLE_SUMMON_LAZER = registerSound("gargoyle.summon_lazer", "entity");
+        GARGOYLE_STEP = registerSound("gargoyle.step", "entity");
     }
 
 

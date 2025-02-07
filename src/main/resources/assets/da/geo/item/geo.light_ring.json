@@ -1,0 +1,28 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "Group",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [5, 0, -8], "size": [3, 3, 16], "uv": [0, 18]},
+						{"origin": [-8, 0, -8], "size": [3, 3, 16], "uv": [0, 18], "mirror": true},
+						{"origin": [-5, 0, -8], "size": [10, 3, 3], "uv": [0, 37]},
+						{"origin": [-5, 0, 5], "size": [10, 3, 3], "uv": [26, 37]},
+						{"origin": [-9, 1.5, -9], "size": [18, 0, 18], "uv": [0, 0]}
+					]
+				}
+			]
+		}
+	]
+}

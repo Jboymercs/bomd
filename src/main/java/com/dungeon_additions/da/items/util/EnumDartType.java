@@ -1,7 +1,7 @@
 package com.dungeon_additions.da.items.util;
 
 public enum EnumDartType {
-    Golden(0, "golden"), Poison(1, "poison"), Enchanted(2, "enchanted");
+    Golden(0, "golden"), Poison(1, "poison"), Farum(2, "farum");
 
     public int meta;
 
@@ -15,7 +15,7 @@ public enum EnumDartType {
 
     public static EnumDartType getType(int meta)
     {
-        return meta == 1 ? Poison :  meta == 2 ? Enchanted : Golden;
+        return meta == 1 ? Poison :  meta == 2 ? Farum : Golden;
     }
 
     public int getMeta()

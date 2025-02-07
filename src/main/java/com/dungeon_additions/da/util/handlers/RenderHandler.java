@@ -100,6 +100,7 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileSoul.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(EntityFrozenCastleLocator.class, ModItems.FROZEN_CASTLE_LOCATOR);
         registerProjectileRenderer(ProjectileFrostGround.class, ModItems.INVISISBLE_ITEM);
+        registerProjectileRenderer(ProjectileLightRing.class, ModItems.LIGHT_RING_PROJECTILE);
     }
 
     //Handles Rendering
@@ -123,6 +124,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityMiniBlossom.class, RenderMiniBlossom::new);
         //Dart
         RenderingRegistry.registerEntityRenderingHandler(EntityDart.class, RenderDartBase::new);
+        //Farum Spike
+        RenderingRegistry.registerEntityRenderingHandler(EntityFarumSpike.class, RenderFarumSpike::new);
         //Sky Arrow
         RenderingRegistry.registerEntityRenderingHandler(EntitySkyArrow.class, RenderSkyArrow::new);
         //Nether Abberrant
@@ -171,6 +174,12 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityImperialSword.class, RenderImperialSword::new);
         //Sky Tornado
         RenderingRegistry.registerEntityRenderingHandler(EntitySkyTornado.class, RenderSkyTornado::new);
+        //
+        RenderingRegistry.registerEntityRenderingHandler(EntityTridentGargoyle.class, RenderGargoyleTrident::new);
+        //
+        RenderingRegistry.registerEntityRenderingHandler(EntityMageGargoyle.class, RenderGargoyleMage::new);
+        //
+        RenderingRegistry.registerEntityRenderingHandler(EntityGargoyleLazer.class, RenderGargoyleLazer::new);
     }
 
 }

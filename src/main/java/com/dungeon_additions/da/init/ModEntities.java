@@ -120,6 +120,11 @@ public class ModEntities {
             registerEntityWithID("imperial_sword", EntityImperialSword.class, ENTITY_START_ID++, 80, night_lich);
             registerEntity("sky_arrow", EntitySkyArrow.class, ENTITY_START_ID++, 80);
             registerEntity("sky_tornado", EntitySkyTornado.class, ENTITY_START_ID++, 80);
+            registerEntityWithID("trident_gargoyle", EntityTridentGargoyle.class, ENTITY_START_ID++, 80, night_lich);
+            registerEntity("farum_dart", EntityFarumSpike.class, ENTITY_START_ID++, 90);
+            registerEntityWithID("mage_gargoyle", EntityMageGargoyle.class, ENTITY_START_ID++, 90, night_lich);
+            registerEntity("light_ring_projectile", ProjectileLightRing.class, ENTITY_START_ID++, 90);
+            registerEntity("gargoyle_lazer", EntityGargoyleLazer.class, ENTITY_START_ID++, 90);
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
         registerTileEntity(TileEntityMegaStructure.class, "mega_structure");
