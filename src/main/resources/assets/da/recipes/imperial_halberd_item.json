@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "VV",
+    "VX",
     "VR",
     " V"
   ],
@@ -11,6 +11,9 @@
     },
     "R": {
       "item": "minecraft:stick"
+    },
+    "X": {
+      "item": "da:divine_scroll"
     }
   },
   "result": {

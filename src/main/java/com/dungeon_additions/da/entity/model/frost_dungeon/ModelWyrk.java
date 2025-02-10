@@ -21,10 +21,6 @@ public class ModelWyrk extends GeoModelExtended<EntityWyrk> {
 
     @Override
     public ResourceLocation getTextureLocation(EntityWyrk animatable) {
-        if(animatable.getOwner() != null) {
-            return new ResourceLocation(ModReference.MOD_ID, "textures/entity/wyrk_tamed.png");
-        } else {
             return new ResourceLocation(ModReference.MOD_ID, "textures/entity/wyrk.png");
-        }
     }
 }

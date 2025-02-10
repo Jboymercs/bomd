@@ -318,13 +318,6 @@ public class EntityDraugrRanger extends EntityFrostBase implements IAttack, IAni
         return PlayState.STOP;
     }
 
-
-
-    @Override
-    public void onDeath(DamageSource cause) {
-        super.onDeath(cause);
-    }
-
     @Override
     public EnumCreatureAttribute getCreatureAttribute()
     {
@@ -357,6 +350,12 @@ public class EntityDraugrRanger extends EntityFrostBase implements IAttack, IAni
     @Override
     protected ResourceLocation getLootTable() {
         return LOOT_MOB;
+    }
+
+
+    @Override
+    public void onDeath(DamageSource cause) {
+        super.onDeath(cause);
     }
 
     @Override

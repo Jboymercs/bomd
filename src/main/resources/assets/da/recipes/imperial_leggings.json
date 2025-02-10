@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VXV",
+    "R R",
+    "T T"
+  ],
+  "key": {
+    "V": {
+      "item": "da:lightning_ingot"
+    },
+    "X": {
+      "item": "da:divine_scroll"
+    },
+    "R": {
+      "item": "da:light_mana"
+    },
+    "T": {
+      "item": "minecraft:dye",
+      "data": 4
+    }
+
+  },
+  "result": {
+    "item": "da:imperial_leggings"
+  }
+}

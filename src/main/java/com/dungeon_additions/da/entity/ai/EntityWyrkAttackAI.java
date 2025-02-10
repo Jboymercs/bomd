@@ -1,12 +1,15 @@
 package com.dungeon_additions.da.entity.ai;
 
+import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.util.ModRand;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.Vec3d;
 
-public class EntityWyrkAttackAI <T extends EntityWyrk & IAttack> extends EntityAIBase {
+import java.util.Objects;
+
+public class EntityWyrkAttackAI <T extends EntityAbstractBase & IAttack> extends EntityAIBase {
 
     private final T entity;
     private final double moveSpeedAmp;
@@ -82,7 +85,7 @@ public class EntityWyrkAttackAI <T extends EntityWyrk & IAttack> extends EntityA
     public void move(EntityLivingBase target, double distSq, boolean canSee) {
 
         if(distSq <= 16 && canSee) {
-            Vec3d away = this.entity.getPositionVector().subtract(this.entity.getAttackTarget().getPositionVector()).normalize();
+            Vec3d away = this.entity.getPositionVector().subtract(Objects.requireNonNull(this.entity.getAttackTarget()).getPositionVector()).normalize();
             Vec3d pos = this.entity.getPositionVector().add(away.scale(2)).add(ModRand.randVec().scale(2));
             this.entity.getNavigator().tryMoveToXYZ(pos.x, pos.y, pos.z, this.moveSpeedAmp);
         } else if (distSq <= this.maxAttackDistSq && canSee) {

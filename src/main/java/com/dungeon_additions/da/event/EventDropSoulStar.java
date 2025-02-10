@@ -4,6 +4,7 @@ import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityFrostBase;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.ProjectileSoul;
+import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModUtils;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,9 +32,23 @@ public class EventDropSoulStar {
         boolean hasFoundWyrk = false;
         //keep consitency with the undead only able to spawn souls to fuel Wyrks
         if(target.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) {
-            List<EntityWyrk> nearbyWyrk = target.world.getEntitiesWithinAABB(EntityWyrk.class, target.getEntityBoundingBox().grow(20.0D), e -> !e.getIsInvulnerable());
+
+            List<EntityWyrk> nearbyWyrkEnemy = target.world.getEntitiesWithinAABB(EntityWyrk.class, target.getEntityBoundingBox().grow(20.0D), e -> !e.getIsInvulnerable());
+            if(!nearbyWyrkEnemy.isEmpty()) {
+                for(EntityWyrk wyrk : nearbyWyrkEnemy) {
+                    if (!hasFoundWyrk) {
+                        ProjectileSoul soul = new ProjectileSoul(target.world, target, 0, wyrk);
+                        soul.setPosition(target.posX, target.posY + 1.5D, target.posZ);
+                        soul.setTravelRange(40F);
+                        target.world.spawnEntity(soul);
+                        hasFoundWyrk = true;
+                    }
+                }
+            }
+
+            List<EntityFriendWyrk> nearbyWyrk = target.world.getEntitiesWithinAABB(EntityFriendWyrk.class, target.getEntityBoundingBox().grow(20.0D), e -> !e.getIsInvulnerable());
             if (!nearbyWyrk.isEmpty() && !target.world.isRemote) {
-                for (EntityWyrk wyrk : nearbyWyrk) {
+                for (EntityFriendWyrk wyrk : nearbyWyrk) {
                     if (!hasFoundWyrk) {
                         ProjectileSoul soul = new ProjectileSoul(target.world, target, 0, wyrk);
                         soul.setPosition(target.posX, target.posY + 1.5D, target.posZ);

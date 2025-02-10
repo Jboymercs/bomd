@@ -134,6 +134,7 @@ public class SoundsHandler {
     public static SoundEvent IMPERIAL_STORM_SHORT;
 
     public static SoundEvent IMPERIAL_SHOOT_ARROW;
+    public static SoundEvent IMPERIAL_SWORD_PARRY;
 
     //Gargoyles
     public static SoundEvent GARGOYLE_WING_FLAP;
@@ -261,6 +262,7 @@ public class SoundsHandler {
         IMPERIAL_STORM_LONG = registerSound("imperial_knight.storm_long", "entity");
         IMPERIAL_STORM_SHORT = registerSound("imperial_knight.storm_short", "entity");
         IMPERIAL_SHOOT_ARROW = registerSound("imperial_knight.shoot_arrow", "entity");
+        IMPERIAL_SWORD_PARRY = registerSound("imperial_knight.parry", "entity");
         //
         GARGOYLE_WING_FLAP = registerSound("gargoyle.flap", "entity");
         GARGOYLE_SHOOT_WINGS = registerSound("gargoyle.shoot", "entity");

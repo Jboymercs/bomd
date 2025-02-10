@@ -136,8 +136,9 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
             }
 
             if (ticksExisted == 20 + delay) {
-                List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntitySkyBase)));
+                List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntityPlayer)));
                 if (!targets.isEmpty()) {
+                    this.damageOverride = true;
                     for (EntityLivingBase target : targets) {
                         if (!(target instanceof EntityPlayer)) {
                             Vec3d offset = target.getPositionVector().add(ModUtils.yVec(1.0D));

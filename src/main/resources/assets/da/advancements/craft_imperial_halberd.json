@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:imperial_halberd_item"
+    },
+    "title": {
+      "translate": "advancements.da.craft_imperial_halberd.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_imperial_halberd.description"
+    }
+  },
+  "parent": "da:kill_imperial_halberd",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:imperial_halberd_item"
+          }
+        ]
+      }
+    }
+  }
+}

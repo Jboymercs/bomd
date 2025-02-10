@@ -6,6 +6,7 @@ import com.dungeon_additions.da.entity.ai.flying.TimedAttackInitiator;
 import com.dungeon_additions.da.entity.ai.sky_dungeon.EntityAIMageGargoyle;
 import com.dungeon_additions.da.entity.ai.sky_dungeon.EntityGargoyleTridentAI;
 import com.dungeon_additions.da.util.ModRand;
+import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -23,6 +24,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -384,6 +386,17 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
     @Override
     public void tick() {
 
+    }
+    private static final ResourceLocation LOOT_MOB = new ResourceLocation(ModReference.MOD_ID, "gargoyle_mage");
+
+    @Override
+    protected ResourceLocation getLootTable() {
+        return LOOT_MOB;
+    }
+
+    @Override
+    protected boolean canDropLoot() {
+        return true;
     }
 
     @Override

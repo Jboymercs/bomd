@@ -18,6 +18,7 @@ import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityEliteDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.ProjectileSoul;
+import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
@@ -180,6 +181,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityMageGargoyle.class, RenderGargoyleMage::new);
         //
         RenderingRegistry.registerEntityRenderingHandler(EntityGargoyleLazer.class, RenderGargoyleLazer::new);
+        //Friendly Wyrk
+        RenderingRegistry.registerEntityRenderingHandler(EntityFriendWyrk.class, RenderFriendWyrk::new);
     }
 
 }

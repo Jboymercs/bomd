@@ -16,6 +16,7 @@ public class EntitySkyBase extends EntityAbstractBase {
     private static final DataParameter<Boolean> HAS_SPAWN = EntityDataManager.createKey(EntitySkyBase.class, DataSerializers.BOOLEAN);
     public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntitySkyBase.class, DataSerializers.BLOCK_POS);
     public boolean hasFallTpOverride = false;
+    public boolean damageOverride = false;
     public EntitySkyBase(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
     }
@@ -36,7 +37,7 @@ public class EntitySkyBase extends EntityAbstractBase {
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        if(source.getImmediateSource() instanceof EntitySkyBase) {
+        if(source.getImmediateSource() instanceof EntitySkyBase && !damageOverride) {
             return false;
         }
 

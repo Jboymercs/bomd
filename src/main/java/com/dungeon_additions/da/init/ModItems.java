@@ -4,6 +4,8 @@ import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.items.*;
 import com.dungeon_additions.da.items.armor.*;
+import com.dungeon_additions.da.items.armor.imperial.ItemImperialArmor;
+import com.dungeon_additions.da.items.armor.imperial.ItemImperialChestplate;
 import com.dungeon_additions.da.items.projectile.ItemLightRing;
 import com.dungeon_additions.da.items.shield.ItemDraugrShield;
 import com.dungeon_additions.da.items.tools.*;
@@ -24,10 +26,12 @@ import java.util.List;
 public class ModItems {
 
     private static final Item.ToolMaterial CHAMPION_AXE_MATERIAL = EnumHelper.addToolMaterial("champion_set", 3, 874, 7.0F, (float) ModConfig.champion_axe_damage, 15);
-    private static final Item.ToolMaterial IMPERIAL_HALBERD_MATERIAL = EnumHelper.addToolMaterial("imperial_halberd_set", 3, 1263, 8.0F, (float) 10, 20);
+    private static final Item.ToolMaterial IMPERIAL_HALBERD_MATERIAL = EnumHelper.addToolMaterial("imperial_halberd_set", 3, 2463, 8.0F, (float) 10, 20);
+
+    private static final Item.ToolMaterial IMPERIAL_SWORD_MATERIAL = EnumHelper.addToolMaterial("imperial_material", 2, 2463, 6.0F, (float) 7.5, 30);
     private static final Item.ToolMaterial DAGGER_MATERIAL = EnumHelper.addToolMaterial("void_material", 2, 320, 6.0F, (float) ModConfig.void_dagger_damage, 45);
 
-    private static final Item.ToolMaterial DRAUGR_SWORD = EnumHelper.addToolMaterial("void_material", 2, 974, 6.0F, (float) ModConfig.frost_sword_damage, 45);
+    private static final Item.ToolMaterial DRAUGR_SWORD = EnumHelper.addToolMaterial("draugr_material", 2, 974, 6.0F, (float) ModConfig.frost_sword_damage, 45);
     private static final Item.ToolMaterial FLAME_SWORD_MATERIAL = EnumHelper.addToolMaterial("flame_sword_material", 2, 988, 6.0F, ModConfig.sword_of_ambition_damage, 70);
 
     private static final Item.ToolMaterial SOUL_SPEAR_MATERIAL = EnumHelper.addToolMaterial("soul_spear_material", 2, 1200, 5.0F, ModConfig.soul_spear_damage, 10);
@@ -39,6 +43,7 @@ public class ModItems {
     private static final ItemArmor.ArmorMaterial DRAUGR_ARMOR = EnumHelper.addArmorMaterial("draugr", ModReference.MOD_ID + "draugr", 375, new int[]{3, 6, 8,3}, 20, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2F);
     private static final ItemArmor.ArmorMaterial LICH_HELMET = EnumHelper.addArmorMaterial("night_lich", ModReference.MOD_ID +":night_lich", 275, new int[] {3,6,8,3}, 70, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1F);
     private static final ItemArmor.ArmorMaterial WYRK_ARMOR = EnumHelper.addArmorMaterial("wyrk", ModReference.MOD_ID +":wyrk", 325, new int[] {3,6,8,3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
+    private static final ItemArmor.ArmorMaterial IMPERIAL_ARMOR = EnumHelper.addArmorMaterial("imperial", ModReference.MOD_ID +":wyrk", 670, new int[] {4,7,9,4}, 30, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
     public ModItems() {
 
 
@@ -81,6 +86,10 @@ public class ModItems {
 
     public static final ItemArmor WYRK_HELMET = new ModWyrkHelmet("wyrk_helmet", WYRK_ARMOR, 1, EntityEquipmentSlot.HEAD, "wyrk_helmet", "wyrk_helmet_desc");
     public static final ItemArmor WYRK_BOOTS = new ModWyrkArmor("wyrk_boots", WYRK_ARMOR, 1, EntityEquipmentSlot.FEET, "wyrk", "wyrk_boots_desc");
+    public static final ItemArmor IMPERIAL_CHESTPLATE = new ItemImperialChestplate("imperial_chestplate", IMPERIAL_ARMOR, 1, EntityEquipmentSlot.CHEST, "imperial_chestplate", "imperial_armor_desc");
+    public static final ItemArmor IMPERIAL_HELMET = new ItemImperialChestplate("imperial_helmet", IMPERIAL_ARMOR, 1, EntityEquipmentSlot.HEAD, "imperial_helmet", "imperial_helmet_desc");
+    public static final ItemArmor IMPERIAL_LEGGINGS = new ItemImperialArmor("imperial_leggings", IMPERIAL_ARMOR, 2, EntityEquipmentSlot.LEGS, "imperial", "imperial_armor_desc");
+    public static final ItemArmor IMPERIAL_BOOTS = new ItemImperialArmor("imperial_boots", IMPERIAL_ARMOR, 1, EntityEquipmentSlot.FEET, "imperial", "imperial_armor_desc");
 
 
     public static final Item ROT_KNIGHT_FRAGMENT = new ItemCraftingMaterial("knight_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -89,6 +98,8 @@ public class ModItems {
     public static final Item ROT_KNIGHT_RAPIER = new ItemKnightRapier("knight_rapier", KNIGHT_RAPIER_MATERIAL, "rapier_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item GLOW_BERRY = new ItemGlowBerry("glow_berry", 4, 0.4F, false, ModBlocks.AZAELA_VINES).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item WYRK_SNACK = new ItemWyrkSnack("wyrk_snack", "wyrk_snack_desc", 6, 0.7F, false).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item CRUMBLE_BERRIES = new ItemCrumbleBerries("crumble_berries", "crumble_berries_desc", 4, 0.5F, false).setCreativeTab(DungeonAdditionsTab.ALL);
+
     public static final Item WYRK_STAFF = new ItemWyrkStaff("wyrk_staff", "wyrk_staff_desc", DungeonAdditionsTab.ALL);
     public static final Item WYRK_TOTEM = new ItemWyrkTotem("wyrk_totem", "wyrk_totem_desc", DungeonAdditionsTab.ALL);
     public static final Item LITIC_SHARD = new ItemCraftingMaterial("lightning_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -113,9 +124,13 @@ public class ModItems {
     public static final Item DRAUGR_SHIELD = new ItemDraugrShield("draugr_shield", DungeonAdditionsTab.ALL, "draugr_shield_desc");
     public static final Item CHAMPION_AXE = new ItemChampionAxe("champion_axe", CHAMPION_AXE_MATERIAL, "champion_axe_desc");
     public static final Item IMPERIAL_HALBERD_ITEM = new ItemImperialHalberd("imperial_halberd_item", IMPERIAL_HALBERD_MATERIAL, "imperial_halberd_desc");
+    public static final Item IMPERIAL_SWORD = new ItemParrySword("imperial_sword_item", "imperial_sword_desc", IMPERIAL_SWORD_MATERIAL);
+
     public static final Item DRAUGR_METAL = new ItemCraftingMaterial("draugr_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item DRAUGR_INGOT = new ItemCraftingMaterial("draugr_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item GREAT_WYRK_CRYSTAL = new ItemCraftingMaterial("great_wyrk_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item LIGHT_MANA = new ItemCraftingMaterial("light_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item DIVINE_SCROLL = new ItemCraftingMaterial("divine_scroll", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROZEN_CASTLE_LOCATOR = new ItemFrozenCastleLocator("frost_locator", "frost_locator_desc");
     public static final Item FAKE_BOW = new ItemBase("fake_bow");
 

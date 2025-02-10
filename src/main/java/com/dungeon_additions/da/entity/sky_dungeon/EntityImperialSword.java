@@ -319,7 +319,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.1, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = (float) (this.getAttack() * 1.25);
-          ModUtils.handleAreaImpact(3.25f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+          ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
           this.playSound(SoundsHandler.IMPERIAL_START_MAGIC, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
       }, 35);
 

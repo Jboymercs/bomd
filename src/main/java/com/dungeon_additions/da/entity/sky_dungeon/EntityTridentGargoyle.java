@@ -11,6 +11,7 @@ import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
 import com.dungeon_additions.da.entity.sky_dungeon.gargoyle.ActionGargoyleShoot;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModRand;
+import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.ServerScaleUtil;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
@@ -36,6 +37,7 @@ import net.minecraft.pathfinding.PathNavigateFlying;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -586,6 +588,18 @@ public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable,
     @Override
     public void tick() {
 
+    }
+
+    private static final ResourceLocation LOOT_MOB = new ResourceLocation(ModReference.MOD_ID, "gargoyle_mage");
+
+    @Override
+    protected ResourceLocation getLootTable() {
+        return LOOT_MOB;
+    }
+
+    @Override
+    protected boolean canDropLoot() {
+        return true;
     }
 
     @Override

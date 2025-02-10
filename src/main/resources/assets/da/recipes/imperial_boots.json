@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "R R",
+    "V V"
+  ],
+  "key": {
+    "V": {
+      "item": "da:lightning_ingot"
+    },
+    "R": {
+      "item": "da:light_mana"
+    }
+
+  },
+  "result": {
+    "item": "da:imperial_boots"
+  }
+}

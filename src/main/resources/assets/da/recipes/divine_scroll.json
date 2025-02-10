@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " X ",
+    "VXV",
+    " X "
+  ],
+  "key": {
+    "V": {
+      "item": "da:light_mana"
+    },
+    "X": {
+      "item": "minecraft:paper"
+    }
+  },
+  "result": {
+    "item": "da:divine_scroll"
+  }
+}

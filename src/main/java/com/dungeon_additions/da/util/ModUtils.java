@@ -56,6 +56,9 @@ public class ModUtils {
     public static byte FIFTH_PARTICLE_BYTE = 17;
 
     public static final String LANG_DESC = ModReference.MOD_ID + ".desc.";
+
+    public static final String LANG_CHAT = ModReference.MOD_ID + ".dialog.";
+
     public static Vec3d Z_AXIS = new Vec3d(0, 0, 1);
     public static float getMobDamage(double baseAttackDamage, double healthScaledAttackFactor, float maxHealth, float health) {
 

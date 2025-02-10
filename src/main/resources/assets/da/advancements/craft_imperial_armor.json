@@ -1,0 +1,56 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:imperial_chestplate"
+    },
+    "title": {
+      "translate": "advancements.da.craft_imperial_armor.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_imperial_armor.description"
+    }
+  },
+  "parent": "da:kill_imperial_halberd",
+  "criteria": {
+    "imperialHelmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:imperial_helmet"
+          }
+        ]
+      }
+    },
+    "imperialChestplate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:imperial_chestplate"
+          }
+        ]
+      }
+    },
+    "imperialLeggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:imperial_leggings"
+          }
+        ]
+      }
+    },
+    "imperialBoots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:imperial_boots"
+          }
+        ]
+      }
+    }
+  }
+}

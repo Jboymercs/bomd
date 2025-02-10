@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "V",
+    "R"
+  ],
+  "key": {
+    "V": {
+      "item": "da:lightning_ingot"
+    },
+    "R": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "da:imperial_sword_item"
+  }
+}

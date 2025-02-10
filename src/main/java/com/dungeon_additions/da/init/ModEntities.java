@@ -15,6 +15,7 @@ import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityEliteDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.ProjectileSoul;
+import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
@@ -125,6 +126,7 @@ public class ModEntities {
             registerEntityWithID("mage_gargoyle", EntityMageGargoyle.class, ENTITY_START_ID++, 90, night_lich);
             registerEntity("light_ring_projectile", ProjectileLightRing.class, ENTITY_START_ID++, 90);
             registerEntity("gargoyle_lazer", EntityGargoyleLazer.class, ENTITY_START_ID++, 90);
+            registerEntity("friend_wyrk", EntityFriendWyrk.class, ENTITY_START_ID++, 90);
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
         registerTileEntity(TileEntityMegaStructure.class, "mega_structure");

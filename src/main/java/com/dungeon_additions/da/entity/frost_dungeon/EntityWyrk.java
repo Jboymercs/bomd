@@ -64,8 +64,6 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
     private Consumer<EntityLivingBase> prevAttack;
     private static final DataParameter<Boolean> STOMP = EntityDataManager.createKey(EntityWyrk.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> SUMMON_COUNT = EntityDataManager.createKey(EntityWyrk.class, DataSerializers.VARINT);
-
-    protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.<Optional<UUID>>createKey(EntityWyrk.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     private boolean isStomp() {return this.dataManager.get(STOMP);}
 
     private void setStomp(boolean value) {this.dataManager.set(STOMP, Boolean.valueOf(value));}
@@ -79,22 +77,12 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
         super(worldIn, x, y, z);
         this.setSize(0.8F, 1.95F);
         this.experienceValue = 12;
-        if(this.getOwner() == null) {
-            this.setUpRegularAI();
-        } else {
-            this.isFriendlyCreature = true;
-        }
     }
 
     public EntityWyrk(World worldIn) {
         super(worldIn);
         this.setSize(0.8F, 1.95F);
         this.experienceValue = 12;
-        if(this.getOwner() == null) {
-            this.setUpRegularAI();
-        } else {
-            this.isFriendlyCreature = true;
-        }
     }
 
     public EntityWyrk(World world, EntityPlayer player) {
@@ -103,50 +91,11 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
         this.experienceValue = 0;
     }
 
-    public void onSummonViaPlayer(BlockPos pos, EntityPlayer owner) {
-        BlockPos offset = pos.add(new BlockPos(0,0,0));
-        this.setPosition(offset.getX(), offset.getY(), offset.getZ());
-        this.setUpOwnerAttributes();
-        this.setUpOwnerAI();
-    }
-
-    @Nullable
-    public UUID getOwnerId()
-    {
-        return (UUID)((Optional)this.dataManager.get(OWNER_UNIQUE_ID)).orNull();
-    }
-
-    public void setOwnerId(@Nullable UUID p_184754_1_)
-    {
-        this.dataManager.set(OWNER_UNIQUE_ID, Optional.fromNullable(p_184754_1_));
-    }
-
-    @Nullable
-    public EntityLivingBase getOwner()
-    {
-        UUID uuid = this.getOwnerId();
-        if(uuid == null) {
-            return null;
-        }
-        else {
-            this.isFriendlyCreature = true;
-            return this.world.getPlayerEntityByUUID(uuid);
-        }
-    }
-
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setInteger("Summon_Count", this.getSummonCount());
         nbt.setBoolean("Stomp", this.isStomp());
-        if (this.getOwnerId() == null)
-        {
-            nbt.setString("OwnerUUID", "");
-        }
-        else
-        {
-            nbt.setString("OwnerUUID", this.getOwnerId().toString());
-        }
         super.writeEntityToNBT(nbt);
     }
 
@@ -154,28 +103,12 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.setSummonCount(nbt.getInteger("Summon_Count"));
         this.setStomp(nbt.getBoolean("Stomp"));
-        String s;
-        if (nbt.hasKey("OwnerUUID", 8))
-        {
-            s = nbt.getString("OwnerUUID");
-        }
-        else
-        {
-            String s1 = nbt.getString("Owner");
-            s = PreYggdrasilConverter.convertMobOwnerIfNeeded(Objects.requireNonNull(this.getServer()), s1);
-        }
-
-        if (!s.isEmpty())
-        {
-            this.setOwnerId(UUID.fromString(s));
-        }
         super.readEntityFromNBT(nbt);
     }
 
     @Override
     public void entityInit() {
         super.entityInit();
-        this.dataManager.register(OWNER_UNIQUE_ID, Optional.absent());
         this.dataManager.register(SUMMON_COUNT, MobConfig.wyrk_starter_souls);
         this.dataManager.register(STOMP, Boolean.valueOf(false));
     }
@@ -189,7 +122,7 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
         EntityLivingBase target = this.getAttackTarget();
 
         if(!world.isRemote) {
-            if(target != null && this.getSummonCount() > 0 && this.getOwner() == null) {
+            if(target != null && this.getSummonCount() > 0) {
                 if(summonDraugrTimer > 1) {
                     summonDraugrTimer--;
                 }
@@ -197,44 +130,6 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
                 if (summonDraugrTimer < 4) {
                     //summons Draugr
                     this.summonDraugrByCount();
-                }
-            } else if (this.getOwner() != null) {
-
-                if(this.getSummonCount() > 5) {
-                    this.setSummonCount(this.getSummonCount() - 1);
-                }
-                double healthFac = this.getHealth() / this.getMaxHealth();
-                //instead have the Wyrk heal itself upon gaining souls, allowing for more depth with the friendly summons
-                if(healthFac <= 0.95 && this.getSummonCount() > 0) {
-                    if(summonDraugrTimer > 1) {
-                        summonDraugrTimer--;
-                    }
-                    if (summonDraugrTimer < 4) {
-                        this.heal(MobConfig.wyrk_heal_amount);
-                        this.setSummonCount(this.getSummonCount() - 1);
-                        this.summonDraugrTimer = 150;
-                        world.setEntityState(this, ModUtils.FOURTH_PARTICLE_BYTE);
-                        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 0.7f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
-                    }
-                } else {
-                    List<EntityPlayer> nearbyplayer = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(8.0D), e -> !e.getIsInvulnerable());
-
-                    if(summonDraugrTimer > 1) {
-                        summonDraugrTimer--;
-                    }
-                    if(!nearbyplayer.isEmpty() && this.getSummonCount() > 0) {
-                        for(EntityPlayer player : nearbyplayer) {
-                            double playerHealth = player.getHealth() / player.getMaxHealth();
-
-                            if(playerHealth < 1 && summonDraugrTimer < 4) {
-                                player.heal(MobConfig.wyrk_heal_amount * 0.5F);
-                                world.setEntityState(this, ModUtils.FOURTH_PARTICLE_BYTE);
-                                this.setSummonCount(this.getSummonCount() - 1);
-                                this.summonDraugrTimer = 400;
-                                this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 1.2f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -280,31 +175,14 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }
 
-    protected void setUpOwnerAI() {
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityMob>(this, EntityMob.class, 1, true, false, null));
-        this.targetTasks.addTask(3, new EntityAIWyrkHurtByTarget(this));
-        this.targetTasks.addTask(4, new EntityWyrkOwnerAttack(this));
-        this.tasks.addTask(5, new EntityAIWyrkFollow(this, 1.4D, 4, 16));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 9));
-    }
-
-    protected void setUpOwnerAttributes() {
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MobConfig.wyrk_health);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.wyrk_attack_damage * 0.9);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(24D);
-    }
-
-    protected void setUpRegularAI() {
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 1, true, false, null));
-        this.targetTasks.addTask(5, new EntityAIHurtByTarget(this, false));
-    }
-
     @Override
     public void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(4, new EntityWyrkAttackAI<>(this, 1.1, 120, 16, 0.5F));
         this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(7, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 1, true, false, null));
+        this.targetTasks.addTask(5, new EntityAIHurtByTarget(this, false));
 
     }
 
@@ -321,7 +199,7 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
             }
             prevAttack.accept(target);
         }
-        return this.getOwner() != null ? 80 : 120;
+        return 120;
     }
 
     private final Consumer<EntityLivingBase> ranged_attack = (target) -> {
@@ -388,13 +266,6 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
             ModUtils.circleCallback(1, 20, (pos)-> {
                 pos = new Vec3d(pos.x, 0, pos.y);
                 ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(2.4)), ModColors.AZURE, pos.normalize().scale(0.1), ModRand.range(10, 15));
-            });
-        }
-
-        if(id == ModUtils.FOURTH_PARTICLE_BYTE) {
-            ModUtils.circleCallback(1, 20, (pos)-> {
-                pos = new Vec3d(pos.x, 0, pos.y);
-                ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(2.4)), ModColors.PINK, pos.normalize().scale(0.1), ModRand.range(10, 15));
             });
         }
     }

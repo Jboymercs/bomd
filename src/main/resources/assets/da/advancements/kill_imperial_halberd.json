@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:imperial_helmet"
+    },
+    "title": {
+      "translate": "advancements.da.kill_imperial_halberd.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_imperial_halberd.description"
+    }
+  },
+  "parent": "da:root",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:imperial_halberd"
+        }
+      }
+    }
+  }
+}

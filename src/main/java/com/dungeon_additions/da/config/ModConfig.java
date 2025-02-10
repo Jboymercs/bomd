@@ -82,6 +82,11 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static int wyrk_armor_chance = 7;
 
+    @Config.Name("Litic Armor Ability Chance")
+    @Config.Comment("Change the chance of the Regeneration being given with the Litic armor, higher means better chance at higher health")
+    @Config.RequiresMcRestart
+    public static int litic_armor_chance = 7;
+
     @Config.Name("Ancient Wyrk Staff Cooldown")
     @Config.Comment("Change the staff cooldown for the frost bullet attack, this scales the alternative attack additionally")
     @Config.RequiresMcRestart

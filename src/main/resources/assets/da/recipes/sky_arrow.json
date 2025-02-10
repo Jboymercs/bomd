@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "R",
+    "F"
+  ],
+  "key": {
+    "V": {
+      "item": "da:light_mana"
+    },
+    "R": {
+      "item": "minecraft:stick"
+    },
+    "F": {
+      "item": "minecraft:feather"
+    }
+  },
+  "result": {
+    "item": "da:sky_arrow",
+    "data": 0,
+    "count": 4
+  }
+}

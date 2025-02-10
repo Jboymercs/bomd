@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.frost_dungeon.friendly_wyrk;
 
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
+import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
 import com.dungeon_additions.da.entity.pathing.MobGroundNavigate;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
@@ -15,7 +16,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityAIWyrkFollow extends EntityAIBase {
-    private final EntityWyrk tameable;
+    private final EntityFriendWyrk tameable;
     private EntityLivingBase owner;
     World world;
     private final double followSpeed;
@@ -25,7 +26,7 @@ public class EntityAIWyrkFollow extends EntityAIBase {
     float minDist;
     private float oldWaterCost;
 
-    public EntityAIWyrkFollow(EntityWyrk tameableIn, double followSpeedIn, float minDistIn, float maxDistIn)
+    public EntityAIWyrkFollow(EntityFriendWyrk tameableIn, double followSpeedIn, float minDistIn, float maxDistIn)
     {
         this.tameable = tameableIn;
         this.world = tameableIn.world;

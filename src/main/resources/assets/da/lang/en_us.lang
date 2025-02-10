@@ -48,6 +48,7 @@ entity.mage_gargoyle.name=Farum Elder Gargoyle
 entity.farum_dart.name=Farum Gargoyle Shard
 entity.light_ring_projectile.name=Light Ring
 entity.gargoyle_lazer.name=The Shining Light
+entity.friend_wyrk.name=Friendly Wyrk
 item.void_leaf.name=Void Leaf
 item.spore.name=Void Blossom Spore
 item.crystal_fruit.name=Crystal Fruit
@@ -106,6 +107,14 @@ item.lightning_ingot.name=Litic Ingot
 item.lightning_smithing_stone.name=Dragon Smithing Stone
 item.lightning_key.name=High Court City Dungeon Key
 item.light_ring.name=Lightning Ring
+item.imperial_sword_item.name=Master Parry Sword
+item.divine_scroll.name=Divine Scroll
+item.crumble_berries.name=Crumble Berries
+item.light_mana.name=Divine Mana
+item.imperial_chestplate.name=Litic Chestplate
+item.imperial_helmet.name=Litic Helmet
+item.imperial_leggings.name=Litic Leggings
+item.imperial_boots.name=Litic Boots
 tile.spore_blossom.name=Void Blossom
 tile.moss_block.name=Moss Block
 tile.moss_carpet.name=Moss Carpet
@@ -239,8 +248,12 @@ da.desc.wyrk_totem_desc=Right clicking will summon a friendly Wyrk to follow and
 da.desc.snow_cold_brick_desc=If Ice is above this block, it will generate Icicles underneath.
 da.desc.sky_arrow_desc=By aiming at a precise target, the arrow will ensure it hits its target.
 da.desc.imperial_halberd_desc=Right clicking will launch a line of Lightning Bolts in front of you.
-da.desc_lighting_key_desc=Used in the High Court City's Petrogloom Arena
+da.desc.lighting_key_desc=Used in the High Court City's Petrogloom Arena
 da.desc.lightning_stone_desc=When used in an anvil, you can upgrade any weapons from BOMD + DA.
+da.desc.imperial_sword_desc=When right clicking, you can parry negating the damage and dealing damage to the enemy. Failing the parry will inflict weakness.
+da.desc.crumble_berries_desc=Grants Absorption for 1 minute, and Speed for 30 seconds.
+da.desc.imperial_armor_desc=Full Set allows lightning bolts to be summoned on entities that attack you and you are given Absorption for 30 seconds, the chance increasing the lower your health is.
+da.desc.imperial_helmet_desc=Grants Resistance to Weakness. Full Set allows lightning bolts to be summoned on entities that attack you and you are given Absorption for 30 seconds, the chance increasing the lower your health is.
 death.attack.da:maelstrom=%1$s succumbed to the void
 death.attack.da:mobMaelstrom=%1$s was killed by a %2$s
 death.attack.da:playerMaelstrom=%1$s was killed by %2$s
@@ -276,6 +289,9 @@ advancements.da.kill_elite_draugr.description=Slay a Frostborn Draugr Champion
 #Ancient Wyrk
 advancements.da.kill_great_wyrk.title=The Depths of the Frost
 advancements.da.kill_great_wyrk.description=Slay an Ancient Wyrk
+#Kill High Court Halbidier
+advancements.da.kill_imperial_halberd.title=The Definition of Forgotten.
+advancements.da.kill_imperial_halberd.description=Slay a High Court Halbidier
 #Find Soul Star
 advancements.da.find_soul_star.title=The stars lead the way
 advancements.da.find_soul_star.description=Obtain a Soul Star
@@ -330,4 +346,13 @@ advancements.da.craft_wyrk_snack.description=Craft the Survivor's Endless Hunger
 #Craft Wyrk Totem
 advancements.da.craft_wyrk_totem.title=Sometimes friends can be cold
 advancements.da.craft_wyrk_totem.description=Craft the Wyrk Elemental Totem
+#Craft Imperial Armor
+advancements.da.craft_imperial_armor.title=I can take a hit.
+advancements.da.craft_imperial_armor.description=Craft the full set of Litic Armor
+#Craft Imperial Halberd
+advancements.da.craft_imperial_halberd.title=It all begins with you!
+advancements.da.craft_imperial_halberd.description=Craft the Prosperous Assault
+#Craft Imperial Sword
+advancements.da.craft_parry_sword.title=Parry this you filthy casual!
+advancements.da.craft_parry_sword.description=Craft the Master Parry Sword
 

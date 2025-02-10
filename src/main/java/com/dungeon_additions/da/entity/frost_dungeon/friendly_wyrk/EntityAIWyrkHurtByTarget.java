@@ -1,15 +1,16 @@
 package com.dungeon_additions.da.entity.frost_dungeon.friendly_wyrk;
 
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
+import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
 
 public class EntityAIWyrkHurtByTarget extends EntityAITarget {
-    EntityWyrk tameable;
+    EntityFriendWyrk tameable;
     EntityLivingBase attacker;
     private int timestamp;
 
-    public EntityAIWyrkHurtByTarget(EntityWyrk theDefendingTameableIn)
+    public EntityAIWyrkHurtByTarget(EntityFriendWyrk theDefendingTameableIn)
     {
         super(theDefendingTameableIn, false);
         this.tameable = theDefendingTameableIn;

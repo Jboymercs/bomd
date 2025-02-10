@@ -57,7 +57,7 @@ public class HighCityDungeon {
     }
 
     private boolean generateStraight(HighCityTemplate parent, BlockPos pos, Rotation rot) {
-        String[] straight_types = {"straight_1", "straight_2", "straight_3"};
+        String[] straight_types = {"straight_1", "straight_2", "straight_3", "straight_4", "straight_5"};
         HighCityTemplate straight_piece = addAdjustedPiece(parent, pos.add(0, ModRand.range(-4, 5), 0), ModRand.choice(straight_types), rot);
 
         if(straight_piece.getDistance() > SIZE || straight_piece.isCollidingExcParent(manager, parent, components)) {
@@ -66,23 +66,25 @@ public class HighCityDungeon {
 
         components.add(straight_piece);
 
-        if(!generatedKeyRoom) {
-            generateKeyRoom(straight_piece, BlockPos.ORIGIN, rot);
-        } else {
-            generateCross(straight_piece, BlockPos.ORIGIN, rot);
-        }
+        generateCross(straight_piece, BlockPos.ORIGIN, rot);
 
-        generateSidePiece(straight_piece, BlockPos.ORIGIN.add(0, 0, 30), rot);
-        generateSidePiece(straight_piece, BlockPos.ORIGIN.add(0,0,-30), rot);
+
         return true;
     }
 
     private boolean generateCross(HighCityTemplate parent, BlockPos pos, Rotation rot) {
-        String[] cross_types = {"cross_1", "cross_2", "cross_3", "cross_4", "cross_5"};
+        String[] cross_types = {"cross_1", "cross_2", "cross_3", "cross_4", "cross_5", "straight_1", "straight_2", "straight_3", "straight_4", "straight_5"};
         HighCityTemplate cross_piece = addAdjustedPiece(parent, pos, ModRand.choice(cross_types), rot);
+
+
 
         if(cross_piece.getDistance() > SIZE || cross_piece.isCollidingExcParent(manager, parent, components)) {
             return false;
+        }
+
+        if(cross_piece.getDistance() > SIZE - 1 && !generatedKeyRoom) {
+            cross_piece = addAdjustedPiece(parent, pos, "cross_key", rot);
+            generatedKeyRoom = true;
         }
 
         components.add(cross_piece);
@@ -94,7 +96,7 @@ public class HighCityDungeon {
                 if(!generateBossRoom(parent, tuple.getSecond(), rot.add(tuple.getFirst()))) {
                     failedHalls++;
                 }
-            } else if (!generateStraight(cross_piece, tuple.getSecond(), rot.add(tuple.getFirst()))) {
+            } else if (!generateCross(cross_piece, tuple.getSecond(), rot.add(tuple.getFirst()))) {
                 failedHalls++;
             }
         }
@@ -105,7 +107,7 @@ public class HighCityDungeon {
                 //Generate Boss Room
                 return generateBossRoom(parent, pos, rot);
             } else if (!generatedKeyRoom){
-                return generateKeyRoom(parent, pos, rot);
+
                 //Generate End Piece
                 //return generateEndPiece(parent, pos, rot);
             }
@@ -113,51 +115,7 @@ public class HighCityDungeon {
         return true;
     }
 
-    protected boolean generateSidePiece(HighCityTemplate parent, BlockPos pos, Rotation rot) {
-        String[] cross_types = {"cross_1", "cross_2", "cross_3", "cross_4", "cross_5", "straight_1", "straight_2", "straight_3"};
-        HighCityTemplate pieceFor = addAdjustedPieceWithoutDistance(parent, pos, ModRand.choice(cross_types), rot);
-        if(pieceFor.isCollidingExcParent(manager, parent, components)) {
-            return false;
-        }
-        components.add(pieceFor);
-        return true;
-    }
 
-    protected boolean generateKeyRoom(HighCityTemplate parent, BlockPos pos, Rotation rot) {
-        String[] cross_types = {"cross_key"};
-        HighCityTemplate cross_piece = addAdjustedPieceWithoutDistance(parent, pos, ModRand.choice(cross_types), rot);
-
-        if(cross_piece.isCollidingExcParent(manager, parent, components)) {
-            return false;
-        }
-
-        components.add(cross_piece);
-        generatedKeyRoom = true;
-        int failedHalls = 0;
-        List<StructureComponent> structures = new ArrayList<>(components);
-        for (Tuple<Rotation, BlockPos> tuple : DUNGEON_CROSS) {
-            if(SIZE > 1 && !generatedBossRoom) {
-                if(!generateBossRoom(parent, tuple.getSecond(), rot.add(tuple.getFirst()))) {
-                    failedHalls++;
-                }
-            } else if (!generateStraight(cross_piece, tuple.getSecond(), rot.add(tuple.getFirst()))) {
-                failedHalls++;
-            }
-        }
-        if (failedHalls > 3) {
-            components.clear();
-            components.addAll(structures);
-            if(SIZE > 1 && !generatedBossRoom) {
-                //Generate Boss Room
-                return generateBossRoom(parent, pos, rot);
-            } else {
-                //Generate End Piece
-                //return generateEndPiece(parent, pos, rot);
-            }
-        }
-
-        return true;
-    }
     protected boolean generateBossRoom(HighCityTemplate parent, BlockPos pos, Rotation rot) {
         HighCityTemplate arena_1 = addAdjustedPieceWithoutDistance(parent, BlockPos.ORIGIN.add(0, 0, -8), "arena_1", rot);
         HighCityTemplate arena_2 = addAdjustedPieceWithoutDistance(parent, BlockPos.ORIGIN.add(19, 0, -8), "arena_2", rot);

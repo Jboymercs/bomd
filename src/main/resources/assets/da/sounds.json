@@ -1039,6 +1039,16 @@
       }
     ]
   },
+  "entity.imperial_knight.parry": {
+    "category": "entity",
+    "subtitle": "entity.imperial_knight.parry",
+    "sounds": [
+      {
+        "name": "da:entity/imperial_knight/parry",
+        "steam": false
+      }
+    ]
+  },
   "entity.gargoyle.flap": {
     "category": "entity",
     "subtitle": "",

@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.items;
 
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
+import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
@@ -42,12 +43,12 @@ public class ItemWyrkTotem extends ItemBase {
         int SwordCoolDown = 60 * 20;
 
         if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
-            List<EntityWyrk> nearbyWyrk = player.world.getEntitiesWithinAABB(EntityWyrk.class, player.getEntityBoundingBox().grow(30D), e -> !e.getIsInvulnerable());
+            List<EntityFriendWyrk> nearbyWyrk = player.world.getEntitiesWithinAABB(EntityFriendWyrk.class, player.getEntityBoundingBox().grow(30D), e -> !e.getIsInvulnerable());
 
             boolean flag = false;
 
             if(!nearbyWyrk.isEmpty()) {
-                for(EntityWyrk wyrk : nearbyWyrk) {
+                for(EntityFriendWyrk wyrk : nearbyWyrk) {
                     if(wyrk.getOwnerId() == player.getUniqueID()) {
                         flag = true;
                     }
@@ -56,7 +57,7 @@ public class ItemWyrkTotem extends ItemBase {
 
             if(!flag) {
                 stack.damageItem(1, player);
-                EntityWyrk friend_wyrk = new EntityWyrk(worldIn, player);
+                EntityFriendWyrk friend_wyrk = new EntityFriendWyrk(worldIn, player);
                 friend_wyrk.setOwnerId(player.getUniqueID());
                 friend_wyrk.onSummonViaPlayer(player.getPosition(), player);
                 player.world.spawnEntity(friend_wyrk);
