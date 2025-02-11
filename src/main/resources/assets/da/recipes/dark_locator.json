@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV",
+    "VXV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "item": "da:dark_mana"
+    },
+    "X": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "item": "da:dark_locator"
+  }
+}

@@ -49,6 +49,8 @@ entity.farum_dart.name=Farum Gargoyle Shard
 entity.light_ring_projectile.name=Light Ring
 entity.gargoyle_lazer.name=The Shining Light
 entity.friend_wyrk.name=Friendly Wyrk
+entity.dark_assassin.name=Cult of Rah Assassin
+entity.shadow_hand.name=Cult's Hand
 item.void_leaf.name=Void Leaf
 item.spore.name=Void Blossom Spore
 item.crystal_fruit.name=Crystal Fruit
@@ -115,6 +117,10 @@ item.imperial_chestplate.name=Litic Chestplate
 item.imperial_helmet.name=Litic Helmet
 item.imperial_leggings.name=Litic Leggings
 item.imperial_boots.name=Litic Boots
+item.dark_mana.name=Rah Void Mana
+item.dark_core.name=Rah Void Core
+item.dark_locator.name=Cult of Rah Eye
+item.dark_dagger.name=Rah Void Dagger
 tile.spore_blossom.name=Void Blossom
 tile.moss_block.name=Moss Block
 tile.moss_carpet.name=Moss Carpet
@@ -210,7 +216,8 @@ tile.farum_rope.name=Farum Rope
 tile.farum_lantern.name=Farum Lantern
 tile.high_spawner.name=High Court City Disappearing Spawner
 
-itemGroup.dungeon_additions=BOMD + Dungeon Additions
+itemGroup.dungeon_additions=BOMD + Dungeon Additions Items
+itemGroup.dungeon_additions_blocks=BOMD + Dungeon Additions Blocks
 
 da.lich_spawn.soul_star=Maybe something of a star like shape?
 da.lich_wrong_time=The sun must set first
@@ -254,6 +261,7 @@ da.desc.imperial_sword_desc=When right clicking, you can parry negating the dama
 da.desc.crumble_berries_desc=Grants Absorption for 1 minute, and Speed for 30 seconds.
 da.desc.imperial_armor_desc=Full Set allows lightning bolts to be summoned on entities that attack you and you are given Absorption for 30 seconds, the chance increasing the lower your health is.
 da.desc.imperial_helmet_desc=Grants Resistance to Weakness. Full Set allows lightning bolts to be summoned on entities that attack you and you are given Absorption for 30 seconds, the chance increasing the lower your health is.
+da.desc.dark_dagger_desc=Right clicking will launch you back shortly and it resets your fall distance.
 death.attack.da:maelstrom=%1$s succumbed to the void
 death.attack.da:mobMaelstrom=%1$s was killed by a %2$s
 death.attack.da:playerMaelstrom=%1$s was killed by %2$s
@@ -292,6 +300,9 @@ advancements.da.kill_great_wyrk.description=Slay an Ancient Wyrk
 #Kill High Court Halbidier
 advancements.da.kill_imperial_halberd.title=The Definition of Forgotten.
 advancements.da.kill_imperial_halberd.description=Slay a High Court Halbidier
+#Kill Cult of Rah Assassin
+advancements.da.kill_dark_assassin.title=The Cult sends there regards!
+advancements.da.kill_dark_assassin.description=Slay a Cult of Rah Assassin
 #Find Soul Star
 advancements.da.find_soul_star.title=The stars lead the way
 advancements.da.find_soul_star.description=Obtain a Soul Star
@@ -355,4 +366,7 @@ advancements.da.craft_imperial_halberd.description=Craft the Prosperous Assault
 #Craft Imperial Sword
 advancements.da.craft_parry_sword.title=Parry this you filthy casual!
 advancements.da.craft_parry_sword.description=Craft the Master Parry Sword
+#Craft Dark Assassin Blade
+advancements.da.craft_dark_dagger.title=In the blade of Night.
+advancements.da.craft_dark_dagger.description=Craft the Rah Void Dagger
 

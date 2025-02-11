@@ -631,7 +631,6 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
     private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
         if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode()) {
             if(this.isPlanted()) {
-                System.out.println("Playing Idle Animation for Planted");
                 event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_PLANTED, true));
                 return PlayState.CONTINUE;
             }

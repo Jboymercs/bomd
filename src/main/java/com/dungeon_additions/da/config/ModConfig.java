@@ -160,6 +160,18 @@ public class ModConfig {
             "da:kill_kobf"
     };
 
+    @Config.Name("Cult of Rah Assassins Spawning Advancement Requirements")
+    @Config.Comment("What advancements are required for Cult of Rah Assassins spawning around the player")
+    @Config.RequiresMcRestart
+    public static String[] assassins_spawn_progress = {
+            "da:kill_great_wyrk"
+    };
+
+    @Config.Name("Cult of Rah Assassin Spawn Rate")
+    @Config.Comment("Change the spawn rate of Cult of Rah Assassins, change to 0 to disable")
+    @Config.RequiresMcRestart
+    public static int assassin_spawn_rate = 18;
+
     @Config.Name("Boss Reset Enabled/Disabled")
     @Config.Comment("This setting makes it so that if bosses killed all players around them, they will reset back into a key block with a chest above with the respective key. Allowing players to recover there loot more easily and try again. default: true")
     @Config.RequiresMcRestart

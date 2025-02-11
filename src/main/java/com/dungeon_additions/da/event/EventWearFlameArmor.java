@@ -2,25 +2,27 @@ package com.dungeon_additions.da.event;
 
 
 import com.dungeon_additions.da.config.ModConfig;
+import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBolt;
 import com.dungeon_additions.da.init.ModItems;
-import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemSword;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber
 public class EventWearFlameArmor {
@@ -140,5 +142,20 @@ public class EventWearFlameArmor {
         actor.world.spawnEntity(bolt7);
         actor.world.spawnEntity(bolt8);
         cooldownDelegation = 25.0;
+    }
+
+    @SubscribeEvent
+    public static  void onSpawnAssassin(LivingSpawnEvent event)
+    {
+        //removes assassin spawns that occur when the players don't meet advancement requirements
+        EntityLivingBase base = event.getEntityLiving();
+        if(base instanceof EntityDarkAssassin) {
+            EntityDarkAssassin assassin = ((EntityDarkAssassin) base);
+            event.getWorld().playerEntities.forEach((p)-> {
+                if(!ModUtils.getAdvancementCompletionAsList(p, ModConfig.assassins_spawn_progress) && !p.isCreative()) {
+                    assassin.setDead();
+                }
+            });
+        }
     }
 }

@@ -1,10 +1,13 @@
 package com.dungeon_additions.da.init;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.EntityFireResistantItems;
 import com.dungeon_additions.da.entity.EntityNetherAbberrant;
 import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
+import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
+import com.dungeon_additions.da.entity.dark_dungeon.EntityShadowHand;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
 import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
@@ -40,6 +43,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeForest;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -66,6 +70,12 @@ public class ModEntities {
     public static Vec3i draugr_champion = new Vec3i(0xa3a19b,0x6eebeb,0);
     public static Vec3i draugr_melee = new Vec3i(0x00338c,0x6eebeb,0);
     public static Vec3i draugr_ranged = new Vec3i(0x62117d,0x6eebeb,0);
+
+    public static Vec3i imperial_halberd = new Vec3i(0x5a6e75,0x7d5e00,0);
+    public static Vec3i imperial_sword = new Vec3i(0x5a6e75,0xf5bb0c,0);
+    public static Vec3i farum_gargoyle = new Vec3i(0x404040,0xf5bb0c,0);
+    public static Vec3i farum_elder = new Vec3i(0x404040,0xebff0a,0);
+    public static Vec3i dark_assassin = new Vec3i(0x233547,0x030303,0);
     public static void registerEntities() {
       //  registerEntityWithID("wreath_knight", EntityWreathKnight.class, ENTITY_START_ID++, 50, knight_mobs);
         registerEntityWithID("void_blossom", EntityVoidBlossom.class, ENTITY_START_ID++, 50, void_blossom);
@@ -116,17 +126,19 @@ public class ModEntities {
             registerEntity("frost_magic", ProjectileFrostGround.class, ENTITY_START_ID++, 80);
             registerEntity("wyrk_foot", EntityWyrkFoot.class, ENTITY_START_ID++, 80);
             registerEntity("wyrk_lazer", EntityWyrkLazer.class, ENTITY_START_ID++, 80);
-            registerEntityWithID("imperial_halberd", EntityImperialHalberd.class, ENTITY_START_ID++, 80, night_lich);
+            registerEntityWithID("imperial_halberd", EntityImperialHalberd.class, ENTITY_START_ID++, 80, imperial_halberd);
             registerEntity("sky_lightning_bolt", EntitySkyBolt.class, ENTITY_START_ID++, 80);
-            registerEntityWithID("imperial_sword", EntityImperialSword.class, ENTITY_START_ID++, 80, night_lich);
+            registerEntityWithID("imperial_sword", EntityImperialSword.class, ENTITY_START_ID++, 80, imperial_sword);
             registerEntity("sky_arrow", EntitySkyArrow.class, ENTITY_START_ID++, 80);
             registerEntity("sky_tornado", EntitySkyTornado.class, ENTITY_START_ID++, 80);
-            registerEntityWithID("trident_gargoyle", EntityTridentGargoyle.class, ENTITY_START_ID++, 80, night_lich);
+            registerEntityWithID("trident_gargoyle", EntityTridentGargoyle.class, ENTITY_START_ID++, 80, farum_gargoyle);
             registerEntity("farum_dart", EntityFarumSpike.class, ENTITY_START_ID++, 90);
-            registerEntityWithID("mage_gargoyle", EntityMageGargoyle.class, ENTITY_START_ID++, 90, night_lich);
+            registerEntityWithID("mage_gargoyle", EntityMageGargoyle.class, ENTITY_START_ID++, 90, farum_elder);
             registerEntity("light_ring_projectile", ProjectileLightRing.class, ENTITY_START_ID++, 90);
             registerEntity("gargoyle_lazer", EntityGargoyleLazer.class, ENTITY_START_ID++, 90);
             registerEntity("friend_wyrk", EntityFriendWyrk.class, ENTITY_START_ID++, 90);
+            registerEntityWithID("dark_assassin", EntityDarkAssassin.class, ENTITY_START_ID++, 90, dark_assassin);
+            registerEntity("shadow_hand", EntityShadowHand.class, ENTITY_START_ID++, 90);
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
         registerTileEntity(TileEntityMegaStructure.class, "mega_structure");
@@ -140,7 +152,10 @@ public class ModEntities {
     }
 
     public static void RegisterEntitySpawns() {
-
+        spawnRate(EntityDarkAssassin.class, EnumCreatureType.MONSTER, ModConfig.assassin_spawn_rate, 1, 2, BiomeDictionary.Type.SNOWY);
+        spawnRate(EntityDarkAssassin.class, EnumCreatureType.MONSTER, ModConfig.assassin_spawn_rate, 1, 2, BiomeDictionary.Type.FOREST);
+        spawnRate(EntityDarkAssassin.class, EnumCreatureType.MONSTER, ModConfig.assassin_spawn_rate, 1, 2, BiomeDictionary.Type.PLAINS);
+        spawnRate(EntityDarkAssassin.class, EnumCreatureType.MONSTER, ModConfig.assassin_spawn_rate, 1, 2, BiomeDictionary.Type.SANDY);
     }
 
 

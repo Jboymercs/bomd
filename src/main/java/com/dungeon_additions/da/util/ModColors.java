@@ -4,6 +4,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class ModColors {
     public static final Vec3d WHITE = new Vec3d(1, 1, 1);
+    public static final Vec3d BLACK = new Vec3d(0, 0, 0);
     public static final Vec3d MAELSTROM = new Vec3d(0.3, 0.2, 0.4);
     public static final Vec3d RED = new Vec3d(0.9, 0.1, 0.1);
     public static final Vec3d AZURE = new Vec3d(0.2, 0.8, 1);

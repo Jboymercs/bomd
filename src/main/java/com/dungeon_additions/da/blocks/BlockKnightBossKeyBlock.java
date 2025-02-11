@@ -39,7 +39,7 @@ public class BlockKnightBossKeyBlock extends BlockBase implements IBlockUpdater,
         this.activationItem = item;
         this.hasTileEntity = true;
         this.spawnPortal = spawnPortal;
-        this.setCreativeTab(DungeonAdditionsTab.ALL);
+        this.setCreativeTab(DungeonAdditionsTab.BLOCKS);
     }
 
 

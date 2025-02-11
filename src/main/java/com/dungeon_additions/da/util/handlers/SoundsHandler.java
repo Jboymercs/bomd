@@ -3,6 +3,7 @@ package com.dungeon_additions.da.util.handlers;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class SoundsHandler {
@@ -151,6 +152,14 @@ public class SoundsHandler {
     public static SoundEvent GARGOYLE_STEP;
     public static SoundEvent GARGOYLE_SUMMON_LAZER;
 
+    //Dark Assassin
+    public static SoundEvent DARK_ASSASSIN_HURT;
+    public static SoundEvent DARK_ASSASSIN_APPEAR;
+    public static SoundEvent DARK_SUMMON_INK;
+    //Shadow Hand
+    public static SoundEvent SHADOW_HAND_SUMMON;
+    public static SoundEvent SHADOW_HAND_ATTACK;
+
     public static void registerSounds() {
         //
         MOSS_BREAK = registerSound("moss.break", "block");
@@ -276,6 +285,13 @@ public class SoundsHandler {
         GARGOYLE_RING_SUMMON = registerSound("gargoyle.ring_summon", "entity");
         GARGOYLE_SUMMON_LAZER = registerSound("gargoyle.summon_lazer", "entity");
         GARGOYLE_STEP = registerSound("gargoyle.step", "entity");
+        //
+        DARK_ASSASSIN_APPEAR = registerSound("dark_assassin.appear", "entity");
+        DARK_ASSASSIN_HURT = registerSound("dark_assassin.hurt", "entity");
+        DARK_SUMMON_INK = registerSound("dark_assassin.summon_ink", "entity");
+        //
+        SHADOW_HAND_ATTACK = registerSound("shadow_hand.attack", "entity");
+        SHADOW_HAND_SUMMON = registerSound("shadow_hand.summon", "entity");
     }
 
 

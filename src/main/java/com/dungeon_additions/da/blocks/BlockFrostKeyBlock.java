@@ -39,7 +39,7 @@ public class BlockFrostKeyBlock extends BlockBase implements IBlockUpdater, ITil
         this.setBlockUnbreakable();
         this.hasTileEntity = true;
         this.spawnPortal = spawnPortal;
-        this.setCreativeTab(DungeonAdditionsTab.ALL);
+        this.setCreativeTab(DungeonAdditionsTab.BLOCKS);
     }
 
 

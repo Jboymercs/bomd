@@ -37,8 +37,11 @@ public class EntitySkyBase extends EntityAbstractBase {
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        if(source.getImmediateSource() instanceof EntitySkyBase && !damageOverride) {
-            return false;
+        if(source.getImmediateSource() instanceof EntitySkyBase) {
+            EntitySkyBase base = (EntitySkyBase) source.getImmediateSource();
+            if(!base.damageOverride) {
+                return false;
+            }
         }
 
 

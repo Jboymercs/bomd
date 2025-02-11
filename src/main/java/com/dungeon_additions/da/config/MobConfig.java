@@ -374,4 +374,24 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static int great_wyrk_cooldown = 5;
 
+    @Config.Name("Cult of Rah Assassin Health")
+    @Config.Comment("Change the health of the Cult of Rah Assassin")
+    @Config.RequiresMcRestart
+    public static double assassin_healht = 35;
+
+    @Config.Name("Cult of Rah Assassin Attack Damage")
+    @Config.Comment("Change the attack damage of the Cult of Rah Assassin")
+    @Config.RequiresMcRestart
+    public static double assassin_attack_damage = 16;
+
+    @Config.Name("Cult of Rah Assassin Armor")
+    @Config.Comment("Change the armor value of the Cult of Rah Assassin")
+    @Config.RequiresMcRestart
+    public static double assassin_armor = 4;
+
+    @Config.Name("Cult of Rah Assassin Disappears in Daylight")
+    @Config.Comment("Change if the Cult of Rah Assassin disappears when its daylight and can see the sun. default: true")
+    @Config.RequiresMcRestart
+    public static boolean assassin_burns_daylight = true;
+
 }

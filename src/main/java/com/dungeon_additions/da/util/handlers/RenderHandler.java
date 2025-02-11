@@ -8,6 +8,8 @@ import com.dungeon_additions.da.entity.EntityNetherAbberrant;
 import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
+import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
+import com.dungeon_additions.da.entity.dark_dungeon.EntityShadowHand;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
 import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
@@ -29,6 +31,8 @@ import com.dungeon_additions.da.entity.projectiles.EntityLily;
 import com.dungeon_additions.da.entity.projectiles.EntitySoulStar;
 import com.dungeon_additions.da.entity.projectiles.ProjectileAbberrantAttack;
 import com.dungeon_additions.da.entity.render.*;
+import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkAssassin;
+import com.dungeon_additions.da.entity.render.dark_dungeon.RenderShadowHand;
 import com.dungeon_additions.da.entity.render.frost_dungeon.*;
 import com.dungeon_additions.da.entity.render.lich.RenderLichSpawn;
 import com.dungeon_additions.da.entity.render.lich.RenderLichStaff;
@@ -183,6 +187,10 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityGargoyleLazer.class, RenderGargoyleLazer::new);
         //Friendly Wyrk
         RenderingRegistry.registerEntityRenderingHandler(EntityFriendWyrk.class, RenderFriendWyrk::new);
+        //Dark Assassin
+        RenderingRegistry.registerEntityRenderingHandler(EntityDarkAssassin.class, RenderDarkAssassin::new);
+        //Shadow hand
+        RenderingRegistry.registerEntityRenderingHandler(EntityShadowHand.class, RenderShadowHand::new);
     }
 
 }

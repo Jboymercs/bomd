@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:dark_locator"
+    },
+    "title": {
+      "translate": "advancements.da.kill_dark_assassin.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_dark_assassin.description"
+    }
+  },
+  "parent": "da:root",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:dark_assassin"
+        }
+      }
+    }
+  }
+}

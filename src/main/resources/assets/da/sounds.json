@@ -1189,6 +1189,64 @@
       }
     ]
   },
+  "entity.dark_assassin.appear": {
+    "category": "entity",
+    "subtitle": "entity.dark_assassin.appear",
+    "sounds": [
+      {
+        "name": "da:entity/dark_assassin/appear",
+        "steam": false
+      }
+    ]
+  },
+  "entity.dark_assassin.summon_ink": {
+    "category": "entity",
+    "subtitle": "entity.dark_assassin.summon_ink",
+    "sounds": [
+      {
+        "name": "da:entity/dark_assassin/summon_ink",
+        "steam": false
+      }
+    ]
+  },
+  "entity.dark_assassin.hurt": {
+    "category": "entity",
+    "subtitle": "entity.dark_assassin.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/dark_assassin/hurt1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/dark_assassin/hurt2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/dark_assassin/hurt3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.shadow_hand.summon": {
+    "category": "entity",
+    "subtitle": "entity.shadow_hand.summon",
+    "sounds": [
+      {
+        "name": "da:entity/shadow_hand/summon",
+        "steam": false
+      }
+    ]
+  },
+  "entity.shadow_hand.attack": {
+    "category": "entity",
+    "subtitle": "entity.shadow_hand.attack",
+    "sounds": [
+      {
+        "name": "da:entity/shadow_hand/attack",
+        "steam": false
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",
