@@ -136,6 +136,11 @@ public class ModUtils {
         return angleBetweenYAxis - 90;
     }
 
+    public static double toPitchDragon(Vec3d vec) {
+        double angleBetweenYAxis = Math.toDegrees(unsignedAngle(vec, ModUtils.Y_AXIS.scale(-1)));
+        return angleBetweenYAxis - 30;
+    }
+
     public static double unsignedAngle(Vec3d a, Vec3d b) {
         double dot = a.dotProduct(b);
         double cos = dot / (a.length() * b.length());
@@ -488,6 +493,7 @@ public class ModUtils {
     }
 
     public static Vec3d Y_AXIS = new Vec3d(0, 1, 0);
+
 
     public static Vec3d planeProject(Vec3d vec, Vec3d plane)
     {

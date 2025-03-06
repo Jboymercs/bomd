@@ -124,7 +124,7 @@ public class HighCityTemplate extends ModStructureTemplate {
 
     public boolean generateKnightSpawn() {
         int randomNumberGenerator = ModRand.range(0, 10);
-        if (randomNumberGenerator >= 4) {
+        if (randomNumberGenerator >= WorldConfig.high_city_mob_spawns - 1) {
             return false;
         }
         return true;
@@ -132,7 +132,7 @@ public class HighCityTemplate extends ModStructureTemplate {
 
     public boolean generateMobSpawn() {
         int randomNumberGenerator = ModRand.range(0, 10);
-        if (randomNumberGenerator >= 6) {
+        if (randomNumberGenerator >= WorldConfig.high_city_mob_spawns) {
             return false;
         }
         return true;
@@ -140,7 +140,7 @@ public class HighCityTemplate extends ModStructureTemplate {
 
     public boolean generateChestSpawn() {
         int randomNumberGenerator = ModRand.range(0, 10);
-        if (randomNumberGenerator >= 6) {
+        if (randomNumberGenerator >= WorldConfig.high_city_chest_spawns) {
             return false;
         }
         return true;

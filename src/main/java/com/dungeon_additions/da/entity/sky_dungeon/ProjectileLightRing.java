@@ -13,6 +13,7 @@ import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -94,7 +95,7 @@ public class ProjectileLightRing extends Projectile {
             Vec3d currPos = this.getPositionVector();
             Vec3d dir = posToTravelToo.subtract(currPos).normalize();
             ModUtils.addEntityVelocity(this, dir.scale(0.04 * 0.4));
-            if(this.getDistanceSq(selectedPlayer) < 5) {
+            if(this.getDistanceSq(selectedPlayer) < 3) {
                 this.breakPathing = true;
             }
         }
@@ -103,7 +104,7 @@ public class ProjectileLightRing extends Projectile {
 
     @Override
     protected void onHit(RayTraceResult result) {
-        if(!(result.entityHit instanceof EntitySkyBase)) {
+        if(!(result.entityHit instanceof EntitySkyBase) && !(result.entityHit instanceof Projectile) && !(result.entityHit instanceof IEntityMultiPart)) {
             DamageSource source = ModDamageSource.builder()
                     .type(ModDamageSource.PROJECTILE)
                     .directEntity(this)

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " V ",
+    "VRV",
+    " V "
+  ],
+  "key": {
+    "V": {
+      "item": "da:city_brick"
+    },
+    "R": {
+      "item": "minecraft:gold_nugget"
+    }
+  },
+  "result": {
+    "item": "da:gold_city_brick",
+    "count": 8
+  }
+}

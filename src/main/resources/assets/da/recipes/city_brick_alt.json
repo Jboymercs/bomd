@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " V ",
+    "VRV",
+    " V "
+  ],
+  "key": {
+    "V": {
+      "item": "da:city_brick"
+    },
+    "R": {
+      "item": "minecraft:dirt",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "da:city_brick_alt",
+    "count": 4
+  }
+}

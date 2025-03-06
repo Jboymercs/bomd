@@ -190,15 +190,30 @@ public class WorldConfig {
     public static String[] biome_types_blacklist_high_city = {"MOUNTAIN"
     };
 
+    @Config.Name("High Court City Mob Spawn Weight")
+    @Config.Comment("Change the chance of mob spawns throughout the High Court City, higher number means more spawns.")
+    @Config.RangeInt(min = 1, max = 10)
+    public static int high_city_mob_spawns = 6;
+
+    @Config.Name("High Court City Chest Chance Weight")
+    @Config.Comment("Change the chance of chest spawns throughout the High Court City, higher number means more chests")
+    @Config.RangeInt(min = 1, max = 10)
+    public static int high_city_chest_spawns = 6;
+
     @Config.Name("High Court City Spacing")
     @Config.Comment("Change the spacing between each High Court City, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int high_city_spacing = 60;
+    public static int high_city_spacing = 170;
 
     @Config.Name("High Court City Size")
     @Config.Comment("Change the size of the High Court City")
     @Config.RequiresMcRestart
     public static int high_court_city_size = 4;
+
+    @Config.Name("High Court City Y Height")
+    @Config.Comment("Change the y Height the High Court City generates at")
+    @Config.RequiresMcRestart
+    public static int high_city_y_height = 185;
 
     @Config.Name("High Court City Allowed Dimensions")
     @Config.Comment("Select what dimensions this structure is allowed to spawn in")

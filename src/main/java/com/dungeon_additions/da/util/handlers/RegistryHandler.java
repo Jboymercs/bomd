@@ -44,12 +44,16 @@ public class RegistryHandler {
         ModelLoader.setCustomModelResourceLocation(ModItems.DRAUGR_SHIELD, 0, new ModelResourceLocation(ModReference.MOD_ID + ":draugr_shield", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.IMPERIAL_HALBERD_ITEM, 0, new ModelResourceLocation(ModReference.MOD_ID + ":imperial_halberd_item", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.LIGHT_RING_PROJECTILE, 0, new ModelResourceLocation(ModReference.MOD_ID + ":light_ring", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.STORM_TORNADO_PROJECTILE, 0, new ModelResourceLocation(ModReference.MOD_ID + ":storm_tornado", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.HOLY_WAVE_PROJ, 0, new ModelResourceLocation(ModReference.MOD_ID + ":holy_wave", "inventory"));
         ModItems.SPORE_BALL.setTileEntityItemStackRenderer(new RenderSpore());
         ModItems.MAGIC_FIREBALL.setTileEntityItemStackRenderer(new RenderMagicFireball());
         ModItems.CHAMPION_AXE.setTileEntityItemStackRenderer(new RenderChampionAxe());
         ModItems.DRAUGR_SHIELD.setTileEntityItemStackRenderer(new RenderDraugrShield());
         ModItems.IMPERIAL_HALBERD_ITEM.setTileEntityItemStackRenderer(new RenderImperialHalberdItem());
         ModItems.LIGHT_RING_PROJECTILE.setTileEntityItemStackRenderer(new RenderLightRing());
+        ModItems.STORM_TORNADO_PROJECTILE.setTileEntityItemStackRenderer(new RenderStormTornado());
+        ModItems.HOLY_WAVE_PROJ.setTileEntityItemStackRenderer(new RenderHolyWave());
         for (Item item : ModItems.ITEMS) {
             if (item instanceof IHasModel) {
                 ((IHasModel) item).registerModels();

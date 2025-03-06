@@ -34,7 +34,10 @@ public class RenderSkyBolt extends RenderGeoExtended<EntitySkyBolt> {
     public void doRender(EntitySkyBolt entity, double x, double y, double z, float entityYaw, float partialTicks) {
         renderManager.renderEngine.bindTexture(RenderDragon.ENDERCRYSTAL_BEAM_TEXTURES);
         if (entity.getRenderDirection() != null && entity.ticksExisted > 17 ) {
-            double scale = (13 / ((entity.ticksExisted - 17) + partialTicks)) / 13;
+            double scale = 1;
+            if(entity.ticksExisted > 20) {
+                scale -= 0.11;
+            }
             RenderUtil.drawBeam(renderManager, entity.getPositionVector(), entity.getRenderDirection(), new Vec3d(x, y, z), ModColors.YELLOW, entity, partialTicks, new Vec3d(scale * 1.2, 1, scale * 1.2));
         }
         super.doRender(entity, x, y, z, entityYaw, partialTicks);

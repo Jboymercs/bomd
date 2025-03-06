@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.sky_dungeon;
 
+import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.flying.EntityAIRandomFly;
 import com.dungeon_additions.da.entity.ai.flying.FlyingMoveHelper;
@@ -257,10 +258,10 @@ public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable,
         super.applyEntityAttributes();
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(24D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(23D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.gargoyle_damage);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(35);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MobConfig.gargoyle_health);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(MobConfig.gargoyle_armor);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0.75D);
     }
 

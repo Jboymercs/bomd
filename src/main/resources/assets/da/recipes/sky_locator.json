@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " V ",
+    " R ",
+    "XFX"
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:blaze_powder"
+    },
+    "R": {
+      "item": "minecraft:gold_ingot"
+    },
+    "F": {
+      "item": "da:knight_ingot"
+    },
+    "X": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "da:sky_locator"
+  }
+}

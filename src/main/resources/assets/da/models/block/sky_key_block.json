@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "da:blocks/sky_key_block_top",
+    "side": "da:blocks/sky_key_block"
+  }
+}

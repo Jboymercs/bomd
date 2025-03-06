@@ -21,8 +21,8 @@ public class EntitySkyBase extends EntityAbstractBase {
         super(worldIn, x, y, z);
     }
 
-    private boolean isHasSpawn() {return this.dataManager.get(HAS_SPAWN);}
-    private void setHasSpawn(boolean value) {this.dataManager.set(HAS_SPAWN, Boolean.valueOf(value));}
+    protected boolean isHasSpawn() {return this.dataManager.get(HAS_SPAWN);}
+    protected void setHasSpawn(boolean value) {this.dataManager.set(HAS_SPAWN, Boolean.valueOf(value));}
     public BlockPos getSpawnLocation() {
         return this.dataManager.get(SPAWN_LOCATION);
     }
@@ -68,7 +68,7 @@ public class EntitySkyBase extends EntityAbstractBase {
     public void onUpdate() {
         super.onUpdate();
 
-        if(!this.isHasSpawn()) {
+        if(!this.isHasSpawn() && !this.iAmBossMob) {
             this.setSpawnLocation(new BlockPos(this.posX, this.posY, this.posZ));
             this.setHasSpawn(true);
         }

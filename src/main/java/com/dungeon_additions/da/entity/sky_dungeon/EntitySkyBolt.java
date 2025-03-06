@@ -34,11 +34,10 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
         this.noClip = true;
         this.setImmovable(true);
         this.setNoAI(true);
-        this.setSize(0.9F, 7.0F);
+        this.setSize(0.9F, 0.5F);
     }
 
     private EntityPlayer player;
-    public int delay = 0;
 
     public EntitySkyBolt(World worldIn, Vec3d renderLazerPos) {
         super(worldIn);
@@ -46,18 +45,17 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
         this.noClip = true;
         this.setImmovable(true);
         this.setNoAI(true);
-        this.setSize(0.9F, 7.0F);
+        this.setSize(0.9F, 0.5F);
     }
 
-    public EntitySkyBolt(World worldIn, Vec3d renderLazerPos, EntityPlayer summoner, int delay) {
+    public EntitySkyBolt(World worldIn, Vec3d renderLazerPos, EntityPlayer summoner) {
         super(worldIn);
         this.renderLazerPos = renderLazerPos;
         this.noClip = true;
         this.setImmovable(true);
         this.setNoAI(true);
-        this.setSize(0.9F, 7.0F);
+        this.setSize(0.9F, 0.5F);
         this.player = summoner;
-        this.delay = delay;
     }
 
     public EntitySkyBolt(World worldIn) {
@@ -65,7 +63,7 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
         this.noClip = true;
         this.setImmovable(true);
         this.setNoAI(true);
-        this.setSize(0.9F, 7.0F);
+        this.setSize(0.9F, 0.5F);
     }
 
     @Override
@@ -87,6 +85,9 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
         this.rotationPitch = 0;
         this.rotationYawHead = 0;
         this.renderYawOffset = 0;
+        if(ticksExisted == 1) {
+            this.playSound(SoundsHandler.SKY_LIGHTNING_CAST, 0.9f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+        }
 
         if (player == null) {
             if (this.ticksExisted > 1 && !this.world.isRemote) {
@@ -100,11 +101,11 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
             }
 
             if (ticksExisted == 17) {
-                this.playSound(SoundsHandler.SKY_LIGHTNING_CAST, 0.9f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+               // this.playSound(SoundsHandler.SKY_LIGHTNING_CAST, 0.9f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
             }
 
             if (ticksExisted == 20) {
-                List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntitySkyBase)));
+                List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(1.0, 14.0, 1.0), e -> !e.getIsInvulnerable() && (!(e instanceof EntitySkyBase)));
                 if (!targets.isEmpty()) {
                     for (EntityLivingBase target : targets) {
                         if (!(target instanceof EntitySkyBase)) {
@@ -125,17 +126,17 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
                 Main.network.sendToAllTracking(new MessageDirectionForRender(this, renderLazerPos), this);
             }
 
-            if (ticksExisted < 17 + delay) {
+            if (ticksExisted < 17) {
                 this.world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
             } else {
                 world.setEntityState(this, ModUtils.PARTICLE_BYTE);
             }
 
-            if (ticksExisted == 17 + delay) {
-                this.playSound(SoundsHandler.SKY_LIGHTNING_CAST, 0.9f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+            if (ticksExisted == 17) {
+             //   this.playSound(SoundsHandler.SKY_LIGHTNING_CAST, 0.9f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
             }
 
-            if (ticksExisted == 20 + delay) {
+            if (ticksExisted == 20) {
                 List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntityPlayer)));
                 if (!targets.isEmpty()) {
                     this.damageOverride = true;
@@ -150,7 +151,7 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
                 }
             }
 
-            if (ticksExisted == 30 + delay) {
+            if (ticksExisted == 30) {
                 this.setDead();
             }
         }

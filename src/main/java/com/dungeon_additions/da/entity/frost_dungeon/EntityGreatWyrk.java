@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.frost_dungeon;
 
 import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.EntityAIBlossom;
 import com.dungeon_additions.da.entity.ai.EntityGreatWyrkAttackAI;
 import com.dungeon_additions.da.entity.ai.IAttack;
@@ -28,6 +29,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
@@ -550,6 +554,22 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
                 ParticleManager.spawnColoredSmoke(world, particlePos, ModColors.WHITE, velocity);
             }
         }
+    }
+
+    private boolean initiateDeathText = false;
+
+    @Override
+    public void onDeath(DamageSource cause) {
+
+        if(cause.getTrueSource() instanceof EntityPlayer || cause.getImmediateSource() instanceof EntityPlayer) {
+            EntityPlayer player = ((EntityPlayer) cause.getTrueSource());
+            if(!ModUtils.getAdvancementCompletionAsList(player, ModConfig.assassins_spawn_progress) && !initiateDeathText) {
+                assert player != null;
+                player.sendMessage(new TextComponentString(TextFormatting.RED + "You have now caught the attention of something lurking in the shadows..."));
+                initiateDeathText = true;
+            }
+        }
+        super.onDeath(cause);
     }
 
 

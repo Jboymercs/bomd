@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "item": "da:city_brick"
+    }
+  },
+  "result": {
+    "item": "da:city_brick_half",
+    "data": 0,
+    "count": 6
+  }
+}

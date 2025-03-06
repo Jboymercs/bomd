@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "V"
+  ],
+  "key": {
+    "V": {
+      "item": "da:city_brick_alt_half",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "da:city_pillar_chisled",
+    "count": 1
+  }
+}

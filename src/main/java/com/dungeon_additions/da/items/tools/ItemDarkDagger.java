@@ -29,7 +29,7 @@ public class ItemDarkDagger extends ToolSword{
         super(name, material);
         this.setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
-        this.setMaxDamage(320);
+        this.setMaxDamage(520);
     }
 
     @Override

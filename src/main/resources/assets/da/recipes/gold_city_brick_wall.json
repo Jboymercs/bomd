@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "item": "da:gold_city_brick"
+    }
+  },
+  "result": {
+    "item": "da:gold_city_brick_wall",
+    "count": 6
+  }
+}

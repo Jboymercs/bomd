@@ -10,9 +10,9 @@
       "translate": "advancements.da.kill_imperial_halberd.description"
     }
   },
-  "parent": "da:root",
+  "parent": "da:craft_sky_locator",
   "criteria": {
-    "Lamentor": {
+    "ImperialKnight": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {

@@ -1247,6 +1247,180 @@
       }
     ]
   },
+  "entity.high_drake.hurt": {
+    "category": "entity",
+    "subtitle": "entity.high_drake.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/high_drake/hurt1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_drake/hurt2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_drake/hurt3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_drake.idle": {
+    "category": "entity",
+    "subtitle": "entity.high_drake.idle",
+    "sounds": [
+      {
+        "name": "da:entity/high_drake/idle1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_drake/idle2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_drake/idle3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_drake.step": {
+    "category": "entity",
+    "subtitle": "entity.high_drake.step",
+    "sounds": [
+      {
+        "name": "da:entity/high_drake/step1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_drake/step2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_drake/step3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_drake.impact": {
+    "category": "entity",
+    "subtitle": "entity.high_drake.impact",
+    "sounds": [
+      {
+        "name": "da:entity/high_drake/impact",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_drake.roar_ground": {
+    "category": "entity",
+    "subtitle": "entity.high_drake.roar",
+    "sounds": [
+      {
+        "name": "da:entity/high_drake/roar_ground",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_drake.roar_air": {
+    "category": "entity",
+    "subtitle": "entity.high_drake.roar",
+    "sounds": [
+      {
+        "name": "da:entity/high_drake/roar_air",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_drake.drake_lightning": {
+    "category": "entity",
+    "subtitle": "entity.high_drake.cast_lightning",
+    "sounds": [
+      {
+        "name": "da:entity/high_drake/drake_lightning",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_drake.breath_ground": {
+    "category": "entity",
+    "subtitle": "entity.high_drake.breath",
+    "sounds": [
+      {
+        "name": "da:entity/high_drake/breath_ground",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_drake.breath_air": {
+    "category": "entity",
+    "subtitle": "entity.high_drake.breath",
+    "sounds": [
+      {
+        "name": "da:entity/high_drake/breath_air",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_drake.wing_flap": {
+    "category": "entity",
+    "subtitle": "entity.high_drake.wing_flap",
+    "sounds": [
+      {
+        "name": "da:entity/high_drake/wing_flap",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_drake.rock_aoe": {
+    "category": "entity",
+    "subtitle": "entity.high_drake.rock",
+    "sounds": [
+      {
+        "name": "da:entity/high_drake/rock_aoe",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_drake.summon_special": {
+    "category": "entity",
+    "subtitle": "entity.high_drake.summon_special",
+    "sounds": [
+      {
+        "name": "da:entity/high_drake/summon_special",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_drake.special_damage": {
+    "category": "entity",
+    "subtitle": "entity.high_drake.special_damage",
+    "sounds": [
+      {
+        "name": "da:entity/high_drake/special_damage",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_drake.bite": {
+    "category": "entity",
+    "subtitle": "entity.high_drake.bite",
+    "sounds": [
+      {
+        "name": "da:entity/high_drake/bite",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_drake.tail_swipe": {
+    "category": "entity",
+    "subtitle": "entity.high_drake.tail_swipe",
+    "sounds": [
+      {
+        "name": "da:entity/high_drake/tail_swipe",
+        "steam": false
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",

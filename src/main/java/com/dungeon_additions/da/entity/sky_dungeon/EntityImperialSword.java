@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.sky_dungeon;
 
+import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.sky_dungeon.EntityImperialHalberdAI;
 import com.dungeon_additions.da.entity.ai.sky_dungeon.EntityImperialSwordAI;
@@ -177,10 +178,10 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(32D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.hcc_knight_attack_damage);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(95);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(16D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MobConfig.hcc_knight_health);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(MobConfig.hcc_knight_armor);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }
 

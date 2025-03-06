@@ -4,6 +4,7 @@ import com.dungeon_additions.da.animation.example.EntityExample;
 import com.dungeon_additions.da.animation.example.ModelExample;
 import com.dungeon_additions.da.animation.example.exampletwo.EntityEverator;
 import com.dungeon_additions.da.animation.example.exampletwo.ModelEverator;
+import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.EntityNetherAbberrant;
 import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
@@ -26,10 +27,7 @@ import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
 import com.dungeon_additions.da.entity.night_lich.EntityLichSpawn;
 import com.dungeon_additions.da.entity.player.EntityWyrkLazer;
-import com.dungeon_additions.da.entity.projectiles.EntityFrozenCastleLocator;
-import com.dungeon_additions.da.entity.projectiles.EntityLily;
-import com.dungeon_additions.da.entity.projectiles.EntitySoulStar;
-import com.dungeon_additions.da.entity.projectiles.ProjectileAbberrantAttack;
+import com.dungeon_additions.da.entity.projectiles.*;
 import com.dungeon_additions.da.entity.render.*;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkAssassin;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderShadowHand;
@@ -38,11 +36,16 @@ import com.dungeon_additions.da.entity.render.lich.RenderLichSpawn;
 import com.dungeon_additions.da.entity.render.lich.RenderLichStaff;
 import com.dungeon_additions.da.entity.render.lich.RenderNightLich;
 import com.dungeon_additions.da.entity.render.sky_dungeon.*;
+import com.dungeon_additions.da.entity.render.sky_dungeon.boss.RenderHighKing;
+import com.dungeon_additions.da.entity.render.sky_dungeon.boss.RenderHighKingDrake;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotSpike;
 import com.dungeon_additions.da.entity.sky_dungeon.*;
+import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake;
+import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing;
+import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.*;
 import com.dungeon_additions.da.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -88,6 +91,15 @@ public class RenderHandler {
         });
     }
 
+    private static <T extends Entity> void registerProjectileRenderer3DModel(Class<T> projectileClass, Item item) {
+        RenderingRegistry.registerEntityRenderingHandler(projectileClass, new IRenderFactory<T>() {
+            @Override
+            public Render<? super T> createRenderFor(RenderManager manager) {
+                return new RenderHolyWaveProjectile<>(manager, Minecraft.getMinecraft().getRenderItem(), item);
+            }
+        });
+    }
+
     public static void registerProjectileRenderers() {
         registerProjectileRenderer(ProjectileVoidLeaf.class, ModItems.VOID_LEAF);
         registerProjectileRenderer(ProjectileSporeBomb.class, ModItems.SPORE_BALL);
@@ -106,6 +118,10 @@ public class RenderHandler {
         registerProjectileRenderer(EntityFrozenCastleLocator.class, ModItems.FROZEN_CASTLE_LOCATOR);
         registerProjectileRenderer(ProjectileFrostGround.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(ProjectileLightRing.class, ModItems.LIGHT_RING_PROJECTILE);
+        registerProjectileRenderer(ProjectileStormBreath.class, ModItems.STORM_TORNADO_PROJECTILE);
+        registerProjectileRenderer(ProjectileStormWind.class, ModItems.INVISISBLE_ITEM);
+        registerProjectileRenderer(EntitySkyDungeonLocator.class, ModItems.SKY_LOCATOR_PROJECTILE);
+        registerProjectileRenderer3DModel(EntityKingHolyWave.class, ModItems.HOLY_WAVE_PROJ);
     }
 
     //Handles Rendering
@@ -191,6 +207,16 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityDarkAssassin.class, RenderDarkAssassin::new);
         //Shadow hand
         RenderingRegistry.registerEntityRenderingHandler(EntityShadowHand.class, RenderShadowHand::new);
+        //High King Drake
+        RenderingRegistry.registerEntityRenderingHandler(EntityHighKingDrake.class, RenderHighKingDrake::new);
+        //Dragon AOE
+        RenderingRegistry.registerEntityRenderingHandler(EntityDragonAOE.class, RenderDragonAOE::new);
+        //Dragon Special Attack
+        RenderingRegistry.registerEntityRenderingHandler(EntityDragonSpecial.class, RenderDragonSpecial::new);
+        //High King
+        RenderingRegistry.registerEntityRenderingHandler(EntityHighKing.class, RenderHighKing::new);
+        //High King AOE
+        RenderingRegistry.registerEntityRenderingHandler(EntityKingHolyAOE.class, RenderKingHolyAOE::new);
     }
 
 }

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  V",
+    " VV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "item": "da:city_brick_alt"
+    }
+  },
+  "result": {
+    "item": "da:city_brick_stairs_alt",
+    "count": 4
+  }
+}

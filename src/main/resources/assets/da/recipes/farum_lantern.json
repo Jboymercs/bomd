@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " V ",
+    "VRV",
+    " X "
+  ],
+  "key": {
+    "X": {
+      "item": "da:city_brick"
+    },
+    "R": {
+      "item": "da:light_mana"
+    },
+    "V": {
+      "item": "minecraft:iron_nugget"
+    }
+  },
+  "result": {
+    "item": "da:farum_lantern"
+  }
+}

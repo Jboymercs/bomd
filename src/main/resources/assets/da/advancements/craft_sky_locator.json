@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:sky_locator"
+    },
+    "title": {
+      "translate": "advancements.da.craft_sky_locator.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_sky_locator.description"
+    }
+  },
+  "parent": "da:root",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:sky_locator"
+          }
+        ]
+      }
+    }
+  }
+}

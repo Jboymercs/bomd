@@ -126,7 +126,7 @@ public class WorldGenHighCity extends WorldGenerator {
             Random random = new Random(chunkX + chunkZ * 10387313L);
             int rand = random.nextInt(Rotation.values().length);
 
-            BlockPos posI = new BlockPos(chunkX * 16 + 4, 185, chunkZ * 16 + 4);
+            BlockPos posI = new BlockPos(chunkX * 16 + 4, WorldConfig.high_city_y_height, chunkZ * 16 + 4);
 
 
             //basically this is to help bring two points to a more common ground

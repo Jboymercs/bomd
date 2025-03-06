@@ -160,6 +160,24 @@ public class SoundsHandler {
     public static SoundEvent SHADOW_HAND_SUMMON;
     public static SoundEvent SHADOW_HAND_ATTACK;
 
+    //High King Drake
+    public static SoundEvent HIGH_DRAKE_IDLE;
+    public static SoundEvent HIGH_DRAKE_HURT;
+    public static SoundEvent HIGH_DRAKE_STEP;
+    public static SoundEvent HIGH_DRAKE_IMPACT_GROUND;
+    public static SoundEvent HIGH_DRAKE_ROAR_GROUND;
+    public static SoundEvent HIGH_DRAKE_ROAR_AIR;
+    public static SoundEvent DRAKE_CAST_LIGHTNING;
+    public static SoundEvent HIGH_DRAKE_BREATH_GROUND;
+    public static SoundEvent HIGH_DRAKE_BREATH_AIR;
+
+    public static SoundEvent HIGH_DRAKE_WING_FLAP;
+    public static SoundEvent HIGH_DRAKE_ROCK_AOE;
+    public static SoundEvent HIGH_DRAKE_SUMMON_SPECIAL;
+    public static SoundEvent HIGH_DRAKE_SPECIAL_DAMAGE_ENTITY;
+    public static SoundEvent HIGH_DRAKE_BITE;
+    public static SoundEvent HIGH_DRAKE_TAIL_SWIPE;
+
     public static void registerSounds() {
         //
         MOSS_BREAK = registerSound("moss.break", "block");
@@ -292,6 +310,22 @@ public class SoundsHandler {
         //
         SHADOW_HAND_ATTACK = registerSound("shadow_hand.attack", "entity");
         SHADOW_HAND_SUMMON = registerSound("shadow_hand.summon", "entity");
+        //
+        HIGH_DRAKE_HURT = registerSound("high_drake.hurt", "entity");
+        HIGH_DRAKE_IDLE = registerSound("high_drake.idle", "entity");
+        HIGH_DRAKE_IMPACT_GROUND = registerSound("high_drake.impact", "entity");
+        HIGH_DRAKE_STEP = registerSound("high_drake.step", "entity");
+        HIGH_DRAKE_ROAR_AIR = registerSound("high_drake.roar_air", "entity");
+        HIGH_DRAKE_ROAR_GROUND = registerSound("high_drake.roar_ground", "entity");
+        DRAKE_CAST_LIGHTNING = registerSound("high_drake.drake_lightning", "entity");
+        HIGH_DRAKE_BREATH_AIR = registerSound("high_drake.breath_air", "entity");
+        HIGH_DRAKE_BREATH_GROUND = registerSound("high_drake.breath_ground", "entity");
+        HIGH_DRAKE_WING_FLAP = registerSound("high_drake.wing_flap", "entity");
+        HIGH_DRAKE_ROCK_AOE = registerSound("high_drake.rock_aoe", "entity");
+        HIGH_DRAKE_SUMMON_SPECIAL = registerSound("high_drake.summon_special", "entity");
+        HIGH_DRAKE_SPECIAL_DAMAGE_ENTITY = registerSound("high_drake.special_damage", "entity");
+        HIGH_DRAKE_BITE = registerSound("high_drake.bite", "entity");
+        HIGH_DRAKE_TAIL_SWIPE = registerSound("high_drake.tail_swipe", "entity");
     }
 
 

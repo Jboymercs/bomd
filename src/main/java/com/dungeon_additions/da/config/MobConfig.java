@@ -394,4 +394,154 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static boolean assassin_burns_daylight = true;
 
+    @Config.Name("High Court Knights Health")
+    @Config.Comment("Change the health of the High Court Knights")
+    @Config.RequiresMcRestart
+    public static double hcc_knight_health = 95;
+
+    @Config.Name("High Court Knights Attack Damage")
+    @Config.Comment("Change the attack damage of the High Court Knights")
+    @Config.RequiresMcRestart
+    public static double hcc_knight_attack_damage = 30;
+
+    @Config.Name("High Court Knights Armor")
+    @Config.Comment("Change the armor value of the High Court Knights")
+    @Config.RequiresMcRestart
+    public static double hcc_knight_armor = 16;
+
+    @Config.Name("Farum Elder Gargoyle Health")
+    @Config.Comment("Change the health of the Farum Elder Gargoyle")
+    @Config.RequiresMcRestart
+    public static double elder_gargoyle_health = 35;
+
+    @Config.Name("Farum Elder Gargoyle Attack Damage")
+    @Config.Comment("Change the attack damage of the Farum Elder Gargoyle")
+    @Config.RequiresMcRestart
+    public static double elder_gargoyle_damage = 18;
+
+    @Config.Name("Farum Elder Gargoyle Armor")
+    @Config.Comment("Change the armor value of the Farum Elder Gargoyle")
+    @Config.RequiresMcRestart
+    public static double elder_gargoyle_armor = 7;
+
+    @Config.Name("Farum Gargoyle Health")
+    @Config.Comment("Change the health of the Farum Gargoyle")
+    @Config.RequiresMcRestart
+    public static double gargoyle_health = 40;
+
+    @Config.Name("Farum Gargoyle Attack Damage")
+    @Config.Comment("Change the attack damage of the Farum Gargoyle")
+    @Config.RequiresMcRestart
+    public static double gargoyle_damage = 23;
+
+    @Config.Name("Farum Gargoyle Armor")
+    @Config.Comment("Change the armor value of the Farum Gargoyle")
+    @Config.RequiresMcRestart
+    public static double gargoyle_armor = 10;
+
+    @Config.Name("High King of the Sky Dragon Health")
+    @Config.Comment("Change the health of the High King of the Sky Dragon")
+    @Config.RequiresMcRestart
+    public static double high_dragon_health = 350;
+
+    @Config.Name("High King/Dragon Attack Damage")
+    @Config.Comment("Change the attack damage of the High King/Dragon")
+    @Config.RequiresMcRestart
+    public static double high_dragon_king_damage = 32;
+
+    @Config.Name("High King of the Sky Dragon Armor")
+    @Config.Comment("Change the armor value of the High King of the Sky Dragon")
+    @Config.RequiresMcRestart
+    public static double high_dragon_armor = 12;
+
+    @Config.Name("High King of the Sky Dragon Armor Toughness")
+    @Config.Comment("Change the armor toughness value of the High King of the Sky Dragon")
+    @Config.RequiresMcRestart
+    public static double high_dragon_armor_toughness = 2;
+
+    @Config.Name("High King of The Sky Dragon Fly Speed")
+    @Config.Comment("Change the fly speed of the Dragon while it is NOT doing an attack")
+    @Config.RequiresMcRestart
+    public static double high_dragon_fly_speed = 0.2;
+
+    @Config.Name("High King of the Sky Dragon Fly Speed Attacking")
+    @Config.Comment("Change the fly speed of the Dragon while it is doing an attack")
+    @Config.RequiresMcRestart
+    public static double high_dragon_attack_fly_speed = 0.15;
+
+    @Config.Name("High King of the Sky Dragon Air Time")
+    @Config.Comment("Change the static of how much time the dragon must be in the air before going to the ground, In Seconds")
+    @Config.RequiresMcRestart
+    public static double high_dragon_fly_time = 50;
+
+    @Config.Name("High King of the Sky Dragon Ground Time")
+    @Config.Comment("Change the static of how much time the dragon must be on ground before going back into the air, In Seconds")
+    @Config.RequiresMcRestart
+    public static double high_dragon_ground_time = 32.5;
+
+    @Config.Name("High King/Dragon Divine Ring Damage Modifier")
+    @Config.Comment("This attack disregards armor when the player fails to avoid the divine rings, it will take X health away from the player as a percentage of there max health")
+    @Config.RequiresMcRestart
+    public static double divine_ring_damage_percentage = 0.25;
+
+    @Config.Name("High King/Dragon Divine Ring Lifesteal Modifier")
+    @Config.Comment("How much Percentage of health does the boss heal if the player fails to make this attack.")
+    @Config.RequiresMcRestart
+    public static double divine_ring_life_steal = 0.05;
+
+    @Config.Name("High King of the Sky Dragon onDeath")
+    @Config.Comment("Change if you want that when the High King of the Sky Dragon dies, does it summon the High King for the second part of the boss fight. Default : true")
+    @Config.RequiresMcRestart
+    public static boolean high_dragon_after_death = true;
+
+    @Config.Name("High King of the Sky Dragon Experience")
+    @Config.Comment("If you changed it to when the dragon dies, it doesn't spawn The High King, How Much Experience does it drop?")
+    @Config.RequiresMcRestart
+    public static int high_dragon_experience_value = 260;
+
+    @Config.Name("The High King Health")
+    @Config.Comment("Change the health of the High King")
+    @Config.RequiresMcRestart
+    public static double high_king_health = 400;
+
+    @Config.Name("The High King Armor")
+    @Config.Comment("Change the armor value of the High King")
+    @Config.RequiresMcRestart
+    public static double high_king_armor = 20;
+
+    @Config.Name("The High King Armor Toughness")
+    @Config.Comment("Change the armor toughness value of the High King")
+    @Config.RequiresMcRestart
+    public static double high_king_armor_toughness = 8;
+
+    @Config.Name("The High King Block Cooldown")
+    @Config.Comment("Change how long the block cooldown is in between each time the boss can block an attack, in Seconds")
+    @Config.RequiresMcRestart
+    public static int high_king_block_cooldown = 4;
+
+    @Config.Name("The High King Aoe Cooldown")
+    @Config.Comment("Change how long before the High King can iniated another AOE attack, this is used to prevent spam of this attack, in Seconds")
+    @Config.RequiresMcRestart
+    public static int high_king_aoe_cooldown = 15;
+
+    @Config.Name("The High King General Cooldown Min")
+    @Config.Comment("Change how long before the High King can do another attack, on the lowest random value, in Seconds")
+    @Config.RequiresMcRestart
+    public static int high_king_cooldown_min = 2;
+
+    @Config.Name("The High King General Cooldown Max")
+    @Config.Comment("Change how long before the High King can do another attack, on the high random value, in Seconds. VALUE MUST BE GREATER THAN MIN")
+    @Config.RequiresMcRestart
+    public static int high_king_cooldown_max = 3;
+
+    @Config.Name("The High King Thrust Lifesteal factor")
+    @Config.Comment("Change how much Health the High King heals when doing a successful Thrust attack with his Spear, this is in a percentage. Default : 0.05 or 5%")
+    @Config.RequiresMcRestart
+    public static double high_king_lifesteal_thrust = 0.05;
+
+    @Config.Name("The High King Grab Lifesteal factor")
+    @Config.Comment("Change how much Health the High King heals when doing a successful Grab attack with his claw hand, this is in a percentage. Default : 0.07 or 7%")
+    @Config.RequiresMcRestart
+    public static double high_king_lifesteal_grab = 0.07;
+
 }

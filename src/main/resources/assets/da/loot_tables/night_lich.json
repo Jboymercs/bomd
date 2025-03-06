@@ -80,6 +80,17 @@
           ]
         }
       ]
+    },
+    {
+      "name" : "da:night_lich",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:sky_locator",
+          "weight": 10
+        }
+      ]
     }
   ]
 }

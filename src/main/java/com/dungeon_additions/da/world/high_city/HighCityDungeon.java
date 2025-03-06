@@ -79,7 +79,7 @@ public class HighCityDungeon {
 
 
         if(cross_piece.getDistance() > SIZE || cross_piece.isCollidingExcParent(manager, parent, components)) {
-            return false;
+            return generateEndPiece(parent, pos, rot);
         }
 
         if(cross_piece.getDistance() > SIZE - 1 && !generatedKeyRoom) {
@@ -109,7 +109,7 @@ public class HighCityDungeon {
             } else if (!generatedKeyRoom){
 
                 //Generate End Piece
-                //return generateEndPiece(parent, pos, rot);
+                return generateEndPiece(parent, pos, rot);
             }
         }
         return true;
@@ -128,6 +128,18 @@ public class HighCityDungeon {
         components.add(arena_4);
         generatedBossRoom = true;
 
+        return true;
+    }
+
+    protected boolean generateEndPiece(HighCityTemplate parent, BlockPos pos, Rotation rot) {
+        String[] end_types = {"end_1","end_2","end_3","end_4"};
+        HighCityTemplate end_piece = addAdjustedPieceWithoutDistance(parent, pos, ModRand.choice(end_types), rot);
+
+        if(end_piece.isCollidingExcParent(manager, parent, components)) {
+            return false;
+        }
+
+        components.add(end_piece);
         return true;
     }
 

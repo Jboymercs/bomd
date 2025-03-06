@@ -42,6 +42,7 @@ public class EntityGargoyleLazer extends EntitySkyBase implements IAnimatable, I
     public EntityGargoyleLazer(World worldIn) {
         super(worldIn);
         this.noClip = true;
+        this.setNoGravity(true);
         this.setImmovable(true);
         this.setNoAI(true);
         this.setSize(1.25F, 7.0F);
@@ -52,6 +53,7 @@ public class EntityGargoyleLazer extends EntitySkyBase implements IAnimatable, I
         super(worldIn);
         this.noClip = true;
         this.setImmovable(true);
+        this.setNoGravity(true);
         this.setNoAI(true);
         this.setSize(1.25F, 7.0F);
         this.target = target;

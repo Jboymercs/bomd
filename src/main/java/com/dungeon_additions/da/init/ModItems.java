@@ -6,7 +6,9 @@ import com.dungeon_additions.da.items.*;
 import com.dungeon_additions.da.items.armor.*;
 import com.dungeon_additions.da.items.armor.imperial.ItemImperialArmor;
 import com.dungeon_additions.da.items.armor.imperial.ItemImperialChestplate;
+import com.dungeon_additions.da.items.projectile.ItemHolyWave;
 import com.dungeon_additions.da.items.projectile.ItemLightRing;
+import com.dungeon_additions.da.items.projectile.ItemStormTornado;
 import com.dungeon_additions.da.items.shield.ItemDraugrShield;
 import com.dungeon_additions.da.items.tools.*;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
@@ -30,7 +32,7 @@ public class ModItems {
     private static final Item.ToolMaterial IMPERIAL_HALBERD_MATERIAL = EnumHelper.addToolMaterial("imperial_halberd_set", 3, 2463, 8.0F, (float) 10, 20);
 
     private static final Item.ToolMaterial IMPERIAL_SWORD_MATERIAL = EnumHelper.addToolMaterial("imperial_material", 2, 2463, 6.0F, (float) 7.5, 30);
-    private static final Item.ToolMaterial DAGGER_MATERIAL = EnumHelper.addToolMaterial("void_material", 2, 320, 6.0F, (float) ModConfig.void_dagger_damage, 45);
+    private static final Item.ToolMaterial DAGGER_MATERIAL = EnumHelper.addToolMaterial("void_material", 2, 720, 6.0F, (float) ModConfig.void_dagger_damage, 45);
     private static final Item.ToolMaterial DARK_DAGGER_MATERIAL = EnumHelper.addToolMaterial("dark_material", 2, 520, 6.0F, (float) 5.5, 5);
 
     private static final Item.ToolMaterial DRAUGR_SWORD = EnumHelper.addToolMaterial("draugr_material", 2, 974, 6.0F, (float) ModConfig.frost_sword_damage, 45);
@@ -72,6 +74,8 @@ public class ModItems {
     public static final Item GREAT_WYRK_CRYSTAL = new ItemCraftingMaterial("great_wyrk_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item LIGHT_MANA = new ItemCraftingMaterial("light_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item DIVINE_SCROLL = new ItemCraftingMaterial("divine_scroll", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item DIVINE_METAL = new ItemCraftingMaterial("divine_metal", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item DRAGON_SCALES = new ItemCraftingMaterial("dragon_scale", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
 
     //Food
     public static final Item VOID_FRUIT = new ItemFoodBase("crystal_fruit", "regen_fruit", 5, 1, false).setCreativeTab(DungeonAdditionsTab.ALL);
@@ -87,6 +91,7 @@ public class ModItems {
     public static final Item DARK_LOCATOR = new ItemBase("dark_locator", DungeonAdditionsTab.ALL);
     public static final Item FROZEN_CASTLE_LOCATOR = new ItemFrozenCastleLocator("frost_locator", "frost_locator_desc");
     public static final Item SOUL_STAR = new ItemSoulStar("soul_star_item", "soul_star_desc");
+    public static final Item SKY_LOCATOR = new ItemSkyLocator("sky_locator", "sky_locator_desc");
     public static final Item ROT_KNIGHT_KEY = new ItemRotKnightKey("knight_key", "rot_knight_key").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_KEY = new ItemFrostKey("frost_key", "dungeon_frost_key_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item LIGHTNING_KEY = new ItemLightningKey("lightning_key", "lighting_key_desc").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -133,12 +138,15 @@ public class ModItems {
 
     public static final Item POISON_DART = new ItemDart("dart");
     public static final Item LIGHT_RING_PROJECTILE = new ItemLightRing("light_ring");
+    public static final Item STORM_TORNADO_PROJECTILE = new ItemStormTornado("storm_tornado");
+    public static final Item HOLY_WAVE_PROJ = new ItemHolyWave("holy_wave");
 
     public static final Item INVISISBLE_ITEM = new ItemBase("invisible_item").setCreativeTab(CreativeTabs.SEARCH);
     public static final Item PROJECTILE_FLAME = new ItemBase("projectile_flame").setCreativeTab(CreativeTabs.SEARCH);
 
     public static final Item FAKE_HEALING_POTION = new ItemBase("fake_healing_potion").setCreativeTab(CreativeTabs.SEARCH);
     public static final Item MAGIC_PROJECTILE = new ItemBase("magic_projectile");
+    public static final Item SKY_LOCATOR_PROJECTILE = new ItemBase("sky_locator_proj");
     public static final Item MAGIC_TRACK_PROJECTILE = new ItemBase("missile_projectile");
     public static final Item FROST_PROJECTILE = new ItemBase("frost_bullet");
     public static final Item FAKE_BOW = new ItemBase("fake_bow");

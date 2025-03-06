@@ -18,8 +18,8 @@ public class ModelSkyBolt extends GeoModelExtended<EntitySkyBolt> {
 
     @Override
     public ResourceLocation getTextureLocation(EntitySkyBolt animatable) {
-        if(animatable.ticksExisted < 30 + animatable.delay && animatable.ticksExisted > 20 + animatable.delay) {
-            return new ResourceLocation(ModReference.MOD_ID, "textures/entity/bolt/lightning_bolt_" + (animatable.ticksExisted - animatable.delay) + ".png");
+        if(animatable.ticksExisted < 30 && animatable.ticksExisted > 20) {
+            return new ResourceLocation(ModReference.MOD_ID, "textures/entity/bolt/lightning_bolt_" + (animatable.ticksExisted) + ".png");
         }
         return new ResourceLocation(ModReference.MOD_ID, "textures/entity/bolt/lightning_bolt.png");
     }

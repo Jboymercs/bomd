@@ -9,12 +9,14 @@ import com.dungeon_additions.da.blocks.base.slab.BlockHalfSlab;
 import com.dungeon_additions.da.blocks.blossom.BlockVoidLily;
 import com.dungeon_additions.da.blocks.faurm.BlockFarumRope;
 import com.dungeon_additions.da.blocks.faurm.BlockFaurmLantern;
+import com.dungeon_additions.da.blocks.faurm.BlockLightningKeyBlock;
 import com.dungeon_additions.da.blocks.ice_generator.BlockFrostBrick;
 import com.dungeon_additions.da.blocks.lich.BlockSoulStar;
 import com.dungeon_additions.da.blocks.vine.BlockAzealaVines;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityGreatWyrk;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
+import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.handlers.BOMDSoundTypes;
 import net.minecraft.block.Block;
@@ -67,6 +69,7 @@ public class ModBlocks {
     public static final Block KNIGHT_STONE = new BlockBase("knight_stone", Material.ROCK, STONE_HARDNESS, STONE_RESISTANCE, SoundType.STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block KNIGHT_KEY_BLOCK = new BlockKnightBossKeyBlock("knight_key_block", ModItems.ROT_KNIGHT_KEY, ((world, pos) -> new EntityRotKnightBoss(world, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F))).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block FROZEN_CASTLE_KEY_BLOCK = new BlockFrostKeyBlock("frost_key_block", ModItems.FROST_KEY, ((worldv, posr) -> new EntityGreatWyrk(worldv, posr.getX(), posr.getY(), posr.getZ()))).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block SKY_KEY_BLOCK = new BlockLightningKeyBlock("sky_key_block", ((worldv, posr) -> new EntityHighKingDrake(worldv, posr.getX(), posr.getY() + 25, posr.getZ()))).setCreativeTab(DungeonAdditionsTab.BLOCKS);
 
     // LICH UPDATE
     public static final Block PETROGLOOM = new BlockBase("gloom_stone", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);

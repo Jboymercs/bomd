@@ -34,7 +34,7 @@ public class ItemBlossomDagger extends ToolSword{
         super(name, material);
         this.setCreativeTab(CreativeTabs.COMBAT);
         this.info_loc = info_loc;
-        this.setMaxDamage(320);
+        this.setMaxDamage(720);
     }
 
     @Override

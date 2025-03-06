@@ -1,0 +1,15 @@
+{
+  "pools": [
+    {
+      "name" : "da:sky_dungeon_reset",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:lightning_key",
+          "weight": 10
+        }
+      ]
+    }
+  ]
+}
