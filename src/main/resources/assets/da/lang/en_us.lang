@@ -60,6 +60,9 @@ entity.sky_locator_projectile.name=Light Locator Projectile
 entity.high_king.name=The High King
 entity.king_holy_aoe.name=Holy Spikes
 entity.holy_wave_projectile.name=Holy Claw Projectile
+entity.blood_pile.name=King's Blood
+entity.blood_ball_proj.name=King's Blood
+entity.imperial_knight_friendly.name=Summoned Halbidier
 item.void_leaf.name=Void Leaf
 item.spore.name=Void Blossom Spore
 item.crystal_fruit.name=Crystal Fruit
@@ -105,7 +108,11 @@ item.draugr_helmet.name=Frostborn Helmet
 item.draugr_chestplate.name=Frostborn Chestplate
 item.great_wyrk_mana.name=Ancient Wyrk Anima
 item.imperial_halberd_item.name=The Prosperous Assault
+item.sword_spear.name=Divine Sword Spear
+item.sword_spear_blood.name=Bloodied Sword Spear
+item.king_helmet.name=Crown of the Cursed
 da.desc.draugr_shield_name=Frostborn Shield
+da.desc.dragon_shield_name=Dragon Scourage Shield
 item.frost_locator.name=Frozen Soul Star
 item.wyrk_helmet.name=Ancient Wyrk Helmet
 item.wyrk_boots.name=Ancient Wyrk Boots
@@ -113,8 +120,8 @@ item.wyrk_snack.name=The Survivor's Endless Hunger
 item.wyrk_staff.name=Ancient Wyrk Staff
 item.wyrk_totem.name=Wyrk Elemental Totem
 item.sky_arrow.name=Golden Tracking Arrow
-item.lightning_shard.name=Litic Shard
-item.lightning_ingot.name=Litic Ingot
+item.lightning_shard.name=Lithic Shard
+item.lightning_ingot.name=Lithic Ingot
 item.lightning_smithing_stone.name=Dragon Smithing Stone
 item.lightning_key.name=High Court City Dungeon Key
 item.light_ring.name=Lightning Ring
@@ -122,20 +129,24 @@ item.imperial_sword_item.name=Master Parry Sword
 item.divine_scroll.name=Divine Scroll
 item.crumble_berries.name=Crumble Berries
 item.light_mana.name=Divine Mana
-item.imperial_chestplate.name=Litic Chestplate
-item.imperial_helmet.name=Litic Helmet
-item.imperial_leggings.name=Litic Leggings
-item.imperial_boots.name=Litic Boots
+item.imperial_chestplate.name=Lithic Chestplate
+item.imperial_helmet.name=Lithic Helmet
+item.imperial_leggings.name=Lithic Leggings
+item.imperial_boots.name=Lithic Boots
 item.dark_mana.name=Rah Void Mana
 item.dark_core.name=Rah Void Core
 item.dark_locator.name=Cult of Rah Eye
 item.dark_dagger.name=Rah Void Dagger
 item.storm_tornado.name=Storm Tornado
-item.dragon_scale.name=High Dragon Scale
+item.dragon_scale.name=High Dragon Scales
 item.divine_metal.name=Divine Metal Scrap
 item.sky_locator.name=Orb of Light
 item.sky_locator_proj.name=Light Projectile
 item.holy_wave.name=Holy Wave
+item.blood_ball.name=Blood Ball
+item.king_claw.name=Lithic Clawed Glove
+item.king_aid.name=King's Aid
+item.dragon_bow.name=Dragon Scourage Bow
 tile.spore_blossom.name=Void Blossom
 tile.moss_block.name=Moss Block
 tile.moss_carpet.name=Moss Carpet
@@ -239,6 +250,8 @@ da.lich_spawn.soul_star=Maybe something of a star like shape?
 da.lich_wrong_time=The sun must set first
 da.within_bounds=You are within the radius of the structure, item locator resetting
 da.friend_wyrk=You already have a Friendly Wyrk under your command near you!
+da.friend_halberd=There is already a Summoned Halbidier near you!
+da.sky_arrow_fail=Failed to shoot due to there not being a target aimed at!
 
 da.desc.regen_fruit=Grants brief regen and resistance
 da.desc.crafting_material=Crafting material
@@ -260,7 +273,8 @@ da.desc.levitation_block_desc=Gives Levitation to nearby mobs if not powered, wh
 da.desc.dungeon_frost_key_desc=Used in the giant room in the Frozen Castle
 da.desc.champion_axe_desc=You deal more damage the lower your health is, jumping crits negate this effect.
 da.desc.draugr_sword_desc=Applies slowness to creatures hit by this sword.
-da.desc.draugr_shield_desc=Once used by those that conquered the oceans
+da.desc.draugr_shield_desc=Once used by those that conquered the oceans.
+da.desc.dragon_shield_desc=Gives a nice Health Bonus when in offhand.
 da.desc.draugr_armor_desc=Full set allows for a chance of strength to be given when taking damage, increasing that chance the lower your health is.
 da.desc.wyrk_helmet_desc=Grants Resistance to Slowness. Full set bonus grants a chance of regeneration the lower your health is.
 da.desc.wyrk_boots_desc=Grants speed when on ice. Full set bonus grants a chance of regeneration the lower your health is.
@@ -279,6 +293,12 @@ da.desc.imperial_armor_desc=Full Set allows lightning bolts to be summoned on en
 da.desc.imperial_helmet_desc=Grants Resistance to Weakness. Full Set allows lightning bolts to be summoned on entities that attack you and you are given Absorption for 30 seconds, the chance increasing the lower your health is.
 da.desc.dark_dagger_desc=Right clicking will launch you back shortly and it resets your fall distance.
 da.desc.sky_locator_desc=The grace of the Orb leads somewhere...
+da.desc.sword_spear_desc=Right Clicking will shoot a Light Ring, Holding Shift + Right Click will levitate you briefly and upon hitting the ground you will do an AOE.
+da.desc.sword_spear_blood_desc=Right Clicking will shoots Blood Projectiles, Holding Shift + Right Click will release a dash that damage entities and spawns Blood Piles.
+da.desc.king_helmet_desc=Immune to Wither and Mining Fatigue but you will be given Blindness instead.As well this helmet boosts damage on Sword Spear Weapons.
+da.desc.king_claw_desc=Right clicking releases a fan of ground projectiles, adding another claw in the offhand decreases cooldown, slightly increases damage of projectiles, and grants Speed when below 75 percent health.
+da.desc.king_aid_desc=Right clicking will summon a Friendly Halbidier to aid you.
+da.desc.dragon_bow_desc=Uses Golden Tracking Arrows only, Does a lot of damage but has a long cooldown after use.
 death.attack.da:maelstrom=%1$s succumbed to the void
 death.attack.da:mobMaelstrom=%1$s was killed by a %2$s
 death.attack.da:playerMaelstrom=%1$s was killed by %2$s
@@ -320,6 +340,9 @@ advancements.da.kill_imperial_halberd.description=Slay a High Court Halbidier
 #Kill Cult of Rah Assassin
 advancements.da.kill_dark_assassin.title=The Cult sends there regards!
 advancements.da.kill_dark_assassin.description=Slay a Cult of Rah Assassin
+#Kill the High King
+advancements.da.kill_high_king.title=Dethroned!
+advancements.da.kill_high_king.description=Slay the High King
 #Find Soul Star
 advancements.da.find_soul_star.title=The stars lead the way
 advancements.da.find_soul_star.description=Obtain a Soul Star
@@ -379,7 +402,7 @@ advancements.da.craft_wyrk_totem.title=Sometimes friends can be cold
 advancements.da.craft_wyrk_totem.description=Craft the Wyrk Elemental Totem
 #Craft Imperial Armor
 advancements.da.craft_imperial_armor.title=I can take a hit.
-advancements.da.craft_imperial_armor.description=Craft the full set of Litic Armor
+advancements.da.craft_imperial_armor.description=Craft the full set of Lithic Armor
 #Craft Imperial Halberd
 advancements.da.craft_imperial_halberd.title=It all begins with you!
 advancements.da.craft_imperial_halberd.description=Craft the Prosperous Assault
@@ -389,4 +412,25 @@ advancements.da.craft_parry_sword.description=Craft the Master Parry Sword
 #Craft Dark Assassin Blade
 advancements.da.craft_dark_dagger.title=In the blade of Night.
 advancements.da.craft_dark_dagger.description=Craft the Rah Void Dagger
+#Craft Bloody Sword Spear
+advancements.da.craft_bloody_sword_spear.title=Sometimes, I think the world should pay for its suffering.
+advancements.da.craft_bloody_sword_spear.description=Craft the Bloodied Sword Spear
+#Craft Sword Spear
+advancements.da.craft_sword_spear.title=Those who ruled.
+advancements.da.craft_sword_spear.description=Craft the Divine Sword Spear.
+#Craft Dragon Bow
+advancements.da.craft_dragon_bow.title=Where's the Ballista?
+advancements.da.craft_dragon_bow.description=Craft the Dragon Scourage Bow.
+#Craft the Dragon Shield
+advancements.da.craft_dragon_shield.title=Divination & Sacrifice
+advancements.da.craft_dragon_shield.description=Craft the Dragon Scourage Shield.
+# Craft the King's Aid
+advancements.da.craft_king_aid.title=Arise.
+advancements.da.craft_king_aid.description=Craft the King's Aid.
+#Craft the Lithic Claws
+advancements.da.craft_king_claw.title=Up close and personal is my game.
+advancements.da.craft_king_claw.description=Craft the Lithic Clawed Glove.
+#Craft the King's Crown
+advancements.da.craft_king_helmet.title=The new king of the sky.
+advancements.da.craft_king_helmet.description=Craft the Crown of the Cursed.
 

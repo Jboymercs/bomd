@@ -641,6 +641,15 @@ public class ModUtils {
         }
     }
 
+    public static void circleCallbackDodgeFunc(float radius, int points, Consumer<Vec3d> particleSpawner) {
+        float degrees = 90f / points;
+        for (int i = 0; i < points; i++) {
+            double radians = Math.toRadians(i * degrees);
+            Vec3d offset = new Vec3d(Math.sin(radians), Math.cos(radians), 0).scale(radius);
+            particleSpawner.accept(offset);
+        }
+    }
+
     public static void aerialTravel(EntityLivingBase entity, float strafe, float vertical, float forward) {
         if (entity.isInWater()) {
             entity.moveRelative(strafe, vertical, forward, 0.02F);

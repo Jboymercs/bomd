@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.world;
 
+import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.util.DALogger;
@@ -50,19 +51,19 @@ public class ModWorldGen implements IWorldGenerator {
         BlockPos pos = new BlockPos(x + 8, 0, z + 8);
 
         //nether arena
-        if(world.provider.getDimension() == -1) {
+        if(world.provider.getDimension() == -1 && WorldConfig.burning_flame_arena_enabled) {
                 netherArena.generate(world, random, pos);
         }
 
         //void blossom
-            if (isAllowedDimensionTooSpawnIn(world.provider.getDimension())) {
+            if (isAllowedDimensionTooSpawnIn(world.provider.getDimension()) && WorldConfig.void_cave_enabled) {
                             BlockPos posModified = new BlockPos(pos.getX(), 0, pos.getZ());
                             blossomCave.generate(world, random, posModified);
 
 
             }
         //Rotten Hold
-        if (isAllowedDimensionTooSpawnInRottenHold(world.provider.getDimension())) {
+        if (isAllowedDimensionTooSpawnInRottenHold(world.provider.getDimension()) && WorldConfig.rotten_hold_enabled) {
             if(world.provider.getBiomeForCoords(pos) != Biomes.DEEP_OCEAN && world.provider.getBiomeForCoords(pos) != Biomes.OCEAN) {
                 if(isBiomeValidRottenHold(pos, world)) {
                     BlockPos posModified = new BlockPos(pos.getX(), 0, pos.getZ());
@@ -71,16 +72,16 @@ public class ModWorldGen implements IWorldGenerator {
             }
         }
         //Night Lich Tower
-        if(isAllowedDimensionTooSpawnInNightLich(world.provider.getDimension())) {
+        if(isAllowedDimensionTooSpawnInNightLich(world.provider.getDimension()) && WorldConfig.night_lich_tower_enabled) {
                         //After doing solid ground checks it can signal for the lich tower to try and generate
                         lich_tower.generate(world, random, pos);
         }
         //Frozen City
-        if(isAllowedDimensionTooSpawnInFrozenCastle(world.provider.getDimension())) {
+        if(isAllowedDimensionTooSpawnInFrozenCastle(world.provider.getDimension()) && WorldConfig.frozen_castle_enabled) {
             frozen_castle.generate(world, random, pos);
         }
         //High Court City
-        if(isAllowedDimensionTooSpawnInHighCourtCity(world.provider.getDimension())) {
+        if(isAllowedDimensionTooSpawnInHighCourtCity(world.provider.getDimension()) && WorldConfig.hcc_enabled) {
             high_court_city.generate(world, random, pos);
         }
 

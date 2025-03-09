@@ -1749,6 +1749,9 @@ public class EntityFlameKnight extends EntityAbstractBase implements IAnimatable
     @Override
     public void onDeath(DamageSource cause) {
         this.setHealth(0.00001F);
+        if(!this.isDeathPlay()) {
+            this.clearEvents();
+        }
         this.setDeathPlay(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);

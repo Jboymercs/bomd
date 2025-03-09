@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:king_helmet"
+    },
+    "title": {
+      "translate": "advancements.da.kill_high_king.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_high_king.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "da:kill_imperial_halberd",
+  "criteria": {
+    "HighKing": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:high_king"
+        }
+      }
+    }
+  }
+}

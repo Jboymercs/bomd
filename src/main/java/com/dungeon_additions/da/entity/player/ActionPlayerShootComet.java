@@ -21,7 +21,7 @@ public class ActionPlayerShootComet implements IActionPlayer{
         }
 
         ProjectileMagicFireBall fireBall = new ProjectileMagicFireBall(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage));
-        fireBall.setTravelRange(40);
+        fireBall.setTravelRange(50);
         fireBall.setNoGravity(true);
         float speed = (float) (MobConfig.magic_fireball_velocity - 0.6);
         Vec3d relPos = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0,3.2,0)));

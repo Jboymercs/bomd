@@ -30,6 +30,7 @@ public class ClientProxy extends CommonProxy{
     private final ModelBiped MODEL_IMPERIAL_HELMET = new ModelImperialHelmet(0F);
 
     private final ModelBiped MODEL_WYRK_HELMET = new ModelWyrkHelmet(0F);
+    private final ModelBiped MODEL_KING_HELMET = new ModelKingHelmet(0F);
 
     @Override
     public void init() {
@@ -83,6 +84,9 @@ public class ClientProxy extends CommonProxy{
         }
         if(item == ModItems.IMPERIAL_HELMET) {
             return MODEL_IMPERIAL_HELMET;
+        }
+        if(item == ModItems.KINGS_HELMET) {
+            return MODEL_KING_HELMET;
         }
         return null;
     }

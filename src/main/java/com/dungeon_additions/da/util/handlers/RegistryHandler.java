@@ -46,6 +46,10 @@ public class RegistryHandler {
         ModelLoader.setCustomModelResourceLocation(ModItems.LIGHT_RING_PROJECTILE, 0, new ModelResourceLocation(ModReference.MOD_ID + ":light_ring", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.STORM_TORNADO_PROJECTILE, 0, new ModelResourceLocation(ModReference.MOD_ID + ":storm_tornado", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.HOLY_WAVE_PROJ, 0, new ModelResourceLocation(ModReference.MOD_ID + ":holy_wave", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.SWORD_SPEAR, 0, new ModelResourceLocation(ModReference.MOD_ID + ":sword_spear", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.BLOODY_SWORD_SPEAR, 0, new ModelResourceLocation(ModReference.MOD_ID + ":sword_spear_blood", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.KING_CLAW, 0, new ModelResourceLocation(ModReference.MOD_ID + ":king_claw", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.DRAGON_SHIELD, 0, new ModelResourceLocation(ModReference.MOD_ID + ":dragon_shield", "inventory"));
         ModItems.SPORE_BALL.setTileEntityItemStackRenderer(new RenderSpore());
         ModItems.MAGIC_FIREBALL.setTileEntityItemStackRenderer(new RenderMagicFireball());
         ModItems.CHAMPION_AXE.setTileEntityItemStackRenderer(new RenderChampionAxe());
@@ -54,6 +58,10 @@ public class RegistryHandler {
         ModItems.LIGHT_RING_PROJECTILE.setTileEntityItemStackRenderer(new RenderLightRing());
         ModItems.STORM_TORNADO_PROJECTILE.setTileEntityItemStackRenderer(new RenderStormTornado());
         ModItems.HOLY_WAVE_PROJ.setTileEntityItemStackRenderer(new RenderHolyWave());
+        ModItems.SWORD_SPEAR.setTileEntityItemStackRenderer(new RenderSwordSpeear());
+        ModItems.BLOODY_SWORD_SPEAR.setTileEntityItemStackRenderer(new RenderBloodySwordSpear());
+        ModItems.KING_CLAW.setTileEntityItemStackRenderer(new RenderKingClaw());
+        ModItems.DRAGON_SHIELD.setTileEntityItemStackRenderer(new RenderDragonShield());
         for (Item item : ModItems.ITEMS) {
             if (item instanceof IHasModel) {
                 ((IHasModel) item).registerModels();

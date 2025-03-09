@@ -1,0 +1,95 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "builtin/entity",
+  "texture_size": [
+    64,
+    64
+  ],
+  "display": {
+    "thirdperson_lefthand": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        6
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        6,
+        94,
+        -12
+      ],
+      "translation": [
+        2,
+        -4,
+        0.5
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        21,
+        -88,
+        20
+      ],
+      "translation": [
+        5,
+        -4.25,
+        0
+      ]
+    },
+    "ground": {
+      "translation": [
+        1.25,
+        6.5,
+        0
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ]
+    },
+    "gui": {
+      "rotation": [
+        8,
+        -138,
+        15
+      ],
+      "translation": [
+        3.75,
+        2.25,
+        0
+      ],
+      "scale": [
+        0.7,
+        0.7,
+        0.7
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        -3.25,
+        3.5,
+        2.5
+      ]
+    }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "blocking": 1
+      },
+      "model": "da:item/dragon_shield_blocking"
+    }
+  ]
+}

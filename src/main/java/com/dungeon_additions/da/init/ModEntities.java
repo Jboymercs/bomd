@@ -30,6 +30,7 @@ import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotSpike;
 import com.dungeon_additions.da.entity.sky_dungeon.*;
+import com.dungeon_additions.da.entity.sky_dungeon.friendly.EntityFriendlyHalberd;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.*;
@@ -148,6 +149,9 @@ public class ModEntities {
             registerEntityWithID("high_king", EntityHighKing.class, ENTITY_START_ID++, 100, night_lich);
             registerEntity("king_holy_aoe", EntityKingHolyAOE.class, ENTITY_START_ID++, 100);
             registerEntity("king_holy_projectile", EntityKingHolyWave.class, ENTITY_START_ID++, 100);
+            registerEntity("blood_pile", EntityBloodPile.class, ENTITY_START_ID++, 100);
+            registerEntity("blood_ball_proj", ProjectileKingBlood.class, ENTITY_START_ID++, 100);
+            registerEntity("imperial_knight_friendly", EntityFriendlyHalberd.class, ENTITY_START_ID++, 100);
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
         registerTileEntity(TileEntityMegaStructure.class, "mega_structure");

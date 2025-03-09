@@ -2,11 +2,15 @@ package com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles;
 
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
+import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -53,6 +57,18 @@ public class EntityKingHolyAOE extends EntitySkyBase implements IAnimatable, IAn
         this.setNoAI(true);
     }
 
+    private EntityPlayer ownerFrom;
+
+    public EntityKingHolyAOE(World worldIn, EntityPlayer owner) {
+        super(worldIn);
+        this.setSize(0.7F, 1.7F);
+        this.noClip = true;
+        this.ownerFrom = owner;
+        selectAnimationTooPlay();
+        this.setImmovable(true);
+        this.setNoAI(true);
+    }
+
     public void selectAnimationTooPlay() {
         if(selection == 1) {
             ANIM_SELECTION_STRING = ANIM_SHOOT_2;
@@ -77,20 +93,40 @@ public class EntityKingHolyAOE extends EntitySkyBase implements IAnimatable, IAn
         this.rotationYawHead = 0;
         this.renderYawOffset = 0;
 
+        if(ticksExisted == 2) {
+         //   this.playSound(SoundsHandler.HOLY_SPIKE_SUMMON, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f));
+        }
         if(!world.isRemote) {
             if (this.ticksExisted == 15) {
-                List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntitySkyBase)));
+                if(ownerFrom != null) {
+                    List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntityPlayer)));
 
-                if (!targets.isEmpty()) {
-                    for (EntityLivingBase base : targets) {
-                        if (!(base instanceof EntitySkyBase)) {
-                            Vec3d offset = base.getPositionVector().add(ModUtils.yVec(1.0D));
-                            DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
-                            float damage = this.getAttack();
-                            ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+                    if (!targets.isEmpty()) {
+                        for (EntityLivingBase base : targets) {
+                            if (base != this && base != ownerFrom && !(base instanceof EntityKingHolyAOE)) {
+                                boolean hasHelmet = ownerFrom.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.KINGS_HELMET;
+                                Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
+                                DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.PLAYER).directEntity(ownerFrom).build();
+                                float damage = hasHelmet ? 24 : 15;
+                                ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+                            }
                         }
-                    }
 
+                    }
+                } else {
+                    List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntitySkyBase)));
+
+                    if (!targets.isEmpty()) {
+                        for (EntityLivingBase base : targets) {
+                            if (!(base instanceof EntitySkyBase)) {
+                                Vec3d offset = base.getPositionVector().add(ModUtils.yVec(1.0D));
+                                DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
+                                float damage = this.getAttack();
+                                ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+                            }
+                        }
+
+                    }
                 }
             }
         }

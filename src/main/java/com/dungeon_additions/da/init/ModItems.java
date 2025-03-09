@@ -9,6 +9,7 @@ import com.dungeon_additions.da.items.armor.imperial.ItemImperialChestplate;
 import com.dungeon_additions.da.items.projectile.ItemHolyWave;
 import com.dungeon_additions.da.items.projectile.ItemLightRing;
 import com.dungeon_additions.da.items.projectile.ItemStormTornado;
+import com.dungeon_additions.da.items.shield.ItemDragonShield;
 import com.dungeon_additions.da.items.shield.ItemDraugrShield;
 import com.dungeon_additions.da.items.tools.*;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
@@ -29,8 +30,10 @@ public class ModItems {
 
     //Materials
     private static final Item.ToolMaterial CHAMPION_AXE_MATERIAL = EnumHelper.addToolMaterial("champion_set", 3, 874, 7.0F, (float) ModConfig.champion_axe_damage, 15);
-    private static final Item.ToolMaterial IMPERIAL_HALBERD_MATERIAL = EnumHelper.addToolMaterial("imperial_halberd_set", 3, 2463, 8.0F, (float) 10, 20);
-
+    private static final Item.ToolMaterial IMPERIAL_HALBERD_MATERIAL = EnumHelper.addToolMaterial("imperial_halberd_set", 3, 2463, 8.0F, (float) 9.5, 20);
+    private static final Item.ToolMaterial SWORD_SPEAR_MATERIAL = EnumHelper.addToolMaterial("sword_spear_set", 3, 2031, 6.0F, (float) 9.5, 40);
+    private static final Item.ToolMaterial BLOODY_SWORD_SPEAR_MATERIAL = EnumHelper.addToolMaterial("bloody_sword_spear_set", 3, 2031, 7.0F, (float) 10, 40);
+    private static final Item.ToolMaterial KINGS_CLAW_MATERIAL = EnumHelper.addToolMaterial("king_claw_set", 3, 942, 7.0F, (float) 6, 40);
     private static final Item.ToolMaterial IMPERIAL_SWORD_MATERIAL = EnumHelper.addToolMaterial("imperial_material", 2, 2463, 6.0F, (float) 7.5, 30);
     private static final Item.ToolMaterial DAGGER_MATERIAL = EnumHelper.addToolMaterial("void_material", 2, 720, 6.0F, (float) ModConfig.void_dagger_damage, 45);
     private static final Item.ToolMaterial DARK_DAGGER_MATERIAL = EnumHelper.addToolMaterial("dark_material", 2, 520, 6.0F, (float) 5.5, 5);
@@ -48,6 +51,7 @@ public class ModItems {
     private static final ItemArmor.ArmorMaterial LICH_HELMET = EnumHelper.addArmorMaterial("night_lich", ModReference.MOD_ID +":night_lich", 275, new int[] {3,6,8,3}, 70, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1F);
     private static final ItemArmor.ArmorMaterial WYRK_ARMOR = EnumHelper.addArmorMaterial("wyrk", ModReference.MOD_ID +":wyrk", 325, new int[] {3,6,8,3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
     private static final ItemArmor.ArmorMaterial IMPERIAL_ARMOR = EnumHelper.addArmorMaterial("imperial", ModReference.MOD_ID +":wyrk", 670, new int[] {4,7,9,4}, 30, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
+    private static final ItemArmor.ArmorMaterial KINGS_HELMET_MAT = EnumHelper.addArmorMaterial("king", ModReference.MOD_ID +":king", 1023, new int[] {4,7,9,4}, 30, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 1.5F);
     public ModItems() {
 
 
@@ -87,6 +91,7 @@ public class ModItems {
     //Utility & Locator Items (Not Weapons)
     public static final Item ENDLESS_PEARL = new ItemEndlessEnderpearl("endless_enderpearl", "pearl_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item WYRK_TOTEM = new ItemWyrkTotem("wyrk_totem", "wyrk_totem_desc", DungeonAdditionsTab.ALL);
+    public static final Item KINGS_AID = new ItemKingsAid("king_aid", "king_aid_desc", DungeonAdditionsTab.ALL);
     public static final Item FLAME_OF_AMBITION = new ItemAmbitionFlame("ambition_flame", "flame_of_ambition").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item DARK_LOCATOR = new ItemBase("dark_locator", DungeonAdditionsTab.ALL);
     public static final Item FROZEN_CASTLE_LOCATOR = new ItemFrozenCastleLocator("frost_locator", "frost_locator_desc");
@@ -103,12 +108,18 @@ public class ModItems {
     public static final Item FROST_SWORD = new ItemDraugrSword("frost_sword", DRAUGR_SWORD, "draugr_sword_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item CHAMPION_AXE = new ItemChampionAxe("champion_axe", CHAMPION_AXE_MATERIAL, "champion_axe_desc");
     public static final Item DRAUGR_SHIELD = new ItemDraugrShield("draugr_shield", DungeonAdditionsTab.ALL, "draugr_shield_desc");
+    public static final Item DRAGON_SHIELD = new ItemDragonShield("dragon_shield", DungeonAdditionsTab.ALL, "dragon_shield_desc");
     public static final Item SWORN_OF_AMBITION = new ItemAmbitionSword("ambition_sword", "flame_sword", FLAME_SWORD_MATERIAL).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item SPEAR_OF_SOULS = new ItemSoulSpear("spear_staff", SOUL_SPEAR_MATERIAL, "soul_spear_desc");
     public static final Item SPEAR_OF_WARRIOR = new ItemWeaponSpear("spear_weapon", SOUL_SPEAR_WEAPON_MATERIAL, "soul_weapon_desc");
     public static final Item IMPERIAL_HALBERD_ITEM = new ItemImperialHalberd("imperial_halberd_item", IMPERIAL_HALBERD_MATERIAL, "imperial_halberd_desc");
     public static final Item IMPERIAL_SWORD = new ItemParrySword("imperial_sword_item", "imperial_sword_desc", IMPERIAL_SWORD_MATERIAL);
     public static final Item WYRK_STAFF = new ItemWyrkStaff("wyrk_staff", "wyrk_staff_desc", DungeonAdditionsTab.ALL);
+    public static final Item DRAGON_BOW = new ItemDragonBow("dragon_bow", "dragon_bow_desc");
+    public static final Item SWORD_SPEAR = new ItemSwordSpear("sword_spear", SWORD_SPEAR_MATERIAL, "sword_spear_desc");
+    public static final Item BLOODY_SWORD_SPEAR = new ItemBloodySwordSpear("sword_spear_blood", BLOODY_SWORD_SPEAR_MATERIAL, "sword_spear_blood_desc");
+    public static final Item KING_CLAW = new ItemKingClaw("king_claw", KINGS_CLAW_MATERIAL, "king_claw_desc");
+
     public static final Item SKY_ARROW = new ItemGoldenArrow("sky_arrow", "sky_arrow_desc", DungeonAdditionsTab.ALL);
 
     //Armor
@@ -127,6 +138,7 @@ public class ModItems {
 
     public static final ItemArmor IMPERIAL_LEGGINGS = new ItemImperialArmor("imperial_leggings", IMPERIAL_ARMOR, 2, EntityEquipmentSlot.LEGS, "imperial", "imperial_armor_desc");
     public static final ItemArmor IMPERIAL_BOOTS = new ItemImperialArmor("imperial_boots", IMPERIAL_ARMOR, 1, EntityEquipmentSlot.FEET, "imperial", "imperial_armor_desc");
+    public static final ItemArmor KINGS_HELMET = new ItemKingHelmet("king_helmet", KINGS_HELMET_MAT, 1, EntityEquipmentSlot.HEAD, "king_helmet_desc");
 
     //Misc Utility
     public static final Item INVISIBLE = new ItemBase("invisible", null);
@@ -140,6 +152,7 @@ public class ModItems {
     public static final Item LIGHT_RING_PROJECTILE = new ItemLightRing("light_ring");
     public static final Item STORM_TORNADO_PROJECTILE = new ItemStormTornado("storm_tornado");
     public static final Item HOLY_WAVE_PROJ = new ItemHolyWave("holy_wave");
+    public static final Item BLOOD_BALL_PROJ = new ItemBase("blood_ball");
 
     public static final Item INVISISBLE_ITEM = new ItemBase("invisible_item").setCreativeTab(CreativeTabs.SEARCH);
     public static final Item PROJECTILE_FLAME = new ItemBase("projectile_flame").setCreativeTab(CreativeTabs.SEARCH);

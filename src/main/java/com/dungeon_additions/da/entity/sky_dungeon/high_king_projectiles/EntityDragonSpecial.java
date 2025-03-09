@@ -82,7 +82,7 @@ public class EntityDragonSpecial extends EntitySkyBase implements IAnimatable, I
                     this.playSound(SoundsHandler.HIGH_DRAKE_SPECIAL_DAMAGE_ENTITY, 1.5f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f));
                 }
 
-                if(ticksExisted <= 74) {
+                if(ticksExisted <= 73) {
                     BlockPos targetPos = new BlockPos(targetedEntity.posX, Math.round(targetedEntity.posY), targetedEntity.posZ);
                     int y = getSurfaceHeight(world, targetPos, (int) targetPos.getY() - 10, (int) targetPos.getY() + 3);
 
@@ -94,7 +94,7 @@ public class EntityDragonSpecial extends EntitySkyBase implements IAnimatable, I
 
                 }
 
-                if(ticksExisted == 75) {
+                if(ticksExisted == 74) {
                     BlockPos targetPos = new BlockPos(targetedEntity.posX, Math.round(targetedEntity.posY), targetedEntity.posZ);
                     int y = getSurfaceHeight(world, targetPos, (int) targetPos.getY() - 10, (int) targetPos.getY() + 3);
 

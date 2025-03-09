@@ -1,0 +1,48 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BXB",
+    "BVB",
+    " R "
+  ],
+  "key": {
+    "V": {
+      "item": "da:light_mana"
+    },
+    "X": {
+      "item": "da:dragon_scale"
+    },
+    "R": {
+      "item": "da:lightning_ingot"
+    },
+    "B": [
+      {
+        "item": "minecraft:planks",
+        "data": 0
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 1
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 2
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 3
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 4
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 5
+      }
+    ]
+  },
+  "result": {
+    "item": "da:dragon_shield"
+  }
+}

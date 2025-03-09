@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " VR",
+    "V R",
+    " VR"
+  ],
+  "key": {
+    "V": {
+      "item": "da:dragon_scale"
+    },
+    "R": {
+      "item": "da:farum_rope"
+    }
+  },
+  "result": {
+    "item": "da:dragon_bow"
+  }
+}

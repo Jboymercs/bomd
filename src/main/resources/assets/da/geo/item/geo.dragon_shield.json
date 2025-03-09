@@ -1,0 +1,36 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "MainGroup",
+					"pivot": [0, -2, 3],
+					"cubes": [
+						{"origin": [-3, -5, 2], "size": [6, 6, 2], "uv": [0, 27]}
+					]
+				},
+				{
+					"name": "Plate",
+					"parent": "MainGroup",
+					"pivot": [-3, -2, 3],
+					"rotation": [90, 0, 0],
+					"cubes": [
+						{"origin": [-5, -10, -2], "size": [2, 16, 11], "uv": [0, 0]},
+						{"origin": [-5, -8, -10], "size": [2, 12, 8], "uv": [26, 0]},
+						{"origin": [-5, -9, 9], "size": [2, 14, 2], "uv": [16, 27]},
+						{"origin": [-6, -6, -1], "size": [1, 8, 8], "uv": [26, 20]}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1421,6 +1421,164 @@
       }
     ]
   },
+  "entity.high_king.armor": {
+    "category": "entity",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/armor1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_king/armor2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_king/armor3",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_king/armor4",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_king/armor5",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_king/armor6",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_king/armor7",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_king.hurt": {
+    "category": "entity",
+    "subtitle": "entity.high_king.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/hurt1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_king/hurt2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_king/hurt3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_king.step": {
+    "category": "entity",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/step1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_king/step2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_king/step3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_king.swing": {
+    "category": "entity",
+    "subtitle": "entity.high_king.swing",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/swing1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_king/swing2",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_king.swing_magic": {
+    "category": "entity",
+    "subtitle": "entity.high_king.swing_magic",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/swing_magic1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/high_king/swing_magic2",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_king.swing_blood": {
+    "category": "entity",
+    "subtitle": "entity.high_king.impale",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/swing_blood",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_king.spear_impact": {
+    "category": "entity",
+    "subtitle": "entity.high_king.spear_impact",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/spear_impact",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_king.cast_claw": {
+    "category": "entity",
+    "subtitle": "entity.high_king.cast_claw",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/cast_claw",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_king.claw_draw": {
+    "category": "entity",
+    "subtitle": "entity.high_king.claw_draw",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/claw_draw",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_king.spike_summon": {
+    "category": "entity",
+    "subtitle": "entity.high_king.spike_summon",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/spike_summon",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_king.blood_spear_use": {
+    "category": "entity",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/blood_spear_use",
+        "steam": false
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",

@@ -246,6 +246,19 @@ public abstract class EntityAbstractBase extends EntityCreature {
         this.dataManager.register(FULL_BODY_USAGE, Boolean.valueOf(false));
     }
 
+    public void clearEvents() {
+        boolean foundEvent = true;
+        while (foundEvent) {
+            TimedEvent event = events.peek();
+            if (event != null && event.ticks <= this.ticksExisted) {
+                events.remove();
+                event.callback.run();
+            } else {
+                foundEvent = false;
+            }
+        }
+    }
+
 
     public float getSizeVariation() {
         return this.sizeScaling;

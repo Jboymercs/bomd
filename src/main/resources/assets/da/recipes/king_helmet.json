@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FVF",
+    "RBR"
+  ],
+  "key": {
+    "V": {
+      "item": "da:lightning_ingot"
+    },
+    "F": {
+      "item": "da:divine_metal"
+    },
+    "R": {
+      "item": "da:divine_scroll"
+    },
+    "B": {
+      "item": "da:dragon_scale"
+    }
+  },
+  "result": {
+    "item": "da:king_helmet"
+  }
+}

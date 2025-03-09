@@ -50,11 +50,13 @@ public class EntityHighKingBoss extends EntitySkyBase {
     public EntityHighKingBoss(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
         this.iAmBossMob = true;
+        this.iAmBossMobWyrkNerf = true;
     }
 
     public EntityHighKingBoss(World worldIn) {
         super(worldIn);
         this.iAmBossMob = true;
+        this.iAmBossMobWyrkNerf = true;
     }
 
 

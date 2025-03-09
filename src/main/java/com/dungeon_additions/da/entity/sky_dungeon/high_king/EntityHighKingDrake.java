@@ -13,10 +13,8 @@ import com.dungeon_additions.da.entity.sky_dungeon.high_king.action.*;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.drake.EntityHighKingDrakeAI;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.ProjectileStormWind;
-import com.dungeon_additions.da.util.ModColors;
-import com.dungeon_additions.da.util.ModRand;
-import com.dungeon_additions.da.util.ModUtils;
-import com.dungeon_additions.da.util.ServerScaleUtil;
+import com.dungeon_additions.da.init.ModBlocks;
+import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -27,13 +25,17 @@ import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigateFlying;
 import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -1254,16 +1256,40 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
         }
     }
 
+    private static final ResourceLocation LOOT_BOSS = new ResourceLocation(ModReference.MOD_ID, "high_dragon");
+
     @Override
     public void onDeath(DamageSource cause) {
         this.setImmovable(true);
-        if(MobConfig.high_dragon_after_death && this.getSpawnLocation() != null) {
-            this.experienceValue = 0;
-            //Spawn the High King for the second part of the boss fight
-            EntityHighKing king = new EntityHighKing(world, this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
-            this.world.spawnEntity(king);
-        } else {
-            //Spawn a chest with the loot table for this boss
+        if(!world.isRemote) {
+            if(MobConfig.high_dragon_after_death && this.getSpawnLocation() != null) {
+                this.experienceValue = 0;
+                //Spawn the High King for the second part of the boss fight
+                EntityHighKing king = new EntityHighKing(world, this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
+                this.world.spawnEntity(king);
+            } else {
+                //Spawn a chest with the loot table for this boss
+                if(this.getSpawnLocation() != null) {
+                    BlockPos pos = this.getSpawnLocation();
+                    world.setBlockState(pos, Blocks.CHEST.getDefaultState());
+                    TileEntity te = world.getTileEntity(pos);
+                    if(te instanceof TileEntityChest) {
+                        TileEntityChest chest = (TileEntityChest) te;
+                        chest.setLootTable(LOOT_BOSS, rand.nextLong());
+                    }
+                } else {
+                    BlockPos pos = this.getPosition();
+                    world.setBlockState(pos, Blocks.CHEST.getDefaultState());
+                    TileEntity te = world.getTileEntity(pos);
+                    if(te instanceof TileEntityChest) {
+                        TileEntityChest chest = (TileEntityChest) te;
+                        chest.setLootTable(LOOT_BOSS, rand.nextLong());
+                    }
+                }
+            }
         }
+
+
+        super.onDeath(cause);
     }
 }

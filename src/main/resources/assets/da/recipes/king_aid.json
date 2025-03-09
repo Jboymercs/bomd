@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RXR",
+    "RCR",
+    " B "
+  ],
+  "key": {
+    "R": {
+      "item": "da:dark_core"
+    },
+    "B": {
+      "item": "da:divine_metal"
+    },
+    "X": {
+      "item": "da:dragon_scale"
+    },
+    "C": {
+      "item": "da:great_wyrk_mana"
+    }
+  },
+  "result": {
+    "item": "da:king_aid"
+  }
+}

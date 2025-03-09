@@ -43,6 +43,7 @@ import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotSpike;
 import com.dungeon_additions.da.entity.sky_dungeon.*;
+import com.dungeon_additions.da.entity.sky_dungeon.friendly.EntityFriendlyHalberd;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.*;
@@ -122,6 +123,7 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileStormWind.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(EntitySkyDungeonLocator.class, ModItems.SKY_LOCATOR_PROJECTILE);
         registerProjectileRenderer3DModel(EntityKingHolyWave.class, ModItems.HOLY_WAVE_PROJ);
+        registerProjectileRenderer(ProjectileKingBlood.class, ModItems.BLOOD_BALL_PROJ);
     }
 
     //Handles Rendering
@@ -217,6 +219,10 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityHighKing.class, RenderHighKing::new);
         //High King AOE
         RenderingRegistry.registerEntityRenderingHandler(EntityKingHolyAOE.class, RenderKingHolyAOE::new);
+        //Blood Pile
+        RenderingRegistry.registerEntityRenderingHandler(EntityBloodPile.class, RenderBloodPile::new);
+        //Friendly Imperial Halberd
+        RenderingRegistry.registerEntityRenderingHandler(EntityFriendlyHalberd.class, RenderFriendlyHalberd::new);
     }
 
 }

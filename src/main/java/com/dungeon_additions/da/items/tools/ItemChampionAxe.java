@@ -47,8 +47,6 @@ public class ItemChampionAxe extends ItemSword implements IAnimatable, IHasModel
         ModItems.ITEMS.add(this);
         setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
-
-
     }
 
     @Override

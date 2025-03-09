@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FRX",
+    " V ",
+    " R "
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:blaze_rod"
+    },
+    "R": {
+      "item": "da:divine_metal"
+    },
+    "X": {
+      "item": "da:divine_scroll"
+    },
+    "F": {
+      "item": "da:lightning_ingot"
+    }
+  },
+  "result": {
+    "item": "da:sword_spear"
+  }
+}

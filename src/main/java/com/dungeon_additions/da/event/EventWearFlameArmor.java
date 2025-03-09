@@ -80,6 +80,22 @@ public class EventWearFlameArmor {
                 }
             }
 
+            //King's Helmet
+            if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.KINGS_HELMET) {
+                if(base.ticksExisted % 40 == 0 && base.isPotionActive(MobEffects.WITHER) || base.ticksExisted % 40 == 0 && base.isPotionActive(MobEffects.MINING_FATIGUE)) {
+                    base.removePotionEffect(MobEffects.WITHER);
+                    base.removePotionEffect(MobEffects.MINING_FATIGUE);
+                    base.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 400, 0));
+                }
+            }
+
+            //King's Claw
+            if(base.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == ModItems.KING_CLAW && base.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).getItem() == ModItems.KING_CLAW) {
+                if(base.ticksExisted % 40 == 0 && base.getHealth()/base.getMaxHealth() <= 0.75) {
+                    base.addPotionEffect(new PotionEffect(MobEffects.SPEED, 100, 0));
+                }
+            }
+
             //Imperial Helmet
             if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.IMPERIAL_HELMET) {
                 if(base.ticksExisted % 40 == 0 && base.isPotionActive(MobEffects.WEAKNESS)) {

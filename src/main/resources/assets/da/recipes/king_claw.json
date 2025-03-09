@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FFF",
+    "RBC",
+    " X "
+  ],
+  "key": {
+    "F": {
+      "item": "da:light_mana"
+    },
+    "R": {
+      "item": "da:dark_core"
+    },
+    "B": {
+      "item": "da:divine_metal"
+    },
+    "X": {
+      "item": "da:dragon_scale"
+    },
+    "C": {
+      "item": "minecraft:leather"
+    }
+  },
+  "result": {
+    "item": "da:king_claw"
+  }
+}

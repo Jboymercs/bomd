@@ -178,6 +178,22 @@ public class SoundsHandler {
     public static SoundEvent HIGH_DRAKE_BITE;
     public static SoundEvent HIGH_DRAKE_TAIL_SWIPE;
 
+    //High King
+    public static SoundEvent HIGH_KING_HURT;
+    public static SoundEvent HIGH_KING_ARMOR_MOVEMENT;
+    public static SoundEvent HIGH_KING_SWING;
+    public static SoundEvent HIGH_KING_SWING_MAGIC;
+    public static SoundEvent HIGH_KING_STEP;
+    public static SoundEvent HIGH_KING_SWING_IMPALE;
+
+    public static SoundEvent HIGH_KING_CLAW_DRAW;
+
+    public static SoundEvent HIGH_KING_CAST_CLAW;
+    public static SoundEvent HIGH_KING_SPEAR_IMPACT;
+    public static SoundEvent HOLY_SPIKE_SUMMON;
+
+    public static SoundEvent BLOOD_SPEAR_USE;
+
     public static void registerSounds() {
         //
         MOSS_BREAK = registerSound("moss.break", "block");
@@ -326,6 +342,19 @@ public class SoundsHandler {
         HIGH_DRAKE_SPECIAL_DAMAGE_ENTITY = registerSound("high_drake.special_damage", "entity");
         HIGH_DRAKE_BITE = registerSound("high_drake.bite", "entity");
         HIGH_DRAKE_TAIL_SWIPE = registerSound("high_drake.tail_swipe", "entity");
+        //
+        HIGH_KING_HURT = registerSound("high_king.hurt", "entity");
+        HIGH_KING_SWING = registerSound("high_king.swing", "entity");
+        HIGH_KING_SWING_MAGIC = registerSound("high_king.swing_magic", "entity");
+        HIGH_KING_ARMOR_MOVEMENT = registerSound("high_king.armor", "entity");
+        HIGH_KING_STEP = registerSound("high_king.step", "entity");
+        HIGH_KING_SWING_IMPALE = registerSound("high_king.swing_blood", "entity");
+        HIGH_KING_CLAW_DRAW = registerSound("high_king.claw_draw", "entity");
+        HIGH_KING_CAST_CLAW = registerSound("high_king.cast_claw", "entity");
+        HIGH_KING_SPEAR_IMPACT = registerSound("high_king.spear_impact", "entity");
+        HOLY_SPIKE_SUMMON = registerSound("high_king.spike_summon", "entity");
+        //
+        BLOOD_SPEAR_USE = registerSound("high_king.blood_spear_use", "entity");
     }
 
 

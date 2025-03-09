@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:king_aid"
+    },
+    "title": {
+      "translate": "advancements.da.craft_king_aid.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_king_aid.description"
+    }
+  },
+  "parent": "da:kill_high_king",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:king_aid"
+          }
+        ]
+      }
+    }
+  }
+}

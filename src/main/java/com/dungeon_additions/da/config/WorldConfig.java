@@ -46,6 +46,11 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static int min_top_part = 40;
 
+    @Config.Name("Void Blossom Cave Enabled/Disabled")
+    @Config.Comment("When set to false, the Void Blossom Cave will be disabled from world generation.")
+    @Config.RequiresMcRestart
+    public static boolean void_cave_enabled = true;
+
     @Config.Name("Burning Flame Arena Spawn Weight")
     @Config.Comment("Change the spawn weight of the Burning Flame Arena (The Nether Dungeon), higher number means lower frequency")
     @Config.RequiresMcRestart
@@ -73,6 +78,10 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static int burning_arena_y_level = 75;
 
+    @Config.Name("Burning Flame Arena Enabled/Disabled")
+    @Config.Comment("When set to false, the Burning Flame Arena will be disabled from world generation.")
+    @Config.RequiresMcRestart
+    public static boolean burning_flame_arena_enabled = true;
 
     @Config.Name("Rotten Hold Dimensions allowed in!")
     @Config.Comment("Take note that any ocean type biomes this structure will NOT spawn in, but you can select which dimension you'd like the structure to spawn in")
@@ -117,6 +126,11 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static int rot_hold_max_y = 70;
 
+    @Config.Name("Rotten Hold Enabled/Disabled")
+    @Config.Comment("When set to false, the Rotten Hold will be disabled from world generation.")
+    @Config.RequiresMcRestart
+    public static boolean rotten_hold_enabled = true;
+
     @Config.Name("Night Lich Tower Dimensions allowed in!")
     @Config.Comment("Take note that any ocean type biomes this structure will NOT spawn in, but you can select which dimension you'd like the structure to spawn in")
     @Config.RequiresMcRestart
@@ -142,6 +156,11 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static String[] biome_types_blacklist_lich = {"DENSE","NETHER","END","MUSHROOM","OCEAN","RIVER","MESA","MOUNTAIN","HILLS","BEACH"
     };
+
+    @Config.Name("Night Lich Tower Enabled/Disabled")
+    @Config.Comment("When set to false, the Night Lich Tower will be disabled from world generation.")
+    @Config.RequiresMcRestart
+    public static boolean night_lich_tower_enabled = true;
 
     @Config.Name("Frozen Castle WhiteList Biome Types")
     @Config.Comment("Add Biome types that ALLOW the Frozen Castle from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
@@ -184,6 +203,11 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static int[] list_of_dimensions_frozen_castle = {0};
 
+    @Config.Name("Frozen Castle Enabled/Disabled")
+    @Config.Comment("When set to false, the Frozen Castle will be disabled from world generation.")
+    @Config.RequiresMcRestart
+    public static boolean frozen_castle_enabled = true;
+
     @Config.Name("High Court City Blacklisted Biome Types")
     @Config.Comment("Add Biome types that DISALLOW the High City from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
     @Config.RequiresMcRestart
@@ -193,7 +217,7 @@ public class WorldConfig {
     @Config.Name("High Court City Mob Spawn Weight")
     @Config.Comment("Change the chance of mob spawns throughout the High Court City, higher number means more spawns.")
     @Config.RangeInt(min = 1, max = 10)
-    public static int high_city_mob_spawns = 6;
+    public static int high_city_mob_spawns = 5;
 
     @Config.Name("High Court City Chest Chance Weight")
     @Config.Comment("Change the chance of chest spawns throughout the High Court City, higher number means more chests")
@@ -219,6 +243,11 @@ public class WorldConfig {
     @Config.Comment("Select what dimensions this structure is allowed to spawn in")
     @Config.RequiresMcRestart
     public static int[] list_of_dimensions_high_court_city = {0};
+
+    @Config.Name("High Court City Enabled/Disabled")
+    @Config.Comment("When set to false, the High Court City will be disabled from world generation.")
+    @Config.RequiresMcRestart
+    public static boolean hcc_enabled = true;
 
     @Config.Name("Petrogloom Ore Gen")
     @Config.Comment("Allowed Dimension for Petrogloom to spawn in")

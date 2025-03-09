@@ -23,6 +23,8 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -290,6 +292,7 @@ public class EntityFriendWyrk extends EntityAbstractBase implements IAnimatable,
             this.setImmovable(false);
             this.setFightMode(false);
             this.setStomp(false);
+
         }, 60);
     };
 
@@ -382,6 +385,14 @@ public class EntityFriendWyrk extends EntityAbstractBase implements IAnimatable,
     public void tick() {
 
     }
+
+    @Override
+    public boolean canBeLeashedTo(EntityPlayer player)
+    {
+        return true;
+    }
+
+
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {

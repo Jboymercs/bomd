@@ -6,33 +6,37 @@ import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
 import com.dungeon_additions.da.entity.sky_dungeon.city_knights.ActionHalberdSpecial;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingBoss;
-import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake;
+import com.dungeon_additions.da.entity.sky_dungeon.high_king.action.ActionBloodSpray;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.action.*;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.ai.EntityHighKingTimedAttack;
-import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.ModRand;
+import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.ServerScaleUtil;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemShield;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
@@ -50,6 +54,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, IAnimationTickable, IAttack {
@@ -57,7 +62,6 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.YELLOW, BossInfo.Overlay.NOTCHED_6));
 
     protected Vec3d chargeDir;
-    private Consumer<EntityLivingBase> prevAttack;
     public boolean currentlyInIFrame = false;
     protected int blockCooldown = MobConfig.high_king_block_cooldown * 20;
     private int HoverTimeIncrease = 0;
@@ -202,9 +206,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     private void setStompFinish(boolean value) {this.dataManager.set(STOMP_FINISH, Boolean.valueOf(value));}
     private boolean isBloodyFly() {return this.dataManager.get(BLOODY_FLY);}
     private void setBloodyFly(boolean value) {this.dataManager.set(BLOODY_FLY, Boolean.valueOf(value));}
-    private boolean isStrafeThrust() {return this.dataManager.get(STRAFE_THRUST);}
+    public boolean isStrafeThrust() {return this.dataManager.get(STRAFE_THRUST);}
     private void setStrafeThrust(boolean value) {this.dataManager.set(STRAFE_THRUST, Boolean.valueOf(value));}
-    private boolean isStrafeThrustContinue() {return this.dataManager.get(STRAFE_THRUST_CONTINUE);}
+    public boolean isStrafeThrustContinue() {return this.dataManager.get(STRAFE_THRUST_CONTINUE);}
     private void setStrafeThrustContinue(boolean value) {this.dataManager.set(STRAFE_THRUST_CONTINUE, Boolean.valueOf(value));}
     private boolean isStrafeThrustFinish() {return this.dataManager.get(STRAFE_THRUST_FINISH);}
     private void setStrafeThrustFinish(boolean value) {this.dataManager.set(STRAFE_THRUST_FINISH, Boolean.valueOf(value));}
@@ -331,7 +335,6 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     public EntityHighKing(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
         this.setSize(0.8F, 2.45F);
-        this.experienceValue = 500;
         this.setHasSpawn(true);
         this.setSpawnLocation(new BlockPos(x,y,z));
         this.doBossSummoning();
@@ -342,6 +345,13 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 120);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 160);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 210);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_CLAW_DRAW, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 185);
+        addEvent(()-> {
+            new ActionSummonKing().performAction(this, null);
+        }, 80);
 
         addEvent(()-> {
           this.setSummonBoss(false);
@@ -354,7 +364,6 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     public EntityHighKing(World worldIn) {
         super(worldIn);
         this.setSize(0.8F, 2.45F);
-        this.experienceValue = 500;
     }
 
     private void performPhaseTransition() {
@@ -365,6 +374,12 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.lockLook = true;
         this.phaseTransition = true;
 
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 22);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_CLAW_DRAW, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 37);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 65);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 130);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 150);
         addEvent(()-> {
         this.setBloodied(true);
             for (EntityPlayer player : this.bossInfo.getPlayers()) {
@@ -395,12 +410,14 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MobConfig.high_king_health);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(MobConfig.high_king_armor);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(MobConfig.high_king_armor_toughness);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.27D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
     }
     private boolean isMeleeViable = false;
 
     private boolean maintainSpearPose = false;
 
+    private boolean grabDetection = false;
+    private boolean maintainGrabPose = false;
     private boolean phaseTransition = false;
     private boolean setUpBloodyAttack = false;
     @Override
@@ -458,6 +475,10 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                     HoverTimeIncrease--;
                 }
 
+                if(this.isStrafeThrustContinue()) {
+                    this.faceEntity(target, 30F, 30F);
+                }
+
                 if(this.hasHoverMovement) {
                     double d0 = (target.posX - this.posX) * 0.012;
                     double d2 = (target.posZ - this.posZ) * 0.012;
@@ -467,7 +488,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
                 if(spearThrustGrabDetection && grabbedEntity == null) {
                     List<EntityLivingBase> nearbyEntities = this.world.getEntitiesWithinAABB(EntityLivingBase.class,
-                            this.getEntityBoundingBox().offset(ModUtils.getRelativeOffset(this, new Vec3d(1.4, -0.5, 0))).grow(1.5D, 3.5D, 1.5D),
+                            this.getEntityBoundingBox().offset(ModUtils.getRelativeOffset(this, new Vec3d(0.9, -0.5, 0))).grow(1.1D, 3.5D, 1.1D),
                             e -> !e.getIsInvulnerable());
 
                     if(!nearbyEntities.isEmpty()) {
@@ -478,9 +499,28 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                             }
                         }
                     }
+                } else if(grabDetection && grabbedEntity == null) {
+                    List<EntityLivingBase> nearbyEntities = this.world.getEntitiesWithinAABB(EntityLivingBase.class,
+                            this.getEntityBoundingBox().offset(ModUtils.getRelativeOffset(this, new Vec3d(1.3, -0.5, 0))).grow(1.25D, 3.5D, 1.25D),
+                            e -> !e.getIsInvulnerable());
+
+                    if(!nearbyEntities.isEmpty()) {
+                        for(EntityLivingBase base : nearbyEntities) {
+                            if(!(base instanceof EntitySkyBase)) {
+                                this.maintainGrabPose = true;
+                                grabbedEntity = base;
+                            }
+                        }
+                    }
                 } else if (grabbedEntity != null) {
                     if(this.maintainSpearPose) {
                         Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.7, 4.5, 0)));
+                        grabbedEntity.setPosition(offset.x, offset.y, offset.z);
+                        grabbedEntity.setPositionAndUpdate(offset.x, offset.y, offset.z);
+                    }
+
+                    if(this.maintainGrabPose) {
+                        Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.2, 0.2, 0)));
                         grabbedEntity.setPosition(offset.x, offset.y, offset.z);
                         grabbedEntity.setPositionAndUpdate(offset.x, offset.y, offset.z);
                     }
@@ -501,8 +541,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         double distance = Math.sqrt(distanceSq);
         double healthFactor = this.getHealth() / this.getMaxHealth();
 
-        if(!this.isFightMode() && !this.isBlockWithRanged() && !this.isBlockAction()) {
-            List<Consumer<EntityLivingBase>> attacks = new ArrayList<>(Arrays.asList(heavy_swing_begin, fast_aoe_attack, double_swing, cast_lightning_attack, cast_claw_attack, dodge_action, circle_air_attack, spear_thrust_attack, stomp_attack, holy_wave, bloody_fly_attack));
+        if(!this.isFightMode() && !this.isBlockWithRanged() && !this.isBlockAction() && !this.isDeathBoss()) {
+            List<Consumer<EntityLivingBase>> attacks = new ArrayList<>(Arrays.asList(heavy_swing_begin, fast_aoe_attack, double_swing, cast_lightning_attack, cast_claw_attack, dodge_action, circle_air_attack, spear_thrust_attack, stomp_attack, holy_wave, bloody_fly_attack, bloody_grab_attack, strafe_thrust_attack));
             double[] weights = {
                     (prevAttacks != heavy_swing_begin && distance <= 9) ? 1/distance : 0, //Heavy Swing, can do a second swing as well
                     (prevAttacks != fast_aoe_attack && distance <= 12 && aoeCooldown < 0) ? 1/distance : 0, //Fast AOE attack
@@ -513,41 +553,316 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                     (prevAttacks != circle_air_attack && distance <= 9) ? 1/distance : 0, //Circle Air Attack
                     (prevAttacks != spear_thrust_attack && distance > 6) ? distance * 0.02 : 0, //Spear Thrust, can do insane damage if far from the king
                     (prevAttacks != stomp_attack && aoeCooldown < 0 && distance > 3 && distance <= 16 && healthFactor <= 0.8) ? 1/distance : 0, //Stomp Attack, can do a second one on random chance
-                    (prevAttacks != holy_wave && distance > 9 && healthFactor <= 0.8) ? 1/distance : 0, //Holy Wave Attack that only activates at distance
-                    (setUpBloodyAttack && healthFactor <= 0.5) ? 1000 : (prevAttacks != bloody_fly_attack && distance <= 16 && healthFactor <= 0.5) ? 1/distance : 0 //Bloody Fly Attack
+                    (prevAttacks != holy_wave && distance > 14 && healthFactor <= 0.8) ? 1/distance : 0, //Holy Wave Attack that only activates at distance
+                    (setUpBloodyAttack && healthFactor <= 0.5) ? 1000 : (prevAttacks != bloody_fly_attack && distance <= 16 && healthFactor <= 0.5) ? 1/distance : 0, //Bloody Fly Attack
+                    (prevAttacks != bloody_grab_attack && distance > 6 && healthFactor <= 0.5) ? 1/distance : 0, //Bloody Grab Attack
+                    (prevAttacks != strafe_thrust_attack && distance <= 11 && healthFactor <= 0.5) ? 1/distance : 0 //Strafe Thrust
             };
             prevAttacks = ModRand.choice(attacks, rand, weights).next();
             prevAttacks.accept(target);
         }
-        return ModRand.range(MobConfig.high_king_cooldown_min * 20, MobConfig.high_king_cooldown_max * 20);
+        return healthFactor <= 0.5 && this.isBloodied() ? 0 : ModRand.range(MobConfig.high_king_cooldown_min * 20, MobConfig.high_king_cooldown_max * 20);
     }
 
+    private final Consumer<EntityLivingBase> strafe_thrust_attack = (target) -> {
+      this.setStrafeThrust(true);
+      this.setImmovable(true);
+      this.setFightMode(true);
+      this.setFullBodyUsage(true);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 25);
+        addEvent(()-> {
+            this.currentlyInIFrame = true;
+            this.setImmovable(false);
+            Vec3d jumpPos = this.getCircleRadiPoint((int) 7, target.getPositionVector());
+            Vec3d dirToo = this.getPositionVector().subtract(jumpPos).normalize();
+            Vec3d finalPos = this.getPositionVector().add(dirToo.scale(47));
+            ModUtils.leapTowards(this, finalPos, 1.6F, 0.25F);
+        }, 5);
+
+        addEvent(()-> {
+            this.currentlyInIFrame = false;
+            this.setImmovable(true);
+        }, 30);
+
+        addEvent(()-> {
+            Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
+            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(1));
+            this.lockLook = true;
+            addEvent(()-> {
+                this.setImmovable(false);
+                double distance = this.getPositionVector().distanceTo(targetedPos);
+                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.20),0F);
+            }, 5);
+        }, 35);
+
+        addEvent(()-> {
+            Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.75, 1.5, 0)));
+            DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+            float damage = (float) (this.getAttack() * 1.25);
+            ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.3f, 0, false);
+            // Summon a Lightning Ring
+            this.playSound(SoundsHandler.HIGH_KING_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+        }, 45);
+
+        addEvent(()-> {
+            this.setImmovable(true);
+        }, 50);
+
+        addEvent(()-> {
+        this.setStrafeThrust(false);
+        int randI = ModRand.range(1, 11);
+        if(this.isMeleeViable && randI >= 4) {
+            setThrustTooContinue(target);
+        } else {
+            this.setStrafeThrustFinish(true);
+            addEvent(()-> {
+                this.lockLook = false;
+            }, 10);
+            addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
+            addEvent(()-> {
+                this.setStrafeThrustFinish(false);
+                this.setFullBodyUsage(false);
+                this.setFightMode(false);
+                this.setImmovable(false);
+            }, 15);
+        }
+        }, 55);
+    };
+
+    private void setThrustTooContinue(EntityLivingBase target) {
+      strafe_thrust_continue.accept(target);
+    }
+
+    private final Consumer<EntityLivingBase> strafe_thrust_continue = (target) -> {
+        this.setStrafeThrustContinue(true);
+        this.setImmovable(false);
+        this.HoverTimeIncrease = 1;
+        this.setNoGravity(true);
+        this.lockLook = false;
+        addEvent(()-> {
+            this.setImmovable(true);
+            this.HoverTimeIncrease = 0;
+            this.motionY = 0;
+        }, 7);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 30);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 85);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 100);
+        addEvent(()-> {
+
+            Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
+            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(1));
+            addEvent(()-> {
+                this.setImmovable(false);
+                double distance = this.getPositionVector().distanceTo(targetedPos);
+                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.06),0F);
+            }, 5);
+        }, 10);
+
+        addEvent(()-> {
+            Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.75, 1.5, 0)));
+            DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
+            float damage = (float) (this.getAttack() * 1.25);
+            ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+            // Summon a Lightning Ring
+            new ActionBloodSpray().performAction(this, target);
+            this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+        }, 21);
+
+        addEvent(()-> {
+            this.setImmovable(true);
+            }, 23);
+
+        addEvent(()-> {
+            Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
+            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(1));
+            addEvent(()-> {
+                this.setImmovable(false);
+                double distance = this.getPositionVector().distanceTo(targetedPos);
+                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.04),0F);
+            }, 5);
+        }, 30);
+
+        addEvent(()-> {
+            Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.75, 1.5, 0)));
+            DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
+            float damage = (float) (this.getAttack());
+            ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+            // Summon a Lightning Ring
+                new ActionBloodSpray().performAction(this, target);
+            this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+        }, 40);
+
+        addEvent(()-> {
+            Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
+            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(-1));
+            addEvent(()-> {
+                this.setImmovable(false);
+                double distance = this.getPositionVector().distanceTo(targetedPos);
+                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.04),0F);
+            }, 5);
+        }, 45);
+
+        addEvent(()-> {
+            Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.75, 1.5, 0)));
+            DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
+            float damage = (float) (this.getAttack());
+            ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+            // Summon a Lightning Ring
+                new ActionBloodSpray().performAction(this, target);
+            this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+        }, 55);
+
+        addEvent(()-> {
+            Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
+            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(-1));
+            addEvent(()-> {
+                this.setImmovable(false);
+                double distance = this.getPositionVector().distanceTo(targetedPos);
+                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.04),0F);
+            }, 5);
+        }, 60);
+
+        addEvent(()-> {
+            Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.75, 1.5, 0)));
+            DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
+            float damage = (float) (this.getAttack());
+            ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+            // Summon a Lightning Ring
+                new ActionBloodSpray().performAction(this, target);
+            this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+        }, 70);
+
+        addEvent(()-> this.setNoGravity(false), 82);
+
+        addEvent(()-> {
+            this.setImmovable(true);
+            this.lockLook = false;
+        }, 100);
+
+        addEvent(()-> {
+            this.setStrafeThrustContinue(false);
+            this.setFightMode(false);
+            this.setFullBodyUsage(false);
+            this.setImmovable(false);
+        }, 110);
+    };
+    private final Consumer<EntityLivingBase> bloody_grab_attack = (target) -> {
+        this.setFullBodyUsage(true);
+        this.setBloodyGrab(true);
+        this.setFightMode(true);
+        this.setImmovable(true);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_CLAW_DRAW, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 20);
+        addEvent(()-> {
+            Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
+            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(-5));
+            addEvent(()-> {
+                this.setImmovable(false);
+                ModUtils.attemptTeleport(targetedPos, this);
+                this.playSound(SoundsHandler.B_KNIGHT_PREPARE, 1.75f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f));
+            }, 3);
+        }, 32);
+
+
+        addEvent(()-> {
+            this.setImmovable(true);
+            Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
+            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(3));
+            this.lockLook = true;
+            addEvent(()-> {
+                this.setImmovable(false);
+                this.grabDetection = true;
+                double distance = this.getPositionVector().distanceTo(targetedPos);
+                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.35),0.1F);
+            }, 8);
+        }, 32);
+
+        addEvent(()-> {
+            this.grabDetection = false;
+            this.setImmovable(true);
+            this.setBloodyGrab(false);
+
+            if(grabbedEntity != null) {
+                this.setGrabTooContinue(target);
+            } else {
+                this.setBloodyGrabEnd(true);
+                addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
+                addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 25);
+                addEvent(()-> this.lockLook = false, 20);
+                addEvent(()-> {
+                this.setBloodyGrabEnd(false);
+                this.setImmovable(false);
+                this.setFightMode(false);
+                this.setFullBodyUsage(false);
+                }, 30);
+            }
+        }, 60);
+    };
+
+    private void setGrabTooContinue(EntityLivingBase target) {
+        bloody_grab_continue.accept(target);
+    }
+
+    private final Consumer<EntityLivingBase> bloody_grab_continue = (target) -> {
+      this.setBloodyGrabContinue(true);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 75);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 90);
+        double healthFac = this.getMaxHealth() * MobConfig.high_king_lifesteal_grab;
+      addEvent(()-> target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 200, 0)), 10);
+
+      addEvent(()-> {
+          if(grabbedEntity != null) {
+              Vec3d offset = grabbedEntity.getPositionVector().add(0, 1, 0);
+              DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+              float damage = (float) (this.getAttack() * 1.25);
+              ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+              this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+              this.heal((float) healthFac);
+              this.maintainGrabPose = false;
+              this.grabbedEntity = null;
+          }
+      }, 34);
+
+      addEvent(()-> this.lockLook = false, 80);
+
+      addEvent(()-> {
+        this.setImmovable(false);
+        this.setBloodyGrabContinue(false);
+        this.setFullBodyUsage(false);
+        this.setFightMode(false);
+      }, 95);
+    };
     private final Consumer<EntityLivingBase> bloody_fly_attack = (target) -> {
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setBloodyFly(true);
-      this.HoverTimeIncrease = 12;
+      this.HoverTimeIncrease = 9;
       this.setNoGravity(true);
       this.setUpBloodyAttack = false;
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 80);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 120);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 135);
 
       addEvent(()-> {
           this.setImmovable(true);
       }, 20);
       addEvent(()-> {
           Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
-          Vec3d targetedPos = target.getPositionVector().add(posSet.scale(-3));
+          Vec3d targetedPos = target.getPositionVector().add(posSet.scale(-2));
           ModUtils.attemptTeleport(targetedPos, this);
           addEvent(()-> {
               this.setImmovable(false);
               double distance = this.getPositionVector().distanceTo(targetedPos);
-              ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.24),0.05F);
+              ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.13),0.05F);
+              new ActionBloodBomb().performAction(this, target);
+              this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           }, 5);
       }, 37);
-
-      addEvent(()-> {
-
-        //Do Bloody Fly Action
-      }, 49);
 
       addEvent(()-> {
         this.setImmovable(true);
@@ -556,19 +871,16 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
-            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(-3));
+            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(-2));
             ModUtils.attemptTeleport(targetedPos, this);
             addEvent(()-> {
                 this.setImmovable(false);
                 double distance = this.getPositionVector().distanceTo(targetedPos);
-                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.24),0.05F);
+                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.13),0.05F);
+                new ActionBloodBomb().performAction(this, target);
+                this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
             }, 5);
         }, 90);
-
-        addEvent(()-> {
-
-            //Do Bloody Fly Action
-        }, 103);
 
         addEvent(()-> {
             this.setImmovable(true);
@@ -590,7 +902,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     private final Consumer<EntityLivingBase> holy_wave = (target) -> {
       this.setHolyWave(true);
       this.setFightMode(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_CAST_CLAW, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 18);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 30);
       addEvent(()-> {
         //Do Holy Wave Action
           new ActionHolyWave((int) this.getDistance(target)).performAction(this, target);
@@ -605,9 +919,10 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
       this.setImmovable(true);
       this.setFullBodyUsage(true);
       this.setFightMode(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 3);
       addEvent(()-> this.lockLook = true, 15);
 
+        addEvent(()-> this.playSound(SoundsHandler.DRAUGR_ELITE_STOMP, 1.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 23);
       addEvent(()-> new ActionKingStomp().performAction(this, target), 25);
 
       addEvent(()-> {
@@ -622,6 +937,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             }, 5);
             addEvent(()-> {
                 this.setStompFinish(false);
+                addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
                 this.setFightMode(false);
                 this.setImmovable(false);
                 this.setFullBodyUsage(false);
@@ -638,8 +954,10 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     private final Consumer<EntityLivingBase> stomp_continue = (target) -> {
         this.setStompContinue(true);
         this.lockLook = false;
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 13);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 55);
         addEvent(()-> this.lockLook = true, 25);
-
+        addEvent(()-> this.playSound(SoundsHandler.DRAUGR_ELITE_STOMP, 1.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 35);
         addEvent(()-> new ActionKingStomp().performAction(this, target), 37);
 
         addEvent(()-> this.lockLook = false, 55);
@@ -658,25 +976,27 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.setFullBodyUsage(true);
         this.setFightMode(true);
         this.setImmovable(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 20);
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
-            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(-10));
+            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(-7));
             ModUtils.attemptTeleport(targetedPos, this);
+            this.playSound(SoundsHandler.B_KNIGHT_PREPARE, 1.75f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 25);
 
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
             Vec3d targetedPos = target.getPositionVector().add(posSet.scale(1));
-            ModUtils.attemptTeleport(targetedPos, this);
+          //  ModUtils.attemptTeleport(targetedPos, this);
             this.lockLook = true;
             addEvent(()-> {
                 this.setImmovable(false);
                 this.spearThrustGrabDetection = true;
                 double distance = this.getPositionVector().distanceTo(targetedPos);
-                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.24),0.1F);
-            }, 6);
-        }, 30);
+                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.35),0.1F);
+            }, 7);
+        }, 28);
 
         addEvent(()-> {
             this.spearThrustGrabDetection = false;
@@ -686,6 +1006,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                 setThrustTooFinisher(target);
             } else {
                 this.setSpearThrustFinish(true);
+                addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 8);
                 this.lockLook = false;
                 addEvent(()-> {
                     this.setSpearThrustFinish(false);
@@ -703,6 +1024,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
     private final Consumer<EntityLivingBase> spear_thrust_finisher = (target) -> {
       this.setSpearThrustContinue(true);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 110);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 124);
       this.maintainSpearPose = true;
       double healthFac = this.getMaxHealth() * MobConfig.high_king_lifesteal_thrust;
       addEvent(()-> {
@@ -711,6 +1035,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
               DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
               float damage = (float) (this.getAttack() * 0.75);
               ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+              this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
               this.heal((float) healthFac);
           }
       }, 35);
@@ -721,6 +1046,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage = (float) (this.getAttack() * 0.75);
                 ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
                 this.heal((float) healthFac);
             }
         }, 60);
@@ -732,6 +1058,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage = (float) (this.getAttack() * 1.25);
                 ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 1.2f, 0, false);
+                this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
                 this.heal((float) healthFac);
             }
         }, 100);
@@ -754,7 +1081,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
        this.setNoGravity(true);
        this.HoverTimeIncrease = 4;
        this.setImmovable(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
        addEvent(()-> {
            Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(-1));
@@ -771,7 +1099,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
            float damage = (float) (this.getAttack() * 1.25);
            ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.6f, 0, false);
            // Summon a Lightning Ring
-           this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+           this.playSound(SoundsHandler.HIGH_KING_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
        }, 37);
 
        addEvent(()-> this.setImmovable(true), 45);
@@ -794,7 +1122,10 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
     private final Consumer<EntityLivingBase> air_circle_melee = (target) -> {
         this.setAirCircleContinue(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 50);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 60);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 100);
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
             Vec3d targetedPos = target.getPositionVector().add(posSet.scale(-1));
@@ -812,9 +1143,11 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.6f, 0, false);
             // Summon a Lightning Ring
             if(world.rand.nextBoolean()) {
+                this.playSound(SoundsHandler.HIGH_KING_SWING_MAGIC, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
                 new ActionKingLightningRing().performAction(this, target);
+            } else {
+                this.playSound(SoundsHandler.HIGH_KING_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
             }
-            this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
             this.setNoGravity(false);
         }, 26);
 
@@ -835,7 +1168,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = (float) (this.getAttack() * 1.25);
             ModUtils.handleAreaImpact(2.2f, (e) -> damage, this, offset, source, 0.4f, 0, false);
-            this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+            this.playSound(SoundsHandler.HIGH_KING_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 75);
 
         addEvent(()-> {
@@ -868,6 +1201,10 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
     private final Consumer<EntityLivingBase> air_circle_ranged = (target) -> {
       this.setAirCircleRanged(true);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_CLAW_DRAW, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_CAST_CLAW, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 29);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 45);
       addEvent(()-> {
           this.lockLook = true;
       }, 22);
@@ -878,6 +1215,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
       }, 25);
 
       addEvent(()-> {
+          this.setImmovable(false);
         this.setNoGravity(false);
         this.lockLook = false;
       }, 35);
@@ -894,28 +1232,37 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
-    //    if(randI >= 6) {
-      //      this.setStrafeDodge(true);
+        if(randI >= 6) {
+            this.setStrafeDodge(true);
+            addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 3);
+            addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 20);
+            addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 33);
+            addEvent(()-> {
+                this.currentlyInIFrame = true;
+                this.setImmovable(false);
+                Vec3d jumpPos = this.getCircleRadiPoint((int) this.getDistance(target) + 2, target.getPositionVector());
+                Vec3d dirToo = this.getPositionVector().subtract(jumpPos).normalize();
+                Vec3d finalPos = this.getPositionVector().add(dirToo.scale(47));
+                ModUtils.leapTowards(this, finalPos, 1.6F, 0.25F);
+            }, 5);
 
-      //      addEvent(()-> {
-      //          this.currentlyInIFrame = true;
-       //         this.setImmovable(false);
-       //     }, 5);
+            addEvent(()-> {
+                this.currentlyInIFrame = false;
+                this.setImmovable(true);
+            }, 30);
 
-       //     addEvent(()-> {
-       //         this.currentlyInIFrame = false;
-       //         this.setImmovable(true);
-      //      }, 30);
-
-      //      addEvent(()-> {
-       //     this.setFightMode(false);
-       //     this.setFullBodyUsage(false);
-     //       this.setStrafeDodge(false);
-      //      this.setImmovable(false);
-       //     }, 40);
-     //   } else {
+            addEvent(()-> {
+            this.setFightMode(false);
+            this.setFullBodyUsage(false);
+            this.setStrafeDodge(false);
+            this.setImmovable(false);
+            }, 40);
+        } else {
             //regular Dodge
             this.setDodge(true);
+            addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 2);
+            addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
+            addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 25);
             addEvent(()-> {
                 this.currentlyInIFrame = true;
                 Vec3d dirToo = this.getPositionVector().subtract(target.getPositionVector()).normalize();
@@ -931,13 +1278,29 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             this.setFullBodyUsage(false);
             this.setDodge(false);
             }, 30);
-       // }
+        }
     };
+
+    private Vec3d getCircleRadiPoint(int distance, Vec3d originPos) {
+        Vec3d pos = new Vec3d(0,0,0);
+        float degrees = -100f / 4;
+        for (int i = 0; i < 4; i++) {
+            double radians = Math.toRadians(i * degrees);
+            Vec3d offset = new Vec3d(Math.sin(radians), Math.cos(radians), 0).scale(distance);
+            pos.add(offset.x, 0, offset.y).add(originPos);
+        }
+
+        return pos;
+    }
+
 
     private final Consumer<EntityLivingBase> cast_claw_attack = (target) -> {
       this.setKingCast(true);
       this.setFightMode(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 7);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_CLAW_DRAW, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 14);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_CAST_CLAW, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 25);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 43);
       addEvent(()-> {
         //Do Claw Action
           new ActionScatteredSmallHolyWave((int) this.getDistance(target)).performAction(this, target);
@@ -951,7 +1314,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     private final Consumer<EntityLivingBase> cast_lightning_attack = (target) -> {
       this.setKingCastLightning(true);
       this.setFightMode(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 45);
       addEvent(()-> {
         //Cast Lightning Attack On Player
           new ActionKingAloneLightning().performAction(this,target);
@@ -968,7 +1332,10 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setImmovable(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 40);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 55);
       addEvent(()-> {
           Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
           Vec3d targetedPos = target.getPositionVector().add(posSet.scale(-1));
@@ -987,9 +1354,15 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
           float damage = this.getAttack();
           ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.4f, 0, false);
           // Summon a Lightning Ring
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           if(world.rand.nextBoolean()) {
+              this.playSound(SoundsHandler.HIGH_KING_SWING_MAGIC, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
               new ActionKingLightningRing().performAction(this, target);
+          } else {
+              this.playSound(SoundsHandler.HIGH_KING_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          }
+          double healthFac = this.getHealth() / this.getMaxHealth();
+          if(healthFac <= 0.5 && world.rand.nextBoolean()) {
+              new ActionBloodSpray().performAction(this, target);
           }
       }, 23);
 
@@ -1012,9 +1385,15 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
           float damage = this.getAttack();
           ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.4f, 0, false);
           // Summon a Lightning Ring
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           if(world.rand.nextBoolean()) {
+              this.playSound(SoundsHandler.HIGH_KING_SWING_MAGIC, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
               new ActionKingLightningRing().performAction(this, target);
+          } else {
+              this.playSound(SoundsHandler.HIGH_KING_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          }
+          double healthFac = this.getHealth() / this.getMaxHealth();
+          if(healthFac <= 0.5 && world.rand.nextBoolean()) {
+              new ActionBloodSpray().performAction(this, target);
           }
       }, 70);
 
@@ -1028,6 +1407,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             setAttackTooJumpAOE(target);
         } else {
             this.setDoubleSwingFinish(true);
+            addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
             addEvent(()-> {
                 this.setDoubleSwingFinish(false);
                 this.setImmovable(false);
@@ -1046,6 +1426,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     private final Consumer<EntityLivingBase> double_swing_continue = (target) -> {
         this.setDoubleSwingJump(true);
         this.setNoGravity(true);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 75);
         this.HoverTimeIncrease = 3;
         addEvent(()-> {
             this.setImmovable(false);
@@ -1060,6 +1442,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             this.lockLook = true;
             this.setImmovable(true);
             //Spawn AOE
+            this.playSound(SoundsHandler.HIGH_KING_SPEAR_IMPACT, 1.5f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
             new ActionHolySpikeAOE((int) this.getDistance(target) + 5).performAction(this, target);
         }, 46);
 
@@ -1077,11 +1460,15 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
       this.setFightMode(true);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 2);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 55);
       addEvent(()-> {
           this.lockLook = true;
       }, 25);
 
+      addEvent(()-> {
+          this.playSound(SoundsHandler.GARGOYLE_CAST_SPECIAL, 1.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f));
+      }, 40);
       addEvent(()-> {
           //Action
           new ActionKingProgAOE().performAction(this, target);
@@ -1103,7 +1490,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 35);
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
             Vec3d targetedPos = target.getPositionVector().add(posSet.scale(-2));
@@ -1123,7 +1511,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.4f, 0, false);
             // Summon a Lightning Ring
             new ActionKingLightningRing().performAction(this, target);
-            this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+            this.playSound(SoundsHandler.HIGH_KING_SWING_MAGIC, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 25);
 
         addEvent(()-> {
@@ -1140,7 +1528,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             } else {
                 //End the Current Attack
                 this.setHeavySwingFinish(true);
-
+                addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
                 addEvent(()-> this.setImmovable(false), 15);
 
                 addEvent(()-> {
@@ -1158,7 +1546,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
     private final Consumer<EntityLivingBase> heavy_swing_continue = (target) -> {
       this.setHeavySwingContinue(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 45);
       addEvent(()-> {
           Vec3d targetedPos = target.getPositionVector();
           this.lockLook = true;
@@ -1175,7 +1564,11 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.getAttack();
           ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.4f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.playSound(SoundsHandler.HIGH_KING_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          double healthFac = this.getHealth() / this.getMaxHealth();
+          if(healthFac <= 0.5) {
+              new ActionBloodSpray().performAction(this, target);
+          }
       }, 34);
 
       addEvent(()-> this.setImmovable(true), 43);
@@ -1200,7 +1593,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     }
 
     private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(!this.isFightMode() && !this.isBlockAction() && !this.isBlockWithRanged()) {
+        if(!this.isFightMode() && !this.isBlockAction() && !this.isBlockWithRanged() && !this.isDeathBoss()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
             return PlayState.CONTINUE;
         }
@@ -1210,7 +1603,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
     private<E extends IAnimatable> PlayState predicateWalk(AnimationEvent<E> event) {
 
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage()) {
+        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage() && !this.isDeathBoss()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_LOWER, true));
             return PlayState.CONTINUE;
         }
@@ -1230,11 +1623,11 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DEATH, false));
             return PlayState.CONTINUE;
         }
-        if(this.isBlockAction()) {
+        if(this.isBlockAction() && !this.isDeathBoss()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BLOCK, false));
             return PlayState.CONTINUE;
         }
-        if(this.isBlockWithRanged()) {
+        if(this.isBlockWithRanged() && !this.isDeathBoss()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BLOCK_RANGED, false));
             return PlayState.CONTINUE;
         }
@@ -1243,7 +1636,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     }
 
     private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
+        if(this.isFightMode() && !this.isDeathBoss()) {
             if(this.isDodge()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DODGE, false));
                 return PlayState.CONTINUE;
@@ -1306,7 +1699,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     }
 
     private <E extends IAnimatable> PlayState predicateAttacksFollowUp(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
+        if(this.isFightMode() && !this.isDeathBoss()) {
             if(this.isheavySwingContinue()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_HEAVY_SWING_CONTINUE));
                 return PlayState.CONTINUE;
@@ -1420,21 +1813,16 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     }
 
     private boolean canBlockDamageSource(DamageSource damageSourceIn) {
-        if(!this.isFightMode()) {
+        if(!this.isFightMode() && !this.isDeathBoss()) {
             if (!damageSourceIn.isUnblockable() && !this.isFightMode() && blockCooldown <= 0) {
                 EntityLivingBase target = this.getAttackTarget();
-                if(target != null && this.getDistanceSq(target) >= 36 && !this.isBlockWithRanged() && !this.isBlockAction()) {
+                if(target != null && this.getDistanceSq(target) >= 196 && !this.isBlockWithRanged() && !this.isBlockAction()) {
                     //We want a certain distance where the attack part if variable, greater than 6 and less than 14
-                        if(this.getDistanceSq(target) <=196) {
                                 if(world.rand.nextBoolean()) {
                                     this.doBlockAction();
                                 } else {
                                     this.doBlockActionWithAttack(target);
                                 }
-                        } else {
-                            //else it will always do a block and then attack
-                            this.doBlockActionWithAttack(target);
-                        }
                 } else if (!this.isBlockWithRanged() && !this.isBlockAction()){
                     //if there is no target, just do a regular block with the cooldown met
                     this.doBlockAction();
@@ -1456,6 +1844,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
     private void doBlockAction() {
         this.setBlockAction(true);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 22);
         addEvent(()-> {
             this.setBlockAction(false);
             this.blockCooldown = MobConfig.high_king_block_cooldown * 20;
@@ -1464,7 +1854,10 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
     private void doBlockActionWithAttack(EntityLivingBase target) {
         this.setBlockWithRanged(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 22);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_CLAW_DRAW, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 32);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_CAST_CLAW, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 37);
         addEvent(()-> {
             this.setImmovable(true);
         }, 30);
@@ -1500,6 +1893,68 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     @Override
     public boolean canBePushed() {
         return false;
+    }
+
+    @Override
+    public void onDeath(DamageSource cause) {
+        this.setHealth(0.00001F);
+        if(!this.isDeathBoss()) {
+            this.clearEvents();
+        }
+        this.setDeathBoss(true);
+        this.setImmovable(true);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 40);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 80);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 105);
+        addEvent(()-> {
+            if(!world.isRemote) {
+                for(int i = 0; i <= 100; i+=5) {
+                    if(!world.isRemote) {
+                        addEvent(() -> {
+                            EntityXPOrb orb = new EntityXPOrb(world, this.posX, this.posY, this.posZ, MobConfig.high_king_experience_value / 20);
+                            orb.setPosition(this.posX, this.posY + 1, this.posZ);
+                            world.spawnEntity(orb);
+                        }, i);
+                    }
+                }
+            }
+        }, 180);
+
+        addEvent(()-> {
+            this.setDead();
+            this.setDropItemsWhenDead(true);
+            this.setDeathBoss(false);
+        }, 280);
+
+        super.onDeath(cause);
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundsHandler.HIGH_KING_HURT;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        if(!this.hasNoGravity()) {
+            this.playSound(SoundsHandler.HIGH_KING_STEP, 0.4F, 0.4f + ModRand.getFloat(0.3F));
+        }
+
+    }
+
+    private static final ResourceLocation LOOT_BOSS = new ResourceLocation(ModReference.MOD_ID, "high_king");
+
+    @Override
+    protected ResourceLocation getLootTable() {
+        return LOOT_BOSS;
+    }
+
+
+    @Override
+    protected boolean canDropLoot() {
+        return true;
     }
 
     @Override

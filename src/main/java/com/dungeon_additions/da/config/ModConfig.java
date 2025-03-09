@@ -95,7 +95,7 @@ public class ModConfig {
     @Config.Name("Ancient Wyrk Staff Frost Bullet damage")
     @Config.Comment("Change the Ancient Wyrk staff frost bullet damage")
     @Config.RequiresMcRestart
-    public static float wyrk_staff_bullet_damage = 6;
+    public static float wyrk_staff_bullet_damage = 8;
 
     @Config.Name("Ancient Wyrk Staff Lazer Damage")
     @Config.Comment("change the Ancient Wyrk staff's max lazer damage, this scales with how long the staff has been charged")

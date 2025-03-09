@@ -46,11 +46,11 @@ public class ActionPlayerShootSpead implements IActionPlayer{
         actor.world.spawnEntity(missile_3);
         actor.world.spawnEntity(missile_4);
         actor.world.spawnEntity(missile_5);
-        missile.setTravelRange(40);
-        missile_2.setTravelRange(40);
-        missile_3.setTravelRange(40);
-        missile_4.setTravelRange(40);
-        missile_5.setTravelRange(40);
+        missile.setTravelRange(55);
+        missile_2.setTravelRange(55);
+        missile_3.setTravelRange(55);
+        missile_4.setTravelRange(55);
+        missile_5.setTravelRange(55);
 
         float speed = (float) (MobConfig.magic_missile_velocity - 0.3);
         missile.shoot(actor, actor.rotationPitch, actor.rotationYaw, 0, speed, 0F);

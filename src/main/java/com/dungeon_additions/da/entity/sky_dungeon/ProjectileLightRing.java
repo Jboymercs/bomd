@@ -28,6 +28,7 @@ public class ProjectileLightRing extends Projectile {
 
     private EntityLivingBase selectedPlayer;
 
+    private EntityLivingBase owner;
     private boolean breakPathing = false;
 
     public ProjectileLightRing(World worldIn, EntityLivingBase throwerIn, float damage, EntityLivingBase target) {
@@ -35,6 +36,7 @@ public class ProjectileLightRing extends Projectile {
         this.setNoGravity(true);
         this.setSize(1.0F, 0.3F);
         this.selectedPlayer = target;
+        this.owner = throwerIn;
     }
 
     public ProjectileLightRing(World worldIn, EntityLivingBase throwerIn, float damage) {
@@ -91,10 +93,14 @@ public class ProjectileLightRing extends Projectile {
             ModUtils.setEntityVelocity(this, currentVec.scale(1.01));
         }
         if(selectedPlayer != null && !breakPathing) {
-            Vec3d posToTravelToo = selectedPlayer.getPositionVector().add(ModUtils.yVec(0.5D));
+            Vec3d posToTravelToo = selectedPlayer.getPositionVector().add(ModUtils.yVec(1.0D));
             Vec3d currPos = this.getPositionVector();
             Vec3d dir = posToTravelToo.subtract(currPos).normalize();
-            ModUtils.addEntityVelocity(this, dir.scale(0.04 * 0.4));
+            if(owner instanceof EntityPlayer) {
+                ModUtils.addEntityVelocity(this, dir.scale(0.15 * 0.4));
+            } else {
+                ModUtils.addEntityVelocity(this, dir.scale(0.09 * 0.4));
+            }
             if(this.getDistanceSq(selectedPlayer) < 3) {
                 this.breakPathing = true;
             }

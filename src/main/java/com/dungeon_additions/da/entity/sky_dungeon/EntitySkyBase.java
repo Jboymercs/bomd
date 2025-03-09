@@ -17,6 +17,9 @@ public class EntitySkyBase extends EntityAbstractBase {
     public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntitySkyBase.class, DataSerializers.BLOCK_POS);
     public boolean hasFallTpOverride = false;
     public boolean damageOverride = false;
+
+    protected boolean isFriendlyTooPlayer = false;
+
     public EntitySkyBase(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
     }
@@ -37,7 +40,7 @@ public class EntitySkyBase extends EntityAbstractBase {
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        if(source.getImmediateSource() instanceof EntitySkyBase) {
+        if(source.getImmediateSource() instanceof EntitySkyBase && !this.isFriendlyTooPlayer) {
             EntitySkyBase base = (EntitySkyBase) source.getImmediateSource();
             if(!base.damageOverride) {
                 return false;
@@ -68,13 +71,13 @@ public class EntitySkyBase extends EntityAbstractBase {
     public void onUpdate() {
         super.onUpdate();
 
-        if(!this.isHasSpawn() && !this.iAmBossMob) {
+        if(!this.isHasSpawn() && !this.iAmBossMob && !this.isFriendlyTooPlayer) {
             this.setSpawnLocation(new BlockPos(this.posX, this.posY, this.posZ));
             this.setHasSpawn(true);
         }
 
         if(!world.isRemote) {
-            if(this.ticksExisted % 40 == 0 && this.isPotionActive(MobEffects.POISON)) {
+            if(this.ticksExisted % 40 == 0 && this.isPotionActive(MobEffects.POISON) && !this.iAmBossMob) {
                 this.removePotionEffect(MobEffects.POISON);
             }
 

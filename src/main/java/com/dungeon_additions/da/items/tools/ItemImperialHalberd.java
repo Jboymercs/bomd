@@ -118,7 +118,7 @@ public class ItemImperialHalberd extends ItemSword implements IAnimatable, IHasM
     }
 
     protected double getAttackSpeed() {
-        return -3.1D;
+        return -2.7D;
     }
 
     public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)

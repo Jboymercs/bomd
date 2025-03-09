@@ -86,7 +86,7 @@ public class MobConfig {
     public static double burning_knight_health = 350;
 
     @Config.Name("Knight of Burning Flame Block Cooldown")
-    @Config.Comment("Change the timer that the Knight of Burning Flame can block attacks, take not this is only fired between cool downs of each attack in seconds")
+    @Config.Comment("Change the timer when the Knight of Burning Flame can block attacks, take note this is only fired between cool downs of each attack in seconds")
     @Config.RequiresMcRestart
     public static double burning_knight_block_cooldown = 3.5;
 
@@ -447,7 +447,7 @@ public class MobConfig {
     @Config.Name("High King/Dragon Attack Damage")
     @Config.Comment("Change the attack damage of the High King/Dragon")
     @Config.RequiresMcRestart
-    public static double high_dragon_king_damage = 32;
+    public static double high_dragon_king_damage = 30;
 
     @Config.Name("High King of the Sky Dragon Armor")
     @Config.Comment("Change the armor value of the High King of the Sky Dragon")
@@ -472,7 +472,7 @@ public class MobConfig {
     @Config.Name("High King of the Sky Dragon Air Time")
     @Config.Comment("Change the static of how much time the dragon must be in the air before going to the ground, In Seconds")
     @Config.RequiresMcRestart
-    public static double high_dragon_fly_time = 50;
+    public static double high_dragon_fly_time = 45;
 
     @Config.Name("High King of the Sky Dragon Ground Time")
     @Config.Comment("Change the static of how much time the dragon must be on ground before going back into the air, In Seconds")
@@ -494,6 +494,11 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static boolean high_dragon_after_death = true;
 
+    @Config.Name("High King Boss Switch")
+    @Config.Comment("When set to false, instead of the Dragon spawning, it will only spawn the High King. Useful for Modpack makers that wanna put the dragon boss somewhere else")
+    @Config.RequiresMcRestart
+    public static boolean dragon_starts_first = true;
+
     @Config.Name("High King of the Sky Dragon Experience")
     @Config.Comment("If you changed it to when the dragon dies, it doesn't spawn The High King, How Much Experience does it drop?")
     @Config.RequiresMcRestart
@@ -502,12 +507,17 @@ public class MobConfig {
     @Config.Name("The High King Health")
     @Config.Comment("Change the health of the High King")
     @Config.RequiresMcRestart
-    public static double high_king_health = 400;
+    public static double high_king_health = 325;
 
     @Config.Name("The High King Armor")
     @Config.Comment("Change the armor value of the High King")
     @Config.RequiresMcRestart
-    public static double high_king_armor = 20;
+    public static double high_king_armor = 16;
+
+    @Config.Name("The High King Experience Value")
+    @Config.Comment("Change how much experience the High King drops upon Death")
+    @Config.RequiresMcRestart
+    public static int high_king_experience_value = 500;
 
     @Config.Name("The High King Armor Toughness")
     @Config.Comment("Change the armor toughness value of the High King")
@@ -527,12 +537,12 @@ public class MobConfig {
     @Config.Name("The High King General Cooldown Min")
     @Config.Comment("Change how long before the High King can do another attack, on the lowest random value, in Seconds")
     @Config.RequiresMcRestart
-    public static int high_king_cooldown_min = 2;
+    public static int high_king_cooldown_min = 1;
 
     @Config.Name("The High King General Cooldown Max")
     @Config.Comment("Change how long before the High King can do another attack, on the high random value, in Seconds. VALUE MUST BE GREATER THAN MIN")
     @Config.RequiresMcRestart
-    public static int high_king_cooldown_max = 3;
+    public static int high_king_cooldown_max = 2;
 
     @Config.Name("The High King Thrust Lifesteal factor")
     @Config.Comment("Change how much Health the High King heals when doing a successful Thrust attack with his Spear, this is in a percentage. Default : 0.05 or 5%")

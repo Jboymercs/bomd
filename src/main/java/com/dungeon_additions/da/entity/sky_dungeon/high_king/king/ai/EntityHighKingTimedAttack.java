@@ -78,13 +78,12 @@ public class EntityHighKingTimedAttack <T extends EntityHighKing & IAttack> exte
     }
 
     public void move(EntityLivingBase target, double distSq, boolean canSee) {
-        if(this.entity.isStrafeDodge() && this.entity.currentlyInIFrame) {
+        if(this.entity.isStrafeDodge() && this.entity.currentlyInIFrame || this.entity.isStrafeThrust() && this.entity.currentlyInIFrame) {
             //Side Jumping mechanic
             this.entity.getNavigator().clearPath();
-            this.entity.getMoveHelper().strafe(-0.2F, 0.6F);
             this.entity.faceEntity(target, this.lookSpeed, this.lookSpeed);
 
-        } else if(!this.entity.lockLook && !this.entity.isDodge()) {
+        } else if(!this.entity.lockLook && !this.entity.isDodge() && !this.entity.isStrafeThrustContinue()) {
 
             if (distSq <= 16 && canSee) {
                 this.entity.getNavigator().clearPath();

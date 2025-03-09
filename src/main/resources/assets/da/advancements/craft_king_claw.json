@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:king_claw"
+    },
+    "title": {
+      "translate": "advancements.da.craft_king_claw.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_king_claw.description"
+    }
+  },
+  "parent": "da:kill_high_king",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:king_claw"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -36,6 +36,7 @@ public class ItemDraugrShield extends ItemShield implements IAnimatable {
         setTranslationKey(name);
         setRegistryName(name);
         setCreativeTab(tabs);
+        this.setMaxDamage(832);
         this.info_loc = info_loc;
         this.maxStackSize = 1;
         ModItems.ITEMS.add(this);

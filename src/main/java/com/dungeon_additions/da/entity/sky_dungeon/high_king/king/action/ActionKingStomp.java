@@ -22,7 +22,7 @@ public class ActionKingStomp implements IActionKing{
         for(int t = 1; t < 10; t++ ) {
             ModUtils.circleCallback(t, (4 * t), (pos) -> {
                     pos = new Vec3d(pos.x, 0, pos.y).add(savedPos);
-                    EntityMoveTile tile = new EntityMoveTile(actor.world, actor);
+                    EntityMoveTile tile = new EntityMoveTile(actor.world, actor, (float) (actor.getAttack() * 0.75));
                     tile.setPosition(pos.x, pos.y, pos.z);
                     int y = getSurfaceHeight(actor.world, new BlockPos(pos.x, 0, pos.z), (int) actor.posY - 6, (int) actor.posY + 4);
                     BlockPos posToo = new BlockPos(pos.x, y, pos.z);
@@ -43,7 +43,7 @@ public class ActionKingStomp implements IActionKing{
             for(int t = 10; t < 19; t++ ) {
                 ModUtils.circleCallback(t, (4 * t), (pos) -> {
                     pos = new Vec3d(pos.x, 0, pos.y).add(savedPos);
-                    EntityMoveTile tile = new EntityMoveTile(actor.world, actor);
+                    EntityMoveTile tile = new EntityMoveTile(actor.world, actor, (float) (actor.getAttack() * 0.75));
                     tile.setPosition(pos.x, pos.y, pos.z);
                     int y = getSurfaceHeight(actor.world, new BlockPos(pos.x, 0, pos.z), (int) actor.posY - 6, (int) actor.posY + 4);
                     BlockPos posToo = new BlockPos(pos.x, y, pos.z);
