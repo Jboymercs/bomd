@@ -9,6 +9,7 @@ import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityShadowHand;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
+import com.dungeon_additions.da.entity.flame_knight.EntityIncendium;
 import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
@@ -60,6 +61,7 @@ public class ModEntities {
     public static Vec3i void_blossom = new Vec3i(6433126, 8111156, 0);
     public static Vec3i mini_void_blossom = new Vec3i(0x9e02e0, 8111156, 0);
     public static Vec3i nether_spirit = new Vec3i(0x3b0009, 0xeb4034, 0);
+    public static Vec3i incendium_spirit = new Vec3i(0x3b0009, 0xe3d646, 0);
     public static Vec3i rot_knights = new Vec3i(0x63615e,0x66005,0);
     public static Vec3i kobf = new Vec3i(0xbf922a, 0xeb4034, 0);
     public static Vec3i rot_knight_rapier = new Vec3i(0x63615e,0xc7a548,0);
@@ -77,6 +79,8 @@ public class ModEntities {
     public static Vec3i farum_gargoyle = new Vec3i(0x404040,0xf5bb0c,0);
     public static Vec3i farum_elder = new Vec3i(0x404040,0xebff0a,0);
     public static Vec3i dark_assassin = new Vec3i(0x233547,0x030303,0);
+    public static Vec3i high_drake = new Vec3i(0x262852,0xd4d4cd,0);
+    public static Vec3i high_king = new Vec3i(0x262852,0xe0c03f,0);
     public static void registerEntities() {
       //  registerEntityWithID("wreath_knight", EntityWreathKnight.class, ENTITY_START_ID++, 50, knight_mobs);
         registerEntityWithID("void_blossom", EntityVoidBlossom.class, ENTITY_START_ID++, 50, void_blossom);
@@ -140,18 +144,20 @@ public class ModEntities {
             registerEntity("friend_wyrk", EntityFriendWyrk.class, ENTITY_START_ID++, 90);
             registerEntityWithID("dark_assassin", EntityDarkAssassin.class, ENTITY_START_ID++, 90, dark_assassin);
             registerEntity("shadow_hand", EntityShadowHand.class, ENTITY_START_ID++, 90);
-            registerEntityWithID("high_king_drake", EntityHighKingDrake.class, ENTITY_START_ID++, 90, night_lich);
+            registerEntityWithID("high_king_drake", EntityHighKingDrake.class, ENTITY_START_ID++, 90, high_drake);
             registerEntity("storm_tornado", ProjectileStormBreath.class, ENTITY_START_ID++, 90);
             registerEntity("storm_breath", ProjectileStormWind.class, ENTITY_START_ID++, 90);
             registerEntity("dragon_aoe", EntityDragonAOE.class, ENTITY_START_ID++, 100);
             registerEntity("dragon_special", EntityDragonSpecial.class, ENTITY_START_ID++, 100);
             registerEntity("sky_locator_projectile", EntitySkyDungeonLocator.class, ENTITY_START_ID++, 100);
-            registerEntityWithID("high_king", EntityHighKing.class, ENTITY_START_ID++, 100, night_lich);
+            registerEntityWithID("high_king", EntityHighKing.class, ENTITY_START_ID++, 100, high_king);
             registerEntity("king_holy_aoe", EntityKingHolyAOE.class, ENTITY_START_ID++, 100);
             registerEntity("king_holy_projectile", EntityKingHolyWave.class, ENTITY_START_ID++, 100);
             registerEntity("blood_pile", EntityBloodPile.class, ENTITY_START_ID++, 100);
             registerEntity("blood_ball_proj", ProjectileKingBlood.class, ENTITY_START_ID++, 100);
             registerEntity("imperial_knight_friendly", EntityFriendlyHalberd.class, ENTITY_START_ID++, 100);
+            registerEntity("burning_flame_projectile", EntityBurningFlameArenaLocator.class, ENTITY_START_ID++, 100);
+            registerEntityWithID("incendium_spirit", EntityIncendium.class, ENTITY_START_ID++, 110, incendium_spirit);
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
         registerTileEntity(TileEntityMegaStructure.class, "mega_structure");

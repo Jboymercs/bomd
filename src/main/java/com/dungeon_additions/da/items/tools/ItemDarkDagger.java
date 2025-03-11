@@ -47,9 +47,9 @@ public class ItemDarkDagger extends ToolSword{
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        int SwordCoolDown = 10 * 20;
+        int SwordCoolDown = ModConfig.rah_void_dagger_cooldown * 20;
         if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
-            Vec3d moveVec = player.getLookVec().scale(-((1.4 * 0.5) + 0.1D));
+            Vec3d moveVec = player.getLookVec().scale(-((1.4 * 0.6) + 0.1D));
             if(player.canBePushed()) {
                 player.motionX = moveVec.x;
                 player.motionY = moveVec.y * 0.7;
@@ -57,6 +57,7 @@ public class ItemDarkDagger extends ToolSword{
                 player.getCooldownTracker().setCooldown(this, SwordCoolDown);
                 player.motionZ = moveVec.z;
                 player.velocityChanged = true;
+                worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.DARK_ASSASSIN_DASH, SoundCategory.NEUTRAL, 1.0f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.4f));
             }
             stack.damageItem(2, player);
         }

@@ -62,6 +62,7 @@ public class ModBlocks {
 
     //Fire Update
     public static final Block FIERY_BLOCK = new BlockBase("fire_stone", Material.ROCK, STONE_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE).setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block CHISLED_FIERY_STONE = new BlockBase("chisled_fire_stone", Material.ROCK, STONE_HARDNESS, STONE_RESISTANCE, SoundType.STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block FIERY_LIT_BLOCK = new BlockFireStoneLit("fire_stone_lit", Material.ROCK, STONE_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE, "fire_stone_desc").setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setLightLevel(0.7F).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block FIERY_STONE_STAIRS = new BlockStairBase("fire_stone_stairs", FIERY_BLOCK.getDefaultState(), STONE_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE).setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block FIERY_STONE_WALL = new BlockWallBase("fire_stone_wall", Material.ROCK, STONE_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE).setCreativeTab(CreativeTabs.DECORATIONS).setCreativeTab(DungeonAdditionsTab.BLOCKS);

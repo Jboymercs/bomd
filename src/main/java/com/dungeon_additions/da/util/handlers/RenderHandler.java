@@ -12,6 +12,7 @@ import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityShadowHand;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
+import com.dungeon_additions.da.entity.flame_knight.EntityIncendium;
 import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
@@ -31,6 +32,7 @@ import com.dungeon_additions.da.entity.projectiles.*;
 import com.dungeon_additions.da.entity.render.*;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkAssassin;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderShadowHand;
+import com.dungeon_additions.da.entity.render.flame_dungeon.RenderIncendium;
 import com.dungeon_additions.da.entity.render.frost_dungeon.*;
 import com.dungeon_additions.da.entity.render.lich.RenderLichSpawn;
 import com.dungeon_additions.da.entity.render.lich.RenderLichStaff;
@@ -108,6 +110,7 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileEndlessEnderpearl.class, ModItems.ENDLESS_PEARL);
         registerProjectileRenderer(ProjectileFlameSling.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(ProjectileTrackingFlame.class, ModItems.PROJECTILE_FLAME);
+        registerProjectileRenderer(EntityBurningFlameArenaLocator.class, ModItems.PROJECTILE_FLAME);
         registerProjectileRenderer(EntitySoulStar.class, ModItems.SOUL_STAR);
         registerProjectileRenderer(EntityLily.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(ProjectileMagicMissile.class, ModItems.MAGIC_PROJECTILE);
@@ -223,6 +226,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityBloodPile.class, RenderBloodPile::new);
         //Friendly Imperial Halberd
         RenderingRegistry.registerEntityRenderingHandler(EntityFriendlyHalberd.class, RenderFriendlyHalberd::new);
+        //Incendium Knight
+        RenderingRegistry.registerEntityRenderingHandler(EntityIncendium.class, RenderIncendium::new);
     }
 
 }

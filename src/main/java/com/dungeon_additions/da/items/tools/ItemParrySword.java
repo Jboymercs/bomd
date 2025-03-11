@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.items.tools;
 
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -56,7 +57,7 @@ public class ItemParrySword extends ToolSword {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        int SwordCoolDown = 5 * 20;
+        int SwordCoolDown = ModConfig.master_parry_sword_cooldown * 20;
         if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this) && player.hurtTime == 0) {
             this.setPlayerLife = 0;
             worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.NEUTRAL, 0.6f, 0.3f / (worldIn.rand.nextFloat() * 0.4F + 0.3f));
@@ -106,7 +107,7 @@ public class ItemParrySword extends ToolSword {
                 }
             } else {
                 player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 240, 1, false, false));
-                player.getCooldownTracker().setCooldown(this, 25 * 20);
+                player.getCooldownTracker().setCooldown(this, ModConfig.master_parry_sword_cooldown * 20);
                 this.isParrying = false;
                 player.stopActiveHand();
                 this.setPlayerLife = 0;

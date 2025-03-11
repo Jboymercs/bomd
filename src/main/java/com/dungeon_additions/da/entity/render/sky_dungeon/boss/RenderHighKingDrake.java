@@ -2,6 +2,7 @@ package com.dungeon_additions.da.entity.render.sky_dungeon.boss;
 
 import com.dungeon_additions.da.entity.model.sky_dungeon.ModelImperialHalberd;
 import com.dungeon_additions.da.entity.model.sky_dungeon.boss.ModelHighKingDrake;
+import com.dungeon_additions.da.entity.render.layer.GeoSpecificGlow;
 import com.dungeon_additions.da.entity.render.util.RenderGeoExtended;
 import com.dungeon_additions.da.entity.sky_dungeon.EntityImperialHalberd;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake;
@@ -22,6 +23,7 @@ public class RenderHighKingDrake extends RenderGeoExtended<EntityHighKingDrake> 
 
     public RenderHighKingDrake(RenderManager renderManager) {
         super(renderManager, new ModelHighKingDrake(MODEL_RESLOC, TEXTURE, "high_king_drake"));
+        this.addLayer(new GeoSpecificGlow<>(this, this.TEXTURE_GETTER, this.MODEL_ID_GETTER));
     }
 
     @Nullable

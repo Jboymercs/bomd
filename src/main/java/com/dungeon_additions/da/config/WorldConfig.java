@@ -54,7 +54,7 @@ public class WorldConfig {
     @Config.Name("Burning Flame Arena Spawn Weight")
     @Config.Comment("Change the spawn weight of the Burning Flame Arena (The Nether Dungeon), higher number means lower frequency")
     @Config.RequiresMcRestart
-    public static int burning_arena_weight = 120;
+    public static int burning_arena_weight = 50;
 
     @Config.Name("Burning Flame Arena Size")
     @Config.Comment("Change the size of the Burning Flame Arena, basically how many extra pieces are added onto the boss arena")
@@ -77,6 +77,12 @@ public class WorldConfig {
     @Config.Comment("Change the y level height the nether dungeon spawns at")
     @Config.RequiresMcRestart
     public static int burning_arena_y_level = 75;
+
+    @Config.Name("Burning Flame Arena Blacklisted Biome Types")
+    @Config.Comment("Add Biome types that DISALLOW the Burning Flame Arena from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
+    @Config.RequiresMcRestart
+    public static String[] biome_types_blacklist_burning_arena = {"COLD","MOUNTAIN"
+    };
 
     @Config.Name("Burning Flame Arena Enabled/Disabled")
     @Config.Comment("When set to false, the Burning Flame Arena will be disabled from world generation.")
@@ -227,7 +233,7 @@ public class WorldConfig {
     @Config.Name("High Court City Spacing")
     @Config.Comment("Change the spacing between each High Court City, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int high_city_spacing = 170;
+    public static int high_city_spacing = 155;
 
     @Config.Name("High Court City Size")
     @Config.Comment("Change the size of the High Court City")

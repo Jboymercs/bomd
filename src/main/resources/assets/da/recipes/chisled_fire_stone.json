@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " V ",
+    "VRV",
+    " V "
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:gold_nugget"
+    },
+    "R": {
+      "item": "da:fire_stone"
+    }
+  },
+  "result": {
+    "item": "da:chisled_fire_stone"
+  }
+}

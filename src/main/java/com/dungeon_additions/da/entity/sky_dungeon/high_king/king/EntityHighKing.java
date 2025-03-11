@@ -4,6 +4,7 @@ import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
+import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
 import com.dungeon_additions.da.entity.sky_dungeon.city_knights.ActionHalberdSpecial;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingBoss;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.action.ActionBloodSpray;
@@ -428,6 +429,15 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             blockCooldown--;
             aoeCooldown--;
 
+            if(ticksExisted == 10 && this.getSpawnLocation() != null) {
+                List<EntitySkyTornado> nearbyEntities = this.world.getEntitiesWithinAABB(EntitySkyTornado.class, this.getEntityBoundingBox().grow(25, 15, 25), e -> !e.getIsInvulnerable());
+                if(!nearbyEntities.isEmpty()) {
+                    for(EntitySkyTornado tornado : nearbyEntities) {
+                        tornado.setDead();
+                    }
+                }
+            }
+
             EntityLivingBase target = this.getAttackTarget();
 
             //Boss Reset Timer
@@ -496,6 +506,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                             if(!(base instanceof EntitySkyBase)) {
                                 this.maintainSpearPose = true;
                                 grabbedEntity = base;
+                                this.playSound(SoundsHandler.KING_GRAB_SUCCESS, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
                             }
                         }
                     }
@@ -509,6 +520,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                             if(!(base instanceof EntitySkyBase)) {
                                 this.maintainGrabPose = true;
                                 grabbedEntity = base;
+                                this.playSound(SoundsHandler.KING_GRAB_SUCCESS, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
                             }
                         }
                     }
@@ -775,6 +787,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                 this.setImmovable(false);
                 this.grabDetection = true;
                 double distance = this.getPositionVector().distanceTo(targetedPos);
+                this.playSound(SoundsHandler.BLOOD_GRAB_ATTACK, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
                 ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.35),0.1F);
             }, 8);
         }, 32);
@@ -842,6 +855,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
       this.HoverTimeIncrease = 9;
       this.setNoGravity(true);
       this.setUpBloodyAttack = false;
+        this.playSound(SoundsHandler.BLOOD_FLY_BEGIN, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 80);
@@ -854,13 +868,13 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
       addEvent(()-> {
           Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
           Vec3d targetedPos = target.getPositionVector().add(posSet.scale(-2));
-          ModUtils.attemptTeleport(targetedPos, this);
+         // ModUtils.attemptTeleport(targetedPos, this);
           addEvent(()-> {
               this.setImmovable(false);
               double distance = this.getPositionVector().distanceTo(targetedPos);
-              ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.13),0.05F);
+              ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.1),0.05F);
               new ActionBloodBomb().performAction(this, target);
-              this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+              this.playSound(SoundsHandler.BLOODY_FLY_SWING, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
           }, 5);
       }, 37);
 
@@ -872,13 +886,13 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
             Vec3d targetedPos = target.getPositionVector().add(posSet.scale(-2));
-            ModUtils.attemptTeleport(targetedPos, this);
+          //  ModUtils.attemptTeleport(targetedPos, this);
             addEvent(()-> {
                 this.setImmovable(false);
                 double distance = this.getPositionVector().distanceTo(targetedPos);
-                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.13),0.05F);
+                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.1),0.05F);
                 new ActionBloodBomb().performAction(this, target);
-                this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+                this.playSound(SoundsHandler.BLOODY_FLY_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
             }, 5);
         }, 90);
 
@@ -995,6 +1009,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                 this.spearThrustGrabDetection = true;
                 double distance = this.getPositionVector().distanceTo(targetedPos);
                 ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.35),0.1F);
+                this.playSound(SoundsHandler.SPEAR_GRAB_ATTACK, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
             }, 7);
         }, 28);
 

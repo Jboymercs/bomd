@@ -65,6 +65,21 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static double abberrant_damage = 8;
 
+    @Config.Name("Incendium Attack Damage")
+    @Config.Comment("Change the Attack Damage of the Incendium Spirit")
+    @Config.RequiresMcRestart
+    public static double incendium_attack_damage = 14;
+
+    @Config.Name("Incendium Health")
+    @Config.Comment("Change the Health of the Incendium Spirit")
+    @Config.RequiresMcRestart
+    public static double incendium_health = 45;
+
+    @Config.Name("Incendium Armor")
+    @Config.Comment("Change the Armor Value of the Incendium Spirit")
+    @Config.RequiresMcRestart
+    public static double incendium_armor = 16;
+
     @Config.Name("Knight of Burning Flame Armor")
     @Config.Comment("Change the armor value of the this boss (Knight of Burning Flame)")
     @Config.RequiresMcRestart
@@ -507,12 +522,12 @@ public class MobConfig {
     @Config.Name("The High King Health")
     @Config.Comment("Change the health of the High King")
     @Config.RequiresMcRestart
-    public static double high_king_health = 325;
+    public static double high_king_health = 330;
 
     @Config.Name("The High King Armor")
     @Config.Comment("Change the armor value of the High King")
     @Config.RequiresMcRestart
-    public static double high_king_armor = 16;
+    public static double high_king_armor = 18;
 
     @Config.Name("The High King Experience Value")
     @Config.Comment("Change how much experience the High King drops upon Death")

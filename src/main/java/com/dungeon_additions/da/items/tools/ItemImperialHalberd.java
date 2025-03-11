@@ -54,7 +54,7 @@ public class ItemImperialHalberd extends ItemSword implements IAnimatable, IHasM
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        int SwordCoolDown = 16 * 20;
+        int SwordCoolDown = ModConfig.prosperous_assault_cooldown * 20;
 
         if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
             worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.IMPERIAL_START_MAGIC, SoundCategory.NEUTRAL, 0.6f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));

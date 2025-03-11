@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeManager;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -84,6 +85,14 @@ public class CommandLocateLich implements ICommand {
                 } else {
                     throw new CommandException("commands.locate.failure", s);
                 }
+            } else if (s.equals("BurningFlameArena")) {
+                BlockPos blockpos = findNearestPosBurningFlame(sender);
+
+                if (blockpos != null) {
+                    sender.sendMessage(new TextComponentTranslation("commands.locate.success", new Object[]{s, blockpos.getX(), blockpos.getZ()}));
+                } else {
+                    throw new CommandException("commands.locate.failure", s);
+                }
             }
         }
     }
@@ -99,7 +108,7 @@ public class CommandLocateLich implements ICommand {
 
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "NightLichTower", "BlossomCave", "FrozenCastle", "HighCourtCity") : Collections.emptyList();
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "NightLichTower", "BlossomCave", "FrozenCastle", "HighCourtCity","BurningFlameArena") : Collections.emptyList();
     }
 
     public static List<String> getListOfStringsMatchingLastWord(String[] args, String... possibilities) {
@@ -201,6 +210,55 @@ public class CommandLocateLich implements ICommand {
         return resultpos;
     }
 
+    public static BlockPos findNearestPosBurningFlame(ICommandSender sender) {
+        BlockPos resultpos = null;
+        BlockPos pos = sender.getPosition();
+        World world = sender.getEntityWorld();
+        Chunk chunk = world.getChunk(pos);
+
+        for (int i = -ModConfig.burning_flame_arena_search_radius; i < ModConfig.burning_flame_arena_search_radius + 1; i++) {
+            for (int j = -ModConfig.burning_flame_arena_search_radius; j < ModConfig.burning_flame_arena_search_radius + 1; j++) {
+                boolean c = IsBurningFlameArenaAtPos(world, chunk.x + i, chunk.z + j);
+                if (c) {
+                    resultpos = new BlockPos((chunk.x + i) << 4, WorldConfig.burning_arena_y_level, (chunk.z + j) << 4);
+                    break;
+                }
+            }
+        }
+        return resultpos;
+    }
+
+    protected static boolean IsBurningFlameArenaAtPos(World world, int chunkX, int chunkZ) {
+        int spacing = WorldConfig.burning_arena_weight;
+        int separation = 16;
+        int i = chunkX;
+        int j = chunkZ;
+
+        if (chunkX < 0) {
+            chunkX -= spacing - 1;
+        }
+
+        if (chunkZ < 0) {
+            chunkZ -= spacing - 1;
+        }
+
+        int k = chunkX / spacing;
+        int l = chunkZ / spacing;
+        Random random = world.setRandomSeed(k, l, 13259582);
+        k = k * spacing;
+        l = l * spacing;
+        k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+        l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+
+        if (i == k && j == l && isAllowedDimensionTooSpawnInBurningFlameArena(world.provider.getDimension())) {
+            BlockPos pos = new BlockPos((i << 4), WorldConfig.burning_arena_y_level, (j << 4));
+            return isAbleToSpawnHereBurningFlameArena(pos, world);
+        } else {
+
+            return false;
+        }
+    }
+
     protected static boolean IsHighCityAtPos(World world, int chunkX, int chunkZ) {
         int spacing = WorldConfig.high_city_spacing;
         int separation = 16;
@@ -224,7 +282,7 @@ public class CommandLocateLich implements ICommand {
         l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
 
         if (i == k && j == l && isAllowedDimensionTooSpawnInHighCastle(world.provider.getDimension())) {
-            BlockPos pos = new BlockPos((i << 4), 0, (j << 4));
+            BlockPos pos = new BlockPos((i << 4), WorldConfig.high_city_y_height, (j << 4));
             return isAbleToSpawnHereHighCity(pos, world);
         } else {
 
@@ -401,6 +459,38 @@ public class CommandLocateLich implements ICommand {
         return true;
     }
 
+
+    public static boolean isAbleToSpawnHereBurningFlameArena(BlockPos pos, World world) {
+        for(BiomeDictionary.Type types : getSpawnBiomeTypesBurningFlameArena()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static List<BiomeDictionary.Type> burningFlameArenaBiomeTypes;
+
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypesBurningFlameArena() {
+        if(burningFlameArenaBiomeTypes == null) {
+            burningFlameArenaBiomeTypes = Lists.newArrayList();
+
+            for(String str : WorldConfig.biome_types_blacklist_burning_arena) {
+                try {
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) burningFlameArenaBiomeTypes.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
+                } catch (Exception e) {
+                    DALogger.logError(str + " is not a valid type name", e);
+                }
+            }
+        }
+
+        return burningFlameArenaBiomeTypes;
+    }
+
     private static List<BiomeDictionary.Type> highCityBiomeTypes;
 
     public static List<BiomeDictionary.Type> getSpawnBiomeTypesHighCity() {
@@ -487,6 +577,14 @@ public class CommandLocateLich implements ICommand {
                 return true;
         }
 
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInBurningFlameArena(int dimensionIn) {
+
+            if(dimensionIn == -1) {
+                return true;
+            }
         return false;
     }
 

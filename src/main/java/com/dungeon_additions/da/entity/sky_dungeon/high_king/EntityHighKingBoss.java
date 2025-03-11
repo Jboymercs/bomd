@@ -3,8 +3,10 @@ package com.dungeon_additions.da.entity.sky_dungeon.high_king;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.sky_dungeon.EntityImperialHalberdAI;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
+import com.dungeon_additions.da.entity.sky_dungeon.EntityGargoyleLazer;
 import com.dungeon_additions.da.entity.sky_dungeon.EntityImperialHalberd;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
+import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,6 +28,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 /**

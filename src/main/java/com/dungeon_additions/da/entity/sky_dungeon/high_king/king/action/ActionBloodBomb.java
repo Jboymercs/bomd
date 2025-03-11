@@ -58,5 +58,42 @@ public class ActionBloodBomb implements IActionKing {
             blood.setTravelRange(40f);
             actor.world.spawnEntity(blood);
         }, 11);
+
+
+        actor.addEvent(()-> {
+            ProjectileKingBlood blood = new ProjectileKingBlood(actor.world, actor, (float) (actor.getAttack() * 0.5), true);
+            Vec3d relPos = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(4, 0, 0)));
+            blood.setPosition(relPos.x, relPos.y, relPos.z);
+            blood.shoot(actor, pitch, actor.rotationYaw + 65, 0.0F, 0.4F, inaccuracy);
+            blood.setTravelRange(40f);
+            actor.world.spawnEntity(blood);
+        }, 2);
+
+        actor.addEvent(()-> {
+            ProjectileKingBlood blood = new ProjectileKingBlood(actor.world, actor, (float) (actor.getAttack() * 0.5), true);
+            Vec3d relPos = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0, 0, -2)));
+            blood.setPosition(relPos.x, relPos.y, relPos.z);
+            blood.shoot(actor, pitch, actor.rotationYaw + 155, 0.0F, 0.4F, inaccuracy);
+            blood.setTravelRange(40f);
+            actor.world.spawnEntity(blood);
+        }, 6);
+
+        actor.addEvent(()-> {
+            ProjectileKingBlood blood = new ProjectileKingBlood(actor.world, actor, (float) (actor.getAttack() * 0.5), true);
+            Vec3d relPos = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(-2, 0, 0)));
+            blood.setPosition(relPos.x, relPos.y, relPos.z);
+            blood.shoot(actor, pitch, actor.rotationYaw + 245, 0.0F, 0.4F, inaccuracy);
+            blood.setTravelRange(40f);
+            actor.world.spawnEntity(blood);
+        }, 8);
+
+        actor.addEvent(()-> {
+            ProjectileKingBlood blood = new ProjectileKingBlood(actor.world, actor, (float) (actor.getAttack() * 0.5), true);
+            Vec3d relPos = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0, 0, 2)));
+            blood.setPosition(relPos.x, relPos.y, relPos.z);
+            blood.shoot(actor, pitch, actor.rotationYaw - 25, 0.0F, 0.4F, inaccuracy);
+            blood.setTravelRange(40f);
+            actor.world.spawnEntity(blood);
+        }, 11);
     }
 }

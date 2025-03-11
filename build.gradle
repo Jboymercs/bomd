@@ -6,8 +6,7 @@
  * it, just make sure it is only being used when necessary for a 3rd party library which isn't a mod that can be easily
  * downloaded otherwise.
  */
-plugins {
-    id 'net.minecraftforge.gradle' version '6.0.+'
+plugins {id 'net.minecraftforge.gradle' version '6.0.+'
     id 'wtf.gofancy.fancygradle' version '1.1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
     //id 'com.github.johnrengelman.shadow' version '8.1.+'

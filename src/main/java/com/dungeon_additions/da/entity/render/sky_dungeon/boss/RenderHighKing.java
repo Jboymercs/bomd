@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.render.sky_dungeon.boss;
 
 import com.dungeon_additions.da.entity.model.sky_dungeon.boss.ModelHighKing;
+import com.dungeon_additions.da.entity.render.layer.GeoSpecificGlow;
 import com.dungeon_additions.da.entity.render.util.RenderGeoExtended;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing;
 import com.dungeon_additions.da.util.ModReference;
@@ -19,6 +20,7 @@ public class RenderHighKing extends RenderGeoExtended<EntityHighKing> {
 
     public RenderHighKing(RenderManager renderManager) {
         super(renderManager, new ModelHighKing(MODEL_RESLOC, TEXTURE, "high_king"));
+        this.addLayer(new GeoSpecificGlow<>(this, this.TEXTURE_GETTER, this.MODEL_ID_GETTER));
     }
 
     @Nullable

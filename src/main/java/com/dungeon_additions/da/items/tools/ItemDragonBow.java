@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.items.tools;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyArrow;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.ItemGoldenArrow;
@@ -111,7 +112,7 @@ public class ItemDragonBow extends ItemBow implements IHasModel {
                         ItemGoldenArrow itemarrow = (ItemGoldenArrow)(itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : ModItems.SKY_ARROW);
                         EntitySkyArrow skyArrow = null;
                         Vec3d playerLookVec = entityplayer.getLookVec();
-                        Vec3d lazerEnd = entityplayer.getPositionEyes(1).add(entityplayer.getLookVec().scale(40));
+                        Vec3d lazerEnd = entityplayer.getPositionEyes(1).add(entityplayer.getLookVec().scale(60));
                         RayTraceResult raytraceresult = entityplayer.world.rayTraceBlocks(entityplayer.getPositionEyes(1), lazerEnd, false, true, false);
                         if (raytraceresult != null) {
                             // If we hit a block, make sure that any collisions with entities are detected up to the hit block
@@ -143,20 +144,20 @@ public class ItemDragonBow extends ItemBow implements IHasModel {
                                         skyArrow = new EntitySkyArrow(worldIn, entityplayer, ((EntityLivingBase) closestEntity));
                                         Vec3d playerPos = new Vec3d(entityplayer.posX + playerLookVec.x * 1.4D,entityplayer.posY + playerLookVec.y + entityplayer.getEyeHeight(), entityplayer. posZ + playerLookVec.z * 1.4D);
                                         skyArrow.setPosition(playerPos.x, playerPos.y, playerPos.z);
-                                        skyArrow.setDamage(3);
+                                        skyArrow.setDamage(ModConfig.dragon_bow_damage);
                                     }
                                 }
                             } else if (closestEntity instanceof EntityLivingBase){
                                 skyArrow = new EntitySkyArrow(worldIn, entityplayer, ((EntityLivingBase) closestEntity));
                                 Vec3d playerPos = new Vec3d(entityplayer.posX + playerLookVec.x * 1.4D,entityplayer.posY + playerLookVec.y + entityplayer.getEyeHeight(), entityplayer. posZ + playerLookVec.z * 1.4D);
                                 skyArrow.setPosition(playerPos.x, playerPos.y, playerPos.z);
-                                skyArrow.setDamage(3);
+                                skyArrow.setDamage(ModConfig.dragon_bow_damage);
                             }
                         } else {
                             skyArrow = new EntitySkyArrow(worldIn, entityplayer);
                             Vec3d playerPos = new Vec3d(entityplayer.posX + playerLookVec.x * 1.4D,entityplayer.posY + playerLookVec.y + entityplayer.getEyeHeight(), entityplayer. posZ + playerLookVec.z * 1.4D);
                             skyArrow.setPosition(playerPos.x, playerPos.y, playerPos.z);
-                            skyArrow.setDamage(3);
+                            skyArrow.setDamage(ModConfig.dragon_bow_damage);
                         }
 
                       //  entityarrow.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
@@ -188,7 +189,7 @@ public class ItemDragonBow extends ItemBow implements IHasModel {
 
                             stack.damageItem(1, entityplayer);
 
-                            entityplayer.getCooldownTracker().setCooldown(this, 30 * 20);
+                            entityplayer.getCooldownTracker().setCooldown(this, ModConfig.dragon_bow_cooldown * 20);
                             worldIn.spawnEntity(skyArrow);
                         } else {
                             entityplayer.sendStatusMessage(new TextComponentTranslation("da.sky_arrow_fail", new Object[0]), true);

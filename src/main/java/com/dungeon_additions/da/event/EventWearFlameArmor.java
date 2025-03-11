@@ -140,14 +140,14 @@ public class EventWearFlameArmor {
         EntitySkyBolt bolt8 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor);
 
         Vec3d actorPos = actor.getPositionVector();
-        bolt.setPosition(actorPos.x + 1.5, actor.posY, actor.posZ);
-        bolt2.setPosition(actorPos.x - 1.5, actor.posY, actor.posZ);
-        bolt3.setPosition(actorPos.x, actor.posY, actor.posZ + 1.5);
-        bolt4.setPosition(actorPos.x, actor.posY, actor.posZ - 1.5);
-        bolt5.setPosition(actorPos.x + 1.25, actor.posY, actor.posZ + 1.25);
-        bolt6.setPosition(actorPos.x + 1.25, actor.posY, actor.posZ - 1.25);
-        bolt7.setPosition(actorPos.x - 1.25, actor.posY, actor.posZ - 1.25);
-        bolt8.setPosition(actorPos.x - 1.25, actor.posY, actor.posZ + 1.25);
+        bolt.setPosition(actorPos.x + 2.5, actor.posY, actor.posZ);
+        bolt2.setPosition(actorPos.x - 2.5, actor.posY, actor.posZ);
+        bolt3.setPosition(actorPos.x, actor.posY, actor.posZ + 2.5);
+        bolt4.setPosition(actorPos.x, actor.posY, actor.posZ - 2.5);
+        bolt5.setPosition(actorPos.x + 2.25, actor.posY, actor.posZ + 2.25);
+        bolt6.setPosition(actorPos.x + 2.25, actor.posY, actor.posZ - 2.25);
+        bolt7.setPosition(actorPos.x - 2.25, actor.posY, actor.posZ - 2.25);
+        bolt8.setPosition(actorPos.x - 2.25, actor.posY, actor.posZ + 2.25);
 
         actor.world.spawnEntity(bolt);
         actor.world.spawnEntity(bolt2);

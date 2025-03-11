@@ -124,7 +124,7 @@ public class HighCityTemplate extends ModStructureTemplate {
 
     public boolean generateKnightSpawn() {
         int randomNumberGenerator = ModRand.range(0, 10);
-        if (randomNumberGenerator >= WorldConfig.high_city_mob_spawns - 1) {
+        if (randomNumberGenerator >= WorldConfig.high_city_mob_spawns) {
             return false;
         }
         return true;

@@ -344,7 +344,6 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
         } else {
             exhaustionFlag = true;
         }
-      addEvent(()-> this.lockLook = true, 33);
 
       addEvent(()-> {
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.1, 0)));
@@ -354,7 +353,6 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
           this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
       }, 45);
 
-      addEvent(()-> this.lockLook = false, 60);
 
       addEvent(()-> {
           this.setFightMode(false);
@@ -508,14 +506,13 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
         }, 5);
 
         addEvent(()-> {
-            this.lockLook = true;
             Vec3d targetedPos = target.getPositionVector();
             addEvent(()-> {
                 this.setImmovable(false);
                 double distance = this.getPositionVector().distanceTo(targetedPos);
                 ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.12),0.2F);
-            }, 5);
-        }, 18);
+            }, 2);
+        }, 21);
 
         addEvent(()-> {
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.1, 0)));
@@ -527,7 +524,6 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
 
         addEvent(()-> {
             this.setImmovable(false);
-            this.lockLook = false;
         }, 50);
 
         addEvent(()-> {

@@ -4,6 +4,7 @@ import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.EntityAiTimedAttack;
 import com.dungeon_additions.da.entity.ai.IAttack;
+import com.dungeon_additions.da.entity.flame_knight.EntityFlameBase;
 import com.dungeon_additions.da.entity.projectiles.ProjectileAbberrantAttack;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
@@ -42,7 +43,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityNetherAbberrant extends EntityAbstractBase implements IAnimatable, IAttack, IAnimationTickable {
+public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatable, IAttack, IAnimationTickable {
     /**
      * The Locals of the Nether Dungeon, A specialist of it's era.
      */
@@ -78,7 +79,7 @@ public class EntityNetherAbberrant extends EntityAbstractBase implements IAnimat
         this.setSize(0.9f, 1.95f);
         this.rangedMode = true;
         this.setImmovable(false);
-        this.experienceValue = 20;
+        this.experienceValue = 12;
     }
 
     @Override
@@ -173,12 +174,12 @@ public class EntityNetherAbberrant extends EntityAbstractBase implements IAnimat
             double distSq = this.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
             double distance = Math.sqrt(distSq);
             if(meleeMode) {
-                if(distance > 3 && !this.isBeingRidden()) {
+                if(distance > 4 && !this.isBeingRidden()) {
                     if(!this.isRanged()) {
                         //Move to melee combat
-                        double d0 = (target.posX - this.posX) * 0.025;
-                        double d1 = (target.posY - this.posY) * 0.05;
-                        double d2 = (target.posZ - this.posZ) * 0.025;
+                        double d0 = (target.posX - this.posX) * 0.02;
+                        double d1 = (target.posY - this.posY) * 0.03;
+                        double d2 = (target.posZ - this.posZ) * 0.02;
                         this.addVelocity(d0, d1, d2);
                     }
                 }
@@ -296,7 +297,7 @@ public class EntityNetherAbberrant extends EntityAbstractBase implements IAnimat
     protected boolean canDespawn() {
 
         // Edit this to restricting them not despawning in Dungeons
-        return this.ticksExisted > 20 * 60 * 20;
+        return false;
 
     }
 
@@ -373,9 +374,8 @@ public class EntityNetherAbberrant extends EntityAbstractBase implements IAnimat
                     Vec3d pos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.5, 0)));
                     float damage = (float) (this.getAttack() * 0.8);
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB)
-                            .directEntity(this)
-                            .disablesShields().build();
-                    ModUtils.handleAreaImpact(2.8f, (e) -> damage, this, pos, source, 0.4f, 0, false);
+                            .directEntity(this).build();
+                    ModUtils.handleAreaImpact(2.8f, (e) -> damage, this, pos, source, 0.3f, 0, false);
                     playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / getRNG().nextFloat() * 0.4f + 0.5f);
                 }, i);
             }
@@ -388,9 +388,8 @@ public class EntityNetherAbberrant extends EntityAbstractBase implements IAnimat
                     Vec3d pos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.5, 0)));
                     float damage = (float) (this.getAttack() * 0.8);
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB)
-                            .directEntity(this)
-                            .disablesShields().build();
-                    ModUtils.handleAreaImpact(2.8f, (e) -> damage, this, pos, source, 0.4f, 0, false);
+                            .directEntity(this).build();
+                    ModUtils.handleAreaImpact(2.8f, (e) -> damage, this, pos, source, 0.3f, 0, false);
                     playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / getRNG().nextFloat() * 0.4f + 0.5f);
                 }, i);
             }

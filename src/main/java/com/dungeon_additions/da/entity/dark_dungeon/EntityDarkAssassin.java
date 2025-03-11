@@ -610,7 +610,8 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
         this.setDodge(true);
         this.setFightMode(true);
         this.setFullBodyUsage(true);
-        this.playSound(SoundEvents.BLOCK_ANVIL_HIT, 0.75f, 1.6f / (rand.nextFloat() * 0.4F + 0.7f));
+        this.playSound(SoundEvents.BLOCK_ANVIL_HIT, 0.5f, 1.6f / (rand.nextFloat() * 0.4F + 0.7f));
+        this.playSound(SoundsHandler.DARK_ASSASSIN_DASH, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.7f));
         this.lockLook = true;
         if(this.isHiddenFrom()) {
             this.setHiddenFrom(false);

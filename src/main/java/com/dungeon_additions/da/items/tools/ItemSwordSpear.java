@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.items.tools;
 
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.player.ActionShootLightRing;
 import com.dungeon_additions.da.entity.player.ActionSummonHolySpikes;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
@@ -64,7 +65,7 @@ public class ItemSwordSpear extends ToolSword implements IAnimatable {
             } else {
                 world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.HIGH_KING_SWING_MAGIC, SoundCategory.NEUTRAL, 1.0f, 0.7f / (world.rand.nextFloat() * 0.4F + 0.2f));
                 itemstack.damageItem(1, player);
-                player.getCooldownTracker().setCooldown(this, (7 * 20));
+                player.getCooldownTracker().setCooldown(this, (ModConfig.divine_sword_spear_cooldown_1 * 20));
                 new ActionShootLightRing().performAction(player);
 
                 return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
@@ -87,7 +88,7 @@ public class ItemSwordSpear extends ToolSword implements IAnimatable {
                 if(player.canBePushed()) {
                     player.motionX = moveVec.x;
                     player.motionY = moveVec.y * 0.3;
-                    player.getCooldownTracker().setCooldown(this, 20 * 20);
+                    player.getCooldownTracker().setCooldown(this, ModConfig.divine_sword_spear_cooldown_2 * 20);
                     player.motionZ = moveVec.z;
                     player.velocityChanged = true;
                     player.fallDistance = 0;

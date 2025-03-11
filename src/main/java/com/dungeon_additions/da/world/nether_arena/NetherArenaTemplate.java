@@ -3,6 +3,7 @@ package com.dungeon_additions.da.world.nether_arena;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.entity.EntityNetherAbberrant;
+import com.dungeon_additions.da.entity.flame_knight.EntityIncendium;
 import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
 import com.dungeon_additions.da.entity.tileEntity.tileEntityMobSpawner;
@@ -73,9 +74,10 @@ public class NetherArenaTemplate extends ModStructureTemplate {
             if (tileentity instanceof tileEntityMobSpawner) {
                 ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
                         new MobSpawnerLogic.MobSpawnData[]{
-                                new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityNetherAbberrant.class), 1)
+                                new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityNetherAbberrant.class), 1),
+                                new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityIncendium.class), 1)
                         },
-                        new int[]{1},
+                        new int[]{1,1},
                         1,
                         32);
             }
@@ -87,9 +89,10 @@ public class NetherArenaTemplate extends ModStructureTemplate {
                 if (tileentity instanceof tileEntityMobSpawner) {
                     ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
                             new MobSpawnerLogic.MobSpawnData[]{
-                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityNetherAbberrant.class), 1)
+                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityNetherAbberrant.class), 1),
+                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityIncendium.class), 1)
                             },
-                            new int[]{1},
+                            new int[]{3, 1},
                             1,
                             32);
                 }

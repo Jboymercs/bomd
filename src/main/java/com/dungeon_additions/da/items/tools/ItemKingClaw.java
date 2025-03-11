@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.items.tools;
 
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.player.ActionDoClawSlash;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
@@ -49,7 +50,7 @@ public class ItemKingClaw extends ToolSword implements IAnimatable {
     {
         ItemStack stack = player.getHeldItem(hand);
         boolean hasOffhandClaw = player.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).getItem() == ModItems.KING_CLAW && player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == ModItems.KING_CLAW;
-        int SwordCoolDown = hasOffhandClaw ? (int) ((20 * 10) * 0.5) : 20 * 10;
+        int SwordCoolDown = hasOffhandClaw ? (int) ((ModConfig.king_claw_cooldown * 10) * 0.5) : ModConfig.king_claw_cooldown * 10;
         if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
             worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.HIGH_KING_CAST_CLAW, SoundCategory.NEUTRAL, 1.0f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
             new ActionDoClawSlash(hasOffhandClaw).performAction(player);

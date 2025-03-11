@@ -2,12 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     " V ",
-    "VRV",
+    "CRC",
     " B "
   ],
   "key": {
     "V": {
       "item": "da:abberrant_eye"
+    },
+    "C": {
+      "item": "da:incendium_core"
     },
     "R": {
       "item": "da:ancient_mana"

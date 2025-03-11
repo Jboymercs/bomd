@@ -219,7 +219,7 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
           ProjectileLightRing ring = new ProjectileLightRing(world, this, this.getAttack(), target);
           ring.setTravelRange(40F);
           ring.setPosition(this.posX, this.posY + 2.25, this.posZ);
-          ring.shoot(this, this.rotationPitch + 5, this.rotationYaw + ModRand.range(-5 ,5), 0.0F, 0.65F, 0);
+          ring.shoot(this, this.rotationPitch + 5, this.rotationYaw, 0.0F, 0.65F, 0);
           world.spawnEntity(ring);
           this.lockLook = false;
       }, 35);

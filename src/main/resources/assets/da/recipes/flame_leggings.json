@@ -1,13 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "VXV",
+    "CXC",
     "R R",
     "V V"
   ],
   "key": {
     "V": {
       "item": "da:abberrant_eye"
+    },
+    "C": {
+      "item": "da:incendium_core"
     },
     "X": {
       "item": "da:flame_metal_scrap"

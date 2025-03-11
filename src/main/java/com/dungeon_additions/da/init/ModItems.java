@@ -30,13 +30,13 @@ public class ModItems {
 
     //Materials
     private static final Item.ToolMaterial CHAMPION_AXE_MATERIAL = EnumHelper.addToolMaterial("champion_set", 3, 874, 7.0F, (float) ModConfig.champion_axe_damage, 15);
-    private static final Item.ToolMaterial IMPERIAL_HALBERD_MATERIAL = EnumHelper.addToolMaterial("imperial_halberd_set", 3, 2463, 8.0F, (float) 9.5, 20);
-    private static final Item.ToolMaterial SWORD_SPEAR_MATERIAL = EnumHelper.addToolMaterial("sword_spear_set", 3, 2031, 6.0F, (float) 9.5, 40);
-    private static final Item.ToolMaterial BLOODY_SWORD_SPEAR_MATERIAL = EnumHelper.addToolMaterial("bloody_sword_spear_set", 3, 2031, 7.0F, (float) 10, 40);
-    private static final Item.ToolMaterial KINGS_CLAW_MATERIAL = EnumHelper.addToolMaterial("king_claw_set", 3, 942, 7.0F, (float) 6, 40);
-    private static final Item.ToolMaterial IMPERIAL_SWORD_MATERIAL = EnumHelper.addToolMaterial("imperial_material", 2, 2463, 6.0F, (float) 7.5, 30);
+    private static final Item.ToolMaterial IMPERIAL_HALBERD_MATERIAL = EnumHelper.addToolMaterial("imperial_halberd_set", 3, 2463, 8.0F, (float) ModConfig.prosperous_assault_damage, 20);
+    private static final Item.ToolMaterial SWORD_SPEAR_MATERIAL = EnumHelper.addToolMaterial("sword_spear_set", 3, 2031, 6.0F, (float) ModConfig.divine_sword_spear_damage, 40);
+    private static final Item.ToolMaterial BLOODY_SWORD_SPEAR_MATERIAL = EnumHelper.addToolMaterial("bloody_sword_spear_set", 3, 2031, 7.0F, (float) ModConfig.bloodied_sword_spear_damage, 40);
+    private static final Item.ToolMaterial KINGS_CLAW_MATERIAL = EnumHelper.addToolMaterial("king_claw_set", 3, 942, 7.0F, (float) ModConfig.kings_claw_damage, 40);
+    private static final Item.ToolMaterial IMPERIAL_SWORD_MATERIAL = EnumHelper.addToolMaterial("imperial_material", 2, 2463, 6.0F, (float) ModConfig.master_parry_sword_damage, 30);
     private static final Item.ToolMaterial DAGGER_MATERIAL = EnumHelper.addToolMaterial("void_material", 2, 720, 6.0F, (float) ModConfig.void_dagger_damage, 45);
-    private static final Item.ToolMaterial DARK_DAGGER_MATERIAL = EnumHelper.addToolMaterial("dark_material", 2, 520, 6.0F, (float) 5.5, 5);
+    private static final Item.ToolMaterial DARK_DAGGER_MATERIAL = EnumHelper.addToolMaterial("dark_material", 2, 520, 6.0F, (float) ModConfig.rah_void_Dagger_damage, 5);
 
     private static final Item.ToolMaterial DRAUGR_SWORD = EnumHelper.addToolMaterial("draugr_material", 2, 974, 6.0F, (float) ModConfig.frost_sword_damage, 45);
     private static final Item.ToolMaterial FLAME_SWORD_MATERIAL = EnumHelper.addToolMaterial("flame_sword_material", 2, 988, 6.0F, ModConfig.sword_of_ambition_damage, 70);
@@ -68,8 +68,10 @@ public class ModItems {
     public static final Item ROT_KNIGHT_INGOT = new ItemCraftingMaterial("knight_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item LITIC_SHARD = new ItemCraftingMaterial("lightning_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item LITIC_INGOT = new ItemCraftingMaterial("lightning_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
-    public static final Item LITIC_SMITHING_STONE = new ItemCraftingMaterial("lightning_smithing_stone", "lightning_stone_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    //TO BE USED LATER
+  //  public static final Item LITIC_SMITHING_STONE = new ItemCraftingMaterial("lightning_smithing_stone", "lightning_stone_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ANCIENT_MANA = new ItemCraftingMaterial("ancient_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item INCENDIUM_CORE = new ItemCraftingMaterial("incendium_core", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item RED_ANICIENT_MANA = new ItemCraftingMaterial("red_ancient_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_SHARD = new ItemCraftingMaterial("frost_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_INGOT = new ItemCraftingMaterial("frost_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -95,6 +97,7 @@ public class ModItems {
     public static final Item FLAME_OF_AMBITION = new ItemAmbitionFlame("ambition_flame", "flame_of_ambition").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item DARK_LOCATOR = new ItemBase("dark_locator", DungeonAdditionsTab.ALL);
     public static final Item FROZEN_CASTLE_LOCATOR = new ItemFrozenCastleLocator("frost_locator", "frost_locator_desc");
+    public static final Item BURNING_FLAME_LOCATOR = new ItemBurningArenaLocator("flame_locator", "flame_locator_desc");
     public static final Item SOUL_STAR = new ItemSoulStar("soul_star_item", "soul_star_desc");
     public static final Item SKY_LOCATOR = new ItemSkyLocator("sky_locator", "sky_locator_desc");
     public static final Item ROT_KNIGHT_KEY = new ItemRotKnightKey("knight_key", "rot_knight_key").setCreativeTab(DungeonAdditionsTab.ALL);

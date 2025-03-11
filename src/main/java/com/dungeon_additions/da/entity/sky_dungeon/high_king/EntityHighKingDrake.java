@@ -8,6 +8,7 @@ import com.dungeon_additions.da.entity.ai.IPitch;
 import com.dungeon_additions.da.entity.ai.flying.FlyingMoveHelper;
 import com.dungeon_additions.da.entity.ai.flying.TimedAttackInitiator;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
+import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
 import com.dungeon_additions.da.entity.sky_dungeon.ProjectileLightRing;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.action.*;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.drake.EntityHighKingDrakeAI;
@@ -373,6 +374,15 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
         if(!world.isRemote) {
             EntityLivingBase target = this.getAttackTarget();
+
+            if(ticksExisted == 10 && this.getSpawnLocation() != null) {
+                List<EntitySkyTornado> nearbyEntities = this.world.getEntitiesWithinAABB(EntitySkyTornado.class, this.getEntityBoundingBox().grow(25, 15, 25).offset(0, -15, 0), e -> !e.getIsInvulnerable());
+                if(!nearbyEntities.isEmpty()) {
+                    for(EntitySkyTornado tornado : nearbyEntities) {
+                        tornado.setDead();
+                    }
+                }
+            }
 
             if(this.isGrounded()) {
                 this.dataManager.set(LOOK, 0F);

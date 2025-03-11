@@ -156,6 +156,7 @@ public class SoundsHandler {
     public static SoundEvent DARK_ASSASSIN_HURT;
     public static SoundEvent DARK_ASSASSIN_APPEAR;
     public static SoundEvent DARK_SUMMON_INK;
+    public static SoundEvent DARK_ASSASSIN_DASH;
     //Shadow Hand
     public static SoundEvent SHADOW_HAND_SUMMON;
     public static SoundEvent SHADOW_HAND_ATTACK;
@@ -191,8 +192,18 @@ public class SoundsHandler {
     public static SoundEvent HIGH_KING_CAST_CLAW;
     public static SoundEvent HIGH_KING_SPEAR_IMPACT;
     public static SoundEvent HOLY_SPIKE_SUMMON;
+    public static SoundEvent BLOOD_GRAB_ATTACK;
+    public static SoundEvent SPEAR_GRAB_ATTACK;
+    public static SoundEvent BLOODY_FLY_SWING;
+    public static SoundEvent BLOOD_FLY_BEGIN;
+    public static SoundEvent KING_GRAB_SUCCESS;
 
     public static SoundEvent BLOOD_SPEAR_USE;
+
+    public static SoundEvent INCENDIUM_HURT;
+    public static SoundEvent INCENDIUM_IDLE;
+    public static SoundEvent INCENDIUM_SWING;
+    public static SoundEvent INCENDIUM_HEAVY_SWING;
 
     public static void registerSounds() {
         //
@@ -323,6 +334,7 @@ public class SoundsHandler {
         DARK_ASSASSIN_APPEAR = registerSound("dark_assassin.appear", "entity");
         DARK_ASSASSIN_HURT = registerSound("dark_assassin.hurt", "entity");
         DARK_SUMMON_INK = registerSound("dark_assassin.summon_ink", "entity");
+        DARK_ASSASSIN_DASH = registerSound("dark_assassin.dash", "entity");
         //
         SHADOW_HAND_ATTACK = registerSound("shadow_hand.attack", "entity");
         SHADOW_HAND_SUMMON = registerSound("shadow_hand.summon", "entity");
@@ -353,8 +365,18 @@ public class SoundsHandler {
         HIGH_KING_CAST_CLAW = registerSound("high_king.cast_claw", "entity");
         HIGH_KING_SPEAR_IMPACT = registerSound("high_king.spear_impact", "entity");
         HOLY_SPIKE_SUMMON = registerSound("high_king.spike_summon", "entity");
+        BLOOD_GRAB_ATTACK = registerSound("high_king.king_dash_blood", "entity");
+        SPEAR_GRAB_ATTACK = registerSound("high_king.king_dash", "entity");
+        BLOOD_FLY_BEGIN = registerSound("high_king.blood_fly_begin", "entity");
+        BLOODY_FLY_SWING = registerSound("high_king.blood_fly", "entity");
+        KING_GRAB_SUCCESS = registerSound("high_king.grab_success", "entity");
         //
         BLOOD_SPEAR_USE = registerSound("high_king.blood_spear_use", "entity");
+        //
+        INCENDIUM_HURT = registerSound("incendium.hurt", "entity");
+        INCENDIUM_IDLE = registerSound("incendium.idle", "entity");
+        INCENDIUM_HEAVY_SWING = registerSound("incendium.heavy_swing", "entity");
+        INCENDIUM_SWING = registerSound("incendium.swing", "entity");
     }
 
 

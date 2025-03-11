@@ -61,7 +61,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityFlameKnight extends EntityAbstractBase implements IAnimatable, IAttack, IAnimationTickable {
+public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, IAttack, IAnimationTickable {
     protected Vec3d chargeDir;
     private Consumer<EntityLivingBase> prevAttack;
 

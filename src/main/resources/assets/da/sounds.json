@@ -1199,6 +1199,16 @@
       }
     ]
   },
+  "entity.dark_assassin.dash": {
+    "category": "entity",
+    "subtitle": "entity.dark_assassin.dash",
+    "sounds": [
+      {
+        "name": "da:entity/dark_assassin/dash",
+        "steam": false
+      }
+    ]
+  },
   "entity.dark_assassin.summon_ink": {
     "category": "entity",
     "subtitle": "entity.dark_assassin.summon_ink",
@@ -1575,6 +1585,104 @@
     "sounds": [
       {
         "name": "da:entity/high_king/blood_spear_use",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_king.king_dash_blood": {
+    "category": "entity",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/king_dash_blood",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_king.king_dash": {
+    "category": "entity",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/king_dash",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_king.blood_fly": {
+    "category": "entity",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/blood_fly",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_king.blood_fly_begin": {
+    "category": "entity",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/blood_fly_begin",
+        "steam": false
+      }
+    ]
+  },
+  "entity.high_king.grab_success": {
+    "category": "entity",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/grab_success",
+        "steam": false
+      }
+    ]
+  },
+  "entity.incendium.hurt": {
+    "category": "entity",
+    "subtitle": "entity.incendium.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/incendium/hurt1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/incendium/hurt2",
+        "steam": false
+      }
+    ]
+  },
+  "entity.incendium.idle": {
+    "category": "entity",
+    "subtitle": "entity.incendium.idle",
+    "sounds": [
+      {
+        "name": "da:entity/incendium/idle1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/incendium/idle2",
+        "steam": false
+      }
+    ]
+  },
+  "entity.incendium.swing": {
+    "category": "entity",
+    "subtitle": "entity.incendium.swing",
+    "sounds": [
+      {
+        "name": "da:entity/incendium/swing",
+        "steam": false
+      }
+    ]
+  },
+  "entity.incendium.heavy_swing": {
+    "category": "entity",
+    "subtitle": "entity.incendium.heavy_swing",
+    "sounds": [
+      {
+        "name": "da:entity/incendium/heavy_swing",
         "steam": false
       }
     ]

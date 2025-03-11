@@ -19,7 +19,6 @@ import java.util.Random;
 
 public class WorldGenBlossomCave extends WorldGenerator {
 
-    private int spacing = 0;
     private static List<Biome> spawnBiomes;
     public WorldGenBlossomCave() {
 
@@ -33,7 +32,7 @@ public class WorldGenBlossomCave extends WorldGenerator {
             return true;
 
         }
-        spacing++;
+
         return false;
     }
 
@@ -100,8 +99,6 @@ public class WorldGenBlossomCave extends WorldGenerator {
     }
 
     protected StructureStart getStructureStart(World world, int chunkX, int chunkZ, Random rand) {
-        spacing = 0;
-
         return new WorldGenBlossomCave.Start(world, rand, chunkX, chunkZ);
     }
 

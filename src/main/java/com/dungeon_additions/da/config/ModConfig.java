@@ -107,6 +107,81 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static float champion_axe_damage_scaling = 4;
 
+    @Config.Name("Bloodied Sword Spear Cooldown")
+    @Config.Comment("Change the cooldown in seconds for the Bloodied Swordspears Bloody Sprat ability, The Bloody Dash is always double the amount of time of this.")
+    @Config.RequiresMcRestart
+    public static int bloody_sword_spear_cooldown = 7;
+
+    @Config.Name("Bloodied Sword Spear Damage")
+    @Config.Comment("Change the Damage of the Bloodied Sword Spear")
+    @Config.RequiresMcRestart
+    public static double bloodied_sword_spear_damage = 10;
+
+    @Config.Name("Divine Sword Spear Cooldown")
+    @Config.Comment("Change the cooldown in seconds for the Cast Light Ring Ability from the Divine Sword Spear")
+    @Config.RequiresMcRestart
+    public static int divine_sword_spear_cooldown_1 = 8;
+
+    @Config.Name("Divine Sword Spear Cooldown 2")
+    @Config.Comment("Change the cooldown in seconds for the AOE ability from the Divine Sword Spear in seconds")
+    @Config.RequiresMcRestart
+    public static int divine_sword_spear_cooldown_2 = 22;
+
+    @Config.Name("Divine Sword Spear Damage")
+    @Config.Comment("Change the Damage of the Divine Sword Spear")
+    @Config.RequiresMcRestart
+    public static double divine_sword_spear_damage = 9.5;
+
+    @Config.Name("The Prosperous Assault Cooldown")
+    @Config.Comment("Change the cooldown of the Prosperous Assault in seconds")
+    @Config.RequiresMcRestart
+    public static int prosperous_assault_cooldown = 15;
+
+    @Config.Name("Prosperous Assault Damage")
+    @Config.Comment("Change the Damage of the Prosperous Assault")
+    @Config.RequiresMcRestart
+    public static double prosperous_assault_damage = 9.5;
+
+    @Config.Name("Dragon Scourage Bow Cooldown")
+    @Config.Comment("Change the cooldown in seconds before being able to use the Dragon Scourage Bow.")
+    @Config.RequiresMcRestart
+    public static int dragon_bow_cooldown = 25;
+
+    @Config.Name("Dragon Scourage Bow Base Damage")
+    @Config.Comment("Change the base damage of the Dragon Scourage Bow, take note that bows do damage weirdly. Even if at 3, it'll do 15-17 damage per full charged shot.")
+    @Config.RequiresMcRestart
+    public static float dragon_bow_damage = 3;
+
+    @Config.Name("King's Claw Cooldown")
+    @Config.Comment("Change the cooldown of the King's Claw, take note that when having an offhand claw, this cooldown is halved.")
+    @Config.RequiresMcRestart
+    public static int king_claw_cooldown = 20;
+
+    @Config.Name("King's Claw Damage")
+    @Config.Comment("Change the Damage of the King's Claw")
+    @Config.RequiresMcRestart
+    public static double kings_claw_damage = 6;
+
+    @Config.Name("Master Parry Sword Cooldown")
+    @Config.Comment("Change the cooldown of the Master Parry Sword when landing a successful parry, failing the parry times this amount by 5")
+    @Config.RequiresMcRestart
+    public static int master_parry_sword_cooldown = 5;
+    @Config.Name("Master Parry Sword Damage")
+    @Config.Comment("Change the Damage of the Master Parry Sword")
+    @Config.RequiresMcRestart
+    public static double master_parry_sword_damage = 7;
+
+    @Config.Name("Rah Void Dagger Damage")
+    @Config.Comment("Change the Damage of the Rah Void Dagger")
+    @Config.RequiresMcRestart
+    public static double rah_void_Dagger_damage = 5.5;
+
+    @Config.Name("Rah Void Dagger Cooldown")
+    @Config.Comment("Change the Cooldown of the Rah Void Dagger")
+    @Config.RequiresMcRestart
+    public static int rah_void_dagger_cooldown = 10;
+
+
     @Config.Name("Crafting Material ToolTip")
     @Config.Comment("Should Items listed as Crafting Material state that is a crafting material. False will disable the tool tip")
     @Config.RequiresMcRestart
@@ -143,13 +218,18 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static int void_blosom_search_distance = 100;
 
+    @Config.Name("Burning Flame Arena Search Radius")
+    @Config.Comment("Change how far The Spark of Ambition searches for the the Burning Flame Arena. In chunks not blocks!")
+    @Config.RequiresMcRestart
+    public static int burning_flame_arena_search_radius = 130;
+
     @Config.Name("Frozen Castle Search Radius")
     @Config.Comment("Change how far the Frozen Soul Star and Locate command searches for a Frozen Castle. In chunks not blocks!")
     @Config.RequiresMcRestart
     public static int frozen_castle_search_distance = 175;
 
     @Config.Name("High Court City Search Radius")
-    @Config.Comment("Change how far the locator item and command searches for the High Court City. In chunks not blocks!")
+    @Config.Comment("Change how far the Orb of Light and command searches for the High Court City. In chunks not blocks!")
     @Config.RequiresMcRestart
     public static int high_court_city_search_distance = 175;
 

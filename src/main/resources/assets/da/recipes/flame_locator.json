@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RVR",
+    "BBB",
+    "RVR"
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:quartz"
+    },
+    "R": {
+      "item": "da:knight_shard"
+    },
+    "B": {
+      "item": "minecraft:blaze_rod"
+    }
+  },
+  "result": {
+    "item": "da:flame_locator"
+  }
+}
