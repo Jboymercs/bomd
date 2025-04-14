@@ -3,12 +3,10 @@ package com.dungeon_additions.da.items.tools;
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.IHasModel;
-import com.dungeon_additions.da.util.ModUtils;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,9 +21,11 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 public class ToolSword extends ItemSword implements IHasModel {
-    private float level;
 
     public int ticksExisted;
+
+//    private final AttributeModifier reach_distance;
+ //   protected float reachDistanceValue = 0;
 
     private Consumer<List<String>> information = (info) -> {
     };
@@ -36,7 +36,7 @@ public class ToolSword extends ItemSword implements IHasModel {
         setRegistryName(name);
         setCreativeTab(CreativeTabs.COMBAT);
         ModItems.ITEMS.add(this);
-        this.level = level;
+    //    this.reach_distance = new AttributeModifier("Weapon modifier", this.reachDistanceValue, 1);
     }
 
 
@@ -63,6 +63,8 @@ public class ToolSword extends ItemSword implements IHasModel {
         if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
             multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.getAttackDamage(), 0));
             multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", getAttackSpeed(), 0));
+           // multimap.put(EntityPlayer.REACH_DISTANCE.getName(), this.reach_distance);
+
         }
 
         return multimap;

@@ -7,19 +7,24 @@ import com.dungeon_additions.da.items.model.*;
 import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSection;
 import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSectionSerializer;
 import com.dungeon_additions.da.util.handlers.RenderHandler;
+import com.dungeon_additions.da.util.particle.ParticlePixel;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.multiplayer.ClientAdvancementManager;
+import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ClientProxy extends CommonProxy{
 
@@ -89,6 +94,30 @@ public class ClientProxy extends CommonProxy{
             return MODEL_KING_HELMET;
         }
         return null;
+    }
+
+    /**
+     * This is used by the Particle Spawning as an ID system for out Particles.
+     * We do not require Ids for Particles, it's just more convenient for sending over packets!
+     * */
+
+    @Override
+    public void spawnParticle(int particle, double posX, double posY, double posZ, double speedX, double speedY, double speedZ, int... parameters)
+    {
+        Minecraft minecraft = Minecraft.getMinecraft();
+        World world = minecraft.world;
+        minecraft.effectRenderer.addEffect(getFactory(particle).createParticle(0, world, posX, posY, posZ, speedX, speedY, speedZ, parameters));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static IParticleFactory getFactory(int particleId)
+    {
+        switch(particleId)
+        {
+            default:
+            case 1:
+                return new ParticlePixel.Factory();
+        }
     }
 
     @Override

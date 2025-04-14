@@ -4,6 +4,7 @@ import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.blossom.EntityGenericWave;
 import com.dungeon_additions.da.entity.blossom.EntityVoidBlossom;
 import com.dungeon_additions.da.entity.blossom.EntityVoidSpike;
+import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
@@ -84,7 +85,7 @@ public class EntityIcicleSpike extends EntityFrostBase implements IAnimatable, I
 
             if(!targets.isEmpty()) {
                 for(EntityLivingBase base : targets) {
-                    if(!(base instanceof EntityFrostBase) && !(base instanceof IEntityMultiPart) && !(base instanceof EntityIcicleSpike)) {
+                    if(!(base instanceof EntityFrostBase) && !(base instanceof IEntityMultiPart) && !(base instanceof EntityIcicleSpike) && !(base instanceof EntityFriendWyrk)) {
                         Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.5D));
                         DamageSource source;
                         source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();

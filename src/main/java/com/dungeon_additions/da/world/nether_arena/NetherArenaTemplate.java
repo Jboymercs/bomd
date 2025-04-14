@@ -3,12 +3,14 @@ package com.dungeon_additions.da.world.nether_arena;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.entity.EntityNetherAbberrant;
+import com.dungeon_additions.da.entity.flame_knight.EntityBareant;
 import com.dungeon_additions.da.entity.flame_knight.EntityIncendium;
 import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
 import com.dungeon_additions.da.entity.tileEntity.tileEntityMobSpawner;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModEntities;
+import com.dungeon_additions.da.integration.ModIntegration;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.world.ModStructureTemplate;
@@ -75,7 +77,7 @@ public class NetherArenaTemplate extends ModStructureTemplate {
                 ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
                         new MobSpawnerLogic.MobSpawnData[]{
                                 new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityNetherAbberrant.class), 1),
-                                new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityIncendium.class), 1)
+                                new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityIncendium.class), 1),
                         },
                         new int[]{1,1},
                         1,
@@ -90,10 +92,28 @@ public class NetherArenaTemplate extends ModStructureTemplate {
                     ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
                             new MobSpawnerLogic.MobSpawnData[]{
                                     new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityNetherAbberrant.class), 1),
-                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityIncendium.class), 1)
+                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityIncendium.class), 1),
+                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityBareant.class), 1)
                             },
-                            new int[]{3, 1},
+                            new int[]{1, 1, 1},
                             1,
+                            32);
+                }
+            } else {
+                world.setBlockToAir(pos);
+            }
+        } else if (function.startsWith("spirit")) {
+            if(generateMobSpawn()) {
+                world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER.getDefaultState(), 2);
+                TileEntity tileentity = world.getTileEntity(pos);
+                if (tileentity instanceof tileEntityMobSpawner) {
+                    ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
+                            new MobSpawnerLogic.MobSpawnData[]{
+                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityNetherAbberrant.class), 1),
+                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityBareant.class), 1)
+                            },
+                            new int[]{1, 2},
+                            2,
                             32);
                 }
             } else {
@@ -133,7 +153,7 @@ public class NetherArenaTemplate extends ModStructureTemplate {
     }
     @Override
     public String templateLocation() {
-        return "nether_arena";
+            return "nether_arena";
     }
 
     public boolean generateMobSpawn() {

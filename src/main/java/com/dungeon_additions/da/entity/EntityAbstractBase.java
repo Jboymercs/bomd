@@ -74,6 +74,8 @@ public abstract class EntityAbstractBase extends EntityCreature {
     private static float regenStartTimer = 20;
 
     private Vec3d initialPosition = null;
+    private boolean bossEnraged = false;
+    private double old_attack_damage;
 
     protected static final DataParameter<Boolean> IMMOVABLE = EntityDataManager.createKey(EntityAbstractBase.class, DataSerializers.BOOLEAN);
 
@@ -176,6 +178,23 @@ public abstract class EntityAbstractBase extends EntityCreature {
                 //This is a static int that will affect cooldowns or other areas of the boss for multiplayer play and make it equally as challenging
                 playersNearbyAmount = ServerScaleUtil.getPlayers(this, world);
                 hasStartedScaling = true;
+            }
+
+            //Boss Enragement System
+            if(!world.isRemote && ModConfig.boss_rage) {
+                double healthFac = this.getHealth() / this.getMaxHealth();
+                //Enables added damage bonus when the boss is below a certain health
+                if(healthFac <= ModConfig.boss_rage_health_factor && !this.bossEnraged) {
+                    double bonusDamage = this.getAttack() * ModConfig.boss_rage_damage_percentage;
+                    this.old_attack_damage = this.getAttack();
+                    this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(this.getAttack() + bonusDamage);
+                    this.bossEnraged = true;
+                }
+                //Disables the bonus damage if the boss heals
+                if(healthFac > ModConfig.boss_rage_health_factor && this.bossEnraged && old_attack_damage != 0) {
+                    this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(old_attack_damage);
+                    this.bossEnraged = false;
+                }
             }
         }
 

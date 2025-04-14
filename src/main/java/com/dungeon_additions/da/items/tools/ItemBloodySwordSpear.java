@@ -36,14 +36,13 @@ public class ItemBloodySwordSpear extends ToolSword implements IAnimatable {
     private String ANIM_STRIKE = "use_blade";
     private String controllerName = "attack_controller";
     private boolean isDashing = false;
-    private boolean setSoundQueue = false;
-    private int savedTickPoint;
     private int dashSpawnBlood = 0;
     public ItemBloodySwordSpear(String name, ToolMaterial material, String info_loc) {
         super(name, material);
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
         this.setMaxDamage(2031);
+      //  this.reachDistanceValue = 1.0F;
     }
 
     @Override

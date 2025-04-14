@@ -8,6 +8,7 @@ import com.dungeon_additions.da.entity.tileEntity.tileEntityMobSpawner;
 import com.dungeon_additions.da.entity.util.EntityBossSpawner;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModEntities;
+import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.world.ModStructureTemplate;
 import com.dungeon_additions.da.world.WorldGenStructure;
 import net.minecraft.tileentity.TileEntity;
@@ -21,7 +22,7 @@ import java.util.Random;
 
 public class BlossomTemplate extends ModStructureTemplate {
 
-    protected WorldGenStructure top = new WorldGenBlossomTop("blossom/blossom_top");
+    protected WorldGenStructure top = new WorldGenBlossomTop("blossom/blossom_top_" + ModRand.range(1, 4));
     public BlossomTemplate(TemplateManager manager, String type, BlockPos pos, Rotation rot, int distance, boolean overWriteIn) {
         super(manager, type, pos,distance, rot, overWriteIn);
     }

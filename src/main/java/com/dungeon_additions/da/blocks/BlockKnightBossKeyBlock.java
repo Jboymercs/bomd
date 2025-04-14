@@ -2,6 +2,8 @@ package com.dungeon_additions.da.blocks;
 
 import com.dungeon_additions.da.blocks.base.IBlockUpdater;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityUpdater;
+import com.dungeon_additions.da.items.ItemLightningKey;
+import com.dungeon_additions.da.items.ItemRotKnightKey;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.google.common.base.Predicate;
 import net.minecraft.block.ITileEntityProvider;
@@ -93,7 +95,7 @@ public class BlockKnightBossKeyBlock extends BlockBase implements IBlockUpdater,
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY,
                                     float hitZ) {
 
-        if (playerIn.getHeldItemMainhand() != null && playerIn.getHeldItemMainhand().getItem() == this.activationItem && !worldIn.isRemote) {
+        if (playerIn.getHeldItemMainhand() != null && playerIn.getHeldItemMainhand().getItem() == this.activationItem && !worldIn.isRemote || playerIn.getHeldItemMainhand().getItem() instanceof ItemRotKnightKey && !worldIn.isRemote) {
             playerIn.getHeldItem(hand).shrink(1);
             worldIn.spawnEntity(this.spawnPortal.apply(worldIn, pos));
             worldIn.setBlockToAir(pos);

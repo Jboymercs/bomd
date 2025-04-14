@@ -53,7 +53,7 @@ public class EventWearFlameArmor {
                 double healthCurr = base.getHealth() / base.getMaxHealth();
                 double bonusAdditive = 2 / healthCurr;
                 if(base.hurtTime == 1 && bonusAdditive + base.world.rand.nextInt(ModConfig.champion_armor_chance) >= 11) {
-                    base.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 200, 0));
+                    base.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 200, 0, false, false));
                 }
             }
             //Wyrk Helmet
@@ -67,7 +67,7 @@ public class EventWearFlameArmor {
                 if(base.ticksExisted % 40 == 0 && base.world.getBlockState(base.getPosition().down()).getBlock() == Blocks.ICE ||
                         base.ticksExisted % 40 == 0 && base.world.getBlockState(base.getPosition().down()).getBlock() == Blocks.PACKED_ICE ||
                         base.ticksExisted % 40 == 0 && base.world.getBlockState(base.getPosition().down()).getBlock() == Blocks.FROSTED_ICE) {
-                    base.addPotionEffect(new PotionEffect(MobEffects.SPEED, 100, 0));
+                    base.addPotionEffect(new PotionEffect(MobEffects.SPEED, 100, 0, false, false));
                 }
             }
 
@@ -76,7 +76,7 @@ public class EventWearFlameArmor {
                 double healthCurr = base.getHealth() / base.getMaxHealth();
                 double bonusAdditive = 2 / healthCurr;
                 if(base.hurtTime == 1 && bonusAdditive + base.world.rand.nextInt(ModConfig.wyrk_armor_chance) >= 11) {
-                    base.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 1));
+                    base.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 1, false, false));
                 }
             }
 
@@ -85,14 +85,14 @@ public class EventWearFlameArmor {
                 if(base.ticksExisted % 40 == 0 && base.isPotionActive(MobEffects.WITHER) || base.ticksExisted % 40 == 0 && base.isPotionActive(MobEffects.MINING_FATIGUE)) {
                     base.removePotionEffect(MobEffects.WITHER);
                     base.removePotionEffect(MobEffects.MINING_FATIGUE);
-                    base.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 400, 0));
+                    base.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 400, 0, false, false));
                 }
             }
 
             //King's Claw
             if(base.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == ModItems.KING_CLAW && base.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).getItem() == ModItems.KING_CLAW) {
                 if(base.ticksExisted % 40 == 0 && base.getHealth()/base.getMaxHealth() <= 0.75) {
-                    base.addPotionEffect(new PotionEffect(MobEffects.SPEED, 100, 0));
+                    base.addPotionEffect(new PotionEffect(MobEffects.SPEED, 100, 0, false, false));
                 }
             }
 
@@ -116,7 +116,7 @@ public class EventWearFlameArmor {
                 cooldownDelegation -= 0.07;
                 if(base.hurtTime == 1 && bonusAdditive + base.world.rand.nextInt(ModConfig.litic_armor_chance) >= 7 + cooldownDelegation) {
                     if(!base.isPotionActive(MobEffects.ABSORPTION)) {
-                        base.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 600, 0));
+                        base.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 600, 0, false, false));
                     }
                     EntityLivingBase entityLivingBase = base.getAttackingEntity();
                     if(entityLivingBase != null && base instanceof EntityPlayer) {

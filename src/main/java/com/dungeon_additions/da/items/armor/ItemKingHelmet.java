@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.items.armor;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.IHasModel;
@@ -56,11 +57,11 @@ public class ItemKingHelmet extends ItemArmor implements IHasModel {
         Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
 
         if (equipmentSlot == this.armorType) {
-            multimap.put(SharedMonsterAttributes.ARMOR.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.damageReduceAmount, 0));
+            multimap.put(SharedMonsterAttributes.ARMOR.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.damageReduceAmount * ModConfig.armor_scaling, 0));
             multimap.put(SharedMonsterAttributes.KNOCKBACK_RESISTANCE.getName(), this.knockbackResistance);
             // Override armor toughness to make is adjustable in game
             //Come back to Re-use when needed IF needed
-            multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor toughness", 1.5F, 0));
+            multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor toughness", 1.5F * ModConfig.armor_toughness_scaling, 0));
             multimap.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(), new AttributeModifier(MOVEMENT_SPEED_MODIFIER, "Movement Speed", 0.01, 0));
 
         }

@@ -25,12 +25,14 @@ public class NetherArena {
 
     private final int SIZE = WorldConfig.burning_arena_size;
 
-    private boolean hasGeneratedKeyRoom = false;
-
+    private boolean hasGeneratedMiniBossRoom = false;
     protected BlockPos posIdentified;
 
     private static final List<Tuple<Rotation, BlockPos>> CROSS_POS = Lists.newArrayList(new Tuple(Rotation.NONE, new BlockPos(0, 0, 0)),
             new Tuple(Rotation.CLOCKWISE_90, new BlockPos(16, 0, 0)), new Tuple(Rotation.COUNTERCLOCKWISE_90, new BlockPos(0, 0, 16)));
+
+    private static final List<Tuple<Rotation, BlockPos>> BIG_CROSS = Lists.newArrayList(new Tuple(Rotation.NONE, new BlockPos(0, 0, 0)),
+            new Tuple(Rotation.CLOCKWISE_90, new BlockPos(26, 0, 0)), new Tuple(Rotation.COUNTERCLOCKWISE_90, new BlockPos(0, 0, 26)));
 
     public NetherArena(World worldIn, TemplateManager template, List<StructureComponent> components) {
         this.world = worldIn;
@@ -57,36 +59,7 @@ public class NetherArena {
         components.add(arenaTwo);
         components.add(arenaThree);
         components.add(arenaFour);
-        generateCross(arenaTwo, BlockPos.ORIGIN.add(0,3,11), rot);
-        return true;
-    }
-
-
-    private boolean generateCross(NetherArenaTemplate parent, BlockPos pos, Rotation rot) {
-        String[] cross_types = {"cross_1", "cross_2", "cross_3"};
-        NetherArenaTemplate template = addAdjustedPiece(parent, pos, ModRand.choice(cross_types), rot);
-
-       if(template.isCollidingExcParent(manager, parent, components)) {
-            return false;
-        }
-
-        List<StructureComponent> structures = new ArrayList<>(components);
-        components.add(template);
-
-        int failedHalls = 0;
-        for(Tuple<Rotation, BlockPos> tuple : CROSS_POS) {
-            if(!generateHall(template, tuple.getSecond(), rot.add(tuple.getFirst()))) {
-                if(!generateStairs(template, tuple.getSecond(), tuple.getFirst())) {
-                    failedHalls++;
-                }
-            }
-        }
-
-        if(failedHalls > 3) {
-            components.clear();
-            components.addAll(structures);
-            return this.generateEndPiece(parent, pos, rot);
-        }
+        generateHold(arenaTwo, BlockPos.ORIGIN.add(0,3,11), rot);
         return true;
     }
 
@@ -122,10 +95,10 @@ public class NetherArena {
             }
         }
         else {
-            if(world.rand.nextInt(2) == 0 || !this.hasGeneratedKeyRoom) {
-                genSuccess = generateHold(stairs, BlockPos.ORIGIN, rot);
+            if(!this.hasGeneratedMiniBossRoom && SIZE > WorldConfig.burning_arena_size - 2) {
+                genSuccess = generateMiniBossRoom(stairs, BlockPos.ORIGIN, rot);
             } else {
-                genSuccess = generateCross(stairs, BlockPos.ORIGIN, rot);
+                genSuccess = generateHold(stairs, BlockPos.ORIGIN, rot);
             }
         }
 
@@ -170,7 +143,7 @@ public class NetherArena {
     }
 
     private boolean generateHold(NetherArenaTemplate parent, BlockPos pos, Rotation rot) {
-        String[] hold_types = {"hold/hold_entrance_1"};
+        String[] hold_types = {"cross_1", "cross_2", "cross_2","cross_3","cross_3","cross_4","cross_5"};
         NetherArenaTemplate hold = addAdjustedPiece(parent, pos, ModRand.choice(hold_types), rot);
         if(hold.isCollidingExcParent(manager, parent, components)) {
             return false;
@@ -183,7 +156,7 @@ public class NetherArena {
 
         //generates like a regular cross
         int failedHalls = 0;
-        for(Tuple<Rotation, BlockPos> tuple : CROSS_POS) {
+        for(Tuple<Rotation, BlockPos> tuple : BIG_CROSS) {
             if(!generateHall(hold, tuple.getSecond(), rot.add(tuple.getFirst()))) {
                 if(!generateStairs(hold, tuple.getSecond(), tuple.getFirst())) {
                     failedHalls++;
@@ -199,25 +172,46 @@ public class NetherArena {
         return true;
     }
 
+    private boolean generateMiniBossRoom(NetherArenaTemplate parent, BlockPos pos, Rotation rot) {
+        NetherArenaTemplate hold = addAdjustedPiece(parent, pos, "mini_boss_room", rot);
+        if(hold.isCollidingExcParent(manager, parent, components)) {
+            return false;
+        }
+
+        List<StructureComponent> structures = new ArrayList<>(components);
+        components.add(hold);
+        this.hasGeneratedMiniBossRoom = true;
+        //generates the lower layer
+        generateFloor(hold, pos, rot);
+
+        //generates like a regular cross
+        int failedHalls = 0;
+        for(Tuple<Rotation, BlockPos> tuple : BIG_CROSS) {
+            if(!generateHall(hold, tuple.getSecond(), rot.add(tuple.getFirst()))) {
+                if(!generateStairs(hold, tuple.getSecond(), tuple.getFirst())) {
+                    failedHalls++;
+                }
+            }
+        }
+
+        if(failedHalls > 3) {
+            components.clear();
+            components.addAll(structures);
+            return this.generateEndPiece(parent, pos, rot);
+        }
+        return true;
+    }
+
+
+
     private boolean generateFloor(NetherArenaTemplate parent, BlockPos pos, Rotation rot) {
     String[] big_rooms = {"hold/floor_1", "hold/floor_2", "hold/floor_3", "hold/floor_4", "hold/floor_5"};
     String[] small_rooms = {"hold/small_floor_1", "hold/small_floor_2"};
-    NetherArenaTemplate LRoom = addAdjustedPiece(parent, BlockPos.ORIGIN.add(-17,-12,0), ModRand.choice(big_rooms), rot);
-    NetherArenaTemplate KEYroom = addAdjustedPieceWithoutCount(parent, BlockPos.ORIGIN.add(-17,-12,0), "hold/key_floor", rot);
-    NetherArenaTemplate SRoom = addAdjustedPieceWithoutCount(parent, BlockPos.ORIGIN.add(-17,-6,0), ModRand.choice(small_rooms), rot);
+    NetherArenaTemplate LRoom = addAdjustedPieceWithoutCount(parent, BlockPos.ORIGIN.add(-27,-17,0), ModRand.choice(big_rooms), rot);
+    NetherArenaTemplate SRoom = addAdjustedPieceWithoutCount(parent, BlockPos.ORIGIN.add(-27,-7,0), ModRand.choice(small_rooms), rot);
+        int randI = ModRand.range(1, 11);
+        if(LRoom.isCollidingExcParent(manager, parent, components) || randI >= 8) {
 
-    if(!hasGeneratedKeyRoom) {
-        if(KEYroom.isCollidingExcParent(manager, parent, components)) {
-            if(SRoom.isCollidingExcParent(manager, parent, components)) {
-                return false;
-            }
-            components.add(SRoom);
-        } else {
-            this.hasGeneratedKeyRoom = true;
-            components.add(KEYroom);
-        }
-    } else {
-        if(LRoom.isCollidingExcParent(manager, parent, components)) {
             if(SRoom.isCollidingExcParent(manager, parent, components)) {
                 return false;
             }
@@ -225,7 +219,7 @@ public class NetherArena {
         } else {
             components.add(LRoom);
         }
-    }
+
         return true;
     }
 
@@ -238,6 +232,7 @@ public class NetherArena {
         components.add(end);
         return true;
     }
+
     private boolean generateHall(NetherArenaTemplate parent, BlockPos pos, Rotation rot) {
         String[] straight_types = {"straight_1", "straight_2", "straight_3", "straight_4"};
         NetherArenaTemplate straight = addAdjustedPieceWithoutCount(parent, pos, ModRand.choice(straight_types), rot);
@@ -264,11 +259,11 @@ public class NetherArena {
                     genSuccess = generateStairs(straight, BlockPos.ORIGIN, rot);
                 }
             } else {
-                if(world.rand.nextInt(2) == 0 || !this.hasGeneratedKeyRoom) {
-                    genSuccess = generateHold(straight, BlockPos.ORIGIN, rot);
+                if(!this.hasGeneratedMiniBossRoom && SIZE > WorldConfig.burning_arena_size - 2) {
+                    genSuccess = generateMiniBossRoom(straight, BlockPos.ORIGIN, rot);
 
                 } else {
-                    genSuccess = generateCross(straight, BlockPos.ORIGIN, rot);
+                    genSuccess = generateHold(straight, BlockPos.ORIGIN, rot);
                 }
             }
         }
@@ -279,19 +274,6 @@ public class NetherArena {
         }
 
         return true;
-    }
-
-    public static int getGroundFromAbove(World world, int x, int z)
-    {
-        int y = 110;
-        boolean foundGround = false;
-        while(!foundGround && y-- >= 31)
-        {
-            Block blockAt = world.getBlockState(new BlockPos(x,y,z)).getBlock();
-            foundGround =  blockAt != Blocks.AIR && blockAt != Blocks.LEAVES && blockAt != Blocks.LEAVES2;
-        }
-
-        return y;
     }
 
 

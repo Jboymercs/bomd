@@ -78,49 +78,51 @@ public class EntityHighKingTimedAttack <T extends EntityHighKing & IAttack> exte
     }
 
     public void move(EntityLivingBase target, double distSq, boolean canSee) {
-        if(this.entity.isStrafeDodge() && this.entity.currentlyInIFrame || this.entity.isStrafeThrust() && this.entity.currentlyInIFrame) {
-            //Side Jumping mechanic
-            this.entity.getNavigator().clearPath();
-            this.entity.faceEntity(target, this.lookSpeed, this.lookSpeed);
-
-        } else if(!this.entity.lockLook && !this.entity.isDodge() && !this.entity.isStrafeThrustContinue()) {
-
-            if (distSq <= 16 && canSee) {
+        if (!this.entity.isDeathBoss()) {
+            if (this.entity.isStrafeDodge() && this.entity.currentlyInIFrame || this.entity.isStrafeThrust() && this.entity.currentlyInIFrame) {
+                //Side Jumping mechanic
                 this.entity.getNavigator().clearPath();
-                ++this.strafingTime;
-            } else {
-                this.entity.getNavigator().tryMoveToEntityLiving(target, this.moveSpeedAmp);
-                this.strafingTime = -1;
-            }
-
-            if (this.strafingTime >= STRAFING_DIRECTION_TICK) {
-                if ((double) this.entity.getRNG().nextFloat() < STRAFING_DIRECTION_CHANGE_CHANCE) {
-                    this.strafingClockwise = !this.strafingClockwise;
-                }
-
-                if ((double) this.entity.getRNG().nextFloat() < STRAFING_DIRECTION_CHANGE_CHANCE) {
-                    this.strafingBackwards = !this.strafingBackwards;
-                }
-
-                this.strafingTime = 0;
-            }
-
-            if (this.strafingTime > -1) {
-                if (distSq > this.maxAttackDistSq * STRAFING_STOP_FACTOR) {
-                    this.strafingBackwards = false;
-                } else if (distSq < this.maxAttackDistSq * STRAFING_BACKWARDS_FACTOR) {
-                    this.strafingBackwards = true;
-                }
-
-                this.entity.getMoveHelper().strafe((this.strafingBackwards ? -1 : 1) * this.strafeAmount, (this.strafingClockwise ? 1 : -1) * this.strafeAmount);
                 this.entity.faceEntity(target, this.lookSpeed, this.lookSpeed);
+
+            } else if (!this.entity.lockLook && !this.entity.isDodge() && !this.entity.isStrafeThrustContinue()) {
+
+                if (distSq <= 16 && canSee) {
+                    this.entity.getNavigator().clearPath();
+                    ++this.strafingTime;
+                } else {
+                    this.entity.getNavigator().tryMoveToEntityLiving(target, this.moveSpeedAmp);
+                    this.strafingTime = -1;
+                }
+
+                if (this.strafingTime >= STRAFING_DIRECTION_TICK) {
+                    if ((double) this.entity.getRNG().nextFloat() < STRAFING_DIRECTION_CHANGE_CHANCE) {
+                        this.strafingClockwise = !this.strafingClockwise;
+                    }
+
+                    if ((double) this.entity.getRNG().nextFloat() < STRAFING_DIRECTION_CHANGE_CHANCE) {
+                        this.strafingBackwards = !this.strafingBackwards;
+                    }
+
+                    this.strafingTime = 0;
+                }
+
+                if (this.strafingTime > -1) {
+                    if (distSq > this.maxAttackDistSq * STRAFING_STOP_FACTOR) {
+                        this.strafingBackwards = false;
+                    } else if (distSq < this.maxAttackDistSq * STRAFING_BACKWARDS_FACTOR) {
+                        this.strafingBackwards = true;
+                    }
+
+                    this.entity.getMoveHelper().strafe((this.strafingBackwards ? -1 : 1) * this.strafeAmount, (this.strafingClockwise ? 1 : -1) * this.strafeAmount);
+                    this.entity.faceEntity(target, this.lookSpeed, this.lookSpeed);
+                } else {
+                    this.entity.getLookHelper().setLookPositionWithEntity(target, this.lookSpeed, this.lookSpeed);
+                }
             } else {
-                this.entity.getLookHelper().setLookPositionWithEntity(target, this.lookSpeed, this.lookSpeed);
+                this.strafingTime = -1;
+                this.entity.getNavigator().clearPath();
+                this.entity.getLookHelper().setLookPositionWithEntity(target, 35, 35);
             }
-        }  else {
-            this.strafingTime = -1;
-            this.entity.getNavigator().clearPath();
-            this.entity.getLookHelper().setLookPositionWithEntity(target, 35, 35);
         }
     }
 }

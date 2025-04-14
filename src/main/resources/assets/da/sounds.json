@@ -1687,6 +1687,44 @@
       }
     ]
   },
+  "entity.bareant.hurt": {
+    "category": "entity",
+    "subtitle": "entity.bareant.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/bareant/hurt1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/bareant/hurt2",
+        "steam": false
+      }
+    ]
+  },
+  "entity.bareant.idle": {
+    "category": "entity",
+    "subtitle": "entity.bareant.idle",
+    "sounds": [
+      {
+        "name": "da:entity/bareant/idle1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/bareant/idle2",
+        "steam": false
+      }
+    ]
+  },
+  "entity.bareant.dash": {
+    "category": "entity",
+    "subtitle": "entity.bareant.dash",
+    "sounds": [
+      {
+        "name": "da:entity/bareant/dash",
+        "steam": false
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",

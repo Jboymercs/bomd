@@ -18,6 +18,16 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static double boss_attack_damage_scaling = 0.18;
 
+    @Config.Name("Armor Scaling")
+    @Config.Comment("Scale the armor values of all of the armor items in the mod")
+    @Config.RequiresMcRestart
+    public static double armor_scaling = 1.0;
+
+    @Config.Name("Armor Toughness Scaling")
+    @Config.Comment("Scale the armor toughness values of all the armor items in the mod")
+    @Config.RequiresMcRestart
+    public static double armor_toughness_scaling = 1.0;
+
     @Config.Name("Poison Dart Damage")
     @Config.Comment("Change the damage done by Poison Darts, used by Mini Blossoms and the Void Dagger")
     @Config.RequiresMcRestart
@@ -266,4 +276,27 @@ public class ModConfig {
     @Config.Comment("Change to false to disable advancement requirements for Soul Stars to drop")
     @Config.RequiresMcRestart
     public static boolean advancements_block_soul_stars = true;
+
+
+    @Config.RequiresMcRestart
+    @Config.Comment(value = "What blocks can bosses NOT break when doing certain attacks. Chests, Beds, Command Blocks, and Bedrock are already Blacklisted! Works with 'modID:blockName'.")
+    public static String[] banned_break_blocks = new String[] {
+            "minecraft:crafting_table",
+            "minecraft:furnace"
+    };
+
+    @Config.Name("Boss Enraged State Enable/Disable")
+    @Config.Comment("When enabled, when a boss is below a set health, there attack damage will increase. Set to false to disable entirely")
+    @Config.RequiresMcRestart
+    public static boolean boss_rage = true;
+
+    @Config.Name("Boss Enraged Health Factor")
+    @Config.Comment("When a boss is below this health, it will get a damage boost, 0.1 being 1% health, 1 being 100% health")
+    @Config.RequiresMcRestart
+    public static double boss_rage_health_factor = 0.15;
+
+    @Config.Name("Boss Enraged Damage Bonus")
+    @Config.Comment("When a boss is enraged, it will get a bonus of extra damage based on its base attack damage. 20% of 30 is 6, so its new attack damage will be 36")
+    @Config.RequiresMcRestart
+    public static double boss_rage_damage_percentage = 0.2;
 }

@@ -1,11 +1,7 @@
 package com.dungeon_additions.da.world;
 
-import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.util.DALogger;
-import com.dungeon_additions.da.util.ModColors;
-import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.world.blossom.WorldGenBlossomCave;
 import com.dungeon_additions.da.world.frozen_castle.WorldGenFrozenCastle;
 import com.dungeon_additions.da.world.high_city.WorldGenHighCity;
@@ -19,14 +15,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeOcean;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.IWorldGenerator;
-import org.lwjgl.Sys;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 

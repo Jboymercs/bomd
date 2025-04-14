@@ -44,6 +44,7 @@ public class ItemSwordSpear extends ToolSword implements IAnimatable {
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
         this.setMaxDamage(2031);
+       // this.reachDistanceValue = 1.0F;
     }
 
     @Override

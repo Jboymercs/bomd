@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VV",
+    "VV"
+  ],
+  "key": {
+    "V": {
+      "item": "da:farum_stone"
+    }
+  },
+  "result": {
+    "item": "da:city_brick",
+    "count": 4
+  }
+}

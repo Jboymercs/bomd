@@ -3,7 +3,7 @@
 	"parent": "block/block",
 	"textures": {
 		"0": "da:blocks/lightning_lantern",
-		"particle": "nb:blocks/lightning_lantern"
+		"particle": "da:blocks/lightning_lantern"
 	},
 	"elements": [
 		{

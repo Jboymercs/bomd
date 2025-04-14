@@ -63,7 +63,7 @@ public class MobConfig {
     @Config.Name("Nether Abberrant Attack Damage")
     @Config.Comment("Change the attack damage of the Nether Abberrant")
     @Config.RequiresMcRestart
-    public static double abberrant_damage = 8;
+    public static double abberrant_damage = 12;
 
     @Config.Name("Incendium Attack Damage")
     @Config.Comment("Change the Attack Damage of the Incendium Spirit")
@@ -80,6 +80,21 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static double incendium_armor = 16;
 
+    @Config.Name("Bareant Spirit Health")
+    @Config.Comment("Change the Health of the Bareant Spirit")
+    @Config.RequiresMcRestart
+    public static double bareant_health = 20;
+
+    @Config.Name("Bareant Spirit Attack Damage")
+    @Config.Comment("Change the Attack Damage of the Bareant Spirit")
+    @Config.RequiresMcRestart
+    public static double bareant_attack_damage = 16;
+
+    @Config.Name("Bareant Spirit Armor")
+    @Config.Comment("Change the Armor of the Bareant Spirit")
+    @Config.RequiresMcRestart
+    public static double bareant_armor = 10;
+
     @Config.Name("Knight of Burning Flame Armor")
     @Config.Comment("Change the armor value of the this boss (Knight of Burning Flame)")
     @Config.RequiresMcRestart
@@ -93,12 +108,12 @@ public class MobConfig {
     @Config.Name("Knight of Burning Flame Attack Damage")
     @Config.Comment("Change the attack damage of this boss (Knight of Burning Flame)")
     @Config.RequiresMcRestart
-    public static double burning_knight_damage = 24;
+    public static double burning_knight_damage = 26;
 
     @Config.Name("Knight of Burning Flame Health")
     @Config.Comment("Change the health of this boss (Knight of Burning Flame)")
     @Config.RequiresMcRestart
-    public static double burning_knight_health = 350;
+    public static double burning_knight_health = 390;
 
     @Config.Name("Knight of Burning Flame Block Cooldown")
     @Config.Comment("Change the timer when the Knight of Burning Flame can block attacks, take note this is only fired between cool downs of each attack in seconds")
@@ -367,7 +382,7 @@ public class MobConfig {
     @Config.Name("Ancient Wyrk Health")
     @Config.Comment("Change the health of the Ancient Wyrk")
     @Config.RequiresMcRestart
-    public static double great_wyrk_health = 250;
+    public static double great_wyrk_health = 270;
 
     @Config.Name("Ancient Wyrk Attack Damage")
     @Config.Comment("Change the attack damage of the Ancient Wyrk")
@@ -457,7 +472,7 @@ public class MobConfig {
     @Config.Name("High King of the Sky Dragon Health")
     @Config.Comment("Change the health of the High King of the Sky Dragon")
     @Config.RequiresMcRestart
-    public static double high_dragon_health = 350;
+    public static double high_dragon_health = 440;
 
     @Config.Name("High King/Dragon Attack Damage")
     @Config.Comment("Change the attack damage of the High King/Dragon")
@@ -522,7 +537,7 @@ public class MobConfig {
     @Config.Name("The High King Health")
     @Config.Comment("Change the health of the High King")
     @Config.RequiresMcRestart
-    public static double high_king_health = 330;
+    public static double high_king_health = 420;
 
     @Config.Name("The High King Armor")
     @Config.Comment("Change the armor value of the High King")
@@ -568,5 +583,10 @@ public class MobConfig {
     @Config.Comment("Change how much Health the High King heals when doing a successful Grab attack with his claw hand, this is in a percentage. Default : 0.07 or 7%")
     @Config.RequiresMcRestart
     public static double high_king_lifesteal_grab = 0.07;
+
+    @Config.Name("The High King Blood Phase")
+    @Config.Comment("When set to true, this will disable all blood related attacks from the High King. This will still keep the Phase Transition, it will just cut out the Phrases")
+    @Config.RequiresMcRestart
+    public static boolean disable_blood_attacks = false;
 
 }

@@ -30,7 +30,7 @@ public class WorldGenNetherArena extends WorldGenerator {
     @Override
     public boolean generate(World world, Random random, BlockPos pos) {
         if(canStructureSpawnAtPos(world, pos.getX() >> 4, pos.getZ() >> 4)) {
-            getStructureStart(world, pos.getX() >> 4, pos.getZ() >> 4, random).generateStructure(world, random, new StructureBoundingBox(pos.getX() - 150, pos.getZ() - 150, pos.getX() + 150, pos.getZ() + 150));
+            getStructureStart(world, pos.getX() >> 4, pos.getZ() >> 4, random).generateStructure(world, random, new StructureBoundingBox(pos.getX() - 300, pos.getZ() - 300, pos.getX() + 300, pos.getZ() + 300));
             return true;
         }
 
@@ -127,16 +127,31 @@ public class WorldGenNetherArena extends WorldGenerator {
             for (int i = 0; i < 4; i++) {
                 Rotation rotation = Rotation.values()[(rand + i) % Rotation.values().length];
                 components.clear();
-                Biome biomeEntry = Biome.REGISTRY.getObject(new ResourceLocation("nb:crimson_forest"));
+                BlockPos blockpos = posI.add(0, WorldConfig.burning_arena_y_level, 0);
 
-                if(ModIntegration.IS_NETHER_BACKPORT_LOADED && worldIn.getBiomeForCoordsBody(posI) ==  biomeEntry) {
+                if(ModIntegration.IS_NETHER_BACKPORT_LOADED) {
+                    Biome biomeEntry = Biome.REGISTRY.getObject(new ResourceLocation("nb:crimson_forest"));
+                    Biome biomeEntry_warped = Biome.REGISTRY.getObject(new ResourceLocation("nb:warped_forest"));
 
-
+                    if(worldIn.getBiomeForCoordsBody(posI) ==  biomeEntry) {
+                        //Generate Crimson Variant
+                        NetherArenaCrimson arenaCrimson = new NetherArenaCrimson(worldIn, worldIn.getSaveHandler().getStructureTemplateManager(), components);
+                        arenaCrimson.startVault(blockpos, Rotation.NONE);
+                    } else if (worldIn.getBiomeForCoordsBody(posI) == biomeEntry_warped) {
+                        //Generate Warped Variant
+                        NetherArenaWarped arenaWarped = new NetherArenaWarped(worldIn, worldIn.getSaveHandler().getStructureTemplateManager(), components);
+                        arenaWarped.startVault(blockpos, Rotation.NONE);
+                    } else {
+                        //Generate Regular Backport Compat
+                        NetherArena stronghold = new NetherArena(worldIn, worldIn.getSaveHandler().getStructureTemplateManager(), components);
+                        stronghold.startVault(blockpos, Rotation.NONE);
+                    }
+                } else {
+                    //Generate Default
+                    NetherArena stronghold = new NetherArena(worldIn, worldIn.getSaveHandler().getStructureTemplateManager(), components);
+                    stronghold.startVault(blockpos, Rotation.NONE);
                 }
 
-                BlockPos blockpos = posI.add(0, WorldConfig.burning_arena_y_level, 0);
-                NetherArena stronghold = new NetherArena(worldIn, worldIn.getSaveHandler().getStructureTemplateManager(), components);
-                stronghold.startVault(blockpos, Rotation.NONE);
                 this.updateBoundingBox();
 
                 this.valid = true;

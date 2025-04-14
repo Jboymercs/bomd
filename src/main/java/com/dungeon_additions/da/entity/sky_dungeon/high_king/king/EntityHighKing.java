@@ -383,14 +383,18 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 150);
         addEvent(()-> {
         this.setBloodied(true);
+        if(!MobConfig.disable_blood_attacks) {
             for (EntityPlayer player : this.bossInfo.getPlayers()) {
                 player.sendMessage(new TextComponentString(TextFormatting.RED + "The king is bloody..."));
             }
+        }
         }, 64);
 
         addEvent(()-> {
-            for (EntityPlayer player : this.bossInfo.getPlayers()) {
-                player.sendMessage(new TextComponentString(TextFormatting.RED + "May you be engulfed in despair."));
+            if(!MobConfig.disable_blood_attacks) {
+                for (EntityPlayer player : this.bossInfo.getPlayers()) {
+                    player.sendMessage(new TextComponentString(TextFormatting.RED + "May you be engulfed in despair."));
+                }
             }
         }, 130);
 
@@ -566,8 +570,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                     (prevAttacks != spear_thrust_attack && distance > 6) ? distance * 0.02 : 0, //Spear Thrust, can do insane damage if far from the king
                     (prevAttacks != stomp_attack && aoeCooldown < 0 && distance > 3 && distance <= 16 && healthFactor <= 0.8) ? 1/distance : 0, //Stomp Attack, can do a second one on random chance
                     (prevAttacks != holy_wave && distance > 14 && healthFactor <= 0.8) ? 1/distance : 0, //Holy Wave Attack that only activates at distance
-                    (setUpBloodyAttack && healthFactor <= 0.5) ? 1000 : (prevAttacks != bloody_fly_attack && distance <= 16 && healthFactor <= 0.5) ? 1/distance : 0, //Bloody Fly Attack
-                    (prevAttacks != bloody_grab_attack && distance > 6 && healthFactor <= 0.5) ? 1/distance : 0, //Bloody Grab Attack
+                    (setUpBloodyAttack && healthFactor <= 0.5 && !MobConfig.disable_blood_attacks) ? 1000 : (prevAttacks != bloody_fly_attack && distance <= 16 && healthFactor <= 0.5 && !MobConfig.disable_blood_attacks) ? 1/distance : 0, //Bloody Fly Attack
+                    (prevAttacks != bloody_grab_attack && distance > 6 && healthFactor <= 0.5 && !MobConfig.disable_blood_attacks) ? 1/distance : 0, //Bloody Grab Attack
                     (prevAttacks != strafe_thrust_attack && distance <= 11 && healthFactor <= 0.5) ? 1/distance : 0 //Strafe Thrust
             };
             prevAttacks = ModRand.choice(attacks, rand, weights).next();
@@ -678,7 +682,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             float damage = (float) (this.getAttack() * 1.25);
             ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.6f, 0, false);
             // Summon a Lightning Ring
-            new ActionBloodSpray().performAction(this, target);
+            if(!MobConfig.disable_blood_attacks) {
+                new ActionBloodSpray().performAction(this, target);
+            }
             this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 21);
 
@@ -702,7 +708,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             float damage = (float) (this.getAttack());
             ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.6f, 0, false);
             // Summon a Lightning Ring
+            if(!MobConfig.disable_blood_attacks) {
                 new ActionBloodSpray().performAction(this, target);
+            }
             this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 40);
 
@@ -722,7 +730,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             float damage = (float) (this.getAttack());
             ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.6f, 0, false);
             // Summon a Lightning Ring
+            if(!MobConfig.disable_blood_attacks) {
                 new ActionBloodSpray().performAction(this, target);
+            }
             this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 55);
 
@@ -742,7 +752,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             float damage = (float) (this.getAttack());
             ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.6f, 0, false);
             // Summon a Lightning Ring
+            if(!MobConfig.disable_blood_attacks) {
                 new ActionBloodSpray().performAction(this, target);
+            }
             this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 70);
 
@@ -1376,7 +1388,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
               this.playSound(SoundsHandler.HIGH_KING_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           }
           double healthFac = this.getHealth() / this.getMaxHealth();
-          if(healthFac <= 0.5 && world.rand.nextBoolean()) {
+          if(healthFac <= 0.5 && world.rand.nextBoolean() && !MobConfig.disable_blood_attacks) {
               new ActionBloodSpray().performAction(this, target);
           }
       }, 23);
@@ -1407,7 +1419,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
               this.playSound(SoundsHandler.HIGH_KING_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           }
           double healthFac = this.getHealth() / this.getMaxHealth();
-          if(healthFac <= 0.5 && world.rand.nextBoolean()) {
+          if(healthFac <= 0.5 && world.rand.nextBoolean() && !MobConfig.disable_blood_attacks) {
               new ActionBloodSpray().performAction(this, target);
           }
       }, 70);
@@ -1581,7 +1593,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
           ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.4f, 0, false);
           this.playSound(SoundsHandler.HIGH_KING_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           double healthFac = this.getHealth() / this.getMaxHealth();
-          if(healthFac <= 0.5) {
+          if(healthFac <= 0.5 && !MobConfig.disable_blood_attacks) {
               new ActionBloodSpray().performAction(this, target);
           }
       }, 34);
@@ -1918,6 +1930,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         }
         this.setDeathBoss(true);
         this.setImmovable(true);
+        this.lockLook = true;
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 40);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 80);

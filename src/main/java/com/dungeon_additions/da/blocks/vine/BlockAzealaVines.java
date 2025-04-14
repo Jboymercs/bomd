@@ -4,6 +4,7 @@ import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.IHasModel;
+import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.handlers.BOMDSoundTypes;
 import com.dungeon_additions.da.util.handlers.RegistryHandler;
 import com.dungeon_additions.da.util.mapper.AdvancedStateMap;
@@ -135,6 +136,15 @@ public class BlockAzealaVines extends BlockBush implements IGrowable, IHasModel,
         {
             growDown(worldIn, rand, pos, state, false);
         }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+            if (rand.nextInt(24) == 0) {
+
+                Main.proxy.spawnParticle(1, worldIn, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), worldIn.rand.nextFloat()/3 - worldIn.rand.nextFloat()/3, -0.04, worldIn.rand.nextFloat()/3 - worldIn.rand.nextFloat()/3, ModRand.range(40, 50));
+            }
     }
 
     // TODO: Test in Multiplayer/over a Server!

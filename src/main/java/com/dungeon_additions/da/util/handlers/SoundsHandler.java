@@ -205,6 +205,10 @@ public class SoundsHandler {
     public static SoundEvent INCENDIUM_SWING;
     public static SoundEvent INCENDIUM_HEAVY_SWING;
 
+    public static SoundEvent BAREANT_IDLE;
+    public static SoundEvent BAREANT_HURT;
+    public static SoundEvent BAREANT_DASH;
+
     public static void registerSounds() {
         //
         MOSS_BREAK = registerSound("moss.break", "block");
@@ -377,6 +381,10 @@ public class SoundsHandler {
         INCENDIUM_IDLE = registerSound("incendium.idle", "entity");
         INCENDIUM_HEAVY_SWING = registerSound("incendium.heavy_swing", "entity");
         INCENDIUM_SWING = registerSound("incendium.swing", "entity");
+        //
+        BAREANT_HURT = registerSound("bareant.hurt", "entity");
+        BAREANT_DASH = registerSound("bareant.dash", "entity");
+        BAREANT_IDLE = registerSound("bareant.idle", "entity");
     }
 
 

@@ -1611,7 +1611,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.0, 1.0, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).disablesShields().directEntity(this).build();
           float damage = (float) (this.getAttack() * 1.5);
-          ModUtils.handleAreaImpact(3.0f, (e) -> damage, this, offset, source, 0.7f, 1, false);
+          ModUtils.handleAreaImpact(3.0f, (e) -> damage, this, offset, source, 0.7f, 4, false);
           double getHealth = this.getHealth()/this.getMaxHealth();
           if(getHealth <= 0.5) {
               new ActionQuickFlameSling(flame_sling_projectiles).performAction(this, target);

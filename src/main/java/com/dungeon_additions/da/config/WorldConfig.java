@@ -280,4 +280,35 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static int gloom_max_height = 30;
 
+    @Config.Name("Farum Ore Gen")
+    @Config.Comment("Allowed Dimension for Farum to spawn in")
+    @Config.RequiresMcRestart
+    public static int[] list_of_dimensions_farum = {0};
+
+    @Config.Name("Farum Ore Gen Enabled/Disabled")
+    @Config.Comment("Change if Petrogloom can generate throughout the world. default : true")
+    @Config.RequiresMcRestart
+    public static boolean enabled_farum = true;
+
+    @Config.Name("Farum Ore Gen Spawn Chances")
+    @Config.Comment("Spawn chances of Farum")
+    @Config.RequiresMcRestart
+    public static int farum_chances = 2;
+
+    @Config.Name("Farum Ore Gen Min Height")
+    @Config.Comment("Minimum Spawn Height of Farum")
+    @Config.RequiresMcRestart
+    public static int farum_min_height = 35;
+
+    @Config.Name("Farum Ore Gen Max Height")
+    @Config.Comment("Maximum Spawn Height of Farum")
+    @Config.RequiresMcRestart
+    public static int farum_max_height = 65;
+
+    @Config.Name("Farum WhiteList Biome Types")
+    @Config.Comment("Add Biome types that ALLOW Farum to spawn in that biome, examples of tags are HOT, COLD, SPOOKY")
+    @Config.RequiresMcRestart
+    public static String[] farum_allowed_biomes = {"MOUNTAIN"
+    };
+
 }

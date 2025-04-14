@@ -18,8 +18,10 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -399,7 +401,7 @@ public class CommandLocateLich implements ICommand {
         if(lichTowerBiomeTypes == null) {
             lichTowerBiomeTypes = Lists.newArrayList();
 
-            for(String str : WorldConfig.biome_types_blossom) {
+            for(String str : WorldConfig.biome_types_blacklist_lich) {
                 try {
                     BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
 
@@ -528,7 +530,7 @@ public class CommandLocateLich implements ICommand {
         if(blossomTowerBiomeTypes == null) {
             blossomTowerBiomeTypes = Lists.newArrayList();
 
-            for(String str : WorldConfig.biome_types_blacklist_lich) {
+            for(String str : WorldConfig.biome_types_blossom) {
                 try {
                     BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
 

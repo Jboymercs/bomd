@@ -387,6 +387,11 @@ public class EntityFriendWyrk extends EntityAbstractBase implements IAnimatable,
     }
 
     @Override
+    protected boolean canDespawn() {
+        return false;
+    }
+
+    @Override
     public boolean canBeLeashedTo(EntityPlayer player)
     {
         return true;

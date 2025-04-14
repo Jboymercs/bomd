@@ -35,6 +35,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.lwjgl.Sys;
 
 import javax.annotation.Nullable;
@@ -864,7 +865,7 @@ public class ModUtils {
                                     block != ModBlocks.LICH_SOUL_STAR_BLOCK &&
                                     block != Blocks.CHEST &&
                                     block != Blocks.BED &&
-                                    !(block instanceof BlockLiquid)) {
+                                    !(block instanceof BlockLiquid) && canBlockBeBroken(block)) {
                                 if (world.getClosestPlayer(blockpos.getX(), blockpos.getY(), blockpos.getZ(), 20, false) != null) {
                                     world.destroyBlock(blockpos, false);
                                 } else {
@@ -876,6 +877,16 @@ public class ModUtils {
                 }
             }
         }
+    }
+
+
+    public static boolean canBlockBeBroken(Block block) {
+        for (String blockName : ModConfig.banned_break_blocks) {
+            if (ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockName)) == block) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

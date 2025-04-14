@@ -336,10 +336,10 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
 
     @Override
     public final boolean attackEntityFrom(DamageSource source, float amount) {
-      if(!this.isTravel()) {
-          return super.attackEntityFrom(source, amount);
+      if(this.isTravel()) {
+          return false;
       }
-        return false;
+        return super.attackEntityFrom(source, amount);
     }
 
     @Override

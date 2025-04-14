@@ -50,7 +50,7 @@ public class ModItems {
     private static final ItemArmor.ArmorMaterial DRAUGR_ARMOR = EnumHelper.addArmorMaterial("draugr", ModReference.MOD_ID + "draugr", 375, new int[]{3, 6, 8,3}, 20, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2F);
     private static final ItemArmor.ArmorMaterial LICH_HELMET = EnumHelper.addArmorMaterial("night_lich", ModReference.MOD_ID +":night_lich", 275, new int[] {3,6,8,3}, 70, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1F);
     private static final ItemArmor.ArmorMaterial WYRK_ARMOR = EnumHelper.addArmorMaterial("wyrk", ModReference.MOD_ID +":wyrk", 325, new int[] {3,6,8,3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
-    private static final ItemArmor.ArmorMaterial IMPERIAL_ARMOR = EnumHelper.addArmorMaterial("imperial", ModReference.MOD_ID +":wyrk", 670, new int[] {4,7,9,4}, 30, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
+    private static final ItemArmor.ArmorMaterial IMPERIAL_ARMOR = EnumHelper.addArmorMaterial("imperial", ModReference.MOD_ID +":imperial", 670, new int[] {4,7,9,4}, 30, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
     private static final ItemArmor.ArmorMaterial KINGS_HELMET_MAT = EnumHelper.addArmorMaterial("king", ModReference.MOD_ID +":king", 1023, new int[] {4,7,9,4}, 30, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 1.5F);
     public ModItems() {
 
