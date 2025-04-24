@@ -110,9 +110,6 @@ public class BlockIcicle extends BlockFalling implements IHasModel {
                 standByTick++;
             }
 
-            if(worldIn.isAreaLoaded(pos.add(-16, -16, -16), pos.add(16, 16, 16))) {
-                worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
-            }
         }
         if ((worldIn.isAirBlock(pos.down()) || canFallThrough(worldIn.getBlockState(pos.down()))) && pos.getY() >= 0)
         {

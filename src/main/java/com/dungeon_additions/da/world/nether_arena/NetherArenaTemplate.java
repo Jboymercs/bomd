@@ -4,6 +4,7 @@ import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.entity.EntityNetherAbberrant;
 import com.dungeon_additions.da.entity.flame_knight.EntityBareant;
+import com.dungeon_additions.da.entity.flame_knight.EntityFlameOrb;
 import com.dungeon_additions.da.entity.flame_knight.EntityIncendium;
 import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
@@ -119,6 +120,11 @@ public class NetherArenaTemplate extends ModStructureTemplate {
             } else {
                 world.setBlockToAir(pos);
             }
+        } else if (function.startsWith("orb")) {
+            world.setBlockToAir(pos);
+            EntityFlameOrb orb = new EntityFlameOrb(world);
+            orb.setPosition(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+            world.spawnEntity(orb);
         }
 
 

@@ -11,6 +11,7 @@ import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.ServerScaleUtil;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
+import com.google.common.collect.Lists;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -32,7 +33,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
+import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase implements IEntityMultiPart, IPitch {
 
@@ -51,6 +54,7 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
 
     protected static final DataParameter<Float> LOOK = EntityDataManager.createKey(EntityAbstractVoidBlossom.class, DataSerializers.FLOAT);
 
+    public List<WeakReference<Entity>> current_mobs = Lists.newArrayList();
     public boolean isHadPreviousTarget() {return this.dataManager.get(HAD_PREVIOUS_TARGET);}
     public void setHadPreviousTarget(boolean value) {this.dataManager.set(HAD_PREVIOUS_TARGET, Boolean.valueOf(value));}
 
@@ -147,12 +151,17 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
 
         double currentHealth = this.getHealth() / this.getMaxHealth();
 
+        //updates the mobs currently summoned by the blossom
+        this.clearInvalidEntities();
+
+        hitDelay--;
+
         //Cool this works!
         if(!world.isRemote) {
             List<EntityLivingBase> nearbyEntities = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable());
             if(!nearbyEntities.isEmpty()) {
                 for(EntityLivingBase base : nearbyEntities) {
-                    if(base != this && !(base instanceof EntityVoidSpike) && !(base instanceof EntityGenericWave) && !(base instanceof EntityMiniBlossom)) {
+                    if(base != this && !(base instanceof EntityVoidSpike) && !(base instanceof EntityGenericWave) && !(base instanceof EntityMiniBlossom) && hitDelay <= 0) {
                             Vec3d pos = base.getPositionVector().add(ModUtils.yVec(0.5));
                             DamageSource source = ModDamageSource.builder()
                                     .type(ModDamageSource.MOB)
@@ -161,7 +170,7 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
                             float damage = (float) (this.getAttack());
                             ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, pos, source, 0.2F, 0, false);
                             this.playSound(SoundEvents.ENCHANT_THORNS_HIT, 1.0f, 1.0f / rand.nextFloat() * 0.4f + 0.4f);
-
+                            hitDelay = 5;
                     }
                 }
             }
@@ -303,6 +312,13 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
         return false;
     }
 
+    /**
+     * This ensures that active mobs are still within a distance and are still alive to be accounted for
+     */
+    private void clearInvalidEntities() {
+        current_mobs = current_mobs.stream().filter(ref -> ref.get() != null && ref.get().getDistance(this) <= 28 && ref.get().isEntityAlive()).collect(Collectors.toList());
+    }
+
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
@@ -399,10 +415,27 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
             }
         }
         if(part == baseStem || part == flowerTopStem) {
+            if(!source.isProjectile() && !source.isExplosion() && hitDelay <= 0) {
+                //Do Thorns Damage
+                if(source.getImmediateSource() instanceof EntityLivingBase) {
+                    EntityLivingBase base = (EntityLivingBase) source.getImmediateSource();
+                    Vec3d pos = base.getPositionVector().add(ModUtils.yVec(0.5));
+                    DamageSource currSource = ModDamageSource.builder()
+                            .type(ModDamageSource.MOB)
+                            .directEntity(this)
+                            .build();
+                    float damageTwo = (float) (this.getAttack());
+                    ModUtils.handleAreaImpact(0.25f, (e) -> damageTwo, this, pos, currSource, 0.2F, 0, false);
+                    this.playSound(SoundEvents.ENCHANT_THORNS_HIT, 1.0f, 1.0f / rand.nextFloat() * 0.4f + 0.4f);
+                    hitDelay = 5;
+                }
+            }
             return this.attackEntityFrom(source, ( damage * (float) 0.75));
         }
         return false;
     }
+
+    int hitDelay = 0;
 
     @Override
     public final boolean attackEntityFrom(DamageSource source, float amount) {

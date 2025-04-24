@@ -221,7 +221,7 @@ public class CommandLocateLich implements ICommand {
         for (int i = -ModConfig.burning_flame_arena_search_radius; i < ModConfig.burning_flame_arena_search_radius + 1; i++) {
             for (int j = -ModConfig.burning_flame_arena_search_radius; j < ModConfig.burning_flame_arena_search_radius + 1; j++) {
                 boolean c = IsBurningFlameArenaAtPos(world, chunk.x + i, chunk.z + j);
-                if (c) {
+                if (c && !world.isChunkLoaded()) {
                     resultpos = new BlockPos((chunk.x + i) << 4, WorldConfig.burning_arena_y_level, (chunk.z + j) << 4);
                     break;
                 }

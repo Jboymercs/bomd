@@ -67,6 +67,11 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static double void_dagger_damage = 5;
 
+    @Config.Name("Flame Metal Fire Resistance")
+    @Config.Comment("Change if the Flame Metal Set should give Permanent Fire Resistance when all pieces are on.")
+    @Config.RequiresMcRestart
+    public static boolean flame_metal_fire_resistance = true;
+
     @Config.Name("Stormvier Rapier Damage")
     @Config.Comment("Change the damage factor of the Stormvier Rapier")
     @Config.RequiresMcRestart

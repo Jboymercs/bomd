@@ -66,6 +66,9 @@ entity.imperial_knight_friendly.name=Summoned Halbidier
 entity.burning_flame_projectile.name=Burning Flame Locator
 entity.incendium_spirit.name=Incendium Spirit
 entity.bareant.name=Bareant Spirit
+entity.volatile_spirit.name=Volactile Spirit
+entity.flame_spit.name=Volactile Flame
+entity.volatile_orb.name=Volactile Flame
 item.void_leaf.name=Void Leaf
 item.spore.name=Void Blossom Spore
 item.crystal_fruit.name=Crystal Fruit
@@ -259,6 +262,7 @@ da.within_bounds=You are within the radius of the structure, item locator resett
 da.friend_wyrk=You already have a Friendly Wyrk under your command near you!
 da.friend_halberd=There is already a Summoned Halbidier near you!
 da.sky_arrow_fail=Failed to shoot due to there not being a target aimed at!
+da.volatile_orb=It's flame is not yet satisfied, there is still fire elementals nearby.
 
 da.desc.regen_fruit=Grants brief regen and resistance
 da.desc.crafting_material=Crafting material
@@ -352,6 +356,9 @@ advancements.da.kill_dark_assassin.description=Slay a Cult of Rah Assassin
 #Kill the High King
 advancements.da.kill_high_king.title=Dethroned!
 advancements.da.kill_high_king.description=Slay the High King
+#Kill Volactile Spirit
+advancements.da.kill_volatile_spirit.title=Gatekeeper.
+advancements.da.kill_volatile_spirit.description=Slay a Volactile Spirit
 #Find Soul Star
 advancements.da.find_soul_star.title=The stars lead the way
 advancements.da.find_soul_star.description=Obtain a Soul Star

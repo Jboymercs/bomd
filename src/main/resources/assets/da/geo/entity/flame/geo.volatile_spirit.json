@@ -1,0 +1,111 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 4,
+				"visible_bounds_height": 4.5,
+				"visible_bounds_offset": [0, 1.75, 0]
+			},
+			"bones": [
+				{
+					"name": "Ground",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "Torso",
+					"parent": "Ground",
+					"pivot": [0, 26, 0],
+					"cubes": [
+						{"origin": [-7, 22, -4], "size": [14, 10, 8], "uv": [0, 31]},
+						{"origin": [-5, 10, -3], "size": [10, 12, 6], "uv": [40, 64]},
+						{"origin": [-4, 18, -4.5], "size": [8, 12, 9], "uv": [44, 31]},
+						{"origin": [-10, 25, -4.5], "size": [6, 8, 9], "uv": [28, 82]},
+						{"origin": [-2, 10, -3.5], "size": [4, 8, 1], "uv": [54, 103]},
+						{"origin": [-6, 8, -4], "size": [12, 3, 8], "uv": [0, 62]},
+						{"origin": [-6, 11, -4], "size": [12, 5, 8], "uv": [0, 49]},
+						{"origin": [-10, 33, -4.5], "size": [6, 4, 9], "uv": [80, 48]},
+						{"origin": [4, 27, -4.5], "size": [4, 4, 9], "uv": [28, 103]},
+						{"origin": [-2.5, 7.5, -4.5], "size": [5, 5, 2], "pivot": [0, 10, -4], "rotation": [0, 0, -45], "uv": [78, 108]},
+						{"origin": [-1.5, 8.5, -4.75], "size": [3, 3, 1], "pivot": [0, 10, -4], "rotation": [0, 0, 45], "uv": [110, 36]},
+						{"origin": [-9, 3, -1], "size": [18, 10, 2], "uv": [40, 52]}
+					]
+				},
+				{
+					"name": "SpinGroup",
+					"parent": "Torso",
+					"pivot": [0, 26, 0]
+				},
+				{
+					"name": "RArm",
+					"parent": "SpinGroup",
+					"pivot": [-10, 30, 0],
+					"cubes": [
+						{"origin": [-17, 26.5, -3.5], "size": [7, 7, 7], "uv": [86, 82]},
+						{"origin": [-15, 25, -3], "size": [3, 2, 6], "uv": [104, 72]},
+						{"origin": [-14.5, 7, -2.5], "size": [2, 18, 5], "uv": [64, 97]},
+						{"origin": [-14.5, 5, -2], "size": [2, 4, 4], "inflate": -0.2, "pivot": [-13.5, 7, 0], "rotation": [-45, 0, 0], "uv": [28, 73]},
+						{"origin": [-17, 33.5, -3.5], "size": [7, 6, 7], "uv": [0, 94]}
+					]
+				},
+				{
+					"name": "LArm",
+					"parent": "Torso",
+					"pivot": [10, 30, 0],
+					"cubes": [
+						{"origin": [9, 26.5, -3.5], "size": [7, 7, 7], "uv": [86, 82], "mirror": true},
+						{"origin": [9.5, 22, -3], "size": [6, 5, 6], "uv": [104, 61]},
+						{"origin": [9, 33.5, -3.5], "size": [7, 8, 7], "uv": [58, 82]},
+						{"origin": [16, 27, 0], "size": [4, 7, 0], "uv": [92, 108]},
+						{"origin": [12.5, 27, -7], "size": [0, 7, 14], "uv": [0, 73]}
+					]
+				},
+				{
+					"name": "CannonJoint",
+					"parent": "LArm",
+					"pivot": [12.5, 22, 0],
+					"cubes": [
+						{"origin": [9, 17, -3.5], "size": [7, 5, 7], "uv": [86, 96]}
+					]
+				},
+				{
+					"name": "Shield",
+					"parent": "CannonJoint",
+					"pivot": [12.5, 19, 0],
+					"cubes": [
+						{"origin": [-2.5, 19, -15], "size": [30, 1, 30], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "HeadJ",
+					"parent": "Torso",
+					"pivot": [0, 35, 0],
+					"cubes": [
+						{"origin": [-4, 33, -4], "size": [8, 10, 8], "inflate": -0.2, "uv": [72, 64]},
+						{"origin": [-4, 34.5, -4], "size": [8, 9, 8], "inflate": 0.2, "uv": [78, 31]},
+						{"origin": [-8, 39, -1], "size": [16, 2, 2], "uv": [28, 99]},
+						{"origin": [-8, 41, -1], "size": [2, 8, 2], "uv": [78, 97]},
+						{"origin": [-6, 47, -1], "size": [3, 2, 2], "uv": [100, 108]},
+						{"origin": [-12, 43, -1], "size": [4, 2, 2], "uv": [16, 107]},
+						{"origin": [-12, 45, -1], "size": [2, 3, 2], "uv": [110, 31]},
+						{"origin": [6, 41, -1], "size": [2, 8, 2], "uv": [78, 97], "mirror": true},
+						{"origin": [3, 47, -1], "size": [3, 2, 2], "uv": [100, 108], "mirror": true},
+						{"origin": [8, 43, -1], "size": [4, 2, 2], "uv": [16, 107], "mirror": true},
+						{"origin": [10, 45, -1], "size": [2, 3, 2], "uv": [110, 31], "mirror": true}
+					]
+				},
+				{
+					"name": "OrbJoint",
+					"parent": "HeadJ",
+					"pivot": [0, 48, 0],
+					"cubes": [
+						{"origin": [-2, 46, -2], "size": [4, 4, 4], "uv": [0, 107]}
+					]
+				}
+			]
+		}
+	]
+}

@@ -2,6 +2,7 @@ package com.dungeon_additions.da.entity.model;
 
 import com.dungeon_additions.da.entity.blossom.EntityVoidBlossom;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
+import com.dungeon_additions.da.entity.model.extended.GeoModelExtended;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
@@ -9,7 +10,11 @@ import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
-public class ModelMiniBlossom extends AnimatedGeoModel<EntityMiniBlossom> {
+public class ModelMiniBlossom extends GeoModelExtended<EntityMiniBlossom> {
+    public ModelMiniBlossom(ResourceLocation model, ResourceLocation textureDefault, String entityName) {
+        super(model, textureDefault, entityName);
+    }
+
     @Override
     public ResourceLocation getModelLocation(EntityMiniBlossom object) {
         return new ResourceLocation(ModReference.MOD_ID, "geo/entity/blossom/geo.miniblossom.json");

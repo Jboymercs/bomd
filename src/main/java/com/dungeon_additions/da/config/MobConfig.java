@@ -40,6 +40,11 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static double blossom_attack_damange = 12;
 
+    @Config.Name("Void Blossom Max Minions")
+    @Config.Comment("Change how many Mini Void Blossoms can be active for the Void Blossom. Default: 2")
+    @Config.RequiresMcRestart
+    public static double blossom_max_minion_count = 2;
+
     @Config.Name("Void Blossom Spikes Lag Reducer")
     @Config.Comment("When enabled, the Void spikes will only spawn within 20 blocks of all players, to help reduce lag when being spawned")
     @Config.RequiresMcRestart
@@ -95,6 +100,41 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static double bareant_armor = 10;
 
+    @Config.Name("Volactile Spirit Inspired Damage Multiplier")
+    @Config.Comment("When Volactile raises its sword and buffs itself, it does base damage times this multiplier for melee attacks")
+    @Config.RequiresMcRestart
+    public static double volactile_inspired_multiplier = 1.4;
+
+    @Config.Name("Volactile Spirit Health")
+    @Config.Comment("Change the Health of the Volactile Spirit")
+    @Config.RequiresMcRestart
+    public static double volactile_spirit_health = 210;
+
+    @Config.Name("Volactile Armor")
+    @Config.Comment("Change the Armor of the Volactile Spirit")
+    @Config.RequiresMcRestart
+    public static double volactile_armor = 16;
+
+    @Config.Name("Volactile Armor Toughness")
+    @Config.Comment("Change the Armor Toughness of the Volactile Spirit")
+    @Config.RequiresMcRestart
+    public static double volactile_armor_toughness = 4;
+
+    @Config.Name("Volactile Attack Damage")
+    @Config.Comment("Change the Attack Damage of the Volactile Spirit")
+    @Config.RequiresMcRestart
+    public static double volactile_attack_damage = 22;
+
+    @Config.Name("Volactile Projectile Resistance")
+    @Config.Comment("When a projectile is fired at the Volactile Spirit, it will only take x percentage of the damage")
+    @Config.RequiresMcRestart
+    public static double volactile_projectile_resistance = 0.6;
+
+    @Config.Name("Volactile Summoning Radius")
+    @Config.Comment("Change how far the Flame orb to summon the Volactile Spirit detects for any dungeon mobs. if this check finds mobs, it will not summon the mini-boss")
+    @Config.RequiresMcRestart
+    public static double volactile_ritual_radius = 35;
+
     @Config.Name("Knight of Burning Flame Armor")
     @Config.Comment("Change the armor value of the this boss (Knight of Burning Flame)")
     @Config.RequiresMcRestart
@@ -124,6 +164,11 @@ public class MobConfig {
     @Config.Comment("Change the amount of health healed when the Knight of Burning Flame uses a health potion. this is measured in X / Maxhealth. so .07 would be 7% of it's max health")
     @Config.RequiresMcRestart
     public static double burning_knight_heal_amount = 0.07;
+
+    @Config.Name("Knight of Burning Flame Projectile Resistance")
+    @Config.Comment("When the Knight of Burning Flame is hit with a projectile, it will take x percentage of the projectiles damage")
+    @Config.RequiresMcRestart
+    public static double burning_knight_projectile_resistance = 0.75;
 
     @Config.Name("Knight of Burning Flame Heal Action")
     @Config.Comment("Change if the Knight of Burning Flame can use healing potions, default: true")
@@ -243,7 +288,7 @@ public class MobConfig {
     @Config.Name("Night Lich Health")
     @Config.Comment("Change the Health of the Night Lich")
     @Config.RequiresMcRestart
-    public static double night_lich_health = 450;
+    public static double night_lich_health = 470;
 
     @Config.Name("Night Lich Attack Damage")
     @Config.Comment("Change the Attack Damage of the Night Lich")

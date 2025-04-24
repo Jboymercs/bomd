@@ -21,6 +21,12 @@ public class EntityAIHalberdHurtByTarget extends EntityAITarget {
     {
         EntityLivingBase entitylivingbase = this.tameable.getOwner();
 
+        if(entitylivingbase instanceof EntityFriendWyrk) {
+            if(((EntityFriendWyrk) entitylivingbase).getOwner() == this.tameable.getOwner()) {
+                return false;
+            }
+        }
+
         if (entitylivingbase == null)
         {
             return false;

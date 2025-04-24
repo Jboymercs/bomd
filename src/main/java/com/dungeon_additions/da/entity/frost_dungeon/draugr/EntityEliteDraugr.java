@@ -105,12 +105,14 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
         super(worldIn, x, y, z);
         this.setSize(1.75F, 3.95F);
         this.iAmBossMob = true;
+        this.experienceValue = 65;
     }
 
     public EntityEliteDraugr(World worldIn) {
         super(worldIn);
         this.setSize(1.75F, 3.95F);
         this.iAmBossMob = true;
+        this.experienceValue = 65;
     }
 
     private int longDistanceCooldown = 150;

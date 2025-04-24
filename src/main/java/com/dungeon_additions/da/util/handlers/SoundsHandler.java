@@ -209,6 +209,15 @@ public class SoundsHandler {
     public static SoundEvent BAREANT_HURT;
     public static SoundEvent BAREANT_DASH;
 
+    public static SoundEvent VOLACTILE_SHIELD_USE;
+    public static SoundEvent VOLACTILE_SHIELD_BLOCK;
+    public static SoundEvent VOLACTILE_SMASH;
+    public static SoundEvent VOLACTILE_SHOOT_CANNON;
+    public static SoundEvent VOLACTILE_HURT;
+    public static SoundEvent VOLACTILE_IDLE;
+    public static SoundEvent VOLACTILE_CAST;
+    public static SoundEvent VOLATILE_ORB_FAIL;
+
     public static void registerSounds() {
         //
         MOSS_BREAK = registerSound("moss.break", "block");
@@ -385,6 +394,15 @@ public class SoundsHandler {
         BAREANT_HURT = registerSound("bareant.hurt", "entity");
         BAREANT_DASH = registerSound("bareant.dash", "entity");
         BAREANT_IDLE = registerSound("bareant.idle", "entity");
+        //
+        VOLACTILE_SHIELD_BLOCK = registerSound("volatile.block", "entity");
+        VOLACTILE_SHIELD_USE = registerSound("volatile.shield_use", "entity");
+        VOLACTILE_SMASH = registerSound("volatile.smash", "entity");
+        VOLACTILE_HURT = registerSound("volatile.hurt", "entity");
+        VOLACTILE_IDLE = registerSound("volatile.idle", "entity");
+        VOLACTILE_CAST = registerSound("volatile.cast", "entity");
+        VOLACTILE_SHOOT_CANNON = registerSound("volatile.cannon", "entity");
+        VOLATILE_ORB_FAIL = registerSound("volatile.orb_fail", "entity");
     }
 
 

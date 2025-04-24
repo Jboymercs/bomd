@@ -36,6 +36,7 @@ import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
@@ -45,13 +46,14 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.core.processor.IBone;
 
 import javax.annotation.Nonnull;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAnimatable, IAttack {
+public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAnimatable, IAttack, IAnimationTickable {
 
     //TODO
     //Finish Azeala's with Particle Effects
@@ -177,7 +179,7 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
                     (distance < 25 && prevAttacks != spikeWave) ? distance * 0.02 : 0, //Spike Wave
                     (distance < 25 && prevAttacks != leafAttack && HealthChange < 0.5) ? distance * 0.02 : 0, // Leaf Attack only active at 50% below Health
                     (distance < 25 && prevAttacks != sporeBomb && HealthChange < 0.75) ? distance * 0.02 : 0, //Spore Bomb Attack active only at 75% below Health
-                    (distance < 25 && prevAttacks != summonMinion && HealthChange < 0.6 && minionCooldown < 0 && MobConfig.enable_minions) ? distance * 0.02 : 0 //Minion Spawning
+                    (distance < 25 && prevAttacks != summonMinion && HealthChange < 0.6 && minionCooldown < 0 && MobConfig.enable_minions && this.current_mobs.size() <= MobConfig.blossom_max_minion_count) ? distance * 0.02 : 0 //Minion Spawning
                                 //maybe a minion summon attack
             };
             prevAttacks = ModRand.choice(attacksMelee, rand, weights).next();
@@ -196,6 +198,7 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
             EntityMiniBlossom blossomMinion = new EntityMiniBlossom(this.world);
             blossomMinion.setPosition(pos.x, pos.y, pos.z);
             world.spawnEntity(blossomMinion);
+            this.current_mobs.add(new WeakReference<>(blossomMinion));
             minionCooldown = 400;
         }, 20);
         addEvent(()-> this.setFightMode(false), 40);
@@ -469,4 +472,13 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
         super.onDeath(cause);
     }
 
+    @Override
+    public void tick() {
+
+    }
+
+    @Override
+    public int tickTimer() {
+        return this.ticksExisted;
+    }
 }

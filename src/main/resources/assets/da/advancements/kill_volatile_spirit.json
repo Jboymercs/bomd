@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:incendium_core"
+    },
+    "title": {
+      "translate": "advancements.da.kill_volatile_spirit.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_volatile_spirit.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "da:kill_abberrant",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:volatile_spirit"
+        }
+      }
+    }
+  }
+}

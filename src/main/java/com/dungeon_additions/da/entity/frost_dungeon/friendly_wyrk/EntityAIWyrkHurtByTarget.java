@@ -2,6 +2,7 @@ package com.dungeon_additions.da.entity.frost_dungeon.friendly_wyrk;
 
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
+import com.dungeon_additions.da.entity.sky_dungeon.friendly.EntityFriendlyHalberd;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
 
@@ -20,6 +21,12 @@ public class EntityAIWyrkHurtByTarget extends EntityAITarget {
     public boolean shouldExecute()
     {
         EntityLivingBase entitylivingbase = this.tameable.getOwner();
+
+        if(entitylivingbase instanceof EntityFriendlyHalberd) {
+            if(((EntityFriendlyHalberd) entitylivingbase).getOwner() == this.tameable.getOwner()) {
+                return false;
+            }
+        }
 
         if (entitylivingbase == null)
         {

@@ -434,7 +434,7 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
                     Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.1, 0)));
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                     float damage = (float) (this.getAttack());
-                    ModUtils.handleAreaImpact(2.25f, (e) -> damage, this, offset, source, 0.6f, 5, false);
+                    ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.6f, 5, false);
                 }, i);
             }
             this.playSound(SoundsHandler.INCENDIUM_HEAVY_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));

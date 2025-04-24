@@ -11,10 +11,7 @@ import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityShadowHand;
-import com.dungeon_additions.da.entity.flame_knight.EntityBareant;
-import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
-import com.dungeon_additions.da.entity.flame_knight.EntityIncendium;
-import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
+import com.dungeon_additions.da.entity.flame_knight.*;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileTrackingFlame;
@@ -34,7 +31,9 @@ import com.dungeon_additions.da.entity.render.*;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkAssassin;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderShadowHand;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderBareant;
+import com.dungeon_additions.da.entity.render.flame_dungeon.RenderFlameOrb;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderIncendium;
+import com.dungeon_additions.da.entity.render.flame_dungeon.RenderVolatileSpirit;
 import com.dungeon_additions.da.entity.render.frost_dungeon.*;
 import com.dungeon_additions.da.entity.render.lich.RenderLichSpawn;
 import com.dungeon_additions.da.entity.render.lich.RenderLichStaff;
@@ -129,6 +128,7 @@ public class RenderHandler {
         registerProjectileRenderer(EntitySkyDungeonLocator.class, ModItems.SKY_LOCATOR_PROJECTILE);
         registerProjectileRenderer3DModel(EntityKingHolyWave.class, ModItems.HOLY_WAVE_PROJ);
         registerProjectileRenderer(ProjectileKingBlood.class, ModItems.BLOOD_BALL_PROJ);
+        registerProjectileRenderer(ProjectileFlameSpit.class, ModItems.INVISISBLE_ITEM);
     }
 
     //Handles Rendering
@@ -232,6 +232,10 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityIncendium.class, RenderIncendium::new);
         //Bareant
         RenderingRegistry.registerEntityRenderingHandler(EntityBareant.class, RenderBareant::new);
+        //Volatile Spirit
+        RenderingRegistry.registerEntityRenderingHandler(EntityVolatileSpirit.class, RenderVolatileSpirit::new);
+        //Volatile Flame Orb
+        RenderingRegistry.registerEntityRenderingHandler(EntityFlameOrb.class, RenderFlameOrb::new);
     }
 
 }

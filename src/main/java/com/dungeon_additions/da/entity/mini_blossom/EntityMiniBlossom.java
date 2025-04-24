@@ -32,6 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
@@ -44,7 +45,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable, IAttack {
+public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable, IAttack, IAnimationTickable {
 
     private final String ANIM_IDLE = "idle";
     private final String ANIM_TRAVEL = "travel";
@@ -123,11 +124,6 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
         this.setBurrow(nbt.getBoolean("Burrow"));
         this.setTravel(nbt.getBoolean("Travel"));
         super.readEntityFromNBT(nbt);
-    }
-
-    @Override
-    public boolean canBeCollidedWith() {
-        return false;
     }
 
     @Override
@@ -350,5 +346,15 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
     @Override
     public AnimationFactory getFactory() {
         return factory;
+    }
+
+    @Override
+    public void tick() {
+
+    }
+
+    @Override
+    public int tickTimer() {
+        return this.ticksExisted;
     }
 }

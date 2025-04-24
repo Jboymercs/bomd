@@ -36,13 +36,17 @@ public class EventWearFlameArmor {
         EntityLivingBase base = event.getEntityLiving();
 
         if(!base.world.isRemote) {
-            if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.FLAME_HELMET && base.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.FLAME_CHESTPLATE &&
-            base.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.FLAME_LEGGINGS && base.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.FLAME_BOOTS) {
-                if(base.ticksExisted % 40 == 0) {
-                    base.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 60, 0, true, false));
+            //Flame Metal Armor
+            if(ModConfig.flame_metal_fire_resistance) {
+                if (base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.FLAME_HELMET && base.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.FLAME_CHESTPLATE &&
+                        base.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.FLAME_LEGGINGS && base.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.FLAME_BOOTS) {
+                    if (base.ticksExisted % 40 == 0) {
+                        base.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 60, 0, true, false));
+                    }
                 }
             }
 
+            //Night Lich Helmet
             if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.NIGHT_LICH_HELMET) {
                 if(base.ticksExisted % 40 == 0 && base.isPotionActive(MobEffects.POISON)) {
                     base.removePotionEffect(MobEffects.POISON);

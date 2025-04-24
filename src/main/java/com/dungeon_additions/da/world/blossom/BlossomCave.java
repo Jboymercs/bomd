@@ -63,9 +63,9 @@ public class BlossomCave {
     }
 
     private boolean generateArenaDD(BlossomTemplate parent, BlockPos pos, Rotation rot) {
-        String[] arena_2 = {"dd/arena_2","dd/arena_2_b"};
-        String[] arena_3 = {"dd/arena_3","dd/arena_3_b"};
-        String[] arena_4 = {"dd/arena_4","dd/arena_4_b"};
+        String[] arena_2 = {"dd/arena_2","dd/arena_2_b","dd/arena_2_c"};
+        String[] arena_3 = {"dd/arena_3","dd/arena_3_b","dd/arena_3_c"};
+        String[] arena_4 = {"dd/arena_4","dd/arena_4_b","dd/arena_4_c"};
         BlossomTemplate arenaTwo = addAdjustedPiece(parent, BlockPos.ORIGIN.add(0,0,0), ModRand.choice(arena_2), rot);
         BlossomTemplate arenaThree = addAdjustedPiece(parent, BlockPos.ORIGIN.add(-26,0,26), ModRand.choice(arena_3), rot);
         BlossomTemplate arenaFour = addAdjustedPiece(parent, BlockPos.ORIGIN.add(0,0,26), ModRand.choice(arena_4), rot);

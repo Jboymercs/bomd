@@ -1725,6 +1725,94 @@
       }
     ]
   },
+  "entity.volatile.shield_use": {
+    "category": "entity",
+    "subtitle": "entity.volactile.shield_use",
+    "sounds": [
+      {
+        "name": "da:entity/volatile/shield_use",
+        "steam": false
+      }
+    ]
+  },
+  "entity.volatile.block": {
+    "category": "entity",
+    "subtitle": "entity.volactile.block",
+    "sounds": [
+      {
+        "name": "da:entity/volatile/block",
+        "steam": false
+      }
+    ]
+  },
+  "entity.volatile.smash": {
+    "category": "entity",
+    "subtitle": "entity.volactile.smash",
+    "sounds": [
+      {
+        "name": "da:entity/volatile/smash",
+        "steam": false
+      }
+    ]
+  },
+  "entity.volatile.cast": {
+    "category": "entity",
+    "subtitle": "entity.volactile.cast",
+    "sounds": [
+      {
+        "name": "da:entity/volatile/cast",
+        "steam": false
+      }
+    ]
+  },
+  "entity.volatile.cannon": {
+    "category": "entity",
+    "subtitle": "entity.volactile.cannon",
+    "sounds": [
+      {
+        "name": "da:entity/volatile/cannon",
+        "steam": false
+      }
+    ]
+  },
+  "entity.volatile.orb_fail": {
+    "category": "entity",
+    "subtitle": "entity.volactile.orb_fail",
+    "sounds": [
+      {
+        "name": "da:entity/volatile/orb_fail",
+        "steam": false
+      }
+    ]
+  },
+  "entity.volatile.idle": {
+    "category": "entity",
+    "subtitle": "entity.volactile.idle",
+    "sounds": [
+      {
+        "name": "da:entity/volatile/idle1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/volatile/idle2",
+        "steam": false
+      }
+    ]
+  },
+  "entity.volatile.hurt": {
+    "category": "entity",
+    "subtitle": "entity.volactile.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/volatile/hurt1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/volatile/hurt2",
+        "steam": false
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",

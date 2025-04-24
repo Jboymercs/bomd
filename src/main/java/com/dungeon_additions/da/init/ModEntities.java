@@ -8,10 +8,7 @@ import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityShadowHand;
-import com.dungeon_additions.da.entity.flame_knight.EntityBareant;
-import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
-import com.dungeon_additions.da.entity.flame_knight.EntityIncendium;
-import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
+import com.dungeon_additions.da.entity.flame_knight.*;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileTrackingFlame;
@@ -160,6 +157,9 @@ public class ModEntities {
             registerEntity("burning_flame_projectile", EntityBurningFlameArenaLocator.class, ENTITY_START_ID++, 100);
             registerEntityWithID("incendium_spirit", EntityIncendium.class, ENTITY_START_ID++, 110, incendium_spirit);
             registerEntityWithID("bareant", EntityBareant.class, ENTITY_START_ID++, 110, night_lich);
+            registerEntityWithID("volatile_spirit", EntityVolatileSpirit.class, ENTITY_START_ID++, 110, night_lich);
+            registerEntity("flame_spit", ProjectileFlameSpit.class, ENTITY_START_ID++, 110);
+            registerEntity("volatile_orb", EntityFlameOrb.class, ENTITY_START_ID++, 110);
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
         registerTileEntity(TileEntityMegaStructure.class, "mega_structure");

@@ -143,7 +143,7 @@ public class WorldGenNetherArena extends WorldGenerator {
                         arenaWarped.startVault(blockpos, Rotation.NONE);
                     } else {
                         //Generate Regular Backport Compat
-                        NetherArena stronghold = new NetherArena(worldIn, worldIn.getSaveHandler().getStructureTemplateManager(), components);
+                        NetherArenaNBDefault stronghold = new NetherArenaNBDefault(worldIn, worldIn.getSaveHandler().getStructureTemplateManager(), components);
                         stronghold.startVault(blockpos, Rotation.NONE);
                     }
                 } else {
