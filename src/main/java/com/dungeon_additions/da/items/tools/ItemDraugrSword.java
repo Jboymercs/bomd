@@ -1,11 +1,14 @@
 package com.dungeon_additions.da.items.tools;
 
+import com.dungeon_additions.da.config.ModConfig;
+import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
@@ -35,7 +38,11 @@ public class ItemDraugrSword extends ToolSword{
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
         if (attacker.world.isRemote) return false;
-        target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 160, 0));
+        int damage = 160;
+        if(attacker instanceof EntityPlayer) {
+         damage = ((EntityPlayer)attacker).getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET ? (int) (160 * ModConfig.incendium_helmet_multipler): 160;
+        }
+        target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, damage, 0));
         stack.damageItem(1, attacker);
         return true;
     }

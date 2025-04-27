@@ -21,7 +21,7 @@
         {
           "type": "item",
           "name": "minecraft:fire_charge",
-          "weight": 7,
+          "weight": 2,
           "functions": [
             {
               "function": "set_count",

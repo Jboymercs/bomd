@@ -69,6 +69,7 @@ entity.bareant.name=Bareant Spirit
 entity.volatile_spirit.name=Volactile Spirit
 entity.flame_spit.name=Volactile Flame
 entity.volatile_orb.name=Volactile Flame
+entity.flame_blade_proj.name=Flame Blade Projectile
 item.void_leaf.name=Void Leaf
 item.spore.name=Void Blossom Spore
 item.crystal_fruit.name=Crystal Fruit
@@ -119,6 +120,7 @@ item.sword_spear_blood.name=Bloodied Sword Spear
 item.king_helmet.name=Crown of the Cursed
 da.desc.draugr_shield_name=Frostborn Shield
 da.desc.dragon_shield_name=Dragon Scourage Shield
+da.desc.flame_shield_name=Incendium Shield
 item.frost_locator.name=Frozen Soul Star
 item.wyrk_helmet.name=Ancient Wyrk Helmet
 item.wyrk_boots.name=Ancient Wyrk Boots
@@ -155,6 +157,13 @@ item.king_aid.name=King's Aid
 item.dragon_bow.name=Dragon Scourage Bow
 item.flame_locator.name=Spark of Ambition
 item.incendium_core.name=Incendium Core
+item.incendium_helmet.name=Incendium Helmet
+item.incendium_leggings.name=Incendium Leggings
+item.flame_blade.name=Ambitious Flame Blade
+item.sealed_flame.name=Sealed Flame Bottle
+item.volatile_orb.name=Volactile Pearl
+item.proj_flame_blade.name=Flame Blade Projectile
+item.flame_shield.name=Incendium Shield
 tile.spore_blossom.name=Void Blossom
 tile.moss_block.name=Moss Block
 tile.moss_carpet.name=Moss Carpet
@@ -284,7 +293,7 @@ da.desc.levitation_block_desc=Gives Levitation to nearby mobs if not powered, wh
 da.desc.dungeon_frost_key_desc=Used in the giant room in the Frozen Castle
 da.desc.champion_axe_desc=You deal more damage the lower your health is, jumping crits negate this effect.
 da.desc.draugr_sword_desc=Applies slowness to creatures hit by this sword.
-da.desc.draugr_shield_desc=Once used by those that conquered the oceans.
+da.desc.draugr_shield_desc=Blocking attacks charges the shield, when you've charged it 5 times. Sneak and block to unleash a ram attack.
 da.desc.dragon_shield_desc=Gives a nice Health Bonus when in offhand.
 da.desc.draugr_armor_desc=Full set allows for a chance of strength to be given when taking damage, increasing that chance the lower your health is.
 da.desc.wyrk_helmet_desc=Grants Resistance to Slowness. Full set bonus grants a chance of regeneration the lower your health is.
@@ -311,6 +320,11 @@ da.desc.king_claw_desc=Right clicking releases a fan of ground projectiles, addi
 da.desc.king_aid_desc=Right clicking will summon a Friendly Halbidier to aid you.
 da.desc.dragon_bow_desc=Uses Golden Tracking Arrows only, Does a lot of damage but has a long cooldown after use.
 da.desc.flame_locator_desc=I wonder where in the Nether this is taking you?
+da.desc.incendium_helmet_desc=Boosts swords ability damage and effects. Full set bonus grants +4 Max Health.
+da.desc.incendium_leggings_desc=Grants Speed Briefly when using a Shield. Full set bonus grants +4 Max Health.
+da.desc.flame_blade_desc=Right Clicking will release a Flame Blade before you that can hit multiple entities.
+da.desc.sealed_flame_desc=Right Clicking will cast a flame wave in front of you.
+da.desc.flame_shield_desc=Blocking attacks charges the shield, upon sneaking and blocking you will shoot flames from your shield.
 death.attack.da:maelstrom=%1$s succumbed to the void
 death.attack.da:mobMaelstrom=%1$s was killed by a %2$s
 death.attack.da:playerMaelstrom=%1$s was killed by %2$s
@@ -380,6 +394,21 @@ advancements.da.find_gloom_stone.description=Mine Petrogloom
 #Craft Void Lily
 advancements.da.craft_void_lily.title=Plant Problem
 advancements.da.craft_void_lily.description=Craft a Void Lily
+#Craft Flame Locator
+advancements.da.craft_flame_locator.title=The path that leads to flame.
+advancements.da.craft_flame_locator.description=Craft the Spark of Ambition
+#Craft Incendium Armor
+advancements.da.craft_incendium_armor.title=From Ash to Fire!
+advancements.da.craft_incendium_armor.description=Craft both pieces of Incendium Armor
+#Craft Ambitious Flame Blade
+advancements.da.craft_flame_blade.title=Shredder Incarnate
+advancements.da.craft_flame_blade.description=Craft the Ambitious Flame Blade
+#Craft Incendium Shield
+advancements.da.craft_flame_shield.title=Flame Wall.
+advancements.da.craft_flame_shield.description=Craft the Incendium Shield
+#Sealed Flame Bottle
+advancements.da.craft_sealed_flame.title=Bottle O' Flame
+advancements.da.craft_sealed_flame.description=Craft a Sealed Flame Bottle
 #Craft Flame Metal
 advancements.da.craft_flame_metal.title=The Flame Burns Again!
 advancements.da.craft_flame_metal.description=Craft the Flame Metal armor set

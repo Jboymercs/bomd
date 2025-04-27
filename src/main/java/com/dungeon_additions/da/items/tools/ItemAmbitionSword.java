@@ -48,13 +48,16 @@ public class ItemAmbitionSword extends ToolSword{
     {
         ItemStack stack = player.getHeldItem(hand);
         int SwordCoolDown = ModConfig.sword_of_ambition_cooldown * 20;
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET) {
 
+        }
+        float damage = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET ? (float) (9 * ModConfig.incendium_helmet_multipler): 9;
         if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
             worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.B_KNIGHT_STOMP, SoundCategory.NEUTRAL, 1.0f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
             ModUtils.circleCallback(1, 8, (pos)-> {
                 pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
                 int y = getSurfaceHeight(worldIn, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
-                EntityMoveTile spike = new EntityMoveTile(worldIn, player, 9F);
+                EntityMoveTile spike = new EntityMoveTile(worldIn, player, damage);
                 spike.setPosition(pos.x, y + 1, pos.z);
                 BlockPos posToo = new BlockPos(pos.x, y, pos.z);
                 spike.setOrigin(posToo, 5, posToo.getX() + 0.5D, posToo.getZ() + 0.5D);
@@ -65,7 +68,7 @@ public class ItemAmbitionSword extends ToolSword{
             ModUtils.circleCallback(2, 16, (pos)-> {
                 pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
                 int y = getSurfaceHeight(worldIn, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
-                EntityMoveTile spike = new EntityMoveTile(worldIn, player , 9F);
+                EntityMoveTile spike = new EntityMoveTile(worldIn, player , damage);
                 spike.setPosition(pos.x, y + 1, pos.z);
                 BlockPos posToo = new BlockPos(pos.x, y, pos.z);
                 spike.setOrigin(posToo, 10, posToo.getX() + 0.5D, posToo.getZ() + 0.5D);
@@ -76,7 +79,7 @@ public class ItemAmbitionSword extends ToolSword{
             ModUtils.circleCallback(3, 24, (pos)-> {
                 pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
                 int y = getSurfaceHeight(worldIn, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
-                EntityMoveTile spike = new EntityMoveTile(worldIn, player , 9F);
+                EntityMoveTile spike = new EntityMoveTile(worldIn, player , damage);
                 spike.setPosition(pos.x, y + 1, pos.z);
                 BlockPos posToo = new BlockPos(pos.x, y, pos.z);
                 spike.setOrigin(posToo, 15, posToo.getX() + 0.5D, posToo.getZ() + 0.5D);
@@ -87,7 +90,7 @@ public class ItemAmbitionSword extends ToolSword{
             ModUtils.circleCallback(4, 32, (pos)-> {
                 pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
                 int y = getSurfaceHeight(worldIn, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
-                EntityMoveTile spike = new EntityMoveTile(worldIn, player , 9F);
+                EntityMoveTile spike = new EntityMoveTile(worldIn, player , damage);
                 spike.setPosition(pos.x, y + 1, pos.z);
                 BlockPos posToo = new BlockPos(pos.x, y, pos.z);
                 spike.setOrigin(posToo, 20, posToo.getX() + 0.5D, posToo.getZ() + 0.5D);
@@ -101,7 +104,7 @@ public class ItemAmbitionSword extends ToolSword{
                 ModUtils.circleCallback(5, 40, (pos)-> {
                     pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
                     int y = getSurfaceHeight(worldIn, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
-                    EntityMoveTile spike = new EntityMoveTile(worldIn, player , 9F);
+                    EntityMoveTile spike = new EntityMoveTile(worldIn, player , damage);
                     spike.setPosition(pos.x, y + 1, pos.z);
                     BlockPos posToo = new BlockPos(pos.x, y, pos.z);
                     spike.setOrigin(posToo, 25, posToo.getX() + 0.5D, posToo.getZ() + 0.5D);
@@ -112,7 +115,7 @@ public class ItemAmbitionSword extends ToolSword{
                 ModUtils.circleCallback(6, 48, (pos)-> {
                     pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
                     int y = getSurfaceHeight(worldIn, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
-                    EntityMoveTile spike = new EntityMoveTile(worldIn, player , 9F);
+                    EntityMoveTile spike = new EntityMoveTile(worldIn, player , damage);
                     spike.setPosition(pos.x, y + 1, pos.z);
                     BlockPos posToo = new BlockPos(pos.x, y, pos.z);
                     spike.setOrigin(posToo, 30, posToo.getX() + 0.5D, posToo.getZ() + 0.5D);
@@ -123,7 +126,7 @@ public class ItemAmbitionSword extends ToolSword{
                 ModUtils.circleCallback(7, 56, (pos)-> {
                     pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
                     int y = getSurfaceHeight(worldIn, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
-                    EntityMoveTile spike = new EntityMoveTile(worldIn, player , 9F);
+                    EntityMoveTile spike = new EntityMoveTile(worldIn, player , damage);
                     spike.setPosition(pos.x, y + 1, pos.z);
                     BlockPos posToo = new BlockPos(pos.x, y, pos.z);
                     spike.setOrigin(posToo, 35, posToo.getX() + 0.5D, posToo.getZ() + 0.5D);

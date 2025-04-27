@@ -1796,6 +1796,10 @@
       {
         "name": "da:entity/volatile/idle2",
         "steam": false
+      },
+      {
+        "name": "da:entity/volatile/idle3",
+        "steam": false
       }
     ]
   },
@@ -1809,6 +1813,34 @@
       },
       {
         "name": "da:entity/volatile/hurt2",
+        "steam": false
+      }
+    ]
+  },
+  "entity.aberrant.hurt": {
+    "category": "entity",
+    "subtitle": "entity.aberrant.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/aberrant/hurt1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/aberrant/hurt2",
+        "steam": false
+      }
+    ]
+  },
+  "entity.aberrant.idle": {
+    "category": "entity",
+    "subtitle": "entity.aberrant.idle",
+    "sounds": [
+      {
+        "name": "da:entity/aberrant/idle1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/aberrant/idle2",
         "steam": false
       }
     ]

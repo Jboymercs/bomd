@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:flame_shield"
+    },
+    "title": {
+      "translate": "advancements.da.craft_flame_shield.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_flame_shield.description"
+    }
+  },
+  "parent": "da:kill_volatile_spirit",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:flame_shield"
+          }
+        ]
+      }
+    }
+  }
+}

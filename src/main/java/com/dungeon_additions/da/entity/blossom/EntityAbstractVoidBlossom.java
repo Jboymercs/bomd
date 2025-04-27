@@ -153,7 +153,6 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
 
         //updates the mobs currently summoned by the blossom
         this.clearInvalidEntities();
-
         hitDelay--;
 
         //Cool this works!
@@ -316,7 +315,7 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
      * This ensures that active mobs are still within a distance and are still alive to be accounted for
      */
     private void clearInvalidEntities() {
-        current_mobs = current_mobs.stream().filter(ref -> ref.get() != null && ref.get().getDistance(this) <= 28 && ref.get().isEntityAlive()).collect(Collectors.toList());
+        current_mobs = current_mobs.stream().filter(ref -> ref.get() != null && ref.get().getDistance(this) <= 35 && ref.get().isEntityAlive()).collect(Collectors.toList());
     }
 
     @Override

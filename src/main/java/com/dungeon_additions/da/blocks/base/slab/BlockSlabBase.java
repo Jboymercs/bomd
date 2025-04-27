@@ -35,11 +35,7 @@ public abstract class BlockSlabBase extends BlockSlab implements IHasModel {
 
         ModBlocks.BLOCKS.add(this);
     }
-    @Override
-    public Item getItemDropped(IBlockState state, Random Rand, int fortune) {
-        return Item.getItemFromBlock(half);
 
-    }
     @Override
     public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
         return new ItemStack(half);

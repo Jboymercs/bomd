@@ -11,7 +11,7 @@
     },
     "frame": "challenge"
   },
-  "parent": "da:kill_abberrant",
+  "parent": "da:root",
   "criteria": {
     "Lamentor": {
       "trigger": "minecraft:player_killed_entity",

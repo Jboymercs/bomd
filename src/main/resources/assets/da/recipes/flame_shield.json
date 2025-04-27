@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV",
+    "XRX",
+    " V "
+  ],
+  "key": {
+    "X": {
+      "item": "da:abberrant_eye"
+    },
+    "V": {
+      "item": "da:incendium_core"
+    },
+    "R": {
+      "item": "da:volatile_orb"
+    }
+  },
+  "result": {
+    "item": "da:flame_shield"
+  }
+}

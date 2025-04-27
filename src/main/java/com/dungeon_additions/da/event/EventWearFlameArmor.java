@@ -5,24 +5,32 @@ import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBolt;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.items.shield.BOMDShieldItem;
 import com.dungeon_additions.da.util.ModUtils;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemShield;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber
 public class EventWearFlameArmor {
@@ -30,6 +38,8 @@ public class EventWearFlameArmor {
     public Item[] itemsStored;
 
     public static double cooldownDelegation = 5.0;
+
+    public static final UUID INCENDIUM_HEALTH_MODIFIER = UUID.fromString("0483aa4a-af8d-36a2-8693-22bec9caa265");
 
     @SubscribeEvent
     public static void onEquipArmor(LivingEvent.LivingUpdateEvent event) {
@@ -107,6 +117,17 @@ public class EventWearFlameArmor {
                 }
             }
 
+            //Incendium Helmet
+            if(base.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.INCENDIUM_LEGGINGS) {
+                if(base instanceof EntityPlayer) {
+                    EntityPlayer player = ((EntityPlayer) base);
+                    if(player.isActiveItemStackBlocking() && base.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).getItem() instanceof ItemShield ||
+                            player.isActiveItemStackBlocking() && base.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() instanceof ItemShield) {
+                        base.addPotionEffect(new PotionEffect(MobEffects.SPEED, 100, 0, false, false));
+                    }
+                }
+            }
+
             //Imperial Armor
             if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.IMPERIAL_HELMET && base.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.IMPERIAL_CHESTPLATE &&
             base.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.IMPERIAL_LEGGINGS && base.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.IMPERIAL_BOOTS) {
@@ -130,6 +151,26 @@ public class EventWearFlameArmor {
             }
 
         }
+    }
+
+
+    @SubscribeEvent
+    public static void adjustHealthChangeFromArmor(LivingEquipmentChangeEvent event) {
+        EntityLivingBase base = event.getEntityLiving();
+        IAttributeInstance attributeIn = base.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);
+        //Incendium Armor Health Bonus
+        if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET && base.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.INCENDIUM_LEGGINGS) {
+            if(!base.world.isRemote && attributeIn.getModifier(INCENDIUM_HEALTH_MODIFIER) == null) {
+                attributeIn.applyModifier(new AttributeModifier(INCENDIUM_HEALTH_MODIFIER, "soul_speed_modifier", 0.2, 1).setSaved(false));;
+            }
+        } else {
+            if(attributeIn.getModifier(INCENDIUM_HEALTH_MODIFIER) != null) attributeIn.removeModifier(INCENDIUM_HEALTH_MODIFIER);
+        }
+    }
+
+    @SubscribeEvent
+    public static void doShieldUpdates(LivingAttackEvent e) {
+        BOMDShieldItem.handleDamageEvent(e);
     }
 
 

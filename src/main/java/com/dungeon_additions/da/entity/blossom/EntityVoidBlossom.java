@@ -179,7 +179,7 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
                     (distance < 25 && prevAttacks != spikeWave) ? distance * 0.02 : 0, //Spike Wave
                     (distance < 25 && prevAttacks != leafAttack && HealthChange < 0.5) ? distance * 0.02 : 0, // Leaf Attack only active at 50% below Health
                     (distance < 25 && prevAttacks != sporeBomb && HealthChange < 0.75) ? distance * 0.02 : 0, //Spore Bomb Attack active only at 75% below Health
-                    (distance < 25 && prevAttacks != summonMinion && HealthChange < 0.6 && minionCooldown < 0 && MobConfig.enable_minions && this.current_mobs.size() <= MobConfig.blossom_max_minion_count) ? distance * 0.02 : 0 //Minion Spawning
+                    (distance < 25 && prevAttacks != summonMinion && HealthChange < 0.5 && minionCooldown < 0 && MobConfig.enable_minions && this.current_mobs.size() <= MobConfig.blossom_max_minion_count) ? distance * 0.02 : 0 //Minion Spawning
                                 //maybe a minion summon attack
             };
             prevAttacks = ModRand.choice(attacksMelee, rand, weights).next();

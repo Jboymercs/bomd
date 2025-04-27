@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV",
+    "X X",
+    "V V"
+  ],
+  "key": {
+    "X": {
+      "item": "da:abberrant_eye"
+    },
+    "V": {
+      "item": "da:incendium_core"
+    }
+  },
+  "result": {
+    "item": "da:incendium_leggings"
+  }
+}

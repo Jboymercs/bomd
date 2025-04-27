@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "X"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:glass_bottle"
+    },
+    "V": {
+      "item": "da:incendium_core"
+    }
+  },
+  "result": {
+    "item": "da:sealed_flame",
+    "count" : 4
+  }
+}

@@ -39,7 +39,7 @@ public class EventSwordResistance {
 
             if(stack.getItem() == ModItems.SWORN_OF_AMBITION || stack.getItem() == ModItems.ENFLAMED_MEAT || stack.getItem() == ModItems.FLAME_OF_AMBITION || stack.getItem() == ModItems.FLAME_BOOTS ||
             stack.getItem() == ModItems.FLAME_METAL_SCRAP || stack.getItem() == ModItems.FLAME_LEGGINGS || stack.getItem() == ModItems.FLAME_HELMET || stack.getItem() == ModItems.FLAME_CHESTPLATE ||
-            stack.getItem() == ModItems.INCENDIUM_CORE) {
+            stack.getItem() == ModItems.INCENDIUM_CORE || stack.getItem() == ModItems.VOLATILE_PEARL) {
                 if(!stack.isEmpty()) {
                     EntityFireResistantItems fireproofItem = new EntityFireResistantItems(worldIn, entityItem, stack);
                     worldIn.spawnEntity(fireproofItem);

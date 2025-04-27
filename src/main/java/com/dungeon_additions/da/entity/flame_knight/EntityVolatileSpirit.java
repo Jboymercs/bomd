@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.flame_knight;
 
 import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.flame_dungeon.EntityBareantAI;
 import com.dungeon_additions.da.entity.ai.flame_dungeon.EntityVolatileSpiritAI;
@@ -10,10 +11,13 @@ import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileTrackingFlame;
 import com.dungeon_additions.da.entity.flame_knight.volatile_action.ActionFlameWave;
 import com.dungeon_additions.da.entity.flame_knight.volatile_action.ActionSecondFlameWave;
+import com.dungeon_additions.da.entity.frost_dungeon.EntityAbstractGreatWyrk;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
+import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.ServerScaleUtil;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.Block;
@@ -26,11 +30,14 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -106,6 +113,11 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
     private static final DataParameter<Boolean> BLOCK_ACTION = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> TRIPLE_STRIKE = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
 
+    private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
+
+    public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BLOCK_POS);
+    public static DataParameter<Boolean> SET_SPAWN_LOC = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
+
     public void setSimpleSwing(boolean value) {this.dataManager.set(SIMPLE_SWING, Boolean.valueOf(value));}
     public void setSwingContinue(boolean value) {this.dataManager.set(SWING_CONTINUE, Boolean.valueOf(value));}
     public void setSwingFinish(boolean value) {this.dataManager.set(SWING_FINISH, Boolean.valueOf(value));}
@@ -137,6 +149,23 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
     private boolean isBlockAction() {return this.dataManager.get(BLOCK_ACTION);}
     private boolean isTripleStrike() {return this.dataManager.get(TRIPLE_STRIKE);}
 
+    public boolean isHadPreviousTarget() {return this.dataManager.get(HAD_PREVIOUS_TARGET);}
+    public void setHadPreviousTarget(boolean value) {this.dataManager.set(HAD_PREVIOUS_TARGET, Boolean.valueOf(value));}
+
+    public boolean isSetSpawnLoc() {
+        return this.dataManager.get(SET_SPAWN_LOC);
+    }
+    public void setSetSpawnLoc(boolean value) {
+        this.dataManager.set(SET_SPAWN_LOC, Boolean.valueOf(value));
+    }
+    public void setSpawnLocation(BlockPos pos) {
+        this.dataManager.set(SPAWN_LOCATION, pos);
+    }
+
+    public BlockPos getSpawnLocation() {
+        return this.dataManager.get(SPAWN_LOCATION);
+    }
+
     private int blockCooldown = 80;
 
     public EntityVolatileSpirit(World worldIn, float x, float y, float z) {
@@ -157,6 +186,12 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         this.experienceValue = 95;
     }
 
+    public void onSummonBoss(double x, double y, double z) {
+        BlockPos offset = new BlockPos(x, y, z);
+        this.setSpawnLocation(offset);
+        this.setSetSpawnLoc(true);
+    }
+
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         super.writeEntityToNBT(nbt);
@@ -175,6 +210,11 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         nbt.setBoolean("Buff_Self", this.isBuffSelf());
         nbt.setBoolean("Block_Action", this.isBlockAction());
         nbt.setBoolean("Triple_Strike", this.isTripleStrike());
+        nbt.setBoolean("Had_Target", this.dataManager.get(HAD_PREVIOUS_TARGET));
+        nbt.setInteger("Spawn_Loc_X", this.getSpawnLocation().getX());
+        nbt.setInteger("Spawn_Loc_Y", this.getSpawnLocation().getY());
+        nbt.setInteger("Spawn_Loc_Z", this.getSpawnLocation().getZ());
+        nbt.setBoolean("Set_Spawn_Loc", this.dataManager.get(SET_SPAWN_LOC));
     }
 
     @Override
@@ -195,6 +235,9 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         this.setBuffSelf(nbt.getBoolean("Buff_Self"));
         this.setBlockAction(nbt.getBoolean("Block_Action"));
         this.setTripleStrike(nbt.getBoolean("Triple_Strike"));
+        this.setHadPreviousTarget(nbt.getBoolean("Had_Target"));
+        this.dataManager.set(SET_SPAWN_LOC, nbt.getBoolean("Set_Spawn_Loc"));
+        this.setSpawnLocation(new BlockPos(nbt.getInteger("Spawn_Loc_X"), nbt.getInteger("Spawn_Loc_Y"), nbt.getInteger("Spawn_Loc_Z")));
     }
 
     @Override
@@ -215,12 +258,16 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         this.dataManager.register(BUFF_SELF, Boolean.valueOf(false));
         this.dataManager.register(BLOCK_ACTION, Boolean.valueOf(false));
         this.dataManager.register(TRIPLE_STRIKE, Boolean.valueOf(false));
+        this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
+        this.dataManager.register(SET_SPAWN_LOC, Boolean.valueOf(false));
+        //
+        this.dataManager.register(SPAWN_LOCATION, new BlockPos(this.getPositionVector().x, this.getPositionVector().y, this.getPositionVector().z));
     }
 
     @Override
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(28D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(26D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.volactile_attack_damage);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MobConfig.volactile_spirit_health);
@@ -236,7 +283,6 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 1, true, false, null));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPigZombie>(this, EntityPigZombie.class, 1, true, false, null));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false));
     }
 
@@ -252,6 +298,45 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         super.onUpdate();
         if(!world.isRemote) {
             EntityLivingBase target = this.getAttackTarget();
+
+
+            if (this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
+                if (target != null) {
+                    if (target instanceof EntityPlayer) {
+                        this.setHadPreviousTarget(true);
+                    }
+                }
+
+                //Creates a Target tracking to ensure if it can despawn or not
+                if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled) {
+                    int nearbyPlayers = ServerScaleUtil.getPlayersForReset(this, world);
+                    if (nearbyPlayers == 0) {
+                        if (targetTrackingTimer > 0) {
+                            targetTrackingTimer--;
+                        }
+                        if (targetTrackingTimer < 1) {
+                            this.resetBossTask();
+                        }
+                    }
+                }
+            }
+
+            //Spawn Telporting Location
+            //This is too keep the boss at it's starting location and keep it from getting too far away
+
+            if(this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
+                Vec3d SpawnLoc = new Vec3d(this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
+
+                double distSq = this.getDistanceSq(SpawnLoc.x, SpawnLoc.y, SpawnLoc.z);
+                double distance = Math.sqrt(distSq);
+                //This basically makes it so the mob will be teleported if they are too far away from the Arena
+                if(!world.isRemote) {
+                    if (distance > 22) {
+                        this.teleportTarget(SpawnLoc.x, SpawnLoc.y, SpawnLoc.z);
+                    }
+                }
+            }
+
             blockCooldown--;
             inspiredCooldown--;
 
@@ -296,6 +381,19 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         }
     }
 
+
+    private void resetBossTask() {
+        this.setImmovable(true);
+        this.setHadPreviousTarget(false);
+        BlockPos pos = this.getSpawnLocation();
+        EntityFlameOrb orb = new EntityFlameOrb(world);
+        orb.setPosition(pos.getX(), pos.getY(), pos.getZ());
+        world.spawnEntity(orb);
+        this.experienceValue = 0;
+        this.setDropItemsWhenDead(false);
+        this.setDead();
+    }
+
     @Override
     public int startAttack(EntityLivingBase target, float distanceSq, boolean strafingBackwards) {
         double distance = Math.sqrt(distanceSq);
@@ -315,7 +413,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
             prevAttacks = ModRand.choice(attacksMelee, rand, weights).next();
             prevAttacks.accept(target);
         }
-        return (healthFac <= 0.5) ? 10 : 40;
+        return (healthFac <= 0.5) ? 10 : 30;
     }
 
     private final Consumer<EntityLivingBase> triple_strike = (target) -> {

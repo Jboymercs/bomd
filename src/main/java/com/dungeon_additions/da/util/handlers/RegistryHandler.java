@@ -50,6 +50,9 @@ public class RegistryHandler {
         ModelLoader.setCustomModelResourceLocation(ModItems.BLOODY_SWORD_SPEAR, 0, new ModelResourceLocation(ModReference.MOD_ID + ":sword_spear_blood", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.KING_CLAW, 0, new ModelResourceLocation(ModReference.MOD_ID + ":king_claw", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.DRAGON_SHIELD, 0, new ModelResourceLocation(ModReference.MOD_ID + ":dragon_shield", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.FLAME_BLADE, 0, new ModelResourceLocation(ModReference.MOD_ID + ":flame_blade", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.FLAME_BLADE_PROJ, 0, new ModelResourceLocation(ModReference.MOD_ID + ":proj_flame_blade", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.FLAME_SPIT_SHIELD, 0, new ModelResourceLocation(ModReference.MOD_ID + ":flame_shield", "inventory"));
         ModItems.SPORE_BALL.setTileEntityItemStackRenderer(new RenderSpore());
         ModItems.MAGIC_FIREBALL.setTileEntityItemStackRenderer(new RenderMagicFireball());
         ModItems.CHAMPION_AXE.setTileEntityItemStackRenderer(new RenderChampionAxe());
@@ -62,6 +65,9 @@ public class RegistryHandler {
         ModItems.BLOODY_SWORD_SPEAR.setTileEntityItemStackRenderer(new RenderBloodySwordSpear());
         ModItems.KING_CLAW.setTileEntityItemStackRenderer(new RenderKingClaw());
         ModItems.DRAGON_SHIELD.setTileEntityItemStackRenderer(new RenderDragonShield());
+        ModItems.FLAME_BLADE.setTileEntityItemStackRenderer(new RenderFlameBlade());
+        ModItems.FLAME_BLADE_PROJ.setTileEntityItemStackRenderer(new RenderFlameBladeProj());
+        ModItems.FLAME_SPIT_SHIELD.setTileEntityItemStackRenderer(new RenderFlameShield());
         for (Item item : ModItems.ITEMS) {
             if (item instanceof IHasModel) {
                 ((IHasModel) item).registerModels();

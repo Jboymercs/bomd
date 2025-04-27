@@ -11,6 +11,7 @@ import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -27,6 +28,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -315,7 +317,23 @@ public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatabl
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_BLAZE_HURT;
+        return SoundsHandler.ABBERRANT_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundsHandler.ABBERRANT_HURT;
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundsHandler.ABBERRANT_IDLE;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+       // this.playSound(SoundsHandler.DRAUGR_STEP, 0.5F, 0.4f + ModRand.getFloat(0.3F));
     }
 
     @Override

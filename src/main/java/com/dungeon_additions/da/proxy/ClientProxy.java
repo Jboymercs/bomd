@@ -7,6 +7,8 @@ import com.dungeon_additions.da.items.model.*;
 import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSection;
 import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSectionSerializer;
 import com.dungeon_additions.da.util.handlers.RenderHandler;
+import com.dungeon_additions.da.util.particle.ParticleDash;
+import com.dungeon_additions.da.util.particle.ParticleFluff;
 import com.dungeon_additions.da.util.particle.ParticlePixel;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
@@ -36,6 +38,8 @@ public class ClientProxy extends CommonProxy{
 
     private final ModelBiped MODEL_WYRK_HELMET = new ModelWyrkHelmet(0F);
     private final ModelBiped MODEL_KING_HELMET = new ModelKingHelmet(0F);
+
+    private final ModelBiped MODEL_INCENDIUM_HELMET = new ModelIncendiumHelmet(0F);
 
     @Override
     public void init() {
@@ -93,6 +97,9 @@ public class ClientProxy extends CommonProxy{
         if(item == ModItems.KINGS_HELMET) {
             return MODEL_KING_HELMET;
         }
+        if(item == ModItems.INCENDIUM_HELMET) {
+            return MODEL_INCENDIUM_HELMET;
+        }
         return null;
     }
 
@@ -117,6 +124,10 @@ public class ClientProxy extends CommonProxy{
             default:
             case 1:
                 return new ParticlePixel.Factory();
+            case 2:
+                return new ParticleDash.Factory();
+            case 3:
+                return new ParticleFluff.Factory();
         }
     }
 

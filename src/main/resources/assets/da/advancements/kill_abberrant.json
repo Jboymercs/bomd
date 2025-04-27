@@ -10,7 +10,7 @@
       "translate": "advancements.da.kill_abberrant.description"
     }
   },
-  "parent": "da:root",
+  "parent": "da:craft_flame_locator",
   "criteria": {
     "Lamentor": {
       "trigger": "minecraft:player_killed_entity",

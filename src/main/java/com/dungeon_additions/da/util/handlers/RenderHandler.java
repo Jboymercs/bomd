@@ -13,6 +13,7 @@ import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityShadowHand;
 import com.dungeon_additions.da.entity.flame_knight.*;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
+import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameBlade;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileTrackingFlame;
 import com.dungeon_additions.da.entity.frost_dungeon.*;
@@ -129,6 +130,7 @@ public class RenderHandler {
         registerProjectileRenderer3DModel(EntityKingHolyWave.class, ModItems.HOLY_WAVE_PROJ);
         registerProjectileRenderer(ProjectileKingBlood.class, ModItems.BLOOD_BALL_PROJ);
         registerProjectileRenderer(ProjectileFlameSpit.class, ModItems.INVISISBLE_ITEM);
+        registerProjectileRenderer3DModel(ProjectileFlameBlade.class, ModItems.FLAME_BLADE_PROJ);
     }
 
     //Handles Rendering

@@ -48,6 +48,46 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static float sword_of_ambition_damage = 9;
 
+    @Config.Name("Incendium Helmet Sword Boost Multiplier")
+    @Config.Comment("Change the multiplier of how much damage or effects are added when using a swords ability and weaing the Incendium Helmet")
+    @Config.RequiresMcRestart
+    public static double incendium_helmet_multipler = 1.5;
+
+    @Config.Name("Ambitious Flame Blade Damage")
+    @Config.Comment("Change the damage of the Ambitious Flame Blade")
+    @Config.RequiresMcRestart
+    public static float flame_blade_damage = 6;
+
+    @Config.Name("Ambitious Flame Blade Cooldown")
+    @Config.Comment("Change the cooldown of the Ambitious Flame Blade in seconds")
+    @Config.RequiresMcRestart
+    public static int flame_blade_cooldown = 14;
+
+    @Config.Name("Sealed Flame Bottle Cooldown")
+    @Config.Comment("Change the cooldown of the Sealed Flame Bottle")
+    @Config.RequiresMcRestart
+    public static int sealed_bottle_cooldown = 8;
+
+    @Config.Name("Incendium Shield Cooldown")
+    @Config.Comment("Change the cooldown of the Incendium Shield in seconds")
+    @Config.RequiresMcRestart
+    public static int incendium_shield_cooldown = 12;
+
+    @Config.Name("Incendium Shield Damage")
+    @Config.Comment("Change the damage that the Incendium Shields Fire ability does to enemies")
+    @Config.RequiresMcRestart
+    public static float incendium_shield_damage = 6;
+
+    @Config.Name("Frostborn Shield Cooldown")
+    @Config.Comment("Change the cooldown of the Frostborn Shield ability in seconds.")
+    @Config.RequiresMcRestart
+    public static int frostborn_shield_cooldown = 10;
+
+    @Config.Name("Frostborn Shield Damage")
+    @Config.Comment("Change the damage of the Frostborn Shield when doing a ram attack")
+    @Config.RequiresMcRestart
+    public static float frostborn_shield_damage = 6;
+
     @Config.Name("Soul Spear Damage")
     @Config.Comment("Change the damage of the Soul Spear")
     @Config.RequiresMcRestart

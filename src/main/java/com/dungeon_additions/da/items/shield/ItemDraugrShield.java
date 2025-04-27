@@ -1,18 +1,21 @@
 package com.dungeon_additions.da.items.shield;
 
+import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.packets.MessageModParticles;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
 import net.minecraft.tileentity.TileEntityBanner;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -26,20 +29,23 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemDraugrShield extends ItemShield implements IAnimatable {
+public class ItemDraugrShield extends BOMDShieldItem implements IAnimatable {
 
     public AnimationFactory factory = new AnimationFactory(this);
     private String info_loc;
 
+    private int hitCounter = 0;
+
+    private int dashTime = 0;
+
+    private boolean isDashing = false;
+
     public ItemDraugrShield(String name, CreativeTabs tabs, String info_loc) {
-        super();
-        setTranslationKey(name);
-        setRegistryName(name);
+        super(name);
         setCreativeTab(tabs);
         this.setMaxDamage(832);
         this.info_loc = info_loc;
         this.maxStackSize = 1;
-        ModItems.ITEMS.add(this);
         this.addPropertyOverride(new ResourceLocation("blocking"), new IItemPropertyGetter()
         {
             @SideOnly(Side.CLIENT)
@@ -65,6 +71,80 @@ public class ItemDraugrShield extends ItemShield implements IAnimatable {
         }
     }
 
+    @Override
+    public void onBlockingDamage(ItemStack shield, EntityPlayer player) {
+        hitCounter++;
+        if(hitCounter < 6 && !player.world.isRemote) {
+            player.world.playSound(player.posX + 0.5D, player.posY, player.posZ + 0.5D, SoundEvents.BLOCK_NOTE_CHIME, SoundCategory.BLOCKS,(float) 0.2 * hitCounter, 1.0F, false);
+        }
+        super.onBlockingDamage(shield, player);
+    }
+
+
+    @Override
+    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        if (entityIn instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) entityIn;
+            if (stack == player.getActiveItemStack() && player.isSneaking() && hitCounter > 4) {
+                Vec3d moveVec = player.getLookVec().scale(2.6F);
+                if(player.canBePushed()) {
+                    player.motionX = moveVec.x;
+                    player.motionY = 0.1;
+                    player.motionZ = moveVec.z;
+                    player.velocityChanged = true;
+                    hitCounter = 0;
+                    this.isDashing = true;
+                    player.world.playSound(player.posX + 0.5D, player.posY, player.posZ + 0.5D, SoundsHandler.DRAUGR_ELITE_STOMP, SoundCategory.BLOCKS,(float) 1.0F, 1.0F, false);
+                }
+            }
+
+            if(this.isDashing) {
+                Main.proxy.spawnParticle(2, player.posX, player.posY + 1, player.posZ, 0,0,0);
+                List<EntityLivingBase> targets = worldIn.getEntitiesWithinAABB(EntityLivingBase.class, player.getEntityBoundingBox().grow(1.5), e -> e != player);
+
+                for(EntityLivingBase target : targets) {
+                   // Vec3d dir = target.getPositionVector().subtract(player.getPositionVector()).normalize();
+                    Vec3d moveDir = player.getPositionVector().add(player.getLookVec().add(0, 1.5, 0)).scale(1.5D);
+
+                    if(target.canBeCollidedWith()) {
+                        this.onEnemyRammed(player, target, moveDir);
+                    }
+                }
+
+                dashTime++;
+
+                if(player.motionX < 0.08 && player.motionZ < 0.08 && dashTime > 5 || dashTime > 35) {
+                    this.isDashing = false;
+                    player.motionX = 0;
+                    player.motionZ = 0;
+                    player.motionY = 0;
+                    dashTime = 0;
+                    player.resetActiveHand();
+                    player.disableShield(true);
+                    player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.frostborn_shield_cooldown * 20);
+                }
+
+            }
+        }
+
+        }
+
+
+    public void onEnemyRammed(EntityLivingBase user, EntityLivingBase enemy, Vec3d rammingDir) {
+        boolean attacked = false;
+
+        if(user instanceof EntityPlayer) {
+            attacked = enemy.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer)user), ModConfig.frostborn_shield_damage);
+
+        } else {
+            attacked = enemy.attackEntityFrom(DamageSource.causeMobDamage(user), ModConfig.frostborn_shield_damage);
+        }
+
+        if(attacked) {
+            enemy.knockBack(user, 1.4F, -rammingDir.x, -rammingDir.z);
+        }
+    }
+
 
     @SideOnly(Side.CLIENT)
     @Override
@@ -74,40 +154,6 @@ public class ItemDraugrShield extends ItemShield implements IAnimatable {
         ItemBanner.appendHoverTextFromTileEntityTag(stack, tooltip);
     }
 
-
-    @Override
-    public int getMaxItemUseDuration(ItemStack stack)
-    {
-        return 72000;
-    }
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
-    {
-
-        ItemStack itemstack = playerIn.getHeldItem(handIn);
-        playerIn.setActiveHand(handIn);
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
-    }
-
-    @Override
-    public boolean isShield(ItemStack stack, @Nullable EntityLivingBase entity)
-    {
-        return true;
-    }
-
-
-    @Override
-    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
-    {
-        return false;
-    }
-
-    @Override
-    public EnumAction getItemUseAction(ItemStack stack)
-    {
-        return EnumAction.BLOCK;
-    }
 
     @Override
     public void registerControllers(AnimationData data) {

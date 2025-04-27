@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.items.tools;
 
 import com.dungeon_additions.da.config.ModConfig;
+import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -11,6 +12,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.IItemPropertyGetter;
@@ -97,7 +99,8 @@ public class ItemParrySword extends ToolSword {
                 if(didBlockDamage && !this.dealtDamage) {
                     EntityLivingBase attacker = player.getAttackingEntity();
                     assert attacker != null;
-                    attacker.attackEntityFrom(ModUtils.causeAxeDamage(player).setDamageBypassesArmor(), 10f);
+                    float damage = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET ? (float) (8 * ModConfig.incendium_helmet_multipler): 8;
+                    attacker.attackEntityFrom(ModUtils.causeAxeDamage(player).setDamageBypassesArmor(), damage);
                     attacker.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1, false, false));
                     worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.IMPERIAL_SWORD_PARRY, SoundCategory.NEUTRAL, 1.0f, 0.8f / (worldIn.rand.nextFloat() * 0.4F + 0.3f));
                     this.isParrying = false;

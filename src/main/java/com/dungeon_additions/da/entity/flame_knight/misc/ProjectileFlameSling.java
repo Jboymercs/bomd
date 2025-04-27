@@ -30,6 +30,17 @@ public class ProjectileFlameSling extends Projectile {
         super(worldIn, throwerIn, baseDamage);
         this.setNoGravity(true);
         this.setSize(0.25F, 1);
+        this.isImmuneToFire = true;
+    }
+
+    private boolean setFlame;
+
+    public ProjectileFlameSling(World worldIn, EntityLivingBase throwerIn, float baseDamage, ItemStack stack, boolean setAflame) {
+        super(worldIn, throwerIn, baseDamage);
+        this.setNoGravity(true);
+        this.setSize(0.25F, 1);
+        this.setFlame = setAflame;
+        this.isImmuneToFire = true;
     }
 
     public ProjectileFlameSling(World worldIn) {
@@ -86,13 +97,16 @@ public class ProjectileFlameSling extends Projectile {
                 int burnTime = this.isBurning() ? 5 : 0;
                 entity.setFire(burnTime);
 
+                if(this.setFlame) {
+                    entity.setFire(8);
+                }
                 DamageSource source = ModDamageSource.builder()
                         .type(ModDamageSource.PROJECTILE)
                         .indirectEntity(shootingEntity)
                         .directEntity(this)
                         .stoppedByArmorNotShields().build();
 
-                entity.attackEntityFrom(source, 15.0f);
+                entity.attackEntityFrom(source, this.getDamage());
 
             }
         }

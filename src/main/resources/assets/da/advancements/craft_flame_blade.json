@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:flame_blade"
+    },
+    "title": {
+      "translate": "advancements.da.craft_flame_blade.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_flame_blade.description"
+    }
+  },
+  "parent": "da:kill_volatile_spirit",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:flame_blade"
+          }
+        ]
+      }
+    }
+  }
+}

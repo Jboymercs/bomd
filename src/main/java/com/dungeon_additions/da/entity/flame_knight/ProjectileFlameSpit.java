@@ -41,6 +41,9 @@ public class ProjectileFlameSpit extends Projectile {
                 .type(ModDamageSource.MAGIC)
                 .stoppedByArmorNotShields().build();
 
+        if(result.entityHit instanceof EntityLivingBase) {
+            result.entityHit.setFire(4);
+        }
         ModUtils.handleAreaImpact(0.5F, (e) -> this.getDamage(), this.shootingEntity, this.getPositionVector(), source);
         this.playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.5F, 0.6F / (rand.nextFloat() * 0.4F + 0.8F));
         super.onHit(result);

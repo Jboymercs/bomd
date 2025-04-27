@@ -6,11 +6,13 @@ import com.dungeon_additions.da.items.*;
 import com.dungeon_additions.da.items.armor.*;
 import com.dungeon_additions.da.items.armor.imperial.ItemImperialArmor;
 import com.dungeon_additions.da.items.armor.imperial.ItemImperialChestplate;
+import com.dungeon_additions.da.items.projectile.ItemFlameBladeProj;
 import com.dungeon_additions.da.items.projectile.ItemHolyWave;
 import com.dungeon_additions.da.items.projectile.ItemLightRing;
 import com.dungeon_additions.da.items.projectile.ItemStormTornado;
 import com.dungeon_additions.da.items.shield.ItemDragonShield;
 import com.dungeon_additions.da.items.shield.ItemDraugrShield;
+import com.dungeon_additions.da.items.shield.ItemFlameShield;
 import com.dungeon_additions.da.items.tools.*;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.ModColors;
@@ -39,6 +41,7 @@ public class ModItems {
     private static final Item.ToolMaterial DARK_DAGGER_MATERIAL = EnumHelper.addToolMaterial("dark_material", 2, 520, 6.0F, (float) ModConfig.rah_void_Dagger_damage, 5);
 
     private static final Item.ToolMaterial DRAUGR_SWORD = EnumHelper.addToolMaterial("draugr_material", 2, 974, 6.0F, (float) ModConfig.frost_sword_damage, 45);
+    private static final Item.ToolMaterial FLAME_BLADE_MATERIAL = EnumHelper.addToolMaterial("flame_blade_material", 2, 1002, 5.0F, (float) ModConfig.flame_blade_damage, 10);
     private static final Item.ToolMaterial FLAME_SWORD_MATERIAL = EnumHelper.addToolMaterial("flame_sword_material", 2, 988, 6.0F, ModConfig.sword_of_ambition_damage, 70);
 
     private static final Item.ToolMaterial SOUL_SPEAR_MATERIAL = EnumHelper.addToolMaterial("soul_spear_material", 2, 1200, 5.0F, ModConfig.soul_spear_damage, 10);
@@ -49,6 +52,7 @@ public class ModItems {
     private static final ItemArmor.ArmorMaterial FLAME_ARMOR = EnumHelper.addArmorMaterial("flame", ModReference.MOD_ID + ":flame", 320, new int[]{4, 7,9,4}, 70, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2F);
     private static final ItemArmor.ArmorMaterial DRAUGR_ARMOR = EnumHelper.addArmorMaterial("draugr", ModReference.MOD_ID + "draugr", 375, new int[]{3, 6, 8,3}, 20, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2F);
     private static final ItemArmor.ArmorMaterial LICH_HELMET = EnumHelper.addArmorMaterial("night_lich", ModReference.MOD_ID +":night_lich", 275, new int[] {3,6,8,3}, 70, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1F);
+    private static final ItemArmor.ArmorMaterial INCENDIUM_HELMET_SET = EnumHelper.addArmorMaterial("incendium_h", ModReference.MOD_ID +":incendium_helmet", 375, new int[] {3,6,8,3}, 20, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 2F);
     private static final ItemArmor.ArmorMaterial WYRK_ARMOR = EnumHelper.addArmorMaterial("wyrk", ModReference.MOD_ID +":wyrk", 325, new int[] {3,6,8,3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
     private static final ItemArmor.ArmorMaterial IMPERIAL_ARMOR = EnumHelper.addArmorMaterial("imperial", ModReference.MOD_ID +":imperial", 670, new int[] {4,7,9,4}, 30, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
     private static final ItemArmor.ArmorMaterial KINGS_HELMET_MAT = EnumHelper.addArmorMaterial("king", ModReference.MOD_ID +":king", 1023, new int[] {4,7,9,4}, 30, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 1.5F);
@@ -72,6 +76,7 @@ public class ModItems {
   //  public static final Item LITIC_SMITHING_STONE = new ItemCraftingMaterial("lightning_smithing_stone", "lightning_stone_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ANCIENT_MANA = new ItemCraftingMaterial("ancient_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item INCENDIUM_CORE = new ItemCraftingMaterial("incendium_core", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item VOLATILE_PEARL = new ItemCraftingMaterial("volatile_orb", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item RED_ANICIENT_MANA = new ItemCraftingMaterial("red_ancient_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_SHARD = new ItemCraftingMaterial("frost_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_INGOT = new ItemCraftingMaterial("frost_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -92,6 +97,7 @@ public class ModItems {
 
     //Utility & Locator Items (Not Weapons)
     public static final Item ENDLESS_PEARL = new ItemEndlessEnderpearl("endless_enderpearl", "pearl_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item SEALED_FLAME_BOTTLE = new ItemSealedFlame("sealed_flame", "sealed_flame_desc", DungeonAdditionsTab.ALL);
     public static final Item WYRK_TOTEM = new ItemWyrkTotem("wyrk_totem", "wyrk_totem_desc", DungeonAdditionsTab.ALL);
     public static final Item KINGS_AID = new ItemKingsAid("king_aid", "king_aid_desc", DungeonAdditionsTab.ALL);
     public static final Item FLAME_OF_AMBITION = new ItemAmbitionFlame("ambition_flame", "flame_of_ambition").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -111,7 +117,9 @@ public class ModItems {
     public static final Item FROST_SWORD = new ItemDraugrSword("frost_sword", DRAUGR_SWORD, "draugr_sword_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item CHAMPION_AXE = new ItemChampionAxe("champion_axe", CHAMPION_AXE_MATERIAL, "champion_axe_desc");
     public static final Item DRAUGR_SHIELD = new ItemDraugrShield("draugr_shield", DungeonAdditionsTab.ALL, "draugr_shield_desc");
+    public static final Item FLAME_SPIT_SHIELD = new ItemFlameShield("flame_shield", "flame_shield_desc");
     public static final Item DRAGON_SHIELD = new ItemDragonShield("dragon_shield", DungeonAdditionsTab.ALL, "dragon_shield_desc");
+    public static final Item FLAME_BLADE = new ItemFlameBlade("flame_blade", "flame_blade_desc", FLAME_BLADE_MATERIAL);
     public static final Item SWORN_OF_AMBITION = new ItemAmbitionSword("ambition_sword", "flame_sword", FLAME_SWORD_MATERIAL).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item SPEAR_OF_SOULS = new ItemSoulSpear("spear_staff", SOUL_SPEAR_MATERIAL, "soul_spear_desc");
     public static final Item SPEAR_OF_WARRIOR = new ItemWeaponSpear("spear_weapon", SOUL_SPEAR_WEAPON_MATERIAL, "soul_weapon_desc");
@@ -131,6 +139,8 @@ public class ModItems {
 
     public static final ItemArmor WYRK_HELMET = new ModWyrkHelmet("wyrk_helmet", WYRK_ARMOR, 1, EntityEquipmentSlot.HEAD, "wyrk_helmet", "wyrk_helmet_desc");
     public static final ItemArmor WYRK_BOOTS = new ModWyrkArmor("wyrk_boots", WYRK_ARMOR, 1, EntityEquipmentSlot.FEET, "wyrk", "wyrk_boots_desc");
+    public static final Item INCENDIUM_HELMET = new ModIncendiumHelmet("incendium_helmet", INCENDIUM_HELMET_SET, 1, EntityEquipmentSlot.HEAD, "incendium", "incendium_helmet_desc");
+    public static final Item INCENDIUM_LEGGINGS = new ModArmorBase("incendium_leggings", INCENDIUM_HELMET_SET, 2, EntityEquipmentSlot.LEGS, "incendium", "incendium_leggings_desc");
     public static final Item FLAME_HELMET = new ModArmorBase("flame_helmet", FLAME_ARMOR, 1, EntityEquipmentSlot.HEAD, "flame", "flame_armor_desc");
     public static final Item FLAME_CHESTPLATE = new ModArmorBase("flame_chestplate", FLAME_ARMOR, 1, EntityEquipmentSlot.CHEST, "flame", "flame_armor_desc");
     public static final Item FLAME_LEGGINGS = new ModArmorBase("flame_leggings", FLAME_ARMOR, 2, EntityEquipmentSlot.LEGS, "flame", "flame_armor_desc");
@@ -156,6 +166,7 @@ public class ModItems {
     public static final Item STORM_TORNADO_PROJECTILE = new ItemStormTornado("storm_tornado");
     public static final Item HOLY_WAVE_PROJ = new ItemHolyWave("holy_wave");
     public static final Item BLOOD_BALL_PROJ = new ItemBase("blood_ball");
+    public static final Item FLAME_BLADE_PROJ = new ItemFlameBladeProj("proj_flame_blade");
 
     public static final Item INVISISBLE_ITEM = new ItemBase("invisible_item").setCreativeTab(CreativeTabs.SEARCH);
     public static final Item PROJECTILE_FLAME = new ItemBase("projectile_flame").setCreativeTab(CreativeTabs.SEARCH);

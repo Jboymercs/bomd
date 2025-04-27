@@ -84,7 +84,7 @@ public class EntityFlameOrb extends EntityFlameBase implements IAnimatable, IAni
 
 
         if(byRateCheck < 0 && !metConditions) {
-            List<EntityPlayer> targets = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(8.0, 4.0, 8.0), e -> !e.getIsInvulnerable());
+            List<EntityPlayer> targets = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(5.0, 4.0, 5.0), e -> !e.getIsInvulnerable());
 
             if(!targets.isEmpty()) {
                 boolean flag = false;
@@ -163,6 +163,7 @@ public class EntityFlameOrb extends EntityFlameBase implements IAnimatable, IAni
             //summon Miniboss
             EntityVolatileSpirit spirit = new EntityVolatileSpirit(world);
             spirit.setPosition(this.posX, this.posY - 1.5, this.posZ);
+            spirit.onSummonBoss(this.posX, this.posY, this.posZ);
             world.spawnEntity(spirit);
             this.setDead();
         }, 60);

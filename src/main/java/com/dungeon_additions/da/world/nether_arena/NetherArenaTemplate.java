@@ -96,7 +96,7 @@ public class NetherArenaTemplate extends ModStructureTemplate {
                                     new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityIncendium.class), 1),
                                     new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityBareant.class), 1)
                             },
-                            new int[]{1, 1, 1},
+                            new int[]{1, 2, 1},
                             1,
                             32);
                 }

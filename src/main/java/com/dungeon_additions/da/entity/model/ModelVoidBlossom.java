@@ -33,10 +33,9 @@ public class ModelVoidBlossom extends GeoModelExtended<EntityVoidBlossom> {
     public void setLivingAnimations(EntityVoidBlossom entity, Integer uniqueID,  AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         IBone head = this.getAnimationProcessor().getBone("StemY");
-        IBone spikes = this.getAnimationProcessor().getBone("Thorns");
+       // IBone spikes = this.getAnimationProcessor().getBone("Thorns");
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
         head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
-
 
 
     }
