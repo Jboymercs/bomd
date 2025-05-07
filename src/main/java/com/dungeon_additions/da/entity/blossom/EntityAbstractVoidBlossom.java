@@ -20,6 +20,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -120,7 +122,12 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
         nbt.setBoolean("Set_Spawn_Loc", this.dataManager.get(SET_SPAWN_LOC));
         nbt.setFloat("Look", this.getPitch());
         nbt.setFloat("Stat_Line", this.getStatLine());
-
+        NBTTagList mobs = new NBTTagList();
+        for (WeakReference<Entity> ref : current_mobs) {
+            if (ref.get() == null) continue;
+            mobs.appendTag(NBTUtil.createUUIDTag(ref.get().getUniqueID()));
+        }
+        nbt.setTag("current_mobs", mobs);
         super.writeEntityToNBT(nbt);
     }
 

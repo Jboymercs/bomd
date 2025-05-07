@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VXV",
+    "V V"
+  ],
+  "key": {
+    "V": {
+      "item": "da:crypt_plate"
+    },
+    "X": {
+      "item": "da:dark_mana"
+    }
+  },
+  "result": {
+    "item": "da:dark_metal_helmet"
+  }
+}

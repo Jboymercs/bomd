@@ -1,13 +1,18 @@
 package com.dungeon_additions.da.event;
 
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
+import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkSorcerer;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBolt;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.shield.BOMDShieldItem;
+import com.dungeon_additions.da.items.tools.ToolSword;
+import com.dungeon_additions.da.items.util.ISweepAttackOverride;
+import com.dungeon_additions.da.packets.MessageEmptySwing;
 import com.dungeon_additions.da.util.ModUtils;
-import net.minecraft.entity.EntityLiving;
+import com.dungeon_additions.da.util.player.PlayerMeleeAttack;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -19,17 +24,18 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShield;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 import java.util.UUID;
 
 @Mod.EventBusSubscriber
@@ -76,6 +82,14 @@ public class EventWearFlameArmor {
                     base.removePotionEffect(MobEffects.SLOWNESS);
                 }
             }
+
+            //Dark Metal Helmet
+            if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET) {
+                if(base.ticksExisted % 40 == 0 && !base.world.isDaytime()) {
+                    base.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 300, 0, false, false));
+                }
+            }
+
             //Wyrk Boots
             if(base.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.WYRK_BOOTS) {
                 if(base.ticksExisted % 40 == 0 && base.world.getBlockState(base.getPosition().down()).getBlock() == Blocks.ICE ||
@@ -217,6 +231,45 @@ public class EventWearFlameArmor {
                     assassin.setDead();
                 }
             });
+        }
+
+        if(base instanceof EntityDarkSorcerer) {
+            EntityDarkSorcerer assassin = ((EntityDarkSorcerer) base);
+            event.getWorld().playerEntities.forEach((p)-> {
+                if(!ModUtils.getAdvancementCompletionAsList(p, ModConfig.sorcerers_spawn_progress) && !p.isCreative()) {
+                    assassin.setDead();
+                }
+            });
+        }
+    }
+
+
+    @SubscribeEvent(receiveCanceled = true)
+    public static void onAttackEntityEvent(AttackEntityEvent event) {
+        // Overrides the melee attack of the player if the item used is the sweep attack
+        // override interface
+        if (event.getEntityPlayer().getHeldItemMainhand().getItem() instanceof ISweepAttackOverride) {
+            PlayerMeleeAttack.attackTargetEntityWithCurrentItem(event.getEntityPlayer(), event.getTarget());
+            event.setCanceled(true);
+        } else {
+            event.setCanceled(false);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent()
+    public static void onEmptyLeftClick(PlayerInteractEvent.LeftClickBlock event) {
+        handleEmptyLeftClick(event);
+    }
+
+    /**
+     * If the weapon is charged and the player empty left clicks, sends a message to the server to do a sweep attack
+     *
+     * @param event
+     */
+    private static void handleEmptyLeftClick(PlayerInteractEvent event) {
+        if (event.getItemStack().getItem() instanceof ToolSword) {
+            Main.network.sendToServer(new MessageEmptySwing());
         }
     }
 }

@@ -1237,6 +1237,104 @@
       }
     ]
   },
+  "entity.dark_sorcerer.hurt": {
+    "category": "entity",
+    "subtitle": "entity.dark_sorcerer.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/dark_sorcerer/hurt1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/dark_sorcerer/hurt2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/dark_sorcerer/hurt3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.dark_sorcerer.idle": {
+    "category": "entity",
+    "subtitle": "entity.dark_sorcerer.idle",
+    "sounds": [
+      {
+        "name": "da:entity/dark_sorcerer/idle1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/dark_sorcerer/idle2",
+        "steam": false
+      }
+    ]
+  },
+  "entity.dark_sorcerer.summon": {
+    "category": "entity",
+    "subtitle": "entity.dark_sorcerer.summon",
+    "sounds": [
+      {
+        "name": "da:entity/dark_sorcerer/summon",
+        "steam": false
+      }
+    ]
+  },
+  "entity.dark_sorcerer.exchange": {
+    "category": "entity",
+    "subtitle": "entity.dark_sorcerer.exchange",
+    "sounds": [
+      {
+        "name": "da:entity/dark_sorcerer/exchange",
+        "steam": false
+      }
+    ]
+  },
+  "entity.dark_crypt.hurt": {
+    "category": "entity",
+    "subtitle": "entity.dark_crypt.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/dark_crypt/hurt1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/dark_crypt/hurt2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/dark_crypt/hurt3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.dark_crypt.idle": {
+    "category": "entity",
+    "subtitle": "entity.dark_crypt.idle",
+    "sounds": [
+      {
+        "name": "da:entity/dark_crypt/idle1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/dark_crypt/idle2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/dark_crypt/idle3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.dark_crypt.dash": {
+    "category": "entity",
+    "subtitle": "entity.dark_crypt.dash",
+    "sounds": [
+      {
+        "name": "da:entity/dark_crypt/dash",
+        "steam": false
+      }
+    ]
+  },
   "entity.shadow_hand.summon": {
     "category": "entity",
     "subtitle": "entity.shadow_hand.summon",

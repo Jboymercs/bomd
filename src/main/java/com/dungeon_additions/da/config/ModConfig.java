@@ -8,6 +8,12 @@ import net.minecraftforge.common.config.Config;
 
 @Config(modid = ModReference.MOD_ID, name = "BOMD DA Backport/general_config")
 public class ModConfig {
+
+    @Config.Name("Aether Content Compat")
+    @Config.Comment("If Aether Continuation, Aether Legacy, and Aether Lost Content are istalled, will they change the High Court City structure")
+    @Config.RequiresMcRestart
+    public static boolean aether_compat = true;
+
     @Config.Name("Boss Scaling Health")
     @Config.Comment("Change the scaling added per player of health added to bosses, not counting one player")
     @Config.RequiresMcRestart
@@ -87,6 +93,26 @@ public class ModConfig {
     @Config.Comment("Change the damage of the Frostborn Shield when doing a ram attack")
     @Config.RequiresMcRestart
     public static float frostborn_shield_damage = 6;
+
+    @Config.Name("Dark Metal Shield Cooldown")
+    @Config.Comment("Change the cooldown of the Dark Metal Shield ability in seconds")
+    @Config.RequiresMcRestart
+    public static int dark_shield_cooldown = 14;
+
+    @Config.Name("Dark Metal Shield Damage")
+    @Config.Comment("Change the damage of the Dark Metal Shiels when doing an AOE attack")
+    @Config.RequiresMcRestart
+    public static float dark_shield_damage = 9;
+
+    @Config.Name("Dark Metal Full Armor Set Bonus")
+    @Config.Comment("Change how much shield damage is boosted when having the full Dark Metal Armor set equipped")
+    @Config.RequiresMcRestart
+    public static double dark_armor_multiplier = 1.8;
+
+    @Config.Name("Dark Metal Sicle Cooldown")
+    @Config.Comment("Change the cooldown of the Dark Metal Sicle ability, in seconds")
+    @Config.RequiresMcRestart
+    public static int dark_sicle_cooldown = 10;
 
     @Config.Name("Soul Spear Damage")
     @Config.Comment("Change the damage of the Soul Spear")
@@ -295,17 +321,29 @@ public class ModConfig {
             "da:kill_kobf"
     };
 
-    @Config.Name("Cult of Rah Assassins Spawning Advancement Requirements")
+    @Config.Name("Cult of Roh Assassins Spawning Advancement Requirements")
     @Config.Comment("What advancements are required for Cult of Rah Assassins spawning around the player naturally at night time")
     @Config.RequiresMcRestart
     public static String[] assassins_spawn_progress = {
             "da:kill_great_wyrk"
     };
 
-    @Config.Name("Cult of Rah Assassin Spawn Rate")
-    @Config.Comment("Change the spawn rate of Cult of Rah Assassins, change to 0 to disable")
+    @Config.Name("Cult of Roh Sorcerers Spawning Advancement Requirements")
+    @Config.Comment("What advancements are required for Cult of Roh Sorcerers spawning around the player naturally at night time")
     @Config.RequiresMcRestart
-    public static int assassin_spawn_rate = 8;
+    public static String[] sorcerers_spawn_progress = {
+            "da:kill_night_lich"
+    };
+
+    @Config.Name("Cult of Roh Assassin Spawn Rate")
+    @Config.Comment("Change the spawn rate of Cult of Roh Assassins, change to 0 to disable")
+    @Config.RequiresMcRestart
+    public static int assassin_spawn_rate = 7;
+
+    @Config.Name("Cult of Roh Sorcerer Spawn Rate")
+    @Config.Comment("Change the spawn rate of Cult of Roh Sorcerer, change to 0 to disable")
+    @Config.RequiresMcRestart
+    public static int sorcerer_spawn_rate = 3;
 
     @Config.Name("Boss Reset Enabled/Disabled")
     @Config.Comment("This setting makes it so that if bosses killed all players around them, they will reset back into a key block with a chest above with the respective key. Allowing players to recover there loot more easily and try again. default: true")

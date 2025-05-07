@@ -4,12 +4,15 @@ import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.items.*;
 import com.dungeon_additions.da.items.armor.*;
+import com.dungeon_additions.da.items.armor.dark.ModDarkArmorBase;
+import com.dungeon_additions.da.items.armor.dark.ModDarkMetalHelmet;
 import com.dungeon_additions.da.items.armor.imperial.ItemImperialArmor;
 import com.dungeon_additions.da.items.armor.imperial.ItemImperialChestplate;
 import com.dungeon_additions.da.items.projectile.ItemFlameBladeProj;
 import com.dungeon_additions.da.items.projectile.ItemHolyWave;
 import com.dungeon_additions.da.items.projectile.ItemLightRing;
 import com.dungeon_additions.da.items.projectile.ItemStormTornado;
+import com.dungeon_additions.da.items.shield.ItemDarkShield;
 import com.dungeon_additions.da.items.shield.ItemDragonShield;
 import com.dungeon_additions.da.items.shield.ItemDraugrShield;
 import com.dungeon_additions.da.items.shield.ItemFlameShield;
@@ -42,6 +45,8 @@ public class ModItems {
 
     private static final Item.ToolMaterial DRAUGR_SWORD = EnumHelper.addToolMaterial("draugr_material", 2, 974, 6.0F, (float) ModConfig.frost_sword_damage, 45);
     private static final Item.ToolMaterial FLAME_BLADE_MATERIAL = EnumHelper.addToolMaterial("flame_blade_material", 2, 1002, 5.0F, (float) ModConfig.flame_blade_damage, 10);
+
+    private static final Item.ToolMaterial DARK_SICLE_MATERIAL = EnumHelper.addToolMaterial("dark_sicle_material", 2, 766, 3.0F, (float) 6, 20);
     private static final Item.ToolMaterial FLAME_SWORD_MATERIAL = EnumHelper.addToolMaterial("flame_sword_material", 2, 988, 6.0F, ModConfig.sword_of_ambition_damage, 70);
 
     private static final Item.ToolMaterial SOUL_SPEAR_MATERIAL = EnumHelper.addToolMaterial("soul_spear_material", 2, 1200, 5.0F, ModConfig.soul_spear_damage, 10);
@@ -53,6 +58,7 @@ public class ModItems {
     private static final ItemArmor.ArmorMaterial DRAUGR_ARMOR = EnumHelper.addArmorMaterial("draugr", ModReference.MOD_ID + "draugr", 375, new int[]{3, 6, 8,3}, 20, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2F);
     private static final ItemArmor.ArmorMaterial LICH_HELMET = EnumHelper.addArmorMaterial("night_lich", ModReference.MOD_ID +":night_lich", 275, new int[] {3,6,8,3}, 70, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1F);
     private static final ItemArmor.ArmorMaterial INCENDIUM_HELMET_SET = EnumHelper.addArmorMaterial("incendium_h", ModReference.MOD_ID +":incendium_helmet", 375, new int[] {3,6,8,3}, 20, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 2F);
+    private static final ItemArmor.ArmorMaterial DARK_METAL_SET = EnumHelper.addArmorMaterial("dark_metal", ModReference.MOD_ID +":dark_metal", 451, new int[] {3,5,8,3}, 30, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 2.5F);
     private static final ItemArmor.ArmorMaterial WYRK_ARMOR = EnumHelper.addArmorMaterial("wyrk", ModReference.MOD_ID +":wyrk", 325, new int[] {3,6,8,3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
     private static final ItemArmor.ArmorMaterial IMPERIAL_ARMOR = EnumHelper.addArmorMaterial("imperial", ModReference.MOD_ID +":imperial", 670, new int[] {4,7,9,4}, 30, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
     private static final ItemArmor.ArmorMaterial KINGS_HELMET_MAT = EnumHelper.addArmorMaterial("king", ModReference.MOD_ID +":king", 1023, new int[] {4,7,9,4}, 30, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 1.5F);
@@ -68,6 +74,7 @@ public class ModItems {
     public static final Item FLAME_METAL_SCRAP = new ItemCraftingMaterial("flame_metal_scrap", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item DARK_MANA = new ItemCraftingMaterial("dark_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item DARK_CORE = new ItemCraftingMaterial("dark_core", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item CRYPT_PLATE = new ItemCraftingMaterial("crypt_plate", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ROT_KNIGHT_FRAGMENT = new ItemCraftingMaterial("knight_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ROT_KNIGHT_INGOT = new ItemCraftingMaterial("knight_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item LITIC_SHARD = new ItemCraftingMaterial("lightning_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -118,9 +125,11 @@ public class ModItems {
     public static final Item CHAMPION_AXE = new ItemChampionAxe("champion_axe", CHAMPION_AXE_MATERIAL, "champion_axe_desc");
     public static final Item DRAUGR_SHIELD = new ItemDraugrShield("draugr_shield", DungeonAdditionsTab.ALL, "draugr_shield_desc");
     public static final Item FLAME_SPIT_SHIELD = new ItemFlameShield("flame_shield", "flame_shield_desc");
+    public static final Item DARK_METAL_SHIELD = new ItemDarkShield("dark_shield", DungeonAdditionsTab.ALL, "dark_shield_desc");
     public static final Item DRAGON_SHIELD = new ItemDragonShield("dragon_shield", DungeonAdditionsTab.ALL, "dragon_shield_desc");
     public static final Item FLAME_BLADE = new ItemFlameBlade("flame_blade", "flame_blade_desc", FLAME_BLADE_MATERIAL);
     public static final Item SWORN_OF_AMBITION = new ItemAmbitionSword("ambition_sword", "flame_sword", FLAME_SWORD_MATERIAL).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item DARK_SICLE = new ItemDarkSicle("dark_sicle", DARK_SICLE_MATERIAL, "dark_sicle_desc");
     public static final Item SPEAR_OF_SOULS = new ItemSoulSpear("spear_staff", SOUL_SPEAR_MATERIAL, "soul_spear_desc");
     public static final Item SPEAR_OF_WARRIOR = new ItemWeaponSpear("spear_weapon", SOUL_SPEAR_WEAPON_MATERIAL, "soul_weapon_desc");
     public static final Item IMPERIAL_HALBERD_ITEM = new ItemImperialHalberd("imperial_halberd_item", IMPERIAL_HALBERD_MATERIAL, "imperial_halberd_desc");
@@ -146,6 +155,10 @@ public class ModItems {
     public static final Item FLAME_LEGGINGS = new ModArmorBase("flame_leggings", FLAME_ARMOR, 2, EntityEquipmentSlot.LEGS, "flame", "flame_armor_desc");
     public static final ItemArmor FLAME_BOOTS = new ModArmorBase("flame_boots", FLAME_ARMOR, 1, EntityEquipmentSlot.FEET, "flame", "flame_armor_desc");
     public static final ItemArmor NIGHT_LICH_HELMET = new ModLichArmor("lich_helmet", LICH_HELMET, 1, EntityEquipmentSlot.HEAD,"night_lich", "night_lich_desc");
+    public static final ItemArmor DARK_METAL_HELMET = new ModDarkMetalHelmet("dark_metal_helmet", DARK_METAL_SET, 1, EntityEquipmentSlot.HEAD, "dark_metal_helmet", "dark_metal_helmet_desc");
+    public static final ItemArmor DARK_METAL_CHESTPLATE = new ModDarkArmorBase("dark_metal_chestplate", DARK_METAL_SET, 1, EntityEquipmentSlot.CHEST, "dark_metal", "dark_metal_desc");
+    public static final ItemArmor DARK_METAL_LEGGINGS = new ModDarkArmorBase("dark_metal_leggings", DARK_METAL_SET, 2, EntityEquipmentSlot.LEGS, "dark_metal", "dark_metal_desc");
+    public static final ItemArmor DARK_METAL_BOOTS = new ModDarkArmorBase("dark_metal_boots", DARK_METAL_SET, 1, EntityEquipmentSlot.FEET, "dark_metal", "dark_metal_desc");
     public static final ItemArmor IMPERIAL_HELMET = new ItemImperialChestplate("imperial_helmet", IMPERIAL_ARMOR, 1, EntityEquipmentSlot.HEAD, "imperial_helmet", "imperial_helmet_desc");
     public static final ItemArmor IMPERIAL_CHESTPLATE = new ItemImperialChestplate("imperial_chestplate", IMPERIAL_ARMOR, 1, EntityEquipmentSlot.CHEST, "imperial_chestplate", "imperial_armor_desc");
 

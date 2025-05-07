@@ -15,6 +15,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -162,6 +163,11 @@ public abstract class EntityAbstractBase extends EntityCreature {
         EntityLivingBase target = this.getAttackTarget();
 
         if(this.iAmBossMob && target != null) {
+
+            if(this.isPotionActive(MobEffects.LEVITATION)) {
+                this.removePotionEffect(MobEffects.LEVITATION);
+            }
+
             if(!this.hasStartedScaling && target instanceof EntityPlayer && !this.world.isRemote) {
                 double changeAttackDamage = ServerScaleUtil.scaleAttackDamageInAccordanceWithPlayers(this, world);
                 double changeAttackDamageWyrk = ServerScaleUtil.scaleAttackDamageInAccordanceWithPlayersWyrk(this, world);

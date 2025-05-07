@@ -42,15 +42,19 @@ public abstract class BlockSlabBase extends BlockSlab implements IHasModel {
     }
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        IBlockState state = this.blockState.getBaseState().withProperty(VARIANT, Variant.DEFAULT);
-        if (!this.isDouble()) state = state.withProperty(HALF, ((meta&8) !=0) ? EnumBlockHalf.TOP : EnumBlockHalf.BOTTOM);
-        return state;
+        if (!this.isDouble())
+        {
+            return this.getDefaultState().withProperty(HALF, EnumBlockHalf.values()[meta % EnumBlockHalf.values().length]);
+        }
+
+        return this.getDefaultState();
     }
     @Override
     public int getMetaFromState(IBlockState state) {
-        int meta = 0;
-        if (!this.isDouble() && state.getValue(HALF) == EnumBlockHalf.TOP) meta |= 8;
-        return meta;
+        if(this.isDouble())
+            return 0;
+
+        return ((EnumBlockHalf)state.getValue(HALF)).ordinal() + 1;
     }
     @Override
     protected BlockStateContainer createBlockState() {

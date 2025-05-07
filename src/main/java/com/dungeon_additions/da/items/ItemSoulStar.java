@@ -58,6 +58,9 @@ public class ItemSoulStar extends ItemBase{
 
             if(particlePos == null) {
                 particlePos = findNearestPos(playerIn.getPosition(), playerIn);
+                if(particlePos == null) {
+                    playerIn.sendStatusMessage(new TextComponentTranslation("da.no_structure", new Object[0]), true);
+                }
             }
 
             if(isWithinRadius(particlePos, playerIn.getPosition())) {
@@ -125,7 +128,7 @@ public class ItemSoulStar extends ItemBase{
         k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
         l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
 
-        if (i == k && j == l && isAllowedDimensionTooSpawnInNightLich(world.provider.getDimension())) {
+        if (i == k && j == l && isAllowedDimensionTooSpawnInNightLich(world.provider.getDimension())  && !world.isRemote && !world.isChunkGeneratedAt(i, j)) {
             BlockPos pos = new BlockPos((i << 4), 0, (j << 4));
 
                     return isAbleToSpawnHere(pos, world);
@@ -149,7 +152,6 @@ public class ItemSoulStar extends ItemBase{
     public static boolean isWithinRadius(BlockPos setPos, BlockPos pos) {
         if(setPos != null) {
             if(setPos.getDistance(pos.getX(), pos.getY(), pos.getZ()) < ModConfig.locator_reset_pos) {
-                System.out.println("Within Radius of structure, resetting particlePos");
                 return true;
             }
         }

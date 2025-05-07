@@ -800,7 +800,7 @@ public class ModUtils {
 
     public static void doSweepAttack(EntityPlayer player, @Nullable EntityLivingBase target, Consumer<EntityLivingBase> perEntity, float maxDistanceSq, float areaSize) {
         float attackDamage = (float) player.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
-        float sweepDamage = Math.min(0.15F + EnchantmentHelper.getSweepingDamageRatio(player), 1) * attackDamage;
+        float sweepDamage = (float) (Math.min(0.15F + EnchantmentHelper.getSweepingDamageRatio(player), 1) + (attackDamage * 0.6));
 
         AxisAlignedBB box;
 

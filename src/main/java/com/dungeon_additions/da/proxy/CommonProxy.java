@@ -5,6 +5,7 @@ import com.dungeon_additions.da.animation.AnimationMessage;
 import com.dungeon_additions.da.blocks.BlockLeaveBase;
 import com.dungeon_additions.da.event.EventSwordResistance;
 import com.dungeon_additions.da.packets.MessageDirectionForRender;
+import com.dungeon_additions.da.packets.MessageEmptySwing;
 import com.dungeon_additions.da.packets.MessageModParticles;
 import com.dungeon_additions.da.packets.ParticleSSMesage;
 import com.dungeon_additions.da.util.ModReference;
@@ -28,6 +29,7 @@ public class CommonProxy{
         Main.network.registerMessage(MessageModParticles.MessageHandler.class, MessageModParticles.class, packetId++, Side.CLIENT);
         Main.network.registerMessage(MessageDirectionForRender.Handler.class, MessageDirectionForRender.class, packetId++, Side.CLIENT);
         Main.network.registerMessage(ParticleSSMesage.Handler.class, ParticleSSMesage.class, packetId++, Side.CLIENT);
+        Main.network.registerMessage(MessageEmptySwing.Handler.class, MessageEmptySwing.class, packetId++, Side.SERVER);
     }
 
 

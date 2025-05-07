@@ -49,17 +49,4 @@ public class EventSwordResistance {
         }
     }
 
-
-    @SubscribeEvent(receiveCanceled = true)
-    public static void onAttackEntityEvent(AttackEntityEvent event) {
-        // Overrides the melee attack of the player if the item used is the sweep attack
-        // override interface
-        if (event.getEntityPlayer().getHeldItemMainhand().getItem() instanceof ISweepAttackOverride) {
-            PlayerMeleeAttack.attackTargetEntityWithCurrentItem(event.getEntityPlayer(), event.getTarget());
-            event.setCanceled(true);
-        } else {
-            event.setCanceled(false);
-        }
-    }
-
 }

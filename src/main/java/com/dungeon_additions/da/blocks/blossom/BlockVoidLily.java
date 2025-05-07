@@ -107,6 +107,11 @@ public class BlockVoidLily extends BlockBush implements IHasModel, ITileEntityPr
         if(!world.isRemote) {
             if(particlePosToo == null) {
                 particlePosToo = findNearestPos(pos, world);
+                if(placer instanceof EntityPlayer) {
+                    if(particlePosToo == null) {
+                        ((EntityPlayer)placer).sendStatusMessage(new TextComponentTranslation("da.no_structure", new Object[0]), true);
+                    }
+                }
             }
 
             if(particlePosToo != null) {
@@ -122,7 +127,6 @@ public class BlockVoidLily extends BlockBush implements IHasModel, ITileEntityPr
     public static boolean isWithinRadius(BlockPos setPos, BlockPos pos) {
         if(setPos != null) {
             if(setPos.getDistance(pos.getX(), pos.getY(), pos.getZ()) < ModConfig.locator_reset_pos) {
-                System.out.println("Within Radius of structure, resetting particlePos");
                 return true;
             }
         }
@@ -141,7 +145,7 @@ public class BlockVoidLily extends BlockBush implements IHasModel, ITileEntityPr
                 //Chunk chunk = world.getChunkFromBlockCoords(pos);
                 boolean c = canStructureSpawnAtPos(world, chunk.x + i, chunk.z + j);
                 if (c) {
-                    resultpos = new BlockPos((chunk.x + i) << 4, 100, (chunk.z + j) << 4);
+                    resultpos = new BlockPos((chunk.x + i) << 4, 60, (chunk.z + j) << 4);
                     break;
                 }
                 // }
@@ -183,7 +187,7 @@ public class BlockVoidLily extends BlockBush implements IHasModel, ITileEntityPr
         k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
         l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
 
-        if (i == k && j == l && isAllowedDimensionTooSpawnIn(world.provider.getDimension())) {
+        if (i == k && j == l && isAllowedDimensionTooSpawnIn(world.provider.getDimension()) && !world.isRemote && !world.isChunkGeneratedAt(i, j)) {
             BlockPos pos = new BlockPos((i << 4), 0, (j << 4));
             return isAbleToSpawnHereBlossom(pos, world);
         } else {

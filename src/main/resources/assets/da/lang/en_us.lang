@@ -49,7 +49,7 @@ entity.farum_dart.name=Farum Gargoyle Shard
 entity.light_ring_projectile.name=Light Ring
 entity.gargoyle_lazer.name=The Shining Light
 entity.friend_wyrk.name=Friendly Wyrk
-entity.dark_assassin.name=Cult of Rah Assassin
+entity.dark_assassin.name=Cult of Roh Assassin
 entity.shadow_hand.name=Cult's Hand
 entity.high_king_drake.name=The High King of the Sky
 entity.storm_tornado.name=Storm Breath
@@ -70,6 +70,9 @@ entity.volatile_spirit.name=Volactile Spirit
 entity.flame_spit.name=Volactile Flame
 entity.volatile_orb.name=Volactile Flame
 entity.flame_blade_proj.name=Flame Blade Projectile
+entity.dark_sorcerer.name=Roh Sorcerer
+entity.proj_dark_matter.name=Void Mana
+entity.dark_royal.name=Roh Crypt Guard
 item.void_leaf.name=Void Leaf
 item.spore.name=Void Blossom Spore
 item.crystal_fruit.name=Crystal Fruit
@@ -118,9 +121,15 @@ item.imperial_halberd_item.name=The Prosperous Assault
 item.sword_spear.name=Divine Sword Spear
 item.sword_spear_blood.name=Bloodied Sword Spear
 item.king_helmet.name=Crown of the Cursed
+item.crypt_plate.name=Dark Metal Plate
+item.dark_metal_helmet.name=Dark Metal Helmet
+item.dark_metal_chestplate.name=Dark Metal Chestplate
+item.dark_metal_leggings.name=Dark Metal Leggings
+item.dark_metal_boots.name=Dark Metal Boots
 da.desc.draugr_shield_name=Frostborn Shield
 da.desc.dragon_shield_name=Dragon Scourage Shield
 da.desc.flame_shield_name=Incendium Shield
+da.desc.dark_shield_name=Dark Metal Shield
 item.frost_locator.name=Frozen Soul Star
 item.wyrk_helmet.name=Ancient Wyrk Helmet
 item.wyrk_boots.name=Ancient Wyrk Boots
@@ -141,10 +150,10 @@ item.imperial_chestplate.name=Lithic Chestplate
 item.imperial_helmet.name=Lithic Helmet
 item.imperial_leggings.name=Lithic Leggings
 item.imperial_boots.name=Lithic Boots
-item.dark_mana.name=Rah Void Mana
-item.dark_core.name=Rah Void Core
-item.dark_locator.name=Cult of Rah Eye
-item.dark_dagger.name=Rah Void Dagger
+item.dark_mana.name=Roh Void Mana
+item.dark_core.name=Roh Void Core
+item.dark_locator.name=Cult of Roh Eye
+item.dark_dagger.name=Roh Void Dagger
 item.storm_tornado.name=Storm Tornado
 item.dragon_scale.name=High Dragon Scales
 item.divine_metal.name=Divine Metal Scrap
@@ -164,6 +173,7 @@ item.sealed_flame.name=Sealed Flame Bottle
 item.volatile_orb.name=Volactile Pearl
 item.proj_flame_blade.name=Flame Blade Projectile
 item.flame_shield.name=Incendium Shield
+item.dark_sicle.name=Dark Metal Sickle
 tile.spore_blossom.name=Void Blossom
 tile.moss_block.name=Moss Block
 tile.moss_carpet.name=Moss Carpet
@@ -272,6 +282,7 @@ da.friend_wyrk=You already have a Friendly Wyrk under your command near you!
 da.friend_halberd=There is already a Summoned Halbidier near you!
 da.sky_arrow_fail=Failed to shoot due to there not being a target aimed at!
 da.volatile_orb=It's flame is not yet satisfied, there is still fire elementals nearby.
+da.no_structure=There is no current structure within the search radius
 
 da.desc.regen_fruit=Grants brief regen and resistance
 da.desc.crafting_material=Crafting material
@@ -325,6 +336,10 @@ da.desc.incendium_leggings_desc=Grants Speed Briefly when using a Shield. Full s
 da.desc.flame_blade_desc=Right Clicking will release a Flame Blade before you that can hit multiple entities.
 da.desc.sealed_flame_desc=Right Clicking will cast a flame wave in front of you.
 da.desc.flame_shield_desc=Blocking attacks charges the shield, upon sneaking and blocking you will shoot flames from your shield.
+da.desc.dark_metal_desc=Full set boosts shield ability damage significantly.
+da.desc.dark_metal_helmet_desc=Gives Night Vision during night time. Full set boosts shield ability damage significantly.
+da.desc.dark_shield_desc=Blocking attacks charges the shield, after 5 charges and sneaking you will do a short AOE attack.
+da.desc.dark_sicle_desc=Attacking causes a sweep attack, Right Clicking shoots a dark matter projectile.
 death.attack.da:maelstrom=%1$s succumbed to the void
 death.attack.da:mobMaelstrom=%1$s was killed by a %2$s
 death.attack.da:playerMaelstrom=%1$s was killed by %2$s
@@ -364,15 +379,18 @@ advancements.da.kill_great_wyrk.description=Slay an Ancient Wyrk
 #Kill High Court Halbidier
 advancements.da.kill_imperial_halberd.title=The Definition of Forgotten.
 advancements.da.kill_imperial_halberd.description=Slay a High Court Halbidier
-#Kill Cult of Rah Assassin
+#Kill Cult of Roh Assassin
 advancements.da.kill_dark_assassin.title=The Cult sends there regards!
-advancements.da.kill_dark_assassin.description=Slay a Cult of Rah Assassin
+advancements.da.kill_dark_assassin.description=Slay a Cult of Roh Assassin
 #Kill the High King
 advancements.da.kill_high_king.title=Dethroned!
 advancements.da.kill_high_king.description=Slay the High King
 #Kill Volactile Spirit
 advancements.da.kill_volatile_spirit.title=Gatekeeper.
 advancements.da.kill_volatile_spirit.description=Slay a Volactile Spirit
+#Kill Roh Crypt Guard
+advancements.da.kill_dark_royal.title=No rest for the wicked.
+advancements.da.kill_dark_royal.description=Slay a Roh Crypt Guard
 #Find Soul Star
 advancements.da.find_soul_star.title=The stars lead the way
 advancements.da.find_soul_star.description=Obtain a Soul Star
@@ -456,7 +474,7 @@ advancements.da.craft_parry_sword.title=Parry this you filthy casual!
 advancements.da.craft_parry_sword.description=Craft the Master Parry Sword
 #Craft Dark Assassin Blade
 advancements.da.craft_dark_dagger.title=In the blade of Night.
-advancements.da.craft_dark_dagger.description=Craft the Rah Void Dagger
+advancements.da.craft_dark_dagger.description=Craft the Roh Void Dagger
 #Craft Bloody Sword Spear
 advancements.da.craft_bloody_sword_spear.title=Sometimes, I think the world should pay for its suffering.
 advancements.da.craft_bloody_sword_spear.description=Craft the Bloodied Sword Spear
@@ -478,4 +496,13 @@ advancements.da.craft_king_claw.description=Craft the Lithic Clawed Glove.
 #Craft the King's Crown
 advancements.da.craft_king_helmet.title=The new king of the sky.
 advancements.da.craft_king_helmet.description=Craft the Crown of the Cursed.
+#Craft Dark Metal Set
+advancements.da.craft_dark_metal_armor.title=The Midnight Knight
+advancements.da.craft_dark_metal_armor.description=Craft the Dark Metal Set.
+#Craft Dark Metal Shield
+advancements.da.craft_dark_shield.title=The Tiresome Defender
+advancements.da.craft_dark_shield.description=Craft the Dark Metal Shield
+#Craft Dark Metal Sickle
+advancements.da.craft_dark_sicle.title=The Night of Harvest
+advancements.da.craft_dark_sicle.description= Craft the Dark Metal Sickle
 

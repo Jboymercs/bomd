@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VV",
+    " R",
+    " X"
+  ],
+  "key": {
+    "V": {
+      "item": "da:crypt_plate"
+    },
+    "R": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "item": "da:dark_core"
+    }
+  },
+  "result": {
+    "item": "da:dark_sicle"
+  }
+}

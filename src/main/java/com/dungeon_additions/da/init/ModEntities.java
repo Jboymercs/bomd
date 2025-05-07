@@ -6,8 +6,8 @@ import com.dungeon_additions.da.entity.EntityFireResistantItems;
 import com.dungeon_additions.da.entity.EntityNetherAbberrant;
 import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
-import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
-import com.dungeon_additions.da.entity.dark_dungeon.EntityShadowHand;
+import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
+import com.dungeon_additions.da.entity.dark_dungeon.*;
 import com.dungeon_additions.da.entity.flame_knight.*;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameBlade;
@@ -82,19 +82,15 @@ public class ModEntities {
     public static Vec3i dark_assassin = new Vec3i(0x233547,0x030303,0);
     public static Vec3i high_drake = new Vec3i(0x262852,0xd4d4cd,0);
     public static Vec3i high_king = new Vec3i(0x262852,0xe0c03f,0);
+    public static Vec3i dark_sorcerer = new Vec3i(0x233547,0x69057b,0);
 
-
+    public static Vec3i dark_royal = new Vec3i(0x233547,0xb42507,0);
     public static void registerEntities() {
-      //  registerEntityWithID("wreath_knight", EntityWreathKnight.class, ENTITY_START_ID++, 50, knight_mobs);
+        //One day, you'll be back in game my son
+       // registerEntityWithID("wreath_knight", EntityWreathKnight.class, ENTITY_START_ID++, 50, void_blossom);
         registerEntityWithID("void_blossom", EntityVoidBlossom.class, ENTITY_START_ID++, 50, void_blossom);
         registerEntityWithID("mini_blossom", EntityMiniBlossom.class, ENTITY_START_ID++, 50, mini_void_blossom);
         registerEntityWithID("nether_aberant", EntityNetherAbberrant.class, ENTITY_START_ID++, 50, nether_spirit);
-
-        //Example Entity
-      //  registerEntity("example_entity", EntityExample.class, ENTITY_START_ID++, 50, knight_mobs);
-
-        //Example Entity 2
-      //  registerEntity("everator", EntityEverator.class, ENTITY_START_ID++, 50, knight_mobs);
         registerEntity("spore_cloud", EntityGenericWave.class, ENTITY_START_ID++, 50);
         registerEntity("void_spike", EntityVoidSpike.class, ENTITY_START_ID++, 50);
         registerEntity("void_leaf", ProjectileVoidLeaf.class, PROJECTILE_START_ID++, 30);
@@ -166,6 +162,10 @@ public class ModEntities {
             registerEntity("flame_spit", ProjectileFlameSpit.class, ENTITY_START_ID++, 110);
             registerEntity("volatile_orb", EntityFlameOrb.class, ENTITY_START_ID++, 110);
             registerEntity("flame_blade_proj", ProjectileFlameBlade.class, ENTITY_START_ID++, 110);
+            registerEntityWithID("dark_sorcerer", EntityDarkSorcerer.class, ENTITY_START_ID++, 110, dark_sorcerer);
+            registerEntity("proj_dark_matter", ProjectileDarkMatter.class, ENTITY_START_ID++, 110);
+            registerEntityWithID("dark_royal", EntityDarkRoyal.class, ENTITY_START_ID++, 110, dark_royal);
+
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
         registerTileEntity(TileEntityMegaStructure.class, "mega_structure");
@@ -183,6 +183,10 @@ public class ModEntities {
         spawnRate(EntityDarkAssassin.class, EnumCreatureType.MONSTER, ModConfig.assassin_spawn_rate, 1, 2, BiomeDictionary.Type.FOREST);
         spawnRate(EntityDarkAssassin.class, EnumCreatureType.MONSTER, ModConfig.assassin_spawn_rate, 1, 2, BiomeDictionary.Type.PLAINS);
         spawnRate(EntityDarkAssassin.class, EnumCreatureType.MONSTER, ModConfig.assassin_spawn_rate, 1, 2, BiomeDictionary.Type.SANDY);
+        spawnRate(EntityDarkSorcerer.class, EnumCreatureType.MONSTER, ModConfig.sorcerer_spawn_rate, 1, 1, BiomeDictionary.Type.SNOWY);
+        spawnRate(EntityDarkSorcerer.class, EnumCreatureType.MONSTER, ModConfig.sorcerer_spawn_rate, 1, 1, BiomeDictionary.Type.FOREST);
+        spawnRate(EntityDarkSorcerer.class, EnumCreatureType.MONSTER, ModConfig.sorcerer_spawn_rate, 1, 1, BiomeDictionary.Type.PLAINS);
+        spawnRate(EntityDarkSorcerer.class, EnumCreatureType.MONSTER, ModConfig.sorcerer_spawn_rate, 1, 1, BiomeDictionary.Type.SANDY);
     }
 
 

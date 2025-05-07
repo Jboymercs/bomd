@@ -2,6 +2,7 @@ package com.dungeon_additions.da.items.shield;
 
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.flame_knight.ProjectileFlameSpit;
+import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
@@ -9,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.tileentity.TileEntityBanner;
 import net.minecraft.util.SoundCategory;
@@ -84,23 +86,34 @@ public class ItemFlameShield extends BOMDShieldItem implements IAnimatable {
                 if(player.ticksExisted % 12 == 0) {
                     hitCounter--;
                     usedHitCounter++;
-                    ProjectileFlameSpit spit = new ProjectileFlameSpit(worldIn, player, ModConfig.incendium_shield_damage);
-                    Vec3d playerLookVec = player.getLookVec();
-                    Vec3d playerPos = new Vec3d(player.posX + playerLookVec.x * 1.4D, player.posY + playerLookVec.y + 1.4, player.posZ + playerLookVec.z * 1.4D);
-                    spit.setPosition(playerPos.x, playerPos.y, playerPos.z);
-                    spit.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 0.7F, 1F);
-                    spit.setTravelRange(8);
-                    worldIn.spawnEntity(spit);
+
+                    float damage = ModConfig.incendium_shield_damage;
+
+                    if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
+                            player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
+                        damage = (float) (ModConfig.incendium_shield_damage * ModConfig.dark_armor_multiplier);
+                    }
+
+                        ProjectileFlameSpit spit = new ProjectileFlameSpit(worldIn, player, damage);
+                        Vec3d playerLookVec = player.getLookVec();
+                        Vec3d playerPos = new Vec3d(player.posX + playerLookVec.x * 1.4D, player.posY + playerLookVec.y + 1.4, player.posZ + playerLookVec.z * 1.4D);
+                        spit.setPosition(playerPos.x, playerPos.y, playerPos.z);
+                        spit.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 0.7F, 1F);
+                        spit.setTravelRange(8);
+                        worldIn.spawnEntity(spit);
+
                     worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.NEUTRAL, 0.6f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.4f));
                     usedAbility = true;
 
                     if (usedHitCounter > 6) {
-                        player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.incendium_shield_cooldown * 20);
                         usedHitCounter = 0;
                         hitCounter = 0;
                         usedAbility = false;
-                        player.resetActiveHand();
-                        player.disableShield(true);
+                        if(!worldIn.isRemote) {
+                            player.resetActiveHand();
+                            player.disableShield(true);
+                            player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.incendium_shield_cooldown * 20);
+                        }
                         worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.NEUTRAL, 0.9f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.4f));
                     }
                 }

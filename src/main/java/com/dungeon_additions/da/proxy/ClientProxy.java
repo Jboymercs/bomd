@@ -41,6 +41,8 @@ public class ClientProxy extends CommonProxy{
 
     private final ModelBiped MODEL_INCENDIUM_HELMET = new ModelIncendiumHelmet(0F);
 
+    private final ModelBiped MODEL_DARK_METAL_HELMET = new ModelDarkHelmet(0F);
+
     @Override
     public void init() {
 
@@ -99,6 +101,9 @@ public class ClientProxy extends CommonProxy{
         }
         if(item == ModItems.INCENDIUM_HELMET) {
             return MODEL_INCENDIUM_HELMET;
+        }
+        if(item == ModItems.DARK_METAL_HELMET) {
+            return MODEL_DARK_METAL_HELMET;
         }
         return null;
     }

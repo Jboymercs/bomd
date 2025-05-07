@@ -2,11 +2,13 @@ package com.dungeon_additions.da.items.tools;
 
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.items.util.ISweepAttackOverride;
 import com.dungeon_additions.da.util.IHasModel;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,11 +18,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class ToolSword extends ItemSword implements IHasModel {
+public class ToolSword extends ItemSword implements IHasModel, ISweepAttackOverride {
 
     public int ticksExisted;
 
@@ -97,4 +100,8 @@ public class ToolSword extends ItemSword implements IHasModel {
     }
 
 
+    @Override
+    public void doSweepAttack(EntityPlayer player, @Nullable EntityLivingBase entity) {
+
+    }
 }

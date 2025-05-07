@@ -1,0 +1,56 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:dark_metal_helmet"
+    },
+    "title": {
+      "translate": "advancements.da.craft_dark_metal_armor.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_dark_metal_armor.description"
+    }
+  },
+  "parent": "da:kill_dark_royal",
+  "criteria": {
+    "darkHelmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:dark_metal_helmet"
+          }
+        ]
+      }
+    },
+    "darkChestplate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:dark_metal_chestplate"
+          }
+        ]
+      }
+    },
+    "darkLeggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:dark_metal_leggings"
+          }
+        ]
+      }
+    },
+    "darkBoots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:dark_metal_boots"
+          }
+        ]
+      }
+    }
+  }
+}

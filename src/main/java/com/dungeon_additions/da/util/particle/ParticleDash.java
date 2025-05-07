@@ -44,7 +44,8 @@ public class ParticleDash extends ParticleSSBase {
     public void onUpdate()
     {
         super.onUpdate();
-        this.texSpot = this.particleAge * 3 / (this.particleMaxAge);
+       // this.texSpot = this.particleAge * 3 / (this.particleMaxAge);
+        this.texSpot = Math.min(this.particleAge * 5 / (this.particleMaxAge), 3);
     }
 
     @Override

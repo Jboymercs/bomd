@@ -35,6 +35,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
@@ -1204,6 +1206,22 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             return super.attackEntityFrom(source, (float) (amount * MobConfig.lich_melee_resistance));
         }
         return super.attackEntityFrom(source, amount);
+    }
+
+    private boolean initiateDeathText = false;
+
+    @Override
+    public void onDeath(DamageSource cause) {
+
+        if(cause.getTrueSource() instanceof EntityPlayer || cause.getImmediateSource() instanceof EntityPlayer) {
+            EntityPlayer player = ((EntityPlayer) cause.getTrueSource());
+            if(!ModUtils.getAdvancementCompletionAsList(player, ModConfig.sorcerers_spawn_progress) && !initiateDeathText) {
+                assert player != null;
+                player.sendMessage(new TextComponentString(TextFormatting.RED + "They giggle at your progress..."));
+                initiateDeathText = true;
+            }
+        }
+        super.onDeath(cause);
     }
 
     private static final ResourceLocation LOOT_BOSS = new ResourceLocation(ModReference.MOD_ID, "night_lich");

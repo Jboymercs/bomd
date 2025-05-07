@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:dark_shield"
+    },
+    "title": {
+      "translate": "advancements.da.craft_dark_shield.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_dark_shield.description"
+    }
+  },
+  "parent": "da:kill_dark_royal",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:dark_shield"
+          }
+        ]
+      }
+    }
+  }
+}

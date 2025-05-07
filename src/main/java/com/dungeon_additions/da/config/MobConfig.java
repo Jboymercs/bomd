@@ -449,25 +449,79 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static int great_wyrk_cooldown = 5;
 
-    @Config.Name("Cult of Rah Assassin Health")
-    @Config.Comment("Change the health of the Cult of Rah Assassin")
+    @Config.Name("Cult of Roh Assassin Health")
+    @Config.Comment("Change the health of the Cult of Roh Assassin")
     @Config.RequiresMcRestart
     public static double assassin_healht = 35;
 
-    @Config.Name("Cult of Rah Assassin Attack Damage")
-    @Config.Comment("Change the attack damage of the Cult of Rah Assassin")
+    @Config.Name("Cult of Roh Assassin Attack Damage")
+    @Config.Comment("Change the attack damage of the Cult of Roh Assassin")
     @Config.RequiresMcRestart
     public static double assassin_attack_damage = 16;
 
-    @Config.Name("Cult of Rah Assassin Armor")
-    @Config.Comment("Change the armor value of the Cult of Rah Assassin")
+    @Config.Name("Cult of Roh Assassin Armor")
+    @Config.Comment("Change the armor value of the Cult of Roh Assassin")
     @Config.RequiresMcRestart
     public static double assassin_armor = 4;
 
-    @Config.Name("Cult of Rah Assassin Disappears in Daylight")
-    @Config.Comment("Change if the Cult of Rah Assassin disappears when its daylight and can see the sun. default: true")
+    @Config.Name("Cult of Roh Mobs Disappears in Daylight")
+    @Config.Comment("Change if the Cult of Roh mobs disappears when its daylight and can see the sun. default: true")
     @Config.RequiresMcRestart
     public static boolean assassin_burns_daylight = true;
+
+    @Config.Name("Cult of Roh Sorcerer Attack Damage")
+    @Config.Comment("Change the attack damage of the Cult of Roh Sorcerer")
+    @Config.RequiresMcRestart
+    public static double sorcerer_attack_damage = 20;
+
+    @Config.Name("Cult of Roh Sorcerer Health")
+    @Config.Comment("Change the health of the Cult of Roh Sorcerer")
+    @Config.RequiresMcRestart
+    public static double sorcerer_health = 65;
+
+    @Config.Name("Cult of Roh Sorcerer Armor")
+    @Config.Comment("Change the Armor value of the Cult of Roh Sorcerer")
+    @Config.RequiresMcRestart
+    public static double sorcerer_armor = 8;
+
+    @Config.Name("Cult of Roh Sorcerer Minions Cap")
+    @Config.Comment("Change how many minions the Cult of Roh Sorcerer can have active around it")
+    @Config.RequiresMcRestart
+    public static int sorcerer_minions_cap = 3;
+
+    @Config.Name("Cult of Roh SorcererMob Spawn List")
+    @Config.Comment("Add or remove possible mob spawns that the Cult of Roh Sorcerer can summon. Must be ModID:entity_name")
+    @Config.RequiresMcRestart
+    public static String[] sorcerer_spawn_list = {
+            "da:dark_assassin", "da:dark_royal"
+    };
+
+    @Config.Name("Cult of Roh Crypt Guard Health")
+    @Config.Comment("Change the health of the Roh Crypt Guard")
+    @Config.RequiresMcRestart
+    public static double crypt_guard_health = 50;
+
+    @Config.Name("Cult of Roh Crypt Guard Attack Damage")
+    @Config.Comment("Change the attack damage of the Roh Crypt Guard")
+    @Config.RequiresMcRestart
+    public static double crypt_guard_attack_damage = 22;
+
+    @Config.Name("Cult of Roh Crypt Guard Armor")
+    @Config.Comment("Change the armor value of the Roh Crypt Guard")
+    @Config.RequiresMcRestart
+    public static double crypt_guard_armor = 18;
+
+    @Config.Name("Cult of Roh Crypt Guard Shield Chance")
+    @Config.Comment("Change the chance that a Crypt Guard will spawn with a shield, higher means less likely. default: 7")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 10)
+    public static int crypt_guard_shield_chance = 7;
+
+    @Config.Name("Cult of Roh Crypt Guard Potion Chance")
+    @Config.Comment("Change the chance that a Crypt Guard will spawn with a Lingering Potion. Only ones without shields can equip these. Higher means less likely. default: 8")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 10)
+    public static int crypt_guard_potion_chance = 8;
 
     @Config.Name("High Court Knights Health")
     @Config.Comment("Change the health of the High Court Knights")

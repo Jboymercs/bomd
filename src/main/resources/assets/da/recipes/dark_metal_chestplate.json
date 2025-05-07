@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V V",
+    "VXV",
+    "VRV"
+  ],
+  "key": {
+    "V": {
+      "item": "da:crypt_plate"
+    },
+    "X": {
+      "item": "da:dark_mana"
+    },
+    "R": {
+      "item": "da:dark_core"
+    }
+  },
+  "result": {
+    "item": "da:dark_metal_chestplate"
+  }
+}

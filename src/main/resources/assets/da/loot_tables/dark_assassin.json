@@ -31,13 +31,7 @@
               }
             }
           ]
-        }
-      ]
-    },
-    {
-      "name" : "da:dark_assassin",
-      "rolls": 1,
-      "entries": [
+        },
         {
           "type": "item",
           "name": "da:dark_mana",
@@ -48,6 +42,26 @@
               "count": {
                 "min": 0,
                 "max": 2
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "da:dark_assassin",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:crypt_plate",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 1
               }
             }
           ]

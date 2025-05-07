@@ -13,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.tileentity.TileEntityBanner;
 import net.minecraft.util.*;
@@ -119,9 +120,11 @@ public class ItemDraugrShield extends BOMDShieldItem implements IAnimatable {
                     player.motionZ = 0;
                     player.motionY = 0;
                     dashTime = 0;
-                    player.resetActiveHand();
-                    player.disableShield(true);
-                    player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.frostborn_shield_cooldown * 20);
+                    if(!worldIn.isRemote) {
+                        player.resetActiveHand();
+                        player.disableShield(true);
+                        player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.frostborn_shield_cooldown * 20);
+                    }
                 }
 
             }
@@ -132,12 +135,21 @@ public class ItemDraugrShield extends BOMDShieldItem implements IAnimatable {
 
     public void onEnemyRammed(EntityLivingBase user, EntityLivingBase enemy, Vec3d rammingDir) {
         boolean attacked = false;
+        float damage = ModConfig.frostborn_shield_damage;
 
         if(user instanceof EntityPlayer) {
-            attacked = enemy.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer)user), ModConfig.frostborn_shield_damage);
+            EntityPlayer actor = ((EntityPlayer) user);
+            if(actor.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && actor.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
+                    actor.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && actor.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
+                damage = (float) (ModConfig.frostborn_shield_damage * ModConfig.dark_armor_multiplier);
+            }
+        }
+
+        if(user instanceof EntityPlayer) {
+            attacked = enemy.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer)user), damage);
 
         } else {
-            attacked = enemy.attackEntityFrom(DamageSource.causeMobDamage(user), ModConfig.frostborn_shield_damage);
+            attacked = enemy.attackEntityFrom(DamageSource.causeMobDamage(user), damage);
         }
 
         if(attacked) {

@@ -53,6 +53,8 @@ public class RegistryHandler {
         ModelLoader.setCustomModelResourceLocation(ModItems.FLAME_BLADE, 0, new ModelResourceLocation(ModReference.MOD_ID + ":flame_blade", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.FLAME_BLADE_PROJ, 0, new ModelResourceLocation(ModReference.MOD_ID + ":proj_flame_blade", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.FLAME_SPIT_SHIELD, 0, new ModelResourceLocation(ModReference.MOD_ID + ":flame_shield", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.DARK_METAL_SHIELD, 0, new ModelResourceLocation(ModReference.MOD_ID + ":dark_shield", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.DARK_SICLE, 0, new ModelResourceLocation(ModReference.MOD_ID + ":dark_sicle", "inventory"));
         ModItems.SPORE_BALL.setTileEntityItemStackRenderer(new RenderSpore());
         ModItems.MAGIC_FIREBALL.setTileEntityItemStackRenderer(new RenderMagicFireball());
         ModItems.CHAMPION_AXE.setTileEntityItemStackRenderer(new RenderChampionAxe());
@@ -68,6 +70,8 @@ public class RegistryHandler {
         ModItems.FLAME_BLADE.setTileEntityItemStackRenderer(new RenderFlameBlade());
         ModItems.FLAME_BLADE_PROJ.setTileEntityItemStackRenderer(new RenderFlameBladeProj());
         ModItems.FLAME_SPIT_SHIELD.setTileEntityItemStackRenderer(new RenderFlameShield());
+        ModItems.DARK_METAL_SHIELD.setTileEntityItemStackRenderer(new RenderDarkShield());
+        ModItems.DARK_SICLE.setTileEntityItemStackRenderer(new RenderDarkSicle());
         for (Item item : ModItems.ITEMS) {
             if (item instanceof IHasModel) {
                 ((IHasModel) item).registerModels();

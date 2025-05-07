@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.world.high_city;
 
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
@@ -9,6 +10,7 @@ import com.dungeon_additions.da.entity.sky_dungeon.*;
 import com.dungeon_additions.da.entity.tileEntity.tileEntityMobSpawner;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModEntities;
+import com.dungeon_additions.da.integration.ModIntegration;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.world.ModStructureTemplate;
@@ -149,6 +151,9 @@ public class HighCityTemplate extends ModStructureTemplate {
 
     @Override
     public String templateLocation() {
+        if(ModIntegration.IS_AETHER_LOADED && ModIntegration.IS_AETHER_LOST_CONTENT_LOADED && ModIntegration.IS_AETHER_CONTINUATION_LOADED && ModConfig.aether_compat) {
+            return "aether_high_city";
+        }
         return "high_city";
     }
 }

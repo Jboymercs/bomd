@@ -74,6 +74,11 @@ public class EntityVoidSpike extends EntityAbstractBase implements IAnimatable {
     }
 
     @Override
+    protected void initEntityAI() {
+
+    }
+
+    @Override
     public void onUpdate() {
         super.onUpdate();
             this.motionX = 0;
@@ -83,7 +88,7 @@ public class EntityVoidSpike extends EntityAbstractBase implements IAnimatable {
             this.rotationYawHead = 0;
             this.renderYawOffset = 0;
 
-            if(MobConfig.spike_lag_reducer) {
+            if(MobConfig.spike_lag_reducer && this.ticksExisted == 2) {
                 List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(20D, 5D, 20D), e -> !e.getIsInvulnerable() && (!(e instanceof EntityVoidBlossom || e instanceof EntityVoidSpike || e instanceof EntityGenericWave || e instanceof EntityMiniBlossom)));
                 if(targets.isEmpty()) {
                     this.setDead();

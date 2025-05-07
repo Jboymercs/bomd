@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:crypt_plate"
+    },
+    "title": {
+      "translate": "advancements.da.kill_dark_royal.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_dark_royal.description"
+    }
+  },
+  "parent": "da:kill_dark_assassin",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:dark_royal"
+        }
+      }
+    }
+  }
+}

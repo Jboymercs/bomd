@@ -221,6 +221,14 @@ public class SoundsHandler {
     public static SoundEvent ABBERRANT_IDLE;
     public static SoundEvent ABBERRANT_HURT;
 
+    public static SoundEvent DARK_SORCERER_HURT;
+    public static SoundEvent DARK_SORCERER_IDLE;
+    public static SoundEvent DARK_SORCERER_SUMMON_MINION;
+    public static SoundEvent DARK_SORCERER_EXCHANGE;
+    public static SoundEvent DARK_ROYAL_IDLE;
+    public static SoundEvent DARK_ROYAL_HURT;
+    public static SoundEvent DARK_ROYAL_DASH;
+
     public static void registerSounds() {
         //
         MOSS_BREAK = registerSound("moss.break", "block");
@@ -408,7 +416,17 @@ public class SoundsHandler {
         VOLATILE_ORB_FAIL = registerSound("volatile.orb_fail", "entity");
         ABBERRANT_HURT = registerSound("aberrant.hurt", "entity");
         ABBERRANT_IDLE = registerSound("aberrant.idle", "entity");
+        //
+        DARK_SORCERER_HURT = registerSound("dark_sorcerer.hurt", "entity");
+        DARK_SORCERER_IDLE = registerSound("dark_sorcerer.idle", "entity");
+        DARK_SORCERER_SUMMON_MINION = registerSound("dark_sorcerer.summon", "entity");
+        DARK_SORCERER_EXCHANGE = registerSound("dark_sorcerer.exchange", "entity");
+        //
+        DARK_ROYAL_HURT = registerSound("dark_crypt.hurt", "entity");
+        DARK_ROYAL_IDLE = registerSound("dark_crypt.idle", "entity");
+        DARK_ROYAL_DASH = registerSound("dark_crypt.dash", "entity");
     }
+
 
 
     private static SoundEvent registerSound(String name, String category) {

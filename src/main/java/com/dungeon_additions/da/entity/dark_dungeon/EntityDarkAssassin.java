@@ -302,22 +302,6 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
           world.spawnEntity(hand);
       }, 15);
 
-      addEvent(()-> {
-          for(int i = 0; i < 10; i +=5) {
-              addEvent(()-> {
-                  EntityShadowHand hand = new EntityShadowHand(world);
-                  Vec3d randPosI = this.getPositionVector().add(ModRand.range(-4, 4) + 2, 0, ModRand.range(-4, 4) + 2);
-                  int yVar = ModUtils.getSurfaceHeightGeneral(world, new BlockPos(randPosI.x, randPosI.y, randPosI.z), (int) this.posY - 5, (int) this.posY + 4);
-                  if(yVar == this.posY) {
-                      hand.setPosition(randPosI.x, yVar, randPosI.z);
-                  } else {
-                      hand.setPosition(randPosI.x, yVar + 1, randPosI.z);
-                  }
-                  this.world.spawnEntity(hand);
-              }, i);
-          }
-      }, 20);
-
 
       addEvent(()-> {
           this.lockLook = false;
