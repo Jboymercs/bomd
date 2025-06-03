@@ -2256,5 +2256,15 @@
         "steam": false
       }
     ]
+  },
+  "block.mirror.move": {
+    "category": "block",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:block/mirror/move",
+        "steam": false
+      }
+    ]
   }
 }

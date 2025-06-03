@@ -255,6 +255,37 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static boolean hcc_enabled = true;
 
+    @Config.Name("Forgotten Temple Y Height")
+    @Config.Comment("Change the Y heigt that the puzzle room generates in the Forgotten Temple")
+    @Config.RequiresMcRestart
+    public static int temple_y_height = 40;
+
+    @Config.Name("Forgotten Temple Max Y Height")
+    @Config.Comment("This paramater ensures that the surface part doesn't go above a set y value. In case it spawns in mountains or something of that")
+    @Config.RequiresMcRestart
+    public static int temple_max_y_height = 70;
+
+    @Config.Name("Forgotten Temple Spacing")
+    @Config.Comment("Change how rare Forgotten Temple structures are, increasing the value increases the spacing")
+    @Config.RequiresMcRestart
+    public static int temple_spacing = 30;
+
+    @Config.Name("Forgotten Temple WhiteList Biome Types")
+    @Config.Comment("Add Biome types that ALLOW the Forgotten Temple from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
+    @Config.RequiresMcRestart
+    public static String[] forgotten_temple_whitelist = {"HOT","DRY","SANDY",
+    };
+
+    @Config.Name("Forgotten Temple Dimensions allowed in!")
+    @Config.Comment("Take note that any ocean type biomes this structure will NOT spawn in, but you can select which dimension you'd like the structure to spawn in")
+    @Config.RequiresMcRestart
+    public static int[] list_of_dimensions_forgotten_temple = {0};
+
+    @Config.Name("Forgotten Temple Enabled/Disabled")
+    @Config.Comment("Change if the Forgotten Temple should spawn at all. default: true")
+    @Config.RequiresMcRestart
+    public static boolean temple_enabled = true;
+
     @Config.Name("Petrogloom Ore Gen")
     @Config.Comment("Allowed Dimension for Petrogloom to spawn in")
     @Config.RequiresMcRestart

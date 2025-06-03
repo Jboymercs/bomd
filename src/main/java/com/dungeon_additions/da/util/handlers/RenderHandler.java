@@ -4,6 +4,7 @@ import com.dungeon_additions.da.animation.example.EntityExample;
 import com.dungeon_additions.da.animation.example.ModelExample;
 import com.dungeon_additions.da.animation.example.exampletwo.EntityEverator;
 import com.dungeon_additions.da.animation.example.exampletwo.ModelEverator;
+import com.dungeon_additions.da.blocks.desert_dungeon.RenderPuzzleMirror;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.EntityNetherAbberrant;
 import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
@@ -52,6 +53,7 @@ import com.dungeon_additions.da.entity.sky_dungeon.friendly.EntityFriendlyHalber
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.*;
+import com.dungeon_additions.da.entity.tileEntity.TileEntityPuzzleMirror;
 import com.dungeon_additions.da.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -59,6 +61,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
@@ -244,6 +247,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityDarkSorcerer.class, RenderDarkSorcerer::new);
         //Dark Royal
         RenderingRegistry.registerEntityRenderingHandler(EntityDarkRoyal.class, RenderDarkRoyal::new);
+        //Puzzle Mirror
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPuzzleMirror.class, new RenderPuzzleMirror());
     }
 
 }

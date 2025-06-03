@@ -175,6 +175,7 @@ public class ModEntities {
         registerTileEntity(TileEntityLichSpawner.class, "lich_spawner_blocks");
         registerTileEntity(TileEntityLevitationBlock.class, "levitation_block_entity");
         registerTileEntity(TileEntityFrostBrick.class, "frost_brick_entity");
+        registerTileEntity(TileEntityPuzzleMirror.class, "mirror_puzzle");
 
     }
 

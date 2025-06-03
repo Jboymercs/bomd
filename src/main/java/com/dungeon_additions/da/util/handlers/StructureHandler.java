@@ -2,6 +2,8 @@ package com.dungeon_additions.da.util.handlers;
 
 import com.dungeon_additions.da.world.blossom.BlossomTemplate;
 import com.dungeon_additions.da.world.blossom.WorldGenBlossomCave;
+import com.dungeon_additions.da.world.forgotten_temple.ForgottenTempleTemplate;
+import com.dungeon_additions.da.world.forgotten_temple.WorldGenForgottenTemple;
 import com.dungeon_additions.da.world.frozen_castle.FrozenCastleTemplate;
 import com.dungeon_additions.da.world.frozen_castle.WorldGenFrozenCastle;
 import com.dungeon_additions.da.world.high_city.HighCityTemplate;
@@ -34,5 +36,8 @@ public class StructureHandler {
         //High City
         MapGenStructureIO.registerStructure(WorldGenHighCity.Start.class, "HighCourtCity");
         MapGenStructureIO.registerStructureComponent(HighCityTemplate.class, "HCP");
+        //Forgotten Temple
+        MapGenStructureIO.registerStructure(WorldGenForgottenTemple.Start.class, "ForgottenTemple");
+        MapGenStructureIO.registerStructureComponent(ForgottenTempleTemplate.class, "FTD");
     }
 }

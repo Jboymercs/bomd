@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "da:blocks/grum_stone_top",
+    "side": "da:blocks/grum_stone"
+  }
+}

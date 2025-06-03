@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "axis=y":  { "model": "da:grum_pillar" },
+    "axis=z":   { "model": "da:grum_pillar", "x": 90 },
+    "axis=x":   { "model": "da:grum_pillar", "x": 90, "y": 90 },
+    "axis=none": { "model": "da:grum_rough" }
+  }
+}

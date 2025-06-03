@@ -96,6 +96,14 @@ public class CommandLocateLich implements ICommand {
                 } else {
                     throw new CommandException("commands.locate.failure", s);
                 }
+            } else if (s.equals("ForgottenTemple")) {
+                BlockPos blockpos = findNearestPosForgottenTemple(sender);
+
+                if (blockpos != null) {
+                    sender.sendMessage(new TextComponentTranslation("commands.locate.success", new Object[]{s, blockpos.getX(), blockpos.getZ()}));
+                } else {
+                    throw new CommandException("commands.locate.failure", s);
+                }
             }
         }
     }
@@ -111,7 +119,7 @@ public class CommandLocateLich implements ICommand {
 
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "NightLichTower", "BlossomCave", "FrozenCastle", "HighCourtCity","BurningFlameArena") : Collections.emptyList();
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "NightLichTower", "BlossomCave", "FrozenCastle", "HighCourtCity","BurningFlameArena","ForgottenTemple") : Collections.emptyList();
     }
 
     public static List<String> getListOfStringsMatchingLastWord(String[] args, String... possibilities) {
@@ -186,6 +194,24 @@ public class CommandLocateLich implements ICommand {
         for (int i = -ModConfig.frozen_castle_search_distance; i < ModConfig.frozen_castle_search_distance + 1; i++) {
             for (int j = -ModConfig.frozen_castle_search_distance; j < ModConfig.frozen_castle_search_distance + 1; j++) {
                 boolean c = IsFrozenCastleAtPos(world, chunk.x + i, chunk.z + j);
+                if (c) {
+                    resultpos = new BlockPos((chunk.x + i) << 4, 100, (chunk.z + j) << 4);
+                    break;
+                }
+            }
+        }
+        return resultpos;
+    }
+
+    public static BlockPos findNearestPosForgottenTemple(ICommandSender sender) {
+        BlockPos resultpos = null;
+        BlockPos pos = sender.getPosition();
+        World world = sender.getEntityWorld();
+        Chunk chunk = world.getChunk(pos);
+        //probably laggy as hell but hey it works
+        for (int i = -ModConfig.forgotten_temple_distance; i < ModConfig.forgotten_temple_distance + 1; i++) {
+            for (int j = -ModConfig.forgotten_temple_distance; j < ModConfig.forgotten_temple_distance + 1; j++) {
+                boolean c = IsForgottenTempleAtPos(world, chunk.x + i, chunk.z + j);
                 if (c) {
                     resultpos = new BlockPos((chunk.x + i) << 4, 100, (chunk.z + j) << 4);
                     break;
@@ -324,6 +350,37 @@ public class CommandLocateLich implements ICommand {
         }
     }
 
+    protected static boolean IsForgottenTempleAtPos(World world, int chunkX, int chunkZ) {
+        int spacing = WorldConfig.temple_spacing;
+        int separation = 16;
+        int i = chunkX;
+        int j = chunkZ;
+
+        if (chunkX < 0) {
+            chunkX -= spacing - 1;
+        }
+
+        if (chunkZ < 0) {
+            chunkZ -= spacing - 1;
+        }
+
+        int k = chunkX / spacing;
+        int l = chunkZ / spacing;
+        Random random = world.setRandomSeed(k, l, 10002973);
+        k = k * spacing;
+        l = l * spacing;
+        k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+        l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+
+        if (i == k && j == l && isAllowedDimensionTooSpawnInForgottenTemple(world.provider.getDimension())) {
+            BlockPos pos = new BlockPos((i << 4), 0, (j << 4));
+            return isAbleToSpawnHereForgottenTemple(pos, world);
+        } else {
+
+            return false;
+        }
+    }
+
     protected static boolean IsBlossomCaveAtPos(World world, int chunkX, int chunkZ) {
         int spacing = WorldConfig.void_blossom_cave_weight;
         int separation = 16;
@@ -452,6 +509,41 @@ public class CommandLocateLich implements ICommand {
         return frozenCastleBiomeTypes;
     }
 
+    public static boolean isAbleToSpawnHereForgottenTemple(BlockPos pos, World world) {
+        int staggerCounter = 0;
+        for(BiomeDictionary.Type types : getSpawnBiomeTypesForgottenTemple()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(staggerCounter > 1) {
+                return true;
+            }
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                staggerCounter++;
+            }
+        }
+        return false;
+    }
+
+    private static List<BiomeDictionary.Type> forgottenTempleBiomeTypes;
+
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypesForgottenTemple() {
+        if(forgottenTempleBiomeTypes == null) {
+            forgottenTempleBiomeTypes = Lists.newArrayList();
+
+            for(String str : WorldConfig.forgotten_temple_whitelist) {
+                try {
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) forgottenTempleBiomeTypes.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
+                } catch (Exception e) {
+                    DALogger.logError(str + " is not a valid type name", e);
+                }
+            }
+        }
+
+        return forgottenTempleBiomeTypes;
+    }
+
     public static boolean isAbleToSpawnHereHighCity(BlockPos pos, World world) {
         for(BiomeDictionary.Type types : getSpawnBiomeTypesHighCity()) {
             Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
@@ -567,6 +659,15 @@ public class CommandLocateLich implements ICommand {
 
     public static boolean isAllowedDimensionTooSpawnInFrozenCastle(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions_frozen_castle) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInForgottenTemple(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_forgotten_temple) {
             if(i == dimensionIn)
                 return true;
         }

@@ -61,6 +61,8 @@ public class SoundsHandler {
 
     //Frozen Icicle
     public static SoundEvent ICICLE_DROP;
+    //
+    public static SoundEvent MIRROR_MOVE;
 
     //Night Lich
     public static SoundEvent LICH_PREPARE_MISSILE;
@@ -248,6 +250,8 @@ public class SoundsHandler {
         SOUL_STAR_ACTIVATE = registerSound("soul_star.activate", "block");
         //
         ICICLE_DROP = registerSound("icicle.drop", "block");
+        //
+        MIRROR_MOVE = registerSound("mirror.move", "block");
         //
         VOID_SPIKE_SHOOT = registerSound("spike.shoot", "entity");
         APPEARING_WAVE = registerSound("spike.wave", "entity");

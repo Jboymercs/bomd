@@ -3,6 +3,7 @@ package com.dungeon_additions.da.world;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.util.DALogger;
 import com.dungeon_additions.da.world.blossom.WorldGenBlossomCave;
+import com.dungeon_additions.da.world.forgotten_temple.WorldGenForgottenTemple;
 import com.dungeon_additions.da.world.frozen_castle.WorldGenFrozenCastle;
 import com.dungeon_additions.da.world.high_city.WorldGenHighCity;
 import com.dungeon_additions.da.world.lich_tower.WorldGenLichTower;
@@ -33,6 +34,7 @@ public class ModWorldGen implements IWorldGenerator {
     private static final WorldGenFrozenCastle frozen_castle = new WorldGenFrozenCastle();
 
     private static final WorldGenHighCity high_court_city = new WorldGenHighCity();
+    private static final WorldGenForgottenTemple forgotten_temple = new WorldGenForgottenTemple();
 
     private static List<Biome> spawnBiomesRottenHold;
     @Override
@@ -75,6 +77,10 @@ public class ModWorldGen implements IWorldGenerator {
         //High Court City
         if(isAllowedDimensionTooSpawnInHighCourtCity(world.provider.getDimension()) && WorldConfig.hcc_enabled) {
             high_court_city.generate(world, random, pos);
+        }
+        //Forgotten Temple
+        if(isAllowedDimensionTooSpawnInForgottenTemple(world.provider.getDimension()) && WorldConfig.temple_enabled) {
+            forgotten_temple.generate(world, random, pos);
         }
 
         }
@@ -153,6 +159,15 @@ public class ModWorldGen implements IWorldGenerator {
 
     public static boolean isAllowedDimensionTooSpawnInNightLich(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions_lich_tower) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInForgottenTemple(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_forgotten_temple) {
             if(i == dimensionIn)
                 return true;
         }

@@ -309,6 +309,11 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static int frozen_castle_search_distance = 175;
 
+    @Config.Name("Forgotten Temple Search Radius")
+    @Config.Comment("Change how far the Desolate Soul and Locate command searches for a Forgotten Temple. In chunks not blocks!")
+    @Config.RequiresMcRestart
+    public static int forgotten_temple_distance = 175;
+
     @Config.Name("High Court City Search Radius")
     @Config.Comment("Change how far the Orb of Light and command searches for the High Court City. In chunks not blocks!")
     @Config.RequiresMcRestart

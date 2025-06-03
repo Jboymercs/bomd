@@ -1,0 +1,9 @@
+{
+  "parent": "block/upper_slab",
+  "textures":
+  {
+    "bottom": "da:blocks/grum_brick",
+    "top": "da:blocks/grum_brick",
+    "side": "da:blocks/grum_brick"
+  }
+}
