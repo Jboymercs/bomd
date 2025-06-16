@@ -63,6 +63,9 @@ public class SoundsHandler {
     public static SoundEvent ICICLE_DROP;
     //
     public static SoundEvent MIRROR_MOVE;
+    public static SoundEvent MIRROR_PLING;
+    public static SoundEvent V_MIRROR_PLING;
+    public static SoundEvent MIRROR_DISPENSE;
 
     //Night Lich
     public static SoundEvent LICH_PREPARE_MISSILE;
@@ -231,6 +234,13 @@ public class SoundsHandler {
     public static SoundEvent DARK_ROYAL_HURT;
     public static SoundEvent DARK_ROYAL_DASH;
 
+    public static SoundEvent BEETLE_IDLE;
+    public static SoundEvent BEETLE_ATTACK;
+    public static SoundEvent BEETLE_HURT;
+    public static SoundEvent BEETLE_WALK;
+    public static SoundEvent BEETLE_WAR_CRY;
+    public static SoundEvent BEETLE_DEATH;
+
     public static void registerSounds() {
         //
         MOSS_BREAK = registerSound("moss.break", "block");
@@ -252,6 +262,9 @@ public class SoundsHandler {
         ICICLE_DROP = registerSound("icicle.drop", "block");
         //
         MIRROR_MOVE = registerSound("mirror.move", "block");
+        MIRROR_PLING = registerSound("mirror.pling", "block");
+        V_MIRROR_PLING = registerSound("mirror.v_pling", "block");
+        MIRROR_DISPENSE = registerSound("mirror.dispense", "block");
         //
         VOID_SPIKE_SHOOT = registerSound("spike.shoot", "entity");
         APPEARING_WAVE = registerSound("spike.wave", "entity");
@@ -429,6 +442,13 @@ public class SoundsHandler {
         DARK_ROYAL_HURT = registerSound("dark_crypt.hurt", "entity");
         DARK_ROYAL_IDLE = registerSound("dark_crypt.idle", "entity");
         DARK_ROYAL_DASH = registerSound("dark_crypt.dash", "entity");
+        //
+        BEETLE_ATTACK = registerSound("beetle.bite", "entity");
+        BEETLE_HURT = registerSound("beetle.hurt", "entity");
+        BEETLE_IDLE = registerSound("beetle.idle", "entity");
+        BEETLE_WALK = registerSound("beetle.step", "entity");
+        BEETLE_WAR_CRY = registerSound("beetle.warcry", "entity");
+        BEETLE_DEATH = registerSound("beetle.death", "entity");
     }
 
 

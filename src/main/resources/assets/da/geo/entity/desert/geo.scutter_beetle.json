@@ -1,0 +1,186 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 4,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "Ground",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "Main",
+					"parent": "Ground",
+					"pivot": [0, 6, 0],
+					"cubes": [
+						{"origin": [-6, 3, -3], "size": [12, 8, 14], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "WingL",
+					"parent": "Main",
+					"pivot": [6, 11, -3],
+					"cubes": [
+						{"origin": [0.25, 5, -3], "size": [6, 6, 14], "inflate": 0.25, "uv": [0, 22], "mirror": true}
+					]
+				},
+				{
+					"name": "WingJointL",
+					"parent": "WingL",
+					"pivot": [6, 11, -3],
+					"cubes": [
+						{"origin": [0, 11.2, -3], "size": [6, 0, 14], "uv": [40, 36], "mirror": true}
+					]
+				},
+				{
+					"name": "WingR",
+					"parent": "Main",
+					"pivot": [-6, 11, -3],
+					"cubes": [
+						{"origin": [-6.25, 5, -3], "size": [6, 6, 14], "inflate": 0.25, "uv": [0, 22]}
+					]
+				},
+				{
+					"name": "WingJointR",
+					"parent": "WingR",
+					"pivot": [-6, 11, -3],
+					"cubes": [
+						{"origin": [-6, 11.2, -3], "size": [6, 0, 14], "uv": [40, 36]}
+					]
+				},
+				{
+					"name": "HeadJoint",
+					"parent": "Main",
+					"pivot": [0, 7, -3],
+					"cubes": [
+						{"origin": [-6, 4, -11], "size": [12, 6, 8], "uv": [40, 22]},
+						{"origin": [-2, 4, -13], "size": [4, 0, 2], "uv": [56, 58]},
+						{"origin": [-1.5, 10, -9], "size": [3, 2, 6], "uv": [20, 56]},
+						{"origin": [0, 12, -14], "size": [0, 5, 9], "uv": [20, 42]}
+					]
+				},
+				{
+					"name": "PincherL",
+					"parent": "HeadJoint",
+					"pivot": [-4, 6, -11],
+					"cubes": [
+						{"origin": [-5, 4, -14], "size": [2, 4, 4], "inflate": -0.1, "uv": [58, 50]},
+						{"origin": [-4, 1, -23], "size": [0, 6, 10], "uv": [0, 42]}
+					]
+				},
+				{
+					"name": "PincherR",
+					"parent": "HeadJoint",
+					"pivot": [4, 6, -11],
+					"cubes": [
+						{"origin": [3, 4, -14], "size": [2, 4, 4], "inflate": -0.1, "uv": [58, 50], "mirror": true},
+						{"origin": [4, 1, -23], "size": [0, 6, 10], "uv": [0, 42], "mirror": true}
+					]
+				},
+				{
+					"name": "LegFL",
+					"parent": "Main",
+					"pivot": [6, 5, -1],
+					"cubes": [
+						{"origin": [6, 3, -3], "size": [6, 4, 4], "uv": [38, 50], "mirror": true}
+					]
+				},
+				{
+					"name": "FLJoint",
+					"parent": "LegFL",
+					"pivot": [12, 5, -1],
+					"cubes": [
+						{"origin": [11, 1, -1], "size": [9, 5, 0], "uv": [52, 16], "mirror": true}
+					]
+				},
+				{
+					"name": "LegFR",
+					"parent": "Main",
+					"pivot": [-6, 5, -1],
+					"cubes": [
+						{"origin": [-12, 3, -3], "size": [6, 4, 4], "uv": [38, 50]}
+					]
+				},
+				{
+					"name": "FRJoint",
+					"parent": "LegFR",
+					"pivot": [-12, 5, -1],
+					"cubes": [
+						{"origin": [-20, 1, -1], "size": [9, 5, 0], "uv": [52, 16]}
+					]
+				},
+				{
+					"name": "LegML",
+					"parent": "Main",
+					"pivot": [6, 5, 4],
+					"cubes": [
+						{"origin": [6, 3, 2], "size": [6, 4, 4], "uv": [52, 0], "mirror": true}
+					]
+				},
+				{
+					"name": "MLJoint",
+					"parent": "LegML",
+					"pivot": [12, 5, 4],
+					"cubes": [
+						{"origin": [11, 1, 4], "size": [9, 5, 0], "uv": [0, 58], "mirror": true}
+					]
+				},
+				{
+					"name": "LegMR",
+					"parent": "Main",
+					"pivot": [-6, 5, 4],
+					"cubes": [
+						{"origin": [-12, 3, 2], "size": [6, 4, 4], "uv": [52, 0]}
+					]
+				},
+				{
+					"name": "MRJoint",
+					"parent": "LegMR",
+					"pivot": [-12, 5, 4],
+					"cubes": [
+						{"origin": [-20, 1, 4], "size": [9, 5, 0], "uv": [0, 58]}
+					]
+				},
+				{
+					"name": "LegBL",
+					"parent": "Main",
+					"pivot": [6, 5, 9],
+					"cubes": [
+						{"origin": [6, 3, 7], "size": [6, 4, 4], "uv": [52, 8], "mirror": true}
+					]
+				},
+				{
+					"name": "BLJoint",
+					"parent": "LegBL",
+					"pivot": [12, 5, 9],
+					"cubes": [
+						{"origin": [11, 1, 9], "size": [9, 5, 0], "uv": [38, 58], "mirror": true}
+					]
+				},
+				{
+					"name": "LegBR",
+					"parent": "Main",
+					"pivot": [-6, 5, 9],
+					"cubes": [
+						{"origin": [-12, 3, 7], "size": [6, 4, 4], "uv": [52, 8]}
+					]
+				},
+				{
+					"name": "BRJoint",
+					"parent": "LegBR",
+					"pivot": [-12, 5, 9],
+					"cubes": [
+						{"origin": [-20, 1, 9], "size": [9, 5, 0], "uv": [38, 58]}
+					]
+				}
+			]
+		}
+	]
+}

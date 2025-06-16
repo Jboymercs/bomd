@@ -8,6 +8,7 @@ import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
 import com.dungeon_additions.da.entity.dark_dungeon.*;
+import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.flame_knight.*;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameBlade;
@@ -25,6 +26,7 @@ import com.dungeon_additions.da.entity.night_lich.*;
 import com.dungeon_additions.da.entity.night_lich.EntityLichSpawn;
 import com.dungeon_additions.da.entity.player.EntityWyrkLazer;
 import com.dungeon_additions.da.entity.projectiles.*;
+import com.dungeon_additions.da.entity.projectiles.puzzle.ProjectilePuzzleBall;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
@@ -165,6 +167,8 @@ public class ModEntities {
             registerEntityWithID("dark_sorcerer", EntityDarkSorcerer.class, ENTITY_START_ID++, 110, dark_sorcerer);
             registerEntity("proj_dark_matter", ProjectileDarkMatter.class, ENTITY_START_ID++, 110);
             registerEntityWithID("dark_royal", EntityDarkRoyal.class, ENTITY_START_ID++, 110, dark_royal);
+            registerEntity("puzzle_orb", ProjectilePuzzleBall.class, ENTITY_START_ID++, 120);
+            registerEntityWithID("scutter_beetle", EntityScutterBeetle.class, ENTITY_START_ID++, 120, night_lich);
 
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
@@ -176,6 +180,8 @@ public class ModEntities {
         registerTileEntity(TileEntityLevitationBlock.class, "levitation_block_entity");
         registerTileEntity(TileEntityFrostBrick.class, "frost_brick_entity");
         registerTileEntity(TileEntityPuzzleMirror.class, "mirror_puzzle");
+        registerTileEntity(TileEntityGrumDispenser.class, "grum_dispenser");
+        registerTileEntity(TileEntityGrumBlocker.class, "grum_blocker");
 
     }
 

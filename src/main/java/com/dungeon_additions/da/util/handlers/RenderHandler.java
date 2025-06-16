@@ -11,6 +11,7 @@ import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
 import com.dungeon_additions.da.entity.dark_dungeon.*;
+import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.flame_knight.*;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameBlade;
@@ -28,11 +29,13 @@ import com.dungeon_additions.da.entity.night_lich.*;
 import com.dungeon_additions.da.entity.night_lich.EntityLichSpawn;
 import com.dungeon_additions.da.entity.player.EntityWyrkLazer;
 import com.dungeon_additions.da.entity.projectiles.*;
+import com.dungeon_additions.da.entity.projectiles.puzzle.ProjectilePuzzleBall;
 import com.dungeon_additions.da.entity.render.*;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkAssassin;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkRoyal;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkSorcerer;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderShadowHand;
+import com.dungeon_additions.da.entity.render.desert_dungeon.RenderScutterBeetle;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderBareant;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderFlameOrb;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderIncendium;
@@ -136,6 +139,7 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileFlameSpit.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer3DModel(ProjectileFlameBlade.class, ModItems.FLAME_BLADE_PROJ);
         registerProjectileRenderer(ProjectileDarkMatter.class, ModItems.DARK_MANA);
+        registerProjectileRenderer(ProjectilePuzzleBall.class, ModItems.INVISISBLE_ITEM);
     }
 
     //Handles Rendering
@@ -247,6 +251,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityDarkSorcerer.class, RenderDarkSorcerer::new);
         //Dark Royal
         RenderingRegistry.registerEntityRenderingHandler(EntityDarkRoyal.class, RenderDarkRoyal::new);
+        //Scutter Beetle
+        RenderingRegistry.registerEntityRenderingHandler(EntityScutterBeetle.class, RenderScutterBeetle::new);
         //Puzzle Mirror
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPuzzleMirror.class, new RenderPuzzleMirror());
     }

@@ -174,6 +174,32 @@ public class ModUtils {
         return null;
     }
 
+    public static BlockPos searchForBlocks(AxisAlignedBB box, World world, IBlockState block) {
+        int i = MathHelper.floor(box.minX);
+        int j = MathHelper.floor(box.minY);
+        int k = MathHelper.floor(box.minZ);
+        int l = MathHelper.floor(box.maxX);
+        int i1 = MathHelper.floor(box.maxY);
+        int j1 = MathHelper.floor(box.maxZ);
+        for (int x = i; x <= l; ++x) {
+            for (int y = j; y <= i1; ++y) {
+                for (int z = k; z <= j1; ++z) {
+                    BlockPos blockpos = new BlockPos(x, y, z);
+                    IBlockState iblockstate = world.getBlockState(blockpos);
+
+
+                    if(iblockstate == block && world.getBlockState(blockpos.up()) != ModBlocks.SPORE_BLOSSOM.getDefaultState()) {
+                        System.out.println("Found BlockPos for Changing");
+
+                        return blockpos;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
     public static boolean searchForInactiveTileEntities(AxisAlignedBB box, World world, IBlockState block) {
         int i = MathHelper.floor(box.minX);
         int j = MathHelper.floor(box.minY);

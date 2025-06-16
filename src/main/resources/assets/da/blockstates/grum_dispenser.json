@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=down":  { "model": "da:grum_dispenser", "x": 180 },
+    "facing=up":    { "model": "da:grum_dispenser" },
+    "facing=north": { "model": "da:grum_dispenser", "x": 90 },
+    "facing=south": { "model": "da:grum_dispenser", "x": -90 },
+    "facing=west":  { "model": "da:grum_dispenser", "x": -90, "y": 90 },
+    "facing=east":  { "model": "da:grum_dispenser", "x": 90, "y":90 }
+  }
+}

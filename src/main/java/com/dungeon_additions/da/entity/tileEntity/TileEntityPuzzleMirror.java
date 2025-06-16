@@ -2,6 +2,8 @@ package com.dungeon_additions.da.entity.tileEntity;
 
 import com.dungeon_additions.da.blocks.base.IBlockUpdater;
 import com.dungeon_additions.da.blocks.desert_dungeon.BlockPuzzleMirror;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemSkull;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -10,6 +12,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -19,11 +22,15 @@ public class TileEntityPuzzleMirror extends TileEntity implements ITickable {
 
     private int skullRotation;
 
+
+    public int serverSkullRotation;
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
         compound.setByte("Rot", (byte)(this.skullRotation & 255));
+        compound.setInteger("Server_Rot", this.serverSkullRotation);
         return compound;
     }
 
@@ -32,7 +39,29 @@ public class TileEntityPuzzleMirror extends TileEntity implements ITickable {
     {
         super.readFromNBT(compound);
         this.skullRotation = compound.getByte("Rot");
+        this.serverSkullRotation = compound.getInteger("Server_Rot");
     }
+
+    /**
+     * WHY CANT I GET THE DAMN NUMBER TO READ IN THE PROJECTILE CLASS
+     *
+     */
+    public void addRotationTooSkull() {
+        if(skullRotation == 16) {
+            skullRotation = 1;
+        } else {
+            this.skullRotation++;
+        }
+        System.out.println("Skull Rot from Rot is " + this.skullRotation);
+        this.markDirty();
+    }
+
+    public int getSkullRotForSpawning() {
+        System.out.println("SKULL ROTATION AT" + skullRotation);
+        return this.skullRotation;
+
+    }
+
 
     @Nullable
     public SPacketUpdateTileEntity getUpdatePacket()
@@ -80,6 +109,21 @@ public class TileEntityPuzzleMirror extends TileEntity implements ITickable {
         if (world.isRemote && this.getBlockType() instanceof IBlockUpdater) {
             ((IBlockUpdater) this.getBlockType()).update(world, pos);
         }
+
+        if(!world.isRemote) {
+            serverSkullRotation = skullRotation;
+        }
+
+
+    }
+
+    @Override
+    public void markDirty() {
+        IBlockState state = world.getBlockState(pos);
+        world.markBlockRangeForRenderUpdate(pos, pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
+        world.scheduleBlockUpdate(pos, getBlockType(), 0, 0);
+        super.markDirty();
     }
 
     @Override

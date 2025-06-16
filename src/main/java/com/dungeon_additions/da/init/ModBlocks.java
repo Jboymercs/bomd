@@ -7,6 +7,8 @@ import com.dungeon_additions.da.blocks.base.BlockWallBase;
 import com.dungeon_additions.da.blocks.base.slab.BlockDoubleSlab;
 import com.dungeon_additions.da.blocks.base.slab.BlockHalfSlab;
 import com.dungeon_additions.da.blocks.blossom.BlockVoidLily;
+import com.dungeon_additions.da.blocks.desert_dungeon.BlockGrumBlocker;
+import com.dungeon_additions.da.blocks.desert_dungeon.BlockGrumDispenser;
 import com.dungeon_additions.da.blocks.desert_dungeon.BlockPuzzleMirror;
 import com.dungeon_additions.da.blocks.faurm.BlockFarumRope;
 import com.dungeon_additions.da.blocks.faurm.BlockFaurmLantern;
@@ -164,7 +166,10 @@ public class ModBlocks {
     public static final Block LICH_SOUL_STAR_BLOCK = new BlockSoulStar("soul_star_block", ModItems.SOUL_STAR).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block VOID_LILY_BLOCK = new BlockVoidLily("void_lily", "void_lily_desc").setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block PUZZLE_MIRROR = new BlockPuzzleMirror("puzzle_mirror", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
-
+    public static final Block PUZZLE_DISPLACER = new BlockBase("grum_displacer", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS).setBlockUnbreakable();
+    public static final Block PUZZLE_DISPENCER = new BlockGrumDispenser("grum_dispenser", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block PUZZLE_BLOCKER = new BlockGrumBlocker("grum_blocker", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block PUZZLE_DOOR = new BlockBase("grum_tile_r", Material.ROCK, OBSIDIAN_HARDNESS, OBSIDIAN_RESISTANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final BlockSlab FIRE_STONE_SLAB_DOUBLE = new BlockDoubleSlab("fire_stone_double", Material.ROCK, CreativeTabs.SEARCH, ModBlocks.FIRE_STONE_SLAB_HALF, STONE_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE);
     public static final BlockSlab FIRE_STONE_SLAB_HALF = new BlockHalfSlab("fire_stone_half", Material.ROCK, DungeonAdditionsTab.BLOCKS, ModBlocks.FIRE_STONE_SLAB_HALF, ModBlocks.FIRE_STONE_SLAB_DOUBLE, STONE_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE);
 
@@ -174,4 +179,6 @@ public class ModBlocks {
     public static final Block DISAPPEARING_SPAWNER = new BlockDisappearingSpawner("cave_spawner", Material.ROCK);
     public static final Block DISAPPEARING_SPAWNER_MOSS = new BlockDisappearingSpawner("moss_spawner", Material.ROCK);
     public static final Block DISAPPEARING_SPAWNER_HIGH_CITY = new BlockDisappearingSpawner("high_spawner", Material.ROCK);
+
+    public static final Block DISAPPEARING_SPAWNER_FORGOTTEN_TEMPLE = new BlockDisappearingSpawner("temple_spawner", Material.ROCK);
 }

@@ -10,6 +10,7 @@ import com.dungeon_additions.da.util.handlers.RenderHandler;
 import com.dungeon_additions.da.util.particle.ParticleDash;
 import com.dungeon_additions.da.util.particle.ParticleFluff;
 import com.dungeon_additions.da.util.particle.ParticlePixel;
+import com.dungeon_additions.da.util.particle.ParticlePuzzle;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
@@ -133,6 +134,8 @@ public class ClientProxy extends CommonProxy{
                 return new ParticleDash.Factory();
             case 3:
                 return new ParticleFluff.Factory();
+            case 4:
+                return new ParticlePuzzle.Factory();
         }
     }
 

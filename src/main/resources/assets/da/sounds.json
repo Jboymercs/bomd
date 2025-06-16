@@ -1943,6 +1943,78 @@
       }
     ]
   },
+  "entity.beetle.idle": {
+    "category": "entity",
+    "subtitle": "entity.beetle.idle",
+    "sounds": [
+      {
+        "name": "da:entity/beetle/idle1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/beetle/idle2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/beetle/idle3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.beetle.hurt": {
+    "category": "entity",
+    "subtitle": "entity.beetle.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/beetle/hurt1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/beetle/hurt2",
+        "steam": false
+      }
+    ]
+  },
+  "entity.beetle.bite": {
+    "category": "entity",
+    "subtitle": "entity.beetle.bite",
+    "sounds": [
+      {
+        "name": "da:entity/beetle/bite1",
+        "steam": false
+      }
+    ]
+  },
+  "entity.beetle.step": {
+    "category": "entity",
+    "subtitle": "entity.beetle.step",
+    "sounds": [
+      {
+        "name": "da:entity/beetle/step1",
+        "steam": false
+      }
+    ]
+  },
+  "entity.beetle.warcry": {
+    "category": "entity",
+    "subtitle": "entity.beetle.warcry",
+    "sounds": [
+      {
+        "name": "da:entity/beetle/warcry1",
+        "steam": false
+      }
+    ]
+  },
+  "entity.beetle.death": {
+    "category": "entity",
+    "subtitle": "entity.beetle.death",
+    "sounds": [
+      {
+        "name": "da:entity/beetle/death1",
+        "steam": false
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",
@@ -2263,6 +2335,36 @@
     "sounds": [
       {
         "name": "da:block/mirror/move",
+        "steam": false
+      }
+    ]
+  },
+  "block.mirror.dispense": {
+    "category": "block",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:block/mirror/dispense",
+        "steam": false
+      }
+    ]
+  },
+  "block.mirror.v_pling": {
+    "category": "block",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:block/mirror/v_pling",
+        "steam": false
+      }
+    ]
+  },
+  "block.mirror.pling": {
+    "category": "block",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:block/mirror/pling",
         "steam": false
       }
     ]

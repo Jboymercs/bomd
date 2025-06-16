@@ -30,9 +30,9 @@ public abstract class EntityModThrowable  extends Entity implements IProjectile 
             return p_apply_1_.canBeCollidedWith();
         }
     });
-    private int xTile;
-    private int yTile;
-    private int zTile;
+    protected int xTile;
+    protected int yTile;
+    protected int zTile;
 
     public boolean isLocatorItem = false;
     private Block inTile;
@@ -94,6 +94,13 @@ public abstract class EntityModThrowable  extends Entity implements IProjectile 
         if (!shooter.onGround) {
             this.motionY += shooter.motionY;
         }
+    }
+
+    public void shootWithYaw(float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy) {
+        float f = -MathHelper.sin(yaw * 0.017453292F) * MathHelper.cos(pitch * 0.017453292F);
+        float f1 = -MathHelper.sin(pitch * 0.017453292F);
+        float f2 = MathHelper.cos(yaw * 0.017453292F) * MathHelper.cos(pitch * 0.017453292F);
+        this.shoot(f, f1, f2, velocity, inaccuracy);
     }
 
     /**

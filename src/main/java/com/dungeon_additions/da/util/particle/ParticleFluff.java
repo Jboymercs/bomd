@@ -38,7 +38,7 @@ public class ParticleFluff extends ParticleSSBase {
 
     @Override
     public int getBrightnessForRender(float partialTicks)
-    { return 256; }
+    { return 135; }
 
     @SideOnly(Side.CLIENT)
     public static class Factory implements IParticleFactory

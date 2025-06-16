@@ -40,6 +40,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 public class BlockPuzzleMirror extends BlockContainer implements IHasModel, IBlockUpdater {
 
@@ -59,6 +60,7 @@ public class BlockPuzzleMirror extends BlockContainer implements IHasModel, IBlo
         this.setCreativeTab(DungeonAdditionsTab.BLOCKS);
         setTranslationKey(name);
         setRegistryName(name);
+        this.hasTileEntity = true;
 
         // Add both an item as a block and the block itself
         ModBlocks.BLOCKS.add(this);
@@ -82,17 +84,24 @@ public class BlockPuzzleMirror extends BlockContainer implements IHasModel, IBlo
         return BlockFaceShape.UNDEFINED;
     }
 
+
+    private int delay = 0;
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         TileEntity te = world.getTileEntity(pos);
-        if(te instanceof TileEntityPuzzleMirror) {
-            TileEntityPuzzleMirror mirror = ((TileEntityPuzzleMirror) te);
-            if(player.getHeldItemMainhand().isEmpty()) {
-                double currentSkullRot = ((mirror.getSkullRotation() + 15.9375));
-                world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundsHandler.MIRROR_MOVE, SoundCategory.BLOCKS, 0.4F, world.rand.nextFloat() * 0.8F + 0.3F, false);
-                    mirror.setSkullRotation((int) currentSkullRot);
-                   // this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(MathHelper.floor(MathHelper.floor((double)(currentSkullRot * 4.0F / 360.0F) + 0.5D) & 3)));
-
+        if(delay <= 0) {
+            delay = 5;
+            if (te instanceof TileEntityPuzzleMirror) {
+                //isUpdating = true;
+                TileEntityPuzzleMirror mirror = ((TileEntityPuzzleMirror) te);
+                if (player.getHeldItemMainhand().isEmpty()) {
+                    if(world.isRemote) {
+                        world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundsHandler.MIRROR_MOVE, SoundCategory.BLOCKS, 0.4F, world.rand.nextFloat() * 0.8F + 0.3F, false);
+                    }
+                    if(!world.isRemote) {
+                        mirror.addRotationTooSkull();
+                    }
+                }
             }
         }
         return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
@@ -109,6 +118,11 @@ public class BlockPuzzleMirror extends BlockContainer implements IHasModel, IBlo
         return false;
     }
 
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        super.breakBlock(worldIn, pos, state);
+        worldIn.removeTileEntity(pos);
+    }
 
     @Nullable
     @Override
@@ -124,6 +138,7 @@ public class BlockPuzzleMirror extends BlockContainer implements IHasModel, IBlo
     @Override
     public void update(World world, BlockPos pos) {
         counter++;
+        delay--;
         if (counter % 5 == 0) {
             List<EntityPlayerSP> list = world.<EntityPlayerSP>getPlayers(EntityPlayerSP.class, new Predicate<EntityPlayerSP>() {
                 @Override
