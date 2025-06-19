@@ -1,12 +1,19 @@
 package com.dungeon_additions.da.entity.flame_knight;
 
 import com.dungeon_additions.da.entity.EntityAbstractBase;
+import com.dungeon_additions.da.entity.ai.IScreenShake;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityEliteDraugr;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
@@ -21,13 +28,17 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntityPyre extends EntityAbstractBase implements IAnimatable, IAnimationTickable {
+public class EntityPyre extends EntityAbstractBase implements IAnimatable, IAnimationTickable, IScreenShake {
 
     private AnimationFactory factory = new AnimationFactory(this);
 
+    private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityPyre.class, DataSerializers.BOOLEAN);
+    public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
+    public boolean isShaking() {return this.dataManager.get(SHAKING);}
     public boolean isCracked = false;
 
     public boolean isParticleSet = false;
+    private int shakeTime = 0;
 
     public EntityPyre(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -42,8 +53,27 @@ public class EntityPyre extends EntityAbstractBase implements IAnimatable, IAnim
     }
 
     @Override
+    public void writeEntityToNBT(NBTTagCompound nbt) {
+        nbt.setBoolean("Shaking", this.isShaking());
+        super.writeEntityToNBT(nbt);
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound nbt) {
+        this.setShaking(nbt.getBoolean("Shaking"));
+        super.readEntityFromNBT(nbt);
+    }
+
+    @Override
+    public void entityInit() {
+        super.entityInit();
+        this.dataManager.register(SHAKING, Boolean.valueOf(false));
+    }
+
+    @Override
     public void onUpdate() {
         super.onUpdate();
+        this.shakeTime--;
         this.motionX = 0;
         this.motionZ = 0;
         this.rotationYaw = 0;
@@ -79,6 +109,10 @@ public class EntityPyre extends EntityAbstractBase implements IAnimatable, IAnim
 
         addEvent(()-> this.isCracked = true, 126);
         addEvent(()-> {
+            this.setShaking(true);
+            this.shakeTime = 40;
+        }, 60);
+        addEvent(()-> {
             this.playSound(SoundEvents.BLOCK_ANVIL_BREAK, 0.9f, 0.5f);
         },76 );
         addEvent(()-> {
@@ -99,6 +133,7 @@ public class EntityPyre extends EntityAbstractBase implements IAnimatable, IAnim
         addEvent(()-> {
         this.setFightMode(false);
         this.world.newExplosion(this, this.posX, this.posY + 1.5, this.posZ, 2, false, false);
+        this.setShaking(false);
         new EntityFlameKnight(this.world).onSummon(this);
         }, 152);
     }
@@ -173,6 +208,19 @@ public class EntityPyre extends EntityAbstractBase implements IAnimatable, IAnim
     @Override
     public void tick() {
 
+    }
+
+    @Override
+    public float getShakeIntensity(Entity viewer, float partialTicks) {
+        if(this.isShaking()) {
+            double dist = getDistance(viewer);
+            float screamMult = (float) (1.0F - dist / 16.0F);
+            if (dist >= 16.0F) {
+                return 0.0F;
+            }
+            return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 1.75F * screamMult);
+        }
+        return 0;
     }
 
     @Override

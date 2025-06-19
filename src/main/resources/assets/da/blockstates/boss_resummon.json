@@ -1,0 +1,29 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": {
+      "model": "da:boss_resummon"
+    },
+    "state=inactive": {
+      "model": "da:boss_resummon"
+    },
+    "state=fallen": {
+      "model": "da:boss/boss_active_1"
+    },
+    "state=void": {
+      "model": "da:boss/boss_active_2"
+    },
+    "state=ancient": {
+      "model": "da:boss/boss_active_3"
+    },
+    "state=flame": {
+      "model": "da:boss/boss_active_4"
+    },
+    "state=night": {
+      "model": "da:boss/boss_active_5"
+    },
+    "state=high": {
+      "model": "da:boss/boss_active_6"
+    }
+  }
+}

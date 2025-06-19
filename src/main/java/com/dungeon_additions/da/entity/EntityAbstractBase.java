@@ -22,6 +22,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -47,12 +48,18 @@ public abstract class EntityAbstractBase extends EntityCreature {
     public boolean iAmBossMobWyrkNerf = false;
     public boolean isFriendlyCreature = false;
     public boolean lockLook = false;
+    protected int timesUsed = 0;
 
     public boolean holdPosition = false;
 
     public EntityAbstractBase(World worldIn, float x, float y, float z) {
         super(worldIn);
         this.setPosition(x, y, z);
+    }
+
+    public EntityAbstractBase(World world, int timesUsed, BlockPos pos) {
+        super(world);
+        this.timesUsed = timesUsed;
     }
 
     protected double healthScaledAttackFactor = 0.0; // Factor that determines how much attack is affected by health
@@ -157,6 +164,13 @@ public abstract class EntityAbstractBase extends EntityCreature {
 
     protected boolean hasStartedScaling = false;
     protected int checkNearbyPlayers = 250;
+
+    protected void doBossReSummonScaling() {
+        double healthModif = (this.getMaxHealth() * ModConfig.boss_resummon_added_health) * this.timesUsed;
+        double attackModif = (this.getAttack() * ModConfig.boss_resummon_added_ad) * this.timesUsed;
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(this.getAttack() + attackModif);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getMaxHealth() + healthModif);
+    }
 
     @Override
     public void onLivingUpdate() {
@@ -304,6 +318,7 @@ public abstract class EntityAbstractBase extends EntityCreature {
         nbt.setBoolean("isImmovable", this.isImmovable());
         nbt.setBoolean("Fight_Mode", this.isFightMode());
         nbt.setBoolean("Full_Body", this.isFullBodyUsage());
+        nbt.setInteger("Times_Used", this.timesUsed);
         super.writeEntityToNBT(nbt);
     }
 
@@ -311,6 +326,7 @@ public abstract class EntityAbstractBase extends EntityCreature {
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.setFightMode(nbt.getBoolean("Fight_Mode"));
         this.setFullBodyUsage(nbt.getBoolean("Full_Body"));
+        this.timesUsed = nbt.getInteger("Times_Used");
         if (nbt.hasKey("isImmovable")) {
             this.setImmovable(nbt.getBoolean("isImmovable"));
         }

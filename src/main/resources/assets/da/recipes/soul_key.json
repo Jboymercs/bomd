@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "R",
+    "F"
+  ],
+  "key": {
+    "V": {
+      "item": "da:dark_core"
+    },
+    "R":[
+      {
+      "item": "da:knight_ingot"
+      },
+      {
+        "item": "da:draugr_ingot"
+      }
+    ],
+    "F": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "result": {
+    "item": "da:soul_key"
+  }
+}

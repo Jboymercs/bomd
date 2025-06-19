@@ -5,6 +5,7 @@ import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.EntityAIBlossom;
 import com.dungeon_additions.da.entity.ai.EntityGreatWyrkAttackAI;
 import com.dungeon_additions.da.entity.ai.IAttack;
+import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.*;
 import com.dungeon_additions.da.entity.night_lich.ProjectileMagicGround;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
@@ -15,6 +16,7 @@ import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -50,7 +52,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimatable, IAnimationTickable, IAttack, IDirectionalRender, ITarget {
+public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimatable, IAnimationTickable, IAttack, IDirectionalRender, ITarget, IScreenShake {
 
     private final String ANIM_WALK = "walk";
     private final String ANIM_IDLE = "idle";
@@ -79,6 +81,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
     private final AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttacks;
 
+    private int shakeTime = 0;
 
     public EntityGreatWyrk(World worldIn) {
         super(worldIn);
@@ -99,6 +102,19 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         onSummonBoss();
     }
 
+    public EntityGreatWyrk(World worldIn, int timesused, BlockPos pos) {
+        super(worldIn);
+        this.iAmBossMob = true;
+        this.timesUsed = timesused;
+        this.iAmBossMobWyrkNerf = true;
+        this.experienceValue = 200;
+        this.setSpawnLocation(pos);
+        this.setSetSpawnLoc(true);
+        this.timesUsed++;
+        this.doBossReSummonScaling();
+        onSummonBoss();
+    }
+
     public void onSummonBoss() {
         this.playSound(SoundsHandler.BIG_WYRK_SUMMON, 1.5f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f));
         this.setFightMode(true);
@@ -106,6 +122,10 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         this.setSummonBoss(true);
         this.setImmovable(true);
         this.lockLook = true;
+        this.shakeTime = 80;
+        this.setShaking(true);
+
+        addEvent(()-> this.setShaking(false), 80);
 
         addEvent(()-> {
             this.setFightMode(false);
@@ -128,7 +148,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
 
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
         EntityLivingBase target = this.getAttackTarget();
-
+        shakeTime--;
         if(!world.isRemote && target != null) {
             if(this.destroyBlocks) {
                 AxisAlignedBB box = getEntityBoundingBox().grow(1.25, 0.1, 1.25).offset(0, 0.1, 0);
@@ -256,11 +276,17 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         //action star stomp
           new ActionStarStomp().performAction(this, target);
           this.setUpdateIcicles = true;
+          this.setShaking(true);
+          this.shakeTime = 20;
           addEvent(()-> {
               this.setUpdateIcicles = false;
           }, 5);
+
       }, 55);
 
+      addEvent(()-> {
+        this.setShaking(false);
+      }, 75);
 
       addEvent(()-> {
           this.lockLook = false;
@@ -342,6 +368,13 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
       }, 30);
 
       addEvent(()-> {
+          this.setShaking(true);
+          this.shakeTime = 20;
+      }, 45);
+
+      addEvent(()-> this.setShaking(false), 55);
+
+      addEvent(()-> {
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.75, 2.5, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = (float) (this.getAttack() * 0.75);
@@ -371,6 +404,11 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
       addEvent(()-> {
           this.playSound(SoundsHandler.BIG_WYRK_RISE, 1.5f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
       }, 15);
+
+      addEvent(()-> {
+          this.setShaking(true);
+          this.shakeTime = 20;
+      }, 45);
 
       addEvent(()-> {
           this.lockLook = true;
@@ -419,6 +457,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         this.chargePos = null;
         this.updateStateToMove = true;
         this.lockLook = false;
+        this.setShaking(false);
         this.getNavigator().clearPath();
         if(target != null) {
             this.getLookHelper().setLookPosition(target.posX, this.getPositionVector().y + 2, target.posZ, 3, 3);
@@ -444,6 +483,15 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         }, 15);
 
       addEvent(()-> this.lockLook = true, 25);
+
+      addEvent(()-> {
+          this.setShaking(true);
+          this.shakeTime = 30;
+      }, 45);
+
+      addEvent(()-> {
+          this.setShaking(false);
+      }, 60);
 
       addEvent(()-> {
             double distance = this.getDistance(target);
@@ -569,6 +617,9 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
                 initiateDeathText = true;
             }
         }
+        if(this.getSpawnLocation() != null) {
+            this.turnBossIntoSummonSpawner(this.getSpawnLocation());
+        }
         super.onDeath(cause);
     }
 
@@ -638,5 +689,18 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
     @Override
     public Optional<Vec3d> getTarget() {
         return Optional.ofNullable(renderLazerPos);
+    }
+
+    @Override
+    public float getShakeIntensity(Entity viewer, float partialTicks) {
+        if(this.isShaking()) {
+            double dist = getDistance(viewer);
+            float screamMult = (float) (1.0F - dist / 30.0F);
+            if (dist >= 30.0F) {
+                return 0.0F;
+            }
+            return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 1.75F * screamMult);
+        }
+        return 0;
     }
 }

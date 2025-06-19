@@ -6,6 +6,7 @@ import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.model.*;
 import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSection;
 import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSectionSerializer;
+import com.dungeon_additions.da.util.handlers.CameraPositionHandler;
 import com.dungeon_additions.da.util.handlers.RenderHandler;
 import com.dungeon_additions.da.util.particle.ParticleDash;
 import com.dungeon_additions.da.util.particle.ParticleFluff;
@@ -60,7 +61,7 @@ public class ClientProxy extends CommonProxy{
 
     @Override
     public void registerEventHandlers() {
-
+        MinecraftForge.EVENT_BUS.register(CameraPositionHandler.INSTANCE);
     }
 
 

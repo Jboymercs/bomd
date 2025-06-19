@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.blocks.desert_dungeon;
 
 import com.dungeon_additions.da.blocks.BlockBase;
+import com.dungeon_additions.da.blocks.BlockLeaveBase;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityGrumBlocker;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityGrumDispenser;
 import net.minecraft.block.SoundType;
@@ -36,6 +37,7 @@ public class BlockGrumBlocker extends BlockBase {
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
+
 
     @Override
     public boolean isFullCube(IBlockState state) {

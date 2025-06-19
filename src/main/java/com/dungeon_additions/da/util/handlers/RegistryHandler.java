@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.util.handlers;
 
 
+import com.dungeon_additions.da.blocks.boss.BossStateMapper;
 import com.dungeon_additions.da.blocks.lich.LichStateMapper;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
@@ -90,6 +91,7 @@ public class RegistryHandler {
             }
         }
 
+        ModelLoader.setCustomStateMapper(ModBlocks.BOSS_RESUMMON_BLOCK, new BossStateMapper());
         ModelLoader.setCustomStateMapper(ModBlocks.LICH_SOUL_STAR_BLOCK, new LichStateMapper());
     }
 

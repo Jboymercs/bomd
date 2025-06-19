@@ -1,5 +1,6 @@
-package com.dungeon_additions.da.items;
+package com.dungeon_additions.da.items.keys;
 
+import com.dungeon_additions.da.items.ItemBase;
 import com.dungeon_additions.da.util.ModUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -10,7 +11,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemFrostKey extends ItemBase{
+public class ItemFrostKey extends ItemBase {
     private String info_loc;
 
     public ItemFrostKey(String name, String info_loc) {

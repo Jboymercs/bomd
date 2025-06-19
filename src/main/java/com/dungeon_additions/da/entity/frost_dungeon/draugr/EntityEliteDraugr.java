@@ -4,6 +4,8 @@ import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.EntityDraugrEliteAttackAI;
 import com.dungeon_additions.da.entity.ai.EntityDraugrRangedAI;
 import com.dungeon_additions.da.entity.ai.IAttack;
+import com.dungeon_additions.da.entity.ai.IScreenShake;
+import com.dungeon_additions.da.entity.frost_dungeon.EntityAbstractGreatWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityFrostBase;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.draugr_elite.*;
 import com.dungeon_additions.da.entity.night_lich.ProjectileMagicGround;
@@ -13,6 +15,7 @@ import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -52,7 +55,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, IAttack, IAnimationTickable {
+public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, IAttack, IAnimationTickable, IScreenShake {
 
     private final String ANIM_IDLE = "idle";
     private final String ANIM_IDLE_UPPER = "idle_upper";
@@ -77,6 +80,8 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
     private static final DataParameter<Boolean> BEZERK = EntityDataManager.createKey(EntityEliteDraugr.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> ICE_WAVE = EntityDataManager.createKey(EntityEliteDraugr.class, DataSerializers.BOOLEAN);
 
+    private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityEliteDraugr.class, DataSerializers.BOOLEAN);
+
     protected int playersNearbyAmount = 0;
     public boolean isDeathState() {return this.dataManager.get(DEATH_STATE);}
     private void setDeathState(boolean value) {this.dataManager.set(DEATH_STATE, Boolean.valueOf(value));}
@@ -94,9 +99,12 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
     private void setBezerk(boolean value) {this.dataManager.set(BEZERK, Boolean.valueOf(value));}
     public boolean isIceWave() {return this.dataManager.get(ICE_WAVE);}
     private void setIceWave(boolean value) {this.dataManager.set(ICE_WAVE, Boolean.valueOf(value));}
+
+    public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
+    public boolean isShaking() {return this.dataManager.get(SHAKING);}
     private final AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttack;
-
+    private int shakeTime = 0;
     Supplier<Projectile> ground_projectiles = () -> new ProjectileMagicGround(world, this, (float) 16, null);
 
     private boolean destroyCloseBlocks = false;
@@ -122,7 +130,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
         super.onUpdate();
 
         EntityLivingBase target = this.getAttackTarget();
-
+        this.shakeTime--;
         if(!world.isRemote && target != null) {
             double distSq = this.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
             double distance = Math.sqrt(distSq);
@@ -180,6 +188,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
         nbt.setBoolean("Magic_Wave", this.isMagicWave());
         nbt.setBoolean("Bezerk", this.isBezerk());
         nbt.setBoolean("Ice_Wave", this.isIceWave());
+        nbt.setBoolean("Shaking", this.isShaking());
         super.writeEntityToNBT(nbt);
     }
 
@@ -193,6 +202,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
         this.setMagicWave(nbt.getBoolean("Magic_Wave"));
         this.setBezerk(nbt.getBoolean("Bezerk"));
         this.setIceWave(nbt.getBoolean("Ice_Wave"));
+        this.setShaking(nbt.getBoolean("Shaking"));
         super.readEntityFromNBT(nbt);
     }
 
@@ -207,6 +217,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
         this.dataManager.register(MAGIC_WAVE, Boolean.valueOf(false));
         this.dataManager.register(BEZERK, Boolean.valueOf(false));
         this.dataManager.register(ICE_WAVE, Boolean.valueOf(false));
+        this.dataManager.register(SHAKING, Boolean.valueOf(false));
     }
 
     @Override
@@ -259,6 +270,14 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
         this.setFullBodyUsage(true);
         this.setImmovable(true);
 
+        addEvent(() -> {
+            this.setShaking(true);
+            this.shakeTime = 70;
+        }, 20);
+
+        addEvent(()-> {
+            this.setShaking(false);
+        }, 55);
         addEvent(()-> this.playSound(SoundsHandler.DRAUGR_ELITE_WAR_CRY, 1.5f, 0.8f), 25);
         addEvent(()-> {
             this.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 400, 0));
@@ -444,7 +463,13 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
 
       addEvent(()-> {
           this.playSound(SoundsHandler.DRAUGR_ELITE_SWING_IMPACT, 1.5f, 0.5f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.setShaking(true);
+          this.shakeTime = 20;
       }, 35);
+
+      addEvent(()-> {
+          this.setShaking(false);
+      }, 55);
       addEvent(()-> {
           if(!this.isDeathState()) {
               new ActionMagicWave(ground_projectiles, 0.6F).performAction(this, target);
@@ -503,6 +528,12 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
       this.setFullBodyUsage(true);
       this.setImmovable(true);
 
+      addEvent(()-> {
+          this.setShaking(true);
+          this.shakeTime = 15;
+      }, 33);
+
+      addEvent(()-> this.setShaking(false), 43);
       addEvent(()-> {
         //Do AOE Action
           if(!this.isDeathState()) {
@@ -760,5 +791,18 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
     @Override
     public int tickTimer() {
         return this.ticksExisted;
+    }
+
+    @Override
+    public float getShakeIntensity(Entity viewer, float partialTicks) {
+        if(this.isShaking()) {
+            double dist = getDistance(viewer);
+            float screamMult = (float) (1.0F - dist / 16.0F);
+            if (dist >= 16.0F) {
+                return 0.0F;
+            }
+            return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 1.75F * screamMult);
+        }
+        return 0;
     }
 }

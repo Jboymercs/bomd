@@ -3,6 +3,7 @@ package com.dungeon_additions.da.entity.flame_knight;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
+import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.ai.flame_dungeon.EntityBareantAI;
 import com.dungeon_additions.da.entity.ai.flame_dungeon.EntityVolatileSpiritAI;
 import com.dungeon_additions.da.entity.ai.flying.TimedAttackInitiator;
@@ -12,6 +13,7 @@ import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileTrackingFlame
 import com.dungeon_additions.da.entity.flame_knight.volatile_action.ActionFlameWave;
 import com.dungeon_additions.da.entity.flame_knight.volatile_action.ActionSecondFlameWave;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityAbstractGreatWyrk;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityEliteDraugr;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.ModRand;
@@ -63,7 +65,7 @@ import java.util.ServiceLoader;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable, IAnimationTickable, IAttack {
+public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable, IAnimationTickable, IAttack, IScreenShake {
 
     private Consumer<EntityLivingBase> prevAttacks;
 
@@ -117,6 +119,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
 
     public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BLOCK_POS);
     public static DataParameter<Boolean> SET_SPAWN_LOC = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
 
     public void setSimpleSwing(boolean value) {this.dataManager.set(SIMPLE_SWING, Boolean.valueOf(value));}
     public void setSwingContinue(boolean value) {this.dataManager.set(SWING_CONTINUE, Boolean.valueOf(value));}
@@ -165,8 +168,11 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
     public BlockPos getSpawnLocation() {
         return this.dataManager.get(SPAWN_LOCATION);
     }
+    public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
+    public boolean isShaking() {return this.dataManager.get(SHAKING);}
 
     private int blockCooldown = 80;
+    private int shakeTime = 0;
 
     public EntityVolatileSpirit(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -209,6 +215,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         nbt.setBoolean("Flame_Wave", this.isFlameWave());
         nbt.setBoolean("Buff_Self", this.isBuffSelf());
         nbt.setBoolean("Block_Action", this.isBlockAction());
+        nbt.setBoolean("Shaking", this.isShaking());
         nbt.setBoolean("Triple_Strike", this.isTripleStrike());
         nbt.setBoolean("Had_Target", this.dataManager.get(HAD_PREVIOUS_TARGET));
         nbt.setInteger("Spawn_Loc_X", this.getSpawnLocation().getX());
@@ -233,6 +240,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         this.setMortarFire(nbt.getBoolean("Mortar_Fire"));
         this.setFlameWave(nbt.getBoolean("Flame_Wave"));
         this.setBuffSelf(nbt.getBoolean("Buff_Self"));
+        this.setShaking(nbt.getBoolean("Shaking"));
         this.setBlockAction(nbt.getBoolean("Block_Action"));
         this.setTripleStrike(nbt.getBoolean("Triple_Strike"));
         this.setHadPreviousTarget(nbt.getBoolean("Had_Target"));
@@ -257,6 +265,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         this.dataManager.register(FLAME_WAVE, Boolean.valueOf(false));
         this.dataManager.register(BUFF_SELF, Boolean.valueOf(false));
         this.dataManager.register(BLOCK_ACTION, Boolean.valueOf(false));
+        this.dataManager.register(SHAKING, Boolean.valueOf(false));
         this.dataManager.register(TRIPLE_STRIKE, Boolean.valueOf(false));
         this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
         this.dataManager.register(SET_SPAWN_LOC, Boolean.valueOf(false));
@@ -296,6 +305,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.shakeTime--;
         if(!world.isRemote) {
             EntityLivingBase target = this.getAttackTarget();
 
@@ -532,7 +542,13 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
           ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.8f, 0, false);
           this.playSound(SoundsHandler.VOLACTILE_SMASH, 1.0f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
           new ActionTileAOE((int) this.getDistance(target) + 4).performAction(this, target);
+          this.setShaking(true);
+          this.shakeTime = 30;
       }, 55);
+
+        addEvent(()-> {
+            this.setShaking(false);
+        }, 75);
 
       addEvent(()-> {
         this.setLeapBegin(false);
@@ -578,7 +594,13 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
             ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.8f, 0, false);
             this.playSound(SoundsHandler.VOLACTILE_SMASH, 1.0f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
             new ActionTileAOE((int) this.getDistance(target) + 4).performAction(this, target);
+            this.setShaking(true);
+            this.shakeTime = 30;
         }, 40);
+
+        addEvent(()-> {
+            this.setShaking(false);
+        }, 60);
 
         addEvent(()-> {
             this.lockLook = false;
@@ -745,7 +767,13 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
               addEvent(()-> {
                   this.playSound(SoundsHandler.VOLACTILE_SMASH, 1.0f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
                 new ActionTileAOE((int) this.getDistance(target) + 4).performAction(this, target);
+                this.setShaking(true);
+                this.shakeTime = 30;
               }, 38);
+
+              addEvent(()-> {
+                  this.setShaking(false);
+              }, 58);
 
               addEvent(()-> {
                   this.lockLook = false;
@@ -1159,4 +1187,16 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         }, 40);
     }
 
+    @Override
+    public float getShakeIntensity(Entity viewer, float partialTicks) {
+        if(this.isShaking()) {
+            double dist = getDistance(viewer);
+            float screamMult = (float) (1.0F - dist / 16.0F);
+            if (dist >= 16.0F) {
+                return 0.0F;
+            }
+            return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 1.5F * screamMult);
+        }
+        return 0;
+    }
 }

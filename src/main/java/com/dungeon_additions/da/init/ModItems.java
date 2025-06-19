@@ -1,6 +1,5 @@
 package com.dungeon_additions.da.init;
 
-import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.items.*;
 import com.dungeon_additions.da.items.armor.*;
@@ -8,6 +7,10 @@ import com.dungeon_additions.da.items.armor.dark.ModDarkArmorBase;
 import com.dungeon_additions.da.items.armor.dark.ModDarkMetalHelmet;
 import com.dungeon_additions.da.items.armor.imperial.ItemImperialArmor;
 import com.dungeon_additions.da.items.armor.imperial.ItemImperialChestplate;
+import com.dungeon_additions.da.items.keys.ItemFrostKey;
+import com.dungeon_additions.da.items.keys.ItemLightningKey;
+import com.dungeon_additions.da.items.keys.ItemRotKnightKey;
+import com.dungeon_additions.da.items.keys.ItemSoulKey;
 import com.dungeon_additions.da.items.projectile.ItemFlameBladeProj;
 import com.dungeon_additions.da.items.projectile.ItemHolyWave;
 import com.dungeon_additions.da.items.projectile.ItemLightRing;
@@ -18,10 +21,8 @@ import com.dungeon_additions.da.items.shield.ItemDraugrShield;
 import com.dungeon_additions.da.items.shield.ItemFlameShield;
 import com.dungeon_additions.da.items.tools.*;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
-import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -116,6 +117,7 @@ public class ModItems {
     public static final Item ROT_KNIGHT_KEY = new ItemRotKnightKey("knight_key", "rot_knight_key").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_KEY = new ItemFrostKey("frost_key", "dungeon_frost_key_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item LIGHTNING_KEY = new ItemLightningKey("lightning_key", "lighting_key_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item SOUL_KEY = new ItemSoulKey("soul_key", DungeonAdditionsTab.ALL, "soul_key_desc");
 
     //Weapons
     public static final Item VOID_DAGGER = new ItemBlossomDagger("void_dagger", "dagger_desc", DAGGER_MATERIAL).setCreativeTab(DungeonAdditionsTab.ALL);

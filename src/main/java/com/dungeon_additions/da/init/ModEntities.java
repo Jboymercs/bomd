@@ -182,6 +182,7 @@ public class ModEntities {
         registerTileEntity(TileEntityPuzzleMirror.class, "mirror_puzzle");
         registerTileEntity(TileEntityGrumDispenser.class, "grum_dispenser");
         registerTileEntity(TileEntityGrumBlocker.class, "grum_blocker");
+        registerTileEntity(TileEntityBossReSummon.class, "boss_resummon");
 
     }
 

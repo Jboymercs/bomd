@@ -3,6 +3,7 @@ package com.dungeon_additions.da.entity.night_lich;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
+import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.ai.flying.EntityAIAerialAttack;
 import com.dungeon_additions.da.entity.ai.flying.FlyingMoveHelper;
 import com.dungeon_additions.da.entity.ai.flying.TimedAttackInitiator;
@@ -18,6 +19,7 @@ import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -25,6 +27,7 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigateFlying;
@@ -56,7 +59,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityNightLich extends EntityAbstractNightLich implements IAnimatable, IAttack, IAnimationTickable {
+public class EntityNightLich extends EntityAbstractNightLich implements IAnimatable, IAttack, IAnimationTickable, IScreenShake {
 
 
     private Consumer<EntityLivingBase> prevAttack;
@@ -96,6 +99,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
     private boolean destroyCloseBlocks = false;
     public boolean doesBossSlowDown = false;
+    private int shakeTime = 0;
 
     public EntityNightLich(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -124,6 +128,23 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             initLichAI();
         }
 
+    }
+
+    public EntityNightLich(World worldIn, int timesUsed, BlockPos pos) {
+        super(worldIn);
+        this.timesUsed = timesUsed;
+        this.moveHelper = new FlyingMoveHelper(this);
+        this.navigator = new PathNavigateFlying(this, worldIn);
+        this.setSize(1.1F, 2.5F);
+        this.wantedDistance = 30;
+        this.isImmuneToFire = true;
+        this.isImmuneToExplosions();
+        this.timesUsed++;
+        this.doBossReSummonScaling();
+        this.experienceValue = MobConfig.lich_experience_value;
+        if(!world.isRemote) {
+            initLichAI();
+        }
     }
 
 
@@ -156,7 +177,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
         EntityLivingBase target = this.getAttackTarget();
-
+        this.shakeTime--;
         if(MobConfig.lich_enable_daylight && world.getWorldTime() < MobConfig.lich_summon_time && !world.isRemote) {
             if(timeTooDieTimer > 0) {
                 timeTooDieTimer--;
@@ -515,6 +536,15 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         }, 35);
 
         addEvent(()-> {
+            this.setShaking(true);
+            this.shakeTime = 20;
+        }, 65);
+
+        addEvent(()-> {
+            this.setShaking(false);
+        }, 80);
+
+        addEvent(()-> {
             this.lockLook = false;
             this.destroyCloseBlocks = false;
         }, 65);
@@ -742,6 +772,14 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         }, 5);
       }, 35);
 
+      addEvent(()-> {
+          this.setShaking(true);
+          this.shakeTime = 20;
+      }, 65);
+
+      addEvent(()-> {
+          this.setShaking(false);
+      }, 80);
       addEvent(()-> {
           this.setImmovable(false);
           this.lockLook = false;
@@ -1221,6 +1259,13 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                 initiateDeathText = true;
             }
         }
+        if(ModConfig.boss_resummon_enabled && this.timesUsed <= ModConfig.boss_resummon_max_uses) {
+            BlockPos pos = this.getPosition();
+            int y = getSurfaceHeight(world, new BlockPos(pos.getX(), 0, pos.getZ()), (int) this.posY - 45, (int) this.posY + 10);
+            BlockPos posModified = new BlockPos(pos.getX(), y + 2, pos.getZ());
+            world.setBlockState(posModified.down(), Blocks.STONEBRICK.getDefaultState());
+            turnBossIntoSummonSpawner(posModified);
+        }
         super.onDeath(cause);
     }
 
@@ -1235,5 +1280,18 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     @Override
     protected boolean canDropLoot() {
         return true;
+    }
+
+    @Override
+    public float getShakeIntensity(Entity viewer, float partialTicks) {
+        if(this.isShaking()) {
+            double dist = getDistance(viewer);
+            float screamMult = (float) (1.0F - dist / 25.0F);
+            if (dist >= 25.0F) {
+                return 0.0F;
+            }
+            return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 1.5F * screamMult);
+        }
+        return 0;
     }
 }

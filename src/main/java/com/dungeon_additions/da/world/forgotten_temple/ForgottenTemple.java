@@ -45,7 +45,7 @@ public class ForgottenTemple {
     }
 
     public void startDungeon(BlockPos pos, Rotation rot) {
-        String[] puzzle_types = {"puzzle/puzzle_1","puzzle/puzzle_2","puzzle/puzzle_3","puzzle/puzzle_4","puzzle/puzzle_5"};
+        String[] puzzle_types = {"puzzle/puzzle_1","puzzle/puzzle_2","puzzle/puzzle_3","puzzle/puzzle_4","puzzle/puzzle_5","puzzle/puzzle_6"};
         ForgottenTempleTemplate templeAdjusted = new ForgottenTempleTemplate(manager, ModRand.choice(puzzle_types), pos, rot, 0, true);
         components.add(templeAdjusted);
         this.posIdentified = pos.add(15, 0, 15);

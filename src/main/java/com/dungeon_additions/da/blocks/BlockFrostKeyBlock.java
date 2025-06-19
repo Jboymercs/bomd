@@ -3,7 +3,7 @@ package com.dungeon_additions.da.blocks;
 import com.dungeon_additions.da.blocks.base.IBlockUpdater;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityUpdaterFrost;
 import com.dungeon_additions.da.init.ModItems;
-import com.dungeon_additions.da.items.ItemFrostKey;
+import com.dungeon_additions.da.items.keys.ItemFrostKey;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.google.common.base.Predicate;
 import net.minecraft.block.ITileEntityProvider;

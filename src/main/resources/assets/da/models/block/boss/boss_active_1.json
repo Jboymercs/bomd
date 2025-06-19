@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "da:blocks/boss/spawner_top",
+    "side": "da:blocks/boss/active_1"
+  }
+}

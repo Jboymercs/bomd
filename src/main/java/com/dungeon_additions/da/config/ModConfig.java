@@ -292,12 +292,12 @@ public class ModConfig {
     @Config.Name("Night Lich Tower Search Radius")
     @Config.Comment("Change how far the Soul Star and Locate command searches for a Night Lich's Tower. In chunks not blocks!")
     @Config.RequiresMcRestart
-    public static int lich_search_distance = 100;
+    public static int lich_search_distance = 150;
 
     @Config.Name("Void Blossom Cave Search Radius")
     @Config.Comment("Change how far the Void Lily and Locate command searches for a Void Blossoms Cave. In chunks not blocks!")
     @Config.RequiresMcRestart
-    public static int void_blosom_search_distance = 100;
+    public static int void_blosom_search_distance = 120;
 
     @Config.Name("Burning Flame Arena Search Radius")
     @Config.Comment("Change how far The Spark of Ambition searches for the the Burning Flame Arena. In chunks not blocks!")
@@ -307,7 +307,7 @@ public class ModConfig {
     @Config.Name("Frozen Castle Search Radius")
     @Config.Comment("Change how far the Frozen Soul Star and Locate command searches for a Frozen Castle. In chunks not blocks!")
     @Config.RequiresMcRestart
-    public static int frozen_castle_search_distance = 175;
+    public static int frozen_castle_search_distance = 185;
 
     @Config.Name("Forgotten Temple Search Radius")
     @Config.Comment("Change how far the Desolate Soul and Locate command searches for a Forgotten Temple. In chunks not blocks!")
@@ -317,7 +317,7 @@ public class ModConfig {
     @Config.Name("High Court City Search Radius")
     @Config.Comment("Change how far the Orb of Light and command searches for the High Court City. In chunks not blocks!")
     @Config.RequiresMcRestart
-    public static int high_court_city_search_distance = 175;
+    public static int high_court_city_search_distance = 200;
 
     @Config.Name("Soul Star Drops Advancement Requirements")
     @Config.Comment("What advancements are required for players to use and unlock Soul Stars dropping from Mobs")
@@ -354,6 +354,31 @@ public class ModConfig {
     @Config.Comment("This setting makes it so that if bosses killed all players around them, they will reset back into a key block with a chest above with the respective key. Allowing players to recover there loot more easily and try again. default: true")
     @Config.RequiresMcRestart
     public static boolean boss_reset_enabled = true;
+
+    @Config.Name("Boss Resummon Enabled/Disabled")
+    @Config.Comment("MUST HAVE BOSS RESET ENABLED TO WORK. This system allows players to resummon bosses at there structures at the cost of the Soul Key.")
+    @Config.RequiresMcRestart
+    public static boolean boss_resummon_enabled = true;
+
+    @Config.Name("Boss Resummon Usage Count")
+    @Config.Comment("Change how many times a player can resummon a boss before the block is exhausted. Default 2, meaning on the 3rd resummon and slaying the boss the block will no longer appear")
+    @Config.RequiresMcRestart
+    public static int boss_resummon_max_uses = 2;
+
+    @Config.Name("Boss Resummon Scaling Health")
+    @Config.Comment("Change the percentage of base health gets added on after resummoning a boss. This works as times used resummon * x. Default 20% added health. Change to 0 to disable")
+    @Config.RequiresMcRestart
+    public static double boss_resummon_added_health = 0.2;
+
+    @Config.Name("Boss Resummon Scaling Attack Damage")
+    @Config.Comment("Change the percentage of base attack damage gets added on after resummoning a boss. This works as times used * x. Default 5% added attack damage. Change to 0 disable")
+    @Config.RequiresMcRestart
+    public static double boss_resummon_added_ad = 0.05;
+
+    @Config.Name("Boss Resummon Cooldown")
+    @Config.Comment("Change the cooldown of the Boss Summon Block. In minutes")
+    @Config.RequiresMcRestart
+    public static int boss_resummon_cooldown = 15;
 
     @Config.Name("Boss Reset Timer")
     @Config.Comment("A timer before boss reset occurs in seconds, basically if any players are not within the bosses follow radius (sight is not needed) and the boss has engaged any player in the past. This timer will countdown till reset")

@@ -1,11 +1,13 @@
 package com.dungeon_additions.da.entity.blossom;
 
+import com.dungeon_additions.da.blocks.boss.BlockEnumBossSummonState;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.IPitch;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityAbstractGreatWyrk;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
+import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
 import com.dungeon_additions.da.entity.util.EntityBossSpawner;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.ModUtils;
@@ -263,9 +265,28 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
                             targetTrackingTimer--;
                         }
                         if (targetTrackingTimer < 1) {
-                            this.resetBossTask();
+                            if(this.timesUsed != 0) {
+                                this.timesUsed--;
+                                turnBossIntoSummonSpawner(this.getSpawnLocation());
+                                this.setDead();
+                            } else {
+                                this.resetBossTask();
+                            }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    protected void turnBossIntoSummonSpawner(BlockPos pos) {
+        if(ModConfig.boss_resummon_enabled) {
+            if (this.timesUsed <= ModConfig.boss_resummon_max_uses && !world.isRemote) {
+                world.setBlockState(pos, ModBlocks.BOSS_RESUMMON_BLOCK.getDefaultState());
+                TileEntity te = world.getTileEntity(pos);
+                if (te instanceof TileEntityBossReSummon) {
+                    TileEntityBossReSummon boss_spawner = ((TileEntityBossReSummon) te);
+                    boss_spawner.setState(BlockEnumBossSummonState.INACTIVE, this.timesUsed, "void_blossom");
                 }
             }
         }

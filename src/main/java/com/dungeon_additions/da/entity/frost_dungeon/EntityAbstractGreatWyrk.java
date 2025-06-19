@@ -1,11 +1,13 @@
 package com.dungeon_additions.da.entity.frost_dungeon;
 
+import com.dungeon_additions.da.blocks.boss.BlockEnumBossSummonState;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IPitch;
 import com.dungeon_additions.da.entity.blossom.EntityAbstractVoidBlossom;
 import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.ActionWyrkLazer;
 import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.IMultiAction;
+import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
@@ -64,6 +66,7 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
     private static final DataParameter<Boolean> LAZER_ATTACK = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SUMMON_AID = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SUMMON_BOSS = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
 
     private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
 
@@ -80,6 +83,7 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
     public void setSummonAid(boolean value) {this.dataManager.set(SUMMON_AID, Boolean.valueOf(value));}
 
     public void setSummonBoss(boolean value) {this.dataManager.set(SUMMON_BOSS, Boolean.valueOf(value));}
+    public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
     public boolean isMegaStomp() {return this.dataManager.get(MEGA_STOMP);}
     public boolean isRoll() {return this.dataManager.get(ROLL);}
     public boolean isMeleeStrike() {return this.dataManager.get(MELEE_STRIKE);}
@@ -89,6 +93,7 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
     public boolean isLazerAttack() {return this.dataManager.get(LAZER_ATTACK);}
     public boolean isSummonAid() {return this.dataManager.get(SUMMON_AID);}
     public boolean isSummonBoss() {return this.dataManager.get(SUMMON_BOSS);}
+    public boolean isShaking() {return this.dataManager.get(SHAKING);}
     public boolean isHadPreviousTarget() {return this.dataManager.get(HAD_PREVIOUS_TARGET);}
     public void setHadPreviousTarget(boolean value) {this.dataManager.set(HAD_PREVIOUS_TARGET, Boolean.valueOf(value));}
 
@@ -117,6 +122,7 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
         nbt.setBoolean("Lazer_Attack", this.isLazerAttack());
         nbt.setBoolean("Summon_Aid", this.isSummonAid());
         nbt.setBoolean("Summon_Boss", this.isSummonBoss());
+        nbt.setBoolean("Shaking", this.isShaking());
         nbt.setBoolean("Had_Target", this.dataManager.get(HAD_PREVIOUS_TARGET));
         nbt.setInteger("Spawn_Loc_X", this.getSpawnLocation().getX());
         nbt.setInteger("Spawn_Loc_Y", this.getSpawnLocation().getY());
@@ -137,6 +143,7 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
         this.setLazerAttack(nbt.getBoolean("Lazer_Attack"));
         this.setSummonAid(nbt.getBoolean("Summon_Aid"));
         this.setSummonBoss(nbt.getBoolean("Summon_Boss"));
+        this.setShaking(nbt.getBoolean("Shaking"));
         this.setHadPreviousTarget(nbt.getBoolean("Had_Target"));
         this.dataManager.set(SET_SPAWN_LOC, nbt.getBoolean("Set_Spawn_Loc"));
         this.setSpawnLocation(new BlockPos(nbt.getInteger("Spawn_Loc_X"), nbt.getInteger("Spawn_Loc_Y"), nbt.getInteger("Spawn_Loc_Z")));
@@ -176,7 +183,13 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
                             targetTrackingTimer--;
                         }
                         if (targetTrackingTimer < 1) {
-                            this.resetBossTask();
+                            if(this.timesUsed != 0) {
+                                this.timesUsed--;
+                                turnBossIntoSummonSpawner(this.getSpawnLocation());
+                                this.setDead();
+                            } else {
+                                this.resetBossTask();
+                            }
                         }
                     }
                 }
@@ -202,6 +215,19 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
 
 
     private static final ResourceLocation LOO_RESET = new ResourceLocation(ModReference.MOD_ID, "frozen_castle_reset");
+
+    protected void turnBossIntoSummonSpawner(BlockPos pos) {
+        if(ModConfig.boss_resummon_enabled) {
+            if (this.timesUsed <= ModConfig.boss_resummon_max_uses && !world.isRemote) {
+                world.setBlockState(pos, ModBlocks.BOSS_RESUMMON_BLOCK.getDefaultState());
+                TileEntity te = world.getTileEntity(pos);
+                if (te instanceof TileEntityBossReSummon) {
+                    TileEntityBossReSummon boss_spawner = ((TileEntityBossReSummon) te);
+                    boss_spawner.setState(BlockEnumBossSummonState.INACTIVE, this.timesUsed, "great_wyrk");
+                }
+            }
+        }
+    }
 
     private void resetBossTask() {
         this.setImmovable(true);
@@ -231,6 +257,7 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
         this.dataManager.register(LAZER_ATTACK, Boolean.valueOf(false));
         this.dataManager.register(SUMMON_AID, Boolean.valueOf(false));
         this.dataManager.register(SUMMON_BOSS, Boolean.valueOf(false));
+        this.dataManager.register(SHAKING, Boolean.valueOf(false));
         this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
         this.dataManager.register(SET_SPAWN_LOC, Boolean.valueOf(false));
         //

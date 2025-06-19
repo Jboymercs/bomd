@@ -72,6 +72,7 @@ public class Main {
     public void init(FMLInitializationEvent e) {
         StructureHandler.handleStructureRegistries();
         ModRecipes.init();
+        proxy.registerEventHandlers();
     }
 
     @Mod.EventHandler

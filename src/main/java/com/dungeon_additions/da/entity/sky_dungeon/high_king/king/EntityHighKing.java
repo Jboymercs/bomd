@@ -3,6 +3,7 @@ package com.dungeon_additions.da.entity.sky_dungeon.high_king.king;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
+import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
 import com.dungeon_additions.da.entity.sky_dungeon.city_knights.ActionHalberdSpecial;
@@ -58,7 +59,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, IAnimationTickable, IAttack {
+public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, IAnimationTickable, IAttack, IScreenShake {
 
     private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.YELLOW, BossInfo.Overlay.NOTCHED_6));
 
@@ -341,6 +342,20 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.doBossSummoning();
     }
 
+    public EntityHighKing(World worldIn, int timesUsed, BlockPos pos) {
+        super(worldIn);
+        this.timesUsed = timesUsed;
+        if(!MobConfig.dragon_starts_first) {
+            this.timesUsed++;
+        }
+        this.doBossReSummonScaling();
+        this.setSize(0.8F, 2.45F);
+        this.setHasSpawn(true);
+        this.setSpawnLocation(pos);
+        this.doBossSummoning();
+    }
+
+
     private void doBossSummoning() {
         this.setSummonBoss(true);
         this.setFightMode(true);
@@ -452,7 +467,13 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                         targetTrackingTimer--;
                     }
                     if (targetTrackingTimer < 1) {
-                        this.resetBossTask();
+                        if(this.timesUsed != 0) {
+                            this.timesUsed--;
+                            turnBossIntoSummonSpawner(this.getSpawnLocation());
+                            this.setDead();
+                        } else {
+                            this.resetBossTask();
+                        }
                     }
                 }
             }
@@ -950,6 +971,14 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
         addEvent(()-> this.playSound(SoundsHandler.DRAUGR_ELITE_STOMP, 1.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 23);
       addEvent(()-> new ActionKingStomp().performAction(this, target), 25);
+      addEvent(()-> {
+          this.setShaking(true);
+          this.shakeTime = 20;
+      }, 25);
+
+      addEvent(()-> {
+          this.setShaking(false);
+      }, 40);
 
       addEvent(()-> {
         this.setStomp(false);
@@ -985,6 +1014,14 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         addEvent(()-> this.lockLook = true, 25);
         addEvent(()-> this.playSound(SoundsHandler.DRAUGR_ELITE_STOMP, 1.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 35);
         addEvent(()-> new ActionKingStomp().performAction(this, target), 37);
+        addEvent(()-> {
+            this.setShaking(true);
+            this.shakeTime = 20;
+        }, 37);
+
+        addEvent(()-> {
+            this.setShaking(false);
+        }, 52);
 
         addEvent(()-> this.lockLook = false, 55);
 
@@ -1473,6 +1510,15 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             new ActionHolySpikeAOE((int) this.getDistance(target) + 5).performAction(this, target);
         }, 46);
 
+        addEvent(()-> {
+            this.setShaking(true);
+            this.shakeTime = 20;
+        }, 46);
+
+        addEvent(()-> {
+            this.setShaking(false);
+        }, 61);
+
         addEvent(()-> this.lockLook = false, 75);
 
         addEvent(()-> {
@@ -1499,7 +1545,13 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
       addEvent(()-> {
           //Action
           new ActionKingProgAOE().performAction(this, target);
+          this.setShaking(true);
+          this.shakeTime = 40;
       }, 45);
+
+        addEvent(()-> {
+            this.setShaking(false);
+        }, 70);
 
       addEvent(()-> this.lockLook = false, 55);
 
@@ -1950,6 +2002,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         }, 180);
 
         addEvent(()-> {
+            if(this.getSpawnLocation() != null) {
+                this.turnBossIntoSummonSpawner(this.getSpawnLocation());
+            }
             this.setDead();
             this.setDropItemsWhenDead(true);
             this.setDeathBoss(false);
@@ -1991,5 +2046,18 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
     @Override
     protected void updateFallState(double y, boolean onGroundIn, @Nonnull IBlockState state, @Nonnull BlockPos pos) {
+    }
+
+    @Override
+    public float getShakeIntensity(Entity viewer, float partialTicks) {
+        if(this.isShaking()) {
+            double dist = getDistance(viewer);
+            float screamMult = (float) (1.0F - dist / 20.0F);
+            if (dist >= 20.0F) {
+                return 0.0F;
+            }
+            return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 1.25F * screamMult);
+        }
+        return 0;
     }
 }

@@ -5,6 +5,7 @@ import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IPitch;
+import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.ai.flying.FlyingMoveHelper;
 import com.dungeon_additions.da.entity.ai.flying.TimedAttackInitiator;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
@@ -62,7 +63,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatable, IAnimationTickable, IAttack, IPitch, IEntityMultiPart {
+public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatable, IAnimationTickable, IAttack, IPitch, IEntityMultiPart, IScreenShake {
 
     private final String ANIM_FLY_BASE = "fly";
     private final String ANIM_FLY_DRAGON = "fly_dragon";
@@ -235,6 +236,22 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
         this.setNoGravity(true);
         this.hitboxParts = new MultiPartEntityPart[]{model, torso, neckPart1, neckPart2, headPart, tailPart1, legPartLeft, legPartRight, tailPart2, tailPart3, tailPart4, tailPart5};
         this.experienceValue = MobConfig.high_dragon_experience_value;
+    }
+
+    public EntityHighKingDrake(World worldIn, int timesUsed, BlockPos pos) {
+        super(worldIn);
+        this.timesUsed = timesUsed;
+        this.timesUsed++;
+        this.doBossReSummonScaling();
+        this.setSize(4.0F, 5.0F);
+        this.moveHelper = new FlyingMoveHelper(this);
+        this.navigator = new PathNavigateFlying(this, worldIn);
+        this.setNoGravity(true);
+        this.hitboxParts = new MultiPartEntityPart[]{model, torso, neckPart1, neckPart2, headPart, tailPart1, legPartLeft, legPartRight, tailPart2, tailPart3, tailPart4, tailPart5};
+        this.experienceValue = MobConfig.high_dragon_experience_value;
+        this.setSpawnLocation(pos.add(0, -25, 0));
+        this.setHasSpawn(true);
+        this.playSound(SoundsHandler.HIGH_DRAKE_ROAR_AIR, 2.5f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f));
     }
 
 
@@ -449,7 +466,13 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
                         targetTrackingTimer--;
                     }
                     if (targetTrackingTimer < 1) {
-                        this.resetBossTask();
+                        if(this.timesUsed != 0) {
+                            this.timesUsed--;
+                            turnBossIntoSummonSpawner(this.getSpawnLocation());
+                            this.setDead();
+                        } else {
+                            this.resetBossTask();
+                        }
                     }
                 }
             }
@@ -605,10 +628,16 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
 
         addEvent(()-> world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE), 60);
 
+        addEvent(()-> {
+            this.setShaking(true);
+            this.shakeTime = 80;
+        }, 90);
 
       addEvent(()-> this.setImmovable(true), 100);
 
       addEvent(()-> this.lockLook = false, 115);
+
+      addEvent(()-> this.setShaking(false), 120);
 
       addEvent(()-> {
         this.setImmovable(false);
@@ -636,7 +665,13 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
           //Do Stomp AOE RIGHT FOOT
           new ActionDragonStomp(this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0,0,-1.8)))).performAction(this, target);
           this.playSound(SoundsHandler.HIGH_DRAKE_IMPACT_GROUND, 1.3f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.setShaking(true);
+          this.shakeTime = 30;
       }, 30);
+
+      addEvent(()-> {
+          this.setShaking(false);
+      }, 60);
 
       addEvent(()-> {
           this.lockLook = false;
@@ -659,6 +694,8 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
       addEvent(()-> this.lockLook = true, 30);
       addEvent(()-> {
           this.playSound(SoundsHandler.HIGH_DRAKE_ROAR_GROUND, 1.75f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.setShaking(true);
+          this.shakeTime = 80;
       }, 30);
 
       addEvent(()-> new ActionDragonSpecialGround().performAction(this, target), 40);
@@ -669,6 +706,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
           this.setImmovable(false);
           this.setFightMode(false);
           this.setFullBodyUsage(false);
+          this.setShaking(false);
       }, 105);
 
     };
@@ -752,7 +790,13 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
         //Do Stomp Attack LEFT FOOT
           new ActionDragonStomp(this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0,0,1.8)))).performAction(this, target);
           this.playSound(SoundsHandler.HIGH_DRAKE_IMPACT_GROUND, 1.3f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.setShaking(true);
+          this.shakeTime = 30;
       }, 70);
+
+        addEvent(()-> {
+            this.setShaking(false);
+        }, 100);
 
       addEvent(()-> this.lockLook = false, 95);
 
@@ -913,10 +957,17 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
       this.setFightMode(true);
 
         addEvent(()-> this.playSound(SoundsHandler.HIGH_DRAKE_ROAR_AIR, 3.0f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f)), 70);
-
+        addEvent(()-> {
+            this.setShaking(true);
+            this.shakeTime = 40;
+        }, 70);
       addEvent(()-> {
         new ActionDragonSpecial().performAction(this, target);
       }, 85);
+
+      addEvent(()-> {
+          this.setShaking(false);
+      }, 120);
 
       addEvent(()-> {
         this.setDragonRoar(false);
@@ -1275,7 +1326,14 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
             if(MobConfig.high_dragon_after_death && this.getSpawnLocation() != null) {
                 this.experienceValue = 0;
                 //Spawn the High King for the second part of the boss fight
-                EntityHighKing king = new EntityHighKing(world, this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
+                EntityHighKing king;
+                if(timesUsed != 0) {
+                    king = new EntityHighKing(world, this.timesUsed, this.getSpawnLocation());
+                    king.setPosition(this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
+                } else {
+                    king = new EntityHighKing(world, this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
+                }
+
                 this.world.spawnEntity(king);
             } else {
                 //Spawn a chest with the loot table for this boss
@@ -1301,5 +1359,18 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
 
 
         super.onDeath(cause);
+    }
+
+    @Override
+    public float getShakeIntensity(Entity viewer, float partialTicks) {
+        if(this.isShaking()) {
+            double dist = getDistance(viewer);
+            float screamMult = (float) (1.0F - dist / 50.0F);
+            if (dist >= 50.0F) {
+                return 0.0F;
+            }
+            return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 2F * screamMult);
+        }
+        return 0;
     }
 }

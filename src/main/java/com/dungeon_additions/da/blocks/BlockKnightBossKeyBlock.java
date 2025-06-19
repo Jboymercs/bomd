@@ -2,8 +2,7 @@ package com.dungeon_additions.da.blocks;
 
 import com.dungeon_additions.da.blocks.base.IBlockUpdater;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityUpdater;
-import com.dungeon_additions.da.items.ItemLightningKey;
-import com.dungeon_additions.da.items.ItemRotKnightKey;
+import com.dungeon_additions.da.items.keys.ItemRotKnightKey;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.google.common.base.Predicate;
 import net.minecraft.block.ITileEntityProvider;

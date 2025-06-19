@@ -54,7 +54,7 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
     private final String ANIM_SCUTTLE = "scuttle";
     private final String ANIM_END_SCUTTLE = "end_scuttle";
 
-    private boolean setHeadState = false;
+    private boolean setHeadState;
 
     private static final DataParameter<Boolean> BITE = EntityDataManager.createKey(EntityScutterBeetle.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> BEGIN_SCUTTLE = EntityDataManager.createKey(EntityScutterBeetle.class, DataSerializers.BOOLEAN);

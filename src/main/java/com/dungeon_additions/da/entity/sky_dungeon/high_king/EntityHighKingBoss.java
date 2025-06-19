@@ -1,12 +1,16 @@
 package com.dungeon_additions.da.entity.sky_dungeon.high_king;
 
+import com.dungeon_additions.da.blocks.boss.BlockEnumBossSummonState;
 import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.sky_dungeon.EntityImperialHalberdAI;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
+import com.dungeon_additions.da.entity.night_lich.EntityAbstractNightLich;
 import com.dungeon_additions.da.entity.sky_dungeon.EntityGargoyleLazer;
 import com.dungeon_additions.da.entity.sky_dungeon.EntityImperialHalberd;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
+import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,9 +41,11 @@ import java.util.function.Consumer;
 public class EntityHighKingBoss extends EntitySkyBase {
 
     private int changeWeatherTimer = 0;
+    protected int shakeTime = 0;
     private static final DataParameter<Boolean> KING_CAST = EntityDataManager.createKey(EntityHighKingBoss.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> KING_CAST_LIGHTNING = EntityDataManager.createKey(EntityHighKingBoss.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntityHighKingBoss.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityHighKingBoss.class, DataSerializers.BOOLEAN);
     protected boolean isKingCast() {return this.dataManager.get(KING_CAST);}
     protected void setKingCast(boolean value) {this.dataManager.set(KING_CAST, Boolean.valueOf(value));}
     protected boolean isKingCastLightning() {return this.dataManager.get(KING_CAST_LIGHTNING);}
@@ -47,6 +53,8 @@ public class EntityHighKingBoss extends EntitySkyBase {
 
     public boolean isHadPreviousTarget() {return this.dataManager.get(HAD_PREVIOUS_TARGET);}
     public void setHadPreviousTarget(boolean value) {this.dataManager.set(HAD_PREVIOUS_TARGET, Boolean.valueOf(value));}
+    public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
+    public boolean isShaking() {return this.dataManager.get(SHAKING);}
 
     public Consumer<EntityLivingBase> prevAttacks;
 
@@ -68,6 +76,7 @@ public class EntityHighKingBoss extends EntitySkyBase {
         nbt.setBoolean("King_Cast", this.isKingCast());
         nbt.setBoolean("King_Cast_Lightning", this.isKingCastLightning());
         nbt.setBoolean("Had_Target", this.isHadPreviousTarget());
+        nbt.setBoolean("Shaking", this.isShaking());
         super.writeEntityToNBT(nbt);
     }
 
@@ -76,13 +85,14 @@ public class EntityHighKingBoss extends EntitySkyBase {
         this.setKingCast(nbt.getBoolean("King_Cast"));
         this.setKingCastLightning(nbt.getBoolean("King_Cast_Lightning"));
         this.setHadPreviousTarget(nbt.getBoolean("Had_Target"));
+        this.setShaking(nbt.getBoolean("Shaking"));
         super.readEntityFromNBT(nbt);
     }
 
     @Override
     public void onUpdate() {
         super.onUpdate();
-
+        this.shakeTime--;
         if(!world.isRemote) {
             changeWeatherTimer--;
 
@@ -126,6 +136,19 @@ public class EntityHighKingBoss extends EntitySkyBase {
         this.setDead();
     }
 
+    protected void turnBossIntoSummonSpawner(BlockPos pos) {
+        if(ModConfig.boss_resummon_enabled) {
+            if (this.timesUsed <= ModConfig.boss_resummon_max_uses && !world.isRemote) {
+                world.setBlockState(pos, ModBlocks.BOSS_RESUMMON_BLOCK.getDefaultState());
+                TileEntity te = world.getTileEntity(pos);
+                if (te instanceof TileEntityBossReSummon) {
+                    TileEntityBossReSummon boss_spawner = ((TileEntityBossReSummon) te);
+                    boss_spawner.setState(BlockEnumBossSummonState.INACTIVE, this.timesUsed, "high_king");
+                }
+            }
+        }
+    }
+
 
     @Override
     public void entityInit() {
@@ -133,6 +156,7 @@ public class EntityHighKingBoss extends EntitySkyBase {
         this.dataManager.register(KING_CAST_LIGHTNING, Boolean.valueOf(false));
         this.dataManager.register(KING_CAST, Boolean.valueOf(false));
         this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
+        this.dataManager.register(SHAKING, Boolean.valueOf(false));
     }
 
     @Override

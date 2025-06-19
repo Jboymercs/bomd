@@ -1,5 +1,7 @@
 package com.dungeon_additions.da.entity.rot_knights;
 
+import com.dungeon_additions.da.blocks.boss.BlockBossReSummon;
+import com.dungeon_additions.da.blocks.boss.BlockEnumBossSummonState;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
@@ -10,6 +12,7 @@ import com.dungeon_additions.da.entity.frost_dungeon.EntityAbstractGreatWyrk;
 import com.dungeon_additions.da.entity.rot_knights.actions.ActionRotFarAOE;
 import com.dungeon_additions.da.entity.rot_knights.actions.ActionRotLineAOE;
 import com.dungeon_additions.da.entity.rot_knights.actions.ActionRotShortAOE;
+import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
@@ -152,6 +155,20 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
         this.onSummonBoss();
     }
 
+    public EntityRotKnightBoss(World world, int timesUsed, BlockPos pos) {
+        super(world);
+        this.timesUsed = timesUsed;
+        this.setSize(0.75F, 1.95F);
+        this.setHideArmState(true);
+        this.iAmBossMob = true;
+        this.timesUsed++;
+        this.doBossReSummonScaling();
+        this.onSummonBoss();
+        BlockPos offset = new BlockPos(pos.getX(), pos.getY(), pos.getZ());
+        this.setSpawnLocation(offset);
+        this.setSetSpawnLoc(true);
+    }
+
     public void onSummonBoss() {
         this.setFightMode(true);
         this.setFullBodyUsage(true);
@@ -278,7 +295,13 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
                             targetTrackingTimer--;
                         }
                         if (targetTrackingTimer < 1) {
-                            this.resetBossTask();
+                            if(this.timesUsed != 0) {
+                                this.timesUsed--;
+                                turnBossIntoSummonSpawner(this.getSpawnLocation());
+                                this.setDead();
+                            } else {
+                                this.resetBossTask();
+                            }
                         }
                     }
                 }
@@ -297,6 +320,19 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
                     if (distance > 25) {
                         this.teleportTarget(SpawnLoc.x, SpawnLoc.y, SpawnLoc.z);
                     }
+                }
+            }
+        }
+    }
+
+    protected void turnBossIntoSummonSpawner(BlockPos pos) {
+        if(ModConfig.boss_resummon_enabled) {
+            if (this.timesUsed <= ModConfig.boss_resummon_max_uses && !world.isRemote) {
+                world.setBlockState(pos, ModBlocks.BOSS_RESUMMON_BLOCK.getDefaultState());
+                TileEntity te = world.getTileEntity(pos);
+                if (te instanceof TileEntityBossReSummon) {
+                    TileEntityBossReSummon boss_spawner = ((TileEntityBossReSummon) te);
+                    boss_spawner.setState(BlockEnumBossSummonState.INACTIVE, this.timesUsed, "ancient_fallen");
                 }
             }
         }
@@ -889,5 +925,13 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
     @Override
     public int tickTimer() {
         return this.ticksExisted;
+    }
+
+    @Override
+    public void onDeath(DamageSource cause) {
+        if(this.getSpawnLocation() != null) {
+            this.turnBossIntoSummonSpawner(this.getSpawnLocation());
+        }
+        super.onDeath(cause);
     }
 }

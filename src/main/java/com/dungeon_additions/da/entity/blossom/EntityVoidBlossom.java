@@ -80,12 +80,20 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
         this.iAmBossMob = true;
     }
 
+    public EntityVoidBlossom(World worldIn, int timesUsed, BlockPos pos) {
+        super(worldIn);
+        this.setImmovable(true);
+        this.setNoGravity(true);
+        this.iAmBossMob = true;
+        this.timesUsed = timesUsed;
+        this.timesUsed++;
+        this.doBossReSummonScaling();
+    }
+
     public void onSummonBoss(BlockPos offset) {
         this.setSpawnLocation(offset);
         this.setSetSpawnLoc(true);
     }
-
-
 
 
     @Override
@@ -468,7 +476,12 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
         addEvent(()-> this.setDeathState(false), 71);
         addEvent(()-> this.setDropItemsWhenDead(true), 65);
         addEvent(()-> this.playSound(SoundsHandler.BLOSSOM_DEATH, 2.0f, 1.0f), 50);
-        addEvent(()-> this.setDead(), 71);
+        addEvent(()-> {
+            if(this.getSpawnLocation() != null) {
+                this.turnBossIntoSummonSpawner(this.getSpawnLocation());
+            }
+            this.setDead();
+            }, 71);
         super.onDeath(cause);
     }
 

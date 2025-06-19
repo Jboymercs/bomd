@@ -1,11 +1,14 @@
 package com.dungeon_additions.da.entity.night_lich;
 
+import com.dungeon_additions.da.blocks.boss.BlockEnumBossSummonState;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.IPitch;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityEliteDraugr;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
+import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
@@ -54,6 +57,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
     private static final DataParameter<Boolean> THROW_STAFF = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> RAGE_MODE = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> MELEE_COMBO = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
 
     private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
     public List<WeakReference<Entity>> current_mobs = Lists.newArrayList();
@@ -93,6 +97,8 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
 
     public boolean isHadPreviousTarget() {return this.dataManager.get(HAD_PREVIOUS_TARGET);}
     public void setHadPreviousTarget(boolean value) {this.dataManager.set(HAD_PREVIOUS_TARGET, Boolean.valueOf(value));}
+    public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
+    public boolean isShaking() {return this.dataManager.get(SHAKING);}
 
     protected int teleportCooldownTimer = MobConfig.lich_teleport_timer * 20;
 
@@ -143,13 +149,36 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
                             targetTrackingTimer--;
                         }
                         if (targetTrackingTimer < 1) {
-                            this.resetBossTask();
+                            if(this.timesUsed != 0) {
+                                this.timesUsed--;
+                                BlockPos pos = this.getPosition();
+                                int y = getSurfaceHeight(world, new BlockPos(pos.getX(), 0, pos.getZ()), (int) this.posY - 45, (int) this.posY + 10);
+                                BlockPos posModified = new BlockPos(pos.getX(), y + 2, pos.getZ());
+                                world.setBlockState(posModified.down(), Blocks.STONEBRICK.getDefaultState());
+                                turnBossIntoSummonSpawner(posModified);
+                                this.setDead();
+                            } else {
+                                this.resetBossTask();
+                            }
                         }
                     }
                 }
             }
 
 
+    }
+
+    protected void turnBossIntoSummonSpawner(BlockPos pos) {
+        if(ModConfig.boss_resummon_enabled) {
+            if (this.timesUsed <= ModConfig.boss_resummon_max_uses && !world.isRemote) {
+                world.setBlockState(pos, ModBlocks.BOSS_RESUMMON_BLOCK.getDefaultState());
+                TileEntity te = world.getTileEntity(pos);
+                if (te instanceof TileEntityBossReSummon) {
+                    TileEntityBossReSummon boss_spawner = ((TileEntityBossReSummon) te);
+                    boss_spawner.setState(BlockEnumBossSummonState.INACTIVE, this.timesUsed, "night_lich");
+                }
+            }
+        }
     }
 
     private static final ResourceLocation LOO_RESET = new ResourceLocation(ModReference.MOD_ID, "night_lich_reset");
@@ -176,7 +205,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
         this.setDead();
     }
 
-    private int getSurfaceHeight(World world, BlockPos pos, int min, int max)
+    protected int getSurfaceHeight(World world, BlockPos pos, int min, int max)
     {
         int currentY = max;
 
@@ -212,6 +241,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
         nbt.setBoolean("Throw_Staff", this.isThrowStaff());
         nbt.setBoolean("Rage_Mode", this.isRageMode());
         nbt.setBoolean("Melee_Combo", this.isMeleeCombo());
+        nbt.setBoolean("Shaking", this.isShaking());
         nbt.setBoolean("Had_Target", this.dataManager.get(HAD_PREVIOUS_TARGET));
         nbt.setFloat("Look", this.getPitch());
         NBTTagList mobs = new NBTTagList();
@@ -240,6 +270,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
         this.setRageMode(nbt.getBoolean("Rage_Mode"));
         this.setMeleeCombo(nbt.getBoolean("Melee_Combo"));
         this.setHadPreviousTarget(nbt.getBoolean("Had_Target"));
+        this.setShaking(nbt.getBoolean("Shaking"));
         this.dataManager.set(LOOK, nbt.getFloat("Look"));
     }
 
@@ -262,6 +293,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
         this.dataManager.register(RAGE_MODE, Boolean.valueOf(false));
         this.dataManager.register(MELEE_COMBO, Boolean.valueOf(false));
         this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
+        this.dataManager.register(SHAKING, Boolean.valueOf(false));
     }
 
 
