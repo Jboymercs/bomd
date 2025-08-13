@@ -90,6 +90,36 @@
       }
     ]
   },
+  "entity.obsi.cast": {
+    "category": "entity",
+    "subtitle": "entity.obsi.cast",
+    "sounds": [
+      {
+        "name": "da:entity/obsi/cast",
+        "steam": false
+      }
+    ]
+  },
+  "entity.obsi.burst": {
+    "category": "entity",
+    "subtitle": "entity.obsi.burst",
+    "sounds": [
+      {
+        "name": "da:entity/obsi/burst",
+        "steam": false
+      }
+    ]
+  },
+  "entity.obsi.shield": {
+    "category": "entity",
+    "subtitle": "entity.obsi.shield",
+    "sounds": [
+      {
+        "name": "da:entity/obsi/shield",
+        "steam": false
+      }
+    ]
+  },
   "entity.night_lich.prepare_fireball": {
     "category": "entity",
     "subtitle": "entity.night_lich.prepare_fireball",
@@ -2015,6 +2045,80 @@
       }
     ]
   },
+  "entity.voidiant.walk": {
+    "category": "entity",
+    "subtitle": "entity.voidiant.walk",
+    "sounds": [
+      {
+        "name": "da:entity/voidiant/walk",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidiant.jump": {
+    "category": "entity",
+    "subtitle": "entity.voidiant.jump",
+    "sounds": [
+      {
+        "name": "da:entity/voidiant/jump",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidiant.open": {
+    "category": "entity",
+    "subtitle": "entity.voidiant.open",
+    "sounds": [
+      {
+        "name": "da:entity/voidiant/open",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidiant.shoot": {
+    "category": "entity",
+    "subtitle": "entity.voidiant.shoot",
+    "sounds": [
+      {
+        "name": "da:entity/voidiant/shoot",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidiant.charge": {
+    "category": "entity",
+    "subtitle": "entity.voidiant.charge",
+    "sounds": [
+      {
+        "name": "da:entity/voidiant/charge",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidiant.lazer_gun": {
+    "category": "entity",
+    "subtitle": "entity.voidiant.lazer_gun",
+    "sounds": [
+      {
+        "name": "da:entity/voidiant/lazer_gun",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidiant.hurt": {
+    "category": "entity",
+    "subtitle": "entity.voidiant.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/voidiant/hurt1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/voidiant/hurt2",
+        "steam": false
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",
@@ -2366,6 +2470,69 @@
       {
         "name": "da:block/mirror/pling",
         "steam": false
+      }
+    ]
+  },
+  "music.ambient.high_dragon": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "da:music/high_dragon_track",
+        "stream": true
+      }
+    ]
+  },
+  "music.ambient.high_king": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "da:music/high_king_track",
+        "stream": true
+      }
+    ]
+  },
+  "music.ambient.flame_knight": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "da:music/flame_knight_track",
+        "stream": true
+      }
+    ]
+  },
+  "music.ambient.void_blossom": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "da:music/void_blossom_track",
+        "stream": true
+      }
+    ]
+  },
+  "music.ambient.fallen_stormvier": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "da:music/fallen_stormvier_track",
+        "stream": true
+      }
+    ]
+  },
+  "music.ambient.night_lich": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "da:music/night_lich_track",
+        "stream": true
+      }
+    ]
+  },
+  "music.ambient.ancient_wyrk": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "da:music/ancient_wyrk_track",
+        "stream": true
       }
     ]
   }

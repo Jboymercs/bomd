@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:obsidian_eye"
+    },
+    "title": {
+      "translate": "advancements.da.craft_obsidian_eye.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_obsidian_eye.description"
+    }
+  },
+  "parent": "da:craft_obsidian_locator",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:obsidian_eye"
+          }
+        ]
+      }
+    }
+  }
+}

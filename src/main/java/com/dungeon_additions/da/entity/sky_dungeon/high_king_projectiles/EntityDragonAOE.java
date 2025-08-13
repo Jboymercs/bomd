@@ -79,10 +79,6 @@ public class EntityDragonAOE extends EntitySkyBase implements IAnimatable, IAnim
 
         if(!world.isRemote) {
             hitDelayTimer--;
-
-            if(this.ticksExisted == 14) {
-                this.playSound(SoundsHandler.HIGH_DRAKE_ROCK_AOE, 0.6f, 1.0F);
-            }
             if(this.ticksExisted > 15 && this.hitDelayTimer < 0 && this.ticksExisted <= 75) {
                 List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntitySkyBase)));
 

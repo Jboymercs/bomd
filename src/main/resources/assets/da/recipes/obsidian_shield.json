@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV",
+    "RXR",
+    " V "
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:obsidian"
+    },
+    "R": {
+      "item": "da:voidiant_core"
+    },
+    "X": {
+      "item": "da:obsdian_heart"
+    }
+  },
+  "result": {
+    "item": "da:obsidian_shield",
+    "count": 1
+  }
+}

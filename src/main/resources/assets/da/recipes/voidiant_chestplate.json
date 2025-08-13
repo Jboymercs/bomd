@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V V",
+    "XBX",
+    "XXX"
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:purpur_block"
+    },
+    "X": {
+      "item": "da:voidiant_core"
+    },
+    "B": {
+      "item": "da:dark_core"
+    }
+  },
+  "result": {
+    "item": "da:voidiant_chestplate",
+    "count": 1
+  }
+}

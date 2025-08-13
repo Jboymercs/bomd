@@ -83,7 +83,7 @@ public class EntityFlameOrb extends EntityFlameBase implements IAnimatable, IAni
         failTimer--;
 
 
-        if(byRateCheck < 0 && !metConditions) {
+        if(byRateCheck < 0 && !metConditions && !world.isRemote) {
             List<EntityPlayer> targets = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(5.0, 4.0, 5.0), e -> !e.getIsInvulnerable());
 
             if(!targets.isEmpty()) {

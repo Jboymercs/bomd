@@ -4,6 +4,7 @@ import com.dungeon_additions.da.entity.night_lich.EntityLichStaffAOE;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.EntityDragonAOE;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -33,7 +34,7 @@ public class ActionGroundTransition implements IActionDrake{
                     tile.setLocationAndAngles(posToo.getX() + 0.5D, posToo.getY(), posToo.getZ() + 0.5D, 0.0f, 0.0F);
                     actor.world.spawnEntity(tile);
                 });
-
+                actor.playSound(SoundsHandler.HIGH_DRAKE_ROCK_AOE, 1.0f, 1.0F);
             }
 
         } else {
@@ -48,7 +49,7 @@ public class ActionGroundTransition implements IActionDrake{
                     tile.setLocationAndAngles(posToo.getX() + 0.5D, posToo.getY(), posToo.getZ() + 0.5D, 0.0f, 0.0F);
                     actor.world.spawnEntity(tile);
                 });
-
+                actor.playSound(SoundsHandler.HIGH_DRAKE_ROCK_AOE, 1.0f, 1.0F);
             }
         }
     }

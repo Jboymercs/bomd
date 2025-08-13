@@ -1,8 +1,8 @@
 package com.dungeon_additions.da.world.forgotten_temple;
 
-import com.deeperdepths.common.world.base.ModRand;
 import com.deeperdepths.common.world.chambers.TrialChambersTemplate;
 import com.dungeon_additions.da.config.WorldConfig;
+import com.dungeon_additions.da.util.ModRand;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -21,7 +21,7 @@ public class ForgottenTemple {
     private List<StructureComponent> components;
     private World world;
     private TemplateManager manager;
-    private int SIZE = 5;
+    private int SIZE = WorldConfig.forgotten_temple_size;
     protected BlockPos posIdentified;
     private boolean generatedBossRoom;
     private boolean generatedKeyRoom;

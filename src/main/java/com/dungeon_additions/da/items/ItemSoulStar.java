@@ -122,7 +122,7 @@ public class ItemSoulStar extends ItemBase{
 
         int k = chunkX / spacing;
         int l = chunkZ / spacing;
-        Random random = world.setRandomSeed(k, l, 10387312);
+        Random random = world.setRandomSeed(k, l, 20387312);
         k = k * spacing;
         l = l * spacing;
         k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;

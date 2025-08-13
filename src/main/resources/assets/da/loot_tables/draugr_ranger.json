@@ -37,13 +37,13 @@
               }
             }
           ]
+        },
+        {
+          "type": "item",
+          "name": "da:draugr_shard",
+          "weight": 3
         }
       ]
-    },
-    {
-      "type": "item",
-      "name": "da:draugr_shard",
-      "weight": 3
     }
   ]
 }

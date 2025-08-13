@@ -10,6 +10,7 @@ import com.dungeon_additions.da.entity.ai.flying.TimedAttackInitiator;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
 import com.dungeon_additions.da.entity.night_lich.action.*;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
+import com.dungeon_additions.da.entity.util.IEntitySound;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
@@ -53,13 +54,14 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityNightLich extends EntityAbstractNightLich implements IAnimatable, IAttack, IAnimationTickable, IScreenShake {
+public class EntityNightLich extends EntityAbstractNightLich implements IAnimatable, IAttack, IAnimationTickable, IScreenShake, IEntitySound {
 
 
     private Consumer<EntityLivingBase> prevAttack;
@@ -107,7 +109,6 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.moveHelper = new FlyingMoveHelper(this);
         this.navigator = new PathNavigateFlying(this, worldIn);
         this.wantedDistance = 30;
-        this.isImmuneToFire = true;
         this.isImmuneToExplosions();
         this.experienceValue = MobConfig.lich_experience_value;
         if(!world.isRemote) {
@@ -121,7 +122,6 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.navigator = new PathNavigateFlying(this, worldIn);
         this.setSize(1.1F, 2.5F);
         this.wantedDistance = 30;
-        this.isImmuneToFire = true;
         this.isImmuneToExplosions();
         this.experienceValue = MobConfig.lich_experience_value;
         if(!world.isRemote) {
@@ -176,6 +176,9 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         super.onUpdate();
 
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+            this.playMusic(this);
+        }
         EntityLivingBase target = this.getAttackTarget();
         this.shakeTime--;
         if(MobConfig.lich_enable_daylight && world.getWorldTime() < MobConfig.lich_summon_time && !world.isRemote) {
@@ -1293,5 +1296,11 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 1.5F * screamMult);
         }
         return 0;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getBossMusic() {
+        return SoundsHandler.NIGHT_LICH_TRACK;
     }
 }

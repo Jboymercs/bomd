@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:voidclysm_crystal"
+    },
+    "title": {
+      "translate": "advancements.da.kill_voidclysm.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_voidclysm.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "da:kill_obsidilith",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:voidclysm"
+        }
+      }
+    }
+  }
+}

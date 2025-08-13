@@ -23,14 +23,14 @@ public class ActionBloodBombs implements IActionProjectile {
         ModUtils.circleCallback(1, 8, (pos)-> {
             pos = new Vec3d(pos.x, 0, pos.y).add(actor.getPositionVector());
             int y = getSurfaceHeight(actor.world, new BlockPos(pos.x, 0, pos.z), (int) actor.posY - 5, (int) actor.posY + 7);
-            EntityBloodPile spike = new EntityBloodPile(actor.world);
+            EntityBloodPile spike = new EntityBloodPile(actor.world, true);
             spike.setPosition(pos.x, y + 1, pos.z);
             actor.world.spawnEntity(spike);
         });
         ModUtils.circleCallback(2, 12, (pos)-> {
             pos = new Vec3d(pos.x, 0, pos.y).add(actor.getPositionVector());
             int y = getSurfaceHeight(actor.world, new BlockPos(pos.x, 0, pos.z), (int) actor.posY - 5, (int) actor.posY + 7);
-            EntityBloodPile spike = new EntityBloodPile(actor.world);
+            EntityBloodPile spike = new EntityBloodPile(actor.world, true);
             spike.setPosition(pos.x, y + 1, pos.z);
             actor.world.spawnEntity(spike);
         });
@@ -38,7 +38,7 @@ public class ActionBloodBombs implements IActionProjectile {
         ModUtils.circleCallback(3, 8, (pos)-> {
             pos = new Vec3d(pos.x, 0, pos.y).add(actor.getPositionVector());
             int y = getSurfaceHeight(actor.world, new BlockPos(pos.x, 0, pos.z), (int) actor.posY - 5, (int) actor.posY + 7);
-            EntityBloodPile spike = new EntityBloodPile(actor.world);
+            EntityBloodPile spike = new EntityBloodPile(actor.world, true);
             spike.setPosition(pos.x, y + 1, pos.z);
             actor.world.spawnEntity(spike);
         });

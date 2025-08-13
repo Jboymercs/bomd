@@ -38,7 +38,6 @@ public class WorldGenForgottenTemple extends WorldGenerator {
         //Checks to see if all biomes are valid in this region before selecting and spawning the structure
         if(canSpawnStructureAtPos(world, position.getX() >> 4, position.getZ() >> 4)) {
             getStructureStart(world, position.getX() >> 4, position.getZ() >> 4, rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - 400, position.getZ() - 400, position.getX() + 400, position.getZ() + 400));
-            System.out.println("Generated Frozen Castle at" + position);
             return true;
         }
 
@@ -140,8 +139,6 @@ public class WorldGenForgottenTemple extends WorldGenerator {
                     Rotation rotation = Rotation.values()[(rand + i) % Rotation.values().length];
                     components.clear();
 
-                    BlockPos blockpos = posI.add(0, y, 0);
-
                     ForgottenTemple castle = new ForgottenTemple(worldIn, worldIn.getSaveHandler().getStructureTemplateManager(), components);
                     castle.startDungeon(new BlockPos(posI.getX(), WorldConfig.temple_y_height, posI.getZ()), Rotation.NONE);
                     this.updateBoundingBox();
@@ -183,7 +180,7 @@ public class WorldGenForgottenTemple extends WorldGenerator {
 
         @Override
         public boolean isSizeableStructure() {
-            return components.size() >= 4;
+            return components.size() >= WorldConfig.forgotten_temple_size;
         }
     }
 }

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " X ",
+    "VXX",
+    "B  "
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:purpur_block"
+    },
+    "X": {
+      "item": "da:voidiant_core"
+    },
+    "B": {
+      "item": "minecraft:blaze_rod"
+    }
+  },
+  "result": {
+    "item": "da:voidiant_catalyst",
+    "count": 1
+  }
+}

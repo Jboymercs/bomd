@@ -11,6 +11,7 @@ import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingBoss;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.action.ActionBloodSpray;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.action.*;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.ai.EntityHighKingTimedAttack;
+import com.dungeon_additions.da.entity.util.IEntitySound;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
@@ -53,13 +54,14 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, IAnimationTickable, IAttack, IScreenShake {
+public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, IAnimationTickable, IAttack, IScreenShake, IEntitySound {
 
     private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.YELLOW, BossInfo.Overlay.NOTCHED_6));
 
@@ -444,6 +446,10 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     public void onUpdate() {
         super.onUpdate();
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+            this.playMusic(this);
+        }
+
         if(!world.isRemote) {
             blockCooldown--;
             aoeCooldown--;
@@ -1969,6 +1975,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.bossInfo.removePlayer(player);
     }
 
+
+
     @Override
     public boolean canBePushed() {
         return false;
@@ -2059,5 +2067,11 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 1.25F * screamMult);
         }
         return 0;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getBossMusic() {
+        return SoundsHandler.HIGH_KING_TRACK;
     }
 }

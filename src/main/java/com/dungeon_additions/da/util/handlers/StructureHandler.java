@@ -12,6 +12,8 @@ import com.dungeon_additions.da.world.lich_tower.LichTowerTemplate;
 import com.dungeon_additions.da.world.lich_tower.WorldGenLichTower;
 import com.dungeon_additions.da.world.nether_arena.NetherArenaTemplate;
 import com.dungeon_additions.da.world.nether_arena.WorldGenNetherArena;
+import com.dungeon_additions.da.world.obsidilith_arena.ObsidilithArenaTemplate;
+import com.dungeon_additions.da.world.obsidilith_arena.WorldGenObsidilithArena;
 import com.dungeon_additions.da.world.rot_hold.RottenHoldTemplate;
 import com.dungeon_additions.da.world.rot_hold.WorldGenRotHold;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
@@ -39,5 +41,8 @@ public class StructureHandler {
         //Forgotten Temple
         MapGenStructureIO.registerStructure(WorldGenForgottenTemple.Start.class, "ForgottenTemple");
         MapGenStructureIO.registerStructureComponent(ForgottenTempleTemplate.class, "FTD");
+        //Obsidilith Arena
+        MapGenStructureIO.registerStructure(WorldGenObsidilithArena.Start.class, "ObsidilithArena");
+        MapGenStructureIO.registerStructureComponent(ObsidilithArenaTemplate.class, "OAP");
     }
 }

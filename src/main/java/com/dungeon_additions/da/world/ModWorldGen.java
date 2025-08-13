@@ -8,6 +8,7 @@ import com.dungeon_additions.da.world.frozen_castle.WorldGenFrozenCastle;
 import com.dungeon_additions.da.world.high_city.WorldGenHighCity;
 import com.dungeon_additions.da.world.lich_tower.WorldGenLichTower;
 import com.dungeon_additions.da.world.nether_arena.WorldGenNetherArena;
+import com.dungeon_additions.da.world.obsidilith_arena.WorldGenObsidilithArena;
 import com.dungeon_additions.da.world.rot_hold.WorldGenRotHold;
 import com.google.common.collect.Lists;
 import net.minecraft.init.Biomes;
@@ -36,6 +37,8 @@ public class ModWorldGen implements IWorldGenerator {
     private static final WorldGenHighCity high_court_city = new WorldGenHighCity();
     private static final WorldGenForgottenTemple forgotten_temple = new WorldGenForgottenTemple();
 
+    private static final WorldGenObsidilithArena obsidilithArena = new WorldGenObsidilithArena();
+
     private static List<Biome> spawnBiomesRottenHold;
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
@@ -59,10 +62,7 @@ public class ModWorldGen implements IWorldGenerator {
         //Rotten Hold
         if (isAllowedDimensionTooSpawnInRottenHold(world.provider.getDimension()) && WorldConfig.rotten_hold_enabled) {
             if(world.provider.getBiomeForCoords(pos) != Biomes.DEEP_OCEAN && world.provider.getBiomeForCoords(pos) != Biomes.OCEAN) {
-                if(isBiomeValidRottenHold(pos, world)) {
-                    BlockPos posModified = new BlockPos(pos.getX(), 0, pos.getZ());
-                    rotten_hold.generate(world, random, posModified);
-                }
+                    rotten_hold.generate(world, random, pos);
             }
         }
         //Night Lich Tower
@@ -83,6 +83,11 @@ public class ModWorldGen implements IWorldGenerator {
             forgotten_temple.generate(world, random, pos);
         }
 
+        //Obsidilith Arena
+        if(isAllowedDimensionTooSpawnInObsidilithArena(world.provider.getDimension()) && WorldConfig.obsidilith_arena_enabled) {
+            obsidilithArena.generate(world, random, pos);
+        }
+
         }
 
 
@@ -91,35 +96,6 @@ public class ModWorldGen implements IWorldGenerator {
      * @return
      */
 
-    public boolean isBiomeValidRottenHold(BlockPos pos, World world) {
-        for(Biome biome : getSpawnBiomesRottenHold()) {
-            if(WorldConfig.rotten_hold_is_blacklist) {
-                if(world.provider.getBiomeForCoords(pos) != biome) {
-                    return true;
-                }
-            } else {
-                if(world.provider.getBiomeForCoords(pos) == biome) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    public static List<Biome> getSpawnBiomesRottenHold() {
-        if (spawnBiomesRottenHold == null) {
-            spawnBiomesRottenHold = Lists.newArrayList();
-            for (String str : WorldConfig.biome_allowed_rot_hold) {
-                try {
-                    Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(str));
-                    if (biome != null) spawnBiomesRottenHold.add(biome);
-                    else DALogger.logError("Biome " + str + " is not registered", new NullPointerException());
-                } catch (Exception e) {
-                    DALogger.logError(str + " is not a valid registry name", e);
-                }
-            }
-        }
-        return spawnBiomesRottenHold;
-    }
 
     public static boolean isAllowedDimensionTooSpawnIn(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions) {
@@ -168,6 +144,15 @@ public class ModWorldGen implements IWorldGenerator {
 
     public static boolean isAllowedDimensionTooSpawnInForgottenTemple(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions_forgotten_temple) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInObsidilithArena(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_obsidilith_arena) {
             if(i == dimensionIn)
                 return true;
         }

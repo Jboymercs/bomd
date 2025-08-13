@@ -104,6 +104,22 @@ public class CommandLocateLich implements ICommand {
                 } else {
                     throw new CommandException("commands.locate.failure", s);
                 }
+            } else if (s.equals("RottenHold")) {
+                BlockPos blockpos = findNearestPosRottenHold(sender);
+
+                if (blockpos != null) {
+                    sender.sendMessage(new TextComponentTranslation("commands.locate.success", new Object[]{s, blockpos.getX(), blockpos.getZ()}));
+                } else {
+                    throw new CommandException("commands.locate.failure", s);
+                }
+            }  else if (s.equals("ObsidilithArena")) {
+                BlockPos blockpos = findNearestPosObsdilithArena(sender);
+
+                if (blockpos != null) {
+                    sender.sendMessage(new TextComponentTranslation("commands.locate.success", new Object[]{s, blockpos.getX(), blockpos.getZ()}));
+                } else {
+                    throw new CommandException("commands.locate.failure", s);
+                }
             }
         }
     }
@@ -119,7 +135,7 @@ public class CommandLocateLich implements ICommand {
 
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "NightLichTower", "BlossomCave", "FrozenCastle", "HighCourtCity","BurningFlameArena","ForgottenTemple") : Collections.emptyList();
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "NightLichTower", "BlossomCave", "FrozenCastle", "HighCourtCity","BurningFlameArena","ForgottenTemple","RottenHold","ObsidilithArena") : Collections.emptyList();
     }
 
     public static List<String> getListOfStringsMatchingLastWord(String[] args, String... possibilities) {
@@ -212,6 +228,42 @@ public class CommandLocateLich implements ICommand {
         for (int i = -ModConfig.forgotten_temple_distance; i < ModConfig.forgotten_temple_distance + 1; i++) {
             for (int j = -ModConfig.forgotten_temple_distance; j < ModConfig.forgotten_temple_distance + 1; j++) {
                 boolean c = IsForgottenTempleAtPos(world, chunk.x + i, chunk.z + j);
+                if (c) {
+                    resultpos = new BlockPos((chunk.x + i) << 4, 100, (chunk.z + j) << 4);
+                    break;
+                }
+            }
+        }
+        return resultpos;
+    }
+
+    public static BlockPos findNearestPosRottenHold(ICommandSender sender) {
+        BlockPos resultpos = null;
+        BlockPos pos = sender.getPosition();
+        World world = sender.getEntityWorld();
+        Chunk chunk = world.getChunk(pos);
+        //probably laggy as hell but hey it works
+        for (int i = -ModConfig.rotten_hold_distance; i < ModConfig.rotten_hold_distance + 1; i++) {
+            for (int j = -ModConfig.rotten_hold_distance; j < ModConfig.rotten_hold_distance + 1; j++) {
+                boolean c = IsRottenHoldAtPos(world, chunk.x + i, chunk.z + j);
+                if (c) {
+                    resultpos = new BlockPos((chunk.x + i) << 4, 100, (chunk.z + j) << 4);
+                    break;
+                }
+            }
+        }
+        return resultpos;
+    }
+
+    public static BlockPos findNearestPosObsdilithArena(ICommandSender sender) {
+        BlockPos resultpos = null;
+        BlockPos pos = sender.getPosition();
+        World world = sender.getEntityWorld();
+        Chunk chunk = world.getChunk(pos);
+        //probably laggy as hell but hey it works
+        for (int i = -ModConfig.obsidilith_arena_search_distance; i < ModConfig.obsidilith_arena_search_distance + 1; i++) {
+            for (int j = -ModConfig.obsidilith_arena_search_distance; j < ModConfig.obsidilith_arena_search_distance + 1; j++) {
+                boolean c = IsObsidilithArenaAtPos(world, chunk.x + i, chunk.z + j);
                 if (c) {
                     resultpos = new BlockPos((chunk.x + i) << 4, 100, (chunk.z + j) << 4);
                     break;
@@ -319,6 +371,37 @@ public class CommandLocateLich implements ICommand {
         }
     }
 
+    protected static boolean IsObsidilithArenaAtPos(World world, int chunkX, int chunkZ) {
+        int spacing = WorldConfig.obsidilith_arena_spacing;
+        int separation = 16;
+        int i = chunkX;
+        int j = chunkZ;
+
+        if (chunkX < 0) {
+            chunkX -= spacing - 1;
+        }
+
+        if (chunkZ < 0) {
+            chunkZ -= spacing - 1;
+        }
+
+        int k = chunkX / spacing;
+        int l = chunkZ / spacing;
+        Random random = world.setRandomSeed(k, l, 20387994);
+        k = k * spacing;
+        l = l * spacing;
+        k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+        l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+
+        if (i == k && j == l && isAllowedDimensionTooSpawnInObsidilithArena(world.provider.getDimension())) {
+            BlockPos pos = new BlockPos((i << 4), WorldConfig.obsidilith_y_height, (j << 4));
+            return isAbleToSpawnHereObsidilithArena(pos, world);
+        } else {
+
+            return false;
+        }
+    }
+
     protected static boolean IsFrozenCastleAtPos(World world, int chunkX, int chunkZ) {
         int spacing = WorldConfig.frozen_castle_spacing;
         int separation = 16;
@@ -381,6 +464,37 @@ public class CommandLocateLich implements ICommand {
         }
     }
 
+    protected static boolean IsRottenHoldAtPos(World world, int chunkX, int chunkZ) {
+        int spacing = WorldConfig.rot_hold_spacing;
+        int separation = 16;
+        int i = chunkX;
+        int j = chunkZ;
+
+        if (chunkX < 0) {
+            chunkX -= spacing - 1;
+        }
+
+        if (chunkZ < 0) {
+            chunkZ -= spacing - 1;
+        }
+
+        int k = chunkX / spacing;
+        int l = chunkZ / spacing;
+        Random random = world.setRandomSeed(k, l, 19239918);
+        k = k * spacing;
+        l = l * spacing;
+        k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+        l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+
+        if (i == k && j == l && isAllowedDimensionTooSpawnInRottenHold(world.provider.getDimension())) {
+            BlockPos pos = new BlockPos((i << 4), 0, (j << 4));
+            return isAbleToSpawnHereRottenHold(pos, world);
+        } else {
+
+            return false;
+        }
+    }
+
     protected static boolean IsBlossomCaveAtPos(World world, int chunkX, int chunkZ) {
         int spacing = WorldConfig.void_blossom_cave_weight;
         int separation = 16;
@@ -397,7 +511,7 @@ public class CommandLocateLich implements ICommand {
 
         int k = chunkX / spacing;
         int l = chunkZ / spacing;
-        Random random = world.setRandomSeed(k, l, 10383709);
+        Random random = world.setRandomSeed(k, l, 40383709);
         k = k * spacing;
         l = l * spacing;
         k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
@@ -428,7 +542,7 @@ public class CommandLocateLich implements ICommand {
 
         int k = chunkX / spacing;
         int l = chunkZ / spacing;
-        Random random = world.setRandomSeed(k, l, 10387312);
+        Random random = world.setRandomSeed(k, l, 20387312);
         k = k * spacing;
         l = l * spacing;
         k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
@@ -544,6 +658,37 @@ public class CommandLocateLich implements ICommand {
         return forgottenTempleBiomeTypes;
     }
 
+    public static boolean isAbleToSpawnHereRottenHold(BlockPos pos, World world) {
+        for(BiomeDictionary.Type types : getSpawnBiomeTypesRottenHold()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static List<BiomeDictionary.Type> rottenHoldBiomeTypes;
+
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypesRottenHold() {
+        if(rottenHoldBiomeTypes == null) {
+            rottenHoldBiomeTypes = Lists.newArrayList();
+
+            for(String str : WorldConfig.rotten_hold_whitelist) {
+                try {
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) rottenHoldBiomeTypes.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
+                } catch (Exception e) {
+                    DALogger.logError(str + " is not a valid type name", e);
+                }
+            }
+        }
+
+        return rottenHoldBiomeTypes;
+    }
+
     public static boolean isAbleToSpawnHereHighCity(BlockPos pos, World world) {
         for(BiomeDictionary.Type types : getSpawnBiomeTypesHighCity()) {
             Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
@@ -552,6 +697,16 @@ public class CommandLocateLich implements ICommand {
             }
         }
         return true;
+    }
+
+    public static boolean isAbleToSpawnHereObsidilithArena(BlockPos pos, World world) {
+        for(BiomeDictionary.Type types : getSpawnBiomeTypesObsdilith_Arena()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -605,6 +760,27 @@ public class CommandLocateLich implements ICommand {
         }
 
         return highCityBiomeTypes;
+    }
+
+    private static List<BiomeDictionary.Type> obsdilith_arena_types;
+
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypesObsdilith_Arena() {
+        if(obsdilith_arena_types == null) {
+            obsdilith_arena_types = Lists.newArrayList();
+
+            for(String str : WorldConfig.obsdilith_arena_whitelist) {
+                try {
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) obsdilith_arena_types.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
+                } catch (Exception e) {
+                    DALogger.logError(str + " is not a valid type name", e);
+                }
+            }
+        }
+
+        return obsdilith_arena_types;
     }
 
     public static boolean isAbleToSpawnHereBlossom(BlockPos pos, World world) {
@@ -675,8 +851,26 @@ public class CommandLocateLich implements ICommand {
         return false;
     }
 
+    public static boolean isAllowedDimensionTooSpawnInRottenHold(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_rotten_hold) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
     public static boolean isAllowedDimensionTooSpawnInHighCastle(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions_high_court_city) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInObsidilithArena(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_obsidilith_arena) {
             if(i == dimensionIn)
                 return true;
         }

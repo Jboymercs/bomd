@@ -54,6 +54,16 @@ public class EntityBloodPile extends EntitySkyBase implements IAnimatable {
         this.noClip = true;
     }
 
+    private boolean isSilent;
+
+    public EntityBloodPile(World worldIn, boolean isSilent) {
+        super(worldIn);
+        this.setImmovable(true);
+        this.isSilent = isSilent;
+        this.setSize(0.6f, 2.0f);
+        this.noClip = true;
+    }
+
     private EntityPlayer ownerFrom;
     public EntityBloodPile(World worldIn, boolean playerProtection, EntityPlayer ownerFrom) {
         super(worldIn);
@@ -80,7 +90,9 @@ public class EntityBloodPile extends EntitySkyBase implements IAnimatable {
 
         if(ticksExisted == 15) {
             if(playerProtection && ownerFrom != null) {
-                this.playSound(SoundsHandler.SPORE_IMPACT, 0.75f, 1.0f);
+                if(!this.isSilent) {
+                    this.playSound(SoundsHandler.SPORE_IMPACT, 0.75f, 1.0f);
+                }
                 List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(1.4, 1.0, 1.4), e -> !e.getIsInvulnerable() && (!(e instanceof EntityPlayer)));
 
                 if(!targets.isEmpty()) {
@@ -103,7 +115,9 @@ public class EntityBloodPile extends EntitySkyBase implements IAnimatable {
                     }
                 }
             } else {
-                this.playSound(SoundsHandler.SPORE_IMPACT, 0.75f, 1.0f);
+                if(!this.isSilent) {
+                    this.playSound(SoundsHandler.SPORE_IMPACT, 0.75f, 1.0f);
+                }
                 List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntityVoidSpike || e instanceof EntityGenericWave)));
 
                 if(!targets.isEmpty()) {

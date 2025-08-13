@@ -1,0 +1,112 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 3.5,
+				"visible_bounds_offset": [0, 1.25, 0]
+			},
+			"bones": [
+				{
+					"name": "Ground",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "Torso",
+					"parent": "Ground",
+					"pivot": [0, 20, 0],
+					"cubes": [
+						{"origin": [-7, 17, -7], "size": [14, 6, 14], "uv": [0, 0]},
+						{"origin": [3, 19, -10], "size": [7, 5, 7], "uv": [36, 33], "mirror": true},
+						{"origin": [-10, 19, -10], "size": [7, 5, 7], "uv": [36, 33]},
+						{"origin": [-10, 19, 3], "size": [7, 5, 7], "uv": [0, 42]},
+						{"origin": [3, 19, 3], "size": [7, 5, 7], "uv": [0, 42], "mirror": true},
+						{"origin": [-3, 16, -3], "size": [6, 1, 6], "uv": [0, 54]}
+					]
+				},
+				{
+					"name": "LFLeg",
+					"parent": "Torso",
+					"pivot": [7, 20, -7],
+					"cubes": [
+						{"origin": [5.5, 10, -8.5], "size": [3, 12, 3], "uv": [56, 0], "mirror": true}
+					]
+				},
+				{
+					"name": "JoinLF",
+					"parent": "LFLeg",
+					"pivot": [7, 10, -7],
+					"cubes": [
+						{"origin": [4.5, 0, -9.5], "size": [5, 10, 5], "uv": [28, 45], "mirror": true},
+						{"origin": [5.5, 10, -8.5], "size": [3, 12, 3], "inflate": 0.25, "uv": [36, 60], "mirror": true}
+					]
+				},
+				{
+					"name": "RFLeg",
+					"parent": "Torso",
+					"pivot": [-7, 20, -7],
+					"cubes": [
+						{"origin": [-8.5, 10, -8.5], "size": [3, 12, 3], "uv": [56, 0]}
+					]
+				},
+				{
+					"name": "JointRF",
+					"parent": "RFLeg",
+					"pivot": [-7, 10, -7],
+					"cubes": [
+						{"origin": [-9.5, 0, -9.5], "size": [5, 10, 5], "uv": [28, 45]},
+						{"origin": [-8.5, 10, -8.5], "size": [3, 12, 3], "inflate": 0.25, "uv": [36, 60]}
+					]
+				},
+				{
+					"name": "LBLeg",
+					"parent": "Torso",
+					"pivot": [7, 20, 7],
+					"cubes": [
+						{"origin": [5.5, 10, 5.5], "size": [3, 12, 3], "uv": [24, 60], "mirror": true}
+					]
+				},
+				{
+					"name": "JoinLB",
+					"parent": "LBLeg",
+					"pivot": [7, 10, 7],
+					"cubes": [
+						{"origin": [4.5, 0, 4.5], "size": [5, 10, 5], "uv": [48, 45], "mirror": true},
+						{"origin": [5.5, 10, 5.5], "size": [3, 12, 3], "inflate": 0.25, "uv": [48, 60], "mirror": true}
+					]
+				},
+				{
+					"name": "RBLeg",
+					"parent": "Torso",
+					"pivot": [-7, 20, 7],
+					"cubes": [
+						{"origin": [-8.5, 10, 5.5], "size": [3, 12, 3], "uv": [24, 60]}
+					]
+				},
+				{
+					"name": "JointRB",
+					"parent": "RBLeg",
+					"pivot": [-7, 10, 7],
+					"cubes": [
+						{"origin": [-8.5, 10, 5.5], "size": [3, 12, 3], "inflate": 0.25, "uv": [48, 60]},
+						{"origin": [-9.5, 0, 4.5], "size": [5, 10, 5], "uv": [48, 45]}
+					]
+				},
+				{
+					"name": "HeadJ",
+					"parent": "Torso",
+					"pivot": [0, 23, 0],
+					"cubes": [
+						{"origin": [-4.5, 23, -4.5], "size": [9, 2, 9], "uv": [0, 20]},
+						{"origin": [-4, 25, -4], "size": [8, 5, 8], "uv": [36, 20]},
+						{"origin": [-4.5, 30, -4.5], "size": [9, 2, 9], "uv": [0, 31]}
+					]
+				}
+			]
+		}
+	]
+}

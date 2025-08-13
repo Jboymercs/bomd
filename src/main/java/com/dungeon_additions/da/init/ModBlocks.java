@@ -17,11 +17,14 @@ import com.dungeon_additions.da.blocks.faurm.BlockLightningKeyBlock;
 import com.dungeon_additions.da.blocks.ice_generator.BlockFrostBrick;
 import com.dungeon_additions.da.blocks.lich.BlockSoulStar;
 import com.dungeon_additions.da.blocks.vine.BlockAzealaVines;
+import com.dungeon_additions.da.blocks.void_blocks.BlockObsdilithRune;
+import com.dungeon_additions.da.blocks.void_blocks.BlockObsidianKeyBlock;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityGreatWyrk;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing;
+import com.dungeon_additions.da.entity.void_dungeon.EntityObsidilith;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.handlers.BOMDSoundTypes;
 import net.minecraft.block.Block;
@@ -73,6 +76,7 @@ public class ModBlocks {
     public static final Block KNIGHT_STONE = new BlockBase("knight_stone", Material.ROCK, STONE_HARDNESS, STONE_RESISTANCE, SoundType.STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block KNIGHT_KEY_BLOCK = new BlockKnightBossKeyBlock("knight_key_block", ModItems.ROT_KNIGHT_KEY, ((world, pos) -> new EntityRotKnightBoss(world, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F))).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block FROZEN_CASTLE_KEY_BLOCK = new BlockFrostKeyBlock("frost_key_block", ModItems.FROST_KEY, ((worldv, posr) -> new EntityGreatWyrk(worldv, posr.getX(), posr.getY(), posr.getZ()))).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block OBSIDIAN_KEY_BLOCK = new BlockObsidianKeyBlock("obsidian_end_frame", Material.ROCK, ((world, pos) -> new EntityObsidilith(world, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F)));
     public static final Block SKY_KEY_BLOCK = new BlockLightningKeyBlock("sky_key_block", MobConfig.dragon_starts_first ? ((worldv, posr) -> new EntityHighKingDrake(worldv, posr.getX(), posr.getY() + 25, posr.getZ())) : ((worldv, posr) -> new EntityHighKing(worldv, posr.getX(), posr.getY(), posr.getZ()))).setCreativeTab(DungeonAdditionsTab.BLOCKS);
 
     public static final Block BOSS_RESUMMON_BLOCK = new BlockBossReSummon("boss_resummon", Material.ROCK, ModItems.LIGHTNING_KEY).setLightLevel(0.9F).setCreativeTab(DungeonAdditionsTab.BLOCKS);
@@ -99,6 +103,8 @@ public class ModBlocks {
     public static final Block GRUM_SMOOTH = new BlockBase("grum_smooth", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block GRUM_TILE = new BlockBase("grum_tile", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block GRUM_CHISLED_TILE = new BlockBase("grum_chisled_tile", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block OBSIDILITH_RUNE = new BlockObsdilithRune("obsidilith_rune", Material.ROCK, OBSIDIAN_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.GLASS).setCreativeTab(DungeonAdditionsTab.BLOCKS).setLightLevel(0.5F);
+    public static final Block FAKE_OBSIDIAN = new BlockBase("fake_obsidian", Material.ROCK, OBSIDIAN_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE).setBlockUnbreakable();
 
     public static final Block PETROGLOOM_SMOOTH = new BlockBase("gloom_smooth", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block COLD_PETROGLOOM_SMOOTH = new BlockBase("cold_smooth", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
@@ -107,6 +113,7 @@ public class ModBlocks {
     public static final Block PETROGLOOM_PILLAR = new BlockPillarBase("gloom_pillar", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block COLD_PETROGLOOM_PILLAR = new BlockPillarBase("cold_pillar", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block GRUM_PILLAR = new BlockPillarBase("grum_pillar", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block DARK_BRICK = new BlockBase("dark_brick", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
 
     public static final Block PETROGLOOM_ROUGH = new BlockPetroGloom("gloom_rough", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block COLD_PETROGLOOM_ROUGH = new BlockPetroGloom("cold_rough", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
@@ -145,6 +152,8 @@ public class ModBlocks {
     public static final BlockSlab COLD_PETROGLOOM_SMOOTH_SLAB_HALF = new BlockHalfSlab("cold_smooth_half", Material.ROCK, DungeonAdditionsTab.BLOCKS, ModBlocks.COLD_PETROGLOOM_SMOOTH_SLAB_HALF, ModBlocks.COLD_PETROGLOOM_SMOOTH_SLAB_DOUBLE, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
     public static final BlockSlab PETROGLOOM_BRICK_SLAB_DOUBLE = new BlockDoubleSlab("gloom_brick_double", Material.ROCK, CreativeTabs.SEARCH, ModBlocks.PETROGLOOM_BRICK_SLAB_HALF, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
     public static final BlockSlab PETROGLOOM_BRICK_SLAB_HALF = new BlockHalfSlab("gloom_brick_half", Material.ROCK, DungeonAdditionsTab.BLOCKS, ModBlocks.PETROGLOOM_BRICK_SLAB_HALF, ModBlocks.PETROGLOOM_BRICK_SLAB_DOUBLE, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
+    public static final BlockSlab FIRE_STONE_SLAB_DOUBLE = new BlockDoubleSlab("fire_stone_double", Material.ROCK, CreativeTabs.SEARCH, ModBlocks.FIRE_STONE_SLAB_HALF, STONE_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE);
+    public static final BlockSlab FIRE_STONE_SLAB_HALF = new BlockHalfSlab("fire_stone_half", Material.ROCK, DungeonAdditionsTab.BLOCKS, ModBlocks.FIRE_STONE_SLAB_HALF, ModBlocks.FIRE_STONE_SLAB_DOUBLE, STONE_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE);
     public static final BlockSlab COLD_PETROGLOOM_BRICK_SLAB_DOUBLE = new BlockDoubleSlab("cold_brick_double", Material.ROCK, CreativeTabs.SEARCH, ModBlocks.COLD_PETROGLOOM_BRICK_SLAB_HALF, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
     public static final BlockSlab COLD_PETROGLOOM_BRICK_SLAB_HALF = new BlockHalfSlab("cold_brick_half", Material.ROCK, DungeonAdditionsTab.BLOCKS, ModBlocks.COLD_PETROGLOOM_BRICK_SLAB_HALF, ModBlocks.COLD_PETROGLOOM_BRICK_SLAB_DOUBLE, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
     public static final BlockSlab GRUM_BRICK_DOUBLE = new BlockDoubleSlab("grum_brick_double", Material.ROCK, DungeonAdditionsTab.BLOCKS, ModBlocks.GRUM_BRICK_HALF, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
@@ -173,8 +182,6 @@ public class ModBlocks {
     public static final Block PUZZLE_DISPENCER = new BlockGrumDispenser("grum_dispenser", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block PUZZLE_BLOCKER = new BlockGrumBlocker("grum_blocker", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block PUZZLE_DOOR = new BlockBase("grum_tile_r", Material.ROCK, OBSIDIAN_HARDNESS, OBSIDIAN_RESISTANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
-    public static final BlockSlab FIRE_STONE_SLAB_DOUBLE = new BlockDoubleSlab("fire_stone_double", Material.ROCK, CreativeTabs.SEARCH, ModBlocks.FIRE_STONE_SLAB_HALF, STONE_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE);
-    public static final BlockSlab FIRE_STONE_SLAB_HALF = new BlockHalfSlab("fire_stone_half", Material.ROCK, DungeonAdditionsTab.BLOCKS, ModBlocks.FIRE_STONE_SLAB_HALF, ModBlocks.FIRE_STONE_SLAB_DOUBLE, STONE_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE);
 
     public static final Block CHANGE_BLOCK = new BlockChangingDoor("change_block", Material.ROCK, OBSIDIAN_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
 
@@ -183,4 +190,5 @@ public class ModBlocks {
     public static final Block DISAPPEARING_SPAWNER_MOSS = new BlockDisappearingSpawner("moss_spawner", Material.ROCK);
     public static final Block DISAPPEARING_SPAWNER_HIGH_CITY = new BlockDisappearingSpawner("high_spawner", Material.ROCK);
     public static final Block DISAPPEARING_SPAWNER_FORGOTTEN_TEMPLE = new BlockDisappearingSpawner("temple_spawner", Material.ROCK);
+    public static final Block DISAPPEARING_SPAWNER_END = new BlockDisappearingSpawner("end_spawner", Material.ROCK);
 }

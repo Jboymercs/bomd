@@ -1,0 +1,95 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "builtin/entity",
+  "texture_size": [
+    64,
+    64
+  ],
+  "display": {
+    "thirdperson_lefthand": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        6
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -1,
+        84,
+        5
+      ],
+      "translation": [
+        -4,
+        -5.25,
+        0.5
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        9,
+        -85,
+        5
+      ],
+      "translation": [
+        4.25,
+        -5.5,
+        0.5
+      ]
+    },
+    "ground": {
+      "translation": [
+        0,
+        5.5,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "gui": {
+      "rotation": [
+        13,
+        -133,
+        11
+      ],
+      "translation": [
+        4,
+        2,
+        0
+      ],
+      "scale": [
+        0.63,
+        0.63,
+        0.63
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        -3,
+        4,
+        1.75
+      ]
+    }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "blocking": 1
+      },
+      "model": "da:item/obsidian_shield_blocking"
+    }
+  ]
+}

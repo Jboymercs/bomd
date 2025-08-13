@@ -13,6 +13,7 @@ import com.dungeon_additions.da.entity.rot_knights.actions.ActionRotFarAOE;
 import com.dungeon_additions.da.entity.rot_knights.actions.ActionRotLineAOE;
 import com.dungeon_additions.da.entity.rot_knights.actions.ActionRotShortAOE;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
+import com.dungeon_additions.da.entity.util.IEntitySound;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
@@ -58,12 +59,13 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatable, IAttack, IAnimationTickable {
+public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatable, IAttack, IAnimationTickable, IEntitySound {
     private Consumer<EntityLivingBase> prevAttack;
     public boolean isRandomGetAway = false;
     private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.NOTCHED_6));
@@ -259,6 +261,9 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
         super.onUpdate();
 
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+            this.playMusic(this);
+        }
         EntityLivingBase target = this.getAttackTarget();
         double healthCurrent = this.getHealth() / this.getMaxHealth();
         if(target != null) {
@@ -933,5 +938,11 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
             this.turnBossIntoSummonSpawner(this.getSpawnLocation());
         }
         super.onDeath(cause);
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getBossMusic() {
+        return SoundsHandler.FALLEN_STORMVIER_TRACK;
     }
 }

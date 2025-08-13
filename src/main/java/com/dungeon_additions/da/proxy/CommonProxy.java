@@ -10,15 +10,19 @@ import com.dungeon_additions.da.packets.MessageModParticles;
 import com.dungeon_additions.da.packets.ParticleSSMesage;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+
+import javax.annotation.Nullable;
 
 public class CommonProxy{
 
@@ -71,4 +75,8 @@ public class CommonProxy{
 
     public void registerItemRenderer(Item item, int meta, String id) {
     }
+
+    public void stopMusic() {}
+
+    public void playMusic(SoundEvent soundEvent, @Nullable Entity linkedEntity) {}
 }

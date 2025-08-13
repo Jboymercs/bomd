@@ -4,10 +4,13 @@ import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBolt;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+
+import java.util.Random;
 
 public class ActionKingCastLighning implements IActionDrake{
     @Override
@@ -20,11 +23,12 @@ public class ActionKingCastLighning implements IActionDrake{
 
         for(int i = 10; i < 90; i += 20) {
             actor.addEvent(()-> {
-                EntitySkyBolt bolt = new EntitySkyBolt(actor.world, new Vec3d(target.posX + ModRand.getFloat(1.5F), target.posY + 12, target.posZ + ModRand.getFloat(1.5F)));
-                EntitySkyBolt bolt2 = new EntitySkyBolt(actor.world, new Vec3d(target.posX + ModRand.getFloat(1.5F) + 1, target.posY + 12, target.posZ + ModRand.getFloat(1.5F)));
-                EntitySkyBolt bolt3 = new EntitySkyBolt(actor.world, new Vec3d(target.posX + ModRand.getFloat(1.5F) - 1, target.posY + 12, target.posZ + ModRand.getFloat(1.5F)));
-                EntitySkyBolt bolt4 = new EntitySkyBolt(actor.world, new Vec3d(target.posX + ModRand.getFloat(1.5F), target.posY + 12, target.posZ + ModRand.getFloat(1.5F) + 1));
-                EntitySkyBolt bolt5 = new EntitySkyBolt(actor.world, new Vec3d(target.posX + ModRand.getFloat(1.5F), target.posY + 12, target.posZ + ModRand.getFloat(1.5F) - 1));
+                EntitySkyBolt bolt = new EntitySkyBolt(actor.world, new Vec3d(target.posX + ModRand.getFloat(1.5F), target.posY + 12, target.posZ + ModRand.getFloat(1.5F)), true);
+                EntitySkyBolt bolt2 = new EntitySkyBolt(actor.world, new Vec3d(target.posX + ModRand.getFloat(1.5F) + 1, target.posY + 12, target.posZ + ModRand.getFloat(1.5F)), true);
+                EntitySkyBolt bolt3 = new EntitySkyBolt(actor.world, new Vec3d(target.posX + ModRand.getFloat(1.5F) - 1, target.posY + 12, target.posZ + ModRand.getFloat(1.5F)), true);
+                EntitySkyBolt bolt4 = new EntitySkyBolt(actor.world, new Vec3d(target.posX + ModRand.getFloat(1.5F), target.posY + 12, target.posZ + ModRand.getFloat(1.5F) + 1), true);
+                EntitySkyBolt bolt5 = new EntitySkyBolt(actor.world, new Vec3d(target.posX + ModRand.getFloat(1.5F), target.posY + 12, target.posZ + ModRand.getFloat(1.5F) - 1), true);
+
                 Vec3d pos = target.getPositionVector();
                 int yVar = ModUtils.getSurfaceHeightGeneral(actor.world, new BlockPos(pos.x, pos.y, pos.z), (int) pos.y - 5, (int) pos.y + 2);
                 if(yVar != pos.y) {
@@ -41,6 +45,7 @@ public class ActionKingCastLighning implements IActionDrake{
                     bolt5.setPosition(pos.x, yVar, pos.z - 1.35);
                 }
                 actor.world.spawnEntity(bolt);
+                bolt.playSound(SoundsHandler.SKY_LIGHTNING_CAST, 1.5f, 0.8f / (new Random().nextFloat() * 0.4f + 0.6f));
                 actor.world.spawnEntity(bolt2);
                 actor.world.spawnEntity(bolt3);
                 actor.world.spawnEntity(bolt4);

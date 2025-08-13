@@ -11,6 +11,8 @@ import com.dungeon_additions.da.entity.blossom.action.*;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.model.ModelVoidBlossom;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
+import com.dungeon_additions.da.entity.util.IEntitySound;
+import com.dungeon_additions.da.entity.void_dungeon.EntityObsidilith;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
@@ -46,6 +48,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.core.processor.IBone;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,12 +56,11 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAnimatable, IAttack, IAnimationTickable {
+public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAnimatable, IAttack, IAnimationTickable, IEntitySound {
 
     //TODO
     //Finish Azeala's with Particle Effects
     private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.NOTCHED_6));
-
 
     private final String ANIM_IDLE_TARGET = "idle";
     private final String ANIM_IDLE_NONTARGET = ""; // Might need one more to hold on frame for this to stay in state
@@ -165,6 +167,9 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
     @Override
     public void onUpdate() {
         super.onUpdate();
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+            this.playMusic(this);
+        }
 
         this.motionY = 0;
         this.motionX = 0;
@@ -493,5 +498,11 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
     @Override
     public int tickTimer() {
         return this.ticksExisted;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getBossMusic() {
+        return SoundsHandler.VOID_BLOSSOM_TRACK;
     }
 }

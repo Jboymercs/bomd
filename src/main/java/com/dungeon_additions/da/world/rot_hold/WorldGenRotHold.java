@@ -2,62 +2,111 @@ package com.dungeon_additions.da.world.rot_hold;
 
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.WorldConfig;
+import com.dungeon_additions.da.util.DALogger;
 import com.dungeon_additions.da.world.blossom.BlossomCave;
 import com.dungeon_additions.da.world.blossom.WorldGenBlossomCave;
+import com.google.common.collect.Lists;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureStart;
+import net.minecraftforge.common.BiomeDictionary;
 import org.lwjgl.Sys;
 
+import java.util.List;
 import java.util.Random;
 
 public class WorldGenRotHold extends WorldGenerator {
 
-    private int spacing = 0;
+    private int spacing;
+    private int separation;
 
     public WorldGenRotHold() {
-
-    }
-
-    private int getSurfaceHeight(World world, BlockPos pos, int min, int max)
-    {
-        int currentY = max;
-
-        while(currentY >= min)
-        {
-            if(!world.isAirBlock(pos.add(0, currentY, 0)) && !world.isRemote && world.getBlockState(pos.add(0, currentY, 0)).isFullBlock() && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LEAVES
-                    && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LEAVES2 && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LOG && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LOG2 &&
-            world.isAirBlock(pos.add(0, currentY + 1, 0)) && world.getBlockState(pos.add(0, currentY, 0)) != Blocks.WATER.getDefaultState()) {
-                return currentY;
-            }
-
-            currentY--;
-        }
-
-        return 0;
+        this.separation = 16;
+        this.spacing = WorldConfig.rot_hold_spacing;
     }
 
     @Override
-    public boolean generate(World world, Random random, BlockPos pos) {
-        BlockPos pos2 = pos.add(7, 0, 7);
-        int yVar1 = getSurfaceHeight(world, pos.add(-6, 0, -6), WorldConfig.rot_hold_min_y, WorldConfig.rot_hold_max_y);
-        int yVar2 = getSurfaceHeight(world, pos2, WorldConfig.rot_hold_min_y, WorldConfig.rot_hold_max_y);
-        if(spacing > WorldConfig.rot_hold_spacing * 16 && world.getBlockState(pos.add(-6, 0, -6)).isFullBlock() && world.getBlockState(pos2).isFullBlock() && yVar1 != 0 && yVar2 != 0) {
-            getStructureStart(world, pos.getX() >> 4, pos.getZ() >> 4, random).generateStructure(world, random, new StructureBoundingBox(pos.getX() - 150, pos.getZ() - 150, pos.getX() + 150, pos.getZ() + 150));
+    public boolean generate(World world, Random rand, BlockPos position) {
+        //Checks to see if all biomes are valid in this region before selecting and spawning the structure
+        if(canSpawnStructureAtPos(world, position.getX() >> 4, position.getZ() >> 4)) {
+            getStructureStart(world, position.getX() >> 4, position.getZ() >> 4, rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - 400, position.getZ() - 400, position.getX() + 400, position.getZ() + 400));
             return true;
-
         }
-        spacing++;
+
         return false;
     }
 
-    protected StructureStart getStructureStart(World world, int chunkX, int chunkZ, Random rand) {
-        spacing = 0;
+    protected boolean canSpawnStructureAtPos(World world, int chunkX, int chunkZ) {
+        int i = chunkX;
+        int j = chunkZ;
 
+        if (chunkX < 0)
+        {
+            chunkX -= this.spacing - 1;
+        }
+
+        if (chunkZ < 0)
+        {
+            chunkZ -= this.spacing - 1;
+        }
+
+        int k = chunkX / this.spacing;
+        int l = chunkZ / this.spacing;
+        Random random =  world.setRandomSeed(k, l, 19239918);
+        k = k * this.spacing;
+        l = l * this.spacing;
+        k = k + (random.nextInt(this.spacing - this.separation) + random.nextInt(this.spacing - this.separation)) / 2;
+        l = l + (random.nextInt(this.spacing - this.separation) + random.nextInt(this.spacing - this.separation)) / 2;
+
+        if (i == k && j == l)
+        {
+            BlockPos pos = new BlockPos(i << 4, 0, j << 4);
+            return isAbleToSpawnHere(pos, world);
+        } else {
+
+            return false;
+        }
+
+    }
+
+    public static boolean isAbleToSpawnHere(BlockPos pos, World world) {
+        //Counter to make sure that two of the Biome Types Match
+        for(BiomeDictionary.Type types : getSpawnBiomeTypes()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static List<BiomeDictionary.Type> rottenHoldBiomeTypes;
+
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypes() {
+        if(rottenHoldBiomeTypes == null) {
+            rottenHoldBiomeTypes = Lists.newArrayList();
+
+            for(String str : WorldConfig.rotten_hold_whitelist) {
+                try {
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) rottenHoldBiomeTypes.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
+                } catch (Exception e) {
+                    DALogger.logError(str + " is not a valid biome type name", e);
+                }
+            }
+        }
+
+        return rottenHoldBiomeTypes;
+    }
+
+    protected StructureStart getStructureStart(World world, int chunkX, int chunkZ, Random rand) {
         return new WorldGenRotHold.Start(world, rand, chunkX, chunkZ);
     }
 
@@ -80,16 +129,15 @@ public class WorldGenRotHold extends WorldGenerator {
 
             BlockPos posI = new BlockPos(chunkX * 16 + 8, 0, chunkZ * 16 + 8);
 
-            int y = getSurfaceHeight(worldIn, posI, WorldConfig.rot_hold_min_y, WorldConfig.rot_hold_max_y);
+            int y = getSurfaceHeight(worldIn, posI, 20, 90);
 
             if(y != 0) {
             for (int i = 0; i < 4; i++) {
                 Rotation rotation = Rotation.values()[(rand + i) % Rotation.values().length];
                 components.clear();
 
-                BlockPos blockpos = posI.add(0, y, 0);
                 RottenHold stronghold = new RottenHold(worldIn, worldIn.getSaveHandler().getStructureTemplateManager(), components);
-                stronghold.startHold(blockpos, Rotation.NONE);
+                stronghold.startHold(new BlockPos(posI.getX(), WorldConfig.rot_hold_static_y, posI.getZ()), Rotation.NONE);
                 this.updateBoundingBox();
 
                 this.valid = true;

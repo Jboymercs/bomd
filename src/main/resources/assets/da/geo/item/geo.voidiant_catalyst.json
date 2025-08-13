@@ -1,0 +1,33 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "gun",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-1, -4, 1], "size": [2, 5, 2], "inflate": -0.1, "uv": [32, 13]},
+						{"origin": [-1.5, -6, 0.5], "size": [3, 2.3, 3], "inflate": -0.2, "uv": [32, 8]},
+						{"origin": [-1.5, 0, -4.5], "size": [3, 3, 9], "uv": [0, 20]},
+						{"origin": [-1, 0.5, -12], "size": [2, 2, 8], "uv": [24, 20]},
+						{"origin": [-0.5, -1, -4], "size": [1, 1, 1], "uv": [16, 36]},
+						{"origin": [-1, -4, -6], "size": [2, 3, 5], "uv": [32, 0]},
+						{"origin": [0, 2, -10], "size": [0, 4, 16], "uv": [0, 0]},
+						{"origin": [-1.5, 0, -12.5], "size": [3, 3, 1], "inflate": -0.05, "pivot": [0, 1.5, -12], "rotation": [0, 0, 45], "uv": [16, 32]},
+						{"origin": [1, 1, -4], "size": [0, 5, 7], "pivot": [0, 0, 0], "rotation": [0, 0, 15], "uv": [24, 30]},
+						{"origin": [-1, 0.5, 4], "size": [2, 2, 6], "uv": [0, 32]}
+					]
+				}
+			]
+		}
+	]
+}

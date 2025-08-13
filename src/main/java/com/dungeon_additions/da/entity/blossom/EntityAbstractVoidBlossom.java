@@ -55,7 +55,6 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
     public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntityAbstractVoidBlossom.class, DataSerializers.BLOCK_POS);
     public static DataParameter<Boolean> SET_SPAWN_LOC = EntityDataManager.createKey(EntityAbstractVoidBlossom.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Float> STAT_LINE = EntityDataManager.createKey(EntityAbstractVoidBlossom.class, DataSerializers.FLOAT);
-
     protected static final DataParameter<Float> LOOK = EntityDataManager.createKey(EntityAbstractVoidBlossom.class, DataSerializers.FLOAT);
 
     public List<WeakReference<Entity>> current_mobs = Lists.newArrayList();

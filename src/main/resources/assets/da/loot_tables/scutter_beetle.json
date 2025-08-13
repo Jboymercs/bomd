@@ -1,0 +1,38 @@
+{
+  "pools": [
+    {
+      "name" : "da:scutter_beetle",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:beetle_shell",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "da:beetle_morsel",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 2
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

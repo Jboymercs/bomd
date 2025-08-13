@@ -9,6 +9,7 @@ import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.*;
 import com.dungeon_additions.da.entity.night_lich.ProjectileMagicGround;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
+import com.dungeon_additions.da.entity.util.IEntitySound;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
@@ -28,6 +29,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -47,12 +49,13 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimatable, IAnimationTickable, IAttack, IDirectionalRender, ITarget, IScreenShake {
+public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimatable, IAnimationTickable, IAttack, IDirectionalRender, ITarget, IScreenShake, IEntitySound {
 
     private final String ANIM_WALK = "walk";
     private final String ANIM_IDLE = "idle";
@@ -147,6 +150,9 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         super.onUpdate();
 
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+            this.playMusic(this);
+        }
         EntityLivingBase target = this.getAttackTarget();
         shakeTime--;
         if(!world.isRemote && target != null) {
@@ -702,5 +708,11 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
             return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 1.75F * screamMult);
         }
         return 0;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getBossMusic() {
+        return SoundsHandler.ANCIENT_WYRK_TRACK;
     }
 }

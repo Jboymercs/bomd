@@ -2,33 +2,37 @@ package com.dungeon_additions.da.proxy;
 
 import com.dungeon_additions.da.animation.IAnimatedEntity;
 import com.dungeon_additions.da.blocks.BlockLeaveBase;
+import com.dungeon_additions.da.entity.util.EntityMusicPlayer;
+import com.dungeon_additions.da.event.EventBossMusic;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.model.*;
 import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSection;
 import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSectionSerializer;
 import com.dungeon_additions.da.util.handlers.CameraPositionHandler;
 import com.dungeon_additions.da.util.handlers.RenderHandler;
-import com.dungeon_additions.da.util.particle.ParticleDash;
-import com.dungeon_additions.da.util.particle.ParticleFluff;
-import com.dungeon_additions.da.util.particle.ParticlePixel;
-import com.dungeon_additions.da.util.particle.ParticlePuzzle;
+import com.dungeon_additions.da.util.particle.*;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.multiplayer.ClientAdvancementManager;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 public class ClientProxy extends CommonProxy{
 
@@ -36,6 +40,7 @@ public class ClientProxy extends CommonProxy{
     private final ModelBiped MODEL_DRAUGR_HELMET = new ModelDraugrHelmet(0F);
 
     private final ModelBiped MODEL_IMPERIAL_CHESTPLATE = new ModelImperialChestplate(0F);
+    private final ModelBiped MODEL_VOIDIANT_CHESTPLATE = new ModelVoidiantChestplate(0F);
     private final ModelBiped MODEL_IMPERIAL_HELMET = new ModelImperialHelmet(0F);
 
     private final ModelBiped MODEL_WYRK_HELMET = new ModelWyrkHelmet(0F);
@@ -62,6 +67,7 @@ public class ClientProxy extends CommonProxy{
     @Override
     public void registerEventHandlers() {
         MinecraftForge.EVENT_BUS.register(CameraPositionHandler.INSTANCE);
+        MinecraftForge.EVENT_BUS.register(EventBossMusic.INSTANCE);
     }
 
 
@@ -107,6 +113,9 @@ public class ClientProxy extends CommonProxy{
         if(item == ModItems.DARK_METAL_HELMET) {
             return MODEL_DARK_METAL_HELMET;
         }
+        if(item == ModItems.VOIDIANT_CHESTPLATE) {
+            return MODEL_VOIDIANT_CHESTPLATE;
+        }
         return null;
     }
 
@@ -137,6 +146,14 @@ public class ClientProxy extends CommonProxy{
                 return new ParticleFluff.Factory();
             case 4:
                 return new ParticlePuzzle.Factory();
+            case 5:
+                return new ParticleLargeFlame.Factory();
+            case 6:
+                return new ParticleStar.Factory();
+            case 7:
+                return new ParticleEnchantment.Factory();
+            case 8:
+                return new ParticleLevitation.Factory();
         }
     }
 
@@ -163,5 +180,22 @@ public class ClientProxy extends CommonProxy{
     @Override
     public void registerItemRenderer(Item item, int meta, String id) {
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), id));
+    }
+
+    @Override
+    public void playMusic(SoundEvent soundEvent, @Nullable Entity linkedEntity) {
+        if (Minecraft.getMinecraft().world != null) {
+            SoundHandler soundHandler = Minecraft.getMinecraft().getSoundHandler();
+
+            if (!EntityMusicPlayer.isPlaying(soundEvent, linkedEntity)) {
+                stopMusic();
+                soundHandler.playSound(new EntityMusicPlayer(linkedEntity, soundEvent));
+            }
+        }
+    }
+
+    @Override
+    public void stopMusic() {
+        Minecraft.getMinecraft().getSoundHandler().stopSounds();
     }
 }

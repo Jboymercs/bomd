@@ -75,6 +75,14 @@ entity.proj_dark_matter.name=Void Mana
 entity.dark_royal.name=Roh Crypt Guard
 entity.puzzle_orb.name=Grum Puzzle Ball
 entity.scutter_beetle.name=Scutter Beetle
+entity.aegyptia.name=Aegyptia
+entity.obsidilith.name=Obsidilith
+entity.blue_wave.name=Obsidilith's Magic
+entity.voidiant.name=Voidiant
+entity.voidclysm.name=The Voidclysm
+entity.voidclysm_bolt.name=Voidclysm Bolt
+entity.void_bomb.name=Voidclysm Bomb
+entity.voidclysm_spike.name=Voidclysm Spike
 item.void_leaf.name=Void Leaf
 item.spore.name=Void Blossom Spore
 item.crystal_fruit.name=Crystal Fruit
@@ -128,10 +136,12 @@ item.dark_metal_helmet.name=Dark Metal Helmet
 item.dark_metal_chestplate.name=Dark Metal Chestplate
 item.dark_metal_leggings.name=Dark Metal Leggings
 item.dark_metal_boots.name=Dark Metal Boots
+item.kopis.name=Aegyptian Kopis
 da.desc.draugr_shield_name=Frostborn Shield
 da.desc.dragon_shield_name=Dragon Scourage Shield
 da.desc.flame_shield_name=Incendium Shield
 da.desc.dark_shield_name=Dark Metal Shield
+da.desc.obsidian_shield_name=Obsidilith's Shield
 item.frost_locator.name=Frozen Soul Star
 item.wyrk_helmet.name=Ancient Wyrk Helmet
 item.wyrk_boots.name=Ancient Wyrk Boots
@@ -175,8 +185,23 @@ item.sealed_flame.name=Sealed Flame Bottle
 item.volatile_orb.name=Volactile Pearl
 item.proj_flame_blade.name=Flame Blade Projectile
 item.flame_shield.name=Incendium Shield
+item.obsidian_shield.name=Obsidilith's Shield
 item.dark_sicle.name=Dark Metal Sickle
 item.soul_key.name=Key of Souls
+item.beetle_shell.name=Scutter Chitin
+item.desert_locator_projectile.name=Forgotten Temple Locator Projectile
+item.desert_locator.name=Desolate Trinket
+item.rot_locator.name=Rotten Core
+item.beetle_morsel.name=Raw Beetle Morsel
+item.cooked_beetle_morsel.name=Cooked Beetle Morsel
+item.obsdian_heart.name=Obsidian Heart
+item.obsidian_eye.name=Obsidian Eye
+item.voidiant_core.name=Voidiant Core
+item.voidiant_catalyst.name=Voidiant Catalyst
+item.voidiant_chestplate.name=Voidiant Chestplate
+item.voidclysm_bolt.name=Voidclysm Bolt
+item.voidclysm_crystal.name=Voidclysm Crystal
+item.obsidian_locator.name=Call of the Void
 tile.spore_blossom.name=Void Blossom
 tile.moss_block.name=Moss Block
 tile.moss_carpet.name=Moss Carpet
@@ -292,6 +317,12 @@ tile.grum_blocker.name=Grum Sealing Eye Pot
 tile.grum_tile_r.name=Grum Sealed Brick
 tile.temple_spawner.name=Forgotten Temple Disappearing Spawner
 tile.boss_resummon.name=Soul Altar
+tile.dark_brick.name=Darglow Stone Brick
+tile.obsidilith_rune.name=Obsidilith Rune
+tile.fake_obsidian.name=Obsidilith Rune Point
+tile.obsidian_end_frame.name=Obsidian End Frame
+tile.end_spawner.name=End Disappearing Spawner
+
 
 itemGroup.dungeon_additions=BOMD + Dungeon Additions Items
 itemGroup.dungeon_additions_blocks=BOMD + Dungeon Additions Blocks
@@ -363,6 +394,16 @@ da.desc.dark_metal_helmet_desc=Gives Night Vision during night time. Full set bo
 da.desc.dark_shield_desc=Blocking attacks charges the shield, after 5 charges and sneaking you will do a short AOE attack.
 da.desc.dark_sicle_desc=Attacking causes a sweep attack, Right Clicking shoots a dark matter projectile.
 da.desc.soul_key_desc=Used to re-summon defeated bosses on a Soul Altar.
+da.desc.desert_locator_desc=It itches to return back to its civilization.
+da.desc.rot_locator_desc=Dull, old, and forgotten. Maybe it'll lead to somewhere more lively.
+da.desc.beetle_morsel_desc=Looks gross...
+da.desc.cooked_beetle_morsel_desc=Grants Night Vision and Speed for a short period of time.
+da.desc.kopis_desc=Momentum brings more pain while jumping.
+da.desc.obsidian_eye_desc=Used in the Obsidilith's arena.
+da.desc.voidiant_catalyst_desc=Right clicking will shoot a laser in your direction. Quicker reload time and higher damage if you are on fire.
+da.desc.voidiant_armor_desc=Getting hit charges this chestplate, when Runic particles appear and crouching you can do a blast attack at your position.
+da.desc.obsidian_shield_desc=Blocking attacks charges the shield. After 5 charges and sneaking and blocking you will summon a magic attack on the entity you are looking at.
+da.desc.obsidian_locator_desc=The void seems to call your name...
 death.attack.da:maelstrom=%1$s succumbed to the void
 death.attack.da:mobMaelstrom=%1$s was killed by a %2$s
 death.attack.da:playerMaelstrom=%1$s was killed by %2$s
@@ -414,6 +455,12 @@ advancements.da.kill_volatile_spirit.description=Slay a Volactile Spirit
 #Kill Roh Crypt Guard
 advancements.da.kill_dark_royal.title=No rest for the wicked.
 advancements.da.kill_dark_royal.description=Slay a Roh Crypt Guard
+#Kill Obsidilith
+advancements.da.kill_obsidilith.title=The monolith in the void.
+advancements.da.kill_obsidilith.description=Slay the Obsidilith
+#Kill Voidclysm
+advancements.da.kill_voidclysm.title=Well that was a close one!
+advancements.da.kill_voidclysm.description=Slay the Voidclysm
 #Find Soul Star
 advancements.da.find_soul_star.title=The stars lead the way
 advancements.da.find_soul_star.description=Obtain a Soul Star
@@ -528,4 +575,25 @@ advancements.da.craft_dark_shield.description=Craft the Dark Metal Shield
 #Craft Dark Metal Sickle
 advancements.da.craft_dark_sicle.title=The Night of Harvest
 advancements.da.craft_dark_sicle.description= Craft the Dark Metal Sickle
+#Find Obsidian Eye
+advancements.da.craft_obsidian_eye.title=Warden's Key
+advancements.da.craft_obsidian_eye.description=Find the Obsidian Eye
+#Craft Voidiant Catalyst
+advancements.da.craft_voidiant_catalyst.title=Spacefarer!
+advancements.da.craft_voidiant_catalyst.description=Craft the Voidiant Catalyst
+#Craft Voidiant Chestplate
+advancements.da.craft_voidiant_chestplate.title=Upgrades people! Upgrades!
+advancements.da.craft_voidiant_chestplate.description=Craft the Voidiant Chestplate
+#Craft Obsidilith's Shield
+advancements.da.craft_obsidian_shield.title=Everything is in my attack radius!
+advancements.da.craft_obsidian_shield.description=Craft Obsidilith's Shield
+#Craft Call of the Void
+advancements.da.craft_obsidian_locator.title=You asked, and they answered.
+advancements.da.craft_obsidian_locator.description=Craft Call of the Void
+#Find Grum Stone
+advancements.da.find_grum_stone.title=The past Era.
+advancements.da.find_grum_stone.description=Mine Grum Stone.
+#Find Farum Stone
+advancements.da.find_farum_stone.title=Sky high builder
+advancements.da.find_farum_stone.description=Mine Farum Stone
 

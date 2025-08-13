@@ -62,7 +62,7 @@ public class WorldGenLichTower extends WorldGenerator {
 
         int k = chunkX / this.spacing;
         int l = chunkZ / this.spacing;
-        Random random =  world.setRandomSeed(k, l, 10387312);
+        Random random =  world.setRandomSeed(k, l, 20387312);
         k = k * this.spacing;
         l = l * this.spacing;
         k = k + (random.nextInt(this.spacing - this.separation) + random.nextInt(this.spacing - this.separation)) / 2;

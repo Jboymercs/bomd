@@ -13,6 +13,7 @@ import com.dungeon_additions.da.entity.frost_dungeon.EntityAbstractGreatWyrk;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
+import com.dungeon_additions.da.entity.util.IEntitySound;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.*;
@@ -64,7 +65,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, IAttack, IAnimationTickable, IScreenShake {
+public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, IAttack, IAnimationTickable, IScreenShake, IEntitySound {
     protected Vec3d chargeDir;
     private Consumer<EntityLivingBase> prevAttack;
 
@@ -662,7 +663,9 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
             hasNotDrankPotion = false;
         }
 
-
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+            this.playMusic(this);
+        }
 
         if(this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
             Vec3d SpawnLoc = new Vec3d(this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
@@ -911,7 +914,23 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
     }
     //Combo Animation Begin
     private int combat_delay = 0;
+
+    private void resetAnyTriggers() {
+        this.setSwingTwo(false);
+        this.setSwingTwo(false);
+        this.setSwingThree(false);
+        this.setSmallStomp(false);
+        this.setOverheadDash(false);
+        this.setFlameSling(false);
+        this.setFlameSlingTriple(false);
+        this.setSummonFlame(false);
+        this.setJumpWithoutAttack(false);
+        this.setJumpWithAttack(false);
+        this.setSpamDetected(false);
+    }
     private void setBeginComboMode() {
+        this.clearEvents();
+        this.resetAnyTriggers();
         this.setBeginCombo(true);
         this.setImmovable(true);
         this.setFullBodyUsage(true);
@@ -2038,7 +2057,6 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
         return LOOT_BOSS;
     }
 
-
     @Override
     protected boolean canDropLoot() {
         return true;
@@ -2055,6 +2073,12 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
             return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 1.1F * screamMult);
         }
         return 0;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getBossMusic() {
+        return SoundsHandler.FLAME_KNIGHT_TRACK;
     }
 
     public enum KNIGHT_HAND {

@@ -1,0 +1,15 @@
+{
+  "pools": [
+    {
+      "name" : "da:voidiant",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:voidiant_core",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

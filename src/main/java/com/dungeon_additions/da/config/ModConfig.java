@@ -14,6 +14,11 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static boolean aether_compat = true;
 
+    @Config.Name("Experimental Features Enabled/Disabled")
+    @Config.Comment("Change if experimental features are enabled. this mostly includes boss music. default: false")
+    @Config.RequiresMcRestart
+    public static boolean experimental_features = true;
+
     @Config.Name("Boss Scaling Health")
     @Config.Comment("Change the scaling added per player of health added to bosses, not counting one player")
     @Config.RequiresMcRestart
@@ -98,6 +103,16 @@ public class ModConfig {
     @Config.Comment("Change the cooldown of the Dark Metal Shield ability in seconds")
     @Config.RequiresMcRestart
     public static int dark_shield_cooldown = 14;
+
+    @Config.Name("Obsidilith Shield Cooldown")
+    @Config.Comment("Change the cooldown of the Obsidilith Shield ability in seconds")
+    @Config.RequiresMcRestart
+    public static int obsidilith_shield_ability = 17;
+
+    @Config.Name("Obsidilith Shield Damage")
+    @Config.Comment("Change the damage of the Obsidilith's Shield ability")
+    @Config.RequiresMcRestart
+    public static float obsidilith_shield_damage = 10;
 
     @Config.Name("Dark Metal Shield Damage")
     @Config.Comment("Change the damage of the Dark Metal Shiels when doing an AOE attack")
@@ -262,6 +277,25 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static int rah_void_dagger_cooldown = 10;
 
+    @Config.Name("Void Catalyst Damage")
+    @Config.Comment("Change the damage of the Voidiant Catalyst")
+    @Config.RequiresMcRestart
+    public static int voidiant_catalyst_damage = 8;
+
+    @Config.Name("Voidiant Catalyst Cooldown")
+    @Config.Comment("Change the cooldown of the Voidiant Catalyst in seconds")
+    @Config.RequiresMcRestart
+    public static int voidiant_catalyst_cooldown = 6;
+
+    @Config.Name("Voidiant Chestplate Charged Capacity")
+    @Config.Comment("How many times must the player take damage in order for the Voidiant Chestplate to be fully charged")
+    @Config.RequiresMcRestart
+    public static int voidiant_chestplate_hit_counter = 9;
+
+    @Config.Name("Voidiant Chestplate Damage")
+    @Config.Comment("How much damage does the Voidiant Chestplate do with its blast attack")
+    @Config.RequiresMcRestart
+    public static float voidiant_chestplate_damage = 5;
 
     @Config.Name("Crafting Material ToolTip")
     @Config.Comment("Should Items listed as Crafting Material state that is a crafting material. False will disable the tool tip")
@@ -310,14 +344,24 @@ public class ModConfig {
     public static int frozen_castle_search_distance = 185;
 
     @Config.Name("Forgotten Temple Search Radius")
-    @Config.Comment("Change how far the Desolate Soul and Locate command searches for a Forgotten Temple. In chunks not blocks!")
+    @Config.Comment("Change how far the Desolate Trinket and Locate command searches for a Forgotten Temple. In chunks not blocks!")
     @Config.RequiresMcRestart
     public static int forgotten_temple_distance = 175;
+
+    @Config.Name("Rotten Hold Search Radius")
+    @Config.Comment("Change how far the Rotten Core and Locate command searches for a Rotten Hold. In chunks not blocks!")
+    @Config.RequiresMcRestart
+    public static int rotten_hold_distance = 90;
 
     @Config.Name("High Court City Search Radius")
     @Config.Comment("Change how far the Orb of Light and command searches for the High Court City. In chunks not blocks!")
     @Config.RequiresMcRestart
     public static int high_court_city_search_distance = 200;
+
+    @Config.Name("Obsidilith Arena Search Radius")
+    @Config.Comment("Change how far the Orb of Light and command searches for the Obsidilith Arena. In chunks not blocks!")
+    @Config.RequiresMcRestart
+    public static int obsidilith_arena_search_distance = 120;
 
     @Config.Name("Soul Star Drops Advancement Requirements")
     @Config.Comment("What advancements are required for players to use and unlock Soul Stars dropping from Mobs")

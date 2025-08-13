@@ -56,6 +56,9 @@ public class RegistryHandler {
         ModelLoader.setCustomModelResourceLocation(ModItems.FLAME_SPIT_SHIELD, 0, new ModelResourceLocation(ModReference.MOD_ID + ":flame_shield", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.DARK_METAL_SHIELD, 0, new ModelResourceLocation(ModReference.MOD_ID + ":dark_shield", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.DARK_SICLE, 0, new ModelResourceLocation(ModReference.MOD_ID + ":dark_sicle", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.VOIDIANT_CATALYST, 0, new ModelResourceLocation(ModReference.MOD_ID + ":voidiant_catalyst", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.OBSIDIAN_SHIELD, 0, new ModelResourceLocation(ModReference.MOD_ID + ":obsidian_shield", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.VOIDCLYSM_BOLT, 0, new ModelResourceLocation(ModReference.MOD_ID + ":voidclysm_bolt", "inventory"));
         ModItems.SPORE_BALL.setTileEntityItemStackRenderer(new RenderSpore());
         ModItems.MAGIC_FIREBALL.setTileEntityItemStackRenderer(new RenderMagicFireball());
         ModItems.CHAMPION_AXE.setTileEntityItemStackRenderer(new RenderChampionAxe());
@@ -73,6 +76,9 @@ public class RegistryHandler {
         ModItems.FLAME_SPIT_SHIELD.setTileEntityItemStackRenderer(new RenderFlameShield());
         ModItems.DARK_METAL_SHIELD.setTileEntityItemStackRenderer(new RenderDarkShield());
         ModItems.DARK_SICLE.setTileEntityItemStackRenderer(new RenderDarkSicle());
+        ModItems.VOIDIANT_CATALYST.setTileEntityItemStackRenderer(new RenderVoidiantCatalyst());
+        ModItems.OBSIDIAN_SHIELD.setTileEntityItemStackRenderer(new RenderObsidianShield());
+        ModItems.VOIDCLYSM_BOLT.setTileEntityItemStackRenderer(new RenderVoidclysmBolt());
         for (Item item : ModItems.ITEMS) {
             if (item instanceof IHasModel) {
                 ((IHasModel) item).registerModels();

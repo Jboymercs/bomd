@@ -47,6 +47,17 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
         this.setNoAI(true);
         this.setSize(0.9F, 0.5F);
     }
+    protected boolean isSilent;
+
+    public EntitySkyBolt(World worldIn, Vec3d renderLazerPos, boolean isSilent) {
+        super(worldIn);
+        this.renderLazerPos = renderLazerPos;
+        this.isSilent = isSilent;
+        this.noClip = true;
+        this.setImmovable(true);
+        this.setNoAI(true);
+        this.setSize(0.9F, 0.5F);
+    }
 
     public EntitySkyBolt(World worldIn, Vec3d renderLazerPos, EntityPlayer summoner) {
         super(worldIn);
@@ -85,12 +96,16 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
         this.rotationPitch = 0;
         this.rotationYawHead = 0;
         this.renderYawOffset = 0;
-        if(ticksExisted == 1) {
+
+        if(ticksExisted == 1 && !isSilent) {
             this.playSound(SoundsHandler.SKY_LIGHTNING_CAST, 0.9f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
         }
 
         if (player == null) {
             if (this.ticksExisted > 1 && !this.world.isRemote) {
+                if(renderLazerPos == null) {
+                    renderLazerPos = this.getPositionVector().add(0, 10, 0);
+                }
                 Main.network.sendToAllTracking(new MessageDirectionForRender(this, renderLazerPos), this);
             }
 

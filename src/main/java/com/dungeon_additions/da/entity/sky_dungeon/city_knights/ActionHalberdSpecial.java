@@ -31,43 +31,43 @@ public class ActionHalberdSpecial implements IAction {
         bolt3.setPosition(relPos3.x, yVar3, relPos3.z);
         actor.world.spawnEntity(bolt3);
         //4
-        EntitySkyBolt bolt4 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(5,10,-3.5))));
+        EntitySkyBolt bolt4 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(5,10,-3.5))), true);
         Vec3d relPos4 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(5, 0, -3.5)));
         int yVar4 = ModUtils.getSurfaceHeightGeneral(actor.world, new BlockPos(relPos4.x, relPos4.y, relPos4.z), (int) actor.posY - 4, (int) actor.posY + 3);
         bolt4.setPosition(relPos4.x, yVar4, relPos4.z);
         actor.world.spawnEntity(bolt4);
         //5
-        EntitySkyBolt bolt5 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(2,10,2))));
+        EntitySkyBolt bolt5 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(2,10,2))), true);
         Vec3d relPos5 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(2, 0, 2)));
         int yVar5 = ModUtils.getSurfaceHeightGeneral(actor.world, new BlockPos(relPos5.x, relPos5.y, relPos5.z), (int) actor.posY - 4, (int) actor.posY + 3);
         bolt5.setPosition(relPos5.x, yVar5, relPos5.z);
         actor.world.spawnEntity(bolt5);
         //6
-        EntitySkyBolt bolt6 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(3,10,2.5))));
+        EntitySkyBolt bolt6 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(3,10,2.5))), true);
         Vec3d relPos6 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(3, 0, 2.5)));
         int yVar6 = ModUtils.getSurfaceHeightGeneral(actor.world, new BlockPos(relPos6.x, relPos6.y, relPos6.z), (int) actor.posY - 4, (int) actor.posY + 3);
         bolt6.setPosition(relPos6.x, yVar6, relPos6.z);
         actor.world.spawnEntity(bolt6);
         //7
-        EntitySkyBolt bolt7 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(4,10,3))));
+        EntitySkyBolt bolt7 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(4,10,3))), true);
         Vec3d relPos7 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(4, 0, 3)));
         int yVar7 = ModUtils.getSurfaceHeightGeneral(actor.world, new BlockPos(relPos7.x, relPos7.y, relPos7.z), (int) actor.posY - 4, (int) actor.posY + 3);
         bolt7.setPosition(relPos7.x, yVar7, relPos7.z);
         actor.world.spawnEntity(bolt7);
         //8
-        EntitySkyBolt bolt8 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(5,10,3.5))));
+        EntitySkyBolt bolt8 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(5,10,3.5))), true);
         Vec3d relPos8 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(5, 0, 3.5)));
         int yVar8 = ModUtils.getSurfaceHeightGeneral(actor.world, new BlockPos(relPos8.x, relPos8.y, relPos8.z), (int) actor.posY - 4, (int) actor.posY + 3);
         bolt8.setPosition(relPos8.x, yVar8, relPos8.z);
         actor.world.spawnEntity(bolt8);
         //9
-        EntitySkyBolt bolt9 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(6,10,-4))));
+        EntitySkyBolt bolt9 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(6,10,-4))), true);
         Vec3d relPos9 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(6, 0, -4)));
         int yVar9 = ModUtils.getSurfaceHeightGeneral(actor.world, new BlockPos(relPos9.x, relPos9.y, relPos9.z), (int) actor.posY - 4, (int) actor.posY + 3);
         bolt9.setPosition(relPos9.x, yVar9, relPos9.z);
         actor.world.spawnEntity(bolt9);
         //10
-        EntitySkyBolt bolt10 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(6,10,4))));
+        EntitySkyBolt bolt10 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(6,10,4))), true);
         Vec3d relPos10 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(6, 0, 4)));
         int yVar10 = ModUtils.getSurfaceHeightGeneral(actor.world, new BlockPos(relPos10.x, relPos10.y, relPos10.z), (int) actor.posY - 4, (int) actor.posY + 3);
         bolt10.setPosition(relPos10.x, yVar10, relPos10.z);
@@ -78,31 +78,31 @@ public class ActionHalberdSpecial implements IAction {
 
 
     private void doLineAction(EntityLivingBase actor) {
-        EntitySkyBolt bolt5 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0,10,0))));
+        EntitySkyBolt bolt5 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0,10,0))), true);
         Vec3d relPos5 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(2, 0, 0)));
         int yVar5 = ModUtils.getSurfaceHeightGeneral(actor.world, new BlockPos(relPos5.x, relPos5.y, relPos5.z), (int) actor.posY - 4, (int) actor.posY + 3);
         bolt5.setPosition(relPos5.x, yVar5, relPos5.z);
         actor.world.spawnEntity(bolt5);
         //6
-        EntitySkyBolt bolt6 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0,10,0))));
+        EntitySkyBolt bolt6 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0,10,0))), true);
         Vec3d relPos6 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(3, 0, 0)));
         int yVar6 = ModUtils.getSurfaceHeightGeneral(actor.world, new BlockPos(relPos6.x, relPos6.y, relPos6.z), (int) actor.posY - 4, (int) actor.posY + 3);
         bolt6.setPosition(relPos6.x, yVar6, relPos6.z);
         actor.world.spawnEntity(bolt6);
         //7
-        EntitySkyBolt bolt7 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0,10,0))));
+        EntitySkyBolt bolt7 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0,10,0))), true);
         Vec3d relPos7 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(4, 0, 0)));
         int yVar7 = ModUtils.getSurfaceHeightGeneral(actor.world, new BlockPos(relPos7.x, relPos7.y, relPos7.z), (int) actor.posY - 4, (int) actor.posY + 3);
         bolt7.setPosition(relPos7.x, yVar7, relPos7.z);
         actor.world.spawnEntity(bolt7);
         //8
-        EntitySkyBolt bolt8 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0,10,0))));
+        EntitySkyBolt bolt8 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0,10,0))), true);
         Vec3d relPos8 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(5, 0, 0)));
         int yVar8 = ModUtils.getSurfaceHeightGeneral(actor.world, new BlockPos(relPos8.x, relPos8.y, relPos8.z), (int) actor.posY - 4, (int) actor.posY + 3);
         bolt8.setPosition(relPos8.x, yVar8, relPos8.z);
         actor.world.spawnEntity(bolt8);
         //9
-        EntitySkyBolt bolt9 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0,10,0))));
+        EntitySkyBolt bolt9 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0,10,0))), true);
         Vec3d relPos9 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(6, 0, 0)));
         int yVar9 = ModUtils.getSurfaceHeightGeneral(actor.world, new BlockPos(relPos9.x, relPos9.y, relPos9.z), (int) actor.posY - 4, (int) actor.posY + 3);
         bolt9.setPosition(relPos9.x, yVar9, relPos9.z);

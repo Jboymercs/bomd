@@ -1,0 +1,45 @@
+{
+  "pools": [
+    {
+      "name" : "da:obsidilith",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:obsdian_heart",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "name" : "da:obsidilith",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "loot_table",
+          "name": "minecraft:chests/end_city_treasure"
+        }
+      ]
+    },
+    {
+      "name" : "da:obsidilith",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:obsidian",
+          "weight": 20,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 50
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

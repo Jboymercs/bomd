@@ -50,6 +50,56 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static boolean spike_lag_reducer = false;
 
+    @Config.Name("Obsidilith Health")
+    @Config.Comment("Change the health of the Obsidilith boss")
+    @Config.RequiresMcRestart
+    public static double obsidilith_health = 300;
+
+    @Config.Name("Obsidilith Armor")
+    @Config.Comment("Change the armor of the Obsidilith")
+    @Config.RequiresMcRestart
+    public static double obsidilith_armor = 18;
+
+    @Config.Name("Obsidilith Armor Toughness")
+    @Config.Comment("Change the armor toughness of the Obsidilith")
+    @Config.RequiresMcRestart
+    public static double obsidilith_armor_toughness = 4;
+
+    @Config.Name("Obsidilith Attack Damage")
+    @Config.Comment("Change the attack damage of the Obsidilith")
+    @Config.RequiresMcRestart
+    public static double obsidilith_attack_damage = 18;
+
+    @Config.Name("Obsidilith Two Part Boss")
+    @Config.Comment("Change if the Obsidilith summons the Voidclysm after it is defeated")
+    @Config.RequiresMcRestart
+    public static boolean obsidilith_two_part_boss = true;
+
+    @Config.Name("Voidclysm Health")
+    @Config.Comment("Change the Health of the Voidclysm")
+    @Config.RequiresMcRestart
+    public static double voidclysm_health = 400;
+
+    @Config.Name("Voidclysm Attack Damage")
+    @Config.Comment("Change the attack damage of the Voidclysm")
+    @Config.RequiresMcRestart
+    public static double voidclysm_attack_damage = 24;
+
+    @Config.Name("Voidclysm Armor")
+    @Config.Comment("Change the armor value of the Voidclysm")
+    @Config.RequiresMcRestart
+    public static double voidclysm_armor = 12;
+
+    @Config.Name("Voicvlysm Armor Toughness")
+    @Config.Comment("Change the armor toughness of the Voidclysm")
+    @Config.RequiresMcRestart
+    public static double voidclysm_armor_toughness = 6;
+
+    @Config.Name("Voidclysm Attack Speed")
+    @Config.Comment("Change the attack speed in ticks for the Voidclysm, this value halves when reaching below half health.")
+    @Config.RequiresMcRestart
+    public static int voidclysm_attack_cooldown = 20;
+
     @Config.Name("Mini Void Blossom Health")
     @Config.Comment("Change the health of the Mini Void Blossom")
     @Config.RequiresMcRestart
@@ -687,5 +737,20 @@ public class MobConfig {
     @Config.Comment("When set to true, this will disable all blood related attacks from the High King. This will still keep the Phase Transition, it will just cut out the Phrases")
     @Config.RequiresMcRestart
     public static boolean disable_blood_attacks = false;
+
+    @Config.Name("Voidiant Health")
+    @Config.Comment("Change the health of the Voidiant.")
+    @Config.RequiresMcRestart
+    public static double voidiant_health = 60;
+
+    @Config.Name("Voidiant Attack Damage")
+    @Config.Comment("Change the attack damage of the Voidiant")
+    @Config.RequiresMcRestart
+    public static double voidiant_attack_damage = 20;
+
+    @Config.Name("Voidiant Armor")
+    @Config.Comment("Change the armor of the Voidiant")
+    @Config.RequiresMcRestart
+    public static double voidiant_armor=8;
 
 }

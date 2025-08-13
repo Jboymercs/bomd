@@ -1,8 +1,12 @@
 package com.dungeon_additions.da.world.rot_hold;
 
+import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.world.blossom.BlossomTemplate;
+import com.dungeon_additions.da.world.forgotten_temple.ForgottenTempleTemplate;
 import com.google.common.collect.Lists;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
@@ -49,15 +53,15 @@ public class RottenHold {
     }
 
     public void startHold(BlockPos pos, Rotation rot) {
-        RottenHoldTemplate templateAdjusted = new RottenHoldTemplate(manager, "hold_main", pos.add(0, -7, 0), rot, 0, true);
+        RottenHoldTemplate templateAdjusted = new RottenHoldTemplate(manager, "start", pos, rot, 0, true);
         components.add(templateAdjusted);
-        this.posIdentified = pos;
+        this.posIdentified = pos.add(-15, 0, -15);
         RottenHoldTemplate.resetTemplateCount();
         System.out.println("Generated Rotten Hold at" + pos);
         List<StructureComponent> structures = new ArrayList<>(components);
         int failedHalls = 0;
-        for(Tuple<Rotation, BlockPos> tuple : STRONG_HOLD_CROSS) {
-            if(!generateStrongholdPart(templateAdjusted, tuple.getSecond(), rot.add(tuple.getFirst()))) {
+        for(Tuple<Rotation, BlockPos> tuple : STRONG_HOLD_CROSS_DUNGEON) {
+            if(!generateStraight(templateAdjusted, tuple.getSecond(), rot.add(tuple.getFirst()))) {
                 failedHalls++;
             }
         }
@@ -68,7 +72,7 @@ public class RottenHold {
             //generate Ends
         }
 
-        generateDungeonStart(templateAdjusted, pos, rot);
+        placeModifyTube(templateAdjusted, BlockPos.ORIGIN.add(-18, 9, 0), rot);
     }
 
     /**
@@ -110,6 +114,42 @@ public class RottenHold {
             //generate Ends
         }
 
+        return true;
+    }
+
+    protected int chamberTubeVarHeight = WorldConfig.rot_hold_static_y + 9;
+
+    public boolean placeModifyTube(RottenHoldTemplate parent, BlockPos pos, Rotation rot) {
+        RottenHoldTemplate tube = addAdjustedPieceWithoutDistance(parent, pos, "stair_well", rot);
+        components.add(tube);
+        int yDifference = getGroundFromAbove(world, posIdentified.getX(), posIdentified.getZ());
+
+        if(yDifference - 8 >= chamberTubeVarHeight) {
+            chamberTubeVarHeight += 8;
+            placeModifyTube(tube, BlockPos.ORIGIN.add(-5, 8, 0), rot);
+        } else {
+            //Place top of structure
+            constructHold(tube, BlockPos.ORIGIN.add(0, 8, 0), rot);
+        }
+        return true;
+    }
+
+    public boolean constructHold(RottenHoldTemplate parent, BlockPos pos, Rotation rot) {
+        RottenHoldTemplate template = addAdjustedPieceWithoutDistance(parent, BlockPos.ORIGIN.add(-18,0,0), "hold_main", rot);
+        components.add(template);
+        List<StructureComponent> structures = new ArrayList<>(components);
+        int failedHalls = 0;
+        for(Tuple<Rotation, BlockPos> tuple : STRONG_HOLD_CROSS) {
+            if(!generateStrongholdPart(template, tuple.getSecond(), rot.add(tuple.getFirst()))) {
+                failedHalls++;
+            }
+        }
+
+        if(failedHalls > 3) {
+            components.clear();
+            components.addAll(structures);
+            //generate Ends
+        }
         return true;
     }
 
@@ -358,6 +398,19 @@ public class RottenHold {
         newTemplate.offset(blockpos.getX(), blockpos.getY(), blockpos.getZ());
         adjustAndCenter(parent, newTemplate, rot);
         return newTemplate;
+    }
+
+    public static int getGroundFromAbove(World world, int x, int z)
+    {
+        int y = WorldConfig.rot_hold_max_y;
+        boolean foundGround = false;
+        while(!foundGround && y-- >= WorldConfig.rot_hold_static_y + 9)
+        {
+            Block blockAt = world.getBlockState(new BlockPos(x,y,z)).getBlock();
+            foundGround =  blockAt != Blocks.AIR && blockAt != Blocks.LEAVES && blockAt != Blocks.LEAVES2;
+        }
+
+        return y;
     }
 
     /**

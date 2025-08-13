@@ -4,6 +4,7 @@ import com.dungeon_additions.da.entity.night_lich.EntityLichStaffAOE;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.EntityDragonAOE;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -34,6 +35,7 @@ public class ActionDragonStomp implements IActionDrake{
             spike.setPosition(pos.x, y + 1, pos.z);
             actor.world.spawnEntity(spike);
         });
+        actor.playSound(SoundsHandler.HIGH_DRAKE_ROCK_AOE, 1.5f, 1.0F);
 
         actor.addEvent(()-> {
             ModUtils.circleCallback(3, 12, (pos)-> {
@@ -51,6 +53,7 @@ public class ActionDragonStomp implements IActionDrake{
                 spike.setPosition(pos.x, y + 1, pos.z);
                 actor.world.spawnEntity(spike);
             });
+            actor.playSound(SoundsHandler.HIGH_DRAKE_ROCK_AOE, 1.5f, 1.0F);
         }, 5);
 
         actor.addEvent(()-> {
@@ -69,6 +72,7 @@ public class ActionDragonStomp implements IActionDrake{
                 spike.setPosition(pos.x, y + 1, pos.z);
                 actor.world.spawnEntity(spike);
             });
+            actor.playSound(SoundsHandler.HIGH_DRAKE_ROCK_AOE, 1.5f, 1.0F);
         }, 10);
 
         actor.addEvent(()-> {
@@ -79,6 +83,7 @@ public class ActionDragonStomp implements IActionDrake{
                 spike.setPosition(pos.x, y + 1, pos.z);
                 actor.world.spawnEntity(spike);
             });
+            actor.playSound(SoundsHandler.HIGH_DRAKE_ROCK_AOE, 1.5f, 1.0F);
         }, 15);
 
         actor.addEvent(()-> {
@@ -89,6 +94,7 @@ public class ActionDragonStomp implements IActionDrake{
                 spike.setPosition(pos.x, y + 1, pos.z);
                 actor.world.spawnEntity(spike);
             });
+            actor.playSound(SoundsHandler.HIGH_DRAKE_ROCK_AOE, 1.5f, 1.0F);
         }, 15);
 
         actor.addEvent(()-> {
@@ -99,6 +105,7 @@ public class ActionDragonStomp implements IActionDrake{
                 spike.setPosition(pos.x, y + 1, pos.z);
                 actor.world.spawnEntity(spike);
             });
+            actor.playSound(SoundsHandler.HIGH_DRAKE_ROCK_AOE, 1.5f, 1.0F);
         }, 15);
     }
 

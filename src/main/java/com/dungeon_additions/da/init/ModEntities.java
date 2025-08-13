@@ -8,6 +8,7 @@ import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
 import com.dungeon_additions.da.entity.dark_dungeon.*;
+import com.dungeon_additions.da.entity.desert_dungeon.EntityAegyptia;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.flame_knight.*;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
@@ -38,6 +39,7 @@ import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing
 import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.*;
 import com.dungeon_additions.da.entity.tileEntity.*;
 import com.dungeon_additions.da.entity.util.EntityBossSpawner;
+import com.dungeon_additions.da.entity.void_dungeon.*;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -87,88 +89,115 @@ public class ModEntities {
     public static Vec3i dark_sorcerer = new Vec3i(0x233547,0x69057b,0);
 
     public static Vec3i dark_royal = new Vec3i(0x233547,0xb42507,0);
+    public static Vec3i scutter_beetle = new Vec3i(0x0e588a, 0xf2c31e, 0);
+    public static Vec3i obsidilith = new Vec3i(0x161117, 0x5B016B, 0);
+    public static Vec3i voidclysm = new Vec3i(0x161117, 0xDE28D9, 0);
+    public static Vec3i voidiant = new Vec3i(0xD473D9, 0x91094D, 0);
     public static void registerEntities() {
         //One day, you'll be back in game my son
        // registerEntityWithID("wreath_knight", EntityWreathKnight.class, ENTITY_START_ID++, 50, void_blossom);
-        registerEntityWithID("void_blossom", EntityVoidBlossom.class, ENTITY_START_ID++, 50, void_blossom);
-        registerEntityWithID("mini_blossom", EntityMiniBlossom.class, ENTITY_START_ID++, 50, mini_void_blossom);
+        //Rotten Hold
+        registerEntityWithID("ancient_fallen", EntityRotKnightBoss.class, ENTITY_START_ID++, 50, rot_knight_boss);
+        registerEntityWithID("ancient_knight", EntityRotKnight.class, ENTITY_START_ID++, 70, rot_knights);
+        registerEntityWithID("ancient_knight_rapier", EntityRotKnightRapier.class, ENTITY_START_ID++, 50 ,rot_knight_rapier);
+        //Void Blossom
+        registerEntityWithID("mini_blossom", EntityMiniBlossom.class, ENTITY_START_ID++, 70, mini_void_blossom);
+        registerEntityWithID("void_blossom", EntityVoidBlossom.class, ENTITY_START_ID++, 90, void_blossom);
+        //Frozen Castle
+        registerEntityWithID("wyrk", EntityWyrk.class, ENTITY_START_ID++, 60, wyrk_mob);
+        registerEntityWithID("frost_draugr", EntityDraugr.class, ENTITY_START_ID++, 60, draugr_melee);
+        registerEntityWithID("frost_draugr_ranger", EntityDraugrRanger.class, ENTITY_START_ID++, 60, draugr_ranged);
+        registerEntityWithID("frost_draugr_elite", EntityEliteDraugr.class, ENTITY_START_ID++, 70, draugr_champion);
+        registerEntityWithID("great_wyrk", EntityGreatWyrk.class, ENTITY_START_ID++, 90, ancient_wyrk);
+        //Forgotten Temple
+        registerEntityWithID("scutter_beetle", EntityScutterBeetle.class, ENTITY_START_ID++, 70, scutter_beetle);
+      //  registerEntityWithID("aegyptia", EntityAegyptia.class, ENTITY_START_ID++, 70, night_lich);
+        // Burning Flame Arena
         registerEntityWithID("nether_aberant", EntityNetherAbberrant.class, ENTITY_START_ID++, 50, nether_spirit);
+        registerEntityWithID("incendium_spirit", EntityIncendium.class, ENTITY_START_ID++, 70, incendium_spirit);
+        registerEntityWithID("bareant", EntityBareant.class, ENTITY_START_ID++, 70, bareant_spirit);
+        registerEntityWithID("volatile_spirit", EntityVolatileSpirit.class, ENTITY_START_ID++, 90, volactile_spirit);
+        registerEntityWithID("flame_knight", EntityFlameKnight.class, ENTITY_START_ID++, 70, kobf);
+        //Obsidilith
+        registerEntityWithID("voidiant", EntityVoidiant.class, ENTITY_START_ID++, 60, voidiant);
+        registerEntityWithID("obsidilith", EntityObsidilith.class, ENTITY_START_ID++, 70, obsidilith);
+        registerEntityWithID("voidclysm", EntityVoidiclysm.class, ENTITY_START_ID++, 70, voidclysm);
+        registerEntity("blue_wave", EntityBlueWave.class, ENTITY_START_ID++, 50);
+        //Night Lich's Tower
+        registerEntityWithID("night_lich", EntityNightLich.class, ENTITY_START_ID++, 90, night_lich);
+        //High Court City
+        registerEntityWithID("trident_gargoyle", EntityTridentGargoyle.class, ENTITY_START_ID++, 70, farum_gargoyle);
+        registerEntityWithID("mage_gargoyle", EntityMageGargoyle.class, ENTITY_START_ID++, 70, farum_elder);
+        registerEntityWithID("imperial_sword", EntityImperialSword.class, ENTITY_START_ID++, 90, imperial_sword);
+        registerEntityWithID("imperial_halberd", EntityImperialHalberd.class, ENTITY_START_ID++, 90, imperial_halberd);
+        registerEntityWithID("high_king_drake", EntityHighKingDrake.class, ENTITY_START_ID++, 110, high_drake);
+        registerEntityWithID("high_king", EntityHighKing.class, ENTITY_START_ID++, 100, high_king);
+        //Dark Dungeon
+        registerEntityWithID("dark_assassin", EntityDarkAssassin.class, ENTITY_START_ID++, 70, dark_assassin);
+        registerEntityWithID("dark_royal", EntityDarkRoyal.class, ENTITY_START_ID++, 70, dark_royal);
+        registerEntityWithID("dark_sorcerer", EntityDarkSorcerer.class, ENTITY_START_ID++, 70, dark_sorcerer);
+
+        //Other Projectles/Utilities
         registerEntity("spore_cloud", EntityGenericWave.class, ENTITY_START_ID++, 50);
         registerEntity("void_spike", EntityVoidSpike.class, ENTITY_START_ID++, 50);
         registerEntity("void_leaf", ProjectileVoidLeaf.class, PROJECTILE_START_ID++, 30);
         registerEntity("spore_bomb", ProjectileSporeBomb.class, PROJECTILE_START_ID++, 30);
         registerEntity("abberrant_projectile", ProjectileAbberrantAttack.class, PROJECTILE_START_ID++, 30);
         registerEntity("pearl_projectile", ProjectileEndlessEnderpearl.class, PROJECTILE_START_ID++, 30);
-        registerEntity("dart_entity", EntityDart.class, ENTITY_START_ID++, 50);
-        registerEntity("boss_spawner", EntityBossSpawner.class, ENTITY_START_ID++, 50);
+        registerEntity("dart_entity", EntityDart.class, ENTITY_START_ID++, 30);
+        registerEntity("boss_spawner", EntityBossSpawner.class, ENTITY_START_ID++, 40);
         registerEntity("aoe_tile", EntityMoveTile.class, ENTITY_START_ID++, 50);
             registerEntity("flame_sling", ProjectileFlameSling.class, ENTITY_START_ID++, 50);
-            registerEntity("flame_projectile", ProjectileTrackingFlame.class, ENTITY_START_ID++, 60);
-            registerEntity("nether_pyre", EntityPyre.class, ENTITY_START_ID++, 50);
-            registerEntity("fire_resist_item", EntityFireResistantItems.class, ENTITY_START_ID++, 60);
-            registerEntityWithID("flame_knight", EntityFlameKnight.class, ENTITY_START_ID++, 50, kobf);
-            registerEntityWithID("ancient_knight", EntityRotKnight.class, ENTITY_START_ID++, 50, rot_knights);
-            registerEntityWithID("ancient_knight_rapier", EntityRotKnightRapier.class, ENTITY_START_ID++, 50 ,rot_knight_rapier);
-            registerEntityWithID("ancient_fallen", EntityRotKnightBoss.class, ENTITY_START_ID++, 50, rot_knight_boss);
-            registerEntity("rot_spike", EntityRotSpike.class, ENTITY_START_ID++, 60);
-            registerEntity("soul_star", EntitySoulStar.class, ENTITY_START_ID++, 60);
-            registerEntity("lily_locator", EntityLily.class, ENTITY_START_ID++, 60);
-            registerEntityWithID("night_lich", EntityNightLich.class, ENTITY_START_ID++, 60, night_lich);
-            registerEntity("magic_missile", ProjectileMagicMissile.class, ENTITY_START_ID++, 60);
-            registerEntity("magic_fireball", ProjectileMagicFireBall.class, ENTITY_START_ID++, 60);
-            registerEntity("lich_staff", EntityLichStaffAOE.class, ENTITY_START_ID++, 60);
-            registerEntity("track_missile", ProjectileTrackingMagicMissile.class, ENTITY_START_ID++, 60);
-            registerEntity("ground_missile", ProjectileMagicGround.class, ENTITY_START_ID++, 60);
-            registerEntity("lich_spawn", EntityLichSpawn.class, ENTITY_START_ID++, 60);
-            registerEntityWithID("wyrk", EntityWyrk.class, ENTITY_START_ID++, 70, wyrk_mob);
-            registerEntity("ice_spike", EntityIcicleSpike.class, ENTITY_START_ID++, 70);
-            registerEntity("ice_bullet", ProjectileFrostBullet.class, ENTITY_START_ID++, 70);
-            registerEntityWithID("frost_draugr", EntityDraugr.class, ENTITY_START_ID++, 70, draugr_melee);
-            registerEntityWithID("frost_draugr_ranger", EntityDraugrRanger.class, ENTITY_START_ID++, 70, draugr_ranged);
-            registerEntity("soul_bullet", ProjectileSoul.class, ENTITY_START_ID++, 70);
-            registerEntityWithID("frost_draugr_elite", EntityEliteDraugr.class, ENTITY_START_ID++, 70, draugr_champion);
-            registerEntity("frost_locator", EntityFrozenCastleLocator.class, ENTITY_START_ID++, 70);
-            registerEntityWithID("great_wyrk", EntityGreatWyrk.class, ENTITY_START_ID++, 70, ancient_wyrk);
-            registerEntity("frost_magic", ProjectileFrostGround.class, ENTITY_START_ID++, 80);
-            registerEntity("wyrk_foot", EntityWyrkFoot.class, ENTITY_START_ID++, 80);
-            registerEntity("wyrk_lazer", EntityWyrkLazer.class, ENTITY_START_ID++, 80);
-            registerEntityWithID("imperial_halberd", EntityImperialHalberd.class, ENTITY_START_ID++, 80, imperial_halberd);
-            registerEntity("sky_lightning_bolt", EntitySkyBolt.class, ENTITY_START_ID++, 80);
-            registerEntityWithID("imperial_sword", EntityImperialSword.class, ENTITY_START_ID++, 80, imperial_sword);
-            registerEntity("sky_arrow", EntitySkyArrow.class, ENTITY_START_ID++, 80);
-            registerEntity("sky_tornado", EntitySkyTornado.class, ENTITY_START_ID++, 80);
-            registerEntityWithID("trident_gargoyle", EntityTridentGargoyle.class, ENTITY_START_ID++, 80, farum_gargoyle);
-            registerEntity("farum_dart", EntityFarumSpike.class, ENTITY_START_ID++, 90);
-            registerEntityWithID("mage_gargoyle", EntityMageGargoyle.class, ENTITY_START_ID++, 90, farum_elder);
-            registerEntity("light_ring_projectile", ProjectileLightRing.class, ENTITY_START_ID++, 90);
-            registerEntity("gargoyle_lazer", EntityGargoyleLazer.class, ENTITY_START_ID++, 90);
+            registerEntity("flame_projectile", ProjectileTrackingFlame.class, ENTITY_START_ID++, 30);
+            registerEntity("nether_pyre", EntityPyre.class, ENTITY_START_ID++, 30);
+            registerEntity("fire_resist_item", EntityFireResistantItems.class, ENTITY_START_ID++, 30);
+            registerEntity("rot_spike", EntityRotSpike.class, ENTITY_START_ID++, 30);
+            registerEntity("soul_star", EntitySoulStar.class, ENTITY_START_ID++, 30);
+            registerEntity("lily_locator", EntityLily.class, ENTITY_START_ID++, 30);
+            registerEntity("magic_missile", ProjectileMagicMissile.class, ENTITY_START_ID++, 30);
+            registerEntity("magic_fireball", ProjectileMagicFireBall.class, ENTITY_START_ID++, 30);
+            registerEntity("lich_staff", EntityLichStaffAOE.class, ENTITY_START_ID++, 30);
+            registerEntity("track_missile", ProjectileTrackingMagicMissile.class, ENTITY_START_ID++, 30);
+            registerEntity("ground_missile", ProjectileMagicGround.class, ENTITY_START_ID++, 30);
+            registerEntity("lich_spawn", EntityLichSpawn.class, ENTITY_START_ID++, 40);
+            registerEntity("ice_spike", EntityIcicleSpike.class, ENTITY_START_ID++, 40);
+            registerEntity("ice_bullet", ProjectileFrostBullet.class, ENTITY_START_ID++, 30);
+            registerEntity("soul_bullet", ProjectileSoul.class, ENTITY_START_ID++, 30);
+            registerEntity("frost_locator", EntityFrozenCastleLocator.class, ENTITY_START_ID++, 30);
+            registerEntity("frost_magic", ProjectileFrostGround.class, ENTITY_START_ID++, 30);
+            registerEntity("wyrk_foot", EntityWyrkFoot.class, ENTITY_START_ID++, 70);
+            registerEntity("wyrk_lazer", EntityWyrkLazer.class, ENTITY_START_ID++, 90);
+            registerEntity("voidiant_lazer", EntityVoidiantLazer.class, ENTITY_START_ID++, 90);
+            registerEntity("sky_lightning_bolt", EntitySkyBolt.class, ENTITY_START_ID++, 50);
+            registerEntity("sky_arrow", EntitySkyArrow.class, ENTITY_START_ID++, 60);
+            registerEntity("sky_tornado", EntitySkyTornado.class, ENTITY_START_ID++, 30);
+            registerEntity("farum_dart", EntityFarumSpike.class, ENTITY_START_ID++, 30);
+            registerEntity("light_ring_projectile", ProjectileLightRing.class, ENTITY_START_ID++, 30);
+            registerEntity("gargoyle_lazer", EntityGargoyleLazer.class, ENTITY_START_ID++, 60);
             registerEntity("friend_wyrk", EntityFriendWyrk.class, ENTITY_START_ID++, 90);
-            registerEntityWithID("dark_assassin", EntityDarkAssassin.class, ENTITY_START_ID++, 90, dark_assassin);
-            registerEntity("shadow_hand", EntityShadowHand.class, ENTITY_START_ID++, 90);
-            registerEntityWithID("high_king_drake", EntityHighKingDrake.class, ENTITY_START_ID++, 90, high_drake);
-            registerEntity("storm_tornado", ProjectileStormBreath.class, ENTITY_START_ID++, 90);
-            registerEntity("storm_breath", ProjectileStormWind.class, ENTITY_START_ID++, 90);
-            registerEntity("dragon_aoe", EntityDragonAOE.class, ENTITY_START_ID++, 100);
-            registerEntity("dragon_special", EntityDragonSpecial.class, ENTITY_START_ID++, 100);
-            registerEntity("sky_locator_projectile", EntitySkyDungeonLocator.class, ENTITY_START_ID++, 100);
-            registerEntityWithID("high_king", EntityHighKing.class, ENTITY_START_ID++, 100, high_king);
-            registerEntity("king_holy_aoe", EntityKingHolyAOE.class, ENTITY_START_ID++, 100);
-            registerEntity("king_holy_projectile", EntityKingHolyWave.class, ENTITY_START_ID++, 100);
-            registerEntity("blood_pile", EntityBloodPile.class, ENTITY_START_ID++, 100);
-            registerEntity("blood_ball_proj", ProjectileKingBlood.class, ENTITY_START_ID++, 100);
-            registerEntity("imperial_knight_friendly", EntityFriendlyHalberd.class, ENTITY_START_ID++, 100);
-            registerEntity("burning_flame_projectile", EntityBurningFlameArenaLocator.class, ENTITY_START_ID++, 100);
-            registerEntityWithID("incendium_spirit", EntityIncendium.class, ENTITY_START_ID++, 110, incendium_spirit);
-            registerEntityWithID("bareant", EntityBareant.class, ENTITY_START_ID++, 110, bareant_spirit);
-            registerEntityWithID("volatile_spirit", EntityVolatileSpirit.class, ENTITY_START_ID++, 110, volactile_spirit);
-            registerEntity("flame_spit", ProjectileFlameSpit.class, ENTITY_START_ID++, 110);
-            registerEntity("volatile_orb", EntityFlameOrb.class, ENTITY_START_ID++, 110);
-            registerEntity("flame_blade_proj", ProjectileFlameBlade.class, ENTITY_START_ID++, 110);
-            registerEntityWithID("dark_sorcerer", EntityDarkSorcerer.class, ENTITY_START_ID++, 110, dark_sorcerer);
-            registerEntity("proj_dark_matter", ProjectileDarkMatter.class, ENTITY_START_ID++, 110);
-            registerEntityWithID("dark_royal", EntityDarkRoyal.class, ENTITY_START_ID++, 110, dark_royal);
-            registerEntity("puzzle_orb", ProjectilePuzzleBall.class, ENTITY_START_ID++, 120);
-            registerEntityWithID("scutter_beetle", EntityScutterBeetle.class, ENTITY_START_ID++, 120, night_lich);
+            registerEntity("shadow_hand", EntityShadowHand.class, ENTITY_START_ID++, 50);
+            registerEntity("storm_tornado", ProjectileStormBreath.class, ENTITY_START_ID++, 30);
+            registerEntity("storm_breath", ProjectileStormWind.class, ENTITY_START_ID++, 30);
+            registerEntity("dragon_aoe", EntityDragonAOE.class, ENTITY_START_ID++, 70);
+            registerEntity("dragon_special", EntityDragonSpecial.class, ENTITY_START_ID++, 70);
+            registerEntity("sky_locator_projectile", EntitySkyDungeonLocator.class, ENTITY_START_ID++, 30);
+            registerEntity("king_holy_aoe", EntityKingHolyAOE.class, ENTITY_START_ID++, 60);
+            registerEntity("king_holy_projectile", EntityKingHolyWave.class, ENTITY_START_ID++, 40);
+            registerEntity("blood_pile", EntityBloodPile.class, ENTITY_START_ID++, 60);
+            registerEntity("blood_ball_proj", ProjectileKingBlood.class, ENTITY_START_ID++, 30);
+            registerEntity("imperial_knight_friendly", EntityFriendlyHalberd.class, ENTITY_START_ID++, 70);
+            registerEntity("burning_flame_projectile", EntityBurningFlameArenaLocator.class, ENTITY_START_ID++, 30);
+            registerEntity("flame_spit", ProjectileFlameSpit.class, ENTITY_START_ID++, 30);
+            registerEntity("volatile_orb", EntityFlameOrb.class, ENTITY_START_ID++, 30);
+            registerEntity("flame_blade_proj", ProjectileFlameBlade.class, ENTITY_START_ID++, 30);
+            registerEntity("proj_dark_matter", ProjectileDarkMatter.class, ENTITY_START_ID++, 30);
+            registerEntity("puzzle_orb", ProjectilePuzzleBall.class, ENTITY_START_ID++, 50);
+            registerEntity("desert_locator_proj", EntityForgottenTempleLocator.class, ENTITY_START_ID++, 30);
+            registerEntity("rot_locator_proj", EntityRottenHoldLocator.class, ENTITY_START_ID++, 30);
+            registerEntity("voidclysm_bolt", ProjectileVoidClysmBolt.class, ENTITY_START_ID++, 30);
+            registerEntity("void_bomb", EntityVoidBomb.class, ENTITY_START_ID++, 30);
+            registerEntity("voidclysm_spike", EntityVoidclysmSpike.class, ENTITY_START_ID++, 30);
+            registerEntity("obsidian_locator", EntityObsidianLocator.class, ENTITY_START_ID++, 30);
 
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
@@ -183,6 +212,7 @@ public class ModEntities {
         registerTileEntity(TileEntityGrumDispenser.class, "grum_dispenser");
         registerTileEntity(TileEntityGrumBlocker.class, "grum_blocker");
         registerTileEntity(TileEntityBossReSummon.class, "boss_resummon");
+        registerTileEntity(TileEntityObsidilithRune.class, "obsidilith_rune");
 
     }
 

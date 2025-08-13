@@ -52,7 +52,7 @@ public class WorldGenBlossomCave extends WorldGenerator {
 
         int k = chunkX / spacing;
         int l = chunkZ / spacing;
-        Random random = world.setRandomSeed(k, l, 10383709);
+        Random random = world.setRandomSeed(k, l, 40383709);
         k = k * spacing;
         l = l * spacing;
         k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;

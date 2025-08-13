@@ -15,6 +15,7 @@ import com.dungeon_additions.da.entity.sky_dungeon.high_king.action.*;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.drake.EntityHighKingDrakeAI;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.ProjectileStormWind;
+import com.dungeon_additions.da.entity.util.IEntitySound;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
@@ -57,13 +58,14 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatable, IAnimationTickable, IAttack, IPitch, IEntityMultiPart, IScreenShake {
+public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatable, IAnimationTickable, IAttack, IPitch, IEntityMultiPart, IScreenShake, IEntitySound {
 
     private final String ANIM_FLY_BASE = "fly";
     private final String ANIM_FLY_DRAGON = "fly_dragon";
@@ -389,6 +391,11 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
     public void onUpdate() {
         super.onUpdate();
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
+
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+            this.playMusic(this);
+        }
+
         if(!world.isRemote) {
             EntityLivingBase target = this.getAttackTarget();
 
@@ -1372,5 +1379,11 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
             return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 2F * screamMult);
         }
         return 0;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getBossMusic() {
+        return SoundsHandler.HIGH_DRAGON_TRACK;
     }
 }

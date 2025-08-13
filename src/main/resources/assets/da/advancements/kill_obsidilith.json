@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:obsdian_heart"
+    },
+    "title": {
+      "translate": "advancements.da.kill_obsidilith.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_obsidilith.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "da:craft_obsidian_eye",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:obsidilith"
+        }
+      }
+    }
+  }
+}

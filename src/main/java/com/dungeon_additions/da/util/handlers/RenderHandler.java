@@ -11,6 +11,7 @@ import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
 import com.dungeon_additions.da.entity.dark_dungeon.*;
+import com.dungeon_additions.da.entity.desert_dungeon.EntityAegyptia;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.flame_knight.*;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
@@ -35,6 +36,7 @@ import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkAssassin;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkRoyal;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkSorcerer;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderShadowHand;
+import com.dungeon_additions.da.entity.render.desert_dungeon.RenderAegyptia;
 import com.dungeon_additions.da.entity.render.desert_dungeon.RenderScutterBeetle;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderBareant;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderFlameOrb;
@@ -47,6 +49,7 @@ import com.dungeon_additions.da.entity.render.lich.RenderNightLich;
 import com.dungeon_additions.da.entity.render.sky_dungeon.*;
 import com.dungeon_additions.da.entity.render.sky_dungeon.boss.RenderHighKing;
 import com.dungeon_additions.da.entity.render.sky_dungeon.boss.RenderHighKingDrake;
+import com.dungeon_additions.da.entity.render.void_dungeon.*;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
@@ -57,6 +60,7 @@ import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.*;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityPuzzleMirror;
+import com.dungeon_additions.da.entity.void_dungeon.*;
 import com.dungeon_additions.da.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -135,11 +139,15 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileStormWind.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(EntitySkyDungeonLocator.class, ModItems.SKY_LOCATOR_PROJECTILE);
         registerProjectileRenderer3DModel(EntityKingHolyWave.class, ModItems.HOLY_WAVE_PROJ);
+        registerProjectileRenderer3DModel(ProjectileVoidClysmBolt.class, ModItems.VOIDCLYSM_BOLT);
         registerProjectileRenderer(ProjectileKingBlood.class, ModItems.BLOOD_BALL_PROJ);
         registerProjectileRenderer(ProjectileFlameSpit.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer3DModel(ProjectileFlameBlade.class, ModItems.FLAME_BLADE_PROJ);
+        registerProjectileRenderer(EntityObsidianLocator.class, ModItems.OBSIDIAN_LOCATOR);
         registerProjectileRenderer(ProjectileDarkMatter.class, ModItems.DARK_MANA);
         registerProjectileRenderer(ProjectilePuzzleBall.class, ModItems.INVISISBLE_ITEM);
+        registerProjectileRenderer(EntityForgottenTempleLocator.class, ModItems.DESERT_LOCATOR_PROJ);
+        registerProjectileRenderer(EntityRottenHoldLocator.class, ModItems.ROTTEN_HOLD_LOCATOR);
     }
 
     //Handles Rendering
@@ -205,6 +213,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityWyrkFoot.class, RenderWyrkFoot::new);
         //Wyrk Lazer
         registerModEntityRenderer(EntityWyrkLazer.class, RenderWyrkLazer::new);
+        //Voidiant Lazer
+        registerModEntityRenderer(EntityVoidiantLazer.class, RenderVoidiantLazer::new);
         //Imperial Halberd
         registerModEntityRenderer(EntityImperialHalberd.class, RenderImperialHalberd::new);
         //Sky Bolt
@@ -253,6 +263,20 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityDarkRoyal.class, RenderDarkRoyal::new);
         //Scutter Beetle
         RenderingRegistry.registerEntityRenderingHandler(EntityScutterBeetle.class, RenderScutterBeetle::new);
+        //Aegyptia
+       // RenderingRegistry.registerEntityRenderingHandler(EntityAegyptia.class, RenderAegyptia::new);
+        //Obsidilith
+        RenderingRegistry.registerEntityRenderingHandler(EntityObsidilith.class, RenderObsidilith::new);
+        //Blue Wave
+        RenderingRegistry.registerEntityRenderingHandler(EntityBlueWave.class, RenderBlueWave::new);
+        //Voidiant
+        RenderingRegistry.registerEntityRenderingHandler(EntityVoidiant.class, RenderVoidiant::new);
+        //Voidclysm
+        RenderingRegistry.registerEntityRenderingHandler(EntityVoidiclysm.class, RenderVoidclysm::new);
+        //Void Bomb
+        RenderingRegistry.registerEntityRenderingHandler(EntityVoidBomb.class, RenderVoidBomb::new);
+        //Voidclysm Spike
+        RenderingRegistry.registerEntityRenderingHandler(EntityVoidclysmSpike.class, RenderVoidclysmSpike::new);
         //Puzzle Mirror
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPuzzleMirror.class, new RenderPuzzleMirror());
     }

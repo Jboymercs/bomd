@@ -24,6 +24,9 @@
     },
     "state=high": {
       "model": "da:boss/boss_active_6"
+    },
+    "state=obsidian": {
+      "model": "da:boss/boss_active_7"
     }
   }
 }

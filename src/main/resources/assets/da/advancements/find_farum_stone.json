@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:city_tile"
+    },
+    "title": {
+      "translate": "advancements.da.find_farum_stone.title"
+    },
+    "description": {
+      "translate": "advancements.da.find_farum_stone.description"
+    }
+  },
+  "parent": "da:find_grum_stone",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:farum_stone"
+          }
+        ]
+      }
+    }
+  }
+}

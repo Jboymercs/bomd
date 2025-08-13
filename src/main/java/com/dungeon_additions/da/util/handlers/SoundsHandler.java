@@ -241,6 +241,29 @@ public class SoundsHandler {
     public static SoundEvent BEETLE_WAR_CRY;
     public static SoundEvent BEETLE_DEATH;
 
+    //Obsidilith
+    public static SoundEvent OBSIDILITH_CAST;
+    public static SoundEvent OBSIDILITH_BURST;
+    public static SoundEvent OBSIDILITH_SHIELD;
+    public static SoundEvent OBSIDILITH_HURT;
+    //VOIDIANT
+    public static SoundEvent VOIDIANT_HURT;
+    public static SoundEvent VOIDIANT_WALK;
+    public static SoundEvent VOIDIANT_JUMP;
+    public static SoundEvent VOIDIANT_OPEN;
+    public static SoundEvent VOIDIANT_SHOOT_LAZER;
+    public static SoundEvent VOIDIANT_CHARGE_LAZER;
+    public static SoundEvent VOIDIANT_LAZER_GUN;
+
+    //MUSIC
+    public static SoundEvent HIGH_DRAGON_TRACK;
+    public static SoundEvent HIGH_KING_TRACK;
+    public static SoundEvent NIGHT_LICH_TRACK;
+    public static SoundEvent FLAME_KNIGHT_TRACK;
+    public static SoundEvent ANCIENT_WYRK_TRACK;
+    public static SoundEvent VOID_BLOSSOM_TRACK;
+    public static SoundEvent FALLEN_STORMVIER_TRACK;
+
     public static void registerSounds() {
         //
         MOSS_BREAK = registerSound("moss.break", "block");
@@ -449,6 +472,26 @@ public class SoundsHandler {
         BEETLE_WALK = registerSound("beetle.step", "entity");
         BEETLE_WAR_CRY = registerSound("beetle.warcry", "entity");
         BEETLE_DEATH = registerSound("beetle.death", "entity");
+        //
+        OBSIDILITH_BURST = registerSound("obsi.burst", "entity");
+        OBSIDILITH_CAST = registerSound("obsi.cast", "entity");
+        OBSIDILITH_SHIELD = registerSound("obsi.shield", "entity");
+        //
+        VOIDIANT_HURT = registerSound("voidiant.hurt", "entity");
+        VOIDIANT_JUMP = registerSound("voidiant.jump", "entity");
+        VOIDIANT_OPEN = registerSound("voidiant.open", "entity");
+        VOIDIANT_WALK = registerSound("voidiant.walk", "entity");
+        VOIDIANT_CHARGE_LAZER = registerSound("voidiant.charge", "entity");
+        VOIDIANT_SHOOT_LAZER = registerSound("voidiant.shoot", "entity");
+        VOIDIANT_LAZER_GUN = registerSound("voidiant.lazer_gun", "entity");
+        //MUSIC
+        HIGH_DRAGON_TRACK = registerSound("ambient.high_dragon", "music");
+        HIGH_KING_TRACK = registerSound("ambient.high_king", "music");
+        FLAME_KNIGHT_TRACK = registerSound("ambient.flame_knight", "music");
+        VOID_BLOSSOM_TRACK = registerSound("ambient.void_blossom", "music");
+        FALLEN_STORMVIER_TRACK = registerSound("ambient.fallen_stormvier", "music");
+        NIGHT_LICH_TRACK = registerSound("ambient.night_lich", "music");
+        ANCIENT_WYRK_TRACK = registerSound("ambient.ancient_wyrk", "music");
     }
 
 

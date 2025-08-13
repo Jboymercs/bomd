@@ -8,7 +8,7 @@ public class WorldConfig {
     @Config.Name("Void Blossom Cave Weight")
     @Config.Comment("Change the spacing between Void Blossom caves, lower means more frequent, higher means less")
     @Config.RequiresMcRestart
-    public static int void_blossom_cave_weight = 95;
+    public static int void_blossom_cave_weight = 100;
 
     @Config.Name("Void Blossom Arena Dimensions allowed in!")
     @Config.Comment("Take note that any ocean type biomes this structure will NOT spawn in, but you can select which dimension you'd like the structure to spawn in")
@@ -105,22 +105,16 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static int rot_hold_chest_spawns = 5;
 
-    @Config.Name("Rotten Hold Allowed Biomes to spawn in")
-    @Config.Comment("Ocean Biomes will automatically be blacklisted, other any biomes added into this list are not locations for the Rotten Hold to spawn in.")
+    @Config.Name("Rotten Hold WhiteList Biome Types")
+    @Config.Comment("Add Biome types that ALLOW the Rotten Hold from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
     @Config.RequiresMcRestart
-    public static String[] biome_allowed_rot_hold = {
-            "minecraft:extreme_hills","minecraft:river","minecraft:frozen_river","minecraft:frozen_ocean","minecraft:beaches","minecraft:desert","minecraft:desert_hills","minecraft:ice_flats","minecraft:ice_mountains","minecraft:stone_beach","minecraft:cold_beach","minecraft:taiga_cold_hills","minecraft:extreme_hills_with_trees","minecraft:mutated_ice_flats","minecraft:mutated_mesa","minecraft:mutated_mesa_rock","minecraft:mutated_mesa_clear_rock","minecraft:mesa_rock","minecraft:mesa_clear_rock","minecraft:mesa"
+    public static String[] rotten_hold_whitelist = {"PLAINS","FOREST","SWAMP","DENSE"
     };
 
-    @Config.Name("Rotten Hold Whitelist/Blacklist")
-    @Config.Comment("Change if the list of biomes is a whitelist for biomes for it too only spawn in, otherwise it is a blacklist of biomes too not spawn in")
-    @Config.RequiresMcRestart
-    public static boolean rotten_hold_is_blacklist = true;
-
     @Config.Name("Rotten Hold Spawn Weight")
-    @Config.Comment("Spacing of Rotten Hold between the next one, Higher means further apart, lower means closer. This number will not add to spacing if not in the correct biome")
+    @Config.Comment("Change the spacing between each Rotten Hold, higher means further apart, lower means closer. This number will not add to spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int rot_hold_spacing = 160;
+    public static int rot_hold_spacing = 55;
 
     @Config.Name("Rotten Hold Minimum Y")
     @Config.Comment("Change the minimum y the surface part of this structure can spawn at, the dungeon will always follow along with what the surface part is")
@@ -131,6 +125,11 @@ public class WorldConfig {
     @Config.Comment("Change the maximum y of the surface part of this structure can spawn at, the dungeon will always follow along with what the surface part is")
     @Config.RequiresMcRestart
     public static int rot_hold_max_y = 70;
+
+    @Config.Name("Rotten Hold Start Y Level")
+    @Config.Comment("Change the y level that the dungeon part of the Rotten Hold generates at.")
+    @Config.RequiresMcRestart
+    public static int rot_hold_static_y = 40;
 
     @Config.Name("Rotten Hold Enabled/Disabled")
     @Config.Comment("When set to false, the Rotten Hold will be disabled from world generation.")
@@ -155,7 +154,7 @@ public class WorldConfig {
     @Config.Name("Night Lich Tower Spacing")
     @Config.Comment("Change the spacing between each Night Lich tower, higher means further apart, lower means closer. This number will not add to spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int lich_tower_spacing = 120;
+    public static int lich_tower_spacing = 140;
 
     @Config.Name("Night Lich Blacklisted Biome Types")
     @Config.Comment("Add Biome types that DISALLOW the Night Lich Tower from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
@@ -177,7 +176,7 @@ public class WorldConfig {
     @Config.Name("Frozen Castle Spacing")
     @Config.Comment("Change the spacing between each Frozen Castle, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int frozen_castle_spacing = 40;
+    public static int frozen_castle_spacing = 35;
 
     @Config.Name("Frozen Castle Y Height")
     @Config.Comment("Change the value that the Frozen Castle generates at Y level")
@@ -268,13 +267,18 @@ public class WorldConfig {
     @Config.Name("Forgotten Temple Spacing")
     @Config.Comment("Change how rare Forgotten Temple structures are, increasing the value increases the spacing")
     @Config.RequiresMcRestart
-    public static int temple_spacing = 30;
+    public static int temple_spacing = 35;
 
     @Config.Name("Forgotten Temple WhiteList Biome Types")
     @Config.Comment("Add Biome types that ALLOW the Forgotten Temple from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
     @Config.RequiresMcRestart
     public static String[] forgotten_temple_whitelist = {"HOT","DRY","SANDY",
     };
+
+    @Config.Name("Forgotten Temple Size")
+    @Config.Comment("Change the size of the Forgotten Temple")
+    @Config.RequiresMcRestart
+    public static int forgotten_temple_size = 5;
 
     @Config.Name("Forgotten Temple Dimensions allowed in!")
     @Config.Comment("Take note that any ocean type biomes this structure will NOT spawn in, but you can select which dimension you'd like the structure to spawn in")
@@ -284,7 +288,33 @@ public class WorldConfig {
     @Config.Name("Forgotten Temple Enabled/Disabled")
     @Config.Comment("Change if the Forgotten Temple should spawn at all. default: true")
     @Config.RequiresMcRestart
-    public static boolean temple_enabled = true;
+    public static boolean temple_enabled = false;
+
+    @Config.Name("Obsidilith Arena Spacing")
+    @Config.Comment("Change the spacing between each Obsidilith Arena, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
+    @Config.RequiresMcRestart
+    public static int obsidilith_arena_spacing = 110;
+
+    @Config.Name("Obsidilith Arena Y Height")
+    @Config.Comment("Change the Y Height at which the Obsidilith Arena generates at.")
+    @Config.RequiresMcRestart
+    public static int obsidilith_y_height = 105;
+
+    @Config.Name("Obsidilith Arena WhiteList Biome Types")
+    @Config.Comment("Add Biome types that ALLOW the Obsidilith Arena from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
+    @Config.RequiresMcRestart
+    public static String[] obsdilith_arena_whitelist = {"END"
+    };
+
+    @Config.Name("Obsidilith Arena Enabled/Disabled")
+    @Config.Comment("Change if the Obsidilith Arena should spawn at all. default: true")
+    @Config.RequiresMcRestart
+    public static boolean obsidilith_arena_enabled = true;
+
+    @Config.Name("Obsidilith Arena Allowed Dimensions")
+    @Config.Comment("Select what dimensions this structure is allowed to spawn in")
+    @Config.RequiresMcRestart
+    public static int[] list_of_dimensions_obsidilith_arena = {1};
 
     @Config.Name("Petrogloom Ore Gen")
     @Config.Comment("Allowed Dimension for Petrogloom to spawn in")

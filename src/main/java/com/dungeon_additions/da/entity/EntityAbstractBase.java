@@ -2,8 +2,10 @@ package com.dungeon_additions.da.entity;
 
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.pathing.MobGroundNavigate;
+import com.dungeon_additions.da.entity.util.EntityMusicPlayer;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.ServerScaleUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,6 +24,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -165,6 +169,7 @@ public abstract class EntityAbstractBase extends EntityCreature {
     protected boolean hasStartedScaling = false;
     protected int checkNearbyPlayers = 250;
 
+
     protected void doBossReSummonScaling() {
         double healthModif = (this.getMaxHealth() * ModConfig.boss_resummon_added_health) * this.timesUsed;
         double attackModif = (this.getAttack() * ModConfig.boss_resummon_added_ad) * this.timesUsed;
@@ -175,7 +180,6 @@ public abstract class EntityAbstractBase extends EntityCreature {
     @Override
     public void onLivingUpdate() {
         EntityLivingBase target = this.getAttackTarget();
-
         if(this.iAmBossMob && target != null) {
 
             if(this.isPotionActive(MobEffects.LEVITATION)) {
@@ -339,6 +343,11 @@ public abstract class EntityAbstractBase extends EntityCreature {
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false));
 
+    }
+
+    @Override
+    public boolean isNonBoss() {
+        return !this.iAmBossMob && !this.iAmBossMobWyrkNerf;
     }
 
     /**

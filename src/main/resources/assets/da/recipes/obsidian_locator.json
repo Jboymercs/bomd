@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " V ",
+    "VRV",
+    " V "
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:obsidian"
+    },
+    "R": {
+      "item": "minecraft:ender_eye"
+    }
+  },
+  "result": {
+    "item": "da:obsidian_locator",
+    "count": 1
+  }
+}

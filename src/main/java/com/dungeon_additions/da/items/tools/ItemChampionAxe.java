@@ -77,18 +77,16 @@ public class ItemChampionAxe extends ItemSword implements IAnimatable, IHasModel
         if (attacker.world.isRemote) return false;
         int axeCoolDown = (int) 2 * 20;
         stack.damageItem(1, attacker);
-        float realAttackDamage = this.getAttackDamage() + 1;
+        float realAttackDamage = this.getAttackDamage();
         float bonus_damage = (ModConfig.champion_axe_damage_scaling /(attacker.getHealth() / attacker.getMaxHealth()) ) - ModConfig.champion_axe_damage_scaling;
-        float regular_damage = (realAttackDamage / 2) + bonus_damage;
+        float regular_damage = (realAttackDamage / 3) + bonus_damage;
         float armor_damage = (realAttackDamage / 2);
-        System.out.println("Detecting Damage Dealing, bonus Damage is at" + bonus_damage);
-        System.out.println("Regular Damage + Bonus is" + regular_damage);
-        System.out.println("Armor Damage is" + armor_damage);
 
         if(attacker instanceof EntityPlayer) {
             EntityPlayer player = ((EntityPlayer) attacker);
             if(!player.getCooldownTracker().hasCooldown(this)) {
                 target.attackEntityFrom(ModUtils.causeAxeDamage(attacker), (float) regular_damage);
+                target.hurtResistantTime = 0;
                 target.attackEntityFrom(ModUtils.causeAxeDamage(attacker).setDamageBypassesArmor(), (float) armor_damage);
             }
             player.getCooldownTracker().setCooldown(this, axeCoolDown);

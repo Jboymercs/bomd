@@ -37,7 +37,6 @@ public class WorldGenHighCity extends WorldGenerator {
         //Checks to see if all biomes are valid in this region before selecting and spawning the structure
         if(canSpawnStructureAtPos(world, position.getX() >> 4, position.getZ() >> 4)) {
             getStructureStart(world, position.getX() >> 4, position.getZ() >> 4, rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - 250, position.getZ() - 250, position.getX() + 250, position.getZ() + 250));
-            System.out.println("Generated Lich Tower at" + position);
             return true;
         }
 

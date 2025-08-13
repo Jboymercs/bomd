@@ -7,6 +7,7 @@ import com.dungeon_additions.da.entity.ai.dark_dungeon.EntityAIRoyalAttack;
 import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityScutterBeetleAI;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkRoyal;
 import com.dungeon_additions.da.util.ModRand;
+import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -18,6 +19,7 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
+import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -26,6 +28,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -148,6 +151,7 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
         this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.75D));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 1, true, false, null));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityRabbit>(this, EntityRabbit.class, 1, true, false, null));
         this.targetTasks.addTask(5, new EntityAIHurtByTarget(this, false));
     }
 
@@ -324,7 +328,7 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
     private <E extends IAnimatable> PlayState predicateWalk(AnimationEvent<E> event) {
         if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK, true));
-            event.getController().setAnimationSpeed(1.0 + (0.007 * event.getLimbSwing()));
+            event.getController().setAnimationSpeed(1.0 + (0.004 * event.getLimbSwing()));
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;
@@ -344,6 +348,18 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
     public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.ARTHROPOD;
+    }
+
+    private static final ResourceLocation LOOT_MOB = new ResourceLocation(ModReference.MOD_ID, "scutter_beetle");
+
+    @Override
+    protected ResourceLocation getLootTable() {
+        return LOOT_MOB;
+    }
+
+    @Override
+    protected boolean canDropLoot() {
+        return true;
     }
 
     @Override

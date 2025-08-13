@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:voidiant_catalyst"
+    },
+    "title": {
+      "translate": "advancements.da.craft_voidiant_catalyst.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_voidiant_catalyst.description"
+    }
+  },
+  "parent": "da:craft_obsidian_eye",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:voidiant_catalyst"
+          }
+        ]
+      }
+    }
+  }
+}

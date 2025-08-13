@@ -1,0 +1,15 @@
+{
+  "pools": [
+    {
+      "name" : "da:obsidian_arena_reset",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:obsidian_eye",
+          "weight": 10
+        }
+      ]
+    }
+  ]
+}

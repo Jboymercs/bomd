@@ -3,10 +3,13 @@ package com.dungeon_additions.da.entity.sky_dungeon.high_king.king.action;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBolt;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import java.util.Random;
 
 public class ActionKingLightningRing implements IActionKing{
     @Override
@@ -17,11 +20,12 @@ public class ActionKingLightningRing implements IActionKing{
                 int i = 0;
                 pos = new Vec3d(pos.x, 0, pos.y).add(targetPos);
                 int y = getSurfaceHeight(actor.world, new BlockPos(pos.x, 0, pos.z), (int) actor.posY - 4, (int) actor.posY + 5);
-                EntitySkyBolt spike = new EntitySkyBolt(actor.world, new Vec3d(pos.x, y + 10, pos.z));
+                EntitySkyBolt spike = new EntitySkyBolt(actor.world, new Vec3d(pos.x, y + 10, pos.z), true);
                 spike.setPosition(pos.x, y + 1, pos.z);
                 actor.world.spawnEntity(spike);
                 i += 2;
             });
+            actor.playSound(SoundsHandler.SKY_LIGHTNING_CAST, 2.0f, 0.8f / (new Random().nextFloat() * 0.4f + 0.6f));
         }, 16);
     }
 
