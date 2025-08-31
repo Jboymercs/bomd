@@ -40,6 +40,11 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static double blossom_attack_damange = 12;
 
+    @Config.Name("Void Blossom Damage Cap")
+    @Config.Comment("Change the damage cap of how much damage can be done at one time to the Void Blossom. Disable this feature entirely in general_config")
+    @Config.RequiresMcRestart
+    public static float blossom_damage_cap = 25;
+
     @Config.Name("Void Blossom Max Minions")
     @Config.Comment("Change how many Mini Void Blossoms can be active for the Void Blossom. Default: 2")
     @Config.RequiresMcRestart
@@ -68,12 +73,37 @@ public class MobConfig {
     @Config.Name("Obsidilith Attack Damage")
     @Config.Comment("Change the attack damage of the Obsidilith")
     @Config.RequiresMcRestart
-    public static double obsidilith_attack_damage = 18;
+    public static double obsidilith_attack_damage = 20;
+
+    @Config.Name("Obsidilith Experience Drop")
+    @Config.Comment("Take in mind, this boss drops x number of experience 16 times, you can change the value of the given orb summoned below")
+    @Config.RequiresMcRestart
+    public static int obsidilith_experience_orb_value = 14;
+
+    @Config.Name("Obsidilith Cooldown Multiplayer")
+    @Config.Comment("Change the cooldown degradation per player not counting the first one. This basically makes the cooldown faster when there are more players around, in ticks")
+    @Config.RequiresMcRestart
+    public static int obsidilith_degradation_cooldown = 8;
+
+    @Config.Name("Obsidilith Cooldown")
+    @Config.Comment("Change the cooldown of the Obsidilith boss while it is not in a Shielded state, in seconds.")
+    @Config.RequiresMcRestart
+    public static double obsidilith_cooldown = 5.5;
+
+    @Config.Name("Obsidilith Cooldown Shielded")
+    @Config.Comment("Change the cooldown of the Obsidilith boss while its in a Shielded state, in seconds")
+    @Config.RequiresMcRestart
+    public static double obsidilith_cooldown_shielded = 10;
 
     @Config.Name("Obsidilith Two Part Boss")
     @Config.Comment("Change if the Obsidilith summons the Voidclysm after it is defeated")
     @Config.RequiresMcRestart
     public static boolean obsidilith_two_part_boss = true;
+
+    @Config.Name("Obsidilith Damage Cap")
+    @Config.Comment("Change the damage cap of how much damage can be done at one time to the Obsidilith. Disable this feature entirely in general_config")
+    @Config.RequiresMcRestart
+    public static float obsidilith_damage_cap = 29;
 
     @Config.Name("Voidclysm Health")
     @Config.Comment("Change the Health of the Voidclysm")
@@ -99,6 +129,26 @@ public class MobConfig {
     @Config.Comment("Change the attack speed in ticks for the Voidclysm, this value halves when reaching below half health.")
     @Config.RequiresMcRestart
     public static int voidclysm_attack_cooldown = 20;
+
+    @Config.Name("Voidclysm Damage Cap")
+    @Config.Comment("Change the damage cap of how much damage can be done at one time to the Voidclysm. Disable this feature entirely in general_config")
+    @Config.RequiresMcRestart
+    public static float voidclysm_damage_cap = 30;
+
+    @Config.Name("Voidclysm Grab Attack")
+    @Config.Comment("Change how much Health Voidclysm removes from the players Health bar in percentage. default 50% Health")
+    @Config.RequiresMcRestart
+    public static double voidclysm_grab_attack_damage = 0.5;
+
+    @Config.Name("Voidclysm Experience Value")
+    @Config.Comment("Change how much experience the Voidclysm drops upon death.")
+    @Config.RequiresMcRestart
+    public static int voidclysm_experience_value = 350;
+
+    @Config.Name("Voidclysm Block Cooldown")
+    @Config.Comment("How long before the Voidclysm can attempt to block an attack if its currently not attack doing an attack. In seconds")
+    @Config.RequiresMcRestart
+    public static int voidclysm_block_cooldown = 5;
 
     @Config.Name("Mini Void Blossom Health")
     @Config.Comment("Change the health of the Mini Void Blossom")
@@ -183,7 +233,12 @@ public class MobConfig {
     @Config.Name("Volactile Summoning Radius")
     @Config.Comment("Change how far the Flame orb to summon the Volactile Spirit detects for any dungeon mobs. if this check finds mobs, it will not summon the mini-boss")
     @Config.RequiresMcRestart
-    public static double volactile_ritual_radius = 35;
+    public static double volactile_ritual_radius = 30;
+
+    @Config.Name("Volactile Damage Cap")
+    @Config.Comment("Change the damage cap of how much damage can be done at one time to the Volactile Spirit. Disable this feature entirely in general_config")
+    @Config.RequiresMcRestart
+    public static float volactile_damage_cap = 25;
 
     @Config.Name("Knight of Burning Flame Armor")
     @Config.Comment("Change the armor value of the this boss (Knight of Burning Flame)")
@@ -260,6 +315,11 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static float aoe_block_damage = 15;
 
+    @Config.Name("Knight of Burning Flame Damage Cap")
+    @Config.Comment("Change the damage cap of how much damage can be done at one time to the Knight of Burning Flame. Disable this feature entirely in general_config")
+    @Config.RequiresMcRestart
+    public static float kobf_damage_cap = 29;
+
     @Config.Name("Stormvier/Galvonizer Health")
     @Config.Comment("Change the Health of the Stormvier/Galvonizer")
     @Config.RequiresMcRestart
@@ -294,6 +354,11 @@ public class MobConfig {
     @Config.Comment("Change the Cooldown value of the Stormvier Fallen in ticks (20 tick = 1 second)")
     @Config.RequiresMcRestart
     public static int fallen_cool_down = 50;
+
+    @Config.Name("Stormvier Fallen Damage Cap")
+    @Config.Comment("Change the damage cap of how much damage can be done at one time to the Stormvier Fallen. Disable this feature entirely in general_config")
+    @Config.RequiresMcRestart
+    public static float fallen_damage_cap = 18;
 
     @Config.Name("Night Lich Active Mob Count")
     @Config.Comment("Change the active mob count the Night Lich can have, try to do it in multiples of 4")
@@ -424,6 +489,11 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static double lich_movement_speed_combat = 0.055;
 
+    @Config.Name("Night Lich Damage Cap")
+    @Config.Comment("Change the damage cap of how much damage can be done at one time to the Night Lich. Disable this feature entirely in general_config")
+    @Config.RequiresMcRestart
+    public static float night_lich_damage_cap = 35;
+
     @Config.Name("Frostborn Draugr Health")
     @Config.Comment("Change the Health of the Frostborn Draugr")
     @Config.RequiresMcRestart
@@ -474,6 +544,11 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static double champion_armor_toughness = 4;
 
+    @Config.Name("Frostborn Draugr Champion Damage Cap")
+    @Config.Comment("Change the damage cap of how much damage can be done at one time to the Frostborn Draugr Champion. Disable this feature entirely in general_config")
+    @Config.RequiresMcRestart
+    public static float champion_damage_cap = 25;
+
     @Config.Name("Ancient Wyrk Health")
     @Config.Comment("Change the health of the Ancient Wyrk")
     @Config.RequiresMcRestart
@@ -499,6 +574,11 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static int great_wyrk_cooldown = 5;
 
+    @Config.Name("Ancient Wyrk Damage Cap")
+    @Config.Comment("Change the damage cap of how much damage can be done at one time to the Ancient Wyrk. Disable this feature entirely in general_config")
+    @Config.RequiresMcRestart
+    public static float great_wyrk_damage_cap = 30;
+
     @Config.Name("Cult of Roh Assassin Health")
     @Config.Comment("Change the health of the Cult of Roh Assassin")
     @Config.RequiresMcRestart
@@ -518,6 +598,21 @@ public class MobConfig {
     @Config.Comment("Change if the Cult of Roh mobs disappears when its daylight and can see the sun. default: true")
     @Config.RequiresMcRestart
     public static boolean assassin_burns_daylight = true;
+
+    @Config.Name("Cult of Roh Assassin Undead Enable/Disable")
+    @Config.Comment("Change if the Cult of Roh Assassin classifies as undead or not. Default: true")
+    @Config.RequiresMcRestart
+    public static boolean cult_assassin_status = true;
+
+    @Config.Name("Cult of Roh Sorcerer Undead Enable/Disable")
+    @Config.Comment("Change if the Cult of Roh Sorcerer classifies as undead or not. Default: true")
+    @Config.RequiresMcRestart
+    public static boolean cult_sorcerer_status = true;
+
+    @Config.Name("Cult of Roh Crypt Guard Undead Enable/Disable")
+    @Config.Comment("Change if the Cult of Roh Assassin classifies as undead or not. Default: true")
+    @Config.RequiresMcRestart
+    public static boolean cult_crypt_guard_status = true;
 
     @Config.Name("Cult of Roh Sorcerer Attack Damage")
     @Config.Comment("Change the attack damage of the Cult of Roh Sorcerer")
@@ -621,12 +716,12 @@ public class MobConfig {
     @Config.Name("High King of the Sky Dragon Health")
     @Config.Comment("Change the health of the High King of the Sky Dragon")
     @Config.RequiresMcRestart
-    public static double high_dragon_health = 440;
+    public static double high_dragon_health = 460;
 
     @Config.Name("High King/Dragon Attack Damage")
     @Config.Comment("Change the attack damage of the High King/Dragon")
     @Config.RequiresMcRestart
-    public static double high_dragon_king_damage = 30;
+    public static double high_dragon_king_damage = 32;
 
     @Config.Name("High King of the Sky Dragon Armor")
     @Config.Comment("Change the armor value of the High King of the Sky Dragon")
@@ -683,10 +778,15 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static int high_dragon_experience_value = 260;
 
+    @Config.Name("High King of the Sky Damage Cap")
+    @Config.Comment("Change the damage cap of how much damage can be done at one time to the High King of the Sky. Disable this feature entirely in general_config")
+    @Config.RequiresMcRestart
+    public static float high_dragon_damage_cap = 35;
+
     @Config.Name("The High King Health")
     @Config.Comment("Change the health of the High King")
     @Config.RequiresMcRestart
-    public static double high_king_health = 420;
+    public static double high_king_health = 440;
 
     @Config.Name("The High King Armor")
     @Config.Comment("Change the armor value of the High King")
@@ -738,6 +838,11 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static boolean disable_blood_attacks = false;
 
+    @Config.Name("The High King Damage Cap")
+    @Config.Comment("Change the damage cap of how much damage can be done at one time to the High King. Disable this feature entirely in general_config")
+    @Config.RequiresMcRestart
+    public static float high_king_damage_cap = 34;
+
     @Config.Name("Voidiant Health")
     @Config.Comment("Change the health of the Voidiant.")
     @Config.RequiresMcRestart
@@ -752,5 +857,35 @@ public class MobConfig {
     @Config.Comment("Change the armor of the Voidiant")
     @Config.RequiresMcRestart
     public static double voidiant_armor=8;
+
+    @Config.Name("Aegyptia Recurian Health")
+    @Config.Comment("Change the health of the Aegyptia Recurian.")
+    @Config.RequiresMcRestart
+    public static double aegyptia_health = 38;
+
+    @Config.Name("Aegyptia Recurian Attack Damage")
+    @Config.Comment("Change the attack damage of the Aegyptia Recurian")
+    @Config.RequiresMcRestart
+    public static double aegyptia_attack_damage = 16;
+
+    @Config.Name("Aegyptia Recurian Armor")
+    @Config.Comment("Change the armor of the Aegyptia Recurian")
+    @Config.RequiresMcRestart
+    public static double aegyptia_armor = 12;
+
+    @Config.Name("Scutter Beetle Health")
+    @Config.Comment("Change the health of the Scutter Beetle.")
+    @Config.RequiresMcRestart
+    public static double scutter_beetle_health = 14;
+
+    @Config.Name("Scutter Beetle Attack Damage")
+    @Config.Comment("Change the attack damage of the Scutter Beetle")
+    @Config.RequiresMcRestart
+    public static double scutter_beetle_damage = 13;
+
+    @Config.Name("Scutter Beetle Armor")
+    @Config.Comment("Change the armor of the Scutter Beetle")
+    @Config.RequiresMcRestart
+    public static double scutter_beetle_armor = 20;
 
 }

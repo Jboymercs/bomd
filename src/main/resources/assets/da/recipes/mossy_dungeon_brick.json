@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "R"
+  ],
+  "key": {
+    "V": {
+      "item": "da:moss_block"
+    },
+    "R": {
+      "item": "da:dungeon_brick"
+    }
+  },
+  "result": {
+    "item": "da:mossy_dungeon_brick",
+    "count": 1
+  }
+}

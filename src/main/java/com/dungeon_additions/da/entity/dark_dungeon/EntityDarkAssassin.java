@@ -535,7 +535,11 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
     @Override
     public EnumCreatureAttribute getCreatureAttribute()
     {
-        return EnumCreatureAttribute.UNDEAD;
+        if(MobConfig.cult_assassin_status) {
+            return EnumCreatureAttribute.UNDEAD;
+        } else {
+            return EnumCreatureAttribute.UNDEFINED;
+        }
     }
 
 

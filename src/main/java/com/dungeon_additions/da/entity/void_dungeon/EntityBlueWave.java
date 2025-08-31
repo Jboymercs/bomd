@@ -55,7 +55,7 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
     public EntityBlueWave(World worldIn) {
         super(worldIn);
         this.setImmovable(true);
-
+        this.isImmuneToFire = true;
         this.setSize(0.6f, 2.0f);
         this.noClip = true;
     }
@@ -66,6 +66,7 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
         this.setRedStyle(isRed);
         this.setPurpleStyle(isPurple);
         this.setSize(0.8f, 3.0f);
+        this.isImmuneToFire = true;
         this.noClip = true;
     }
 
@@ -78,7 +79,21 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
         this.noClip = true;
         this.owner = owner;
         this.damageFromOwner = damage;
+        this.isImmuneToFire = true;
         this.setImmovable(true);
+    }
+
+    public EntityBlueWave(World worldIn, boolean isFlame, boolean isRed, boolean isPurple, EntityPlayer owner, float damage) {
+        super(worldIn);
+        this.setImmovable(true);
+        this.setFlameStyle(isFlame);
+        this.setRedStyle(isRed);
+        this.setPurpleStyle(isPurple);
+        this.setSize(0.8f, 3.0f);
+        this.damageFromOwner = damage;
+        this.owner = owner;
+        this.isImmuneToFire = true;
+        this.noClip = true;
     }
 
     private boolean enableDamage;
@@ -88,6 +103,7 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
         this.setFlameStyle(false);
         this.setPurpleStyle(isPurple);
         this.setRedStyle(false);
+        this.isImmuneToFire = true;
         this.enableDamage = enableDamage;
     }
 
@@ -156,21 +172,39 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
                 if(this.rand.nextInt(5) == 0) {
                     this.playSound(SoundsHandler.OBSIDILITH_BURST, 0.2f, 1.0f);
                 }
+                //player owned spell
                 List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(0.9D), e -> !e.getIsInvulnerable() && (!(e instanceof EntityVoidBlossom || e instanceof EntityVoidSpike || e instanceof EntityGenericWave)));
 
-                if (!targets.isEmpty()) {
-                    for (EntityLivingBase base : targets) {
-                        if (base != this && !(base instanceof EntityEndBase) && base != null) {
-                            Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.25D));
-                            DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
-                            float damage = this.getAttack();
-                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.3f, 0, false);
-                            if (!world.isRemote) {
-                                base.setFire(8);
+                if(owner != null) {
+                    if (!targets.isEmpty()) {
+                        for (EntityLivingBase base : targets) {
+                            if (base != this && !(base instanceof EntityEndBase) && base != null && base != owner) {
+                                Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.25D));
+                                DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
+                                float damage = this.getAttack();
+                                ModUtils.handleAreaImpact(0.25f, (e) -> this.damageFromOwner, this, offset, source, 0.3f, 0, false);
+                                if (!world.isRemote) {
+                                    base.setFire(8);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if (!targets.isEmpty()) {
+                        for (EntityLivingBase base : targets) {
+                            if (base != this && !(base instanceof EntityEndBase) && base != null) {
+                                Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.25D));
+                                DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
+                                float damage = this.getAttack();
+                                ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.3f, 0, false);
+                                if (!world.isRemote) {
+                                    base.setFire(8);
+                                }
                             }
                         }
                     }
                 }
+
             } else if (this.isRedStyle()) {
                 if(this.rand.nextInt(5) == 0) {
                     this.playSound(SoundEvents.ITEM_FIRECHARGE_USE, 0.2f, 1.0f);
@@ -191,7 +225,7 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
             //nothing occurs on impact
                 if(this.enableDamage) {
                     if(this.rand.nextInt(5) == 0) {
-                        this.playSound(SoundEvents.ITEM_FIRECHARGE_USE, 0.2f, 1.0f);
+                        this.playSound(SoundsHandler.SPORE_IMPACT, 0.75f, 1.0f);
                     }
                     List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(0.9D), e -> !e.getIsInvulnerable() && (!(e instanceof EntityVoidBlossom || e instanceof EntityVoidSpike || e instanceof EntityGenericWave)));
 
@@ -209,7 +243,10 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
                 //Player Owned Spell
             }else if (owner != null){
                 this.playSound(SoundsHandler.OBSIDILITH_BURST, 0.2f, 1.0f);
-                List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(0.8D), e -> !e.getIsInvulnerable() && (!(e == owner)));
+                if(rand.nextInt(4) == 0) {
+                    this.playSound(SoundsHandler.OBSIDILITH_WAVE_DING, 0.6f, 1.0f);
+                }
+                List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(0.7D), e -> !e.getIsInvulnerable() && (!(e == owner)));
 
                 if (!targets.isEmpty()) {
                     for (EntityLivingBase base : targets) {
@@ -222,7 +259,7 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
                             if (!world.isRemote) {
                                 double distSq = this.getDistanceSq(base.posX, base.getEntityBoundingBox().minY, base.posZ);
                                 double distance = Math.sqrt(distSq);
-                                if (base.getActivePotionEffect(MobEffects.SLOWNESS) == null && distance < 1) {
+                                if (base.getActivePotionEffect(MobEffects.SLOWNESS) == null && distance < 0.9) {
                                     base.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 200, 2, false, false));
                                 }
                             }
@@ -232,6 +269,9 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
 
             } else {
                 this.playSound(SoundsHandler.OBSIDILITH_BURST, 0.2f, 1.0f);
+                if(rand.nextInt(4) == 0) {
+                    this.playSound(SoundsHandler.OBSIDILITH_WAVE_DING, 0.6f, 1.0f);
+                }
                 List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(0.8D), e -> !e.getIsInvulnerable() && (!(e instanceof EntityVoidBlossom || e instanceof EntityVoidSpike || e instanceof EntityGenericWave)));
 
                 if (!targets.isEmpty()) {

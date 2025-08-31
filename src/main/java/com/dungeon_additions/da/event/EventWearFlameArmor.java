@@ -136,6 +136,16 @@ public class EventWearFlameArmor {
                 }
             }
 
+            if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.OBSIDIAN_HELMET) {
+                if(base.ticksExisted % 40 == 0 && base.isPotionActive(MobEffects.LEVITATION)) {
+                    base.removePotionEffect(MobEffects.LEVITATION);
+                }
+
+                if(base.ticksExisted % 40 == 0 && base.isPotionActive(MobEffects.BLINDNESS)) {
+                    base.removePotionEffect(MobEffects.BLINDNESS);
+                }
+            }
+
             //Incendium Helmet
             if(base.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.INCENDIUM_LEGGINGS) {
                 if(base instanceof EntityPlayer) {
@@ -232,7 +242,7 @@ public class EventWearFlameArmor {
         if(base instanceof EntityDarkAssassin) {
             EntityDarkAssassin assassin = ((EntityDarkAssassin) base);
             event.getWorld().playerEntities.forEach((p)-> {
-                if(!ModUtils.getAdvancementCompletionAsList(p, ModConfig.assassins_spawn_progress) && !p.isCreative()) {
+                if(!ModUtils.getAdvancementCompletionAsListBase(p, ModConfig.assassins_spawn_progress)) {
                     assassin.setDead();
                 }
             });
@@ -241,7 +251,7 @@ public class EventWearFlameArmor {
         if(base instanceof EntityDarkSorcerer) {
             EntityDarkSorcerer assassin = ((EntityDarkSorcerer) base);
             event.getWorld().playerEntities.forEach((p)-> {
-                if(!ModUtils.getAdvancementCompletionAsList(p, ModConfig.sorcerers_spawn_progress) && !p.isCreative()) {
+                if(!ModUtils.getAdvancementCompletionAsListBase(p, ModConfig.sorcerers_spawn_progress)) {
                     assassin.setDead();
                 }
             });

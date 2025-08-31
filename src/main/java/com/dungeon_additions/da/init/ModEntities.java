@@ -6,10 +6,11 @@ import com.dungeon_additions.da.entity.EntityFireResistantItems;
 import com.dungeon_additions.da.entity.EntityNetherAbberrant;
 import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
-import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
 import com.dungeon_additions.da.entity.dark_dungeon.*;
-import com.dungeon_additions.da.entity.desert_dungeon.EntityAegyptia;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
+import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
+import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
+import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityDesertBeam;
 import com.dungeon_additions.da.entity.flame_knight.*;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameBlade;
@@ -48,7 +49,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeForest;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -111,7 +111,7 @@ public class ModEntities {
         registerEntityWithID("great_wyrk", EntityGreatWyrk.class, ENTITY_START_ID++, 90, ancient_wyrk);
         //Forgotten Temple
         registerEntityWithID("scutter_beetle", EntityScutterBeetle.class, ENTITY_START_ID++, 70, scutter_beetle);
-      //  registerEntityWithID("aegyptia", EntityAegyptia.class, ENTITY_START_ID++, 70, night_lich);
+        registerEntityWithID("aegyptia", EntityAegyptia.class, ENTITY_START_ID++, 70, night_lich);
         // Burning Flame Arena
         registerEntityWithID("nether_aberant", EntityNetherAbberrant.class, ENTITY_START_ID++, 50, nether_spirit);
         registerEntityWithID("incendium_spirit", EntityIncendium.class, ENTITY_START_ID++, 70, incendium_spirit);
@@ -198,6 +198,10 @@ public class ModEntities {
             registerEntity("void_bomb", EntityVoidBomb.class, ENTITY_START_ID++, 30);
             registerEntity("voidclysm_spike", EntityVoidclysmSpike.class, ENTITY_START_ID++, 30);
             registerEntity("obsidian_locator", EntityObsidianLocator.class, ENTITY_START_ID++, 30);
+            registerEntity("void_projectile", ProjectileTrackingVoid.class, ENTITY_START_ID++, 30);
+            registerEntity("void_hole", EntityVoidBlackHole.class, ENTITY_START_ID++, 30);
+            registerEntity("desert_beam", EntityDesertBeam.class, ENTITY_START_ID++, 30);
+            registerEntity("desert_storm", ProjectileDesertStorm.class, ENTITY_START_ID++, 35);
 
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");

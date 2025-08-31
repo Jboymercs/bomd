@@ -289,7 +289,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
         addEvent(()-> this.playSound(SoundsHandler.B_KNIGHT_MOVEMENT_ARMOR, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 76);
         addEvent(()-> this.playSound(SoundsHandler.B_KNIGHT_MOVEMENT_ARMOR, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 90);
         addEvent(()-> this.playSound(SoundsHandler.B_KNIGHT_MOVEMENT_ARMOR, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 120);
-        addEvent(()-> this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.4f, 0.4f / (rand.nextFloat() * 0.4f + 0.2f)), 133);
+        addEvent(()->           this.playSound(SoundsHandler.B_KNIGHT_SWING, 0.6f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f)), 133);
         addEvent(()-> this.playSound(SoundsHandler.B_KNIGHT_MOVEMENT_ARMOR, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 142);
         addEvent(()-> this.playSound(SoundsHandler.B_KNIGHT_MOVEMENT_ARMOR, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 203);
         addEvent(()-> this.playSound(SoundsHandler.B_KNIGHT_MOVEMENT_ARMOR, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 240);
@@ -313,7 +313,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
         addEvent(()-> this.playSound(SoundsHandler.B_KNIGHT_MOVEMENT_ARMOR, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 76);
         addEvent(()-> this.playSound(SoundsHandler.B_KNIGHT_MOVEMENT_ARMOR, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 90);
         addEvent(()-> this.playSound(SoundsHandler.B_KNIGHT_MOVEMENT_ARMOR, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 120);
-        addEvent(()-> this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.4f, 0.4f / (rand.nextFloat() * 0.4f + 0.2f)), 133);
+        addEvent(()->           this.playSound(SoundsHandler.B_KNIGHT_SWING, 0.6f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f)), 133);
         addEvent(()-> this.playSound(SoundsHandler.B_KNIGHT_MOVEMENT_ARMOR, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 142);
         addEvent(()-> this.playSound(SoundsHandler.B_KNIGHT_MOVEMENT_ARMOR, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 203);
         addEvent(()-> this.playSound(SoundsHandler.B_KNIGHT_MOVEMENT_ARMOR, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 240);
@@ -1258,7 +1258,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage = this.getAttack();
           ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.4f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.playSound(SoundsHandler.B_KNIGHT_SWING, 0.6f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
       }, 17);
 
       addEvent(()-> {
@@ -1295,7 +1295,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage = this.getAttack();
           ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.4f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.playSound(SoundsHandler.B_KNIGHT_SWING, 0.6f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
       }, 22);
 
       addEvent(()->{
@@ -1342,7 +1342,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).disablesShields().directEntity(this).build();
           float damage = (float) (this.getAttack() * 1.5);
           ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.9f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.playSound(SoundsHandler.B_KNIGHT_SWING, 0.6f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           double getHealth = this.getHealth()/this.getMaxHealth();
           if(getHealth <= 0.5) {
               new ActionQuickFlameSling(flame_sling_projectiles).performAction(this, target);
@@ -1397,7 +1397,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).disablesShields().directEntity(this).build();
           float damage = (float) (this.getAttack());
           ModUtils.handleAreaImpact(2F, (e) -> damage, this, offset, source, 0.4f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.playSound(SoundsHandler.B_KNIGHT_SWING, 0.6f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
       }, 17);
 
       addEvent(()-> {
@@ -1419,7 +1419,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).disablesShields().directEntity(this).build();
           float damage = (float) (this.getAttack());
           ModUtils.handleAreaImpact(2F, (e) -> damage, this, offset, source, 0.6f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.playSound(SoundsHandler.B_KNIGHT_SWING, 0.6f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           double getHealth = this.getHealth()/this.getMaxHealth();
           if(getHealth <= 0.5) {
               new ActionQuickFlameSling(flame_sling_projectiles).performAction(this, target);
@@ -1465,10 +1465,10 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).disablesShields().directEntity(this).build();
           float damage = (float) (this.getAttack() * 1.7);
           ModUtils.handleAreaImpact(1.9F, (e) -> damage, this, offset, source, 0.4f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.playSound(SoundsHandler.B_KNIGHT_SWING, 0.6f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           addEvent(() -> {
               ModUtils.handleAreaImpact(1.5F, (e) -> damage, this, offset, source, 0.8f, 0, false);
-              this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+              this.playSound(SoundsHandler.B_KNIGHT_SWING, 0.6f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
               addEvent(()-> {
                   this.lockLook =false;
                   this.setImmovable(true);
@@ -1493,7 +1493,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).disablesShields().directEntity(this).build();
           float damage = (float) (this.getAttack() * 1.7);
           ModUtils.handleAreaImpact(1.9F, (e) -> damage, this, offset, source, 0.4f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.playSound(SoundsHandler.B_KNIGHT_SWING, 0.6f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
       }, 56);
 
       addEvent(()-> {
@@ -1518,7 +1518,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).disablesShields().directEntity(this).build();
           float damage = (float) (this.getAttack());
           ModUtils.handleAreaImpact(1.9F, (e) -> damage, this, offset, source, 0.4f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.playSound(SoundsHandler.B_KNIGHT_SWING, 0.6f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           new ActionFlameSling(flame_sling_projectiles, false).performAction(this, target);
       }, 85);
 
@@ -1544,7 +1544,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage = this.getAttack();
           ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.4f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.playSound(SoundsHandler.B_KNIGHT_SWING, 0.6f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
       }, 20);
 
       addEvent(()-> {
@@ -1580,7 +1580,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage = this.getAttack();
           ModUtils.handleAreaImpact(1.9f, (e) -> damage, this, offset, source, 0.4f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.playSound(SoundsHandler.B_KNIGHT_SWING, 0.6f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           double getHealth = this.getHealth()/this.getMaxHealth();
           if(getHealth <= 0.5) {
               new ActionQuickFlameSling(flame_sling_projectiles).performAction(this, target);
@@ -1668,7 +1668,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).disablesShields().directEntity(this).build();
             float damage = this.getAttack();
             ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.4f, 0, false);
-            this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+            this.playSound(SoundsHandler.B_KNIGHT_SWING, 0.6f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
             addEvent(()-> {
                 this.setImmovable(true);
                 //this.holdPosition = true;
@@ -1853,6 +1853,11 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
         } else if (source.isProjectile()) {
             return super.attackEntityFrom(source, (float) (amount * MobConfig.burning_knight_projectile_resistance));
         }
+
+        if(ModConfig.boss_cap_damage_enabled && amount > MobConfig.kobf_damage_cap) {
+            return super.attackEntityFrom(source, MobConfig.kobf_damage_cap);
+        }
+
         return super.attackEntityFrom(source, amount);
     }
 

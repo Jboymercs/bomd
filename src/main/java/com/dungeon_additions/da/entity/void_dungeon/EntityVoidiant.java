@@ -12,6 +12,7 @@ import com.dungeon_additions.da.entity.frost_dungeon.IDirectionalRender;
 import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.ActionWyrkLazer;
 import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.IMultiAction;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
+import com.dungeon_additions.da.entity.void_dungeon.voidiant_action.VoidiantFlameCircle;
 import com.dungeon_additions.da.entity.void_dungeon.voidiant_action.VoidiantLazerAction;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
@@ -132,9 +133,12 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
     private boolean sentAttackFlag;
     private int closeIndicator = 0;
     private int checkNearbyEntities = 10;
+
+    private int flameCircleAttackCooldown = 20;
     @Override
     public void onUpdate() {
         super.onUpdate();
+        flameCircleAttackCooldown--;
 
         if(!world.isRemote && this.isIdleState()) {
             this.motionX = 0;
@@ -148,7 +152,7 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
 
             //gives nearby players Blindness and Levitation
             if(checkNearbyEntities < 0 && !this.isIdleState()) {
-                List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(1.75D), e -> !e.getIsInvulnerable() && (!(e instanceof EntityEndBase)));
+                List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(1.25D), e -> !e.getIsInvulnerable() && (!(e instanceof EntityEndBase)));
                 if(!targets.isEmpty()) {
                     for(EntityLivingBase base : targets) {
                         if(!(base instanceof EntityEndBase)) {
@@ -164,6 +168,14 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
                 if(closeIndicator == 0 && this.isIdleState() && !this.sentAttackFlag) {
                     this.sendAttackMode();
                     this.sentAttackFlag = true;
+                }
+
+                //does flame attack if the player lingers
+                if(this.isIdleState() && this.getDistance(target) < 6) {
+                    if(flameCircleAttackCooldown < 0 && !this.isFightMode()) {
+                        flame_circle.accept(target);
+                        flameCircleAttackCooldown = 80;
+                    }
                 }
 
                 if(closeIndicator > 1 && !this.isFightMode()) {
@@ -286,7 +298,11 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
             if(distance < 6) {
                 prevAttacks = stomp_attack;
             } else {
-                prevAttacks = shoot_lazer_attack;
+                if(prevAttacks == shoot_lazer_attack) {
+                    prevAttacks = cast_spell;
+                } else {
+                    prevAttacks = shoot_lazer_attack;
+                }
             }
             prevAttacks.accept(target);
         }
@@ -324,6 +340,37 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
       }, 30);
          };
 
+    private Consumer<EntityLivingBase> flame_circle = target -> {
+      this.setFightMode(true);
+        this.playSound(SoundsHandler.OBSIDILITH_WAVE_DING, 1.0f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f));
+        world.setEntityState(this, ModUtils.FOURTH_PARTICLE_BYTE);
+      addEvent(()-> new VoidiantFlameCircle().performAction(this, target), 5);
+      addEvent(() -> {
+          this.setFightMode(false);
+      }, 20);
+    };
+
+    private boolean enableBlueParticles = false;
+
+    private Consumer<EntityLivingBase> cast_spell = target -> {
+      this.setFightMode(true);
+      this.enableBlueParticles = true;
+
+      addEvent(()-> {
+          //spawn small wave
+          this.playSound(SoundsHandler.OBSIDILITH_WAVE_DING, 1.0f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.enableBlueParticles = false;
+              Vec3d targetOldPos = target.getPositionVector();
+              addEvent(()-> {
+                  Vec3d targetedPos = target.getPositionVector();
+                  Vec3d predictedPosition = ModUtils.predictPlayerPosition(targetOldPos, targetedPos, 3);
+                  this.spawnSpikeAction(predictedPosition);
+              }, 3);
+
+          this.setFightMode(false);
+      }, 40);
+    };
+
     private Consumer<EntityLivingBase> stomp_attack = target -> {
     this.setImmovable(true);
     this.setFightMode(true);
@@ -358,6 +405,10 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
         if(world.rand.nextInt(4) == 0 && !this.isIdleState()) {
             world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
         }
+
+        if(this.enableBlueParticles) {
+            world.setEntityState(this, ModUtils.FIFTH_PARTICLE_BYTE);
+        }
     }
 
     @Override
@@ -373,15 +424,28 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
                 ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(1)), ModColors.WHITE, pos.normalize().scale(0.1), ModRand.range(55, 65));
             });
         }
+
+        if(id == ModUtils.FOURTH_PARTICLE_BYTE) {
+            ModUtils.circleCallback(3, 18, (pos)-> {
+                pos = new Vec3d(pos.x, 0, pos.y);
+                ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(1)), ModColors.FIREBALL_ORANGE, pos.normalize(), ModRand.range(55, 65));
+            });
+        }
+
+        if(id == ModUtils.FIFTH_PARTICLE_BYTE) {
+            for (int i = 0; i < 1; i++) {
+                Vec3d lookVec = ModUtils.getLookVec(this.getPitch(), this.renderYawOffset);
+                Vec3d particlePos = this.getPositionEyes(1).add(ModUtils.getAxisOffset(lookVec, new Vec3d(0.7, 0, 0)));
+                ParticleManager.spawnColoredSmoke(world, particlePos, ModColors.AZURE, Vec3d.ZERO);
+            }
+        }
+
         if (id == stopLazerByte) {
             this.renderLazerPos = null;
         }
         else if(id == ModUtils.PARTICLE_BYTE) {
             for (int i = 0; i < 1; i++) {
                 Vec3d lookVec = ModUtils.getLookVec(this.getPitch(), this.renderYawOffset);
-                Vec3d randOffset = ModUtils.rotateVector2(lookVec, lookVec.crossProduct(ModUtils.Y_AXIS), ModRand.range(-70, 70));
-                randOffset = ModUtils.rotateVector2(randOffset, lookVec, ModRand.range(0, 360)).scale(1.5f);
-                Vec3d velocity = Vec3d.ZERO.subtract(randOffset).normalize().scale(0.15f).add(new Vec3d(this.motionX, this.motionY, this.motionZ));
                 Vec3d particlePos = this.getPositionEyes(1).add(ModUtils.getAxisOffset(lookVec, new Vec3d(0.7, 0, 0)));
                 ParticleManager.spawnColoredSmoke(world, particlePos, ModColors.WHITE, Vec3d.ZERO);
             }
@@ -489,6 +553,59 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
             this.prevRenderLazerPos = dir;
         }
         this.renderLazerPos = dir;
+    }
+
+    public void spawnSpikeAction(Vec3d predictedPos) {
+        EntityLivingBase target = this.getAttackTarget();
+        //1
+        if(target != null) {
+            EntityBlueWave spike = new EntityBlueWave(this.world);
+            BlockPos area = new BlockPos(predictedPos.x, predictedPos.y, predictedPos.z);
+            int y = getSurfaceHeight(this.world, new BlockPos(target.posX, 0, target.posZ), (int) target.posY - 3, (int) target.posY + 3);
+            spike.setPosition(area.getX(), y + 1, area.getZ());
+            world.spawnEntity(spike);
+            spike.playSound(SoundsHandler.APPEARING_WAVE, 0.75f, 1.0f / getRNG().nextFloat() * 0.04F + 1.2F);;
+            //2
+            EntityBlueWave spike2 = new EntityBlueWave(this.world);
+            BlockPos area2 = new BlockPos(predictedPos.x + 1, predictedPos.y, predictedPos.z);
+            int y2 = getSurfaceHeight(this.world, new BlockPos(area2.getX(), 0, area2.getZ()), (int) target.posY - 3, (int) target.posY + 3);
+            spike2.setPosition(area2.getX(), y2 + 1, area2.getZ());
+            world.spawnEntity(spike2);
+            //3
+            EntityBlueWave spike3 = new EntityBlueWave(this.world);
+            BlockPos area3 = new BlockPos(predictedPos.x - 1, predictedPos.y, predictedPos.z);
+            int y3 = getSurfaceHeight(this.world, new BlockPos(area3.getX(), 0, area3.getZ()), (int) target.posY - 3, (int) target.posY + 3);
+            spike3.setPosition(area3.getX(), y3 + 1, area3.getZ());
+            world.spawnEntity(spike3);
+            //4
+            EntityBlueWave spike4 = new EntityBlueWave(this.world);
+            BlockPos area4 = new BlockPos(predictedPos.x , predictedPos.y, predictedPos.z + 1);
+            int y4 = getSurfaceHeight(this.world, new BlockPos(area4.getX(), 0, area4.getZ()), (int) target.posY - 3, (int) target.posY + 3);
+            spike4.setPosition(area4.getX(),y4 + 1, area4.getZ());
+            world.spawnEntity(spike4);
+            //5
+            EntityBlueWave spike5 = new EntityBlueWave(this.world);
+            BlockPos area5 = new BlockPos(predictedPos.x , predictedPos.y, predictedPos.z - 1);
+            int y5 = getSurfaceHeight(this.world, new BlockPos(area5.getX(), 0, area5.getZ()), (int) target.posY - 3, (int) target.posY + 3);
+            spike5.setPosition(area5.getX(), y5 + 1, area5.getZ());
+            world.spawnEntity(spike5);
+        }
+    }
+
+    public int getSurfaceHeight(World world, BlockPos pos, int min, int max)
+    {
+        int currentY = max;
+
+        while(currentY >= min)
+        {
+            if(!world.isAirBlock(pos.add(0, currentY, 0)) && !world.isRemote && world.getBlockState(pos.add(0, currentY, 0)).isFullBlock()) {
+                return currentY;
+            }
+
+            currentY--;
+        }
+
+        return 0;
     }
 
     @Override

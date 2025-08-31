@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RRR",
+    "V V"
+  ],
+  "key": {
+    "V": {
+      "item": "da:void_thorns"
+    },
+    "R": {
+      "item": "da:moss_block"
+    }
+  },
+  "result": {
+    "item": "da:flower_crown"
+  }
+}

@@ -154,7 +154,7 @@ public class WorldConfig {
     @Config.Name("Night Lich Tower Spacing")
     @Config.Comment("Change the spacing between each Night Lich tower, higher means further apart, lower means closer. This number will not add to spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int lich_tower_spacing = 140;
+    public static int lich_tower_spacing = 150;
 
     @Config.Name("Night Lich Blacklisted Biome Types")
     @Config.Comment("Add Biome types that DISALLOW the Night Lich Tower from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
@@ -232,7 +232,7 @@ public class WorldConfig {
     @Config.Name("High Court City Spacing")
     @Config.Comment("Change the spacing between each High Court City, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int high_city_spacing = 180;
+    public static int high_city_spacing = 220;
 
     @Config.Name("High Court City Size")
     @Config.Comment("Change the size of the High Court City")
@@ -267,7 +267,7 @@ public class WorldConfig {
     @Config.Name("Forgotten Temple Spacing")
     @Config.Comment("Change how rare Forgotten Temple structures are, increasing the value increases the spacing")
     @Config.RequiresMcRestart
-    public static int temple_spacing = 35;
+    public static int temple_spacing = 65;
 
     @Config.Name("Forgotten Temple WhiteList Biome Types")
     @Config.Comment("Add Biome types that ALLOW the Forgotten Temple from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
@@ -288,7 +288,7 @@ public class WorldConfig {
     @Config.Name("Forgotten Temple Enabled/Disabled")
     @Config.Comment("Change if the Forgotten Temple should spawn at all. default: true")
     @Config.RequiresMcRestart
-    public static boolean temple_enabled = false;
+    public static boolean temple_enabled = true;
 
     @Config.Name("Obsidilith Arena Spacing")
     @Config.Comment("Change the spacing between each Obsidilith Arena, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")

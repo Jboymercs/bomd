@@ -11,6 +11,10 @@ import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSectionSerializer;
 import com.dungeon_additions.da.util.handlers.CameraPositionHandler;
 import com.dungeon_additions.da.util.handlers.RenderHandler;
 import com.dungeon_additions.da.util.particle.*;
+import com.dungeon_additions.da.util.particle.obsidilith.ParticleBlue;
+import com.dungeon_additions.da.util.particle.obsidilith.ParticleOrange;
+import com.dungeon_additions.da.util.particle.obsidilith.ParticlePurple;
+import com.dungeon_additions.da.util.particle.obsidilith.ParticleRed;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
@@ -49,6 +53,8 @@ public class ClientProxy extends CommonProxy{
     private final ModelBiped MODEL_INCENDIUM_HELMET = new ModelIncendiumHelmet(0F);
 
     private final ModelBiped MODEL_DARK_METAL_HELMET = new ModelDarkHelmet(0F);
+    private final ModelBiped MODEL_OBSIDIAN_HELMET = new ModelObsidianHelmet(0F);
+    private final ModelBiped MODEL_FLOWER_CROWN = new ModelVoidCrown(0F);
 
     @Override
     public void init() {
@@ -116,6 +122,12 @@ public class ClientProxy extends CommonProxy{
         if(item == ModItems.VOIDIANT_CHESTPLATE) {
             return MODEL_VOIDIANT_CHESTPLATE;
         }
+        if(item == ModItems.OBSIDIAN_HELMET) {
+            return MODEL_OBSIDIAN_HELMET;
+        }
+        if(item == ModItems.VOID_FLOWER_CROWN) {
+            return MODEL_FLOWER_CROWN;
+        }
         return null;
     }
 
@@ -154,6 +166,16 @@ public class ClientProxy extends CommonProxy{
                 return new ParticleEnchantment.Factory();
             case 8:
                 return new ParticleLevitation.Factory();
+            case 9:
+                return new ParticleVoid.Factory();
+            case 10:
+                return new ParticleRed.Factory();
+            case 11:
+                return new ParticlePurple.Factory();
+            case 12:
+                return new ParticleOrange.Factory();
+            case 13:
+                return new ParticleBlue.Factory();
         }
     }
 

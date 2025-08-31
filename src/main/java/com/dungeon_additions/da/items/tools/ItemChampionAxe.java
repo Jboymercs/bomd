@@ -79,7 +79,7 @@ public class ItemChampionAxe extends ItemSword implements IAnimatable, IHasModel
         stack.damageItem(1, attacker);
         float realAttackDamage = this.getAttackDamage();
         float bonus_damage = (ModConfig.champion_axe_damage_scaling /(attacker.getHealth() / attacker.getMaxHealth()) ) - ModConfig.champion_axe_damage_scaling;
-        float regular_damage = (realAttackDamage / 3) + bonus_damage;
+        float regular_damage = (realAttackDamage / 2) + bonus_damage - 2;
         float armor_damage = (realAttackDamage / 2);
 
         if(attacker instanceof EntityPlayer) {
@@ -87,7 +87,7 @@ public class ItemChampionAxe extends ItemSword implements IAnimatable, IHasModel
             if(!player.getCooldownTracker().hasCooldown(this)) {
                 target.attackEntityFrom(ModUtils.causeAxeDamage(attacker), (float) regular_damage);
                 target.hurtResistantTime = 0;
-                target.attackEntityFrom(ModUtils.causeAxeDamage(attacker).setDamageBypassesArmor(), (float) armor_damage);
+                target.attackEntityFrom(ModUtils.causeAxeDamage(attacker).setDamageBypassesArmor(), (float) armor_damage / 2);
             }
             player.getCooldownTracker().setCooldown(this, axeCoolDown);
         }
@@ -124,7 +124,7 @@ public class ItemChampionAxe extends ItemSword implements IAnimatable, IHasModel
     }
 
     protected double getAttackSpeed() {
-        return -3.3D;
+        return -3.4D;
     }
     public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
     { return false; }

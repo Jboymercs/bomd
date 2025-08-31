@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "da:blocks/mossy_dungeon_brick"
+  }
+}

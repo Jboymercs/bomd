@@ -1,7 +1,7 @@
 package com.dungeon_additions.da.entity.model.desert_dungeon;
 
-import com.dungeon_additions.da.entity.desert_dungeon.EntityAegyptia;
-import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
+import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.model.extended.GeoModelExtended;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraft.util.ResourceLocation;
@@ -18,6 +18,18 @@ public class ModelAegyptia extends GeoModelExtended<EntityAegyptia> {
     @Override
     public ResourceLocation getAnimationFileLocation(EntityAegyptia animatable) {
         return new ResourceLocation(ModReference.MOD_ID, "animations/animation.aegyptia.json");
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(EntityAegyptia animatable) {
+        if(animatable.getSkin() == 1) {
+            return new ResourceLocation(ModReference.MOD_ID, "textures/entity/aegyptia/aegyptia.png");
+        } else if (animatable.getSkin() == 2) {
+            return new ResourceLocation(ModReference.MOD_ID, "textures/entity/aegyptia/aegyptia_2.png");
+        } else if (animatable.getSkin() == 3) {
+            return new ResourceLocation(ModReference.MOD_ID, "textures/entity/aegyptia/aegyptia_3.png");
+        }
+        return new ResourceLocation(ModReference.MOD_ID, "textures/entity/aegyptia/aegyptia.png");
     }
 
     @Override

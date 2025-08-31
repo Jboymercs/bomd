@@ -32,6 +32,7 @@ public class SoundsHandler {
     public static SoundEvent B_KNIGHT_PREPARE;
     public static SoundEvent B_KNIGHT_STOMP;
     public static SoundEvent B_KNIGHT_DASH;
+    public static SoundEvent B_KNIGHT_SWING;
 
     //Rot Knight
     public static SoundEvent ROT_KNIGHT_HURT;
@@ -246,6 +247,7 @@ public class SoundsHandler {
     public static SoundEvent OBSIDILITH_BURST;
     public static SoundEvent OBSIDILITH_SHIELD;
     public static SoundEvent OBSIDILITH_HURT;
+    public static SoundEvent OBSIDILITH_WAVE_DING;
     //VOIDIANT
     public static SoundEvent VOIDIANT_HURT;
     public static SoundEvent VOIDIANT_WALK;
@@ -254,6 +256,25 @@ public class SoundsHandler {
     public static SoundEvent VOIDIANT_SHOOT_LAZER;
     public static SoundEvent VOIDIANT_CHARGE_LAZER;
     public static SoundEvent VOIDIANT_LAZER_GUN;
+    //VOICLYSM
+    public static SoundEvent VOIDCLYSM_HURT;
+    public static SoundEvent VOIDCLYSM_IDLE;
+    public static SoundEvent VOIDCLYSM_SCREAM;
+    public static SoundEvent VOIDCLYSM_BEAM_TELEPORT;
+    public static SoundEvent VOIDCLYSM_IMPACT;
+    public static SoundEvent VOIDCLYSM_CAST_SPELL;
+    public static SoundEvent VOIDCLYSM_CAST_TRACK;
+    public static SoundEvent VOIDCLYSM_BLACK_HOLE;
+    public static SoundEvent VOIDCLYSM_CLAP_ATTACK;
+    public static SoundEvent VOIDCLYSM_EQUIP;
+    public static SoundEvent VOIDCLYSM_BOMB_EXPLODE;
+
+    //Aegyptia
+    public static SoundEvent AEGYPTIA_HURT;
+    public static SoundEvent AEGYPTIA_IDLE;
+    public static SoundEvent AEGYPTIA_STEP;
+    public static SoundEvent AEGYPTIA_PIERCE;
+    public static SoundEvent AEGYPTIA_SWING_STORM;
 
     //MUSIC
     public static SoundEvent HIGH_DRAGON_TRACK;
@@ -308,6 +329,7 @@ public class SoundsHandler {
         B_KNIGHT_FLAME_SLING_FAST =registerSound("b_knight.quick_sling", "entity");
         B_KNIGHT_STOMP = registerSound("b_knight.stomp", "entity");
         B_KNIGHT_DASH = registerSound("b_knight.dash", "entity");
+        B_KNIGHT_SWING = registerSound("b_knight.swing", "entity");
         //
         ROT_SPIKE_SHOOT = registerSound("rot_spike.shoot", "entity");
         ROT_KNIGHT_HURT = registerSound("rot_knight.hurt", "entity");
@@ -476,6 +498,8 @@ public class SoundsHandler {
         OBSIDILITH_BURST = registerSound("obsi.burst", "entity");
         OBSIDILITH_CAST = registerSound("obsi.cast", "entity");
         OBSIDILITH_SHIELD = registerSound("obsi.shield", "entity");
+        OBSIDILITH_WAVE_DING = registerSound("obsi.step", "entity");
+        OBSIDILITH_HURT = registerSound("obsi.hurt","entity");
         //
         VOIDIANT_HURT = registerSound("voidiant.hurt", "entity");
         VOIDIANT_JUMP = registerSound("voidiant.jump", "entity");
@@ -484,6 +508,24 @@ public class SoundsHandler {
         VOIDIANT_CHARGE_LAZER = registerSound("voidiant.charge", "entity");
         VOIDIANT_SHOOT_LAZER = registerSound("voidiant.shoot", "entity");
         VOIDIANT_LAZER_GUN = registerSound("voidiant.lazer_gun", "entity");
+        //
+        VOIDCLYSM_HURT = registerSound("voidclysm.hurt", "entity");
+        VOIDCLYSM_IDLE = registerSound("voidclysm.idle", "entity");
+        VOIDCLYSM_SCREAM = registerSound("voidclysm.scream", "entity");
+        VOIDCLYSM_BEAM_TELEPORT = registerSound("voidclysm.beam_teleport", "entity");
+        VOIDCLYSM_IMPACT = registerSound("voidclysm.impact", "entity");
+        VOIDCLYSM_CAST_SPELL = registerSound("voidclysm.cast_spell", "entity");
+        VOIDCLYSM_CAST_TRACK = registerSound("voidclysm.cast_track", "entity");
+        VOIDCLYSM_BLACK_HOLE = registerSound("voidclysm.blackhole", "entity");
+        VOIDCLYSM_CLAP_ATTACK = registerSound("voidclysm.aoe", "entity");
+        VOIDCLYSM_EQUIP = registerSound("voidclysm.equip", "entity");
+        VOIDCLYSM_BOMB_EXPLODE = registerSound("voidclysm.bomb_explode", "entity");
+        //
+        AEGYPTIA_HURT = registerSound("aegyptia.hurt", "entity");
+        AEGYPTIA_IDLE = registerSound("aegyptia.idle", "entity");
+        AEGYPTIA_STEP = registerSound("aegyptia.step", "entity");
+        AEGYPTIA_SWING_STORM = registerSound("aegyptia.swing_storm", "entity");
+        AEGYPTIA_PIERCE = registerSound("aegyptia.pierce", "entity");
         //MUSIC
         HIGH_DRAGON_TRACK = registerSound("ambient.high_dragon", "music");
         HIGH_KING_TRACK = registerSound("ambient.high_king", "music");

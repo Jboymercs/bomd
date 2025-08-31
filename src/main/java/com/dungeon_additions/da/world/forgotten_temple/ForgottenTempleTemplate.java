@@ -2,6 +2,7 @@ package com.dungeon_additions.da.world.forgotten_temple;
 
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
+import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
@@ -63,6 +64,24 @@ public class ForgottenTempleTemplate extends ModStructureTemplate {
             } else {
                 world.setBlockToAir(pos);
             }
+        } else if(function.startsWith("mob")) {
+            if(generateMobSpawn()) {
+                world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_FORGOTTEN_TEMPLE.getDefaultState(), 2);
+                TileEntity tileentity = world.getTileEntity(pos);
+                if (tileentity instanceof tileEntityMobSpawner) {
+                    ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
+                            new MobSpawnerLogic.MobSpawnData[]{
+                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityScutterBeetle.class), 2),
+                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityAegyptia.class), 1)
+                                    //include archer Aegyptia in this lot
+                            },
+                            new int[]{1, 3},
+                            1,
+                            24);
+                }
+            } else {
+                world.setBlockToAir(pos);
+            }
         }
         //Chests
         //Crypt Common Chest
@@ -111,6 +130,14 @@ public class ForgottenTempleTemplate extends ModStructureTemplate {
     public boolean generateBeetleSpawn() {
         int randomNumberGenerator = ModRand.range(0, 10);
         if (randomNumberGenerator >= 6) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean generateMobSpawn() {
+        int randomNumberGenerator = ModRand.range(0, 10);
+        if (randomNumberGenerator >= 4) {
             return false;
         }
         return true;

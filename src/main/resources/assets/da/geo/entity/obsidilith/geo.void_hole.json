@@ -1,0 +1,45 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "Center",
+					"pivot": [0, 8, 0]
+				},
+				{
+					"name": "Hole",
+					"parent": "Center",
+					"pivot": [0, 8, 0],
+					"cubes": [
+						{"origin": [-8, 0, -8], "size": [16, 16, 16], "uv": [0, 64]}
+					]
+				},
+				{
+					"name": "HoleAdjust",
+					"parent": "Hole",
+					"pivot": [0, 8, 0],
+					"cubes": [
+						{"origin": [-8, 0, -8], "size": [16, 16, 16], "inflate": 0.1, "uv": [64, 64]}
+					]
+				},
+				{
+					"name": "OuterShell",
+					"parent": "Center",
+					"pivot": [0, 34, 0],
+					"cubes": [
+						{"origin": [-16, 18, -16], "size": [32, 32, 32], "uv": [0, 0]}
+					]
+				}
+			]
+		}
+	]
+}

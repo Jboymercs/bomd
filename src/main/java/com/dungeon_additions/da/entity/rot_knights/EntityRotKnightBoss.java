@@ -924,6 +924,10 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
             return false;
         }
 
+        if(ModConfig.boss_cap_damage_enabled && amount > MobConfig.fallen_damage_cap) {
+            return super.attackEntityFrom(source, MobConfig.fallen_damage_cap);
+        }
+
         return super.attackEntityFrom(source, amount);
     }
 

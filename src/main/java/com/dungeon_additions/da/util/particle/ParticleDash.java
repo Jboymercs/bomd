@@ -50,7 +50,7 @@ public class ParticleDash extends ParticleSSBase {
 
     @Override
     public int getBrightnessForRender(float partialTicks)
-    { return super.getBrightnessForRender(partialTicks); }
+    { return brightnessIncreaseToFull(partialTicks); }
 
     @SideOnly(Side.CLIENT)
     public static class Factory implements IParticleFactory

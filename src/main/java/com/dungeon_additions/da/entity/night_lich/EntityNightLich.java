@@ -1244,8 +1244,17 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         }
 
         if (this.isAngeredState()) {
-            return super.attackEntityFrom(source, (float) (amount * MobConfig.lich_melee_resistance));
+            if(ModConfig.boss_cap_damage_enabled && amount > MobConfig.night_lich_damage_cap) {
+                return super.attackEntityFrom(source, (float) (MobConfig.night_lich_damage_cap * MobConfig.lich_melee_resistance));
+            } else {
+                return super.attackEntityFrom(source, (float) (amount * MobConfig.lich_melee_resistance));
+            }
         }
+
+        if(ModConfig.boss_cap_damage_enabled && amount > MobConfig.night_lich_damage_cap) {
+            return super.attackEntityFrom(source, MobConfig.night_lich_damage_cap);
+        }
+
         return super.attackEntityFrom(source, amount);
     }
 
@@ -1256,7 +1265,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
         if(cause.getTrueSource() instanceof EntityPlayer || cause.getImmediateSource() instanceof EntityPlayer) {
             EntityPlayer player = ((EntityPlayer) cause.getTrueSource());
-            if(!ModUtils.getAdvancementCompletionAsList(player, ModConfig.sorcerers_spawn_progress) && !initiateDeathText) {
+            if(!ModUtils.getAdvancementCompletionAsListBase(player, ModConfig.sorcerers_spawn_progress) && !initiateDeathText) {
                 assert player != null;
                 player.sendMessage(new TextComponentString(TextFormatting.RED + "They giggle at your progress..."));
                 initiateDeathText = true;

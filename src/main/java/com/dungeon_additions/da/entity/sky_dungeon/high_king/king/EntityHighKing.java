@@ -1893,6 +1893,11 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
             return false;
         }
+
+        if(ModConfig.boss_cap_damage_enabled && amount > MobConfig.high_king_damage_cap) {
+            return super.attackEntityFrom(source, MobConfig.high_king_damage_cap);
+        }
+
         //do regular damage
         return super.attackEntityFrom(source, amount);
     }

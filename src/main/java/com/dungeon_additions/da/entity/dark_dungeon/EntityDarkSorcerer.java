@@ -204,7 +204,11 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
     @Override
     public EnumCreatureAttribute getCreatureAttribute()
     {
-        return EnumCreatureAttribute.UNDEAD;
+        if(MobConfig.cult_sorcerer_status) {
+            return EnumCreatureAttribute.UNDEAD;
+        } else {
+            return EnumCreatureAttribute.UNDEFINED;
+        }
     }
 
 
@@ -560,6 +564,8 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
         event.getController().markNeedsReload();
         return PlayState.STOP;
     }
+
+
 
     @Override
     public void fall(float distance, float damageMultiplier) {

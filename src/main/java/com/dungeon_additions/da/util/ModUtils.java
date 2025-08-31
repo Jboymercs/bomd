@@ -1016,4 +1016,18 @@ public class ModUtils {
         return false;
     }
 
+    public static boolean getAdvancementCompletionAsListBase(EntityPlayer currentPlayer, String[] advancementNamesList) {
+        for(String adv : advancementNamesList) {
+            ResourceLocation loc = new ResourceLocation(adv);
+            boolean isCompleted = Main.proxy.doesPlayerHaveXAdvancement(currentPlayer, loc);
+
+            if(!isCompleted) {
+                break;
+            }
+
+            return true;
+        }
+        return false;
+    }
+
 }

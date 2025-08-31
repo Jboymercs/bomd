@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RXR",
+    "V V"
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:obsidian"
+    },
+    "R": {
+      "item": "minecraft:gold_ingot"
+    },
+    "X": {
+      "item": "da:obsdian_heart"
+    }
+  },
+  "result": {
+    "item": "da:obsidian_helm",
+    "count": 1
+  }
+}

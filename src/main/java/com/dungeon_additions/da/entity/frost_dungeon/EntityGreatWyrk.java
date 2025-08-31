@@ -617,7 +617,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
 
         if(cause.getTrueSource() instanceof EntityPlayer || cause.getImmediateSource() instanceof EntityPlayer) {
             EntityPlayer player = ((EntityPlayer) cause.getTrueSource());
-            if(!ModUtils.getAdvancementCompletionAsList(player, ModConfig.assassins_spawn_progress) && !initiateDeathText) {
+            if(!ModUtils.getAdvancementCompletionAsListBase(player, ModConfig.assassins_spawn_progress) && !initiateDeathText) {
                 assert player != null;
                 player.sendMessage(new TextComponentString(TextFormatting.RED + "You have now caught the attention of something lurking in the shadows..."));
                 initiateDeathText = true;

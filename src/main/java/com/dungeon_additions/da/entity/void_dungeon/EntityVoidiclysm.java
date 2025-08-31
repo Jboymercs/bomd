@@ -33,6 +33,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
@@ -47,6 +48,7 @@ import net.minecraft.tileentity.TileEntityShulkerBox;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -94,7 +96,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
     private final String ANIM_GRAB_CONTINUE = "grab_continue";
     private final String ANIM_GRAB_END = "grab_finish";
     private final String ANIM_MELEE_SLAM = "melee_slam";
-    private final String ANIM_ATOMIC_ATTACK = "atomic";
+    private final String ANIM_ATOMIC_ATTACK = "atomic_attack";
     private final String ANIM_SUMMON_TRACK_PROJECTILES = "summon_track";
     private final String ANIM_DEFLECT = "deflect";
     private final String ANIM_PARRY = "parry";
@@ -190,6 +192,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
     private boolean grabDetection = false;
     public int wantedDistance = 20;
 
+    private boolean hasDoneAtomic = false;
     private boolean setBossToFlyHigh = false;
 
     private int standByCooldown = 0;
@@ -199,6 +202,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         this.iAmBossMob = true;
         this.moveHelper = new FlyingMoveHelper(this);
         this.navigator = new PathNavigateFlying(this, worldIn);
+        this.experienceValue = MobConfig.voidclysm_experience_value;
         this.setSize(1.6F, 3.7F);
         this.isImmuneToExplosions();
         if(!world.isRemote) {
@@ -207,11 +211,13 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         BlockPos offset = new BlockPos(x, y, z);
         this.setSpawnLocation(offset);
         this.setSetSpawnLoc(true);
+        this.onSummonBoss();
     }
 
     public EntityVoidiclysm(World world, int timesUsed, BlockPos pos) {
         super(world, timesUsed, pos);
         this.timesUsed = timesUsed;
+        this.experienceValue = MobConfig.voidclysm_experience_value;
         if(!MobConfig.obsidilith_two_part_boss) {
             this.timesUsed++;
         }
@@ -226,6 +232,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         }
         this.setSpawnLocation(pos);
         this.setSetSpawnLoc(true);
+        this.onSummonBoss();
     }
 
     public EntityVoidiclysm(World worldIn) {
@@ -233,21 +240,39 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         this.iAmBossMob = true;
         this.moveHelper = new FlyingMoveHelper(this);
         this.navigator = new PathNavigateFlying(this, worldIn);
+        this.experienceValue = MobConfig.voidclysm_experience_value;
         this.setSize(1.6F, 3.7F);
         this.isImmuneToExplosions();
         if(!world.isRemote) {
             initVoidclysmAI();
         }
+        this.onSummonBoss();
     }
 
     private void onSummonBoss() {
         this.setSummon(true);
         this.setFullBodyUsage(true);
+        this.clearCurrentVelocity = true;
+        this.setImmovable(true);
+        world.setEntityState(this, ModUtils.THIRD_PARTICLE_BYTE);
 
         addEvent(()-> {
+            this.playSound(SoundsHandler.VOIDCLYSM_SCREAM, 1.75f, 0.7F);
+            this.setShaking(true);
+            this.shakeTime = 65;
+        }, 30);
+
+        addEvent(()-> {
+                this.setShaking(false);
+        }, 95);
+
+        addEvent(()-> {
+            this.standbyOnVel = false;
+            this.setImmovable(false);
+            this.standByCooldown = base_cooldown * 2;
             this.setSummon(false);
             this.setFullBodyUsage(false);
-        }, 50);
+        }, 60);
     }
 
     @Override
@@ -364,12 +389,13 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         this.dataManager.register(SPAWN_LOCATION, new BlockPos(this.getPositionVector().x, this.getPositionVector().y, this.getPositionVector().z));
     }
 
+    private int atomicCooldown = 30 * 20;
     @Override
     public void onUpdate() {
         super.onUpdate();
         this.shakeTime--;
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
-
+        this.atomicCooldown--;
 
         if(ticksExisted == 5 && !world.isRemote) {
             if(this.getSpawnLocation() != null) {
@@ -475,7 +501,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
                 grabbedEntity.setPositionAndUpdate(offset.x, offset.y, offset.z);
 
                 if(setBossToFlyHigh) {
-                    this.motionY = 0.2;
+                    this.motionY = 0.36;
                     this.motionX = 0;
                     this.motionZ = 0;
                 }
@@ -532,7 +558,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         double HealthChange = this.getHealth() / this.getMaxHealth();
         double distance = Math.sqrt(distanceSq);
         if(!this.isFightMode() && standByCooldown < 0 && !this.isParry() && !this.isDeflect() && !this.isSummon()) {
-            List<Consumer<EntityLivingBase>> close_attacks = new ArrayList<>(Arrays.asList(strike_attack, clap_attack, summon_spike_magic, grab_attack, cast_projectiles, scream_attack, teleport_lazer));
+            List<Consumer<EntityLivingBase>> close_attacks = new ArrayList<>(Arrays.asList(strike_attack, clap_attack, summon_spike_magic, grab_attack, cast_projectiles, scream_attack, teleport_lazer, summon_tracking_projectiles_attack, atomic_attack));
             double[] weights = {
                     (prevAttack != strike_attack && this.isMeleeMode() && distance < 8) ? 1/distance : 0, //strike attack
                     (prevAttack != clap_attack && this.isMeleeMode() && distance < 12 && HealthChange < 0.75) ? 1/distance : 0, //clap attack
@@ -540,9 +566,9 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
                     (prevAttack != grab_attack && this.isMeleeMode()) ? 1/distance : 0, //grab attack
                     (!this.isMeleeMode() && prevAttack != cast_projectiles) ? distance * 0.03 : (this.isMeleeMode() && prevAttack != cast_projectiles && distance > 11) ? distance * 0.02 : 0, //Cast Projectile LIne Attack
                     (!this.isMeleeMode() && prevAttack != scream_attack) ? distance * 0.02 : 0, //Scream Attack
-                    (!this.isMeleeMode() && prevAttack != teleport_lazer && HealthChange < 0.85) ? distance * 0.02 : 0 // Teleport Lazer Attack
-                    // Cast Tracking Projectiles attack
-                    // Atomic Blackhole Attack
+                    (!this.isMeleeMode() && prevAttack != teleport_lazer && HealthChange < 0.85) ? distance * 0.02 : 0, // Teleport Lazer Attack
+                    (!this.isMeleeMode() && prevAttack != summon_tracking_projectiles_attack && HealthChange < 0.5) ? distance * 0.02 : 0, // Cast Tracking Projectiles attack
+                    (prevAttack != atomic_attack && this.isMeleeMode() && distance < 14 && HealthChange < 0.5) && !this.hasDoneAtomic ? 5/distance : (prevAttack != atomic_attack && this.isMeleeMode() && distance < 14 && atomicCooldown < 0 && HealthChange < 0.5) ? 1/distance : 0// Atomic Blackhole Attack
             };
             prevAttack = ModRand.choice(close_attacks, rand, weights).next();
             prevAttack.accept(target);
@@ -557,23 +583,81 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
       this.setFightMode(true);
       this.setSummonTrack(true);
 
+
+        addEvent(()-> {
+            this.playSound(SoundsHandler.VOIDCLYSM_CAST_TRACK, 2.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+        }, 5);
+
+     addEvent(()-> {
+         for(int i = 0; i < 30; i += 10) {
+             addEvent(()-> {
+                 if(target != null) {
+                     ProjectileTrackingVoid void_projectile = new ProjectileTrackingVoid(world, this, this.getAttack(), target);
+                     Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.7,2.0,0)));
+                     void_projectile.setPosition(offset.x, offset.y, offset.z);
+                     void_projectile.setTravelRange(80F);
+                     world.spawnEntity(void_projectile);
+                 }
+             }, i);
+         }
+     }, 35);
+
       addEvent(()-> {
+          this.attack_differential += 2;
+          this.standByCooldown = base_cooldown;
           this.setFullBodyUsage(false);
           this.setFightMode(false);
           this.setSummonTrack(false);
-      }, 45);
+      }, 60);
     };
 
     private final Consumer<EntityLivingBase> atomic_attack = (target) -> {
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setAtomicAttack(true);
+      this.hasDoneAtomic = true;
 
       addEvent(()-> {
+          this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 2.0F, 1.0F);
+        if(this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
+            this.setPosition(this.getSpawnLocation().getX(), this.getSpawnLocation().getY() + 0.5, this.getSpawnLocation().getZ());
+        } else {
+            if(target != null) {
+                //just teleport it close to the player
+                Vec3d targetRandomPos = target.getPositionVector().add(ModRand.range(-2, 2) + 2, 1, ModRand.range(-2, 2) + 2);
+                this.setPosition(targetRandomPos.x, targetRandomPos.y, targetRandomPos.z);
+
+            }
+        }
+          this.clearCurrentVelocity = true;
+          this.setImmovable(true);
+          this.lockLook = true;
+      }, 10);
+
+      addEvent(()-> {
+          //summon blackhole entity
+          EntityVoidBlackHole blackHole = new EntityVoidBlackHole(world);
+          Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5,4.5,0)));
+          blackHole.setPosition(relPos.x, relPos.y, relPos.z);
+          world.spawnEntity(blackHole);
+      }, 30);
+
+      addEvent(() -> {
+            this.lockLook = false;
+      }, 170);
+
+        addEvent(() -> {
+            this.standbyOnVel = false;
+            this.setImmovable(false);
+        }, 195);
+
+      addEvent(()-> {
+          this.atomicCooldown = 30 * 20;
+          this.attack_differential += 2;
           this.setFullBodyUsage(false);
           this.setFightMode(false);
           this.setAtomicAttack(false);
-      }, 45);
+      }, 210);
 
     };
     private final Consumer<EntityLivingBase> teleport_lazer = (target) -> {
@@ -604,7 +688,13 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
             this.setImmovable(false);
             this.doesBossSlowDown = false;
         this.attack_differential += 3;
-        this.standByCooldown = base_cooldown * 3;
+        double healthDif = this.getHealth() / this.getMaxHealth();
+        if(healthDif < 0.5) {
+            this.standByCooldown = base_cooldown * 2;
+        } else {
+            this.standByCooldown = base_cooldown * 3;
+        }
+
         this.setLazerTeleport(false);
         this.setFightMode(false);
         this.setFullBodyUsage(false);
@@ -617,11 +707,15 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         this.setFullBodyUsage(true);
         this.setImmovable(true);
         this.clearCurrentVelocity = true;
-
+        this.playSound(SoundsHandler.VOIDIANT_CHARGE_LAZER, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
         addEvent(()-> {
         this.shakeTime = 40;
         this.setShaking(true);
         },10);
+
+        addEvent(()-> {
+            this.playSound(SoundsHandler.VOIDCLYSM_SCREAM, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+        }, 30);
 
         addEvent(()-> this.setShaking(false), 50);
 
@@ -636,7 +730,12 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
 
         addEvent(()-> {
         this.attack_differential += 5;
-        this.standByCooldown = this.base_cooldown * 4;
+        double healthDif = this.getHealth() / this.getMaxHealth();
+            if(healthDif < 0.5) {
+                this.standByCooldown = base_cooldown * 2;
+            } else {
+                this.standByCooldown = base_cooldown * 4;
+            }
         this.setScreamAttack(false);
         this.setFightMode(false);
         this.setFullBodyUsage(false);
@@ -648,6 +747,14 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
       this.setCastSpell(true);
       this.setFullBodyUsage(true);
       this.setFightMode(true);
+
+        addEvent(()-> {
+            if(this.isMeleeMode()) {
+                this.playSound(SoundsHandler.VOIDCLYSM_CAST_SPELL, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+            } else {
+                this.playSound(SoundsHandler.VOIDCLYSM_CAST_SPELL, 2.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+            }
+        }, 5);
 
       addEvent(()-> {
             //cast 5 projectiles
@@ -668,6 +775,10 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         this.setGrabAttack(true);
         this.setImmovable(true);
         this.clearCurrentVelocity = true;
+
+        addEvent(()-> {
+            this.playSound(SoundsHandler.VOIDCLYSM_EQUIP, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f));
+        }, 25);
 
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -701,6 +812,10 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
             } else {
                 this.setGrabFinish(true);
                 this.lockLook = false;
+
+                addEvent(()-> {
+                    this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.6f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+                }, 5);
                 addEvent(()-> {
                 this.standbyOnVel = false;
                 this.setImmovable(false);
@@ -723,16 +838,22 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.0, 0)));
         DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
         float damage = (float) (0);
-        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.5f, 0, false);
+        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+        target.hurtResistantTime = 0;
         if(target.getMaxHealth() > 40) {
             target.setHealth((float) (target.getHealth() - 20));
         } else {
-            target.setHealth((float) (target.getHealth() - (target.getMaxHealth() * 0.4)));
+            target.setHealth((float) (target.getHealth() - (target.getMaxHealth() * MobConfig.voidclysm_grab_attack_damage)));
         }
+        float healAmount = this.getMaxHealth() * 0.12F;
+        this.heal(healAmount);
+        target.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 200, 0, false, false));
+        target.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 100, 0, false, false));
         this.setImmovable(false);
         this.setBossToFlyHigh = true;
 
         addEvent(()-> {
+            this.playSound(SoundsHandler.LICH_MAGIC_SWING, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
             this.setBossToFlyHigh = false;
             this.grabbedEntity = null;
             this.lockLook = false;
@@ -755,6 +876,10 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
       this.setFightMode(true);
       this.setRaiseSpikes(true);
       //strafe to right during this attack
+
+        addEvent(()-> {
+            this.playSound(SoundsHandler.OBSIDILITH_CAST, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+        }, 20);
 
         addEvent(()-> {
             if(!world.isRemote) {
@@ -789,7 +914,12 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
 
         addEvent(()-> {
             this.attack_differential += 4;
-            this.standByCooldown = base_cooldown * 3;
+            double healthDif = this.getHealth() / this.getMaxHealth();
+            if(healthDif < 0.5) {
+                this.standByCooldown = base_cooldown * 2;
+            } else {
+                this.standByCooldown = base_cooldown * 3;
+            }
             this.setRaiseSpikes(false);
             this.setFightMode(false);
             this.setFullBodyUsage(false);
@@ -803,6 +933,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
       this.clearCurrentVelocity = true;
       addEvent(()-> {
           //summon rune sound
+          this.playSound(SoundsHandler.VOIDCLYSM_CLAP_ATTACK, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       }, 15);
 
       addEvent(()-> {
@@ -824,7 +955,12 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
           this.setImmovable(false);
       }, 35);
       addEvent(()-> {
-          this.standByCooldown = base_cooldown * 2;
+          double healthDif = this.getHealth() / this.getMaxHealth();
+          if(healthDif < 0.5) {
+              this.standByCooldown = base_cooldown;
+          } else {
+              this.standByCooldown = base_cooldown * 2;
+          }
         this.attack_differential += 2;
         this.setFightMode(false);
         this.setClap(false);
@@ -836,7 +972,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         this.setFightMode(true);
         this.setImmovable(true);
         int randI = ModRand.range(1, 6);
-
+        addEvent(()-> this.playSound(SoundsHandler.VOIDCLYSM_EQUIP, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
         //Two Strikes
         if(randI >= 4) {
             this.setStrikeTwo(true);
@@ -865,6 +1001,8 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
                 this.setImmovable(true);
                 this.lockLook = false;
             }, 40);
+
+            addEvent(()-> this.playSound(SoundsHandler.VOIDCLYSM_EQUIP, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 42);
 
             addEvent(()-> {
                 this.lockLook = true;
@@ -899,7 +1037,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
                 this.setFullBodyUsage(false);
                 this.setFightMode(false);
                 this.setImmovable(false);
-            }, 95);
+            }, 90);
             //One Strike
         } else {
             this.setStrikeOne(true);
@@ -1029,6 +1167,10 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         }
         if(this.isDeflect()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DEFLECT, false));
+            return PlayState.CONTINUE;
+        }
+        if(this.isSummon()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON, false));
             return PlayState.CONTINUE;
         }
 
@@ -1161,7 +1303,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         if(target != null) {
             EntityBlueWave spike = new EntityBlueWave(this.world);
             BlockPos area = new BlockPos(predictedPos.x, predictedPos.y, predictedPos.z);
-            int y = getSurfaceHeight(this.world, new BlockPos(target.posX, 0, target.posZ), (int) this.posY - 5, (int) this.posY + 7);
+            int y = getSurfaceHeight(this.world, new BlockPos(area.getX(), 0, area.getZ()), (int) this.posY - 25, (int) this.posY + 7);
             spike.setPosition(area.getX(), y + 1, area.getZ());
             world.spawnEntity(spike);
             spike.playSound(SoundsHandler.APPEARING_WAVE, 0.75f, 1.0f / getRNG().nextFloat() * 0.04F + 1.2F);;
@@ -1258,7 +1400,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
 
     @Override
     public final boolean attackEntityFrom(DamageSource source, float amount) {
-        if(this.grabbedEntity != null || this.isParry()) {
+        if(this.grabbedEntity != null || this.isParry() || this.isSummon()) {
             return false;
         } else if (!this.isFightMode() && amount > 0.0F && this.canBlockDamageSource(source)) {
             this.damageShield(amount);
@@ -1275,11 +1417,15 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
             return false;
         }
 
+        if(ModConfig.boss_cap_damage_enabled && amount > MobConfig.voidclysm_damage_cap) {
+            return super.attackEntityFrom(source, MobConfig.voidclysm_damage_cap);
+        }
+
         //do regular damage
         return super.attackEntityFrom(source, amount * 0.9F);
     }
 
-    protected int blockCooldown = 5 * 20;
+    protected int blockCooldown = MobConfig.voidclysm_block_cooldown * 20;
     private boolean parriedLastAttack = false;
 
 
@@ -1358,8 +1504,15 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         this.clearCurrentVelocity = true;
         this.setImmovable(true);
         this.parriedLastAttack = true;
-        player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 60, 3, false, false));
+        player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 60, 5, false, false));
 
+        addEvent(()-> {
+            this.playSound(SoundsHandler.VOIDCLYSM_EQUIP, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f));
+        }, 7);
+
+        addEvent(()-> {
+            this.playSound(SoundsHandler.IMPERIAL_SWORD_PARRY, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+        }, 5);
         addEvent(()-> {
             this.lockLook = true;
             Vec3d posSet = player.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -1389,7 +1542,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
             this.setImmovable(false);
             this.standbyOnVel = false;
             this.setParry(false);
-            blockCooldown = 5 * 20;
+            blockCooldown = MobConfig.voidclysm_block_cooldown * 20;
         }, 60);
     }
 
@@ -1397,8 +1550,18 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         this.setDeflect(true);
         addEvent(()-> {
             this.setDeflect(false);
-            blockCooldown = 5 * 20;
+            blockCooldown = MobConfig.voidclysm_block_cooldown * 20;
         }, 25);
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundsHandler.VOIDCLYSM_HURT;
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundsHandler.VOIDCLYSM_IDLE;
     }
 
 

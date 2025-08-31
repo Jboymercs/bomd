@@ -465,6 +465,9 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
 
     @Override
     public final boolean attackEntityFrom(DamageSource source, float amount) {
+        if(ModConfig.boss_cap_damage_enabled && amount > MobConfig.blossom_damage_cap) {
+            return super.attackEntityFrom(source, MobConfig.blossom_damage_cap);
+        }
         return super.attackEntityFrom(source, amount);
     }
 }

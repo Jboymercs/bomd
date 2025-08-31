@@ -1251,6 +1251,10 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
             return false;
         }
 
+        if(ModConfig.boss_cap_damage_enabled && amount > MobConfig.high_dragon_damage_cap) {
+            return super.attackEntityFrom(source, MobConfig.high_dragon_damage_cap);
+        }
+
        return super.attackEntityFrom(source, amount);
     }
 

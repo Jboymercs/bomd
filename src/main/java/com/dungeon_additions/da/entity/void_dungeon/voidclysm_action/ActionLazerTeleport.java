@@ -7,6 +7,7 @@ import com.dungeon_additions.da.packets.MessageDirectionForRender;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
@@ -44,6 +45,7 @@ public class ActionLazerTeleport implements IMultiAction {
         }
         //turns on lazer
         entity.addEvent(()-> this.isShootingLazer = true, chargeUpTime);
+        entity.addEvent(()-> this.entity.playSound(SoundsHandler.VOIDCLYSM_BEAM_TELEPORT, 3.5F, 1.0F), chargeUpTime);
 
         entity.addEvent(() -> this.holdLazer = true, chargeUpTime + 40);
 
@@ -63,7 +65,8 @@ public class ActionLazerTeleport implements IMultiAction {
                             .stoppedByArmorNotShields().disablesShields().build();
 
                     ModUtils.handleAreaImpact(5, (e) -> this.entity.getAttack(), this.entity, this.entity.getPositionVector().add(ModUtils.yVec(1)), source);
-                    this.entity.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f + ModRand.getFloat(0.1f));
+                    //this.entity.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f + ModRand.getFloat(0.1f));
+                    this.entity.playSound(SoundsHandler.VOIDCLYSM_IMPACT, 1.0F, 1.0f + ModRand.getFloat(0.1f));
                     this.entity.world.setEntityState(this.entity, ModUtils.THIRD_PARTICLE_BYTE);
                 }
             }, 5);

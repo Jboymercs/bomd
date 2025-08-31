@@ -120,6 +120,46 @@
       }
     ]
   },
+  "entity.obsi.hurt": {
+    "category": "entity",
+    "subtitle": "entity.obsi.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/obsi/hurt1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/obsi/hurt2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/obsi/hurt3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.obsi.step": {
+    "category": "entity",
+    "subtitle": "entity.obsi.ding",
+    "sounds": [
+      {
+        "name": "da:entity/obsi/step1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/obsi/step2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/obsi/step3",
+        "steam": false
+      },
+      {
+        "name": "da:entity/obsi/step4",
+        "steam": false
+      }
+    ]
+  },
   "entity.night_lich.prepare_fireball": {
     "category": "entity",
     "subtitle": "entity.night_lich.prepare_fireball",
@@ -415,6 +455,16 @@
     "sounds": [
       {
         "name": "da:entity/b_knight/stomp",
+        "steam": false
+      }
+    ]
+  },
+  "entity.b_knight.swing": {
+    "category": "entity",
+    "subtitle": "entity.burning_knight.swing",
+    "sounds": [
+      {
+        "name": "da:entity/b_knight/swing",
         "steam": false
       }
     ]
@@ -2115,6 +2165,210 @@
       },
       {
         "name": "da:entity/voidiant/hurt2",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidclysm.hurt": {
+    "category": "entity",
+    "subtitle": "entity.voidclysm.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/voidclysm/hurt1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/voidclysm/hurt2",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidclysm.idle": {
+    "category": "entity",
+    "subtitle": "entity.voidclysm.idle",
+    "sounds": [
+      {
+        "name": "da:entity/voidclysm/idle1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/voidclysm/idle2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/voidclysm/idle3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidclysm.scream": {
+    "category": "entity",
+    "subtitle": "entity.voidclysm.scream",
+    "sounds": [
+      {
+        "name": "da:entity/voidclysm/scream",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidclysm.beam_teleport": {
+    "category": "entity",
+    "subtitle": "entity.voidclysm.beam_teleport",
+    "sounds": [
+      {
+        "name": "da:entity/voidclysm/beam_teleport",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidclysm.impact": {
+    "category": "entity",
+    "subtitle": "entity.voidclysm.impact",
+    "sounds": [
+      {
+        "name": "da:entity/voidclysm/impact",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidclysm.cast_spell": {
+    "category": "entity",
+    "subtitle": "entity.voidclysm.cast_spell",
+    "sounds": [
+      {
+        "name": "da:entity/voidclysm/cast_spell",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidclysm.cast_track": {
+    "category": "entity",
+    "subtitle": "entity.voidclysm.cast_track",
+    "sounds": [
+      {
+        "name": "da:entity/voidclysm/cast_track",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidclysm.blackhole": {
+    "category": "entity",
+    "subtitle": "entity.voidclysm.blackhole",
+    "sounds": [
+      {
+        "name": "da:entity/voidclysm/blackhole",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidclysm.aoe": {
+    "category": "entity",
+    "subtitle": "entity.voidclysm.aoe",
+    "sounds": [
+      {
+        "name": "da:entity/voidclysm/aoe",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidclysm.equip": {
+    "category": "entity",
+    "subtitle": "entity.voidclysm.equip",
+    "sounds": [
+      {
+        "name": "da:entity/voidclysm/equip",
+        "steam": false
+      }
+    ]
+  },
+  "entity.voidclysm.bomb_explode": {
+    "category": "entity",
+    "subtitle": "entity.voidclysm.bomd_explode",
+    "sounds": [
+      {
+        "name": "da:entity/voidclysm/bomb_explode",
+        "steam": false
+      }
+    ]
+  },
+  "entity.aegyptia.hurt": {
+    "category": "entity",
+    "subtitle": "entity.aegyptia.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/aegyptia/hurt1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/aegyptia/hurt2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/aegyptia/hurt3",
+        "steam": false
+      },
+      {
+        "name": "da:entity/aegyptia/hurt4",
+        "steam": false
+      }
+    ]
+  },
+  "entity.aegyptia.idle": {
+    "category": "entity",
+    "subtitle": "entity.aegyptia.idle",
+    "sounds": [
+      {
+        "name": "da:entity/aegyptia/idle1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/aegyptia/idle2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/aegyptia/idle3",
+        "steam": false
+      },
+      {
+        "name": "da:entity/aegyptia/idle4",
+        "steam": false
+      }
+    ]
+  },
+  "entity.aegyptia.step": {
+    "category": "entity",
+    "subtitle": "entity.aegyptia.step",
+    "sounds": [
+      {
+        "name": "da:entity/aegyptia/step1",
+        "steam": false
+      },
+      {
+        "name": "da:entity/aegyptia/step2",
+        "steam": false
+      },
+      {
+        "name": "da:entity/aegyptia/step3",
+        "steam": false
+      }
+    ]
+  },
+  "entity.aegyptia.swing_storm": {
+    "category": "entity",
+    "subtitle": "entity.aegyptia.swing_storm",
+    "sounds": [
+      {
+        "name": "da:entity/aegyptia/swing_storm",
+        "steam": false
+      }
+    ]
+  },
+  "entity.aegyptia.pierce": {
+    "category": "entity",
+    "subtitle": "entity.aegyptia.pierce",
+    "sounds": [
+      {
+        "name": "da:entity/aegyptia/pierce",
         "steam": false
       }
     ]

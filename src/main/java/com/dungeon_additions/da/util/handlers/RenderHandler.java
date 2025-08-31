@@ -5,14 +5,15 @@ import com.dungeon_additions.da.animation.example.ModelExample;
 import com.dungeon_additions.da.animation.example.exampletwo.EntityEverator;
 import com.dungeon_additions.da.animation.example.exampletwo.ModelEverator;
 import com.dungeon_additions.da.blocks.desert_dungeon.RenderPuzzleMirror;
-import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.EntityNetherAbberrant;
 import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
 import com.dungeon_additions.da.entity.dark_dungeon.*;
-import com.dungeon_additions.da.entity.desert_dungeon.EntityAegyptia;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
+import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
+import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
+import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityDesertBeam;
 import com.dungeon_additions.da.entity.flame_knight.*;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameBlade;
@@ -37,6 +38,7 @@ import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkRoyal;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkSorcerer;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderShadowHand;
 import com.dungeon_additions.da.entity.render.desert_dungeon.RenderAegyptia;
+import com.dungeon_additions.da.entity.render.desert_dungeon.RenderDesertBeam;
 import com.dungeon_additions.da.entity.render.desert_dungeon.RenderScutterBeetle;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderBareant;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderFlameOrb;
@@ -143,7 +145,9 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileKingBlood.class, ModItems.BLOOD_BALL_PROJ);
         registerProjectileRenderer(ProjectileFlameSpit.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer3DModel(ProjectileFlameBlade.class, ModItems.FLAME_BLADE_PROJ);
+        registerProjectileRenderer3DModel(ProjectileDesertStorm.class, ModItems.DESERT_STORM_PROJ);
         registerProjectileRenderer(EntityObsidianLocator.class, ModItems.OBSIDIAN_LOCATOR);
+        registerProjectileRenderer(ProjectileTrackingVoid.class, ModItems.VOID_PROJECTILE);
         registerProjectileRenderer(ProjectileDarkMatter.class, ModItems.DARK_MANA);
         registerProjectileRenderer(ProjectilePuzzleBall.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(EntityForgottenTempleLocator.class, ModItems.DESERT_LOCATOR_PROJ);
@@ -213,6 +217,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityWyrkFoot.class, RenderWyrkFoot::new);
         //Wyrk Lazer
         registerModEntityRenderer(EntityWyrkLazer.class, RenderWyrkLazer::new);
+        //Desert Beam
+        registerModEntityRenderer(EntityDesertBeam.class, RenderDesertBeam::new);
         //Voidiant Lazer
         registerModEntityRenderer(EntityVoidiantLazer.class, RenderVoidiantLazer::new);
         //Imperial Halberd
@@ -264,7 +270,7 @@ public class RenderHandler {
         //Scutter Beetle
         RenderingRegistry.registerEntityRenderingHandler(EntityScutterBeetle.class, RenderScutterBeetle::new);
         //Aegyptia
-       // RenderingRegistry.registerEntityRenderingHandler(EntityAegyptia.class, RenderAegyptia::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityAegyptia.class, RenderAegyptia::new);
         //Obsidilith
         RenderingRegistry.registerEntityRenderingHandler(EntityObsidilith.class, RenderObsidilith::new);
         //Blue Wave
@@ -277,6 +283,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityVoidBomb.class, RenderVoidBomb::new);
         //Voidclysm Spike
         RenderingRegistry.registerEntityRenderingHandler(EntityVoidclysmSpike.class, RenderVoidclysmSpike::new);
+        //Voidclysm Blackhole
+        RenderingRegistry.registerEntityRenderingHandler(EntityVoidBlackHole.class, RenderVoidBlackHole::new);
         //Puzzle Mirror
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPuzzleMirror.class, new RenderPuzzleMirror());
     }

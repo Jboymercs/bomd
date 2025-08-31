@@ -1102,6 +1102,11 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         } else if(source.isProjectile()) {
             return super.attackEntityFrom(source, (float) (amount * MobConfig.volactile_projectile_resistance));
         }
+
+        if(ModConfig.boss_cap_damage_enabled && amount > MobConfig.volactile_damage_cap) {
+            return super.attackEntityFrom(source, MobConfig.volactile_damage_cap);
+        }
+
         return super.attackEntityFrom(source, amount);
     }
 

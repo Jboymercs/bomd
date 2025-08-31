@@ -52,7 +52,7 @@ public class VoidiantLazerAction implements IMultiAction {
     public void update() {
         if(this.isShootingLazer) {
             if(entity.getAttackTarget() != null) {
-                Vec3d laserShootPos = entity.getAttackTarget().getPositionVector();
+                Vec3d laserShootPos = entity.getAttackTarget().getPositionVector().add(0, 1, 0);
                 entity.addEvent(() -> {
 
                     // Extend shooting beyond the target position up to 40 blocks

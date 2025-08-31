@@ -40,7 +40,7 @@ public class ParticleLargeFlame extends ParticleSSBase{
 
     @Override
     public int getBrightnessForRender(float partialTicks)
-    { return super.getBrightnessForRender(partialTicks); }
+    { return 135; }
 
     @SideOnly(Side.CLIENT)
     public static class Factory implements IParticleFactory

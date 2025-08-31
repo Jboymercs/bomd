@@ -10,6 +10,7 @@ import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
@@ -43,6 +44,20 @@ public class EntityVoidSpike extends EntityAbstractBase implements IAnimatable {
 
     public EntityVoidSpike(World worldIn) {
         super(worldIn);
+        selectAnimationTooPlay();
+        this.setSize(0.6f, 2.0f);
+        this.noClip = true;
+        this.setImmovable(true);
+        this.setNoAI(true);
+    }
+
+    private EntityPlayer player;
+    private float damageIn;
+
+    public EntityVoidSpike(World worldIn, EntityPlayer owner, float damage) {
+        super(worldIn);
+        this.player = owner;
+        this.damageIn = damage;
         selectAnimationTooPlay();
         this.setSize(0.6f, 2.0f);
         this.noClip = true;
@@ -104,16 +119,29 @@ public class EntityVoidSpike extends EntityAbstractBase implements IAnimatable {
         if(ticksExisted > 24 && ticksExisted < 30) {
             List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntityVoidBlossom || e instanceof EntityVoidSpike || e instanceof EntityGenericWave)));
 
-            if(!targets.isEmpty()) {
-                for(EntityLivingBase base : targets) {
-                    if(base != this && !(base instanceof EntityVoidBlossom) && !(base instanceof EntityMiniBlossom)) {
-                        Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
-                        DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
-                        float damage = this.getAttack();
-                        ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+            if(player != null) {
+                if(!targets.isEmpty()) {
+                    for(EntityLivingBase base : targets) {
+                        if(base != this && base != player) {
+                            Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
+                            DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.PLAYER).directEntity(player).build();
+                            ModUtils.handleAreaImpact(0.5f, (e) -> damageIn, this, offset, source, 0.2f, 0, false);
+                        }
                     }
-                }
 
+                }
+            } else {
+                if(!targets.isEmpty()) {
+                    for(EntityLivingBase base : targets) {
+                        if(base != this && !(base instanceof EntityVoidBlossom) && !(base instanceof EntityMiniBlossom)) {
+                            Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
+                            DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
+                            float damage = this.getAttack();
+                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+                        }
+                    }
+
+                }
             }
 
         }

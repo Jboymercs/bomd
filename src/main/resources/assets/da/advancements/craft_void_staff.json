@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:void_staff"
+    },
+    "title": {
+      "translate": "advancements.da.craft_void_staff.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_void_staff.description"
+    }
+  },
+  "parent": "da:kill_voidclysm",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:void_staff"
+          }
+        ]
+      }
+    }
+  }
+}

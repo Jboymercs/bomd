@@ -1,6 +1,6 @@
 package com.dungeon_additions.da.entity.render.desert_dungeon;
 
-import com.dungeon_additions.da.entity.desert_dungeon.EntityAegyptia;
+import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
 import com.dungeon_additions.da.entity.model.desert_dungeon.ModelAegyptia;
 import com.dungeon_additions.da.entity.render.layer.GeoSpecificGlow;
 import com.dungeon_additions.da.entity.render.util.RenderGeoExtended;
@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import javax.annotation.Nullable;
 
 public class RenderAegyptia extends RenderGeoExtended<EntityAegyptia> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/aegyptia.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/aegyptia/aegyptia.png");
     private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/entity/desert/geo.aegyptia.json");
 
 

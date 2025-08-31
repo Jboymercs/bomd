@@ -62,7 +62,7 @@ public class ModDarkArmorBase extends ItemArmor implements IHasModel {
             multimap.put(SharedMonsterAttributes.KNOCKBACK_RESISTANCE.getName(), this.knockbackResistance);
             // Override armor toughness to make is adjustable in game
             //Come back to Re-use when needed IF needed
-            multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor toughness", 2.25F * ModConfig.armor_toughness_scaling, 0));
+            multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor toughness", 2.5F * ModConfig.armor_toughness_scaling, 0));
 
         }
 

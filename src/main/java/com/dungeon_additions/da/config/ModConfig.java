@@ -29,6 +29,11 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static double boss_attack_damage_scaling = 0.18;
 
+    @Config.Name("Boss Damage Cap Enable/Disalbe")
+    @Config.Comment("When enabled, bosses have damage caps that players can do to them. They are typically quite high but more for exploits in modded settings")
+    @Config.RequiresMcRestart
+    public static boolean boss_cap_damage_enabled = true;
+
     @Config.Name("Armor Scaling")
     @Config.Comment("Scale the armor values of all of the armor items in the mod")
     @Config.RequiresMcRestart
@@ -201,7 +206,7 @@ public class ModConfig {
     @Config.Name("Frostborn Champion Axe Chance")
     @Config.Comment("Change the damage scaling the champion axe can do. Higher the number, the more damage it does the lower the health of the player")
     @Config.RequiresMcRestart
-    public static float champion_axe_damage_scaling = 4;
+    public static float champion_axe_damage_scaling = 1;
 
     @Config.Name("Bloodied Sword Spear Cooldown")
     @Config.Comment("Change the cooldown in seconds for the Bloodied Swordspears Bloody Sprat ability, The Bloody Dash is always double the amount of time of this.")
@@ -295,7 +300,82 @@ public class ModConfig {
     @Config.Name("Voidiant Chestplate Damage")
     @Config.Comment("How much damage does the Voidiant Chestplate do with its blast attack")
     @Config.RequiresMcRestart
-    public static float voidiant_chestplate_damage = 5;
+    public static float voidiant_chestplate_damage = 6;
+
+    @Config.Name("Voidiant Chestplate Cooldown")
+    @Config.Comment("Change the cooldown for the Voidic Chestplate before it can start recharging its ability. In seconds")
+    @Config.RequiresMcRestart
+    public static int voidiant_chestplate_cooldown = 10;
+
+    @Config.Name("Voidic Helmet Charged Capacity")
+    @Config.Comment("How many times must the player take damage in order for the Voidic Helmet to be fully charged")
+    @Config.RequiresMcRestart
+    public static int voidic_helmet_hit_counter = 12;
+
+    @Config.Name("Voidic Helmet Damage")
+    @Config.Comment("Change how much Damage does the Voidic Helmet's Flame Rune AOE do.")
+    @Config.RequiresMcRestart
+    public static int voidic_helmet_damage = 7;
+
+    @Config.Name("Voidic Helmet Cooldown")
+    @Config.Comment("Change the cooldown for the Voidic Helmet before it can start recharging its ability. In seconds")
+    @Config.RequiresMcRestart
+    public static int voidic_helmet_cooldown = 30;
+
+    @Config.Name("Void Blossom Crown Charged Capacity")
+    @Config.Comment("How many times must the player take damage in order for the Void Blossom Crown to use its ability")
+    @Config.RequiresMcRestart
+    public static int void_blossom_crown_hit_counter = 5;
+
+    @Config.Name("Void Blossom Crown Cooldown")
+    @Config.Comment("Change the cooldown for the Void Blossom Crown before it can start recharging its ability. In seconds")
+    @Config.RequiresMcRestart
+    public static int void_blossom_crown_cooldown = 17;
+
+    @Config.Name("Void Blossom Crown Damage")
+    @Config.Comment("When the Void Blossom Crown does its ability, how much damage should the Thorns do?")
+    @Config.RequiresMcRestart
+    public static int void_blossom_crown_damage = 9;
+
+    @Config.Name("Voidclystic Hammer Projectile Cooldown")
+    @Config.Comment("Change the cooldown of the Voidclystic Hammer when launching projectiles. In seconds")
+    @Config.RequiresMcRestart
+    public static int void_hammer_projectile_cooldown = 14;
+
+    @Config.Name("Voidclystic Hammer Projectile Damage")
+    @Config.Comment("Change the damage of the Voidclystic Hammer when launching projectiles.")
+    @Config.RequiresMcRestart
+    public static float void_hammer_projectile_damage = 9;
+
+    @Config.Name("Voidclystic Hammer Black Hole Cooldown")
+    @Config.Comment("Change the cooldown of the Voidclystic Hammer when releasing a Black Hole. In seconds")
+    @Config.RequiresMcRestart
+    public static int void_hammer_blackhole_cooldown = 60;
+
+    @Config.Name("Voidclystic Hammer Black Hole Damage Cap")
+    @Config.Comment("Change the damage cap of the Black hole on its blast. Since the hammer damages based on enchantments with weapons. There is a cap to prevent overpowered combos")
+    @Config.RequiresMcRestart
+    public static float void_hammer_blackhole_damage_cap = 16;
+
+    @Config.Name("Voidclystic Hammer Damage")
+    @Config.Comment("Change the base damage the Voidclystic Hammer")
+    @Config.RequiresMcRestart
+    public static float void_hammer_damage = 8;
+
+    @Config.Name("Voidclystic Staff Damage")
+    @Config.Comment("Change the base damage the Voidclystic Staff")
+    @Config.RequiresMcRestart
+    public static double void_staff_damage = 4.5;
+
+    @Config.Name("Voidclystic Staff Full Health Modifier")
+    @Config.Comment("Change the extra damage bonus for when the player is full health using the Voidclystic Staff")
+    @Config.RequiresMcRestart
+    public static double void_staff_health_modif = 2;
+
+    @Config.Name("Voidclystic Staff Cooldown")
+    @Config.Comment("Change the cooldown of the Voidclystic Staff for the projectile attack. Other ability scales with this. In seconds")
+    @Config.RequiresMcRestart
+    public static int void_staff_cooldown = 3;
 
     @Config.Name("Crafting Material ToolTip")
     @Config.Comment("Should Items listed as Crafting Material state that is a crafting material. False will disable the tool tip")
@@ -356,7 +436,7 @@ public class ModConfig {
     @Config.Name("High Court City Search Radius")
     @Config.Comment("Change how far the Orb of Light and command searches for the High Court City. In chunks not blocks!")
     @Config.RequiresMcRestart
-    public static int high_court_city_search_distance = 200;
+    public static int high_court_city_search_distance = 225;
 
     @Config.Name("Obsidilith Arena Search Radius")
     @Config.Comment("Change how far the Orb of Light and command searches for the Obsidilith Arena. In chunks not blocks!")
@@ -387,12 +467,12 @@ public class ModConfig {
     @Config.Name("Cult of Roh Assassin Spawn Rate")
     @Config.Comment("Change the spawn rate of Cult of Roh Assassins, change to 0 to disable")
     @Config.RequiresMcRestart
-    public static int assassin_spawn_rate = 7;
+    public static int assassin_spawn_rate = 5;
 
     @Config.Name("Cult of Roh Sorcerer Spawn Rate")
     @Config.Comment("Change the spawn rate of Cult of Roh Sorcerer, change to 0 to disable")
     @Config.RequiresMcRestart
-    public static int sorcerer_spawn_rate = 3;
+    public static int sorcerer_spawn_rate = 2;
 
     @Config.Name("Boss Reset Enabled/Disabled")
     @Config.Comment("This setting makes it so that if bosses killed all players around them, they will reset back into a key block with a chest above with the respective key. Allowing players to recover there loot more easily and try again. default: true")

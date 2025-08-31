@@ -38,8 +38,6 @@ public class ModWorldGen implements IWorldGenerator {
     private static final WorldGenForgottenTemple forgotten_temple = new WorldGenForgottenTemple();
 
     private static final WorldGenObsidilithArena obsidilithArena = new WorldGenObsidilithArena();
-
-    private static List<Biome> spawnBiomesRottenHold;
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
 
@@ -56,8 +54,6 @@ public class ModWorldGen implements IWorldGenerator {
             if (isAllowedDimensionTooSpawnIn(world.provider.getDimension()) && WorldConfig.void_cave_enabled) {
                             BlockPos posModified = new BlockPos(pos.getX(), 0, pos.getZ());
                             blossomCave.generate(world, random, posModified);
-
-
             }
         //Rotten Hold
         if (isAllowedDimensionTooSpawnInRottenHold(world.provider.getDimension()) && WorldConfig.rotten_hold_enabled) {
@@ -67,8 +63,8 @@ public class ModWorldGen implements IWorldGenerator {
         }
         //Night Lich Tower
         if(isAllowedDimensionTooSpawnInNightLich(world.provider.getDimension()) && WorldConfig.night_lich_tower_enabled) {
-                        //After doing solid ground checks it can signal for the lich tower to try and generate
-                        lich_tower.generate(world, random, pos);
+            //After doing solid ground checks it can signal for the lich tower to try and generate
+            lich_tower.generate(world, random, pos);
         }
         //Frozen City
         if(isAllowedDimensionTooSpawnInFrozenCastle(world.provider.getDimension()) && WorldConfig.frozen_castle_enabled) {
@@ -82,7 +78,6 @@ public class ModWorldGen implements IWorldGenerator {
         if(isAllowedDimensionTooSpawnInForgottenTemple(world.provider.getDimension()) && WorldConfig.temple_enabled) {
             forgotten_temple.generate(world, random, pos);
         }
-
         //Obsidilith Arena
         if(isAllowedDimensionTooSpawnInObsidilithArena(world.provider.getDimension()) && WorldConfig.obsidilith_arena_enabled) {
             obsidilithArena.generate(world, random, pos);

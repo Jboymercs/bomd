@@ -259,7 +259,10 @@ public class ForgottenTemple {
         String[] big_end_pieces = {"end/b_end_1","end/b_end_2","end/b_end_3"};
         String[] small_end_pieces = {"end/end_1","end/end_2","end/end_3","end/end_4","end/end_5","end/end_6","end/end_7"};
 
-        if(SIZE > 1 && !generatedKeyRoom) {
+        if(SIZE > 3 && !generatedBossRoom) {
+            return constructBossRoom(parent, pos, rot);
+        }
+        else if(SIZE > 1 && !generatedKeyRoom) {
             return constructKeyRoom(parent, pos, rot);
         }
 
@@ -290,6 +293,17 @@ public class ForgottenTemple {
         }
         components.add(key_room);
         generatedKeyRoom = true;
+        return true;
+    }
+
+    private boolean constructBossRoom(ForgottenTempleTemplate parent, BlockPos pos, Rotation rot) {
+        ForgottenTempleTemplate boss_room = addAdjustedPieceWithoutDistance(parent, pos, "boss_room", rot);
+
+        if(boss_room.isCollidingExcParent(manager, parent, components)) {
+            return false;
+        }
+        components.add(boss_room);
+        generatedBossRoom = true;
         return true;
     }
 

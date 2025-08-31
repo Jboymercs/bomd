@@ -53,7 +53,7 @@ public class VoidiantChestplate extends ItemArmor implements IHasModel {
         setRegistryName(name);
         this.texture = textureName;
         ModItems.ITEMS.add(this);
-        this.knockbackResistance = new AttributeModifier("darkKnockbackResistance", 0.3, 0);
+        this.knockbackResistance = new AttributeModifier("darkKnockbackResistance", 0.15, 0);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class VoidiantChestplate extends ItemArmor implements IHasModel {
         if (entityIn instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entityIn;
             if(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == this) {
-                if(player.hurtTime == 1) {
+                if(player.hurtTime == 1 && !player.getCooldownTracker().hasCooldown(this)) {
                     hitCounter++;
                 }
 
@@ -123,6 +123,7 @@ public class VoidiantChestplate extends ItemArmor implements IHasModel {
                 if(player.canBePushed()) {
                     player.motionY += 0.5;
                 }
+                player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.voidiant_chestplate_cooldown * 20);
                 this.setAttack = false;
             }
         }

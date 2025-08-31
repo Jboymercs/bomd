@@ -3,6 +3,7 @@ package com.dungeon_additions.da.util.handlers;
 
 import com.dungeon_additions.da.blocks.boss.BossStateMapper;
 import com.dungeon_additions.da.blocks.lich.LichStateMapper;
+import com.dungeon_additions.da.entity.render.desert_dungeon.RenderDesertBeam;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.render.*;
@@ -59,6 +60,9 @@ public class RegistryHandler {
         ModelLoader.setCustomModelResourceLocation(ModItems.VOIDIANT_CATALYST, 0, new ModelResourceLocation(ModReference.MOD_ID + ":voidiant_catalyst", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.OBSIDIAN_SHIELD, 0, new ModelResourceLocation(ModReference.MOD_ID + ":obsidian_shield", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.VOIDCLYSM_BOLT, 0, new ModelResourceLocation(ModReference.MOD_ID + ":voidclysm_bolt", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.VOID_HAMMER, 0, new ModelResourceLocation(ModReference.MOD_ID + ":void_hammer", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.VOID_STAFF, 0, new ModelResourceLocation(ModReference.MOD_ID + ":void_staff", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.DESERT_STORM_PROJ, 0, new ModelResourceLocation(ModReference.MOD_ID + ":desert_storm", "inventory"));
         ModItems.SPORE_BALL.setTileEntityItemStackRenderer(new RenderSpore());
         ModItems.MAGIC_FIREBALL.setTileEntityItemStackRenderer(new RenderMagicFireball());
         ModItems.CHAMPION_AXE.setTileEntityItemStackRenderer(new RenderChampionAxe());
@@ -79,6 +83,9 @@ public class RegistryHandler {
         ModItems.VOIDIANT_CATALYST.setTileEntityItemStackRenderer(new RenderVoidiantCatalyst());
         ModItems.OBSIDIAN_SHIELD.setTileEntityItemStackRenderer(new RenderObsidianShield());
         ModItems.VOIDCLYSM_BOLT.setTileEntityItemStackRenderer(new RenderVoidclysmBolt());
+        ModItems.VOID_HAMMER.setTileEntityItemStackRenderer(new RenderVoidHammer());
+        ModItems.VOID_STAFF.setTileEntityItemStackRenderer(new RenderVoidStaff());
+        ModItems.DESERT_STORM_PROJ.setTileEntityItemStackRenderer(new RenderDesertStorm());
         for (Item item : ModItems.ITEMS) {
             if (item instanceof IHasModel) {
                 ((IHasModel) item).registerModels();

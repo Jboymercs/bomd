@@ -12,6 +12,7 @@ import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -49,6 +50,23 @@ public class EntityVoidclysmSpike extends EntityEndBase implements IAnimatable {
         this.setImmovable(true);
         this.setNoAI(true);
     }
+
+
+    public EntityVoidclysmSpike(World worldIn, EntityPlayer player, float damage) {
+        super(worldIn);
+        this.owner = player;
+        this.damageIn = damage;
+        selectAnimationTooPlay();
+        this.setSize(0.6f, 2.0f);
+        this.noClip = true;
+        this.setImmovable(true);
+        this.setNoAI(true);
+    }
+
+    private EntityPlayer owner;
+    private float damageIn;
+
+
     public void selectAnimationTooPlay() {
         if(selection == 1) {
             ANIM_SELECTION_STRING = ANIM_SHOOT_2;
@@ -89,38 +107,60 @@ public class EntityVoidclysmSpike extends EntityEndBase implements IAnimatable {
         this.renderYawOffset = 0;
 
         if(MobConfig.spike_lag_reducer && this.ticksExisted == 2) {
-            List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(20D, 5D, 20D), e -> !e.getIsInvulnerable() && (!(e instanceof EntityVoidBlossom || e instanceof EntityVoidSpike || e instanceof EntityGenericWave || e instanceof EntityMiniBlossom)));
+            List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(20D, 5D, 20D), e -> !e.getIsInvulnerable() && (!(e instanceof EntityEndBase)));
             if(targets.isEmpty()) {
                 this.setDead();
             }
         }
+        if(world.rand.nextInt(4) == 0) {
+            if(ticksExisted == 2) {
+                playSound(SoundsHandler.APPEARING_WAVE, 0.4f, 1.0f / getRNG().nextFloat() * 0.04F + 0.8F);
+            }
+            if(ticksExisted == 21) {
+                playSound(SoundsHandler.VOID_SPIKE_SHOOT, 0.2f, 1.0f);
+            }
+        }
 
-        if(ticksExisted == 2) {
-            playSound(SoundsHandler.APPEARING_WAVE, 0.4f, 1.0f / getRNG().nextFloat() * 0.04F + 0.8F);
-        }
-        if(ticksExisted == 21) {
-            playSound(SoundsHandler.VOID_SPIKE_SHOOT, 0.2f, 1.0f);
-        }
         if(ticksExisted > 24 && ticksExisted < 30) {
             List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntityEndBase)));
 
-            if(!targets.isEmpty()) {
-                for(EntityLivingBase base : targets) {
-                    if(base != this && !(base instanceof EntityEndBase)) {
-                        Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
-                        DamageSource source = ModDamageSource.builder().type(ModDamageSource.MAGIC).directEntity(this).build();
-                        float damage = this.getAttack();
-                        ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.6f, 0, false);
-                        if (!world.isRemote) {
-                            double distSq = this.getDistanceSq(base.posX, base.getEntityBoundingBox().minY, base.posZ);
-                            double distance = Math.sqrt(distSq);
-                            if (base.getActivePotionEffect(MobEffects.SLOWNESS) == null && distance < 1) {
-                                base.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 60, 3, false, false));
+            if(owner != null) {
+                if(!targets.isEmpty()) {
+                    for(EntityLivingBase base : targets) {
+                        if(base != this && base != owner) {
+                            Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
+                            DamageSource source = ModDamageSource.builder().type(ModDamageSource.PLAYER).directEntity(owner).build();
+                            ModUtils.handleAreaImpact(0.5f, (e) -> damageIn, this, offset, source, 0.6f, 0, false);
+                            if (!world.isRemote) {
+                                double distSq = this.getDistanceSq(base.posX, base.getEntityBoundingBox().minY, base.posZ);
+                                double distance = Math.sqrt(distSq);
+                                if (base.getActivePotionEffect(MobEffects.SLOWNESS) == null && distance < 1) {
+                                    base.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 100, 1, false, false));
+                                }
                             }
                         }
                     }
-                }
 
+                }
+            } else {
+                if(!targets.isEmpty()) {
+                    for(EntityLivingBase base : targets) {
+                        if(base != this && !(base instanceof EntityEndBase)) {
+                            Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
+                            DamageSource source = ModDamageSource.builder().type(ModDamageSource.MAGIC).directEntity(this).build();
+                            float damage = this.getAttack();
+                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                            if (!world.isRemote) {
+                                double distSq = this.getDistanceSq(base.posX, base.getEntityBoundingBox().minY, base.posZ);
+                                double distance = Math.sqrt(distSq);
+                                if (base.getActivePotionEffect(MobEffects.SLOWNESS) == null && distance < 1) {
+                                    base.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 100, 1, false, false));
+                                }
+                            }
+                        }
+                    }
+
+                }
             }
 
         }

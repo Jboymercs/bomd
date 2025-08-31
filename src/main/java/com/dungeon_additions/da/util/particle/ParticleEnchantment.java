@@ -38,7 +38,7 @@ public class ParticleEnchantment extends ParticleSSBase{
 
     @Override
     public int getBrightnessForRender(float partialTicks)
-    { return 135; }
+    { return brightnessIncreaseToFull(partialTicks); }
 
     @SideOnly(Side.CLIENT)
     public static class Factory implements IParticleFactory

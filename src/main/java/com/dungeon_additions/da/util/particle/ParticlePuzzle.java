@@ -50,7 +50,7 @@ public class ParticlePuzzle extends ParticleSSBase{
 
     @Override
     public int getBrightnessForRender(float partialTicks)
-    { return super.getBrightnessForRender(partialTicks * this.particleAge * 3); }
+    { return brightnessIncreaseToFull(partialTicks); }
 
     @SideOnly(Side.CLIENT)
     public static class Factory implements IParticleFactory

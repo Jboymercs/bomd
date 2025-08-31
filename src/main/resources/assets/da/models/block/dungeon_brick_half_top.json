@@ -1,0 +1,9 @@
+{
+  "parent": "block/upper_slab",
+  "textures":
+  {
+    "bottom": "da:blocks/dungeon_brick",
+    "top": "da:blocks/dungeon_brick",
+    "side": "da:blocks/dungeon_brick"
+  }
+}

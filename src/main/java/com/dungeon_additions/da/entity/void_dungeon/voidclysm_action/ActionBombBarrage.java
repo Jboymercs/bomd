@@ -14,7 +14,7 @@ public class ActionBombBarrage implements IActionVoidclysm {
         double health = actor.getHealth() / actor.getMaxHealth();
 
         if(health < 0.5) {
-            if(actor.getSpawnLocation() != null) {
+            if(actor.getSpawnLocation() != null && actor.isSetSpawnLoc()) {
                 for(int i = 0; i <= 140; i += 5) {
                     actor.addEvent(() -> {
                         EntityVoidBomb bomb = new EntityVoidBomb(actor.world);
@@ -35,7 +35,7 @@ public class ActionBombBarrage implements IActionVoidclysm {
                 }
             }
         } else {
-            if(actor.getSpawnLocation() != null) {
+            if(actor.getSpawnLocation() != null && actor.isSetSpawnLoc()) {
                 for(int i = 0; i <= 80; i += 5) {
                     actor.addEvent(() -> {
                         EntityVoidBomb bomb = new EntityVoidBomb(actor.world);
@@ -56,15 +56,39 @@ public class ActionBombBarrage implements IActionVoidclysm {
                 }
             }
         }
-
-        Vec3d targetOldPos = target.getPositionVector();
         actor.addEvent(()-> {
-            Vec3d targetedPos = target.getPositionVector();
-            Vec3d predictedPosition = ModUtils.predictPlayerPosition(targetOldPos, targetedPos, 3);
-            EntityVoidBomb bomb = new EntityVoidBomb(actor.world);
-            bomb.setPosition(predictedPosition.x, predictedPosition.y + 20, predictedPosition.z);
-            actor.world.spawnEntity(bomb);
-        }, 3);
+            Vec3d targetOldPos = target.getPositionVector();
+            actor.addEvent(()-> {
+                Vec3d targetedPos = target.getPositionVector();
+                Vec3d predictedPosition = ModUtils.predictPlayerPosition(targetOldPos, targetedPos, 3);
+                EntityVoidBomb bomb = new EntityVoidBomb(actor.world);
+                bomb.setPosition(predictedPosition.x, predictedPosition.y + 20, predictedPosition.z);
+                actor.world.spawnEntity(bomb);
+            }, 3);
+        }, 1);
+
+
+        actor.addEvent(()-> {
+            Vec3d targetOldPos = target.getPositionVector();
+            actor.addEvent(()-> {
+                Vec3d targetedPos = target.getPositionVector();
+                Vec3d predictedPosition = ModUtils.predictPlayerPosition(targetOldPos, targetedPos, 3);
+                EntityVoidBomb bomb = new EntityVoidBomb(actor.world);
+                bomb.setPosition(predictedPosition.x, predictedPosition.y + 20, predictedPosition.z);
+                actor.world.spawnEntity(bomb);
+            }, 3);
+        }, 30);
+
+        actor.addEvent(()-> {
+            Vec3d targetOldPos = target.getPositionVector();
+            actor.addEvent(()-> {
+                Vec3d targetedPos = target.getPositionVector();
+                Vec3d predictedPosition = ModUtils.predictPlayerPosition(targetOldPos, targetedPos, 3);
+                EntityVoidBomb bomb = new EntityVoidBomb(actor.world);
+                bomb.setPosition(predictedPosition.x, predictedPosition.y + 20, predictedPosition.z);
+                actor.world.spawnEntity(bomb);
+            }, 3);
+        }, 70);
 
     }
 }

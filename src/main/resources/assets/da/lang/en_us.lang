@@ -75,7 +75,7 @@ entity.proj_dark_matter.name=Void Mana
 entity.dark_royal.name=Roh Crypt Guard
 entity.puzzle_orb.name=Grum Puzzle Ball
 entity.scutter_beetle.name=Scutter Beetle
-entity.aegyptia.name=Aegyptia
+entity.aegyptia.name=Aegyptia Recurian
 entity.obsidilith.name=Obsidilith
 entity.blue_wave.name=Obsidilith's Magic
 entity.voidiant.name=Voidiant
@@ -83,6 +83,9 @@ entity.voidclysm.name=The Voidclysm
 entity.voidclysm_bolt.name=Voidclysm Bolt
 entity.void_bomb.name=Voidclysm Bomb
 entity.voidclysm_spike.name=Voidclysm Spike
+entity.void_projectile.name=Voidclysm Tracking Magic
+entity.void_hole.name=Voidclysm Blackhole
+entity.desert_storm.name=Desert Storm
 item.void_leaf.name=Void Leaf
 item.spore.name=Void Blossom Spore
 item.crystal_fruit.name=Crystal Fruit
@@ -137,6 +140,7 @@ item.dark_metal_chestplate.name=Dark Metal Chestplate
 item.dark_metal_leggings.name=Dark Metal Leggings
 item.dark_metal_boots.name=Dark Metal Boots
 item.kopis.name=Aegyptian Kopis
+item.desert_storm.name=Desert Storm Projectile
 da.desc.draugr_shield_name=Frostborn Shield
 da.desc.dragon_shield_name=Dragon Scourage Shield
 da.desc.flame_shield_name=Incendium Shield
@@ -202,6 +206,10 @@ item.voidiant_chestplate.name=Voidiant Chestplate
 item.voidclysm_bolt.name=Voidclysm Bolt
 item.voidclysm_crystal.name=Voidclysm Crystal
 item.obsidian_locator.name=Call of the Void
+item.void_hammer.name=Voidclystic Hammer
+item.obsidian_helm.name=Voidic Helmet
+item.flower_crown.name=Void Blossom's Crown
+item.void_staff.name=Voidclystic Staff
 tile.spore_blossom.name=Void Blossom
 tile.moss_block.name=Moss Block
 tile.moss_carpet.name=Moss Carpet
@@ -322,6 +330,12 @@ tile.obsidilith_rune.name=Obsidilith Rune
 tile.fake_obsidian.name=Obsidilith Rune Point
 tile.obsidian_end_frame.name=Obsidian End Frame
 tile.end_spawner.name=End Disappearing Spawner
+tile.dungeon_brick.name=Dungeon Stone Bricks
+tile.mossy_dungeon_brick.name=Mossy Dungeon Stone Bricks
+tile.dungeon_brick_half.name=Dungeon Stone Brick Slab
+tile.dungeon_brick_double.name=Double Dungeon Stone Brick Slab
+tile.dungeon_brick_stairs.name=Dungeon Stone Brick Stairs
+tile.dungeon_brick_wall.name=Dungeon Stone Brick Wall
 
 
 itemGroup.dungeon_additions=BOMD + Dungeon Additions Items
@@ -404,6 +418,10 @@ da.desc.voidiant_catalyst_desc=Right clicking will shoot a laser in your directi
 da.desc.voidiant_armor_desc=Getting hit charges this chestplate, when Runic particles appear and crouching you can do a blast attack at your position.
 da.desc.obsidian_shield_desc=Blocking attacks charges the shield. After 5 charges and sneaking and blocking you will summon a magic attack on the entity you are looking at.
 da.desc.obsidian_locator_desc=The void seems to call your name...
+da.desc.void_hammer_desc=Right click releases 3 projectiles, Shift + Right Click summons forth a black hole. Additionally half of this weapons damage bypasses armor and does a sweep attack.
+da.desc.obsidian_armor_desc=Negates Levitation and Blindness. After taking damage multiple times and fire rune particles start spawning around you, By sneaking you can summons a fire wave around you.
+da.desc.flower_crown_desc=After taking several hits, the last entity that hit you will have void thorns summoned upon them.
+da.desc.void_staff_desc=Right click shoots a void bolt, sneaking and right clicking summons a void aoe. Damage scales with weapon and being at full health provides extra damage.
 death.attack.da:maelstrom=%1$s succumbed to the void
 death.attack.da:mobMaelstrom=%1$s was killed by a %2$s
 death.attack.da:playerMaelstrom=%1$s was killed by %2$s
@@ -596,4 +614,16 @@ advancements.da.find_grum_stone.description=Mine Grum Stone.
 #Find Farum Stone
 advancements.da.find_farum_stone.title=Sky high builder
 advancements.da.find_farum_stone.description=Mine Farum Stone
+#Craft Void Hammer
+advancements.da.craft_void_hammer.title=Smack down!
+advancements.da.craft_void_hammer.description=Craft the Voidclystic Hammer
+#Craft Void Staff
+advancements.da.craft_void_staff.title=Mage Arena.
+advancements.da.craft_void_staff.description=Craft the Voidclystic Staff
+#Craft Obsidian Helmet
+advancements.da.craft_obsidian_helm.title=Wait. This armor has a soul?
+advancements.da.craft_obsidian_helm.description=Craft the Voidic Helmet.
+#Craft Void Blossoms Crown
+advancements.da.craft_flower_crown.title=Elegance is my demeanor.
+advancements.da.craft_flower_crown.description=Craft the Void Blossom's Crown
 

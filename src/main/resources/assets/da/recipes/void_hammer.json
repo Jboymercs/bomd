@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FRX",
+    " V ",
+    " B "
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:blaze_rod"
+    },
+    "R": {
+      "item": "da:voidclysm_crystal"
+    },
+    "B": {
+      "item": "da:incendium_core"
+    },
+    "X": {
+      "item": "da:voidiant_core"
+    },
+    "F": {
+      "item": "da:obsdian_heart"
+    }
+  },
+  "result": {
+    "item": "da:void_hammer"
+  }
+}

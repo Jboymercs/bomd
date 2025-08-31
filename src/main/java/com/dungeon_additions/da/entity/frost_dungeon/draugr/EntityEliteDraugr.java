@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.frost_dungeon.draugr;
 
 import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.EntityDraugrEliteAttackAI;
 import com.dungeon_additions.da.entity.ai.EntityDraugrRangedAI;
 import com.dungeon_additions.da.entity.ai.IAttack;
@@ -768,6 +769,11 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
         if (source.isProjectile()) {
             return super.attackEntityFrom(source, amount * 0.5F);
         }
+
+        if(ModConfig.boss_cap_damage_enabled && amount > MobConfig.champion_damage_cap) {
+            return super.attackEntityFrom(source, MobConfig.champion_damage_cap);
+        }
+
         return super.attackEntityFrom(source, amount);
     }
 

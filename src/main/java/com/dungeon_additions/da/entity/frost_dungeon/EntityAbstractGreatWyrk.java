@@ -378,6 +378,11 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
         if(source.isProjectile()) {
             return super.attackEntityFrom(source, amount * 0.15F);
         }
+
+        if(ModConfig.boss_cap_damage_enabled && amount > MobConfig.great_wyrk_damage_cap) {
+            return super.attackEntityFrom(source, MobConfig.great_wyrk_damage_cap);
+        }
+
         return super.attackEntityFrom(source, amount * 1.15F);
     }
 

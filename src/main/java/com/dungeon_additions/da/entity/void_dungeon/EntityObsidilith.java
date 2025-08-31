@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.void_dungeon;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.blocks.BlockBase;
 import com.dungeon_additions.da.blocks.boss.BlockEnumBossSummonState;
 import com.dungeon_additions.da.config.MobConfig;
@@ -17,11 +18,9 @@ import com.dungeon_additions.da.entity.tileEntity.TileEntityObsidilithRune;
 import com.dungeon_additions.da.entity.void_dungeon.obsidilith_action.ActionFlameRing;
 import com.dungeon_additions.da.entity.void_dungeon.obsidilith_action.ActionRedWave;
 import com.dungeon_additions.da.init.ModBlocks;
-import com.dungeon_additions.da.util.ModRand;
-import com.dungeon_additions.da.util.ModReference;
-import com.dungeon_additions.da.util.ModUtils;
-import com.dungeon_additions.da.util.ServerScaleUtil;
+import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
+import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,6 +28,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,6 +45,7 @@ import net.minecraft.tileentity.TileEntityShulkerBox;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -71,8 +72,13 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
 
     private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.NOTCHED_6));
     private static final DataParameter<Boolean> SUMMON_STATE = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> DEATH_STATE = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> LEAP_ATTACK = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHIELDED = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> PURPLE_ATTACK = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> RED_ATTACK = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> FLAME_ATTACK = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> BLUE_ATTACK = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Float> STAT_LINE = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.FLOAT);
     public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BLOCK_POS);
@@ -87,6 +93,16 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
     private Consumer<EntityLivingBase> prevAttacks;
     public boolean isSummonState() {return this.dataManager.get(SUMMON_STATE);}
     public void setSummonState(boolean value) {this.dataManager.set(SUMMON_STATE, Boolean.valueOf(value));}
+    public boolean isPurpleAttack() {return this.dataManager.get(PURPLE_ATTACK);}
+    public void setPurpleAttack(boolean value) {this.dataManager.set(PURPLE_ATTACK, Boolean.valueOf(value));}
+    public boolean isFlameAttack() {return this.dataManager.get(FLAME_ATTACK);}
+    public void setFlameAttack(boolean value) {this.dataManager.set(FLAME_ATTACK, Boolean.valueOf(value));}
+    public boolean isRedAttack() {return this.dataManager.get(RED_ATTACK);}
+    public void setRedAttack(boolean value) {this.dataManager.set(RED_ATTACK, Boolean.valueOf(value));}
+    public boolean isBlueAttack() {return this.dataManager.get(BLUE_ATTACK);}
+    public void setBlueAttack(boolean value) {this.dataManager.set(BLUE_ATTACK, Boolean.valueOf(value));}
+    public boolean isDeathState() {return this.dataManager.get(DEATH_STATE);}
+    public void setDeathState(boolean value) {this.dataManager.set(DEATH_STATE, Boolean.valueOf(value));}
     public boolean isLeapAttack() {return this.dataManager.get(LEAP_ATTACK);}
     public void setLeapAttack(boolean value) {this.dataManager.set(LEAP_ATTACK, Boolean.valueOf(value));}
     public boolean isShielded() {return this.dataManager.get(SHIELDED);}
@@ -163,8 +179,13 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
     @Override
     public void entityInit() {
         this.dataManager.register(SUMMON_STATE, Boolean.valueOf(false));
+        this.dataManager.register(DEATH_STATE, Boolean.valueOf(false));
         this.dataManager.register(LEAP_ATTACK, Boolean.valueOf(false));
         this.dataManager.register(SHIELDED, Boolean.valueOf(false));
+        this.dataManager.register(PURPLE_ATTACK, Boolean.valueOf(false));
+        this.dataManager.register(RED_ATTACK, Boolean.valueOf(false));
+        this.dataManager.register(FLAME_ATTACK, Boolean.valueOf(false));
+        this.dataManager.register(BLUE_ATTACK, Boolean.valueOf(false));
         this.dataManager.register(SHAKING, Boolean.valueOf(false));
         this.dataManager.register(STAT_LINE,  0.75F);
         this.dataManager.register(SET_SPAWN_LOC, Boolean.valueOf(false));
@@ -177,8 +198,13 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("Summon", this.isSummonState());
+        nbt.setBoolean("Death_State", this.isDeathState());
         nbt.setBoolean("Leap_Attack", this.isLeapAttack());
         nbt.setBoolean("Shielded", this.isShielded());
+        nbt.setBoolean("Purple_Attack", this.isPurpleAttack());
+        nbt.setBoolean("Red_Attack", this.isRedAttack());
+        nbt.setBoolean("Flame_Attack", this.isFlameAttack());
+        nbt.setBoolean("Blue_Attack", this.isBlueAttack());
         nbt.setBoolean("Shaking", this.isShaking());
         nbt.setFloat("Stat_Line", this.getStatLine());
         nbt.setBoolean("Had_Target", this.isHadPreviousTarget());
@@ -192,7 +218,12 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.setSummonState(nbt.getBoolean("Summon"));
+        this.setDeathState(nbt.getBoolean("Death_State"));
         this.setLeapAttack(nbt.getBoolean("Leap_Attack"));
+        this.setPurpleAttack(nbt.getBoolean("Purple_Attack"));
+        this.setRedAttack(nbt.getBoolean("Red_Attack"));
+        this.setFlameAttack(nbt.getBoolean("Flame_Attack"));
+        this.setBlueAttack(nbt.getBoolean("Blue_Attack"));
         this.setShielded(nbt.getBoolean("Shielded"));
         this.setShaking(nbt.getBoolean("Shaking"));
         if (this.hasCustomName()) {
@@ -221,6 +252,14 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         if(!this.isImmovable()) {
             this.motionX = 0;
             this.motionZ = 0;
+        }
+
+        if(!this.isFightMode() && this.ticksExisted % 10 == 0) {
+            if(this.getSpawnLocation() != null) {
+                if(this.getPosition() != this.getSpawnLocation()) {
+                    this.setPosition(this.getSpawnLocation().getX() + 0.5, this.getSpawnLocation().getY(), this.getSpawnLocation().getZ() + 0.5);
+                }
+            }
         }
 
 
@@ -327,7 +366,6 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
                 }
             }
         }
-
     }
 
     protected void turnBossIntoSummonSpawner(BlockPos pos) {
@@ -432,9 +470,9 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
     @Override
     public int startAttack(EntityLivingBase target, float distanceSq, boolean strafingBackwards) {
         double distance = Math.sqrt(distanceSq);
-        int cooldown_degradation = MobConfig.blossom_degradation_cooldown * playersNearbyAmount;
+        int cooldown_degradation = MobConfig.obsidilith_degradation_cooldown * playersNearbyAmount;
         double HealthChange = this.getHealth() / this.getMaxHealth();
-        if(!this.isFightMode() && !this.isSummonState()) {
+        if(!this.isFightMode() && !this.isSummonState() && !this.isDeathState()) {
             List<Consumer<EntityLivingBase>> attacksMelee = new ArrayList<>(Arrays.asList(spikeAttack, flame_attack, red_attack, purple_attack));
             double[] weights = {
                     distance * 0.02, // Spike Attack Simple
@@ -446,13 +484,15 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
             prevAttacks = ModRand.choice(attacksMelee, rand, weights).next();
             prevAttacks.accept(target);
         }
-        return this.isShielded() ? 170 - cooldown_degradation : 110 - cooldown_degradation;
+        return this.isShielded() ? (int) (MobConfig.obsidilith_cooldown_shielded * 20) - cooldown_degradation : (int) (MobConfig.obsidilith_cooldown * 20) - cooldown_degradation;
     }
 
    private Vec3d savedPos;
 
     private Consumer<EntityLivingBase> purple_attack = (target) -> {
       this.setFightMode(true);
+      this.setPurpleAttack(true);
+        world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
         addEvent(()-> playSound(SoundsHandler.OBSIDILITH_CAST, 2.0f, 0.5f), 5);
         addEvent(()-> {
             savedPos = this.getPositionVector();
@@ -477,7 +517,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
                 .directEntity(this)
                 .stoppedByArmorNotShields().disablesShields().build();
 
-        ModUtils.handleAreaImpact(5, (e) -> this.getAttack(), this, this.getPositionVector().add(ModUtils.yVec(1)), source);
+        ModUtils.handleAreaImpact(5, (e) -> this.getAttack() * 1.5F, this, this.getPositionVector().add(ModUtils.yVec(1)), source);
         this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f + ModRand.getFloat(0.1f));
         this.world.setEntityState(this, ModUtils.THIRD_PARTICLE_BYTE);
         this.setShaking(true);
@@ -492,24 +532,32 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
             this.setImmovable(true);
             this.setNoGravity(false);
             this.setFightMode(false);
+            this.setPurpleAttack(false);
         }, 30);
     }
 
     private Consumer<EntityLivingBase> red_attack = (target) -> {
       this.setFightMode(true);
+      this.setRedAttack(true);
+      world.setEntityState(this, ModUtils.PARTICLE_BYTE);
         addEvent(()-> playSound(SoundsHandler.OBSIDILITH_CAST, 1.5f, 0.5f), 5);
         addEvent(()-> new ActionRedWave().performAction(this, target), 30);
         addEvent(()-> this.setFightMode(false), 100);
+        addEvent(()-> this.setRedAttack(false), 100);
     };
     private Consumer<EntityLivingBase> flame_attack = (target) -> {
       this.setFightMode(true);
+      this.setFlameAttack(true);
+        world.setEntityState(this, ModUtils.FOURTH_PARTICLE_BYTE);
         addEvent(()-> playSound(SoundsHandler.OBSIDILITH_CAST, 1.5f, 1.5f), 5);
-      addEvent(()-> new ActionFlameRing().performAction(this, target), 30);
-      addEvent(()-> this.setFightMode(false), 60);
+      addEvent(()-> new ActionFlameRing().performAction(this, target), 15);
+      addEvent(()-> this.setFightMode(false), 45);
+      addEvent(()-> this.setFlameAttack(false), 45);
     };
     private Consumer<EntityLivingBase> spikeAttack = (target)-> {
         this.setFightMode(true);
-
+        this.setBlueAttack(true);
+        world.setEntityState(this, ModUtils.FIFTH_PARTICLE_BYTE);
         addEvent(()-> playSound(SoundsHandler.OBSIDILITH_CAST, 1.5f, 1.0f), 5);
 
         addEvent(()-> {
@@ -544,7 +592,8 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         }, 21);
         addEvent(()-> {
             this.setFightMode(false);
-        }, 120);
+            this.setBlueAttack(false);
+        }, 135);
     };
 
     public void spawnSpikeAction(Vec3d predictedPos) {
@@ -750,7 +799,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
     }
 
     private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(!this.isSummonState()) {
+        if(!this.isSummonState() && !this.isDeathState()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
             return PlayState.CONTINUE;
         }
@@ -760,6 +809,10 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
     private <E extends IAnimatable> PlayState predicateStates(AnimationEvent<E> event) {
         if(this.isSummonState()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON, false));
+            return PlayState.CONTINUE;
+        }
+        if(this.isDeathState()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DEATH, false));
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
@@ -802,6 +855,30 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
                         this.posZ + ModRand.getFloat(5), 0, 0, 0);
             });
         }
+        if(id == ModUtils.PARTICLE_BYTE) {
+            ModUtils.circleCallback(3, 15, (pos)-> {
+                pos = new Vec3d(pos.x, 0, pos.y);
+                Main.proxy.spawnParticle(10, this.posX + pos.x, this.posY + 1, this.posZ + pos.z, 0,0.1,0);
+            });
+        }
+        if(id == ModUtils.SECOND_PARTICLE_BYTE) {
+            ModUtils.circleCallback(3, 15, (pos)-> {
+                pos = new Vec3d(pos.x, 0, pos.y);
+                Main.proxy.spawnParticle(11, this.posX + pos.x, this.posY + 1, this.posZ + pos.z, 0,0.1,0);
+            });
+        }
+        if(id == ModUtils.FOURTH_PARTICLE_BYTE) {
+            ModUtils.circleCallback(3, 15, (pos)-> {
+                pos = new Vec3d(pos.x, 0, pos.y);
+                Main.proxy.spawnParticle(12, this.posX + pos.x, this.posY + 1, this.posZ + pos.z, 0,0.1,0);
+            });
+        }
+        if(id == ModUtils.FIFTH_PARTICLE_BYTE) {
+            ModUtils.circleCallback(3, 15, (pos)-> {
+                pos = new Vec3d(pos.x, 0, pos.y);
+                Main.proxy.spawnParticle(13, this.posX + pos.x, this.posY + 1, this.posZ + pos.z, 0,0.1,0);
+            });
+        }
     }
 
     @Override
@@ -816,6 +893,10 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
 
         if(source.isProjectile()) {
             return super.attackEntityFrom(source, amount * 0.5F);
+        }
+
+        if(ModConfig.boss_cap_damage_enabled && amount > MobConfig.obsidilith_damage_cap) {
+            return super.attackEntityFrom(source, MobConfig.obsidilith_damage_cap);
         }
         return super.attackEntityFrom(source, amount);
     }
@@ -832,28 +913,78 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
 
     @Override
     public void onDeath(DamageSource cause) {
-        if(this.getSpawnLocation() != null) {
-            if(MobConfig.obsidilith_two_part_boss) {
-                //spawns two part boss fight
-                this.experienceValue = 0;
-                this.setDropItemsWhenDead(false);
-                if(!world.isRemote) {
-                    EntityVoidiclysm voidiclysm;
-                    if (timesUsed != 0) {
-                        voidiclysm = new EntityVoidiclysm(world, timesUsed, this.getSpawnLocation());
-                        voidiclysm.setPosition(this.getSpawnLocation().getX(), this.getSpawnLocation().getY() + 1, this.getSpawnLocation().getZ());
-                    } else {
-                        voidiclysm = new EntityVoidiclysm(world, this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
-                    }
-                    world.spawnEntity(voidiclysm);
-                }
-            } else if (ModConfig.boss_resummon_enabled && this.timesUsed <= ModConfig.boss_resummon_max_uses){
-                //turns boss into spawner
-                this.turnBossIntoSummonSpawner(this.getSpawnLocation());
-            }
+        this.setHealth(0.00001F);
+        if(!this.isDeathState()) {
+            this.clearEvents();
         }
+        this.setDeathState(true);
+        this.setFullBodyUsage(true);
+        this.setImmovable(true);
+        this.setShaking(true);
+        this.shakeTime = 80;
+
+        addEvent(()-> {
+            if(!world.isRemote) {
+                for(int i = 0; i <= 80; i+=5) {
+                    if(!world.isRemote) {
+                        addEvent(() -> {
+                            EntityXPOrb orb = new EntityXPOrb(world, this.posX, this.posY, this.posZ, MobConfig.obsidilith_experience_orb_value);
+                            orb.setPosition(this.posX, this.posY + 1, this.posZ);
+                            world.spawnEntity(orb);
+                        }, i);
+                    }
+                }
+            }
+        }, 20);
+
+        addEvent(()-> {
+            if(!world.isRemote) {
+                for(int i = 0; i <= 60; i+=10) {
+                    if(!world.isRemote) {
+                        addEvent(() -> {
+                            this.playSound(SoundEvents.BLOCK_ANVIL_BREAK, 0.9f, 0.5f);
+                        }, i);
+                    }
+                }
+            }
+        }, 1);
+
+        addEvent(()-> {
+            this.playSound(SoundsHandler.VOIDCLYSM_IMPACT, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+            if(this.getSpawnLocation() != null) {
+                if(MobConfig.obsidilith_two_part_boss) {
+                    //spawns two part boss fight
+                    this.experienceValue = 0;
+                    this.setDropItemsWhenDead(false);
+                    if(!world.isRemote) {
+                        EntityVoidiclysm voidiclysm;
+                        if (timesUsed != 0) {
+                            voidiclysm = new EntityVoidiclysm(world, timesUsed, this.getSpawnLocation());
+                            voidiclysm.setPosition(this.getSpawnLocation().getX(), this.getSpawnLocation().getY() + 1, this.getSpawnLocation().getZ());
+                        } else {
+                            voidiclysm = new EntityVoidiclysm(world, this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
+                        }
+                        world.spawnEntity(voidiclysm);
+                    }
+                } else if (ModConfig.boss_resummon_enabled && this.timesUsed <= ModConfig.boss_resummon_max_uses){
+                    //turns boss into spawner
+                    this.turnBossIntoSummonSpawner(this.getSpawnLocation());
+                }
+            }
+            this.setShaking(false);
+        }, 85);
+
+        addEvent(()-> {
             this.placeLootOnDeath(new BlockPos(this.posX, this.posY, this.posZ));
+            this.setDeathState(false);
+            this.setDead();
+        }, 100);
         super.onDeath(cause);
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundsHandler.OBSIDILITH_HURT;
     }
 
     @Override

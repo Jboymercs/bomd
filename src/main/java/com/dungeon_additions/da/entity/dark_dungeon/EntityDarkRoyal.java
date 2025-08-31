@@ -926,7 +926,11 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
     @Override
     public EnumCreatureAttribute getCreatureAttribute()
     {
-        return EnumCreatureAttribute.UNDEAD;
+        if(MobConfig.cult_crypt_guard_status) {
+            return EnumCreatureAttribute.UNDEAD;
+        } else {
+            return EnumCreatureAttribute.UNDEFINED;
+        }
     }
 
     public enum ROYAL_HAND {

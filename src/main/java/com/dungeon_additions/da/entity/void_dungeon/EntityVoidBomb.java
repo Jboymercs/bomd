@@ -2,6 +2,7 @@ package com.dungeon_additions.da.entity.void_dungeon;
 
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.void_dungeon.voidclysm_action.ActionVoidBomb;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -93,6 +94,7 @@ public class EntityVoidBomb extends EntityEndBase implements IAnimatable, IAnima
 
     private void explodeVoidBomb() {
         this.setExplodeBomb(true);
+        this.playSound(SoundsHandler.VOIDCLYSM_BOMB_EXPLODE, 0.75f, 1.0f);
         addEvent(()-> {
             new ActionVoidBomb().performAction(this, null);
         }, 10);

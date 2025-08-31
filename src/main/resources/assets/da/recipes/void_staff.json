@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "R",
+    "V",
+    "B"
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:blaze_rod"
+    },
+    "R": {
+      "item": "da:voidclysm_crystal"
+    },
+    "B": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "result": {
+    "item": "da:void_staff"
+  }
+}
