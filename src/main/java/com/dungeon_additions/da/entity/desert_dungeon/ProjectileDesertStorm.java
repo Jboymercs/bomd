@@ -103,23 +103,34 @@ public class ProjectileDesertStorm extends Projectile {
         List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(AREA_FACTOR).expand(0, 0.25f, 0));
         for (Entity entity : list) {
             if (entity instanceof EntityLivingBase && this.shootingEntity != null && entity != this.shootingEntity && !(entity instanceof EntityDesertBase)) {
+                if (player != null) {
+                    //player summoned Spell
+                        grabbedEntity = ((EntityLivingBase) entity);
+                    DamageSource source = ModDamageSource.builder()
+                            .type(ModDamageSource.PROJECTILE)
+                            .indirectEntity(shootingEntity)
+                            .directEntity(this)
+                            .stoppedByArmorNotShields().disablesShields().build();
 
-                if(entity instanceof EntityAbstractBase) {
-                    if(!((EntityAbstractBase)entity).iAmBossMob) {
+                    entity.attackEntityFrom(source, (float) getDamage());
+                } else {
+                    if (entity instanceof EntityAbstractBase) {
+                        if (!((EntityAbstractBase) entity).iAmBossMob) {
+                            grabbedEntity = ((EntityLivingBase) entity);
+                        }
+                    } else {
                         grabbedEntity = ((EntityLivingBase) entity);
                     }
-                } else {
-                    grabbedEntity = ((EntityLivingBase) entity);
+
+                    DamageSource source = ModDamageSource.builder()
+                            .type(ModDamageSource.PROJECTILE)
+                            .indirectEntity(shootingEntity)
+                            .directEntity(this)
+                            .stoppedByArmorNotShields().disablesShields().build();
+
+                    entity.attackEntityFrom(source, (float) getDamage());
+
                 }
-
-                DamageSource source = ModDamageSource.builder()
-                        .type(ModDamageSource.PROJECTILE)
-                        .indirectEntity(shootingEntity)
-                        .directEntity(this)
-                        .stoppedByArmorNotShields().disablesShields().build();
-
-                entity.attackEntityFrom(source, (float) getDamage());
-
             }
         }
     }

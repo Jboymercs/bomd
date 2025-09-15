@@ -11,10 +11,7 @@ import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSectionSerializer;
 import com.dungeon_additions.da.util.handlers.CameraPositionHandler;
 import com.dungeon_additions.da.util.handlers.RenderHandler;
 import com.dungeon_additions.da.util.particle.*;
-import com.dungeon_additions.da.util.particle.obsidilith.ParticleBlue;
-import com.dungeon_additions.da.util.particle.obsidilith.ParticleOrange;
-import com.dungeon_additions.da.util.particle.obsidilith.ParticlePurple;
-import com.dungeon_additions.da.util.particle.obsidilith.ParticleRed;
+import com.dungeon_additions.da.util.particle.obsidilith.*;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
@@ -176,6 +173,8 @@ public class ClientProxy extends CommonProxy{
                 return new ParticleOrange.Factory();
             case 13:
                 return new ParticleBlue.Factory();
+            case 14:
+                return new ParticleYellow.Factory();
         }
     }
 

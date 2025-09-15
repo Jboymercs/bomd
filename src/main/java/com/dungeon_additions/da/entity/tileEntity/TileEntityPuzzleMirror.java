@@ -52,14 +52,7 @@ public class TileEntityPuzzleMirror extends TileEntity implements ITickable {
         } else {
             this.skullRotation++;
         }
-        System.out.println("Skull Rot from Rot is " + this.skullRotation);
         this.markDirty();
-    }
-
-    public int getSkullRotForSpawning() {
-        System.out.println("SKULL ROTATION AT" + skullRotation);
-        return this.skullRotation;
-
     }
 
 

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VV",
+    "VV"
+  ],
+  "key": {
+    "V": {
+      "item": "da:aegyptia_metal"
+    }
+  },
+  "result": {
+    "item": "da:aegyptia_metal_ingot"
+  }
+}

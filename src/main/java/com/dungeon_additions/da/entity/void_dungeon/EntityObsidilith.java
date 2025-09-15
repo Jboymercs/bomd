@@ -11,12 +11,15 @@ import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.ai.void_dungeon.EntityAIObsidilith;
 import com.dungeon_additions.da.entity.blossom.EntityAbstractVoidBlossom;
 import com.dungeon_additions.da.entity.blossom.EntityVoidSpike;
+import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
 import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
+import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityObsidilithRune;
 import com.dungeon_additions.da.entity.void_dungeon.obsidilith_action.ActionFlameRing;
 import com.dungeon_additions.da.entity.void_dungeon.obsidilith_action.ActionRedWave;
+import com.dungeon_additions.da.entity.void_dungeon.obsidilith_action.ActionYellowWave;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
@@ -67,6 +70,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAnimationTickable, IAttack, IScreenShake {
 
@@ -79,6 +83,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
     private static final DataParameter<Boolean> RED_ATTACK = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> FLAME_ATTACK = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> BLUE_ATTACK = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> YELLOW_ATTACK = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Float> STAT_LINE = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.FLOAT);
     public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BLOCK_POS);
@@ -105,6 +110,8 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
     public void setDeathState(boolean value) {this.dataManager.set(DEATH_STATE, Boolean.valueOf(value));}
     public boolean isLeapAttack() {return this.dataManager.get(LEAP_ATTACK);}
     public void setLeapAttack(boolean value) {this.dataManager.set(LEAP_ATTACK, Boolean.valueOf(value));}
+    public boolean isYellowAttack() {return this.dataManager.get(YELLOW_ATTACK);}
+    public void setYellowAttack(boolean value) {this.dataManager.set(YELLOW_ATTACK, Boolean.valueOf(value));}
     public boolean isShielded() {return this.dataManager.get(SHIELDED);}
     public void setShielded(boolean value) {this.dataManager.set(SHIELDED, Boolean.valueOf(value));}
     public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
@@ -190,6 +197,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         this.dataManager.register(STAT_LINE,  0.75F);
         this.dataManager.register(SET_SPAWN_LOC, Boolean.valueOf(false));
         this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
+        this.dataManager.register(YELLOW_ATTACK, Boolean.valueOf(false));
         //
         this.dataManager.register(SPAWN_LOCATION, new BlockPos(this.getPositionVector().x, this.getPositionVector().y, this.getPositionVector().z));
         super.entityInit();
@@ -206,6 +214,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         nbt.setBoolean("Flame_Attack", this.isFlameAttack());
         nbt.setBoolean("Blue_Attack", this.isBlueAttack());
         nbt.setBoolean("Shaking", this.isShaking());
+        nbt.setBoolean("Yellow_Attack", this.isYellowAttack());
         nbt.setFloat("Stat_Line", this.getStatLine());
         nbt.setBoolean("Had_Target", this.isHadPreviousTarget());
         nbt.setInteger("Spawn_Loc_X", this.getSpawnLocation().getX());
@@ -224,6 +233,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         this.setRedAttack(nbt.getBoolean("Red_Attack"));
         this.setFlameAttack(nbt.getBoolean("Flame_Attack"));
         this.setBlueAttack(nbt.getBoolean("Blue_Attack"));
+        this.setYellowAttack(nbt.getBoolean("Yellow_Attack"));
         this.setShielded(nbt.getBoolean("Shielded"));
         this.setShaking(nbt.getBoolean("Shaking"));
         if (this.hasCustomName()) {
@@ -473,12 +483,13 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         int cooldown_degradation = MobConfig.obsidilith_degradation_cooldown * playersNearbyAmount;
         double HealthChange = this.getHealth() / this.getMaxHealth();
         if(!this.isFightMode() && !this.isSummonState() && !this.isDeathState()) {
-            List<Consumer<EntityLivingBase>> attacksMelee = new ArrayList<>(Arrays.asList(spikeAttack, flame_attack, red_attack, purple_attack));
+            List<Consumer<EntityLivingBase>> attacksMelee = new ArrayList<>(Arrays.asList(spikeAttack, flame_attack, red_attack, purple_attack, yellow_attack));
             double[] weights = {
                     distance * 0.02, // Spike Attack Simple
                     (distance < 8 && prevAttacks != flame_attack) ? distance * 0.03 : 0, //Flame Ring Attack
                     (distance > 4 && prevAttacks != red_attack) ? distance * 0.02 : 0, //Red Attack
-                    (prevAttacks !=purple_attack && !this.isShielded() && HealthChange < 0.75) ? distance * 0.02 : 0 //Purple Attack Teleport
+                    (prevAttacks !=purple_attack && !this.isShielded() && HealthChange < 0.75) ? distance * 0.02 : 0, //Purple Attack Teleport
+                    (prevAttacks != yellow_attack && distance > 2) ? distance * 0.02 : 0 //Yellow Attack
                     //maybe a minion summon attack
             };
             prevAttacks = ModRand.choice(attacksMelee, rand, weights).next();
@@ -487,9 +498,28 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         return this.isShielded() ? (int) (MobConfig.obsidilith_cooldown_shielded * 20) - cooldown_degradation : (int) (MobConfig.obsidilith_cooldown * 20) - cooldown_degradation;
     }
 
+    Supplier<Projectile> yellow_wave_projectiles = () -> new ProjectileYellowWave(world, this, (float) this.getAttack(), null, true);
+
+    private final Consumer<EntityLivingBase> yellow_attack = (target) -> {
+      this.setFightMode(true);
+      this.setYellowAttack(true);
+        world.setEntityState(this, ModUtils.SIXTH_PARTICLE_BYTE);
+        addEvent(()-> playSound(SoundsHandler.OBSIDILITH_CAST, 2.0f, 2.2f), 5);
+
+        addEvent(()-> {
+            new ActionYellowWave(yellow_wave_projectiles).performAction(this, target);
+        }, 40);
+
+
+        addEvent(()-> {
+            this.setYellowAttack(false);
+            this.setFightMode(false);
+        }, 160);
+    };
+
    private Vec3d savedPos;
 
-    private Consumer<EntityLivingBase> purple_attack = (target) -> {
+    private final Consumer<EntityLivingBase> purple_attack = (target) -> {
       this.setFightMode(true);
       this.setPurpleAttack(true);
         world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
@@ -536,7 +566,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         }, 30);
     }
 
-    private Consumer<EntityLivingBase> red_attack = (target) -> {
+    private final Consumer<EntityLivingBase> red_attack = (target) -> {
       this.setFightMode(true);
       this.setRedAttack(true);
       world.setEntityState(this, ModUtils.PARTICLE_BYTE);
@@ -545,7 +575,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         addEvent(()-> this.setFightMode(false), 100);
         addEvent(()-> this.setRedAttack(false), 100);
     };
-    private Consumer<EntityLivingBase> flame_attack = (target) -> {
+    private final Consumer<EntityLivingBase> flame_attack = (target) -> {
       this.setFightMode(true);
       this.setFlameAttack(true);
         world.setEntityState(this, ModUtils.FOURTH_PARTICLE_BYTE);
@@ -554,7 +584,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
       addEvent(()-> this.setFightMode(false), 45);
       addEvent(()-> this.setFlameAttack(false), 45);
     };
-    private Consumer<EntityLivingBase> spikeAttack = (target)-> {
+    private final Consumer<EntityLivingBase> spikeAttack = (target)-> {
         this.setFightMode(true);
         this.setBlueAttack(true);
         world.setEntityState(this, ModUtils.FIFTH_PARTICLE_BYTE);
@@ -877,6 +907,13 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
             ModUtils.circleCallback(3, 15, (pos)-> {
                 pos = new Vec3d(pos.x, 0, pos.y);
                 Main.proxy.spawnParticle(13, this.posX + pos.x, this.posY + 1, this.posZ + pos.z, 0,0.1,0);
+            });
+        }
+
+        if(id == ModUtils.SIXTH_PARTICLE_BYTE) {
+            ModUtils.circleCallback(3, 15, (pos)-> {
+                pos = new Vec3d(pos.x, 0, pos.y);
+                Main.proxy.spawnParticle(14, this.posX + pos.x, this.posY + 1, this.posZ + pos.z, 0,0.1,0);
             });
         }
     }

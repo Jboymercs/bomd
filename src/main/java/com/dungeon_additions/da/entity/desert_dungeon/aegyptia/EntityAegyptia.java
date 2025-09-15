@@ -7,8 +7,11 @@ import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityAegyptiaAttackAI;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityDesertBase;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
+import com.dungeon_additions.da.entity.desert_dungeon.miniboss.EntityEverator;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.player.EntityWyrkLazer;
+import com.dungeon_additions.da.entity.sky_dungeon.EntityTridentGargoyle;
+import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
@@ -24,18 +27,25 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityPotion;
+import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionType;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
@@ -89,6 +99,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
 
     private static final DataParameter<Boolean> HAS_KOPIS = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> HAS_POTION = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<ItemStack> ITEM_HAND = EntityDataManager.<ItemStack>createKey(EntityAegyptia.class, DataSerializers.ITEM_STACK);
     private static final DataParameter<Boolean> MOVE_JAW = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SWING = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SWING_TWO = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
@@ -138,6 +149,8 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
         return this.dataManager.get(SKIN_TYPE).intValue();
     }
 
+    private int potionType;
+
     public EntityAegyptia(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
         this.setSize(0.7F, 2.45F);
@@ -149,8 +162,33 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
             this.setHasKopis(true);
         } else {
             this.setHasKopis(false);
+            int randB = ModRand.range(1, 15);
+            if(randB >= 12) {
+                int randC = ModRand.range(1, 4);
+                if(randC == 1) {
+                    ItemStack potionStack = new ItemStack(Items.SPLASH_POTION, 1);
+                    PotionUtils.addPotionToItemStack(potionStack, PotionTypes.LONG_WEAKNESS);
+                    this.equipItemInHand(AEGYPTIA_HAND.HAND, potionStack);
+                    this.potionType = 1;
+                    this.setHasPotion(true);
+                } else if (randC == 2) {
+                    ItemStack potionStack = new ItemStack(Items.SPLASH_POTION, 1);
+                    PotionUtils.addPotionToItemStack(potionStack, PotionTypes.LONG_SLOWNESS);
+                    this.equipItemInHand(AEGYPTIA_HAND.HAND, potionStack);
+                    this.potionType = 2;
+                    this.setHasPotion(true);
+                } else  {
+                    ItemStack potionStack = new ItemStack(Items.SPLASH_POTION, 1);
+                    PotionUtils.addPotionToItemStack(potionStack, PotionTypes.STRONG_HARMING);
+                    this.equipItemInHand(AEGYPTIA_HAND.HAND, potionStack);
+                    this.potionType = 3;
+                    this.setHasPotion(true);
+                }
+            }
         }
     }
+
+    //types of potions SLOWNESS, WEAKNESS, HARMING
 
     public EntityAegyptia(World worldIn) {
         super(worldIn);
@@ -163,6 +201,29 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
             this.setHasKopis(true);
         } else {
             this.setHasKopis(false);
+            int randB = ModRand.range(1, 15);
+            if(randB >= 12) {
+                int randC = ModRand.range(1, 4);
+                if(randC == 1) {
+                    ItemStack potionStack = new ItemStack(Items.SPLASH_POTION, 1);
+                    PotionUtils.addPotionToItemStack(potionStack, PotionTypes.LONG_WEAKNESS);
+                    this.equipItemInHand(AEGYPTIA_HAND.HAND, potionStack);
+                    this.potionType = 1;
+                    this.setHasPotion(true);
+                } else if (randC == 2) {
+                    ItemStack potionStack = new ItemStack(Items.SPLASH_POTION, 1);
+                    PotionUtils.addPotionToItemStack(potionStack, PotionTypes.LONG_SLOWNESS);
+                    this.equipItemInHand(AEGYPTIA_HAND.HAND, potionStack);
+                    this.potionType = 2;
+                    this.setHasPotion(true);
+                } else  {
+                    ItemStack potionStack = new ItemStack(Items.SPLASH_POTION, 1);
+                    PotionUtils.addPotionToItemStack(potionStack, PotionTypes.STRONG_HARMING);
+                    this.equipItemInHand(AEGYPTIA_HAND.HAND, potionStack);
+                    this.potionType = 3;
+                    this.setHasPotion(true);
+                }
+            }
         }
     }
 
@@ -215,6 +276,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
     @Override
     public void entityInit() {
         super.entityInit();
+        this.dataManager.register(ITEM_HAND, ItemStack.EMPTY);
         this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
         this.dataManager.register(HAS_KOPIS, Boolean.valueOf(false));
         this.dataManager.register(HAS_POTION, Boolean.valueOf(false));
@@ -262,6 +324,11 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
 
         if(this.ticksExisted % 180 == 0 && !this.isMoveJaw()) {
             this.handleJawMovement();
+        }
+
+        if(this.isHasKopis() && this.isHasPotion()) {
+            this.equipItemInHand(AEGYPTIA_HAND.HAND, new ItemStack(ModItems.INVISISBLE_ITEM, 1));
+            this.setHasPotion(false);
         }
 
         if(!world.isRemote) {
@@ -340,7 +407,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
             } else {
                 //basic attacks
                 if(distance <= 6) {
-                    List<Consumer<EntityLivingBase>> attacksMelee = new ArrayList<>(Arrays.asList(do_swing_attack, do_pierce_attack, do_mega_pierce, do_throw_potion));
+                    List<Consumer<EntityLivingBase>> attacksMelee = new ArrayList<>(Arrays.asList(do_swing_attack, do_pierce_attack, do_mega_pierce, throw_potion_attack));
                     double[] weights = {
                             (prevAttack != do_swing_attack) ? 1/distance : 0,
                             (prevAttack != do_pierce_attack) ? 1/distance : 0,
@@ -356,6 +423,41 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
         return this.isHasKopis() ? 10 : 20;
     }
 
+    private final Consumer<EntityLivingBase> throw_potion_attack = (target) -> {
+      this.setFightMode(true);
+      this.setThrowPotion(true);
+
+      addEvent(()-> {
+        this.setHasPotion(false);
+          this.equipItemInHand(AEGYPTIA_HAND.HAND, new ItemStack(ModItems.INVISISBLE_ITEM, 1));
+          Vec3d relpos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.7, 0)));
+          double d0 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D;
+          double d1 = target.posX + target.motionX - relpos.x;
+          double d2 = d0 - relpos.y;
+          double d3 = target.posZ + target.motionZ - relpos.z;
+          float f = MathHelper.sqrt(d1 * d1 + d3 * d3);
+
+          PotionType potionSet = PotionTypes.STRONG_HARMING;
+
+          if(potionType == 1) {
+              potionSet = PotionTypes.LONG_WEAKNESS;
+          } if (potionType == 2) {
+              potionSet = PotionTypes.LONG_SLOWNESS;
+          }
+
+          EntityPotion entitypotion = new EntityPotion(this.world, this, PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), potionSet));
+          entitypotion.rotationPitch -= -20.0F;
+          entitypotion.shoot(d1, d2 + (double)(f * 0.2F), d3, 0.75F, 4.0F);
+          this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_WITCH_THROW, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
+          this.world.spawnEntity(entitypotion);
+      }, 30);
+
+
+      addEvent(()-> {
+        this.setFightMode(false);
+        this.setThrowPotion(false);
+      }, 50);
+    };
     private final Consumer<EntityLivingBase> do_jump_attack = (target) -> {
       this.setFullBodyUsage(true);
       this.setImmovable(true);
@@ -559,21 +661,6 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
                 this.setDoubleSwing(false);
             }, 70);
         }
-    };
-
-    private final Consumer<EntityLivingBase> do_throw_potion = (target) -> {
-      this.setFightMode(true);
-      this.setThrowPotion(true);
-
-      addEvent(()-> {
-        //throw Potion
-          this.setHasPotion(false);
-      }, 30);
-
-      addEvent(()-> {
-        this.setFightMode(false);
-        this.setThrowPotion(false);
-      }, 50);
     };
 
     private final Consumer<EntityLivingBase> do_mega_pierce = (target) -> {
@@ -929,5 +1016,50 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundsHandler.AEGYPTIA_STEP, 0.35F, 0.4f + ModRand.getFloat(0.3F));
+    }
+
+    public enum AEGYPTIA_HAND {
+        HAND("HoldHandL");
+
+        public String getBoneName() {
+            return this.boneName;
+        }
+
+        private String boneName;
+
+        AEGYPTIA_HAND(String bone) {
+            this.boneName = bone;
+        }
+
+        @Nullable
+        public static EntityAegyptia.AEGYPTIA_HAND getFromBoneName(String boneName) {
+            if ("HoldHandL".equals(boneName)) {
+                return HAND;
+            }
+            return null;
+        }
+
+        public int getIndex() {
+            if (this == EntityAegyptia.AEGYPTIA_HAND.HAND) {
+                return 1;
+            }
+            return 0;
+        }
+    }
+
+    public void equipItemInHand(EntityAegyptia.AEGYPTIA_HAND head, ItemStack state) {
+        if(world.isRemote) {
+            return;
+        }
+        if (head == AEGYPTIA_HAND.HAND) {
+            this.dataManager.set(ITEM_HAND, state);
+        }
+    }
+
+    public ItemStack getItemFromGargoyleHand(EntityAegyptia.AEGYPTIA_HAND head) {
+        if (head == AEGYPTIA_HAND.HAND) {
+            return this.dataManager.get(ITEM_HAND);
+        }
+        return null;
     }
 }

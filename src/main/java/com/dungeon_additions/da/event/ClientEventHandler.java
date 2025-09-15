@@ -25,7 +25,6 @@ public class ClientEventHandler {
         EntityPlayerSP player = mc.player;
         if (player != null && player.isHandActive() && player.getActiveHand() == event.getHand() && player.getHeldItem(player.getActiveHand()).getItem() instanceof ItemParrySword)
         {
-            System.out.println("Detecting Animations");
             GlStateManager.pushMatrix();
             boolean rightHanded = (((event.getHand() == EnumHand.MAIN_HAND) ? player.getPrimaryHand() : player.getPrimaryHand().opposite()) == EnumHandSide.RIGHT);
             transformSideFirstPerson(rightHanded ? 1.0F : -1.0F, event.getEquipProgress());

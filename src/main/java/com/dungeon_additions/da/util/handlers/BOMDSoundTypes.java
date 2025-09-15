@@ -14,4 +14,7 @@ public class BOMDSoundTypes {
 
     public static final SoundType PETRO_GLOOM = new SoundType(0.75F, 1, SoundsHandler.GLOOM_BREAK, SoundsHandler.GLOOM_STEP,
             SoundsHandler.GLOOM_PLACE, SoundsHandler.GLOOM_BREAK, SoundsHandler.GLOOM_BREAK);
+
+    public static final SoundType GRUM_STONE = new SoundType(0.75F, 1, SoundsHandler.GRUM_BREAK, SoundsHandler.GRUM_STEP,
+            SoundsHandler.GRUM_PLACE, SoundsHandler.GRUM_BREAK, SoundsHandler.GRUM_BREAK);
 }

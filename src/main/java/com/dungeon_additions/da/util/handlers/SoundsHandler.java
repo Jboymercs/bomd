@@ -57,6 +57,11 @@ public class SoundsHandler {
     public static SoundEvent GLOOM_STEP;
     public static SoundEvent GLOOM_BREAK;
     public static SoundEvent GLOOM_PLACE;
+
+    //GRUM
+    public static SoundEvent GRUM_PLACE;
+    public static SoundEvent GRUM_BREAK;
+    public static SoundEvent GRUM_STEP;
     //Soul Star Block
     public static SoundEvent SOUL_STAR_ACTIVATE;
 
@@ -276,6 +281,13 @@ public class SoundsHandler {
     public static SoundEvent AEGYPTIA_PIERCE;
     public static SoundEvent AEGYPTIA_SWING_STORM;
 
+    //EVERATOR
+    public static SoundEvent EVERATOR_SWING;
+    public static SoundEvent EVERATOR_HURT;
+    public static SoundEvent EVERATOR_STEP;
+    public static SoundEvent EVERATOR_SMASH_SWING;
+    public static SoundEvent EVERATOR_TRIBUTE;
+
     //MUSIC
     public static SoundEvent HIGH_DRAGON_TRACK;
     public static SoundEvent HIGH_KING_TRACK;
@@ -309,6 +321,10 @@ public class SoundsHandler {
         MIRROR_PLING = registerSound("mirror.pling", "block");
         V_MIRROR_PLING = registerSound("mirror.v_pling", "block");
         MIRROR_DISPENSE = registerSound("mirror.dispense", "block");
+        //
+        GRUM_BREAK = registerSound("grum.break", "block");
+        GRUM_PLACE = registerSound("grum.place", "block");
+        GRUM_STEP = registerSound("grum.step", "block");
         //
         VOID_SPIKE_SHOOT = registerSound("spike.shoot", "entity");
         APPEARING_WAVE = registerSound("spike.wave", "entity");
@@ -526,6 +542,11 @@ public class SoundsHandler {
         AEGYPTIA_STEP = registerSound("aegyptia.step", "entity");
         AEGYPTIA_SWING_STORM = registerSound("aegyptia.swing_storm", "entity");
         AEGYPTIA_PIERCE = registerSound("aegyptia.pierce", "entity");
+        //
+        EVERATOR_SWING = registerSound("everator.swing", "entity");
+        EVERATOR_STEP = registerSound("everator.step", "entity");
+        EVERATOR_TRIBUTE = registerSound("everator.tribute", "entity");
+        EVERATOR_HURT = registerSound("everator.hurt", "entity");
         //MUSIC
         HIGH_DRAGON_TRACK = registerSound("ambient.high_dragon", "music");
         HIGH_KING_TRACK = registerSound("ambient.high_king", "music");

@@ -79,8 +79,8 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static int flame_blade_cooldown = 14;
 
-    @Config.Name("Sealed Flame Bottle Cooldown")
-    @Config.Comment("Change the cooldown of the Sealed Flame Bottle")
+    @Config.Name("Sealed Bottle Cooldown")
+    @Config.Comment("Change the cooldown of all Sealed Bottles")
     @Config.RequiresMcRestart
     public static int sealed_bottle_cooldown = 8;
 

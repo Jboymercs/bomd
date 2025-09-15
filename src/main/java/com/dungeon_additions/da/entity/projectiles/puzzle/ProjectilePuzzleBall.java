@@ -99,7 +99,6 @@ public class ProjectilePuzzleBall extends Projectile {
                     if (te instanceof TileEntityPuzzleMirror) {
                         TileEntityPuzzleMirror mirror = ((TileEntityPuzzleMirror) te);
                         int skullRot = mirror.serverSkullRotation;
-                        System.out.println(skullRot);
                         float yawRot = (float) (skullRot * 360 / 16);
                         ProjectilePuzzleBall ball = new ProjectilePuzzleBall(world);
                         ball.setPosition(blockpos.getX() + 0.5, blockpos.getY() + 0.5, blockpos.getZ() + 0.5);

@@ -23,6 +23,8 @@ public class ModelObsidilith extends GeoModelExtended<EntityObsidilith> {
             return new ResourceLocation(ModReference.MOD_ID,"textures/entity/obsidilith/obsidilith_orange.png");
         } else if (obsidilith.isBlueAttack()) {
             return new ResourceLocation(ModReference.MOD_ID,"textures/entity/obsidilith/obsidilith_blue.png");
+        } else if (obsidilith.isYellowAttack()) {
+            return new ResourceLocation(ModReference.MOD_ID,"textures/entity/obsidilith/obsidilith_yellow.png");
         } else {
             return new ResourceLocation(ModReference.MOD_ID,"textures/entity/obsidilith.png");
         }

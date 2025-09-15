@@ -3,7 +3,9 @@ package com.dungeon_additions.da.entity.render.desert_dungeon;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
 import com.dungeon_additions.da.entity.model.desert_dungeon.ModelAegyptia;
 import com.dungeon_additions.da.entity.render.layer.GeoSpecificGlow;
+import com.dungeon_additions.da.entity.render.util.RenderGargoyleExtended;
 import com.dungeon_additions.da.entity.render.util.RenderGeoExtended;
+import com.dungeon_additions.da.entity.sky_dungeon.EntityTridentGargoyle;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -13,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
 
-public class RenderAegyptia extends RenderGeoExtended<EntityAegyptia> {
+public class RenderAegyptia extends RenderGargoyleExtended<EntityAegyptia> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/aegyptia/aegyptia.png");
     private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/entity/desert/geo.aegyptia.json");
 
@@ -26,6 +28,10 @@ public class RenderAegyptia extends RenderGeoExtended<EntityAegyptia> {
     @Nullable
     @Override
     protected ItemStack getHeldItemForBone(String boneName, EntityAegyptia currentEntity) {
+        ItemStack stackInhand = currentEntity.getItemFromGargoyleHand(EntityAegyptia.AEGYPTIA_HAND.getFromBoneName(boneName));
+        if(stackInhand != null) {
+            return stackInhand;
+        }
         return null;
     }
 

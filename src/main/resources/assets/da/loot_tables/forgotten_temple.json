@@ -185,6 +185,11 @@
         },
         {
           "type": "item",
+          "name": "da:sealed_tornado",
+          "weight": 10
+        },
+        {
+          "type": "item",
           "name": "minecraft:sand",
           "weight": 20,
           "data": 0,
@@ -279,6 +284,21 @@
               "levels": {
                 "min": 15,
                 "max": 25
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "da:aegyptia_bone",
+          "weight": 15,
+          "data": 0,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 2
               }
             }
           ]

@@ -6,8 +6,10 @@ import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -41,28 +43,35 @@ public class ItemKopis extends ToolSword {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
-        ItemStack stack = player.getHeldItem(hand);
-        int SwordCoolDown = ModConfig.dagger_cooldown * 20;
-        if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
-            float inaccuracy = 0.0f;
-            float speed = 1.4f;
-            float pitch = player.rotationPitch; // Projectiles aim straight ahead always
-            worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.BLOSSOM_PETAL_WAVE, SoundCategory.NEUTRAL, 1.0f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
-            // Shoots projectiles in a small arc
-            for (int i = 0; i < 5; i++) {
-                EntityDart projectile = new EntityDart(worldIn, player);
-                projectile.shoot(player, pitch, player.rotationYaw - 30 + (i * 15), 0.0F, speed, inaccuracy);
-                projectile.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
-                player.world.spawnEntity(projectile);
-                player.getCooldownTracker().setCooldown(this, SwordCoolDown);
-            }
+        if (attacker.world.isRemote) return false;
+        int axeCoolDown = (int) (1.7 * 20);
+        stack.damageItem(1, attacker);
+        float realAttackDamage = this.getAttackDamage();
+        double playerVec = (Math.abs(attacker.motionX + attacker.motionZ + attacker.motionY) * 12) - 1.5;
+        System.out.println("Player Vec at" + playerVec);
 
-
-            stack.damageItem(2, player);
+        if(playerVec > 8) {
+            playerVec = 8;
         }
-        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+        float regular_damage = (float) (realAttackDamage + 1 + (playerVec));
+        //add some sort of cap to the motion
+
+        if(attacker instanceof EntityPlayer) {
+            EntityPlayer player = ((EntityPlayer) attacker);
+            if(!player.getCooldownTracker().hasCooldown(this) && !player.onGround) {
+                int potionBonus = 0;
+                if(player.isPotionActive(MobEffects.SPEED)) {
+                    potionBonus = 2;
+                }
+                target.attackEntityFrom(ModUtils.causeAxeDamage(attacker), (float) regular_damage + potionBonus);
+            }
+            player.getCooldownTracker().setCooldown(this, axeCoolDown);
+        }
+
+
+        return true;
     }
 
 

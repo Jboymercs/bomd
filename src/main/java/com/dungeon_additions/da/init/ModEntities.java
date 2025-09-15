@@ -11,6 +11,8 @@ import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityDesertBeam;
+import com.dungeon_additions.da.entity.desert_dungeon.miniboss.EntityEverator;
+import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
 import com.dungeon_additions.da.entity.flame_knight.*;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameBlade;
@@ -87,6 +89,8 @@ public class ModEntities {
     public static Vec3i high_drake = new Vec3i(0x262852,0xd4d4cd,0);
     public static Vec3i high_king = new Vec3i(0x262852,0xe0c03f,0);
     public static Vec3i dark_sorcerer = new Vec3i(0x233547,0x69057b,0);
+    public static Vec3i aegyptian_recurian = new Vec3i(0xEDEDCE,0x6E2C36,0);
+    public static Vec3i everator = new Vec3i(0xEDEDCE,0xEBD463,0);
 
     public static Vec3i dark_royal = new Vec3i(0x233547,0xb42507,0);
     public static Vec3i scutter_beetle = new Vec3i(0x0e588a, 0xf2c31e, 0);
@@ -111,7 +115,8 @@ public class ModEntities {
         registerEntityWithID("great_wyrk", EntityGreatWyrk.class, ENTITY_START_ID++, 90, ancient_wyrk);
         //Forgotten Temple
         registerEntityWithID("scutter_beetle", EntityScutterBeetle.class, ENTITY_START_ID++, 70, scutter_beetle);
-        registerEntityWithID("aegyptia", EntityAegyptia.class, ENTITY_START_ID++, 70, night_lich);
+        registerEntityWithID("aegyptia", EntityAegyptia.class, ENTITY_START_ID++, 70, aegyptian_recurian);
+        registerEntityWithID("everator", EntityEverator.class, ENTITY_START_ID++, 70, everator);
         // Burning Flame Arena
         registerEntityWithID("nether_aberant", EntityNetherAbberrant.class, ENTITY_START_ID++, 50, nether_spirit);
         registerEntityWithID("incendium_spirit", EntityIncendium.class, ENTITY_START_ID++, 70, incendium_spirit);
@@ -202,6 +207,7 @@ public class ModEntities {
             registerEntity("void_hole", EntityVoidBlackHole.class, ENTITY_START_ID++, 30);
             registerEntity("desert_beam", EntityDesertBeam.class, ENTITY_START_ID++, 30);
             registerEntity("desert_storm", ProjectileDesertStorm.class, ENTITY_START_ID++, 35);
+            registerEntity("yellow_wave", ProjectileYellowWave.class, ENTITY_START_ID++, 35);
 
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");

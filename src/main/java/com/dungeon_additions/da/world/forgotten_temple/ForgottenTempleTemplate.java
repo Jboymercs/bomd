@@ -3,6 +3,7 @@ package com.dungeon_additions.da.world.forgotten_temple;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
+import com.dungeon_additions.da.entity.desert_dungeon.miniboss.EntityEverator;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
@@ -82,6 +83,32 @@ public class ForgottenTempleTemplate extends ModStructureTemplate {
             } else {
                 world.setBlockToAir(pos);
             }
+        } else if (function.startsWith("royal")) {
+            world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_FORGOTTEN_TEMPLE.getDefaultState(), 2);
+            TileEntity tileentity = world.getTileEntity(pos);
+            if (tileentity instanceof tileEntityMobSpawner) {
+                ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
+                        new MobSpawnerLogic.MobSpawnData[]{
+                                new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityEverator.class), 1)
+                                //include archer Aegyptia in this lot
+                        },
+                        new int[]{1},
+                        1,
+                        32);
+            }
+        } else if (function.startsWith("two_royal")) {
+         //   world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_FORGOTTEN_TEMPLE.getDefaultState(), 2);
+            TileEntity tileentity = world.getTileEntity(pos);
+         //   if (tileentity instanceof tileEntityMobSpawner) {
+          //      ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
+          //              new MobSpawnerLogic.MobSpawnData[]{
+           //                     new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityEverator.class), 1)
+                                //include archer Aegyptia in this lot
+           //             },
+            //            new int[]{1},
+           //             1,
+            //            32);
+         //   }
         }
         //Chests
         //Crypt Common Chest

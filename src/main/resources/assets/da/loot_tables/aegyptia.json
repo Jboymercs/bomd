@@ -1,0 +1,44 @@
+{
+  "pools": [
+    {
+      "name" : "da:aegyptia",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:aegyptia_bone",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 2
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "da:aegyptia",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:aegyptia_metal",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

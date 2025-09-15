@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "X"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:glass_bottle"
+    },
+    "V": {
+      "item": "da:aegyptia_bone"
+    }
+  },
+  "result": {
+    "item": "da:sealed_tornado",
+    "count" : 2
+  }
+}

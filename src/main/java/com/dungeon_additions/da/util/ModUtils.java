@@ -56,6 +56,8 @@ public class ModUtils {
     public static byte FOURTH_PARTICLE_BYTE = 16;
     public static byte FIFTH_PARTICLE_BYTE = 17;
 
+    public static byte SIXTH_PARTICLE_BYTE = 19;
+
     public static final String LANG_DESC = ModReference.MOD_ID + ".desc.";
 
     public static final String LANG_CHAT = ModReference.MOD_ID + ".dialog.";
@@ -917,6 +919,11 @@ public class ModUtils {
                                     block != ModBlocks.LICH_SOUL_STAR_BLOCK &&
                                     block != Blocks.CHEST &&
                                     block != Blocks.BED &&
+                                    block != ModBlocks.PUZZLE_DOOR &&
+                                    block != ModBlocks.PUZZLE_MIRROR &&
+                                    block != ModBlocks.PUZZLE_BLOCKER &&
+                                    block != ModBlocks.PUZZLE_DISPENCER &&
+                                    block != ModBlocks.PUZZLE_DISPLACER &&
                                     !(block instanceof BlockLiquid) && canBlockBeBroken(block)) {
                                 if (world.getClosestPlayer(blockpos.getX(), blockpos.getY(), blockpos.getZ(), 20, false) != null) {
                                     world.destroyBlock(blockpos, false);

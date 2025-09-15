@@ -2,8 +2,6 @@ package com.dungeon_additions.da.util.handlers;
 
 import com.dungeon_additions.da.animation.example.EntityExample;
 import com.dungeon_additions.da.animation.example.ModelExample;
-import com.dungeon_additions.da.animation.example.exampletwo.EntityEverator;
-import com.dungeon_additions.da.animation.example.exampletwo.ModelEverator;
 import com.dungeon_additions.da.blocks.desert_dungeon.RenderPuzzleMirror;
 import com.dungeon_additions.da.entity.EntityNetherAbberrant;
 import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
@@ -14,6 +12,8 @@ import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityDesertBeam;
+import com.dungeon_additions.da.entity.desert_dungeon.miniboss.EntityEverator;
+import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
 import com.dungeon_additions.da.entity.flame_knight.*;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameBlade;
@@ -39,6 +39,7 @@ import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkSorcerer;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderShadowHand;
 import com.dungeon_additions.da.entity.render.desert_dungeon.RenderAegyptia;
 import com.dungeon_additions.da.entity.render.desert_dungeon.RenderDesertBeam;
+import com.dungeon_additions.da.entity.render.desert_dungeon.RenderEverator;
 import com.dungeon_additions.da.entity.render.desert_dungeon.RenderScutterBeetle;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderBareant;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderFlameOrb;
@@ -146,6 +147,7 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileFlameSpit.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer3DModel(ProjectileFlameBlade.class, ModItems.FLAME_BLADE_PROJ);
         registerProjectileRenderer3DModel(ProjectileDesertStorm.class, ModItems.DESERT_STORM_PROJ);
+        registerProjectileRenderer3DModel(ProjectileYellowWave.class, ModItems.YELLOW_WAVE_PROJ);
         registerProjectileRenderer(EntityObsidianLocator.class, ModItems.OBSIDIAN_LOCATOR);
         registerProjectileRenderer(ProjectileTrackingVoid.class, ModItems.VOID_PROJECTILE);
         registerProjectileRenderer(ProjectileDarkMatter.class, ModItems.DARK_MANA);
@@ -159,7 +161,6 @@ public class RenderHandler {
         //Example Entity Rendering
         registerModEntityRenderer(EntityExample.class, new ModelExample(), "example.png");
         //Example 2 Everator
-        registerModEntityRenderer(EntityEverator.class, new ModelEverator(), "everator.png");
     }
 
     public static void registerGeoEntityRenderers() {
@@ -285,6 +286,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityVoidclysmSpike.class, RenderVoidclysmSpike::new);
         //Voidclysm Blackhole
         RenderingRegistry.registerEntityRenderingHandler(EntityVoidBlackHole.class, RenderVoidBlackHole::new);
+        //Everator Miniboss
+        RenderingRegistry.registerEntityRenderingHandler(EntityEverator.class, RenderEverator::new);
         //Puzzle Mirror
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPuzzleMirror.class, new RenderPuzzleMirror());
     }

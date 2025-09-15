@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "R",
+    "X",
+    "V"
+  ],
+  "key": {
+    "X": {
+      "item": "da:aegyptia_metal_ingot"
+    },
+    "V": {
+      "item": "da:aegyptia_bone"
+    },
+    "R": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "da:kopis"
+  }
+}

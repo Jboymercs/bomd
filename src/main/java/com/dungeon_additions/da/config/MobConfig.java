@@ -73,7 +73,7 @@ public class MobConfig {
     @Config.Name("Obsidilith Attack Damage")
     @Config.Comment("Change the attack damage of the Obsidilith")
     @Config.RequiresMcRestart
-    public static double obsidilith_attack_damage = 20;
+    public static double obsidilith_attack_damage = 22;
 
     @Config.Name("Obsidilith Experience Drop")
     @Config.Comment("Take in mind, this boss drops x number of experience 16 times, you can change the value of the given orb summoned below")
@@ -113,7 +113,7 @@ public class MobConfig {
     @Config.Name("Voidclysm Attack Damage")
     @Config.Comment("Change the attack damage of the Voidclysm")
     @Config.RequiresMcRestart
-    public static double voidclysm_attack_damage = 24;
+    public static double voidclysm_attack_damage = 26;
 
     @Config.Name("Voidclysm Armor")
     @Config.Comment("Change the armor value of the Voidclysm")
@@ -872,6 +872,26 @@ public class MobConfig {
     @Config.Comment("Change the armor of the Aegyptia Recurian")
     @Config.RequiresMcRestart
     public static double aegyptia_armor = 12;
+
+    @Config.Name("Everator Health")
+    @Config.Comment("Change the health of the Everator.")
+    @Config.RequiresMcRestart
+    public static double everator_health = 200;
+
+    @Config.Name("Everator Attack Damage")
+    @Config.Comment("Change the attack damage of the Everator")
+    @Config.RequiresMcRestart
+    public static double everator_attack_damage = 19;
+
+    @Config.Name("Everator Armor")
+    @Config.Comment("Change the armor of the Everator")
+    @Config.RequiresMcRestart
+    public static double everator_armor = 18;
+
+    @Config.Name("Everator Armor Toughness")
+    @Config.Comment("Change the armor toughness of the Everator")
+    @Config.RequiresMcRestart
+    public static double everator_armor_toughness = 6;
 
     @Config.Name("Scutter Beetle Health")
     @Config.Comment("Change the health of the Scutter Beetle.")
