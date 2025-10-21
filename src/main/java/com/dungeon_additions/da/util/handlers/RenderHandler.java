@@ -25,6 +25,12 @@ import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityEliteDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.ProjectileSoul;
 import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
+import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
+import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyrSpear;
+import com.dungeon_additions.da.entity.gaelon_dungeon.EntityReAnimate;
+import com.dungeon_additions.da.entity.gaelon_dungeon.ProjectileGhost;
+import com.dungeon_additions.da.entity.gaelon_dungeon.apathyr.*;
+import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.EntityFriendlyCursedRevenant;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
@@ -46,6 +52,7 @@ import com.dungeon_additions.da.entity.render.flame_dungeon.RenderFlameOrb;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderIncendium;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderVolatileSpirit;
 import com.dungeon_additions.da.entity.render.frost_dungeon.*;
+import com.dungeon_additions.da.entity.render.gaelon_dungeon.*;
 import com.dungeon_additions.da.entity.render.lich.RenderLichSpawn;
 import com.dungeon_additions.da.entity.render.lich.RenderLichStaff;
 import com.dungeon_additions.da.entity.render.lich.RenderNightLich;
@@ -148,6 +155,9 @@ public class RenderHandler {
         registerProjectileRenderer3DModel(ProjectileFlameBlade.class, ModItems.FLAME_BLADE_PROJ);
         registerProjectileRenderer3DModel(ProjectileDesertStorm.class, ModItems.DESERT_STORM_PROJ);
         registerProjectileRenderer3DModel(ProjectileYellowWave.class, ModItems.YELLOW_WAVE_PROJ);
+        registerProjectileRenderer3DModel(ProjectileCrystalWave.class, ModItems.CRYSTAL_WAVE_PROJ);
+        registerProjectileRenderer3DModel(ProjectileGhost.class, ModItems.GHOST_BOLT_PROJ);
+        registerProjectileRenderer3DModel(ProjectileFastGhostCrystal.class, ModItems.FAST_CRYSTAL_PROJ);
         registerProjectileRenderer(EntityObsidianLocator.class, ModItems.OBSIDIAN_LOCATOR);
         registerProjectileRenderer(ProjectileTrackingVoid.class, ModItems.VOID_PROJECTILE);
         registerProjectileRenderer(ProjectileDarkMatter.class, ModItems.DARK_MANA);
@@ -288,6 +298,20 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityVoidBlackHole.class, RenderVoidBlackHole::new);
         //Everator Miniboss
         RenderingRegistry.registerEntityRenderingHandler(EntityEverator.class, RenderEverator::new);
+        //Re-Animate
+        RenderingRegistry.registerEntityRenderingHandler(EntityReAnimate.class, RenderReAnimate::new);
+        //Apathyr
+        RenderingRegistry.registerEntityRenderingHandler(EntityApathyr.class, RenderApathyr::new);
+        //Ghost Apathyr
+        RenderingRegistry.registerEntityRenderingHandler(EntityApathyrGhost.class, RenderGhostApathyr::new);
+        //Ultra Attack
+        RenderingRegistry.registerEntityRenderingHandler(EntityUltraAttack.class, RenderUltraAttack::new);
+        //Apathyr Spear
+        RenderingRegistry.registerEntityRenderingHandler(EntityApathyrSpear.class, RenderApathyrSpear::new);
+        //Apathyr Eye
+        RenderingRegistry.registerEntityRenderingHandler(EntityApathyrEye.class, RenderApathyrEye::new);
+        //Friendly Cursed Revenant
+        RenderingRegistry.registerEntityRenderingHandler(EntityFriendlyCursedRevenant.class, RenderFriendlyCursedRevenant::new);
         //Puzzle Mirror
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPuzzleMirror.class, new RenderPuzzleMirror());
     }

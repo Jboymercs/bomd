@@ -27,6 +27,9 @@
     },
     "state=obsidian": {
       "model": "da:boss/boss_active_7"
+    },
+    "state=apathyr": {
+      "model": "da:boss/boss_active_8"
     }
   }
 }

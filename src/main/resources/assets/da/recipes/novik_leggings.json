@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XVX",
+    "X X",
+    "X X"
+  ],
+  "key": {
+    "V": {
+      "item": "da:gaelon_shard"
+    },
+    "X": {
+      "item": "da:novik_plate"
+    }
+  },
+  "result": {
+    "item": "da:novik_leggings"
+  }
+}

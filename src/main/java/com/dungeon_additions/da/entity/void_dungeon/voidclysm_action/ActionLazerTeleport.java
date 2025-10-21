@@ -94,8 +94,8 @@ public class ActionLazerTeleport implements IMultiAction {
                 } else {
                     //adjust lazer
                     entity.addEvent(() -> {
-                        Vec3d laserShootPos = entity.getAttackTarget().getPositionVector();
                         if(entity.getAttackTarget() != null) {
+                            Vec3d laserShootPos = entity.getAttackTarget().getPositionVector();
                             entity.addEvent(() -> {
                                 Vec3d targetedPos = entity.getAttackTarget().getPositionVector();
                                 if(entity.getAttackTarget() != null) {

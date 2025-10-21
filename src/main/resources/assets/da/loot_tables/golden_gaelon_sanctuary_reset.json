@@ -1,0 +1,15 @@
+{
+  "pools": [
+    {
+      "name" : "da:golden_gaelon_sanctuary_reset",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:golden_apathyr_heart",
+          "weight": 10
+        }
+      ]
+    }
+  ]
+}

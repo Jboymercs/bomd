@@ -623,7 +623,7 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
 
     @Override
     public void onDeath(DamageSource cause) {
-        if(this.getOwner() != null && !hasSentMessage) {
+        if(this.getOwner() != null && !hasSentMessage && !world.isRemote) {
             sendMessageToOwner();
             this.hasSentMessage = true;
         }

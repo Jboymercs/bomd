@@ -1,0 +1,9 @@
+{
+  "parent": "block/upper_slab",
+  "textures":
+  {
+    "bottom": "da:blocks/darkglow_stonebricks",
+    "top": "da:blocks/darkglow_stonebricks",
+    "side": "da:blocks/darkglow_stonebricks"
+  }
+}

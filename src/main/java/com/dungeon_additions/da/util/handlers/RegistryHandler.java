@@ -64,6 +64,10 @@ public class RegistryHandler {
         ModelLoader.setCustomModelResourceLocation(ModItems.VOID_STAFF, 0, new ModelResourceLocation(ModReference.MOD_ID + ":void_staff", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.DESERT_STORM_PROJ, 0, new ModelResourceLocation(ModReference.MOD_ID + ":desert_storm", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.YELLOW_WAVE_PROJ, 0, new ModelResourceLocation(ModReference.MOD_ID + ":yellow_wave", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.GHOST_BOLT_PROJ, 0, new ModelResourceLocation(ModReference.MOD_ID + ":ghost_bolt", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.FAST_CRYSTAL_PROJ, 0, new ModelResourceLocation(ModReference.MOD_ID + ":fast_crystal", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.CRYSTAL_WAVE_PROJ, 0, new ModelResourceLocation(ModReference.MOD_ID + ":crystal_wave", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.APATHYR_AXE, 0, new ModelResourceLocation(ModReference.MOD_ID + ":apathyr_axe","inventory"));
         ModItems.SPORE_BALL.setTileEntityItemStackRenderer(new RenderSpore());
         ModItems.MAGIC_FIREBALL.setTileEntityItemStackRenderer(new RenderMagicFireball());
         ModItems.CHAMPION_AXE.setTileEntityItemStackRenderer(new RenderChampionAxe());
@@ -88,6 +92,10 @@ public class RegistryHandler {
         ModItems.VOID_STAFF.setTileEntityItemStackRenderer(new RenderVoidStaff());
         ModItems.DESERT_STORM_PROJ.setTileEntityItemStackRenderer(new RenderDesertStorm());
         ModItems.YELLOW_WAVE_PROJ.setTileEntityItemStackRenderer(new RenderYellowWave());
+        ModItems.GHOST_BOLT_PROJ.setTileEntityItemStackRenderer(new RenderGhostProjectile());
+        ModItems.FAST_CRYSTAL_PROJ.setTileEntityItemStackRenderer(new RenderFastCrystal());
+        ModItems.CRYSTAL_WAVE_PROJ.setTileEntityItemStackRenderer(new RenderCrystalWave());
+        ModItems.APATHYR_AXE.setTileEntityItemStackRenderer(new RenderApathyrAxe());
         for (Item item : ModItems.ITEMS) {
             if (item instanceof IHasModel) {
                 ((IHasModel) item).registerModels();

@@ -24,6 +24,12 @@ import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityEliteDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.ProjectileSoul;
 import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
+import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
+import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyrSpear;
+import com.dungeon_additions.da.entity.gaelon_dungeon.EntityReAnimate;
+import com.dungeon_additions.da.entity.gaelon_dungeon.ProjectileGhost;
+import com.dungeon_additions.da.entity.gaelon_dungeon.apathyr.*;
+import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.EntityFriendlyCursedRevenant;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
@@ -97,6 +103,8 @@ public class ModEntities {
     public static Vec3i obsidilith = new Vec3i(0x161117, 0x5B016B, 0);
     public static Vec3i voidclysm = new Vec3i(0x161117, 0xDE28D9, 0);
     public static Vec3i voidiant = new Vec3i(0xD473D9, 0x91094D, 0);
+    public static Vec3i reanimate = new Vec3i(0x615429,0x6eebeb,0);
+    public static Vec3i apathyr = new Vec3i(0xBD8F04,0x6eebeb,0);
     public static void registerEntities() {
         //One day, you'll be back in game my son
        // registerEntityWithID("wreath_knight", EntityWreathKnight.class, ENTITY_START_ID++, 50, void_blossom);
@@ -128,6 +136,10 @@ public class ModEntities {
         registerEntityWithID("obsidilith", EntityObsidilith.class, ENTITY_START_ID++, 70, obsidilith);
         registerEntityWithID("voidclysm", EntityVoidiclysm.class, ENTITY_START_ID++, 70, voidclysm);
         registerEntity("blue_wave", EntityBlueWave.class, ENTITY_START_ID++, 50);
+        //Gaelon Dungeon
+        registerEntityWithID("reanimate", EntityReAnimate.class, ENTITY_START_ID++, 60, reanimate);
+        registerEntity("cursed_revenant", EntityFriendlyCursedRevenant.class, ENTITY_START_ID++, 60);
+        registerEntityWithID("apathyr", EntityApathyr.class, ENTITY_START_ID++, 80, apathyr);
         //Night Lich's Tower
         registerEntityWithID("night_lich", EntityNightLich.class, ENTITY_START_ID++, 90, night_lich);
         //High Court City
@@ -208,6 +220,13 @@ public class ModEntities {
             registerEntity("desert_beam", EntityDesertBeam.class, ENTITY_START_ID++, 30);
             registerEntity("desert_storm", ProjectileDesertStorm.class, ENTITY_START_ID++, 35);
             registerEntity("yellow_wave", ProjectileYellowWave.class, ENTITY_START_ID++, 35);
+            registerEntity("crystal_wave", ProjectileCrystalWave.class, ENTITY_START_ID++, 35);
+            registerEntity("ghost_bolt", ProjectileGhost.class, ENTITY_START_ID++, 35);
+            registerEntity("fast_ghost_bolt", ProjectileFastGhostCrystal.class, ENTITY_START_ID++, 35);
+            registerEntity("ghost_apathyr", EntityApathyrGhost.class, ENTITY_START_ID++, 40);
+            registerEntity("ultra_attack", EntityUltraAttack.class, ENTITY_START_ID++, 40);
+            registerEntity("apathyr_spear", EntityApathyrSpear.class, ENTITY_START_ID++, 40);
+            registerEntity("apathyr_eye", EntityApathyrEye.class, ENTITY_START_ID++, 40);
 
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");
@@ -223,6 +242,7 @@ public class ModEntities {
         registerTileEntity(TileEntityGrumBlocker.class, "grum_blocker");
         registerTileEntity(TileEntityBossReSummon.class, "boss_resummon");
         registerTileEntity(TileEntityObsidilithRune.class, "obsidilith_rune");
+        registerTileEntity(TileEntityEyePillar.class, "eye_pillar");
 
     }
 

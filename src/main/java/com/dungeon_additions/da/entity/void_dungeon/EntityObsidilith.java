@@ -17,6 +17,7 @@ import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityObsidilithRune;
+import com.dungeon_additions.da.entity.util.IEntitySound;
 import com.dungeon_additions.da.entity.void_dungeon.obsidilith_action.ActionFlameRing;
 import com.dungeon_additions.da.entity.void_dungeon.obsidilith_action.ActionRedWave;
 import com.dungeon_additions.da.entity.void_dungeon.obsidilith_action.ActionYellowWave;
@@ -66,13 +67,14 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAnimationTickable, IAttack, IScreenShake {
+public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAnimationTickable, IAttack, IScreenShake, IEntitySound {
 
     private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.NOTCHED_6));
     private static final DataParameter<Boolean> SUMMON_STATE = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BOOLEAN);
@@ -254,6 +256,9 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
     @Override
     public void onUpdate() {
         super.onUpdate();
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+            this.playMusic(this);
+        }
         double currentHealth = this.getHealth() / this.getMaxHealth();
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
         this.setRotation(0, 0);
@@ -485,11 +490,11 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         if(!this.isFightMode() && !this.isSummonState() && !this.isDeathState()) {
             List<Consumer<EntityLivingBase>> attacksMelee = new ArrayList<>(Arrays.asList(spikeAttack, flame_attack, red_attack, purple_attack, yellow_attack));
             double[] weights = {
-                    distance * 0.02, // Spike Attack Simple
+                    (prevAttacks != spikeAttack && HealthChange < 0.5) ? distance * 0.02 : (HealthChange >= 0.5) ? distance * 0.02 : 0, // Spike Attack Simple
                     (distance < 8 && prevAttacks != flame_attack) ? distance * 0.03 : 0, //Flame Ring Attack
                     (distance > 4 && prevAttacks != red_attack) ? distance * 0.02 : 0, //Red Attack
                     (prevAttacks !=purple_attack && !this.isShielded() && HealthChange < 0.75) ? distance * 0.02 : 0, //Purple Attack Teleport
-                    (prevAttacks != yellow_attack && distance > 2) ? distance * 0.02 : 0 //Yellow Attack
+                    (prevAttacks != yellow_attack && distance > 2 && HealthChange < 0.5) ? distance * 0.02 : 0 //Yellow Attack
                     //maybe a minion summon attack
             };
             prevAttacks = ModRand.choice(attacksMelee, rand, weights).next();
@@ -1035,5 +1040,11 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
             return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 1.8F * screamMult);
         }
         return 0;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getBossMusic() {
+        return SoundsHandler.OBSIDILITH_TRACK;
     }
 }

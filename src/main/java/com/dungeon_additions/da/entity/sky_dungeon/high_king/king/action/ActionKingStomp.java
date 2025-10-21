@@ -14,6 +14,15 @@ import net.minecraft.world.World;
 
 public class ActionKingStomp implements IActionKing{
 
+    private boolean isApathyr;
+
+    public ActionKingStomp() {
+
+    }
+
+    public ActionKingStomp(boolean isApathyr) {
+        this.isApathyr = isApathyr;
+    }
 
     @Override
     public void performAction(EntityHighKing actor, EntityLivingBase target) {
@@ -32,7 +41,11 @@ public class ActionKingStomp implements IActionKing{
                     if(actor.world.getBlockState(posToo).isFullBlock()) {
                         tile.setBlock(blockToo, 0);
                     } else {
-                        tile.setBlock(ModBlocks.CITY_BRICK_ALT, 0);
+                        if(this.isApathyr) {
+                            tile.setBlock(ModBlocks.DARK_GLOW_BRICKS, 0);
+                        } else {
+                            tile.setBlock(ModBlocks.CITY_BRICK_ALT, 0);
+                        }
                     }
                     actor.world.spawnEntity(tile);
 
@@ -53,7 +66,11 @@ public class ActionKingStomp implements IActionKing{
                     if(actor.world.getBlockState(posToo).isFullBlock()) {
                         tile.setBlock(blockToo, 0);
                     } else {
-                        tile.setBlock(ModBlocks.CITY_BRICK_ALT, 0);
+                        if(this.isApathyr) {
+                            tile.setBlock(ModBlocks.DARK_GLOW_BRICKS, 0);
+                        } else {
+                            tile.setBlock(ModBlocks.CITY_BRICK_ALT, 0);
+                        }
                     }
                     actor.world.spawnEntity(tile);
 

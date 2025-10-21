@@ -8,6 +8,7 @@ import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.blossom.EntityVoidBlossom;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityGreatWyrk;
+import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
 import com.dungeon_additions.da.entity.night_lich.EntityNightLich;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake;
@@ -114,6 +115,12 @@ public class BlockBossReSummon extends BlockBase implements ITileEntityProvider,
                         world.spawnEntity(knight);
                         world.setBlockToAir(pos);
                         player.getHeldItem(hand).shrink(1);
+                    }  else if (boss_spawner.getState() == BlockEnumBossSummonState.APATHYR) {
+                        EntityApathyr knight = new EntityApathyr(world, timesUsed, pos);
+                        world.setBlockToAir(pos);
+                        knight.onSummonViaBlock(pos);
+                        world.spawnEntity(knight);
+                        player.getHeldItem(hand).shrink(1);
                     } else if (boss_spawner.getState() == BlockEnumBossSummonState.NIGHT_LICH) {
                         if(MobConfig.lich_enable_daylight && world.getWorldTime() < MobConfig.lich_summon_time) {
                             player.sendStatusMessage(new TextComponentTranslation("da.lich_wrong_time", new Object[0]), true);
@@ -194,6 +201,9 @@ public class BlockBossReSummon extends BlockBase implements ITileEntityProvider,
             }  else if (spawner.getState() == BlockEnumBossSummonState.OBSIDILITH) {
                 Vec3d particlePos = new Vec3d(pos.getX() -0.1 + ModRand.getFloat(1.1F), pos.getY() + 0.9 + ModRand.getFloat(1F), pos.getZ() -0.1 + ModRand.getFloat(1.1F));
                 ParticleManager.spawnDust(worldIn, particlePos, ModColors.MAELSTROM, new Vec3d(0, 0.05, 0), ModRand.range(10, 15));
+            }   else if (spawner.getState() == BlockEnumBossSummonState.APATHYR) {
+                Vec3d particlePos = new Vec3d(pos.getX() -0.1 + ModRand.getFloat(1.1F), pos.getY() + 0.9 + ModRand.getFloat(1F), pos.getZ() -0.1 + ModRand.getFloat(1.1F));
+                Main.proxy.spawnParticle(15, worldIn, particlePos.x, particlePos.y, particlePos.z, worldIn.rand.nextFloat()/6 - worldIn.rand.nextFloat()/6, 0.04, worldIn.rand.nextFloat()/6 - worldIn.rand.nextFloat()/6, 100);
             }
         }
     }

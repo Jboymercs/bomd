@@ -2,6 +2,7 @@ package com.dungeon_additions.da.entity.desert_dungeon.miniboss;
 
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityAegyptiaAttackAI;
@@ -791,6 +792,10 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
 
         if(this.isTributed) {
             return super.attackEntityFrom(source, amount * 0.5F);
+        }
+
+        if(ModConfig.boss_cap_damage_enabled && amount > MobConfig.everator_damage_cap) {
+            return super.attackEntityFrom(source, MobConfig.champion_damage_cap);
         }
 
         return super.attackEntityFrom(source, amount);

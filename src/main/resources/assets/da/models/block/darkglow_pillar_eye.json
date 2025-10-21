@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "da:blocks/darkglow_pillar_end",
+    "side": "da:blocks/darkglow_pillar_eye_side"
+  }
+}

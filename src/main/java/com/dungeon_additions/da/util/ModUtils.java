@@ -26,6 +26,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
@@ -47,6 +48,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class ModUtils {
     public static final ResourceLocation PARTICLE = new ResourceLocation(ModReference.MOD_ID + ":textures/particle/particles.png");
@@ -847,6 +849,22 @@ public class ModUtils {
         return pos.getY();
     }
 
+    public static int getSurfaceHeightZeroReturn(World world, BlockPos pos, int min, int max)
+    {
+        int currentY = max;
+
+        while(currentY >= min)
+        {
+            if(!world.isAirBlock(pos.add(0, currentY, 0)) && !world.isRemote) {
+                return currentY;
+            }
+
+            currentY--;
+        }
+
+        return 0;
+    }
+
 
     public static void doSweepAttack(EntityPlayer player, @Nullable EntityLivingBase target, Consumer<EntityLivingBase> perEntity) {
         doSweepAttack(player, target, perEntity, 9, 1);
@@ -924,6 +942,8 @@ public class ModUtils {
                                     block != ModBlocks.PUZZLE_BLOCKER &&
                                     block != ModBlocks.PUZZLE_DISPENCER &&
                                     block != ModBlocks.PUZZLE_DISPLACER &&
+                                    block != ModBlocks.DARK_GLOW_EYE_PILLAR &&
+                                    block != ModBlocks.DARK_GLOW_LIT_PILLAR &&
                                     !(block instanceof BlockLiquid) && canBlockBeBroken(block)) {
                                 if (world.getClosestPlayer(blockpos.getX(), blockpos.getY(), blockpos.getZ(), 20, false) != null) {
                                     world.destroyBlock(blockpos, false);
@@ -946,6 +966,24 @@ public class ModUtils {
             }
         }
         return true;
+    }
+
+    public static boolean canItemBeRepaired(Item item) {
+        for (String blockName : ModConfig.gaelon_repair_items) {
+            if (ForgeRegistries.ITEMS.getValue(new ResourceLocation(blockName)) == item) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static float calculateValueWithPrecentage(float precentageOf, float precentageVal) {
+        return (precentageOf * Math.min(precentageVal, 100.0F)) / 100.0F;
+    }
+
+
+    public static float getPercentageOf(float precentageOf, float precentageVal) {
+        return Math.min((precentageVal * 100.0F) / precentageOf, 100.0F);
     }
 
     /**
@@ -1035,6 +1073,31 @@ public class ModUtils {
             return true;
         }
         return false;
+    }
+
+
+    public static boolean getAdvancementCompletionAsListOnePass(EntityPlayer currentPlayer, String[] advancementNamesList) {
+        for(String adv : advancementNamesList) {
+            ResourceLocation loc = new ResourceLocation(adv);
+            boolean isCompleted = Main.proxy.doesPlayerHaveXAdvancement(currentPlayer, loc);
+
+            if(isCompleted) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns all EntityLivingBase entities in a certain bounding box
+     */
+    public static List<EntityLivingBase> getEntitiesInBox(Entity entity, AxisAlignedBB bb) {
+        List<Entity> list = entity.world.getEntitiesWithinAABBExcludingEntity(entity, bb);
+
+        Predicate<Entity> isInstance = i -> i instanceof EntityLivingBase;
+        Function<Entity, EntityLivingBase> cast = i -> (EntityLivingBase) i;
+
+        return list.stream().filter(isInstance).map(cast).collect(Collectors.toList());
     }
 
 }

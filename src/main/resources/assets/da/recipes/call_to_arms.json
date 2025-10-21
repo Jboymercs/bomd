@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " R ",
+    "XVX",
+    " D "
+  ],
+  "key": {
+    "V": {
+      "item": "da:novik_sword"
+    },
+    "R": {
+      "item": "da:unbridled_soul"
+    },
+    "X": {
+      "item": "da:dark_mana"
+    },
+    "D": {
+      "item": "da:dark_core"
+    }
+  },
+  "result": {
+    "item": "da:call_to_arms"
+  }
+}

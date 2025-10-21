@@ -2441,6 +2441,306 @@
       }
     ]
   },
+  "entity.reanimate.appear": {
+    "category": "entity",
+    "subtitle": "entity.reanimate.appear",
+    "sounds": [
+      {
+        "name": "da:entity/reanimate/appear",
+        "stream": false
+      }
+    ]
+  },
+  "entity.reanimate.disappear": {
+    "category": "entity",
+    "subtitle": "entity.reanimate.disappear",
+    "sounds": [
+      {
+        "name": "da:entity/reanimate/disappear",
+        "stream": false
+      }
+    ]
+  },
+  "entity.reanimate.swing": {
+    "category": "entity",
+    "subtitle": "entity.reanimate.swing",
+    "sounds": [
+      {
+        "name": "da:entity/reanimate/swing",
+        "stream": false
+      }
+    ]
+  },
+  "entity.reanimate.cast": {
+    "category": "entity",
+    "subtitle": "entity.reanimate.cast",
+    "sounds": [
+      {
+        "name": "da:entity/reanimate/cast",
+        "stream": false
+      }
+    ]
+  },
+  "entity.reanimate.shield": {
+    "category": "entity",
+    "subtitle": "entity.reanimate.shield",
+    "sounds": [
+      {
+        "name": "da:entity/reanimate/shield",
+        "stream": false
+      }
+    ]
+  },
+  "entity.reanimate.hurt": {
+    "category": "entity",
+    "subtitle": "entity.reanimate.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/reanimate/hurt1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/reanimate/hurt2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/reanimate/hurt3",
+        "stream": false
+      },
+      {
+        "name": "da:entity/reanimate/hurt4",
+        "stream": false
+      }
+    ]
+  },
+  "entity.reanimate.step": {
+    "category": "entity",
+    "subtitle": "entity.reanimate.step",
+    "sounds": [
+      {
+        "name": "da:entity/reanimate/step1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/reanimate/step2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/reanimate/step3",
+        "stream": false
+      },
+      {
+        "name": "da:entity/reanimate/step4",
+        "stream": false
+      }
+    ]
+  },
+  "entity.reanimate.idle": {
+    "category": "entity",
+    "subtitle": "entity.reanimate.idle",
+    "sounds": [
+      {
+        "name": "da:entity/reanimate/idle1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/reanimate/idle2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/reanimate/idle3",
+        "stream": false
+      }
+    ]
+  },
+  "entity.apathyr.hurt": {
+    "category": "entity",
+    "subtitle": "entity.apathyr.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/apathyr/hurt1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/apathyr/hurt2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/apathyr/hurt3",
+        "stream": false
+      }
+    ]
+  },
+  "entity.apathyr.attack": {
+    "category": "entity",
+    "subtitle": "entity.apathyr.attack",
+    "sounds": [
+      {
+        "name": "da:entity/apathyr/attack1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/apathyr/attack2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/apathyr/attack3",
+        "stream": false
+      }
+    ]
+  },
+  "entity.apathyr.swing": {
+    "category": "entity",
+    "subtitle": "entity.apathyr.swing",
+    "sounds": [
+      {
+        "name": "da:entity/apathyr/swing",
+        "stream": false
+      }
+    ]
+  },
+  "entity.apathyr.small_dash": {
+    "category": "entity",
+    "subtitle": "entity.apathyr.small_dash",
+    "sounds": [
+      {
+        "name": "da:entity/apathyr/small_dash",
+        "stream": false
+      }
+    ]
+  },
+  "entity.apathyr.jump": {
+    "category": "entity",
+    "subtitle": "entity.apathyr.jump",
+    "sounds": [
+      {
+        "name": "da:entity/apathyr/jump",
+        "stream": false
+      }
+    ]
+  },
+  "entity.apathyr.impact": {
+    "category": "entity",
+    "subtitle": "entity.apathyr.impact",
+    "sounds": [
+      {
+        "name": "da:entity/apathyr/impact",
+        "stream": false
+      }
+    ]
+  },
+  "entity.apathyr.charge_axe": {
+    "category": "entity",
+    "subtitle": "entity.apathyr.charge_axe",
+    "sounds": [
+      {
+        "name": "da:entity/apathyr/charge_axe",
+        "stream": false
+      }
+    ]
+  },
+  "entity.apathyr.cast": {
+    "category": "entity",
+    "subtitle": "entity.apathyr.cast",
+    "sounds": [
+      {
+        "name": "da:entity/apathyr/cast",
+        "stream": false
+      }
+    ]
+  },
+  "entity.apathyr.cast_heavy": {
+    "category": "entity",
+    "subtitle": "entity.apathyr.cast_heavy",
+    "sounds": [
+      {
+        "name": "da:entity/apathyr/cast_heavy",
+        "stream": false
+      }
+    ]
+  },
+  "entity.apathyr.summon_spear": {
+    "category": "entity",
+    "subtitle": "entity.apathyr.summon_spear",
+    "sounds": [
+      {
+        "name": "da:entity/apathyr/summon_spear",
+        "stream": false
+      }
+    ]
+  },
+  "entity.apathyr.cast_spikes": {
+    "category": "entity",
+    "subtitle": "entity.apathyr.cast_spikes",
+    "sounds": [
+      {
+        "name": "da:entity/apathyr/cast_spikes",
+        "stream": false
+      }
+    ]
+  },
+  "entity.apathyr.summon_ghost": {
+    "category": "entity",
+    "subtitle": "entity.apathyr.summon_ghost",
+    "sounds": [
+      {
+        "name": "da:entity/apathyr/summon_ghost",
+        "stream": false
+      }
+    ]
+  },
+  "entity.apathyr.awaken": {
+    "category": "entity",
+    "subtitle": "entity.apathyr.awaken",
+    "sounds": [
+      {
+        "name": "da:entity/apathyr/awaken",
+        "stream": false
+      }
+    ]
+  },
+  "entity.apathyr.death": {
+    "category": "entity",
+    "subtitle": "entity.apathyr.death",
+    "sounds": [
+      {
+        "name": "da:entity/apathyr/death",
+        "stream": false
+      }
+    ]
+  },
+  "entity.apathyr.domain_idle": {
+    "category": "entity",
+    "subtitle": "entity.apathyr.domain_idle",
+    "sounds": [
+      {
+        "name": "da:entity/apathyr/domain_idle",
+        "stream": false
+      }
+    ]
+  },
+  "entity.apathyr.step": {
+    "category": "entity",
+    "subtitle": "entity.apathyr.step",
+    "sounds": [
+      {
+        "name": "da:entity/apathyr/step1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/apathyr/step2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/apathyr/step3",
+        "stream": false
+      },
+      {
+        "name": "da:entity/apathyr/step4",
+        "stream": false
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",
@@ -2809,6 +3109,88 @@
       }
     ]
   },
+  "block.gaelon.break": {
+    "category": "block",
+    "subtitle": "subtitles.block.generic.break",
+    "sounds": [
+      {
+        "name": "da:block/gaelon/break1",
+        "stream": false
+      },
+      {
+        "name": "da:block/gaelon/break2",
+        "stream": false
+      },
+      {
+        "name": "da:block/gaelon/break3",
+        "stream": false
+      },
+      {
+        "name": "da:block/gaelon/break4",
+        "stream": false
+      }
+    ]
+  },
+  "block.gaelon.place": {
+    "category": "block",
+    "subtitle": "subtitles.block.generic.place",
+    "sounds": [
+      {
+        "name": "da:block/gaelon/place1",
+        "stream": false
+      },
+      {
+        "name": "da:block/gaelon/place2",
+        "stream": false
+      },
+      {
+        "name": "da:block/gaelon/place3",
+        "stream": false
+      },
+      {
+        "name": "da:block/gaelon/place4",
+        "stream": false
+      }
+    ]
+  },
+  "block.gaelon.step": {
+    "category": "block",
+    "subtitle": "subtitles.block.generic.place",
+    "sounds": [
+      {
+        "name": "da:block/gaelon/step1",
+        "stream": false
+      },
+      {
+        "name": "da:block/gaelon/step2",
+        "stream": false
+      },
+      {
+        "name": "da:block/gaelon/step3",
+        "stream": false
+      },
+      {
+        "name": "da:block/gaelon/step4",
+        "stream": false
+      },
+      {
+        "name": "da:block/gaelon/step5",
+        "stream": false
+      },
+      {
+        "name": "da:block/gaelon/step6",
+        "stream": false
+      },
+      {
+        "name": "da:block/gaelon/step7",
+        "stream": false
+      },
+      {
+        "name": "da:block/gaelon/step8",
+        "stream": false
+      }
+    ]
+  },
   "block.soul_star.activate": {
     "category": "block",
     "subtitle": "",
@@ -2928,6 +3310,33 @@
     "sounds": [
       {
         "name": "da:music/ancient_wyrk_track",
+        "stream": true
+      }
+    ]
+  },
+  "music.ambient.voidclysm": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "da:music/voidclysm_track",
+        "stream": true
+      }
+    ]
+  },
+  "music.ambient.obsidilith": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "da:music/obsidilith_track",
+        "stream": true
+      }
+    ]
+  },
+  "music.ambient.apathyr": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "da:music/apathyr_track",
         "stream": true
       }
     ]

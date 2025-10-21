@@ -62,6 +62,10 @@ public class SoundsHandler {
     public static SoundEvent GRUM_PLACE;
     public static SoundEvent GRUM_BREAK;
     public static SoundEvent GRUM_STEP;
+    //GAELON
+    public static SoundEvent GAELON_PLACE;
+    public static SoundEvent GAELON_BREAK;
+    public static SoundEvent GAELON_STEP;
     //Soul Star Block
     public static SoundEvent SOUL_STAR_ACTIVATE;
 
@@ -288,6 +292,34 @@ public class SoundsHandler {
     public static SoundEvent EVERATOR_SMASH_SWING;
     public static SoundEvent EVERATOR_TRIBUTE;
 
+    //REANIMATE
+    public static SoundEvent REANIMATE_HURT;
+    public static SoundEvent REANIMATE_IDLE;
+    public static SoundEvent REANIMATE_STEP;
+    public static SoundEvent REANIMATE_SWING;
+    public static SoundEvent REANIMATE_APPEAR;
+    public static SoundEvent REANIMATE_DISAPPEAR;
+    public static SoundEvent REANIMATE_CAST;
+    public static SoundEvent REANIMATE_SHIELD;
+
+    //APATHYR
+    public static SoundEvent APATHYR_HURT;
+    public static SoundEvent APATHYR_ATTACK;
+    public static SoundEvent APATHYR_SWING;
+    public static SoundEvent APATHYR_STEP;
+    public static SoundEvent APATHYR_JUMP;
+    public static SoundEvent APATHYR_CAST_MAGIC;
+    public static SoundEvent APATHYR_CAST_HEAVY;
+    public static SoundEvent APATHYR_CHARGE_AXE;
+    public static SoundEvent APATHYR_AXE_IMPACT;
+    public static SoundEvent APATHYR_SUMMON_SPEAR;
+    public static SoundEvent APATHYR_CAST_SPIKES;
+    public static SoundEvent APATHYR_DOMAIN_IDLE;
+    public static SoundEvent APATHYR_SUMMON_GHOST;
+    public static SoundEvent APATHYR_SLIGHT_DASH;
+    public static SoundEvent APATHYR_AWAKEN;
+    public static SoundEvent APATHYR_DEATH;
+
     //MUSIC
     public static SoundEvent HIGH_DRAGON_TRACK;
     public static SoundEvent HIGH_KING_TRACK;
@@ -296,6 +328,9 @@ public class SoundsHandler {
     public static SoundEvent ANCIENT_WYRK_TRACK;
     public static SoundEvent VOID_BLOSSOM_TRACK;
     public static SoundEvent FALLEN_STORMVIER_TRACK;
+    public static SoundEvent OBSIDILITH_TRACK;
+    public static SoundEvent VOIDCLYSM_TRACK;
+    public static SoundEvent APATHYR_TRACK;
 
     public static void registerSounds() {
         //
@@ -325,6 +360,10 @@ public class SoundsHandler {
         GRUM_BREAK = registerSound("grum.break", "block");
         GRUM_PLACE = registerSound("grum.place", "block");
         GRUM_STEP = registerSound("grum.step", "block");
+        //
+        GAELON_BREAK = registerSound("gaelon.break", "block");
+        GAELON_PLACE = registerSound("gaelon.place","block");
+        GAELON_STEP = registerSound("gaelon.step","block");
         //
         VOID_SPIKE_SHOOT = registerSound("spike.shoot", "entity");
         APPEARING_WAVE = registerSound("spike.wave", "entity");
@@ -547,6 +586,32 @@ public class SoundsHandler {
         EVERATOR_STEP = registerSound("everator.step", "entity");
         EVERATOR_TRIBUTE = registerSound("everator.tribute", "entity");
         EVERATOR_HURT = registerSound("everator.hurt", "entity");
+        //
+        REANIMATE_APPEAR = registerSound("reanimate.appear", "entity");
+        REANIMATE_DISAPPEAR = registerSound("reanimate.disappear","entity");
+        REANIMATE_SWING = registerSound("reanimate.swing","entity");
+        REANIMATE_HURT = registerSound("reanimate.hurt","entity");
+        REANIMATE_IDLE = registerSound("reanimate.idle","entity");
+        REANIMATE_STEP = registerSound("reanimate.step","entity");
+        REANIMATE_CAST = registerSound("reanimate.cast", "entity");
+        REANIMATE_SHIELD = registerSound("reanimate.shield", "entity");
+        //APATHYR
+        APATHYR_ATTACK = registerSound("apathyr.attack", "entity");
+        APATHYR_HURT = registerSound("apathyr.hurt", "entity");
+        APATHYR_SWING = registerSound("apathyr.swing","entity");
+        APATHYR_STEP = registerSound("apathyr.step","entity");
+        APATHYR_JUMP = registerSound("apathyr.jump","entity");
+        APATHYR_SLIGHT_DASH = registerSound("apathyr.small_dash","entity");
+        APATHYR_CHARGE_AXE = registerSound("apathyr.charge_axe", "entity");
+        APATHYR_AXE_IMPACT = registerSound("apathyr.impact", "entity");
+        APATHYR_CAST_MAGIC = registerSound("apathyr.cast", "entity");
+        APATHYR_CAST_HEAVY = registerSound("apathyr.cast_heavy", "entity");
+        APATHYR_SUMMON_SPEAR = registerSound("apathyr.summon_spear", "entity");
+        APATHYR_CAST_SPIKES = registerSound("apathyr.cast_spikes","entity");
+        APATHYR_SUMMON_GHOST = registerSound("apathyr.summon_ghost","entity");
+        APATHYR_DOMAIN_IDLE = registerSound("apathyr.domain_idle","entity");
+        APATHYR_AWAKEN = registerSound("apathyr.awaken","entity");
+        APATHYR_DEATH = registerSound("apathyr.death","entity");
         //MUSIC
         HIGH_DRAGON_TRACK = registerSound("ambient.high_dragon", "music");
         HIGH_KING_TRACK = registerSound("ambient.high_king", "music");
@@ -555,6 +620,9 @@ public class SoundsHandler {
         FALLEN_STORMVIER_TRACK = registerSound("ambient.fallen_stormvier", "music");
         NIGHT_LICH_TRACK = registerSound("ambient.night_lich", "music");
         ANCIENT_WYRK_TRACK = registerSound("ambient.ancient_wyrk", "music");
+        VOIDCLYSM_TRACK = registerSound("ambient.voidclysm", "music");
+        OBSIDILITH_TRACK = registerSound("ambient.obsidilith", "music");
+        APATHYR_TRACK = registerSound("ambient.apathyr","music");
     }
 
 

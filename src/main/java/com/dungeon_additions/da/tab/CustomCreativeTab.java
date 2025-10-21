@@ -1,5 +1,4 @@
 package com.dungeon_additions.da.tab;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,4 +17,7 @@ public class CustomCreativeTab extends CreativeTabs {
     public ItemStack createIcon() {
         return new ItemStack(icon.get());
     }
+
+
+
 }

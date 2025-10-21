@@ -7,6 +7,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -102,5 +104,12 @@ public class RenderUtil {
         bufferbuilder.pos(d8, lineLength, d9).tex(0.5D, d24).color(red, green, blue, 255).endVertex();
         tessellator.draw();
         GlStateManager.popMatrix();
+    }
+
+    private static final ResourceLocation VOIDCLYSM_LAZER = new ResourceLocation(ModReference.MOD_ID, "textures/entity/beam/voidclysm_beam.png");
+
+    public static void drawLazer(RenderManager renderManager, Vec3d startPos, Vec3d endPos, Vec3d offset, Vec3d color, EntityLiving entity, float partialTicks) {
+        renderManager.renderEngine.bindTexture(VOIDCLYSM_LAZER);
+        drawBeam(renderManager, startPos, endPos, offset, color, entity, partialTicks);
     }
 }

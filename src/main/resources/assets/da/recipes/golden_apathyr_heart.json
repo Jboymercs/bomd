@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " R ",
+    "XVX",
+    " D "
+  ],
+  "key": {
+    "V": {
+      "item": "da:apathyr_heart"
+    },
+    "R": {
+      "item": "da:dark_core"
+    },
+    "X": {
+      "item": "minecraft:gold_ingot"
+    },
+    "D": {
+      "item": "da:incendium_core"
+    }
+  },
+  "result": {
+    "item": "da:golden_apathyr_heart"
+  }
+}

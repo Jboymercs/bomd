@@ -6,6 +6,8 @@ import com.dungeon_additions.da.world.forgotten_temple.ForgottenTempleTemplate;
 import com.dungeon_additions.da.world.forgotten_temple.WorldGenForgottenTemple;
 import com.dungeon_additions.da.world.frozen_castle.FrozenCastleTemplate;
 import com.dungeon_additions.da.world.frozen_castle.WorldGenFrozenCastle;
+import com.dungeon_additions.da.world.gaelon_sanctuary.GaelonSanctuaryTemplate;
+import com.dungeon_additions.da.world.gaelon_sanctuary.WorldGenGaelonSanctuary;
 import com.dungeon_additions.da.world.high_city.HighCityTemplate;
 import com.dungeon_additions.da.world.high_city.WorldGenHighCity;
 import com.dungeon_additions.da.world.lich_tower.LichTowerTemplate;
@@ -44,5 +46,8 @@ public class StructureHandler {
         //Obsidilith Arena
         MapGenStructureIO.registerStructure(WorldGenObsidilithArena.Start.class, "ObsidilithArena");
         MapGenStructureIO.registerStructureComponent(ObsidilithArenaTemplate.class, "OAP");
+        //Gaelon Sanctuary
+        MapGenStructureIO.registerStructure(WorldGenGaelonSanctuary.Start.class, "GaelonSanctuary");
+        MapGenStructureIO.registerStructureComponent(GaelonSanctuaryTemplate.class, "GSP");
     }
 }

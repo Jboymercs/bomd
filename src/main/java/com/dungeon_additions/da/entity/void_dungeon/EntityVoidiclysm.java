@@ -12,6 +12,7 @@ import com.dungeon_additions.da.entity.ai.void_dungeon.EntityVoidclysmAttackAI;
 import com.dungeon_additions.da.entity.frost_dungeon.IDirectionalRender;
 import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.IMultiAction;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
+import com.dungeon_additions.da.entity.util.IEntitySound;
 import com.dungeon_additions.da.entity.void_dungeon.voidclysm_action.ActionBombBarrage;
 import com.dungeon_additions.da.entity.void_dungeon.voidclysm_action.ActionCastVoidBolts;
 import com.dungeon_additions.da.entity.void_dungeon.voidclysm_action.ActionClapAttack;
@@ -65,12 +66,13 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAnimationTickable, IPitch, IScreenShake, IAttack, IDirectionalRender {
+public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAnimationTickable, IPitch, IScreenShake, IAttack, IDirectionalRender, IEntitySound {
     private AnimationFactory factory = new AnimationFactory(this);
     private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.NOTCHED_10));
     private Consumer<EntityLivingBase> prevAttack;
@@ -393,6 +395,9 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
     @Override
     public void onUpdate() {
         super.onUpdate();
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+            this.playMusic(this);
+        }
         this.shakeTime--;
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
         this.atomicCooldown--;
@@ -1565,4 +1570,9 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
     }
 
 
+    @Nullable
+    @Override
+    public SoundEvent getBossMusic() {
+        return SoundsHandler.VOIDCLYSM_TRACK;
+    }
 }

@@ -79,4 +79,6 @@ public class CommonProxy{
     public void stopMusic() {}
 
     public void playMusic(SoundEvent soundEvent, @Nullable Entity linkedEntity) {}
+
+    public void stopMusicFromBoss(SoundEvent soundEvent, @Nullable Entity linkedEntity) {}
 }

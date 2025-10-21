@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "item": "da:gaelon_shard"
+    }
+  },
+  "result": {
+    "item": "da:gaelon_ingot"
+  }
+}

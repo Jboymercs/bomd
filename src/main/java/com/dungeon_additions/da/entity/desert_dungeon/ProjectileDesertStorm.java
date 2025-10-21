@@ -11,6 +11,7 @@ import com.dungeon_additions.da.util.handlers.ParticleManager;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -105,7 +106,21 @@ public class ProjectileDesertStorm extends Projectile {
             if (entity instanceof EntityLivingBase && this.shootingEntity != null && entity != this.shootingEntity && !(entity instanceof EntityDesertBase)) {
                 if (player != null) {
                     //player summoned Spell
-                        grabbedEntity = ((EntityLivingBase) entity);
+                            if(entity instanceof EntityAbstractBase) {
+                                EntityAbstractBase base = ((EntityAbstractBase) entity);
+                                if(base.iAmBossMob) {
+                                    if(!base.isImmovable()) {
+                                        grabbedEntity = ((EntityLivingBase) entity);
+                                    }
+                                } else if(base.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getBaseValue() != 1) {
+                                    grabbedEntity = base;
+                                }
+                            } else {
+                                EntityLivingBase base = ((EntityLivingBase) entity);
+                                if(base.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getBaseValue() != 1) {
+                                    grabbedEntity = ((EntityLivingBase) entity);
+                                }
+                            }
                     DamageSource source = ModDamageSource.builder()
                             .type(ModDamageSource.PROJECTILE)
                             .indirectEntity(shootingEntity)

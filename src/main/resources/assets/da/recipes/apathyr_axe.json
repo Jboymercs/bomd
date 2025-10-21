@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VRV",
+    " XD",
+    " D "
+  ],
+  "key": {
+    "V": {
+      "item": "da:gaelon_ingot"
+    },
+    "R": {
+      "item": "da:unbridled_soul"
+    },
+    "X": {
+      "item": "minecraft:stick"
+    },
+    "D": {
+      "item": "da:novik_plate"
+    }
+  },
+  "result": {
+    "item": "da:apathyr_axe"
+  }
+}

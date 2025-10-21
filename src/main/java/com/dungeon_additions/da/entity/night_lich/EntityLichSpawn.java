@@ -5,6 +5,8 @@ import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
+import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
+import com.dungeon_additions.da.entity.gaelon_dungeon.EntityReAnimate;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.Entity;
@@ -60,6 +62,8 @@ public class EntityLichSpawn extends EntityAbstractBase implements IAnimatable, 
 
     private EntityWyrk wyrk_owner;
 
+    private EntityApathyr apathyr_owner;
+
     public EntityLichSpawn(World worldIn, EntityNightLich owner) {
         super(worldIn);
         this.setSize(0.8F, 0.8F);
@@ -76,6 +80,20 @@ public class EntityLichSpawn extends EntityAbstractBase implements IAnimatable, 
         this.setImmovable(true);
         this.setNoAI(true);
         this.wyrk_owner = owner;
+    }
+
+    private boolean isEliteSpawn;
+    private boolean isGoldenSpawn;
+
+    public EntityLichSpawn(World worldIn, EntityApathyr owner, boolean isEliteSpawn, boolean isGoldenSpawn) {
+        super(worldIn);
+        this.setSize(0.8F, 0.8F);
+        this.noClip = true;
+        this.setImmovable(true);
+        this.setNoAI(true);
+        this.isEliteSpawn = isEliteSpawn;
+        this.isGoldenSpawn = isGoldenSpawn;
+        this.apathyr_owner = owner;
     }
 
     @Override
@@ -148,6 +166,37 @@ public class EntityLichSpawn extends EntityAbstractBase implements IAnimatable, 
                 EntityDraugr draugr = new EntityDraugr(world);
                 draugr.setPosition(this.posX, this.posY, this.posZ);
                 draugr.setDropItemsWhenDead(false);
+                world.spawnEntity(draugr);
+            }
+        } else if (apathyr_owner != null && ticksExisted == 30) {
+
+            if(this.isEliteSpawn) {
+                //ELITE SPAWNS
+                EntityReAnimate draugr = new EntityReAnimate(world);
+                draugr.setPosition(this.posX, this.posY, this.posZ);
+                draugr.setDropItemsWhenDead(false);
+                draugr.setDropsLoot(false);
+                if(apathyr_owner != null) {
+                    if(this.isGoldenSpawn) {
+                        apathyr_owner.current_mobs_golden.add(new WeakReference<>(draugr));
+                    } else {
+                        apathyr_owner.current_mobs.add(new WeakReference<>(draugr));
+                    }
+                }
+                world.spawnEntity(draugr);
+            } else {
+                //spawns Re-Animates
+                EntityReAnimate draugr = new EntityReAnimate(world);
+                draugr.setPosition(this.posX, this.posY, this.posZ);
+                draugr.setDropItemsWhenDead(false);
+                draugr.setDropsLoot(false);
+                if(apathyr_owner != null) {
+                    if(this.isGoldenSpawn) {
+                        apathyr_owner.current_mobs_golden.add(new WeakReference<>(draugr));
+                    } else {
+                        apathyr_owner.current_mobs.add(new WeakReference<>(draugr));
+                    }
+                }
                 world.spawnEntity(draugr);
             }
         }

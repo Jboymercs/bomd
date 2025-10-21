@@ -42,6 +42,8 @@ public abstract class EntityModThrowable  extends Entity implements IProjectile 
      * Seems to be some sort of timer for animating an arrow.
      */
     public int throwableShake;
+
+    public int bypassTime = 0;
     /**
      * The owner of this arrow.
      */
@@ -223,10 +225,17 @@ public abstract class EntityModThrowable  extends Entity implements IProjectile 
                 if (this.shootingEntity instanceof EntityPlayer && !((EntityPlayer) this.shootingEntity).canAttackPlayer(entityplayer)) {
                     raytraceresult = null;
                 }
+            } else if (raytraceresult != null) {
+                if(!(raytraceresult.entityHit instanceof EntityPlayer)) {
+                    Entity entityIn = ((Entity)raytraceresult.entityHit);
+                    if(entityIn == shootingEntity) {
+                        raytraceresult = null;
+                    }
+                }
             }
 
             if (raytraceresult != null && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
-                this.onHit(raytraceresult);
+                    this.onHit(raytraceresult);
             }
 
             this.posX += this.motionX;

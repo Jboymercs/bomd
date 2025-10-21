@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "axis=y":  { "model": "da:darkglow_pillar_lit" },
+    "axis=z":   { "model": "da:darkglow_pillar_lit", "x": 90 },
+    "axis=x":   { "model": "da:darkglow_pillar_lit", "x": 90, "y": 90 },
+    "axis=none": { "model": "da:darkglow_bricks_lit" }
+  }
+}

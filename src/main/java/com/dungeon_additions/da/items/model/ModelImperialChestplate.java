@@ -29,7 +29,7 @@ public class ModelImperialChestplate extends ModelBiped {
 		Body.cubeList.add(new ModelBox(Body, 0, 0, -4.0F, -10.0F, -2.0F, 8, 12, 4, 0.6F, false));
 
 		RArm = new ModelRenderer(this);
-		RArm.setRotationPoint(0.5F, 0.0F, 0.0F);
+		RArm.setRotationPoint(-0.5F, 0.0F, 0.0F);
 		RArm.cubeList.add(new ModelBox(RArm, 48, 52, -1.0F, -3.0F, -3.5F, 1, 5, 7, 0.1F, true));
 		RArm.cubeList.add(new ModelBox(RArm, 28, 44, -5.0F, 2.0F, -3.5F, 5, 1, 7, 0.1F, true));
 		RArm.cubeList.add(new ModelBox(RArm, 28, 52, -4.5F, -2.5F, -3.0F, 4, 5, 6, 0.1F, true));

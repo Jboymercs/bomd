@@ -12,7 +12,8 @@ public enum BlockEnumBossSummonState implements IStringSerializable {
     NIGHT_LICH("night", true),
     HIGH_KING("high", true),
 
-    OBSIDILITH("obsidian", true);
+    OBSIDILITH("obsidian", true),
+    APATHYR("apathyr", true);
 
 
     private final String name;

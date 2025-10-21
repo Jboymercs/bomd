@@ -1,0 +1,9 @@
+{
+  "parent": "block/half_slab",
+  "textures":
+  {
+    "bottom": "da:blocks/darkglow_bricks",
+    "top": "da:blocks/darkglow_bricks",
+    "side": "da:blocks/darkglow_bricks"
+  }
+}

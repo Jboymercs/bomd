@@ -893,6 +893,11 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static double everator_armor_toughness = 6;
 
+    @Config.Name("Everator Damage Cap")
+    @Config.Comment("Change the damage cap of how much damage can be done at one time to the Everator. Disable this feature entirely in general_config")
+    @Config.RequiresMcRestart
+    public static float everator_damage_cap = 25;
+
     @Config.Name("Scutter Beetle Health")
     @Config.Comment("Change the health of the Scutter Beetle.")
     @Config.RequiresMcRestart
@@ -907,5 +912,65 @@ public class MobConfig {
     @Config.Comment("Change the armor of the Scutter Beetle")
     @Config.RequiresMcRestart
     public static double scutter_beetle_armor = 20;
+
+    @Config.Name("Cursed Revenant Health")
+    @Config.Comment("Change the health of the Cursed Revenant.")
+    @Config.RequiresMcRestart
+    public static double reanimate_health = 25;
+
+    @Config.Name("Cursed Revenant Attack Damage")
+    @Config.Comment("Change the attack damage of the Cursed Revenant")
+    @Config.RequiresMcRestart
+    public static double reanimate_damage = 10;
+
+    @Config.Name("Cursed Revenant Armor")
+    @Config.Comment("Change the armor of the Cursed Revenant")
+    @Config.RequiresMcRestart
+    public static double reanimate_armor = 12;
+
+    @Config.Name("Apathyr Health")
+    @Config.Comment("Change the health of the Apathyr.")
+    @Config.RequiresMcRestart
+    public static double apathyr_health = 400;
+
+    @Config.Name("Apathyr Attack Damage")
+    @Config.Comment("Change the attack damage of the Apathyr")
+    @Config.RequiresMcRestart
+    public static double apathyr_damage = 26;
+
+    @Config.Name("Apathyr Armor")
+    @Config.Comment("Change the armor of the Apathyr")
+    @Config.RequiresMcRestart
+    public static double apathyr_armor = 20;
+
+    @Config.Name("Apathyr Armor Toughness")
+    @Config.Comment("Change the armor tougness of the Apathyr")
+    @Config.RequiresMcRestart
+    public static double apathyr_armor_toughness = 8;
+
+    @Config.Name("Apathyr Damage Cap")
+    @Config.Comment("Change the damage cap of how much damage can be done at one time to the Apathyr. Disable this feature entirely in general_config")
+    @Config.RequiresMcRestart
+    public static float apathyr_damage_cap = 28;
+
+    @Config.Name("Apathyr Cooldown Base")
+    @Config.Comment("Change the cooldown of the Apathyr's attack at the base level. In seconds")
+    @Config.RequiresMcRestart
+    public static double apathyr_cooldown = 1.5;
+
+    @Config.Name("Apathyr Experience Value")
+    @Config.Comment("Change how much experience the Apathyr drops upon Death")
+    @Config.RequiresMcRestart
+    public static int apathyr_experience_value = 300;
+
+    @Config.Name("Apathyr Life steal Amount")
+    @Config.Comment("Change the percentage of health healed to the Apathyr when it gets a successful grab attack on the target")
+    @Config.RequiresMcRestart
+    public static double apathyr_life_steal_amount = 0.07;
+
+    @Config.Name("Apathyr Disable Solo Mode")
+    @Config.Comment("When enabled, you can fight the Apathyr with others. When disabled, this boss can only be fought solo.")
+    @Config.RequiresMcRestart
+    public static boolean apathyr_disable_solo_mode = false;
 
 }

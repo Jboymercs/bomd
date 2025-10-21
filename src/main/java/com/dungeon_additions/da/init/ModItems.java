@@ -7,6 +7,10 @@ import com.dungeon_additions.da.items.armor.dark.ModDarkArmorBase;
 import com.dungeon_additions.da.items.armor.dark.ModDarkMetalHelmet;
 import com.dungeon_additions.da.items.armor.imperial.ItemImperialArmor;
 import com.dungeon_additions.da.items.armor.imperial.ItemImperialChestplate;
+import com.dungeon_additions.da.items.armor.novik.ItemApathyrHelmet;
+import com.dungeon_additions.da.items.armor.novik.ItemNovikArmor;
+import com.dungeon_additions.da.items.armor.novik.ItemNovikChestplate;
+import com.dungeon_additions.da.items.armor.novik.ItemNovikHelmet;
 import com.dungeon_additions.da.items.food.ItemBeetleMorsel;
 import com.dungeon_additions.da.items.food.ItemUncookedFood;
 import com.dungeon_additions.da.items.gun.ItemSealedTornado;
@@ -26,6 +30,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemFood;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.util.EnumHelper;
 
 import java.util.ArrayList;
@@ -35,6 +40,7 @@ public class ModItems {
 
     //Materials
     private static final Item.ToolMaterial CHAMPION_AXE_MATERIAL = EnumHelper.addToolMaterial("champion_set", 3, 874, 7.0F, (float) ModConfig.champion_axe_damage, 15);
+    private static final Item.ToolMaterial APATHYR_AXE_MATERIAL = EnumHelper.addToolMaterial("apathyr_axe_set", 3, 974, 7.0F, (float) 8.5, 25);
     private static final Item.ToolMaterial VOID_HAMMER_MATERIAL = EnumHelper.addToolMaterial("void_hammer_set", 3, 874, 7.0F, (float) ModConfig.void_hammer_damage, 25);
     private static final Item.ToolMaterial VOID_STAFF_MATERIAL = EnumHelper.addToolMaterial("void_staff_set", 1, 1074, 3.0F, (float) ModConfig.void_staff_damage, 15);
     private static final Item.ToolMaterial IMPERIAL_HALBERD_MATERIAL = EnumHelper.addToolMaterial("imperial_halberd_set", 3, 2463, 8.0F, (float) ModConfig.prosperous_assault_damage, 20);
@@ -56,12 +62,15 @@ public class ModItems {
     private static final Item.ToolMaterial SOUL_SPEAR_WEAPON_MATERIAL = EnumHelper.addToolMaterial("soul_spear_weapon_material", 2, 1200, 5.0F, ModConfig.soul_weapon_damage, 20);
     private static final Item.ToolMaterial KNIGHT_RAPIER_MATERIAL = EnumHelper.addToolMaterial("knight_rapier_material", 2, 502, 5.0F, (float) ModConfig.rapier_damage, 10);
     private static final Item.ToolMaterial KOPIS_MATERIAL = EnumHelper.addToolMaterial("kopis_material", 1, 1200, 5.0F, (float) 5, 20);
+    private static final Item.ToolMaterial NOVIK_MATERIAL = EnumHelper.addToolMaterial("novik_material", 2, 1200, 4.0F, (float) 6.5, 10);
 
     private static final ItemArmor.ArmorMaterial FLAME_ARMOR = EnumHelper.addArmorMaterial("flame", ModReference.MOD_ID + ":flame", 320, new int[]{4, 7,9,4}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2F);
     private static final ItemArmor.ArmorMaterial DRAUGR_ARMOR = EnumHelper.addArmorMaterial("draugr", ModReference.MOD_ID + "draugr", 375, new int[]{3, 6, 8,3}, 5, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2F);
     private static final ItemArmor.ArmorMaterial LICH_HELMET = EnumHelper.addArmorMaterial("night_lich", ModReference.MOD_ID +":night_lich", 275, new int[] {3,6,8,3}, 40, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1F);
     private static final ItemArmor.ArmorMaterial INCENDIUM_HELMET_SET = EnumHelper.addArmorMaterial("incendium_h", ModReference.MOD_ID +":incendium_helmet", 375, new int[] {3,6,8,3}, 20, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 2F);
     private static final ItemArmor.ArmorMaterial DARK_METAL_SET = EnumHelper.addArmorMaterial("dark_metal", ModReference.MOD_ID +":dark_metal", 451, new int[] {3,5,8,3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 2.5F);
+    private static final ItemArmor.ArmorMaterial NOVIK_SET = EnumHelper.addArmorMaterial("novik", ModReference.MOD_ID +":novik", 351, new int[] {4,6,9,4}, 15, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2F);
+    private static final ItemArmor.ArmorMaterial APATHYR_SET = EnumHelper.addArmorMaterial("apathyr", ModReference.MOD_ID + ":apathyr", 470, new int[]{5,7,10,5}, 25, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
     private static final ItemArmor.ArmorMaterial WYRK_ARMOR = EnumHelper.addArmorMaterial("wyrk", ModReference.MOD_ID +":wyrk", 325, new int[] {3,6,8,3}, 30, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
     private static final ItemArmor.ArmorMaterial IMPERIAL_ARMOR = EnumHelper.addArmorMaterial("imperial", ModReference.MOD_ID +":imperial", 670, new int[] {4,7,9,4}, 15, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
     private static final ItemArmor.ArmorMaterial VOIDIANT_ARMOR = EnumHelper.addArmorMaterial("voidiant", ModReference.MOD_ID + "obsidian", 870, new int[]{4, 6, 7, 4}, 25, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 3F);
@@ -99,6 +108,10 @@ public class ModItems {
     public static final Item ABBERRANT_EYE = new ItemCraftingMaterial("abberrant_eye", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FLAME_METAL_SCRAP = new ItemCraftingMaterial("flame_metal_scrap", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ANCIENT_MANA = new ItemCraftingMaterial("ancient_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item NOVIK_PLATE = new ItemCraftingMaterial("novik_plate", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item GAELON_SHARD = new ItemCraftingMaterial("gaelon_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item GAELON_INGOT = new ItemCraftingMaterial("gaelon_ingot", "gaelon_ingot_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item UNBRIDLED_SOUL = new ItemCraftingMaterial("unbridled_soul", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item VOIDIANT_CORE = new ItemCraftingMaterial("voidiant_core", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item OBSIDIAN_HEART = new ItemCraftingMaterial("obsdian_heart", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item VOIDCLYSM_CRYSTAL = new ItemCraftingMaterial("voidclysm_crystal", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -124,6 +137,7 @@ public class ModItems {
     public static final Item SEALED_TORNADO_BOTTLE = new ItemSealedTornado("sealed_tornado","sealed_tornado_desc", DungeonAdditionsTab.ALL);
     public static final Item SEALED_FLAME_BOTTLE = new ItemSealedFlame("sealed_flame", "sealed_flame_desc", DungeonAdditionsTab.ALL);
     public static final Item WYRK_TOTEM = new ItemWyrkTotem("wyrk_totem", "wyrk_totem_desc", DungeonAdditionsTab.ALL);
+    public static final Item NOVIK_AID = new ItemNovikAid("call_to_arms", "call_to_arms_desc", DungeonAdditionsTab.ALL);
     public static final Item KINGS_AID = new ItemKingsAid("king_aid", "king_aid_desc", DungeonAdditionsTab.ALL);
     public static final Item ROTTEN_HOLD_LOCATOR = new ItemRottenHoldLocator("rot_locator", "rot_locator_desc");
     public static final Item FROZEN_CASTLE_LOCATOR = new ItemFrozenCastleLocator("frost_locator", "frost_locator_desc");
@@ -137,6 +151,8 @@ public class ModItems {
     public static final Item ROT_KNIGHT_KEY = new ItemRotKnightKey("knight_key", "rot_knight_key").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_KEY = new ItemFrostKey("frost_key", "dungeon_frost_key_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FLAME_OF_AMBITION = new ItemAmbitionFlame("ambition_flame", "flame_of_ambition").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item APATHYR_HEART = new ItemCraftingMaterial("apathyr_heart", "apathyr_heart_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item GOLDEN_APATHYR_HEART = new ItemCraftingMaterial("golden_apathyr_heart", "golden_apathyr_heart_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item OBSIDIAN_EYE = new ItemObsidianKey("obsidian_eye", "obsidian_eye_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item LIGHTNING_KEY = new ItemLightningKey("lightning_key", "lighting_key_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item SOUL_KEY = new ItemSoulKey("soul_key", DungeonAdditionsTab.ALL, "soul_key_desc");
@@ -155,6 +171,8 @@ public class ModItems {
     public static final Item KOPIS_BLADE = new ItemKopis("kopis", "kopis_desc", KOPIS_MATERIAL).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FLAME_BLADE = new ItemFlameBlade("flame_blade", "flame_blade_desc", FLAME_BLADE_MATERIAL);
     public static final Item SWORN_OF_AMBITION = new ItemAmbitionSword("ambition_sword", "flame_sword", FLAME_SWORD_MATERIAL).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item NOVIK_SWORD = new ItemNovikSword("novik_sword", NOVIK_MATERIAL, "novik_sword_desc");
+    public static final Item APATHYR_AXE = new ItemApathyrAxe("apathyr_axe", APATHYR_AXE_MATERIAL, "apathyr_axe_desc");
     public static final Item DARK_SICLE = new ItemDarkSicle("dark_sicle", DARK_SICLE_MATERIAL, "dark_sicle_desc");
     public static final Item VOID_HAMMER = new ItemVoidHammer("void_hammer", VOID_HAMMER_MATERIAL, "void_hammer_desc");
     public static final Item SPEAR_OF_SOULS = new ItemSoulSpear("spear_staff", SOUL_SPEAR_MATERIAL, "soul_spear_desc");
@@ -184,6 +202,11 @@ public class ModItems {
     public static final Item FLAME_CHESTPLATE = new ModArmorBase("flame_chestplate", FLAME_ARMOR, 1, EntityEquipmentSlot.CHEST, "flame", "flame_armor_desc");
     public static final Item FLAME_LEGGINGS = new ModArmorBase("flame_leggings", FLAME_ARMOR, 2, EntityEquipmentSlot.LEGS, "flame", "flame_armor_desc");
     public static final ItemArmor FLAME_BOOTS = new ModArmorBase("flame_boots", FLAME_ARMOR, 1, EntityEquipmentSlot.FEET, "flame", "flame_armor_desc");
+    public static final ItemArmor NOVIK_HELMET = new ItemNovikHelmet("novik_helmet", NOVIK_SET, 1, EntityEquipmentSlot.HEAD, "novik", "novik_helmet_desc");
+    public static final ItemArmor NOVIK_CHESTPLATE = new ItemNovikChestplate("novik_chestplate", NOVIK_SET, 1, EntityEquipmentSlot.CHEST, "novik", "novik_armor_desc");
+    public static final ItemArmor NOVIK_LEGGINGS = new ItemNovikArmor("novik_leggings", NOVIK_SET, 2, EntityEquipmentSlot.LEGS,"novik", "novik_armor_desc");
+    public static final ItemArmor NOVIK_BOOTS = new ItemNovikArmor("novik_boots", NOVIK_SET, 1, EntityEquipmentSlot.FEET, "novik", "novik_armor_desc");
+    public static final ItemArmor APATHYR_HELMET = new ItemApathyrHelmet("apathyr_helmet", APATHYR_SET, 1, EntityEquipmentSlot.HEAD, "apathyr", "apathyr_helmet_desc");
     public static final ItemArmor VOIDIANT_CHESTPLATE = new VoidiantChestplate("voidiant_chestplate",VOIDIANT_ARMOR, 1, EntityEquipmentSlot.CHEST, "voidiant", "voidiant_armor_desc");
     public static final ItemArmor OBSIDIAN_HELMET = new ItemObsidianHelmet("obsidian_helm", OBSIDIAN_HELMET_MAT, 1, EntityEquipmentSlot.HEAD, "obsidian", "obsidian_armor_desc");
     public static final ItemArmor NIGHT_LICH_HELMET = new ModLichArmor("lich_helmet", LICH_HELMET, 1, EntityEquipmentSlot.HEAD,"night_lich", "night_lich_desc");
@@ -215,6 +238,9 @@ public class ModItems {
     public static final Item FLAME_BLADE_PROJ = new ItemFlameBladeProj("proj_flame_blade");
     public static final Item DESERT_STORM_PROJ = new ItemDesertStorm("desert_storm");
     public static final Item YELLOW_WAVE_PROJ = new ItemYellowWave("yellow_wave");
+    public static final Item CRYSTAL_WAVE_PROJ = new ItemYellowWave("crystal_wave");
+    public static final Item GHOST_BOLT_PROJ = new ItemProjectileGhost("ghost_bolt");
+    public static final Item FAST_CRYSTAL_PROJ = new ItemFastCrystal("fast_crystal");
 
     public static final Item INVISISBLE_ITEM = new ItemBase("invisible_item").setCreativeTab(CreativeTabs.SEARCH);
     public static final Item PROJECTILE_FLAME = new ItemBase("projectile_flame").setCreativeTab(CreativeTabs.SEARCH);

@@ -2,7 +2,6 @@ package com.dungeon_additions.da.entity.desert_dungeon.aegyptia;
 
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
-import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityAegyptiaAttackAI;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityDesertBase;
 import com.dungeon_additions.da.util.ModRand;

@@ -316,6 +316,43 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static int[] list_of_dimensions_obsidilith_arena = {1};
 
+
+    @Config.Name("Gaelon Sanctuary WhiteList Biome Types")
+    @Config.Comment("Add Biome types that ALLOW the Gaelon Sanctuary from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
+    @Config.RequiresMcRestart
+    public static String[] gaelon_sanctuary_whitelist = {"MOUNTAIN","HILLS","SPOOKY"
+    };
+
+    @Config.Name("Gaelon Sanctuary Spacing")
+    @Config.Comment("Change the spacing between each Gaelon Sanctuary, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
+    @Config.RequiresMcRestart
+    public static int gaelon_sanctuary_spacing = 175;
+
+    @Config.Name("Gaelon Sanctuary Max Y Height")
+    @Config.Comment("Change the max Y Height at which the Gaelon Sanctuary surface part generates at.")
+    @Config.RequiresMcRestart
+    public static int gaelon_sanctuary_max_y_height = 80;
+
+    @Config.Name("Gaelon Sanctuary Base Y Height")
+    @Config.Comment("Change the base Y Height at which the Gaelon Sanctuary generates at.")
+    @Config.RequiresMcRestart
+    public static int gaelon_sanctuary_y_height = 10;
+
+    @Config.Name("Gaelon Sanctuary Allowed Dimensions")
+    @Config.Comment("Select what dimensions this structure is allowed to spawn in")
+    @Config.RequiresMcRestart
+    public static int[] list_of_dimensions_gaelon_sanctuary = {0};
+
+    @Config.Name("Gaelon Sanctuary Enabled/Disabled")
+    @Config.Comment("Change if the Gaelon Sanctuary should spawn at all. default: true")
+    @Config.RequiresMcRestart
+    public static boolean gaelon_sanctuary_enabled = true;
+
+    @Config.Name("Gaelon Sanctuary Size")
+    @Config.Comment("Change the size of the Gaelon Sanctuary dungeon")
+    @Config.RequiresMcRestart
+    public static int gaelon_sanctuary_size = 4;
+
     @Config.Name("Petrogloom Ore Gen")
     @Config.Comment("Allowed Dimension for Petrogloom to spawn in")
     @Config.RequiresMcRestart

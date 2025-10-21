@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.desert_dungeon.miniboss;
 
 import com.dungeon_additions.da.entity.desert_dungeon.EntityDesertBase;
+import com.dungeon_additions.da.entity.gaelon_dungeon.EntityGaelonBase;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.void_dungeon.EntityObsidilith;
 import com.dungeon_additions.da.util.ModColors;
@@ -23,7 +24,6 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class ProjectileYellowWave extends Projectile {
-    protected static final float AREA_FACTOR = 0.5f;
 
     public static final int PARTICLE_AMOUNT = 1;
     protected int updates = 5;
@@ -41,6 +41,7 @@ public class ProjectileYellowWave extends Projectile {
         this.setNoGravity(true);
         this.setSize(1.4F, 2);
         this.byPass = bypass;
+        this.noClip = true;
     }
 
     public EntityPlayer player;
@@ -104,9 +105,9 @@ public class ProjectileYellowWave extends Projectile {
     }
 
     protected void onQuakeUpdate() {
-        List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(1));
+        List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(0.7));
         for (Entity entity : list) {
-            if (entity instanceof EntityLivingBase && this.shootingEntity != null && entity != this.shootingEntity && !(entity instanceof EntityDesertBase)) {
+            if (entity instanceof EntityLivingBase && this.shootingEntity != null && entity != this.shootingEntity && !(entity instanceof EntityDesertBase) && (!(entity instanceof EntityGaelonBase))) {
 
                 DamageSource source = ModDamageSource.builder()
                         .type(ModDamageSource.PROJECTILE)

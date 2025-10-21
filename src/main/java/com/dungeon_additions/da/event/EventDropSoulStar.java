@@ -12,7 +12,11 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -107,4 +111,27 @@ public class EventDropSoulStar {
 
 
     }
+
+    //Gaelon Ingot Anvil List
+
+    @SubscribeEvent
+    public static void addGaelonRepairRecipes(AnvilUpdateEvent event) {
+
+        ItemStack leftInput = event.getLeft();
+        ItemStack rightInput = event.getRight();
+        ItemStack output = event.getOutput();
+
+        if(ModUtils.canItemBeRepaired(leftInput.getItem()) && rightInput.getItem() == ModItems.GAELON_INGOT) {
+            NBTTagCompound tags = leftInput.getTagCompound();
+            output = new ItemStack(leftInput.getItem());
+            int itemDamage = (int) ModUtils.getPercentageOf(leftInput.getMaxDamage(), leftInput.getItemDamage());
+            int calculatedDamage = (int) ModUtils.calculateValueWithPrecentage(output.getMaxDamage(), (itemDamage - 30));
+            output.setItemDamage((calculatedDamage));
+            output.setTagCompound(tags);
+            event.setOutput(output);
+            event.setMaterialCost(1);
+            event.setCost(5);
+        }
+    }
+
 }

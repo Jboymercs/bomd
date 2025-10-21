@@ -1,0 +1,6 @@
+{
+  "parent": "block/wall_side",
+  "textures": {
+    "wall": "da:blocks/darkglow_bricks"
+  }
+}

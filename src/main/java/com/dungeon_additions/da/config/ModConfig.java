@@ -19,6 +19,11 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static boolean experimental_features = true;
 
+    @Config.Name("Boss Music Volume")
+    @Config.Comment("Change the overall music volume of every track used for the bosses")
+    @Config.RequiresMcRestart
+    public static double boss_music_volume = 0.9;
+
     @Config.Name("Boss Scaling Health")
     @Config.Comment("Change the scaling added per player of health added to bosses, not counting one player")
     @Config.RequiresMcRestart
@@ -439,9 +444,14 @@ public class ModConfig {
     public static int high_court_city_search_distance = 225;
 
     @Config.Name("Obsidilith Arena Search Radius")
-    @Config.Comment("Change how far the Orb of Light and command searches for the Obsidilith Arena. In chunks not blocks!")
+    @Config.Comment("Change how far the Call of the Void and command searches for the Obsidilith Arena. In chunks not blocks!")
     @Config.RequiresMcRestart
     public static int obsidilith_arena_search_distance = 120;
+
+    @Config.Name("Gaelon Sanctuary Search Radius")
+    @Config.Comment("Change how far the command searches for the Gaelon Sanctuary. In chunks not blocks!")
+    @Config.RequiresMcRestart
+    public static int gaelon_sanctuary_search_distance = 190;
 
     @Config.Name("Soul Star Drops Advancement Requirements")
     @Config.Comment("What advancements are required for players to use and unlock Soul Stars dropping from Mobs")
@@ -463,6 +473,37 @@ public class ModConfig {
     public static String[] sorcerers_spawn_progress = {
             "da:kill_night_lich"
     };
+
+    @Config.Name("Gaelon Dungeon Mob Boost Early")
+    @Config.Comment("What advancements can a player have to give Gaelon mobs a health and attack damage boost. Only needs one to trigger")
+    @Config.RequiresMcRestart
+    public static String[] gaelon_boost_one = {
+            "da:kill_void_blossom","da:kill_great_wyrk"
+    };
+
+    @Config.Name("Gaelon Dungeon Mob Boost Mid")
+    @Config.Comment("What advancements can a player have to give Gaelon mobs a health and attack damage boost. Only needs one to trigger")
+    @Config.RequiresMcRestart
+    public static String[] gaelon_boost_two = {
+            "da:kill_obsidilith","da:kill_voidclysm","da:kill_kobf"
+    };
+
+    @Config.Name("Gaelon Dungeon Mob Boost Late")
+    @Config.Comment("What advancements can a player have to give Gaelon mobs a health and attack damage boost. Only needs one to trigger")
+    @Config.RequiresMcRestart
+    public static String[] gaelon_boost_three = {
+            "da:kill_high_king","da:kill_night_lich"
+    };
+
+    @Config.Name("Gaelon Dungeon Mob Health Boost")
+    @Config.Comment("Per boost level of what advancements the player has, Gaelon mobs will boost there Health x per level")
+    @Config.RequiresMcRestart
+    public static double gaelon_mob_health_boost = 10;
+
+    @Config.Name("Gaelon Dungeon Mob Attack Damage Boost")
+    @Config.Comment("Per boost level of what advancements the player has, Gaelon mobs will boost there Attack Damage x per level")
+    @Config.RequiresMcRestart
+    public static double gaelon_attack_damage_boost = 4;
 
     @Config.Name("Cult of Roh Assassin Spawn Rate")
     @Config.Comment("Change the spawn rate of Cult of Roh Assassins, change to 0 to disable")
@@ -520,6 +561,65 @@ public class ModConfig {
     public static String[] banned_break_blocks = new String[] {
             "minecraft:crafting_table",
             "minecraft:furnace"
+    };
+
+
+    @Config.RequiresMcRestart
+    @Config.Comment(value = "What Items can be repaired with Gaelon Ingots. Works with 'modID:blockName'.")
+    public static String[] gaelon_repair_items = new String[] {
+            "da:void_dagger",
+            "da:ambition_sword",
+            "da:flame_helmet",
+            "da:flame_chestplate",
+            "da:flame_leggings",
+            "da:flame_boots",
+            "da:knight_rapier",
+            "da:spear_staff",
+            "da:spear_weapon",
+            "da:lich_helmet",
+            "da:champion_axe",
+            "da:draugr_shield",
+            "da:draugr_helmet",
+            "da:draugr_chestplate",
+            "da:imperial_halberd_item",
+            "da:sword_spear",
+            "da:sword_spear_blood",
+            "da:king_helmet",
+            "da:dark_metal_helmet",
+            "da:dark_metal_chestplate",
+            "da:dark_metal_leggings",
+            "da:dark_metal_boots",
+            "da:kopis",
+            "da:wyrk_boots",
+            "da:wyrk_helmet",
+            "da:wyrk_staff",
+            "da:imperial_sword_item",
+            "da:imperial_helmet",
+            "da:imperial_chestplate",
+            "da:imperial_leggings",
+            "da:imperial_boots",
+            "da:dark_dagger",
+            "da:king_claw",
+            "da:dragon_bow",
+            "da:incendium_leggings",
+            "da:incendium_helmet",
+            "da:flame_blade",
+            "da:flame_shield",
+            "da:obsidian_shield",
+            "da:dark_sicle",
+            "da:voidiant_catalyst",
+            "da:voidiant_chestplate",
+            "da:void_hammer",
+            "da:obsidian_helm",
+            "da:flower_crown",
+            "da:void_staff",
+            "da:dark_shield",
+            "da:dragon_shield",
+            "da:frost_sword",
+            "da:novik_helmet",
+            "da:novik_chestplate",
+            "da:novik_leggings",
+            "da:novik_boots"
     };
 
     @Config.Name("Boss Enraged State Enable/Disable")

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VBV",
+    "X X"
+  ],
+  "key": {
+    "V": {
+      "item": "da:gaelon_shard"
+    },
+    "X": {
+      "item": "da:novik_plate"
+    },
+    "B": {
+      "item": "da:unbridled_soul"
+    }
+  },
+  "result": {
+    "item": "da:apathyr_helmet"
+  }
+}

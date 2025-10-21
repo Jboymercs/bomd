@@ -105,7 +105,7 @@ public abstract class EntityAbstractBase extends EntityCreature {
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(0);
 
     }
-    protected boolean isImmovable() {
+    public boolean isImmovable() {
         return this.dataManager == null ? false : this.dataManager.get(IMMOVABLE);
     }
 

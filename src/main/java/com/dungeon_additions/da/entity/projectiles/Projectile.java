@@ -18,7 +18,6 @@ public class Projectile extends EntityModThrowable{
     protected static final byte IMPACT_PARTICLE_BYTE = 3;
     private static final byte PARTICLE_BYTE = 4;
     private float damage = 0;
-    protected static final DataParameter<Integer> ELEMENT = EntityDataManager.<Integer>createKey(Projectile.class, DataSerializers.VARINT);
     protected float maxAge = 20 * 20;
     private Item itemToRender = ModItems.INVISIBLE;
 
@@ -87,7 +86,7 @@ public class Projectile extends EntityModThrowable{
 
     @Override
     protected void onHit(RayTraceResult result) {
-        if (!world.isRemote && !isLocatorItem) {
+        if (!world.isRemote && !isLocatorItem && this.ticksExisted > bypassTime) {
             this.world.setEntityState(this, this.IMPACT_PARTICLE_BYTE);
             this.setDead();
         }

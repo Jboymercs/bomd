@@ -53,6 +53,13 @@ public class ItemSwordSpear extends ToolSword implements IAnimatable {
     }
 
     @Override
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
+    {
+        attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.HIGH_KING_SWING, SoundCategory.NEUTRAL, 0.4f, 0.7f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
+        return true;
+    }
+
+    @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand handIn)
     {
         ItemStack itemstack = player.getHeldItem(handIn);
@@ -184,7 +191,7 @@ public class ItemSwordSpear extends ToolSword implements IAnimatable {
     }
 
     protected double getAttackSpeed() {
-        return -2.9D;
+        return -3.1D;
     }
 
     @Override

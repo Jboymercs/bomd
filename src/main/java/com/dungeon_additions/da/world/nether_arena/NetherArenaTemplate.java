@@ -35,7 +35,7 @@ public class NetherArenaTemplate extends ModStructureTemplate {
     private static final WorldGenCenterPiece[] pieces = {new WorldGenCenterPiece("piece_1"),new WorldGenCenterPiece("piece_2"),new WorldGenCenterPiece("piece_3"),
             new WorldGenCenterPiece("piece_4"),new WorldGenCenterPiece("piece_5"),new WorldGenCenterPiece("piece_6"),
             new WorldGenCenterPiece("piece_7"),};
-    private static final ResourceLocation LOOT = new ResourceLocation(ModReference.MOD_ID, "arena_chests");
+    private static final ResourceLocation LOOT = new ResourceLocation(ModReference.MOD_ID, "flame_arena_chests");
     private static final ResourceLocation LOOT_KEY = new ResourceLocation(ModReference.MOD_ID, "arena_key_chest");
     public NetherArenaTemplate(TemplateManager manager, String type, BlockPos pos, Rotation rot, int distance, boolean overWriteIn) {
         super(manager, type, pos,distance, rot, overWriteIn);

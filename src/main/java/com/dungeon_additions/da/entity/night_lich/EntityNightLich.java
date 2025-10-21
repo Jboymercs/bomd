@@ -1221,14 +1221,6 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             new ActionRandomLichTeleport(ModColors.AZURE).performAction(this, target);
             this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.6F));
             return true;
-          //  Vec3d pos = ModRand.randVec().normalize().scale(12)
-         //           .add(target.getPositionVector());
-         //   boolean canSee = this.world.rayTraceBlocks(target.getPositionEyes(1), pos, false, true, false) == null;
-         //   if(canSee) {
-         //       ModUtils.attemptTeleport(pos, this);
-         //       this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.6F));
-         //       return true;
-        //    }
         }
         return false;
     }

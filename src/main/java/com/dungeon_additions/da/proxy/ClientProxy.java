@@ -52,6 +52,9 @@ public class ClientProxy extends CommonProxy{
     private final ModelBiped MODEL_DARK_METAL_HELMET = new ModelDarkHelmet(0F);
     private final ModelBiped MODEL_OBSIDIAN_HELMET = new ModelObsidianHelmet(0F);
     private final ModelBiped MODEL_FLOWER_CROWN = new ModelVoidCrown(0F);
+    private final ModelBiped MODEL_NOVIK_HELMET = new ModelNovikHelmet(0f);
+    private final ModelBiped MODEL_NOVIK_CHESTPLATE = new ModelNovikChestplate(0f);
+    private final ModelBiped MODEL_APATHYR_HELMET = new ModelApathyrHelmet(0f);
 
     @Override
     public void init() {
@@ -125,6 +128,15 @@ public class ClientProxy extends CommonProxy{
         if(item == ModItems.VOID_FLOWER_CROWN) {
             return MODEL_FLOWER_CROWN;
         }
+        if(item == ModItems.NOVIK_HELMET) {
+            return MODEL_NOVIK_HELMET;
+        }
+        if(item == ModItems.NOVIK_CHESTPLATE) {
+            return MODEL_NOVIK_CHESTPLATE;
+        }
+        if(item == ModItems.APATHYR_HELMET) {
+            return MODEL_APATHYR_HELMET;
+        }
         return null;
     }
 
@@ -175,6 +187,12 @@ public class ClientProxy extends CommonProxy{
                 return new ParticleBlue.Factory();
             case 14:
                 return new ParticleYellow.Factory();
+            case 15:
+                return new ParticleGaelonGleam.Factory();
+            case 16:
+                return new ParticleApathyrTarget.Factory();
+            case 17:
+                return new ParticleCrystalPixel.Factory();
         }
     }
 
@@ -214,6 +232,7 @@ public class ClientProxy extends CommonProxy{
             }
         }
     }
+
 
     @Override
     public void stopMusic() {

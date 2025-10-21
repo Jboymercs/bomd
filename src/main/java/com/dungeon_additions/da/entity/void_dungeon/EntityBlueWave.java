@@ -272,7 +272,7 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
                 if(rand.nextInt(4) == 0) {
                     this.playSound(SoundsHandler.OBSIDILITH_WAVE_DING, 0.6f, 1.0f);
                 }
-                List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(0.8D), e -> !e.getIsInvulnerable() && (!(e instanceof EntityVoidBlossom || e instanceof EntityVoidSpike || e instanceof EntityGenericWave)));
+                List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(0.65D), e -> !e.getIsInvulnerable() && (!(e instanceof EntityVoidBlossom || e instanceof EntityVoidSpike || e instanceof EntityGenericWave)));
 
                 if (!targets.isEmpty()) {
                     for (EntityLivingBase base : targets) {

@@ -14,6 +14,7 @@ import com.dungeon_additions.da.blocks.desert_dungeon.BlockPuzzleMirror;
 import com.dungeon_additions.da.blocks.faurm.BlockFarumRope;
 import com.dungeon_additions.da.blocks.faurm.BlockFaurmLantern;
 import com.dungeon_additions.da.blocks.faurm.BlockLightningKeyBlock;
+import com.dungeon_additions.da.blocks.gaelon.BlockEyePillar;
 import com.dungeon_additions.da.blocks.ice_generator.BlockFrostBrick;
 import com.dungeon_additions.da.blocks.lich.BlockSoulStar;
 import com.dungeon_additions.da.blocks.vine.BlockAzealaVines;
@@ -65,6 +66,7 @@ public class ModBlocks {
     public static final Block INDESTRUCTABLE_BLOCK = new BlockSpawnFlower("strong_block", Material.GRASS, OBSIDIAN_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.PLANT);
     public static final Block MEGA_STRUCTURE_BLOCK = new BlockMegaStructure("mega_structure");
     public static final Block VINE_WALL = new BlockAzealaFence(Material.GRASS, false, "az_fence").setHardness(STONE_HARDNESS).setResistance(STONE_RESISTANCE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block DARKGLOW_BARS = new BlockAzealaFence(Material.ROCK, false, "darkglow_bars").setHardness(GLOOM_STONE_HARDNESS).setResistance(GLOOM_STONE_RESITANCE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
 
     //Fire Update
     public static final Block FIERY_BLOCK = new BlockBase("fire_stone", Material.ROCK, STONE_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE).setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setCreativeTab(DungeonAdditionsTab.BLOCKS);
@@ -106,6 +108,20 @@ public class ModBlocks {
     public static final Block GRUM_SMOOTH = new BlockBase("grum_smooth", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.GRUM_STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block GRUM_TILE = new BlockBase("grum_tile", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.GRUM_STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block GRUM_CHISLED_TILE = new BlockBase("grum_chisled_tile", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.GRUM_STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block DARK_GLOW_STONEBRICKS = new BlockBase("darkglow_stonebricks", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block DARK_GLOW_BRICKS = new BlockBase("darkglow_bricks", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block DARK_GLOW_DECORATION_BRICKS = new BlockBase("darkglow_decoration_bricks", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block DARK_GLOW_TILE = new BlockBase("darkglow_tile", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block DARK_GLOW_LIT_BRICKS = new BlockBase("darkglow_lit_bricks", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setLightLevel(0.6F).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block DARK_GLOW_LIT_DECORATION_BRICKS = new BlockBase("darkglow_lit_decoration_bricks", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setLightLevel(0.8F).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block GAELON_CRYSTAL = new BlockGaelonCrystalBlock("gaelon_crystal", Material.GLASS, OBSIDIAN_HARDNESS, OBSIDIAN_RESISTANCE, BOMDSoundTypes.GAELON_CRYSTAL).setLightLevel(1.0F).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block GAELON_CHUNK = new BlockGaelonCrystal("gaelon_chunk", Material.ROCK, PLANTS_HARDNESS, PLANTS_RESISTANCE, BOMDSoundTypes.GAELON_CRYSTAL).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block ALFERA_PLANKS = new BlockBase("alfera_planks", Material.WOOD, WOOD_HARDNESS, WOOD_RESISTANCE, SoundType.WOOD).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block ALFERA_PLANKS_ROD = new BlockBase("alfera_planks_rod", Material.WOOD, WOOD_HARDNESS, WOOD_RESISTANCE, SoundType.WOOD).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block ALFERA_CRATE = new BlockBase("alfera_crate", Material.WOOD, WOOD_HARDNESS, WOOD_RESISTANCE, SoundType.WOOD).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+
+
+
     public static final Block OBSIDILITH_RUNE = new BlockObsdilithRune("obsidilith_rune", Material.ROCK, OBSIDIAN_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.GLASS).setCreativeTab(DungeonAdditionsTab.BLOCKS).setLightLevel(0.5F);
     public static final Block FAKE_OBSIDIAN = new BlockBase("fake_obsidian", Material.ROCK, OBSIDIAN_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE).setBlockUnbreakable();
 
@@ -116,6 +132,9 @@ public class ModBlocks {
     public static final Block PETROGLOOM_PILLAR = new BlockPillarBase("gloom_pillar", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block COLD_PETROGLOOM_PILLAR = new BlockPillarBase("cold_pillar", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block GRUM_PILLAR = new BlockPillarBase("grum_pillar", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.GRUM_STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block DARK_GLOW_PILLAR = new BlockPillarBase("darkglow_pillar", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block DARK_GLOW_LIT_PILLAR = new BlockPillarBase("darkglow_pillar_lit", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setBlockUnbreakable().setLightLevel(1.0F).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block DARK_GLOW_EYE_PILLAR = new BlockEyePillar("darkglow_pillar_eye", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setLightLevel(1.0F);
     public static final Block DARK_BRICK = new BlockBase("dark_brick", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
 
     public static final Block PETROGLOOM_ROUGH = new BlockPetroGloom("gloom_rough", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
@@ -134,6 +153,8 @@ public class ModBlocks {
     public static final Block GOLD_CITY_BRICK_STAIRS = new BlockStairBase("gold_city_brick_stairs", GOLD_CITY_BRICK.getDefaultState(), GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block GRUM_BRICK_STAIRS = new BlockStairBase("grum_brick_stairs", GRUM_BRICKS.getDefaultState(), GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.GRUM_STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block DUNGEON_BRICK_STAIRS = new BlockStairBase("dungeon_brick_stairs", DUNGEON_BRICK.getDefaultState(), STONE_HARDNESS, STONE_RESISTANCE, SoundType.STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block DARKGLOW_STONEBRICK_STAIRS = new BlockStairBase("darkglow_stonebrick_stairs", DARK_GLOW_STONEBRICKS.getDefaultState(), GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block DARKGLOW_BRICK_STAIRS = new BlockStairBase("darkglow_brick_stairs", DARK_GLOW_BRICKS.getDefaultState(), GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
 
 
 
@@ -165,6 +186,10 @@ public class ModBlocks {
     public static final BlockSlab GRUM_BRICK_HALF = new BlockHalfSlab("grum_brick_half", Material.ROCK, DungeonAdditionsTab.BLOCKS, ModBlocks.GRUM_BRICK_HALF, ModBlocks.GRUM_BRICK_DOUBLE, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.GRUM_STONE);
     public static final BlockSlab DUNGEON_BRICK_DOUBLE = new BlockDoubleSlab("dungeon_brick_double", Material.ROCK, DungeonAdditionsTab.BLOCKS, ModBlocks.DUNGEON_BRICK_HALF, STONE_HARDNESS, STONE_RESISTANCE, SoundType.STONE);
     public static final BlockSlab DUNGEON_BRICK_HALF = new BlockHalfSlab("dungeon_brick_half", Material.ROCK, DungeonAdditionsTab.BLOCKS, ModBlocks.DUNGEON_BRICK_HALF, ModBlocks.DUNGEON_BRICK_DOUBLE, STONE_HARDNESS, STONE_RESISTANCE, SoundType.STONE);
+    public static final BlockSlab DARKGLOW_STONEBRICK_DOUBLE = new BlockDoubleSlab("darkglow_stonebrick_double", Material.ROCK, DungeonAdditionsTab.BLOCKS, ModBlocks.DARKGLOW_STONEBRICK_HALF, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
+    public static final BlockSlab DARKGLOW_STONEBRICK_HALF = new BlockHalfSlab("darkglow_stonebrick_half", Material.ROCK, DungeonAdditionsTab.BLOCKS, ModBlocks.DARKGLOW_STONEBRICK_HALF, ModBlocks.DARKGLOW_STONEBRICK_DOUBLE, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
+    public static final BlockSlab DARKGLOW_BRICK_DOUBLE = new BlockDoubleSlab("darkglow_brick_double", Material.ROCK, DungeonAdditionsTab.BLOCKS, ModBlocks.DARKGLOW_BRICK_HALF, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
+    public static final BlockSlab DARKGLOW_BRICK_HALF = new BlockHalfSlab("darkglow_brick_half", Material.ROCK, DungeonAdditionsTab.BLOCKS, ModBlocks.DARKGLOW_BRICK_HALF, ModBlocks.DARKGLOW_BRICK_DOUBLE, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM);
 
     public static final Block PETROGLOOM_STONE_WALL = new BlockWallBase("gloom_stone_wall", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block COLD_PETROGLOOM_STONE_WALL = new BlockWallBase("cold_stone_wall", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
@@ -179,6 +204,9 @@ public class ModBlocks {
     public static final Block GOLD_CITY_WALL = new BlockWallBase("gold_city_brick_wall", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block GRUM_BRICK_WALL = new BlockWallBase("grum_brick_wall", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.GRUM_STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block DUNGEON_BRICK_WALL = new BlockWallBase("dungeon_brick_wall", Material.ROCK, STONE_HARDNESS, STONE_RESISTANCE, SoundType.STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block DARKGLOW_BRICK_WALL = new BlockWallBase("darkglow_brick_wall", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block DARKGLOW_STONEBRICK_WALL = new BlockWallBase("darkglow_stonebrick_wall", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+
     public static final Block FARUM_ROPE = new BlockFarumRope("farum_rope", Material.GROUND, PLANTS_HARDNESS, PLANTS_RESISTANCE, SoundType.CLOTH).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block FARUM_LANTERN = new BlockFaurmLantern("farum_lantern", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS).setLightLevel(1.0F);
 

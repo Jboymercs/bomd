@@ -5,6 +5,7 @@ import com.dungeon_additions.da.util.DALogger;
 import com.dungeon_additions.da.world.blossom.WorldGenBlossomCave;
 import com.dungeon_additions.da.world.forgotten_temple.WorldGenForgottenTemple;
 import com.dungeon_additions.da.world.frozen_castle.WorldGenFrozenCastle;
+import com.dungeon_additions.da.world.gaelon_sanctuary.WorldGenGaelonSanctuary;
 import com.dungeon_additions.da.world.high_city.WorldGenHighCity;
 import com.dungeon_additions.da.world.lich_tower.WorldGenLichTower;
 import com.dungeon_additions.da.world.nether_arena.WorldGenNetherArena;
@@ -38,6 +39,7 @@ public class ModWorldGen implements IWorldGenerator {
     private static final WorldGenForgottenTemple forgotten_temple = new WorldGenForgottenTemple();
 
     private static final WorldGenObsidilithArena obsidilithArena = new WorldGenObsidilithArena();
+    private static final WorldGenGaelonSanctuary gaelon_sanctuary = new WorldGenGaelonSanctuary();
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
 
@@ -49,7 +51,6 @@ public class ModWorldGen implements IWorldGenerator {
         if(world.provider.getDimension() == -1 && WorldConfig.burning_flame_arena_enabled) {
                 netherArena.generate(world, random, pos);
         }
-
         //void blossom
             if (isAllowedDimensionTooSpawnIn(world.provider.getDimension()) && WorldConfig.void_cave_enabled) {
                             BlockPos posModified = new BlockPos(pos.getX(), 0, pos.getZ());
@@ -82,6 +83,11 @@ public class ModWorldGen implements IWorldGenerator {
         if(isAllowedDimensionTooSpawnInObsidilithArena(world.provider.getDimension()) && WorldConfig.obsidilith_arena_enabled) {
             obsidilithArena.generate(world, random, pos);
         }
+        //Gaelon Sanctuary
+        if(isAllowedDimensionTooSpawnInGaelonSanctuary(world.provider.getDimension()) && WorldConfig.gaelon_sanctuary_enabled) {
+            gaelon_sanctuary.generate(world, random, pos);
+        }
+
 
         }
 
@@ -155,21 +161,12 @@ public class ModWorldGen implements IWorldGenerator {
         return false;
     }
 
-    private int getSurfaceHeight(World world, BlockPos pos, int min, int max)
-    {
-        int currentY = max;
-
-        while(currentY >= min)
-        {
-            if(!world.isAirBlock(pos.add(0, currentY, 0)) && !world.isRemote && world.getBlockState(pos.add(0, currentY, 0)).isFullBlock() && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LEAVES
-                    && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LEAVES2 && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LOG && world.getBlockState(pos.add(0, currentY, 0)).getBlock() != Blocks.LOG2 &&
-                    world.isAirBlock(pos.add(0, currentY + 1, 0)) && world.getBlockState(pos.add(0, currentY, 0)) != Blocks.WATER.getDefaultState()) {
-                return currentY;
-            }
-
-            currentY--;
+    public static boolean isAllowedDimensionTooSpawnInGaelonSanctuary(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_gaelon_sanctuary) {
+            if(i == dimensionIn)
+                return true;
         }
-        //returns 0 if out of bounds
-        return 0;
+
+        return false;
     }
 }

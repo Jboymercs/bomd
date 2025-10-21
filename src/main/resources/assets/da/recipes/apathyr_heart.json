@@ -1,0 +1,29 @@
+
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " R ",
+    "XVX",
+    "BDB"
+  ],
+  "key": {
+    "V": {
+      "item": "da:gaelon_ingot"
+    },
+    "R": {
+      "item": "da:frost_ingot"
+    },
+    "X": {
+      "item": "da:abberrant_eye"
+    },
+    "B": {
+      "item": "da:dark_mana"
+    },
+    "D": {
+      "item": "da:crystal_fruit"
+    }
+  },
+  "result": {
+    "item": "da:apathyr_heart"
+  }
+}

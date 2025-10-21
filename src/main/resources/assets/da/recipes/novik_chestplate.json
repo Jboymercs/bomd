@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "XVX",
+    "XXX"
+  ],
+  "key": {
+    "V": {
+      "item": "da:gaelon_ingot"
+    },
+    "X": {
+      "item": "da:novik_plate"
+    }
+  },
+  "result": {
+    "item": "da:novik_chestplate"
+  }
+}
