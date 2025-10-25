@@ -85,6 +85,13 @@ public class ModBlocks {
 
     public static final Block BOSS_RESUMMON_BLOCK = new BlockBossReSummon("boss_resummon", Material.ROCK, ModItems.LIGHTNING_KEY).setLightLevel(0.9F).setCreativeTab(DungeonAdditionsTab.BLOCKS);
 
+    //Metal Blocks
+    public static final Block STORMVIER_BLOCK = new BlockBase("stormvier_block", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.METAL_BLOCK).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block FROSTBORN_BLOCK = new BlockBase("frostborn_block", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.METAL_BLOCK).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block CRYPT_BLOCK = new BlockBase("crypt_block", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.METAL_BLOCK).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block NOVIK_BLOCK = new BlockDescriptionBase("novik_block", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.METAL_BLOCK, "novik_block_desc").setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block LITIC_BLOCK = new BlockBase("litic_block", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.METAL_BLOCK).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+
     // LICH UPDATE
     public static final Block PETROGLOOM = new BlockBase("gloom_stone", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block COLD_PETROGLOOM = new BlockBase("cold_stone", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);

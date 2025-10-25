@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.gaelon_dungeon;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.blocks.boss.BlockEnumBossSummonState;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
@@ -734,7 +735,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 //Phase Two
                 //Summons 3 Waves of mobs that the player must defeat
                 // Boss Teleports to Spawnpoint or remains in spot of activation
-                if (!this.hasLaunchedPhaseTwo && healthFac < 0.5 && this.test) {
+                if (!this.hasLaunchedPhaseTwo && healthFac < 0.5) {
                                 if(!this.isFightMode() && !this.isSpawningWaves()) {
                                     if(this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
                                         this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
@@ -1156,6 +1157,10 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
 
         addEvent(()-> new ActionApathyrStomp().performAction(this, target), 47);
         addEvent(()-> {
+            Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2.25, 1.2, 0)));
+            Main.proxy.spawnParticle(21, relPos.x, this.posY + 0.5, relPos.z, 0, 0, 0);
+        }, 46);
+        addEvent(()-> {
         this.setImmovable(true);
         this.performSuperDash = false;
         }, 52);
@@ -1240,6 +1245,8 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 1.2f, 0, false);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+            Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 1.2, 0)));
+            Main.proxy.spawnParticle(21, relPos.x, this.posY, relPos.z, 0, 0, 0);
             if(this.onGround) {
                 this.setImmovable(true);
             }
@@ -1380,6 +1387,8 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             this.destroyBlocksInSwing(new Vec3d(2.5, 1.2, 0), 0.9);
             this.setImmovable(true);
             //do projectile attack
+            Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2.75, 1.2, 0)));
+            Main.proxy.spawnParticle(21, relPos.x, this.posY, relPos.z, 0, 0, 0);
                 new ActionEveratorProjectileYellow(crystal_wave_projectiles).performAction(this, target);
                 this.playSound(SoundsHandler.APATHYR_CAST_MAGIC, 0.75f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
 
@@ -1912,6 +1921,8 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 1.2f, 0, false);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+            Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 1.2, 0)));
+            Main.proxy.spawnParticle(21, relPos.x, this.posY, relPos.z, 0, 0, 0);
             if(this.onGround) {
                 this.setImmovable(true);
             }

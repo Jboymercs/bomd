@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:unbridled_soul"
+    },
+    "title": {
+      "translate": "advancements.da.kill_apathyr.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_apathyr.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "da:craft_apathyr_heart",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:apathyr"
+        }
+      }
+    }
+  }
+}

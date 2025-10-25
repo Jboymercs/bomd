@@ -68,6 +68,8 @@ public class ActionLazerTeleport implements IMultiAction {
                     //this.entity.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f + ModRand.getFloat(0.1f));
                     this.entity.playSound(SoundsHandler.VOIDCLYSM_IMPACT, 1.0F, 1.0f + ModRand.getFloat(0.1f));
                     this.entity.world.setEntityState(this.entity, ModUtils.THIRD_PARTICLE_BYTE);
+                    Vec3d relPos = entity.getPositionVector().add(ModUtils.getRelativeOffset(entity, new Vec3d(0, 1.2, 0)));
+                    Main.proxy.spawnParticle(20, relPos.x, entity.posY + 0.1, relPos.z, 0, 0, 0);
                 }
             }, 5);
         }, lazerEndTime);

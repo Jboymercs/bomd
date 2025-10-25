@@ -20,4 +20,7 @@ public class BOMDSoundTypes {
 
     public static final SoundType GAELON_CRYSTAL = new SoundType(0.75F, 1.35F, SoundsHandler.GAELON_BREAK, SoundsHandler.GAELON_STEP,
             SoundsHandler.GAELON_PLACE, SoundsHandler.GAELON_BREAK, SoundsHandler.GAELON_BREAK);
+
+    public static final SoundType METAL_BLOCK = new SoundType(0.75F, 1, SoundsHandler.STORMVIER_BLOCK_BREAK, SoundsHandler.STORMVIER_BLOCK_STEP,
+            SoundsHandler.STORMVIER_BLOCK_STEP, SoundsHandler.STORMVIER_BLOCK_BREAK, SoundsHandler.STORMVIER_BLOCK_BREAK);
 }

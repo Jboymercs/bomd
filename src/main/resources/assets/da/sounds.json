@@ -2741,6 +2741,60 @@
       }
     ]
   },
+  "entity.cursed_sentinel.step": {
+    "category": "entity",
+    "subtitle": "entity.cursed_sentinel.step",
+    "sounds": [
+      {
+        "name": "da:entity/cursed_sentinel/step1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/cursed_sentinel/step2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/cursed_sentinel/step3",
+        "stream": false
+      },
+      {
+        "name": "da:entity/cursed_sentinel/step4",
+        "stream": false
+      }
+    ]
+  },
+  "entity.cursed_sentinel.hurt": {
+    "category": "entity",
+    "subtitle": "entity.cursed_sentinel.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/cursed_sentinel/hurt1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/cursed_sentinel/hurt2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/cursed_sentinel/hurt3",
+        "stream": false
+      },
+      {
+        "name": "da:entity/cursed_sentinel/hurt4",
+        "stream": false
+      }
+    ]
+  },
+  "entity.cursed_sentinel.awake": {
+    "category": "entity",
+    "subtitle": "entity.cursed_sentinel.awake",
+    "sounds": [
+      {
+        "name": "da:entity/cursed_sentinel/awake",
+        "stream": false
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",
@@ -3105,6 +3159,58 @@
       },
       {
         "name": "da:block/grum/break4",
+        "stream": false
+      }
+    ]
+  },
+  "block.stormvier.break": {
+    "category": "block",
+    "subtitle": "subtitles.block.generic.break",
+    "sounds": [
+      {
+        "name": "da:block/stormvier/break1",
+        "stream": false
+      },
+      {
+        "name": "da:block/stormvier/break2",
+        "stream": false
+      },
+      {
+        "name": "da:block/stormvier/break3",
+        "stream": false
+      },
+      {
+        "name": "da:block/stormvier/break4",
+        "stream": false
+      }
+    ]
+  },
+  "block.stormvier.step": {
+    "category": "block",
+    "subtitle": "subtitles.block.generic.place",
+    "sounds": [
+      {
+        "name": "da:block/stormvier/step1",
+        "stream": false
+      },
+      {
+        "name": "da:block/stormvier/step2",
+        "stream": false
+      },
+      {
+        "name": "da:block/stormvier/step3",
+        "stream": false
+      },
+      {
+        "name": "da:block/stormvier/step4",
+        "stream": false
+      },
+      {
+        "name": "da:block/stormvier/step5",
+        "stream": false
+      },
+      {
+        "name": "da:block/stormvier/step6",
         "stream": false
       }
     ]

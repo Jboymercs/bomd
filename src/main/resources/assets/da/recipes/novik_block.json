@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV",
+    "VVV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "item": "da:novik_plate"
+    }
+  },
+  "result": {
+    "item": "da:novik_block"
+  }
+}

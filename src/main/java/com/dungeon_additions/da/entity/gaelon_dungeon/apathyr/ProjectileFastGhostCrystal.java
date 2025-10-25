@@ -20,6 +20,12 @@ public class ProjectileFastGhostCrystal extends Projectile {
         this.setNoGravity(true);
     }
 
+    public ProjectileFastGhostCrystal(World worldIn, EntityLivingBase throwerIn, float damage, boolean noGravity) {
+        super(worldIn, throwerIn, damage);
+        this.setSize(0.8F, 0.8F);
+        this.setNoGravity(noGravity);
+    }
+
     public ProjectileFastGhostCrystal(World worldIn) {
         super(worldIn);
         this.setSize(1.0F, 0.8F);

@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.sky_dungeon.high_king.king;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
@@ -978,6 +979,10 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         addEvent(()-> this.playSound(SoundsHandler.DRAUGR_ELITE_STOMP, 1.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 23);
       addEvent(()-> new ActionKingStomp().performAction(this, target), 25);
       addEvent(()-> {
+          Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
+          Main.proxy.spawnParticle(20, relPos.x, this.posY, relPos.z, 0, 0, 0);
+      }, 25);
+      addEvent(()-> {
           this.setShaking(true);
           this.shakeTime = 20;
       }, 25);
@@ -1020,6 +1025,10 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         addEvent(()-> this.lockLook = true, 25);
         addEvent(()-> this.playSound(SoundsHandler.DRAUGR_ELITE_STOMP, 1.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 35);
         addEvent(()-> new ActionKingStomp().performAction(this, target), 37);
+        addEvent(()-> {
+            Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
+            Main.proxy.spawnParticle(20, relPos.x, this.posY, relPos.z, 0, 0, 0);
+        }, 37);
         addEvent(()-> {
             this.setShaking(true);
             this.shakeTime = 20;
@@ -1514,6 +1523,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             //Spawn AOE
             this.playSound(SoundsHandler.HIGH_KING_SPEAR_IMPACT, 1.5f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
             new ActionHolySpikeAOE((int) this.getDistance(target) + 5).performAction(this, target);
+            Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.25, 1.2, 0)));
+            Main.proxy.spawnParticle(20, relPos.x, this.posY, relPos.z, 0, 0, 0);
         }, 46);
 
         addEvent(()-> {
@@ -1551,6 +1562,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
       addEvent(()-> {
           //Action
           new ActionKingProgAOE().performAction(this, target);
+          Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 1.2, 0)));
+          Main.proxy.spawnParticle(20, relPos.x, this.posY, relPos.z, 0, 0, 0);
           this.setShaking(true);
           this.shakeTime = 40;
       }, 45);

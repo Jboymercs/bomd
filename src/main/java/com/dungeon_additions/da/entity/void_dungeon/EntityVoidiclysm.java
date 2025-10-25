@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.void_dungeon;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.blocks.boss.BlockEnumBossSummonState;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
@@ -944,6 +945,10 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
       addEvent(()-> {
         //do spike action
           new ActionClapAttack().performAction(this, target);
+          Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
+          Main.proxy.spawnParticle(22, relPos.x, this.posY, relPos.z, 0, 0, 0);
+          Main.proxy.spawnParticle(22, relPos.x, this.posY + 1, relPos.z, 0, 0, 0);
+          Main.proxy.spawnParticle(22, relPos.x, this.posY + 2, relPos.z, 0, 0, 0);
       }, 20);
 
         addEvent(()-> {
@@ -1210,7 +1215,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
     public void handleStatusUpdate(byte id) {
         super.handleStatusUpdate(id);
         if(id == ModUtils.THIRD_PARTICLE_BYTE) {
-            ModUtils.performNTimes(100, (i) -> {
+            ModUtils.performNTimes(50, (i) -> {
                 this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX + ModRand.getFloat(5), this.posY + ModRand.getFloat(5),
                         this.posZ + ModRand.getFloat(5), 0, 0, 0);
             });

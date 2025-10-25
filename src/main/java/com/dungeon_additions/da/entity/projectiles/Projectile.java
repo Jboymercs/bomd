@@ -86,7 +86,7 @@ public class Projectile extends EntityModThrowable{
 
     @Override
     protected void onHit(RayTraceResult result) {
-        if (!world.isRemote && !isLocatorItem && this.ticksExisted > bypassTime) {
+        if (!world.isRemote && !isLocatorItem) {
             this.world.setEntityState(this, this.IMPACT_PARTICLE_BYTE);
             this.setDead();
         }

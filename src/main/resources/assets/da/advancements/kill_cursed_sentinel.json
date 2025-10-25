@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:sentinel_part"
+    },
+    "title": {
+      "translate": "advancements.da.kill_cursed_sentinel.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_cursed_sentinel.description"
+    }
+  },
+  "parent": "da:craft_gaelon_shard",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:cursed_sentinel"
+        }
+      }
+    }
+  }
+}

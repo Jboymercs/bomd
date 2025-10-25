@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VBV",
+    "XVX"
+  ],
+  "key": {
+    "V": {
+      "item": "da:sentinel_part"
+    },
+    "X": {
+      "item": "da:novik_plate"
+    },
+    "B": {
+      "item": "da:unbridled_soul"
+    }
+  },
+  "result": {
+    "item": "da:golem_cannon"
+  }
+}

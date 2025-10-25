@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.blossom;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.entity.blossom.action.ActionSporeBomb;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.util.ModColors;
@@ -48,6 +49,7 @@ public class ProjectileSporeBomb extends Projectile {
     @Override
     protected void onHit(RayTraceResult result) {
         if(!world.isRemote) {
+            Main.proxy.spawnParticle(19, this.posX, this.posY + 1.25, this.posZ, 0, 0, 0);
             new ActionSporeBomb().performAction(this, null);
         }
         this.playSound(SoundEvents.BLOCK_SLIME_PLACE, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));

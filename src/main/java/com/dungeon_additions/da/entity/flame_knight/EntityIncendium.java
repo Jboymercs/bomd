@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.flame_knight;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.EntityAiTimedAttack;
@@ -590,6 +591,8 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
         addEvent(()-> {
         new ActionTileAOE(7).performAction(this, target);
             this.playSound(SoundsHandler.B_KNIGHT_STOMP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+                Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
+                Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
         }, 25);
 
         addEvent(()-> {

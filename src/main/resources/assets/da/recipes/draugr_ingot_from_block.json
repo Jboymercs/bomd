@@ -1,0 +1,16 @@
+{
+  "type": "crafting_shaped",
+  "group": "dragur_ingot",
+  "pattern": [
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "da:frostborn_block"
+    }
+  },
+  "result": {
+    "item": "da:draugr_ingot",
+    "count": 9
+  }
+}

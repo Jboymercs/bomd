@@ -300,6 +300,16 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static int obsidilith_y_height = 105;
 
+    @Config.Name("Obsidilith Arena Mob Spawn Weight")
+    @Config.Comment("Change the chance of mob spawns throughout the Obsidilith Arena, higher number means more spawns.")
+    @Config.RangeInt(min = 1, max = 10)
+    public static int obsidilith_arena_mob_spawns = 4;
+
+    @Config.Name("Obsidilith Arena Chest Chance Weight")
+    @Config.Comment("Change the chance of chest spawns throughout the Obsidilith Arena, higher number means more chests")
+    @Config.RangeInt(min = 1, max = 10)
+    public static int obsidilith_arena_chest_spawns = 5;
+
     @Config.Name("Obsidilith Arena WhiteList Biome Types")
     @Config.Comment("Add Biome types that ALLOW the Obsidilith Arena from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
     @Config.RequiresMcRestart
@@ -331,7 +341,7 @@ public class WorldConfig {
     @Config.Name("Gaelon Sanctuary Max Y Height")
     @Config.Comment("Change the max Y Height at which the Gaelon Sanctuary surface part generates at.")
     @Config.RequiresMcRestart
-    public static int gaelon_sanctuary_max_y_height = 80;
+    public static int gaelon_sanctuary_max_y_height = 120;
 
     @Config.Name("Gaelon Sanctuary Base Y Height")
     @Config.Comment("Change the base Y Height at which the Gaelon Sanctuary generates at.")
@@ -347,6 +357,16 @@ public class WorldConfig {
     @Config.Comment("Change if the Gaelon Sanctuary should spawn at all. default: true")
     @Config.RequiresMcRestart
     public static boolean gaelon_sanctuary_enabled = true;
+
+    @Config.Name("Gaelon Sanctuary Mob Spawn Weight")
+    @Config.Comment("Change the chance of mob spawns throughout the Gaelon Sanctuary, higher number means more spawns.")
+    @Config.RangeInt(min = 1, max = 10)
+    public static int gaelon_sanctuary_mob_spawns = 4;
+
+    @Config.Name("Gaelon Sanctuary Chest Chance Weight")
+    @Config.Comment("Change the chance of chest spawns throughout the Gaelon Sanctuary, higher number means more chests")
+    @Config.RangeInt(min = 1, max = 10)
+    public static int gaelon_sanctuary_chest_spawns = 5;
 
     @Config.Name("Gaelon Sanctuary Size")
     @Config.Comment("Change the size of the Gaelon Sanctuary dungeon")

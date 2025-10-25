@@ -332,6 +332,11 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
       }, 37);
 
       addEvent(()-> {
+          Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2.75, 1.2, 0)));
+          Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
+      }, 40);
+
+      addEvent(()-> {
         this.setImmovable(false);
         this.lockLook = false;
       }, 55);
@@ -431,6 +436,8 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
         new ActionProgressiveStomp((int) (this.getDistanceSq(target) + 2)).performAction(this, target);
         this.setShaking(true);
         this.shakeTime = 30;
+              Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
+              Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
       }, 43);
 
       addEvent(()-> {
@@ -549,6 +556,8 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
             this.setImmovable(true);
             //do arena Ground Slam
             new ActionEveratorLongSwing().performAction(this, target);
+            Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2.75, 1.2, 0)));
+            Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
             this.setShaking(true);
             this.shakeTime = 30;
         }, 123);

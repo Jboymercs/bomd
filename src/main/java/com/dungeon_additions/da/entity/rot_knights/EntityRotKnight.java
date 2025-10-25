@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.rot_knights;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.EntityAIAttackRotKnight;
@@ -276,6 +277,10 @@ public class EntityRotKnight extends EntityAbstractBase implements IAnimatable, 
       this.setFullBodyUsage(true);
       this.setShieldDash(true);
       this.setImmovable(true);
+
+      addEvent(()-> {
+          Main.proxy.spawnParticle(18, this.posX, this.posY, this.posZ, 0, 0, 0);
+      }, 18);
       addEvent(()-> {
         Vec3d targetSaved = target.getPositionVector();
         this.lockLook = true;

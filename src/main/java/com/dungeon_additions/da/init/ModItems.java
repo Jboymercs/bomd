@@ -13,6 +13,7 @@ import com.dungeon_additions.da.items.armor.novik.ItemNovikChestplate;
 import com.dungeon_additions.da.items.armor.novik.ItemNovikHelmet;
 import com.dungeon_additions.da.items.food.ItemBeetleMorsel;
 import com.dungeon_additions.da.items.food.ItemUncookedFood;
+import com.dungeon_additions.da.items.gun.ItemGolemCannon;
 import com.dungeon_additions.da.items.gun.ItemSealedTornado;
 import com.dungeon_additions.da.items.gun.ItemVoidiantCatalyst;
 import com.dungeon_additions.da.items.keys.*;
@@ -40,7 +41,7 @@ public class ModItems {
 
     //Materials
     private static final Item.ToolMaterial CHAMPION_AXE_MATERIAL = EnumHelper.addToolMaterial("champion_set", 3, 874, 7.0F, (float) ModConfig.champion_axe_damage, 15);
-    private static final Item.ToolMaterial APATHYR_AXE_MATERIAL = EnumHelper.addToolMaterial("apathyr_axe_set", 3, 974, 7.0F, (float) 8.5, 25);
+    private static final Item.ToolMaterial APATHYR_AXE_MATERIAL = EnumHelper.addToolMaterial("apathyr_axe_set", 3, 974, 7.0F, (float) ModConfig.midnight_reign_damage, 25);
     private static final Item.ToolMaterial VOID_HAMMER_MATERIAL = EnumHelper.addToolMaterial("void_hammer_set", 3, 874, 7.0F, (float) ModConfig.void_hammer_damage, 25);
     private static final Item.ToolMaterial VOID_STAFF_MATERIAL = EnumHelper.addToolMaterial("void_staff_set", 1, 1074, 3.0F, (float) ModConfig.void_staff_damage, 15);
     private static final Item.ToolMaterial IMPERIAL_HALBERD_MATERIAL = EnumHelper.addToolMaterial("imperial_halberd_set", 3, 2463, 8.0F, (float) ModConfig.prosperous_assault_damage, 20);
@@ -62,7 +63,7 @@ public class ModItems {
     private static final Item.ToolMaterial SOUL_SPEAR_WEAPON_MATERIAL = EnumHelper.addToolMaterial("soul_spear_weapon_material", 2, 1200, 5.0F, ModConfig.soul_weapon_damage, 20);
     private static final Item.ToolMaterial KNIGHT_RAPIER_MATERIAL = EnumHelper.addToolMaterial("knight_rapier_material", 2, 502, 5.0F, (float) ModConfig.rapier_damage, 10);
     private static final Item.ToolMaterial KOPIS_MATERIAL = EnumHelper.addToolMaterial("kopis_material", 1, 1200, 5.0F, (float) 5, 20);
-    private static final Item.ToolMaterial NOVIK_MATERIAL = EnumHelper.addToolMaterial("novik_material", 2, 1200, 4.0F, (float) 6.5, 10);
+    private static final Item.ToolMaterial NOVIK_MATERIAL = EnumHelper.addToolMaterial("novik_material", 2, 1200, 4.0F, (float) ModConfig.novik_sword_damage, 10);
 
     private static final ItemArmor.ArmorMaterial FLAME_ARMOR = EnumHelper.addArmorMaterial("flame", ModReference.MOD_ID + ":flame", 320, new int[]{4, 7,9,4}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2F);
     private static final ItemArmor.ArmorMaterial DRAUGR_ARMOR = EnumHelper.addArmorMaterial("draugr", ModReference.MOD_ID + "draugr", 375, new int[]{3, 6, 8,3}, 5, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2F);
@@ -109,6 +110,7 @@ public class ModItems {
     public static final Item FLAME_METAL_SCRAP = new ItemCraftingMaterial("flame_metal_scrap", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ANCIENT_MANA = new ItemCraftingMaterial("ancient_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item NOVIK_PLATE = new ItemCraftingMaterial("novik_plate", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item SENTINEL_PART = new ItemCraftingMaterial("sentinel_part","crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item GAELON_SHARD = new ItemCraftingMaterial("gaelon_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item GAELON_INGOT = new ItemCraftingMaterial("gaelon_ingot", "gaelon_ingot_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item UNBRIDLED_SOUL = new ItemCraftingMaterial("unbridled_soul", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -135,6 +137,7 @@ public class ModItems {
     //Utility & Locator Items (Not Weapons)
     public static final Item ENDLESS_PEARL = new ItemEndlessEnderpearl("endless_enderpearl", "pearl_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item SEALED_TORNADO_BOTTLE = new ItemSealedTornado("sealed_tornado","sealed_tornado_desc", DungeonAdditionsTab.ALL);
+    public static final Item SEALED_SPEAR_WAVE_BOTTLE = new ItemSealedSpearWave("sealed_spear_wave", "sealed_spear_wave_desc", DungeonAdditionsTab.ALL);
     public static final Item SEALED_FLAME_BOTTLE = new ItemSealedFlame("sealed_flame", "sealed_flame_desc", DungeonAdditionsTab.ALL);
     public static final Item WYRK_TOTEM = new ItemWyrkTotem("wyrk_totem", "wyrk_totem_desc", DungeonAdditionsTab.ALL);
     public static final Item NOVIK_AID = new ItemNovikAid("call_to_arms", "call_to_arms_desc", DungeonAdditionsTab.ALL);
@@ -144,6 +147,7 @@ public class ModItems {
     public static final Item FORGOTTEN_TEMPLE_LOCATOR = new ItemForgottenTempleLocator("desert_locator", "desert_locator_desc");
     public static final Item DARK_LOCATOR = new ItemBase("dark_locator", DungeonAdditionsTab.ALL);
     public static final Item BURNING_FLAME_LOCATOR = new ItemBurningArenaLocator("flame_locator", "flame_locator_desc");
+    public static final Item GAELON_LOCATOR = new ItemGaelonSanctuaryLocator("gaelon_locator", "gaelon_locator_desc");
     public static final Item OBSIDIAN_LOCATOR = new ItemObsidianLocator("obsidian_locator", "obsidian_locator_desc");
     public static final Item SOUL_STAR = new ItemSoulStar("soul_star_item", "soul_star_desc");
     public static final Item SKY_LOCATOR = new ItemSkyLocator("sky_locator", "sky_locator_desc");
@@ -183,6 +187,7 @@ public class ModItems {
     public static final Item BLOODY_SWORD_SPEAR = new ItemBloodySwordSpear("sword_spear_blood", BLOODY_SWORD_SPEAR_MATERIAL, "sword_spear_blood_desc");
     public static final Item KING_CLAW = new ItemKingClaw("king_claw", KINGS_CLAW_MATERIAL, "king_claw_desc");
     public static final Item WYRK_STAFF = new ItemWyrkStaff("wyrk_staff", "wyrk_staff_desc", DungeonAdditionsTab.ALL);
+    public static final Item GOLEM_CANNON = new ItemGolemCannon("golem_cannon", DungeonAdditionsTab.ALL, "golem_cannon_desc");
     public static final Item VOIDIANT_CATALYST = new ItemVoidiantCatalyst("voidiant_catalyst", "voidiant_catalyst_desc", DungeonAdditionsTab.ALL);
     public static final Item VOID_STAFF = new ItemVoidStaff("void_staff", "void_staff_desc", VOID_STAFF_MATERIAL);
     public static final Item DRAGON_BOW = new ItemDragonBow("dragon_bow", "dragon_bow_desc");
@@ -230,29 +235,29 @@ public class ModItems {
     public static final Item MAGIC_FIREBALL = new ItemMagicFireball("magic_fireball", null);
 
     public static final Item POISON_DART = new ItemDart("dart");
-    public static final Item LIGHT_RING_PROJECTILE = new ItemLightRing("light_ring");
-    public static final Item STORM_TORNADO_PROJECTILE = new ItemStormTornado("storm_tornado");
-    public static final Item VOIDCLYSM_BOLT = new ItemVoidclysmBolt("voidclysm_bolt");
-    public static final Item HOLY_WAVE_PROJ = new ItemHolyWave("holy_wave");
-    public static final Item BLOOD_BALL_PROJ = new ItemBase("blood_ball");
-    public static final Item FLAME_BLADE_PROJ = new ItemFlameBladeProj("proj_flame_blade");
-    public static final Item DESERT_STORM_PROJ = new ItemDesertStorm("desert_storm");
-    public static final Item YELLOW_WAVE_PROJ = new ItemYellowWave("yellow_wave");
-    public static final Item CRYSTAL_WAVE_PROJ = new ItemYellowWave("crystal_wave");
-    public static final Item GHOST_BOLT_PROJ = new ItemProjectileGhost("ghost_bolt");
-    public static final Item FAST_CRYSTAL_PROJ = new ItemFastCrystal("fast_crystal");
+    public static final Item LIGHT_RING_PROJECTILE = new ItemLightRing("light_ring").setCreativeTab(null);
+    public static final Item STORM_TORNADO_PROJECTILE = new ItemStormTornado("storm_tornado").setCreativeTab(null);
+    public static final Item VOIDCLYSM_BOLT = new ItemVoidclysmBolt("voidclysm_bolt").setCreativeTab(null);
+    public static final Item HOLY_WAVE_PROJ = new ItemHolyWave("holy_wave").setCreativeTab(null);
+    public static final Item BLOOD_BALL_PROJ = new ItemBase("blood_ball", null);
+    public static final Item FLAME_BLADE_PROJ = new ItemFlameBladeProj("proj_flame_blade").setCreativeTab(null);
+    public static final Item DESERT_STORM_PROJ = new ItemDesertStorm("desert_storm").setCreativeTab(null);
+    public static final Item YELLOW_WAVE_PROJ = new ItemYellowWave("yellow_wave").setCreativeTab(null);
+    public static final Item CRYSTAL_WAVE_PROJ = new ItemYellowWave("crystal_wave").setCreativeTab(null);
+    public static final Item GHOST_BOLT_PROJ = new ItemProjectileGhost("ghost_bolt").setCreativeTab(null);
+    public static final Item FAST_CRYSTAL_PROJ = new ItemFastCrystal("fast_crystal").setCreativeTab(null);
 
-    public static final Item INVISISBLE_ITEM = new ItemBase("invisible_item").setCreativeTab(CreativeTabs.SEARCH);
-    public static final Item PROJECTILE_FLAME = new ItemBase("projectile_flame").setCreativeTab(CreativeTabs.SEARCH);
-    public static final Item VOID_PROJECTILE = new ItemBase("void_projectile");
+    public static final Item INVISISBLE_ITEM = new ItemBase("invisible_item", null);
+    public static final Item PROJECTILE_FLAME = new ItemBase("projectile_flame", null);
+    public static final Item VOID_PROJECTILE = new ItemBase("void_projectile", null);
 
-    public static final Item FAKE_HEALING_POTION = new ItemBase("fake_healing_potion").setCreativeTab(CreativeTabs.SEARCH);
-    public static final Item MAGIC_PROJECTILE = new ItemBase("magic_projectile");
-    public static final Item SKY_LOCATOR_PROJECTILE = new ItemBase("sky_locator_proj");
-    public static final Item MAGIC_TRACK_PROJECTILE = new ItemBase("missile_projectile");
-    public static final Item FROST_PROJECTILE = new ItemBase("frost_bullet");
-    public static final Item FAKE_BOW = new ItemBase("fake_bow");
-    public static final Item DESERT_LOCATOR_PROJ = new ItemBase("desert_locator_projectile");
+    public static final Item FAKE_HEALING_POTION = new ItemBase("fake_healing_potion", null);
+    public static final Item MAGIC_PROJECTILE = new ItemBase("magic_projectile", null);
+    public static final Item SKY_LOCATOR_PROJECTILE = new ItemBase("sky_locator_proj", null);
+    public static final Item MAGIC_TRACK_PROJECTILE = new ItemBase("missile_projectile", null);
+    public static final Item FROST_PROJECTILE = new ItemBase("frost_bullet", null);
+    public static final Item FAKE_BOW = new ItemBase("fake_bow", null);
+    public static final Item DESERT_LOCATOR_PROJ = new ItemBase("desert_locator_projectile", null);
 
     public static final Item MOD_LOGO = new ItemBase("bomd_mod_logo", null);
 

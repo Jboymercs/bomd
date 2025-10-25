@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:golem_cannon"
+    },
+    "title": {
+      "translate": "advancements.da.golem_cannon.title"
+    },
+    "description": {
+      "translate": "advancements.da.golem_cannon.description"
+    }
+  },
+  "parent": "da:kill_apathyr",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:golem_cannon"
+          }
+        ]
+      }
+    }
+  }
+}

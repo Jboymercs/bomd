@@ -66,6 +66,10 @@ public class SoundsHandler {
     public static SoundEvent GAELON_PLACE;
     public static SoundEvent GAELON_BREAK;
     public static SoundEvent GAELON_STEP;
+    //METAL BLOCKS
+    public static SoundEvent STORMVIER_BLOCK_STEP;
+    public static SoundEvent STORMVIER_BLOCK_BREAK;
+
     //Soul Star Block
     public static SoundEvent SOUL_STAR_ACTIVATE;
 
@@ -320,6 +324,11 @@ public class SoundsHandler {
     public static SoundEvent APATHYR_AWAKEN;
     public static SoundEvent APATHYR_DEATH;
 
+    //Cursed Sentinel
+    public static SoundEvent CURSED_SENTINEL_STEP;
+    public static SoundEvent CURSED_SENTINEL_HURT;
+    public static SoundEvent CURSED_SENTINEL_AWAKE;
+
     //MUSIC
     public static SoundEvent HIGH_DRAGON_TRACK;
     public static SoundEvent HIGH_KING_TRACK;
@@ -364,6 +373,9 @@ public class SoundsHandler {
         GAELON_BREAK = registerSound("gaelon.break", "block");
         GAELON_PLACE = registerSound("gaelon.place","block");
         GAELON_STEP = registerSound("gaelon.step","block");
+        //
+        STORMVIER_BLOCK_BREAK = registerSound("stormvier.break","block");
+        STORMVIER_BLOCK_STEP = registerSound("stormvier.step","block");
         //
         VOID_SPIKE_SHOOT = registerSound("spike.shoot", "entity");
         APPEARING_WAVE = registerSound("spike.wave", "entity");
@@ -612,6 +624,10 @@ public class SoundsHandler {
         APATHYR_DOMAIN_IDLE = registerSound("apathyr.domain_idle","entity");
         APATHYR_AWAKEN = registerSound("apathyr.awaken","entity");
         APATHYR_DEATH = registerSound("apathyr.death","entity");
+        //
+        CURSED_SENTINEL_HURT = registerSound("cursed_sentinel.hurt","entity");
+        CURSED_SENTINEL_STEP = registerSound("cursed_sentinel.step","entity");
+        CURSED_SENTINEL_AWAKE = registerSound("cursed_sentinel.awake","entity");
         //MUSIC
         HIGH_DRAGON_TRACK = registerSound("ambient.high_dragon", "music");
         HIGH_KING_TRACK = registerSound("ambient.high_king", "music");

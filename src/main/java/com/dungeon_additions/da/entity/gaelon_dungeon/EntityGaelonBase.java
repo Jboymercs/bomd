@@ -25,7 +25,7 @@ public class EntityGaelonBase extends EntityAbstractBase {
     protected boolean setImmediateChange = false;
     private static final DataParameter<Boolean> PLAYER_CHECKED = EntityDataManager.createKey(EntityGaelonBase.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DROPS_LOOT = EntityDataManager.createKey(EntityGaelonBase.class, DataSerializers.BOOLEAN);
-    private void setPlayerChecked(boolean value) {this.dataManager.set(PLAYER_CHECKED, Boolean.valueOf(value));}
+    protected void setPlayerChecked(boolean value) {this.dataManager.set(PLAYER_CHECKED, Boolean.valueOf(value));}
     private boolean isPlayerChecked() {return this.dataManager.get(PLAYER_CHECKED);}
     public void setDropsLoot(boolean value) {this.dataManager.set(DROPS_LOOT, Boolean.valueOf(value));}
     protected boolean isDropsLoot() {return this.dataManager.get(DROPS_LOOT);}

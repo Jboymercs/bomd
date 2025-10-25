@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.night_lich;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
@@ -505,6 +506,8 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 1.5, 0)));
                             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                             float damage = this.getAttack();
+                            Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.25, 1.2, 0)));
+                            Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
                             ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.4f, 0, false);
                             addEvent(()-> {
                                 //AOE ACTION
@@ -744,6 +747,8 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                     float damage = this.getAttack();
                     ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+                    Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 1.2, 0)));
+                    Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
                     addEvent(()-> {
                         //AOE ACTION
                         float distance = this.getDistance(target);

@@ -1,9 +1,11 @@
 package com.dungeon_additions.da.world.gaelon_sanctuary;
 
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
 import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
+import com.dungeon_additions.da.entity.gaelon_dungeon.EntityCursedSentinel;
 import com.dungeon_additions.da.entity.gaelon_dungeon.EntityReAnimate;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
 import com.dungeon_additions.da.entity.tileEntity.tileEntityMobSpawner;
@@ -45,7 +47,22 @@ public class GaelonSanctuaryTemplate extends ModStructureTemplate {
                     ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
                             new MobSpawnerLogic.MobSpawnData[]{
                                     new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityReAnimate.class), 1)
-                                    //include archer Aegyptia in this lot
+                            },
+                            new int[]{1},
+                            1,
+                            28);
+                }
+            } else {
+                world.setBlockToAir(pos);
+            }
+        } else if(function.startsWith("elite")) {
+            if(generateEliteSpawn()) {
+                world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_FORGOTTEN_TEMPLE.getDefaultState(), 2);
+                TileEntity tileentity = world.getTileEntity(pos);
+                if (tileentity instanceof tileEntityMobSpawner) {
+                    ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
+                            new MobSpawnerLogic.MobSpawnData[]{
+                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityCursedSentinel.class), 1)
                             },
                             new int[]{1},
                             1,
@@ -80,7 +97,15 @@ public class GaelonSanctuaryTemplate extends ModStructureTemplate {
 
     public boolean generateMobSpawn() {
         int randomNumberGenerator = ModRand.range(0, 10);
-        if (randomNumberGenerator >= 4) {
+        if (randomNumberGenerator >= WorldConfig.gaelon_sanctuary_mob_spawns) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean generateEliteSpawn() {
+        int randomNumberGenerator = ModRand.range(0, 10);
+        if (randomNumberGenerator >= WorldConfig.gaelon_sanctuary_mob_spawns + 2) {
             return false;
         }
         return true;
@@ -88,7 +113,7 @@ public class GaelonSanctuaryTemplate extends ModStructureTemplate {
 
     public boolean generateChestSpawn() {
         int randomNumberGenerator = ModRand.range(0, 10);
-        if (randomNumberGenerator >= 5) {
+        if (randomNumberGenerator >= WorldConfig.gaelon_sanctuary_chest_spawns) {
             return false;
         }
         return true;

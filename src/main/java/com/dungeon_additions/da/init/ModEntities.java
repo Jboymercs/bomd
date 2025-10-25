@@ -24,10 +24,7 @@ import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityEliteDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.ProjectileSoul;
 import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
-import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
-import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyrSpear;
-import com.dungeon_additions.da.entity.gaelon_dungeon.EntityReAnimate;
-import com.dungeon_additions.da.entity.gaelon_dungeon.ProjectileGhost;
+import com.dungeon_additions.da.entity.gaelon_dungeon.*;
 import com.dungeon_additions.da.entity.gaelon_dungeon.apathyr.*;
 import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.EntityFriendlyCursedRevenant;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
@@ -104,6 +101,7 @@ public class ModEntities {
     public static Vec3i voidclysm = new Vec3i(0x161117, 0xDE28D9, 0);
     public static Vec3i voidiant = new Vec3i(0xD473D9, 0x91094D, 0);
     public static Vec3i reanimate = new Vec3i(0x615429,0x6eebeb,0);
+    public static Vec3i cursed_sentinel = new Vec3i(0x2B241E,0x6eebeb,0);
     public static Vec3i apathyr = new Vec3i(0xBD8F04,0x6eebeb,0);
     public static void registerEntities() {
         //One day, you'll be back in game my son
@@ -139,6 +137,8 @@ public class ModEntities {
         //Gaelon Dungeon
         registerEntityWithID("reanimate", EntityReAnimate.class, ENTITY_START_ID++, 60, reanimate);
         registerEntity("cursed_revenant", EntityFriendlyCursedRevenant.class, ENTITY_START_ID++, 60);
+        registerEntity("cursed_sentinel_friendly", EntityFriendlyCursedGolem.class, ENTITY_START_ID++, 60);
+        registerEntityWithID("cursed_sentinel",EntityCursedSentinel.class, ENTITY_START_ID++, 60, cursed_sentinel);
         registerEntityWithID("apathyr", EntityApathyr.class, ENTITY_START_ID++, 80, apathyr);
         //Night Lich's Tower
         registerEntityWithID("night_lich", EntityNightLich.class, ENTITY_START_ID++, 90, night_lich);
@@ -227,6 +227,8 @@ public class ModEntities {
             registerEntity("ultra_attack", EntityUltraAttack.class, ENTITY_START_ID++, 40);
             registerEntity("apathyr_spear", EntityApathyrSpear.class, ENTITY_START_ID++, 40);
             registerEntity("apathyr_eye", EntityApathyrEye.class, ENTITY_START_ID++, 40);
+            registerEntity("gaelon_locator", EntityGaelonSanctuaryLocator.class, ENTITY_START_ID++, 40);
+
 
 
         registerTileEntity(TileEntitySporeBlossom.class, "spore_blossom");

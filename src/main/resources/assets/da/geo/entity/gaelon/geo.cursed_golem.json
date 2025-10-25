@@ -1,0 +1,131 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 4,
+				"visible_bounds_height": 3.5,
+				"visible_bounds_offset": [0, 1.25, 0]
+			},
+			"bones": [
+				{
+					"name": "Ground",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "Torso",
+					"parent": "Ground",
+					"pivot": [0, 28, 0],
+					"cubes": [
+						{"origin": [-9, 25, -4.5], "size": [18, 9, 9], "uv": [0, 0]},
+						{"origin": [-7.5, 22, -4.5], "size": [15, 3, 9], "uv": [0, 18]}
+					]
+				},
+				{
+					"name": "LowerTorso",
+					"parent": "Torso",
+					"pivot": [0, 22, 0],
+					"cubes": [
+						{"origin": [-5, 16, -3], "size": [10, 6, 6], "uv": [0, 72]},
+						{"origin": [-4, 14, -4], "size": [8, 4, 8], "uv": [32, 72]}
+					]
+				},
+				{
+					"name": "CrownJoint",
+					"parent": "LowerTorso",
+					"pivot": [-5, 16, 0],
+					"cubes": [
+						{"origin": [-8, 15, -4], "size": [4, 4, 8], "inflate": 0.2, "uv": [50, 90], "mirror": true}
+					]
+				},
+				{
+					"name": "RLeg",
+					"parent": "CrownJoint",
+					"pivot": [-5, 16, 0],
+					"cubes": [
+						{"origin": [-7, 7, -2.5], "size": [5, 11, 5], "uv": [84, 54], "mirror": true},
+						{"origin": [-7.5, 0, -3], "size": [6, 7, 6], "uv": [26, 84], "mirror": true}
+					]
+				},
+				{
+					"name": "CrownJointL",
+					"parent": "LowerTorso",
+					"pivot": [5, 16, 0],
+					"cubes": [
+						{"origin": [4, 15, -4], "size": [4, 4, 8], "inflate": 0.2, "uv": [50, 90]}
+					]
+				},
+				{
+					"name": "LLeg",
+					"parent": "CrownJointL",
+					"pivot": [5, 16, 0],
+					"cubes": [
+						{"origin": [2, 7, -2.5], "size": [5, 11, 5], "uv": [84, 54]},
+						{"origin": [1.5, 0, -3], "size": [6, 7, 6], "uv": [26, 84]}
+					]
+				},
+				{
+					"name": "Head",
+					"parent": "Torso",
+					"pivot": [0, 34, 0],
+					"cubes": [
+						{"origin": [-4, 34, -4], "size": [8, 8, 8], "uv": [0, 56]},
+						{"origin": [-4, 34, -4], "size": [8, 8, 8], "inflate": 0.4, "uv": [60, 23]},
+						{"origin": [3, 38, 0], "size": [3, 2, 2], "uv": [50, 84]},
+						{"origin": [6, 38, -6], "size": [2, 2, 8], "uv": [92, 20]},
+						{"origin": [6, 40, -6], "size": [2, 6, 2], "uv": [84, 70]},
+						{"origin": [6, 44, -4], "size": [2, 2, 4], "uv": [48, 23]},
+						{"origin": [6, 42, -2], "size": [2, 2, 2], "uv": [92, 30]},
+						{"origin": [-6, 38, 0], "size": [3, 2, 2], "uv": [50, 84], "mirror": true},
+						{"origin": [-8, 38, -6], "size": [2, 2, 8], "uv": [92, 20], "mirror": true},
+						{"origin": [-8, 40, -6], "size": [2, 6, 2], "uv": [84, 70], "mirror": true},
+						{"origin": [-8, 44, -4], "size": [2, 2, 4], "uv": [48, 23], "mirror": true},
+						{"origin": [-8, 42, -2], "size": [2, 2, 2], "uv": [92, 30], "mirror": true}
+					]
+				},
+				{
+					"name": "LArm",
+					"parent": "Torso",
+					"pivot": [9, 32, 0],
+					"cubes": [
+						{"origin": [9, 14, -2.5], "size": [5, 20, 5], "uv": [64, 54]},
+						{"origin": [9, 26, -3.5], "size": [6, 9, 7], "inflate": 0.1, "uv": [0, 84]},
+						{"origin": [7.5, 8, -4], "size": [8, 8, 8], "uv": [32, 56]},
+						{"origin": [9, 30, -4.5], "size": [7, 2, 9], "uv": [80, 0]}
+					]
+				},
+				{
+					"name": "Spikes",
+					"parent": "LArm",
+					"pivot": [11.5, 12, 0],
+					"cubes": [
+						{"origin": [5, 5.5, 0], "size": [13, 10, 0], "uv": [74, 90]},
+						{"origin": [11.5, 5.5, -6.5], "size": [0, 10, 13], "uv": [54, 0]},
+						{"origin": [11.5, 7.5, -7.5], "size": [0, 11, 15], "pivot": [11.5, 12, 0], "rotation": [0, 45, 0], "uv": [0, 30]},
+						{"origin": [11.5, 7.5, -7.5], "size": [0, 11, 15], "pivot": [11.5, 12, 0], "rotation": [0, -45, 0], "uv": [30, 30]}
+					]
+				},
+				{
+					"name": "RArm",
+					"parent": "Torso",
+					"pivot": [-9, 32, 0],
+					"cubes": [
+						{"origin": [-17, 28, -4], "size": [8, 7, 8], "inflate": 0.75, "uv": [60, 39]},
+						{"origin": [-16.5, 25, -3.5], "size": [7, 2, 7], "inflate": 0.75, "uv": [80, 11]}
+					]
+				},
+				{
+					"name": "CannonTip",
+					"parent": "RArm",
+					"pivot": [-13, 26, 0],
+					"cubes": [
+						{"origin": [-17, 20.5, -4], "size": [8, 3, 8], "inflate": 0.75, "uv": [64, 79]}
+					]
+				}
+			]
+		}
+	]
+}

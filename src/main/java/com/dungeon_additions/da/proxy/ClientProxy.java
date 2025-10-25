@@ -11,6 +11,7 @@ import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSectionSerializer;
 import com.dungeon_additions.da.util.handlers.CameraPositionHandler;
 import com.dungeon_additions.da.util.handlers.RenderHandler;
 import com.dungeon_additions.da.util.particle.*;
+import com.dungeon_additions.da.util.particle.impact.*;
 import com.dungeon_additions.da.util.particle.obsidilith.*;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
@@ -193,6 +194,16 @@ public class ClientProxy extends CommonProxy{
                 return new ParticleApathyrTarget.Factory();
             case 17:
                 return new ParticleCrystalPixel.Factory();
+            case 18:
+                return new ParticleImpact.Factory();
+            case 19:
+                return new PoisonImpact.Factory();
+            case 20:
+                return new ParticleBigImpact.Factory();
+            case 21:
+                return new ParticleBlueImpact.Factory();
+            case 22:
+                return new ParticlePurpleImpact.Factory();
         }
     }
 

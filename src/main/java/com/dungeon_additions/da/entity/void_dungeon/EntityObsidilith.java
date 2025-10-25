@@ -555,6 +555,8 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         ModUtils.handleAreaImpact(5, (e) -> this.getAttack() * 1.5F, this, this.getPositionVector().add(ModUtils.yVec(1)), source);
         this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f + ModRand.getFloat(0.1f));
         this.world.setEntityState(this, ModUtils.THIRD_PARTICLE_BYTE);
+        Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
+        Main.proxy.spawnParticle(20, relPos.x, this.posY + 0.1, relPos.z, 0, 0, 0);
         this.setShaking(true);
         this.shakeTime = 30;
         addEvent(()-> {
@@ -885,7 +887,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
     public void handleStatusUpdate(byte id) {
         super.handleStatusUpdate(id);
         if(id == ModUtils.THIRD_PARTICLE_BYTE) {
-            ModUtils.performNTimes(100, (i) -> {
+            ModUtils.performNTimes(50, (i) -> {
                 this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX + ModRand.getFloat(5), this.posY + ModRand.getFloat(5),
                         this.posZ + ModRand.getFloat(5), 0, 0, 0);
             });

@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.frost_dungeon.draugr;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.EntityDraugrEliteAttackAI;
@@ -468,6 +469,11 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
           this.shakeTime = 20;
       }, 35);
 
+        addEvent(()-> {
+            Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2.75, 1.2, 0)));
+            Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
+        }, 35);
+
       addEvent(()-> {
           this.setShaking(false);
       }, 55);
@@ -533,6 +539,11 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
           this.setShaking(true);
           this.shakeTime = 15;
       }, 33);
+
+        addEvent(()-> {
+            Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.25, 1.2, 0)));
+            Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
+        }, 34);
 
       addEvent(()-> this.setShaking(false), 43);
       addEvent(()-> {

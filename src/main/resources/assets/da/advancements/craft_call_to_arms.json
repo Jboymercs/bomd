@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:call_to_arms"
+    },
+    "title": {
+      "translate": "advancements.da.craft_call_to_arms.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_call_to_arms.description"
+    }
+  },
+  "parent": "da:kill_apathyr",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:call_to_arms"
+          }
+        ]
+      }
+    }
+  }
+}

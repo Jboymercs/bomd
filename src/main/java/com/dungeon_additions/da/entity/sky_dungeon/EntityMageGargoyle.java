@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.sky_dungeon;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.flying.EntityAIRandomFly;
@@ -187,6 +188,10 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
       this.lockLook = true;
 
       addEvent(()-> this.playSound(SoundsHandler.GARGOYLE_CAST_SPECIAL, 1.0f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 33);
+        addEvent(()-> {
+            Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.1, 1.2, 0)));
+            Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
+        }, 33);
       addEvent(()-> {
         //cast special attack
           EntityGargoyleLazer lazer = new EntityGargoyleLazer(world, target);

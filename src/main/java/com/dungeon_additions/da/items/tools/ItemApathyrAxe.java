@@ -68,15 +68,15 @@ public class ItemApathyrAxe extends ItemSword implements IAnimatable, IHasModel 
             if(player.isSneaking()) {
                 float damage;
                 if(!worldIn.isDaytime()) {
-                    damage = 12;
+                    damage = ModConfig.midnight_reign_ability_damage + 5;
                 } else {
-                    damage = 8;
+                    damage = ModConfig.midnight_reign_ability_damage + 1;
                 }
                 ModUtils.performNTimes(20, (i) -> Main.proxy.spawnParticle(17, player.posX + ModRand.range(-2, 2), player.posY + ModRand.range(1, 3), player.posZ + ModRand.range(-2, 2), 0, 0.08, 0, 20));
                 worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.APATHYR_CAST_HEAVY, SoundCategory.NEUTRAL, 1.5f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.4f));
                 //do crystal wave
                 new ActionApathyrWave(damage).performAction(player);
-                player.getCooldownTracker().setCooldown(stack.getItem(), 26 * 20);
+                player.getCooldownTracker().setCooldown(stack.getItem(), (ModConfig.midnight_reign_cooldown * 2) * 20);
                 stack.damageItem(4, player);
             } else {
                 Entity entityToo = findClosestEntity(player, worldIn);
@@ -107,15 +107,15 @@ public class ItemApathyrAxe extends ItemSword implements IAnimatable, IHasModel 
                         Vec3d predictedPosition = ModUtils.predictPlayerPosition(targetOriginalPosition, targetedEntity.getPositionVector(), 3);
                         float damage;
                         if(!worldIn.isDaytime()) {
-                            damage = 11;
+                            damage = ModConfig.midnight_reign_ability_damage + 4;
                         } else {
-                            damage = 7;
+                            damage = ModConfig.midnight_reign_ability_damage;
                         }
                         this.spawnSpikeAction(player, damage, targetedEntity, predictedPosition, worldIn);
                         player.resetActiveHand();
                         this.waitTime = 4;
                         this.targetOriginalPosition = null;
-                        player.getCooldownTracker().setCooldown(stack.getItem(), 13 * 20);
+                        player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.midnight_reign_cooldown * 20);
                         this.targetedEntity = null;
                     } else {
                         waitTime--;

@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:apathyr_axe"
+    },
+    "title": {
+      "translate": "advancements.da.craft_apathyr_axe.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_apathyr_axe.description"
+    }
+  },
+  "parent": "da:kill_apathyr",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:apathyr_axe"
+          }
+        ]
+      }
+    }
+  }
+}

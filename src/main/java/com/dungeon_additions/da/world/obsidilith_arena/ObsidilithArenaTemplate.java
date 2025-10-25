@@ -88,7 +88,7 @@ public class ObsidilithArenaTemplate extends ModStructureTemplate {
 
     public boolean generateMobSpawn() {
         int randomNumberGenerator = ModRand.range(0, 10);
-        if (randomNumberGenerator >= 4) {
+        if (randomNumberGenerator >= WorldConfig.obsidilith_arena_mob_spawns) {
             return false;
         }
         return true;
@@ -96,7 +96,7 @@ public class ObsidilithArenaTemplate extends ModStructureTemplate {
 
     public boolean generateChestSpawn() {
         int randomNumberGenerator = ModRand.range(0, 10);
-        if (randomNumberGenerator >= 5) {
+        if (randomNumberGenerator >= WorldConfig.obsidilith_arena_chest_spawns) {
             return false;
         }
         return true;

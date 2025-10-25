@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:novik_sword"
+    },
+    "title": {
+      "translate": "advancements.da.craft_novik_sword.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_novik_sword.description"
+    }
+  },
+  "parent": "da:kill_cursed_sentinel",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:novik_sword"
+          }
+        ]
+      }
+    }
+  }
+}

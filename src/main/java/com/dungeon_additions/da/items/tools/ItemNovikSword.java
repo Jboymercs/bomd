@@ -46,7 +46,7 @@ public class ItemNovikSword extends ToolSword implements IHasModel {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        int SwordCoolDown = ModConfig.flame_blade_cooldown * 50;
+        int SwordCoolDown = ModConfig.novik_sword_cooldown * 20;
         if(!player.getCooldownTracker().hasCooldown(this)) {
             worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.REANIMATE_CAST, SoundCategory.NEUTRAL, 1.3f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
             ModUtils.performNTimes(10, (i) -> {

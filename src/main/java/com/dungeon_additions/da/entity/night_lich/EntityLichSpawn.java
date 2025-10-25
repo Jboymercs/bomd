@@ -6,6 +6,7 @@ import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
 import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
+import com.dungeon_additions.da.entity.gaelon_dungeon.EntityCursedSentinel;
 import com.dungeon_additions.da.entity.gaelon_dungeon.EntityReAnimate;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -172,7 +173,7 @@ public class EntityLichSpawn extends EntityAbstractBase implements IAnimatable, 
 
             if(this.isEliteSpawn) {
                 //ELITE SPAWNS
-                EntityReAnimate draugr = new EntityReAnimate(world);
+                EntityCursedSentinel draugr = new EntityCursedSentinel(world, false);
                 draugr.setPosition(this.posX, this.posY, this.posZ);
                 draugr.setDropItemsWhenDead(false);
                 draugr.setDropsLoot(false);

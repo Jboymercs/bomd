@@ -96,6 +96,8 @@ entity.crystal_wave.name=Gaelon Crystal Wave
 entity.apathyr_speear.name=Apathyr Spear
 entity.apathyr_eye.name=Apathyr's Eye
 entity.cursed_revenant.name=Friendly Cursed Revenant
+entity.cursed_sentinel.name=Cursed Sentinel
+entity.cursed_sentinel_friendly.name=Cursed Golem
 item.void_leaf.name=Void Leaf
 item.spore.name=Void Blossom Spore
 item.crystal_fruit.name=Crystal Fruit
@@ -244,6 +246,10 @@ item.unbridled_soul.name=Unbridled Soul
 item.apathyr_helmet.name=Apathyr's Helmet
 item.call_to_arms.name=A Call to Arms
 item.apathyr_axe.name=The Midnight Reign
+item.sentinel_part.name=Sentinel Remains
+item.gaelon_locator.name=Mysterious Artifact
+item.sealed_spear_wave.name=Sealed Spear Bottle
+item.golem_cannon.name=Sentinel Cannon
 tile.spore_blossom.name=Void Blossom
 tile.moss_block.name=Moss Block
 tile.moss_carpet.name=Moss Carpet
@@ -394,6 +400,11 @@ tile.darkglow_pillar_eye.name=Darkglow Protector Eye
 tile.alfera_planks.name=Alfera Planks
 tile.alfera_planks_rod.name=Studded Alfera Planks
 tile.alfera_crate.name=Alfera Crate
+tile.stormvier_block.name=Block of Stormvier
+tile.frostborn_block.name=Block of Frostborn
+tile.crypt_block.name=Block of Dark Metal
+tile.novik_block.name=Block of Novik Metal
+tile.litic_block.name=Block of Litic
 
 itemGroup.dungeon_additions=Dungeon Additions Items
 itemGroup.dungeon_additions_blocks=Dungeon Additions Blocks
@@ -446,7 +457,7 @@ da.desc.snow_cold_brick_desc=If Ice is above this block, it will generate Icicle
 da.desc.sky_arrow_desc=By aiming at a precise target, the arrow will ensure it hits its target.
 da.desc.imperial_halberd_desc=Right clicking will launch a line of Lightning Bolts in front of you.
 da.desc.lighting_key_desc=Used in the High Court City's Petrogloom Arena
-da.desc.lightning_stone_desc=When used in an anvil, you can upgrade any weapons from BOMD + DA.
+da.desc.lightning_stone_desc=When used in an anvil, you can upgrade any weapons from Dungeon Additions.
 da.desc.imperial_sword_desc=When right clicking, you can parry negating the damage and dealing damage to the enemy. Failing the parry will inflict weakness.
 da.desc.crumble_berries_desc=Grants Absorption for 1 minute, and Speed for 30 seconds.
 da.desc.imperial_armor_desc=Full Set allows lightning bolts to be summoned on entities that attack you and you are given Absorption for 30 seconds, the chance increasing the lower your health is.
@@ -485,7 +496,7 @@ da.desc.obsidian_armor_desc=Negates Levitation and Blindness. After taking damag
 da.desc.flower_crown_desc=After taking several hits, the last entity that hit you will have void thorns summoned upon them.
 da.desc.void_staff_desc=Right click shoots a void bolt, sneaking and right clicking summons a void aoe. Damage scales with weapon and being at full health provides extra damage.
 da.desc.sealed_tornado_desc=Right click will release a desert storm tornado before you.
-da.desc.gaelon_ingot_desc=Can repair any armor or weapons from Bosses of Mass Destruction plus Dungeon Additions!
+da.desc.gaelon_ingot_desc=Can repair any armor or weapons from Dungeon Additions!
 da.desc.novik_armor_desc=Full set bonus deals 20 percent more damage to Undead.
 da.desc.novik_helmet_desc=10 percent chance last attacked Entity will be given weakness. Full set bonus deals 20 percent more damage to Undead.
 da.desc.novik_sword_desc=Right clicking will set you in a focused state. With each hit you'll gain half a heart.
@@ -493,7 +504,11 @@ da.desc.apathyr_heart_desc=It seems to be made of a valuable resource, I wonder 
 da.desc.golden_apathyr_heart_desc=Allows you to fight the Apathyr with other adventurers!
 da.desc.apathyr_helmet_desc=When below half health, your melee weapons will deal 2 extra damage. Also works with Full set bonus for the Novik set.
 da.desc.call_to_arms_desc=Right clicking will summon a Friendly Cursed Revenant to aid you, along with its health and attack damage scaling with what bosses you've defeated.
-da.desc.apathyr_axe_desc=Right click will launch spears at the entity you are looking at. Shift + Right click will summon a wave before you. Ability and Weapon damage increases while it's dark.
+da.desc.apathyr_axe_desc=Right click will launch spears at the entity you are looking at. Shift + Right click will summon a wave before you. Ability damage increases while it's dark.
+da.desc.gaelon_locator_desc=I feel like it's calling to me...
+da.desc.novik_block_desc=By placing two on top of each other and a pumpkin above, you'll summon a Friendly Cursed Sentinel.
+da.desc.sealed_spear_wave_desc=Right clicking will summon a massive spear wave around the caster.
+da.desc.golem_cannon_desc=Requires Gaelon Shards as ammo. Right clicking will shoot a powerful shard bullet.
 death.attack.da:maelstrom=%1$s succumbed to the void
 death.attack.da:mobMaelstrom=%1$s was killed by a %2$s
 death.attack.da:playerMaelstrom=%1$s was killed by %2$s
@@ -507,8 +522,8 @@ death.attack.da.wyrk_staff=%1$s died too %2$s
 death.attack.da.wyrk_staff.item=%1$s was magicked by %2$s using %3$s
 death.attack.da.magma_stomp=%1$s burned too %2$s
 
-advancements.da.root.title=Bosses Of Mass Destruction
-advancements.da.root.description=Welcome to BOMD + DA, bringing new bosses and dungeons!
+advancements.da.root.title=Dungeon Additions Mod
+advancements.da.root.description=Welcome to Dungeon Additions, originally a backport of BOMD but now extended into bringing new bosses and dungeons!
 #Stormvier
 advancements.da.kill_fallen_stormvier.title=And so the Journey Begins!
 advancements.da.kill_fallen_stormvier.description=Slay A Fallen Stormvier in the Rotten Hold
@@ -551,6 +566,12 @@ advancements.da.kill_obsidilith.description=Slay the Obsidilith
 #Kill Voidclysm
 advancements.da.kill_voidclysm.title=Well that was a close one!
 advancements.da.kill_voidclysm.description=Slay the Voidclysm
+#Kill Cursed Sentinel
+advancements.da.kill_cursed_sentinel.title=How long have they been here?
+advancements.da.kill_cursed_sentinel.description=Kill a Cursed Sentinel
+#Kill The Apathyr
+advancements.da.kill_apathyr.title=Next level.
+advancements.da.kill_apathyr.description=Kill the Apathyr.
 #Find Soul Star
 advancements.da.find_soul_star.title=The stars lead the way
 advancements.da.find_soul_star.description=Obtain a Soul Star
@@ -688,14 +709,44 @@ advancements.da.find_farum_stone.title=Sky high builder
 advancements.da.find_farum_stone.description=Mine Farum Stone
 #Craft Void Hammer
 advancements.da.craft_void_hammer.title=Smack down!
-advancements.da.craft_void_hammer.description=Craft the Voidclystic Hammer
+advancements.da.craft_void_hammer.description=Craft the Voidclystic Hammer.
 #Craft Void Staff
 advancements.da.craft_void_staff.title=Mage Arena.
-advancements.da.craft_void_staff.description=Craft the Voidclystic Staff
+advancements.da.craft_void_staff.description=Craft the Voidclystic Staff.
 #Craft Obsidian Helmet
 advancements.da.craft_obsidian_helm.title=Wait. This armor has a soul?
 advancements.da.craft_obsidian_helm.description=Craft the Voidic Helmet.
 #Craft Void Blossoms Crown
 advancements.da.craft_flower_crown.title=Elegance is my demeanor.
-advancements.da.craft_flower_crown.description=Craft the Void Blossom's Crown
+advancements.da.craft_flower_crown.description=Craft the Void Blossom's Crown.
+#Craft Gaelon Sanctuary Locator
+advancements.da.craft_gaelon_locator.title=Extra Credit Exploration
+advancements.da.craft_gaelon_locator.description=Craft the Mysterious Artifact.
+#Craft Gaelon Shard
+advancements.da.craft_gaelon_shard.title=The Key to Modernization
+advancements.da.craft_gaelon_shard.description=Gather a Gaelon Shard from the chunks.
+#Craft Novik Armor Set
+advancements.da.craft_novik_armor.title=Armor of the Hunters
+advancements.da.craft_novik_armor.description=Craft the Novik armor set.
+#Craft Novik Sword
+advancements.da.craft_novik_sword.title=Sword of the Night
+advancements.da.craft_novik_sword.description=Craft the Novik Sword.
+#Craft the Heart of the Aapathyr
+advancements.da.craft_apathyr_heart.title=Waking of the Champion
+advancements.da.craft_apathyr_heart.description=Craft the Heart of the Apathyr.
+#Craft the Apathyr Helmet
+advancements.da.craft_apathyr_helmet.title=The Unbridled King
+advancements.da.craft_apathyr_helmet.description=Craft the Apathyr's Helmet
+#Craft the Midnight Reign
+advancements.da.craft_apathyr_axe.title=I am the enemy now...
+advancements.da.craft_apathyr_axe.description=Craft the Midnight Reign.
+#Craft the Call To Arms
+advancements.da.craft_call_to_arms.title=Personal Support Guard
+advancements.da.craft_call_to_arms.description=Craft the Call To Arms.
+#Craft Sealed Spear Bottle
+advancements.da.sealed_spear_wave.title=Magic Connoisseur
+advancements.da.sealed_spear_wave.description=Craft a Sealed Spear Bottle
+#Craft Sentinel Cannon
+advancements.da.golem_cannon.title=Locked N' Loaded
+advancements.da.golem_cannon.description=Craft the Sentinel Cannon
 

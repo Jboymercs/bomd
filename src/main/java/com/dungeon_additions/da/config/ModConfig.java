@@ -292,6 +292,41 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static int voidiant_catalyst_damage = 8;
 
+    @Config.Name("Midnight Reign Cooldown")
+    @Config.Comment("Change the cooldown of the Midnight Reign")
+    @Config.RequiresMcRestart
+    public static int midnight_reign_cooldown = 13;
+
+    @Config.Name("Midnight Reign Damage")
+    @Config.Comment("Change the damage of the Midnight Reign")
+    @Config.RequiresMcRestart
+    public static double midnight_reign_damage = 8.5;
+
+    @Config.Name("Midnight Reign Ability Damage")
+    @Config.Comment("Change the ability damage of the Midnight Reign")
+    @Config.RequiresMcRestart
+    public static float midnight_reign_ability_damage = 7;
+
+    @Config.Name("Novik Sword Cooldown")
+    @Config.Comment("Change the cooldown of the Novik Sword")
+    @Config.RequiresMcRestart
+    public static int novik_sword_cooldown = 35;
+
+    @Config.Name("Novik Sword Damage")
+    @Config.Comment("Change the damage of the Novik Sword")
+    @Config.RequiresMcRestart
+    public static double novik_sword_damage = 6.5;
+
+    @Config.Name("Sentinel Cannon Cooldown")
+    @Config.Comment("Change the cooldown of the Sentinel Cannon")
+    @Config.RequiresMcRestart
+    public static int sentinel_cannon_cooldown = 20;
+
+    @Config.Name("Sentinel Cannon Damage")
+    @Config.Comment("Change the damage of the Sentinel Cannon")
+    @Config.RequiresMcRestart
+    public static double sentinel_cannon_damage = 16;
+
     @Config.Name("Voidiant Catalyst Cooldown")
     @Config.Comment("Change the cooldown of the Voidiant Catalyst in seconds")
     @Config.RequiresMcRestart

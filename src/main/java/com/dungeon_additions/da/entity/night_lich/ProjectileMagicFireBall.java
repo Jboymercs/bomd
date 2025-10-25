@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.night_lich;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModColors;
@@ -48,6 +49,7 @@ public class ProjectileMagicFireBall extends Projectile {
     protected void onHit(RayTraceResult result) {
         //Spawns an Explosion on Impact
         if(!world.isRemote) {
+            Main.proxy.spawnParticle(21, this.posX, this.posY, this.posZ, 0, 0, 0);
             if(player != null) {
                 if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.NIGHT_LICH_HELMET) {
                     world.newExplosion(this, this.posX, this.posY, this.posZ, 2, false, false);

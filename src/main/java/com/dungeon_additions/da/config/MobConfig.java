@@ -923,6 +923,32 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static double reanimate_damage = 10;
 
+
+    @Config.Name("Cursed Sentinel Armor")
+    @Config.Comment("Change the armor of the Cursed Sentinel")
+    @Config.RequiresMcRestart
+    public static double cursed_sentinel_armor = 12;
+
+    @Config.Name("Cursed Sentinel Health")
+    @Config.Comment("Change the health of the Cursed Sentinel.")
+    @Config.RequiresMcRestart
+    public static double cursed_sentinel_health = 75;
+
+    @Config.Name("Cursed Sentinel Attack Damage")
+    @Config.Comment("Change the attack damage of the Cursed Sentinel")
+    @Config.RequiresMcRestart
+    public static double cursed_sentinel_damage = 12;
+
+    @Config.Name("Cursed Sentinel Damage Source Pickaxes")
+    @Config.Comment("Change how much damage the Cursed Sentinel is multiplied when damaged from a pickaxe")
+    @Config.RequiresMcRestart
+    public static double cursed_sentinel_pickaxe_multiplier = 1.5;
+
+    @Config.Name("Cursed Sentinel Damage Source Regular")
+    @Config.Comment("Change how much damage the Cursed Sentinel is multiplied when damaged from any melee source.")
+    @Config.RequiresMcRestart
+    public static double cursed_sentinel_regular_multiplier = 0.25;
+
     @Config.Name("Cursed Revenant Armor")
     @Config.Comment("Change the armor of the Cursed Revenant")
     @Config.RequiresMcRestart

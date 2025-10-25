@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:gaelon_shard"
+    },
+    "title": {
+      "translate": "advancements.da.craft_gaelon_shard.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_gaelon_shard.description"
+    }
+  },
+  "parent": "da:craft_gaelon_locator",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:gaelon_shard"
+          }
+        ]
+      }
+    }
+  }
+}

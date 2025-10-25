@@ -386,7 +386,8 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
         DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
         float damage = this.getAttack();
         ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.8f, 0, false);
-        world.setEntityState(this, ModUtils.THIRD_PARTICLE_BYTE);
+            Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
+            Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
         this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.9f, 1.3f / (rand.nextFloat() * 0.4F + 0.4f));
     }, 30);
 

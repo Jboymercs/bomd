@@ -25,10 +25,7 @@ import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityEliteDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.ProjectileSoul;
 import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
-import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
-import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyrSpear;
-import com.dungeon_additions.da.entity.gaelon_dungeon.EntityReAnimate;
-import com.dungeon_additions.da.entity.gaelon_dungeon.ProjectileGhost;
+import com.dungeon_additions.da.entity.gaelon_dungeon.*;
 import com.dungeon_additions.da.entity.gaelon_dungeon.apathyr.*;
 import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.EntityFriendlyCursedRevenant;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
@@ -143,6 +140,7 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileFrostBullet.class, ModItems.FROST_PROJECTILE);
         registerProjectileRenderer(ProjectileSoul.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(EntityFrozenCastleLocator.class, ModItems.FROZEN_CASTLE_LOCATOR);
+        registerProjectileRenderer(EntityGaelonSanctuaryLocator.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(ProjectileFrostGround.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(ProjectileLightRing.class, ModItems.LIGHT_RING_PROJECTILE);
         registerProjectileRenderer(ProjectileStormBreath.class, ModItems.STORM_TORNADO_PROJECTILE);
@@ -312,6 +310,10 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityApathyrEye.class, RenderApathyrEye::new);
         //Friendly Cursed Revenant
         RenderingRegistry.registerEntityRenderingHandler(EntityFriendlyCursedRevenant.class, RenderFriendlyCursedRevenant::new);
+        //Cursed Sentinel
+        RenderingRegistry.registerEntityRenderingHandler(EntityCursedSentinel.class, RenderCursedSentinel::new);
+        //Friendly Cursed Sentinel
+        RenderingRegistry.registerEntityRenderingHandler(EntityFriendlyCursedGolem.class, RenderFriendlyCursedGolem::new);
         //Puzzle Mirror
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPuzzleMirror.class, new RenderPuzzleMirror());
     }

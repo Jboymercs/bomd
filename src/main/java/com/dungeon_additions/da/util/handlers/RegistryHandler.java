@@ -68,6 +68,7 @@ public class RegistryHandler {
         ModelLoader.setCustomModelResourceLocation(ModItems.FAST_CRYSTAL_PROJ, 0, new ModelResourceLocation(ModReference.MOD_ID + ":fast_crystal", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.CRYSTAL_WAVE_PROJ, 0, new ModelResourceLocation(ModReference.MOD_ID + ":crystal_wave", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.APATHYR_AXE, 0, new ModelResourceLocation(ModReference.MOD_ID + ":apathyr_axe","inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.GOLEM_CANNON, 0, new ModelResourceLocation(ModReference.MOD_ID + ":golem_cannon", "inventory"));
         ModItems.SPORE_BALL.setTileEntityItemStackRenderer(new RenderSpore());
         ModItems.MAGIC_FIREBALL.setTileEntityItemStackRenderer(new RenderMagicFireball());
         ModItems.CHAMPION_AXE.setTileEntityItemStackRenderer(new RenderChampionAxe());
@@ -96,6 +97,7 @@ public class RegistryHandler {
         ModItems.FAST_CRYSTAL_PROJ.setTileEntityItemStackRenderer(new RenderFastCrystal());
         ModItems.CRYSTAL_WAVE_PROJ.setTileEntityItemStackRenderer(new RenderCrystalWave());
         ModItems.APATHYR_AXE.setTileEntityItemStackRenderer(new RenderApathyrAxe());
+        ModItems.GOLEM_CANNON.setTileEntityItemStackRenderer(new RenderGolemCannon());
         for (Item item : ModItems.ITEMS) {
             if (item instanceof IHasModel) {
                 ((IHasModel) item).registerModels();

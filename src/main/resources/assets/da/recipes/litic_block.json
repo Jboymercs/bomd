@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV",
+    "VVV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "item": "da:lightning_ingot"
+    }
+  },
+  "result": {
+    "item": "da:litic_block"
+  }
+}

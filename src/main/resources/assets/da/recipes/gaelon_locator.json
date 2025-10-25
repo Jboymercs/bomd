@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XVX",
+    "BBB",
+    "XVX"
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:gold_ingot"
+    },
+    "X": {
+      "item": "minecraft:gold_nugget"
+    },
+    "B": {
+      "item": "minecraft:soul_sand"
+    }
+  },
+  "result": {
+    "item": "da:gaelon_locator"
+  }
+}

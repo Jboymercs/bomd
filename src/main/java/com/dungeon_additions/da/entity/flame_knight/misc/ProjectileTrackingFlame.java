@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.flame_knight.misc;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.EntityNetherAbberrant;
@@ -165,6 +166,7 @@ public class ProjectileTrackingFlame extends Projectile {
     protected void onHit(RayTraceResult result) {
         if(this.setExplodeOnImpact && !world.isRemote) {
             this.world.newExplosion(this, this.posX, this.posY, this.posZ, 2, MobConfig.let_the_world_burn, false);
+            Main.proxy.spawnParticle(18, this.posX, this.posY + 1.2, this.posZ, 0, 0, 0);
         }
 
         if(!this.isImmune) {
