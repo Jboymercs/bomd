@@ -514,8 +514,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
 
     private boolean setTooDoDomain = false;
 
-    private boolean test;
-
     @Override
     public void onUpdate() {
         super.onUpdate();

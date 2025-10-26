@@ -400,11 +400,12 @@ tile.darkglow_pillar_eye.name=Darkglow Protector Eye
 tile.alfera_planks.name=Alfera Planks
 tile.alfera_planks_rod.name=Studded Alfera Planks
 tile.alfera_crate.name=Alfera Crate
-tile.stormvier_block.name=Block of Stormvier
-tile.frostborn_block.name=Block of Frostborn
+tile.stormvier_block.name=Block of Stormvier Metal
+tile.frostborn_block.name=Block of Frostborn Metal
 tile.crypt_block.name=Block of Dark Metal
 tile.novik_block.name=Block of Novik Metal
-tile.litic_block.name=Block of Litic
+tile.litic_block.name=Block of Litic Metal
+tile.gaelon_spawner.name=Disappearing Gaelon Sanctuary Spawner
 
 itemGroup.dungeon_additions=Dungeon Additions Items
 itemGroup.dungeon_additions_blocks=Dungeon Additions Blocks

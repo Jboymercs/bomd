@@ -336,7 +336,7 @@ public class WorldConfig {
     @Config.Name("Gaelon Sanctuary Spacing")
     @Config.Comment("Change the spacing between each Gaelon Sanctuary, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int gaelon_sanctuary_spacing = 175;
+    public static int gaelon_sanctuary_spacing = 155;
 
     @Config.Name("Gaelon Sanctuary Max Y Height")
     @Config.Comment("Change the max Y Height at which the Gaelon Sanctuary surface part generates at.")

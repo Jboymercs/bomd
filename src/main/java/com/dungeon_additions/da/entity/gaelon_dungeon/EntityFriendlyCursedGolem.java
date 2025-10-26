@@ -230,8 +230,8 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
 
         if(!world.isRemote && this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
             BlockPos pos = this.getSpawnLocation();
-            if(this.getDistance(pos.getX(), pos.getY(), pos.getZ()) > 16) {
-                this.setPosition(pos.getX() + 0.5, pos.getY(), this.posZ + 0.5);
+            if(this.getDistance(pos.getX(), pos.getY(), pos.getZ()) > 24) {
+                this.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             }
         }
 

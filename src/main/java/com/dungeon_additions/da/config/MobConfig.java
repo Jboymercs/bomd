@@ -937,7 +937,7 @@ public class MobConfig {
     @Config.Name("Cursed Sentinel Attack Damage")
     @Config.Comment("Change the attack damage of the Cursed Sentinel")
     @Config.RequiresMcRestart
-    public static double cursed_sentinel_damage = 12;
+    public static double cursed_sentinel_damage = 14;
 
     @Config.Name("Cursed Sentinel Damage Source Pickaxes")
     @Config.Comment("Change how much damage the Cursed Sentinel is multiplied when damaged from a pickaxe")
@@ -957,7 +957,7 @@ public class MobConfig {
     @Config.Name("Apathyr Health")
     @Config.Comment("Change the health of the Apathyr.")
     @Config.RequiresMcRestart
-    public static double apathyr_health = 400;
+    public static double apathyr_health = 430;
 
     @Config.Name("Apathyr Attack Damage")
     @Config.Comment("Change the attack damage of the Apathyr")

@@ -77,7 +77,7 @@ public class ModWorldGen implements IWorldGenerator {
         }
         //Forgotten Temple
         if(isAllowedDimensionTooSpawnInForgottenTemple(world.provider.getDimension()) && WorldConfig.temple_enabled) {
-            forgotten_temple.generate(world, random, pos);
+          //  forgotten_temple.generate(world, random, pos);
         }
         //Obsidilith Arena
         if(isAllowedDimensionTooSpawnInObsidilithArena(world.provider.getDimension()) && WorldConfig.obsidilith_arena_enabled) {

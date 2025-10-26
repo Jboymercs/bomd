@@ -41,7 +41,7 @@ public class GaelonSanctuaryTemplate extends ModStructureTemplate {
     protected void handleDataMarker(String function, BlockPos pos, World world, Random rand, StructureBoundingBox sbb) {
         if(function.startsWith("mob")) {
             if(generateMobSpawn()) {
-                world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_FORGOTTEN_TEMPLE.getDefaultState(), 2);
+                world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_GAELON.getDefaultState(), 2);
                 TileEntity tileentity = world.getTileEntity(pos);
                 if (tileentity instanceof tileEntityMobSpawner) {
                     ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
@@ -57,7 +57,7 @@ public class GaelonSanctuaryTemplate extends ModStructureTemplate {
             }
         } else if(function.startsWith("elite")) {
             if(generateEliteSpawn()) {
-                world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_FORGOTTEN_TEMPLE.getDefaultState(), 2);
+                world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_GAELON.getDefaultState(), 2);
                 TileEntity tileentity = world.getTileEntity(pos);
                 if (tileentity instanceof tileEntityMobSpawner) {
                     ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(

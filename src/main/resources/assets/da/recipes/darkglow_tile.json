@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "R",
+    "V"
+  ],
+  "key": {
+    "V": {
+      "item": "da:darkglow_stonebrick_half",
+      "data": 0
+    },
+    "R": {
+      "item": "da:darkglow_pillar",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "da:darkglow_tile",
+    "count": 1
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " V ",
+    "VRV",
+    " V "
+  ],
+  "key": {
+    "V": {
+      "item": "da:darkglow_bricks"
+    },
+    "R": {
+      "item": "da:gaelon_shard"
+    }
+  },
+  "result": {
+    "item": "da:darkglow_lit_bricks",
+    "count": 4
+  }
+}

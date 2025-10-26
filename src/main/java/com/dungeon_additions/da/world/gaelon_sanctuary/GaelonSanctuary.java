@@ -106,7 +106,7 @@ public class GaelonSanctuary {
     }
 
     public boolean generateEnd(GaelonSanctuaryTemplate parent, BlockPos pos, Rotation rot) {
-        String[] end_types = {"tiles/end_1","tiles/end_2","tiles/end_3","tiles/end_4","tiles/end_5"};
+        String[] end_types = {"tiles/end_1","tiles/end_2","tiles/end_3","tiles/end_4","tiles/end_5","tiles/end_6"};
         GaelonSanctuaryTemplate end = addAdjustedPieceWithoutDistance(parent, pos, ModRand.choice(end_types), rot);
 
         if(SIZE > 2 && !generatedBossArena) {

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "V"
+  ],
+  "key": {
+    "V": {
+      "item": "da:darkglow_brick_half",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "da:darkglow_decoration_bricks",
+    "count": 1
+  }
+}

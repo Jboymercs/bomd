@@ -66,7 +66,7 @@ public class ModBlocks {
     public static final Block INDESTRUCTABLE_BLOCK = new BlockSpawnFlower("strong_block", Material.GRASS, OBSIDIAN_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.PLANT);
     public static final Block MEGA_STRUCTURE_BLOCK = new BlockMegaStructure("mega_structure");
     public static final Block VINE_WALL = new BlockAzealaFence(Material.GRASS, false, "az_fence").setHardness(STONE_HARDNESS).setResistance(STONE_RESISTANCE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
-    public static final Block DARKGLOW_BARS = new BlockAzealaFence(Material.ROCK, false, "darkglow_bars").setHardness(GLOOM_STONE_HARDNESS).setResistance(GLOOM_STONE_RESITANCE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block DARKGLOW_BARS = new BlockAzealaFence(Material.ROCK, true, "darkglow_bars").setHardness(GLOOM_STONE_HARDNESS).setResistance(GLOOM_STONE_RESITANCE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
 
     //Fire Update
     public static final Block FIERY_BLOCK = new BlockBase("fire_stone", Material.ROCK, STONE_HARDNESS, OBSIDIAN_RESISTANCE, SoundType.STONE).setCreativeTab(CreativeTabs.BUILDING_BLOCKS).setCreativeTab(DungeonAdditionsTab.BLOCKS);
@@ -234,4 +234,5 @@ public class ModBlocks {
     public static final Block DISAPPEARING_SPAWNER_HIGH_CITY = new BlockDisappearingSpawner("high_spawner", Material.ROCK);
     public static final Block DISAPPEARING_SPAWNER_FORGOTTEN_TEMPLE = new BlockDisappearingSpawner("temple_spawner", Material.ROCK);
     public static final Block DISAPPEARING_SPAWNER_END = new BlockDisappearingSpawner("end_spawner", Material.ROCK);
+    public static final Block DISAPPEARING_SPAWNER_GAELON = new BlockDisappearingSpawner("gaelon_spawner",Material.ROCK);
 }

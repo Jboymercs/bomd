@@ -2,6 +2,7 @@ package com.dungeon_additions.da.items.tools;
 
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
+import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.IHasModel;
 import com.dungeon_additions.da.util.ModRand;
@@ -12,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -46,7 +48,7 @@ public class ItemNovikSword extends ToolSword implements IHasModel {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        int SwordCoolDown = ModConfig.novik_sword_cooldown * 20;
+        int SwordCoolDown = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET ? (ModConfig.novik_sword_cooldown * 20) - 200 : ModConfig.novik_sword_cooldown * 20;
         if(!player.getCooldownTracker().hasCooldown(this)) {
             worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.REANIMATE_CAST, SoundCategory.NEUTRAL, 1.3f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
             ModUtils.performNTimes(10, (i) -> {

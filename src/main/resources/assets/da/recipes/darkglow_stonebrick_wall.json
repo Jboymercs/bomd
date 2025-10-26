@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VVV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "item": "da:darkglow_stonebricks"
+    }
+  },
+  "result": {
+    "item": "da:darkglow_stonebrick_wall",
+    "count": 6
+  }
+}
