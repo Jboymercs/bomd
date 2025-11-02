@@ -6,6 +6,7 @@ import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -51,6 +52,17 @@ public class EntitySkyTornado extends EntitySkyBase implements IAnimatable, IAni
         super(worldIn);
         this.setHostileTornado(isHostile);
         this.noClip = true;
+        this.setImmovable(true);
+        this.setNoAI(true);
+        this.setSize(1.25F, 1.0F);
+    }
+
+    EntityPlayer player;
+    public EntitySkyTornado(World worldIn, boolean isHostile, EntityPlayer player) {
+        super(worldIn);
+        this.setHostileTornado(isHostile);
+        this.noClip = true;
+        this.player = player;
         this.setImmovable(true);
         this.setNoAI(true);
         this.setSize(1.25F, 1.0F);
@@ -102,6 +114,13 @@ public class EntitySkyTornado extends EntitySkyBase implements IAnimatable, IAni
                     for(EntityLivingBase base : targets) {
                         if(!(base instanceof EntitySkyBase)) {
                             if(base.canBePushed() && tornadoTimer < 0) {
+                                if(player != null) {
+                                    if(base instanceof EntityPlayer) {
+                                        EntityPlayer playerIn = ((EntityPlayer) base);
+                                        playerIn.motionX = playerIn.motionX * 1.5;
+                                        playerIn.motionZ = playerIn.motionZ * 1.5;
+                                    }
+                                }
                                 base.motionY += 1.7;
                                 base.velocityChanged = true;
                                 for(int i = 0; i < 55; i += 5) {

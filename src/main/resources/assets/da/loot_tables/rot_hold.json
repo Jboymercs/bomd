@@ -235,6 +235,11 @@
         },
         {
           "type": "item",
+          "name": "da:copper_coin",
+          "weight": 3
+        },
+        {
+          "type": "item",
           "name": "minecraft:bone",
           "weight": 15,
           "functions": [

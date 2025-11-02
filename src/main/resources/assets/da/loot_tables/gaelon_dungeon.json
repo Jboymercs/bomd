@@ -529,6 +529,20 @@
         },
         {
           "type": "item",
+          "name": "da:copper_coin",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
           "name": "minecraft:experience_bottle",
           "weight": 20,
           "functions": [

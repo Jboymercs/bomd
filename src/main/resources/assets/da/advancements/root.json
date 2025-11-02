@@ -9,7 +9,7 @@
     "description": {
       "translate": "advancements.da.root.description"
     },
-    "background": "da:textures/blocks/gloom_stone.png",
+    "background": "da:textures/blocks/dungeon_brick.png",
     "show_toast": true,
     "announce_to_chat": false
   },

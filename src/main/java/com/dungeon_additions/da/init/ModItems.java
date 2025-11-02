@@ -20,6 +20,7 @@ import com.dungeon_additions.da.items.keys.*;
 import com.dungeon_additions.da.items.projectile.*;
 import com.dungeon_additions.da.items.shield.*;
 import com.dungeon_additions.da.items.tools.*;
+import com.dungeon_additions.da.items.trinket.ItemTrinket;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraft.creativetab.CreativeTabs;
@@ -91,8 +92,9 @@ public class ModItems {
     public static final Item DARK_MANA = new ItemCraftingMaterial("dark_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item DARK_CORE = new ItemCraftingMaterial("dark_core", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item CRYPT_PLATE = new ItemCraftingMaterial("crypt_plate", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
-    //TO BE USED LATER
-  //  public static final Item LITIC_SMITHING_STONE = new ItemCraftingMaterial("lightning_smithing_stone", "lightning_stone_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item COPPER_COIN = new ItemCraftingMaterial("copper_coin","trader_coin_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item SILVER_COIN = new ItemCraftingMaterial("silver_coin","trader_coin_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item GOLDEN_COIN = new ItemCraftingMaterial("golden_coin","trader_coin_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item RED_ANICIENT_MANA = new ItemCraftingMaterial("red_ancient_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_SHARD = new ItemCraftingMaterial("frost_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_INGOT = new ItemCraftingMaterial("frost_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -139,6 +141,23 @@ public class ModItems {
     public static final Item SEALED_TORNADO_BOTTLE = new ItemSealedTornado("sealed_tornado","sealed_tornado_desc", DungeonAdditionsTab.ALL);
     public static final Item SEALED_SPEAR_WAVE_BOTTLE = new ItemSealedSpearWave("sealed_spear_wave", "sealed_spear_wave_desc", DungeonAdditionsTab.ALL);
     public static final Item SEALED_FLAME_BOTTLE = new ItemSealedFlame("sealed_flame", "sealed_flame_desc", DungeonAdditionsTab.ALL);
+    public static final Item FROZEN_CRYSTAL_TRINKET = new ItemTrinket("crystal_trinket", "crystal_trinket_desc", 128);
+    public static final Item GLASS_CANNON_TRINKET = new ItemTrinket("glass_cannon_trinket", "glass_cannon_trinket_desc", 128);
+    public static final Item SPEED_BOOTS_TRINKET = new ItemTrinket("boots_trinket", "boots_trinket_desc", 128);
+    public static final Item FLAMES_RAGE_TRINKET = new ItemTrinket("flame_trinket","flame_trinket_desc", 836);
+    public static final Item DEATH_TRINKET = new ItemTrinket("death_trinket","death_trinket_desc", 96);
+    public static final Item SHIELD_TRINKET = new ItemTrinket("shield_trinket", "shield_trinket_desc", 436);
+    public static final Item DIAMOND_SHIELD_TRINKET = new ItemTrinket("diamond_shield_trinket", "diamond_shield_trinket_desc", 436);
+    public static final Item CREEPER_TRINKET = new ItemTrinket("creeper_trinket","creeper_trinket_desc", 32);
+    public static final Item MAGIC_CHARM_TRINKET = new ItemTrinket("charm_trinket", "charm_trinket_desc", 128);
+    public static final Item FROZEN_SLAM_TRINKET = new ItemTrinket("slam_trinket", "slam_trinket_desc", 128);
+    public static final Item VAMPIRIC_TRINKET = new ItemTrinket("vampire_trinket", "vampire_trinket_desc", 96);
+    public static final Item HEART_TRINKET = new ItemTrinket("heart_trinket", "heart_trinket_desc", 336);
+    public static final Item GAMBLE_TRINKET = new ItemTrinket("gamble_trinket", "gamble_trinket_desc", 46);
+    public static final Item POISON_TRINKET = new ItemTrinket("poison_trinket", "poison_trinket_desc", 96);
+    public static final Item VOID_TRINKET = new ItemTrinket("void_trinket","void_trinket_desc", 64);
+    public static final Item WIND_TRINKET = new ItemTrinket("wind_trinket", "wind_trinket_desc", 96);
+    public static final Item WEAKNESS_TRINKET = new ItemTrinket("weakness_trinket", "weakness_trinket_desc", 84);
     public static final Item WYRK_TOTEM = new ItemWyrkTotem("wyrk_totem", "wyrk_totem_desc", DungeonAdditionsTab.ALL);
     public static final Item NOVIK_AID = new ItemNovikAid("call_to_arms", "call_to_arms_desc", DungeonAdditionsTab.ALL);
     public static final Item KINGS_AID = new ItemKingsAid("king_aid", "king_aid_desc", DungeonAdditionsTab.ALL);
@@ -257,6 +276,7 @@ public class ModItems {
     public static final Item MAGIC_TRACK_PROJECTILE = new ItemBase("missile_projectile", null);
     public static final Item FROST_PROJECTILE = new ItemBase("frost_bullet", null);
     public static final Item FAKE_BOW = new ItemBase("fake_bow", null);
+    public static final Item TRADER_BAG = new ItemBase("trader_bag", null);
     public static final Item DESERT_LOCATOR_PROJ = new ItemBase("desert_locator_projectile", null);
 
     public static final Item MOD_LOGO = new ItemBase("bomd_mod_logo", null);

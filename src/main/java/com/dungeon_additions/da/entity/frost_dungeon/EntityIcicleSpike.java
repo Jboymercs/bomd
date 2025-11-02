@@ -12,6 +12,7 @@ import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -51,7 +52,19 @@ public class EntityIcicleSpike extends EntityFrostBase implements IAnimatable, I
         this.setImmovable(true);
         this.setNoAI(true);
             this.setSize(0.8F, 1.8F);
+    }
 
+    private EntityPlayer player;
+    private float damageIn;
+
+    public EntityIcicleSpike(World worldIn, EntityPlayer owner, float damage) {
+        super(worldIn);
+        this.player = owner;
+        this.damageIn = damage;
+        this.noClip = true;
+        this.setImmovable(true);
+        this.setNoAI(true);
+        this.setSize(0.8F, 1.8F);
     }
 
     @Override
@@ -82,8 +95,21 @@ public class EntityIcicleSpike extends EntityFrostBase implements IAnimatable, I
         if(this.ticksExisted >= 7 && this.ticksExisted <= 12) {
             //do damage
             List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntityFrostBase)));
+            if(player != null) {
+                if(!targets.isEmpty()) {
+                    for(EntityLivingBase base : targets) {
+                        if(base != this && base != player) {
+                            Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.5D));
+                            DamageSource source;
+                            source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
+                            float damage = this.getAttack();
+                            ModUtils.handleAreaImpact(0.25f, (e) -> damageIn, this, offset, source, 0.15f, 0, false);
+                        }
+                    }
 
-            if(!targets.isEmpty()) {
+                }
+            }
+             else if(!targets.isEmpty()) {
                 for(EntityLivingBase base : targets) {
                     if(!(base instanceof EntityFrostBase) && !(base instanceof IEntityMultiPart) && !(base instanceof EntityIcicleSpike) && !(base instanceof EntityFriendWyrk)) {
                         Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.5D));

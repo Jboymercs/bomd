@@ -8,6 +8,7 @@ import com.dungeon_additions.da.world.frozen_castle.WorldGenFrozenCastle;
 import com.dungeon_additions.da.world.gaelon_sanctuary.WorldGenGaelonSanctuary;
 import com.dungeon_additions.da.world.high_city.WorldGenHighCity;
 import com.dungeon_additions.da.world.lich_tower.WorldGenLichTower;
+import com.dungeon_additions.da.world.mysterious_trader.WorldGenMysteriousTraderPost;
 import com.dungeon_additions.da.world.nether_arena.WorldGenNetherArena;
 import com.dungeon_additions.da.world.obsidilith_arena.WorldGenObsidilithArena;
 import com.dungeon_additions.da.world.rot_hold.WorldGenRotHold;
@@ -40,6 +41,7 @@ public class ModWorldGen implements IWorldGenerator {
 
     private static final WorldGenObsidilithArena obsidilithArena = new WorldGenObsidilithArena();
     private static final WorldGenGaelonSanctuary gaelon_sanctuary = new WorldGenGaelonSanctuary();
+    private static final WorldGenMysteriousTraderPost trader_post = new WorldGenMysteriousTraderPost();
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
 
@@ -77,7 +79,7 @@ public class ModWorldGen implements IWorldGenerator {
         }
         //Forgotten Temple
         if(isAllowedDimensionTooSpawnInForgottenTemple(world.provider.getDimension()) && WorldConfig.temple_enabled) {
-          //  forgotten_temple.generate(world, random, pos);
+            forgotten_temple.generate(world, random, pos);
         }
         //Obsidilith Arena
         if(isAllowedDimensionTooSpawnInObsidilithArena(world.provider.getDimension()) && WorldConfig.obsidilith_arena_enabled) {
@@ -86,6 +88,10 @@ public class ModWorldGen implements IWorldGenerator {
         //Gaelon Sanctuary
         if(isAllowedDimensionTooSpawnInGaelonSanctuary(world.provider.getDimension()) && WorldConfig.gaelon_sanctuary_enabled) {
             gaelon_sanctuary.generate(world, random, pos);
+        }
+        //Mysterious Trader Post
+        if(isAllowedDimensionTooSpawnInTraderPost(world.provider.getDimension()) && WorldConfig.mysterious_trader_post_enabled && world.provider.getBiomeForCoords(pos) != Biomes.DEEP_OCEAN) {
+            trader_post.generate(world, random, pos);
         }
 
 
@@ -163,6 +169,15 @@ public class ModWorldGen implements IWorldGenerator {
 
     public static boolean isAllowedDimensionTooSpawnInGaelonSanctuary(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions_gaelon_sanctuary) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInTraderPost(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_mysterious_trader_post) {
             if(i == dimensionIn)
                 return true;
         }

@@ -6,6 +6,7 @@ import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkSorcerer;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBolt;
+import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.armor.VoidiantChestplate;
 import com.dungeon_additions.da.items.shield.BOMDShieldItem;
@@ -53,6 +54,10 @@ public class EventWearFlameArmor {
 
     public static final UUID INCENDIUM_HEALTH_MODIFIER = UUID.fromString("0483aa4a-af8d-36a2-8693-22bec9caa265");
 
+    public static final UUID SHIELD_TRINKET_MODIFIER = UUID.fromString("9812aa4a-afc8-33b2-8956-22bec9cab736");
+    public static final UUID DIAMOND_SHIELD_TRINKET_MODIFIER = UUID.fromString("7843aa4a-af8d-36a2-1293-69bec9caa675");
+    public static final UUID HEART_TRINKET_MODIFIER = UUID.fromString("8724aa4a-af8d-22a2-8693-12bec9caa544");
+
     @SubscribeEvent
     public static void onEquipArmor(LivingEvent.LivingUpdateEvent event) {
         EntityLivingBase base = event.getEntityLiving();
@@ -87,6 +92,92 @@ public class EventWearFlameArmor {
                 if(base.ticksExisted % 40 == 0 && base.isPotionActive(MobEffects.SLOWNESS)) {
                     base.removePotionEffect(MobEffects.SLOWNESS);
                 }
+            }
+
+            //Trinkets
+            if(base instanceof EntityPlayer) {
+                EntityPlayer player = ((EntityPlayer) base);
+                    ItemStack speedTrinket = ModUtils.findTrinket(ModItems.SPEED_BOOTS_TRINKET.getDefaultInstance(), player);
+                    ItemStack strengthTrinket = ModUtils.findTrinket(ModItems.GLASS_CANNON_TRINKET.getDefaultInstance(), player);
+                    ItemStack shieldTrinket = ModUtils.findTrinket(ModItems.SHIELD_TRINKET.getDefaultInstance(), player);
+                    ItemStack diamondShieldTrinket = ModUtils.findTrinket(ModItems.DIAMOND_SHIELD_TRINKET.getDefaultInstance(), player);
+                    ItemStack heartTrinket = ModUtils.findTrinket(ModItems.HEART_TRINKET.getDefaultInstance(), player);
+                    ItemStack voidTrinket = ModUtils.findTrinket(ModItems.VOID_TRINKET.getDefaultInstance(), player);
+                    ItemStack wind_trinket = ModUtils.findTrinket(ModItems.WIND_TRINKET.getDefaultInstance(), player);
+
+                    if(!wind_trinket.isEmpty() && !player.getCooldownTracker().hasCooldown(wind_trinket.getItem())) {
+                        if(player.isSneaking() && player.motionY > 0.075) {
+                            EntitySkyTornado tornado = new EntitySkyTornado(player.world, true, player);
+                            tornado.setPosition(player.posX, player.posY, player.posZ);
+                            player.world.spawnEntity(tornado);
+                            wind_trinket.damageItem(1, player);
+                            player.getCooldownTracker().setCooldown(wind_trinket.getItem(), 600);
+                        }
+                    }
+
+                    if(!speedTrinket.isEmpty() && player.getHealth() / player.getMaxHealth() > 0.98) {
+                        if(player.ticksExisted % 45 == 0) {
+                            player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 100, 0, false, false));
+                        }
+                        if(player.hurtTime == 1) {
+                            speedTrinket.damageItem(1, player);
+                        }
+                    }
+
+                    if(!strengthTrinket.isEmpty() && player.getHealth() / player.getMaxHealth() > 0.98) {
+                        if(player.ticksExisted % 45 == 0) {
+                            player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 100, 0, false, false));
+                        }
+                        if(player.hurtTime == 1) {
+                            strengthTrinket.damageItem(1, player);
+                        }
+                    }
+
+                    if(!voidTrinket.isEmpty() && player.isPotionActive(MobEffects.WEAKNESS)) {
+                        if(base.hurtTime == 1) {
+                            voidTrinket.damageItem(1, player);
+                        }
+                        base.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 80, 0, false, false));
+                    }
+
+                    IAttributeInstance attributeInShield = base.getEntityAttribute(SharedMonsterAttributes.ARMOR);
+                    IAttributeInstance attributeInDiamond = base.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS);
+                    IAttributeInstance attributeInHeart = base.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);
+
+                    //shield Trinkets
+                    if(!shieldTrinket.isEmpty()) {
+                        if(attributeInShield.getModifier(SHIELD_TRINKET_MODIFIER) == null) {
+                            attributeInShield.applyModifier(new AttributeModifier(SHIELD_TRINKET_MODIFIER, "shield_trinket_modifier", 2, 1).setSaved(false));
+                        }
+                        if(player.hurtTime == 1) {
+                            shieldTrinket.damageItem(1, player);
+                        }
+                    } else if(attributeInShield.getModifier(SHIELD_TRINKET_MODIFIER) != null) {
+                        attributeInShield.removeModifier(SHIELD_TRINKET_MODIFIER);
+                    }
+
+                    if(!diamondShieldTrinket.isEmpty()) {
+                            if(attributeInDiamond.getModifier(DIAMOND_SHIELD_TRINKET_MODIFIER) == null) {
+                                attributeInDiamond.applyModifier(new AttributeModifier(DIAMOND_SHIELD_TRINKET_MODIFIER, "diamond_shield_trinket_modifier", 1, 1).setSaved(false));
+                            }
+                        if(player.hurtTime == 1) {
+                            diamondShieldTrinket.damageItem(1, player);
+                        }
+                    } else if(attributeInDiamond.getModifier(DIAMOND_SHIELD_TRINKET_MODIFIER) != null) {
+                        attributeInDiamond.removeModifier(DIAMOND_SHIELD_TRINKET_MODIFIER);
+                    }
+
+                    if(!heartTrinket.isEmpty()) {
+                        if (attributeInHeart.getModifier(HEART_TRINKET_MODIFIER) == null) {
+                            attributeInHeart.applyModifier(new AttributeModifier(HEART_TRINKET_MODIFIER, "heart_trinket_modifier", 0.2, 1).setSaved(false));
+                        }
+
+                        if(player.hurtTime == 1) {
+                            heartTrinket.damageItem(1, player);
+                        }
+                    } else if(attributeInHeart.getModifier(HEART_TRINKET_MODIFIER) != null) {
+                        attributeInHeart.removeModifier(HEART_TRINKET_MODIFIER);
+                    }
             }
 
             //Dark Metal Helmet
@@ -191,7 +282,7 @@ public class EventWearFlameArmor {
         //Incendium Armor Health Bonus
         if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET && base.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.INCENDIUM_LEGGINGS) {
             if(!base.world.isRemote && attributeIn.getModifier(INCENDIUM_HEALTH_MODIFIER) == null) {
-                attributeIn.applyModifier(new AttributeModifier(INCENDIUM_HEALTH_MODIFIER, "soul_speed_modifier", 0.2, 1).setSaved(false));;
+                attributeIn.applyModifier(new AttributeModifier(INCENDIUM_HEALTH_MODIFIER, "incendium_health_modifier", 0.2, 1).setSaved(false));;
             }
         } else {
             if(attributeIn.getModifier(INCENDIUM_HEALTH_MODIFIER) != null) attributeIn.removeModifier(INCENDIUM_HEALTH_MODIFIER);

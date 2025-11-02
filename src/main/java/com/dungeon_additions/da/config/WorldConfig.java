@@ -373,6 +373,27 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static int gaelon_sanctuary_size = 4;
 
+    @Config.Name("Mysterious Trader Post Blacklisted Biome Types")
+    @Config.Comment("Add Biome types that DISALLOW the Mysterious Trader Post from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
+    @Config.RequiresMcRestart
+    public static String[] biome_types_blacklist_trader_outpost = {"DENSE","NETHER","END","MUSHROOM","OCEAN","RIVER","MESA","MOUNTAIN","HILLS","BEACH"
+    };
+
+    @Config.Name("Mysterious Trader Post Allowed Dimensions")
+    @Config.Comment("Select what dimensions this structure is allowed to spawn in")
+    @Config.RequiresMcRestart
+    public static int[] list_of_dimensions_mysterious_trader_post = {0};
+
+    @Config.Name("Mysterious Trader Post Enabled/Disabled")
+    @Config.Comment("Change if the Mysterious Trader Post should spawn at all. default: true")
+    @Config.RequiresMcRestart
+    public static boolean mysterious_trader_post_enabled = true;
+
+    @Config.Name("Mysterious Trader Post Spacing")
+    @Config.Comment("Change the spacing between each Mysterious Trader Post, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
+    @Config.RequiresMcRestart
+    public static int mysterious_trader_post_spacing = 95;
+
     @Config.Name("Petrogloom Ore Gen")
     @Config.Comment("Allowed Dimension for Petrogloom to spawn in")
     @Config.RequiresMcRestart

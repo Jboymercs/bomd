@@ -27,11 +27,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
@@ -150,6 +148,33 @@ public class ModUtils {
         double dot = a.dotProduct(b);
         double cos = dot / (a.length() * b.length());
         return Math.acos(cos);
+    }
+
+
+    public static ItemStack findTrinket(ItemStack stack, EntityPlayer player)
+    {
+        if (player.getHeldItem(EnumHand.OFF_HAND).getItem() == stack.getItem())
+        {
+            return player.getHeldItem(EnumHand.OFF_HAND);
+        }
+        else if (player.getHeldItem(EnumHand.MAIN_HAND).getItem() == stack.getItem())
+        {
+            return player.getHeldItem(EnumHand.MAIN_HAND);
+        }
+        else
+        {
+            for (int i = 0; i < player.inventory.getSizeInventory(); ++i)
+            {
+                ItemStack itemstack = player.inventory.getStackInSlot(i);
+
+                if (itemstack.getItem() == stack.getItem())
+                {
+                    return itemstack;
+                }
+            }
+
+            return ItemStack.EMPTY;
+        }
     }
 
     public static BlockPos searchForBlocks(AxisAlignedBB box, World world, Entity entity, IBlockState block) {

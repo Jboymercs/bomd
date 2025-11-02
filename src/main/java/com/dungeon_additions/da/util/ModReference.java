@@ -6,8 +6,8 @@ import org.apache.logging.log4j.Logger;
 
 public class ModReference {
     public static final String MOD_ID ="da";
-    public static final String NAME = "Dungeon Additions";
-    public static final String CHANNEL_NETWORK_NAME = "DungeonAdditions";
+    public static final String NAME = "Unseen's Dungeon Additions";
+    public static final String CHANNEL_NETWORK_NAME = "UnseensDungeonAdditions";
 
     public static final String VERSION = "0.1.71";
 

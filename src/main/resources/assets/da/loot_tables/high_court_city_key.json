@@ -12,6 +12,17 @@
       ]
     },
     {
+      "name" : "da:high_court_city_key",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:golden_coin",
+          "weight": 1
+        }
+      ]
+    },
+    {
       "name": "da:high_court_city_key",
       "rolls": {
         "min": 1,

@@ -56,6 +56,7 @@ import com.dungeon_additions.da.entity.render.lich.RenderNightLich;
 import com.dungeon_additions.da.entity.render.sky_dungeon.*;
 import com.dungeon_additions.da.entity.render.sky_dungeon.boss.RenderHighKing;
 import com.dungeon_additions.da.entity.render.sky_dungeon.boss.RenderHighKingDrake;
+import com.dungeon_additions.da.entity.render.trader.RenderMysteriousTrader;
 import com.dungeon_additions.da.entity.render.void_dungeon.*;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
@@ -67,6 +68,7 @@ import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.*;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityPuzzleMirror;
+import com.dungeon_additions.da.entity.trader.EntityMysteriousTrader;
 import com.dungeon_additions.da.entity.void_dungeon.*;
 import com.dungeon_additions.da.init.ModItems;
 import net.minecraft.client.Minecraft;
@@ -314,6 +316,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityCursedSentinel.class, RenderCursedSentinel::new);
         //Friendly Cursed Sentinel
         RenderingRegistry.registerEntityRenderingHandler(EntityFriendlyCursedGolem.class, RenderFriendlyCursedGolem::new);
+        //Mysterious Trader
+        RenderingRegistry.registerEntityRenderingHandler(EntityMysteriousTrader.class, RenderMysteriousTrader::new);
         //Puzzle Mirror
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPuzzleMirror.class, new RenderPuzzleMirror());
     }

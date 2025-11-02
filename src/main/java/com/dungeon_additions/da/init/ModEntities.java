@@ -44,6 +44,7 @@ import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.*;
 import com.dungeon_additions.da.entity.tileEntity.*;
+import com.dungeon_additions.da.entity.trader.EntityMysteriousTrader;
 import com.dungeon_additions.da.entity.util.EntityBossSpawner;
 import com.dungeon_additions.da.entity.void_dungeon.*;
 import com.dungeon_additions.da.util.ModReference;
@@ -103,6 +104,7 @@ public class ModEntities {
     public static Vec3i reanimate = new Vec3i(0x615429,0x6eebeb,0);
     public static Vec3i cursed_sentinel = new Vec3i(0x2B241E,0x6eebeb,0);
     public static Vec3i apathyr = new Vec3i(0xBD8F04,0x6eebeb,0);
+    public static Vec3i mysterious_trader = new Vec3i(0x57514E,0x75000D,0);
     public static void registerEntities() {
         //One day, you'll be back in game my son
        // registerEntityWithID("wreath_knight", EntityWreathKnight.class, ENTITY_START_ID++, 50, void_blossom);
@@ -153,6 +155,8 @@ public class ModEntities {
         registerEntityWithID("dark_assassin", EntityDarkAssassin.class, ENTITY_START_ID++, 70, dark_assassin);
         registerEntityWithID("dark_royal", EntityDarkRoyal.class, ENTITY_START_ID++, 70, dark_royal);
         registerEntityWithID("dark_sorcerer", EntityDarkSorcerer.class, ENTITY_START_ID++, 70, dark_sorcerer);
+        //Traders
+        registerEntityWithID("mysterious_trader", EntityMysteriousTrader.class, ENTITY_START_ID++, 50, mysterious_trader);
 
         //Other Projectles/Utilities
         registerEntity("spore_cloud", EntityGenericWave.class, ENTITY_START_ID++, 50);

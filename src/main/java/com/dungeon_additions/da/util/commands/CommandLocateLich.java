@@ -128,6 +128,14 @@ public class CommandLocateLich implements ICommand {
                 } else {
                     throw new CommandException("commands.locate.failure", s);
                 }
+            }  else if (s.equals("TraderPost")) {
+                BlockPos blockpos = findNearestPosTraderPost(sender);
+
+                if (blockpos != null) {
+                    sender.sendMessage(new TextComponentTranslation("commands.locate.success", new Object[]{s, blockpos.getX(), blockpos.getZ()}));
+                } else {
+                    throw new CommandException("commands.locate.failure", s);
+                }
             }
         }
     }
@@ -143,7 +151,8 @@ public class CommandLocateLich implements ICommand {
 
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "NightLichTower", "BlossomCave", "FrozenCastle", "HighCourtCity","BurningFlameArena","ForgottenTemple","RottenHold","ObsidilithArena","GaelonSanctuary") : Collections.emptyList();
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "NightLichTower", "BlossomCave", "FrozenCastle", "HighCourtCity","BurningFlameArena","ForgottenTemple","RottenHold","ObsidilithArena","GaelonSanctuary",
+                "TraderPost") : Collections.emptyList();
     }
 
     public static List<String> getListOfStringsMatchingLastWord(String[] args, String... possibilities) {
@@ -292,6 +301,24 @@ public class CommandLocateLich implements ICommand {
                 boolean c = IsGaelonSanctuaryAtPos(world, chunk.x + i, chunk.z + j);
                 if (c) {
                     resultpos = new BlockPos((chunk.x + i) << 4, WorldConfig.gaelon_sanctuary_y_height, (chunk.z + j) << 4);
+                    break;
+                }
+            }
+        }
+        return resultpos;
+    }
+
+    public static BlockPos findNearestPosTraderPost(ICommandSender sender) {
+        BlockPos resultpos = null;
+        BlockPos pos = sender.getPosition();
+        World world = sender.getEntityWorld();
+        Chunk chunk = world.getChunk(pos);
+        //probably laggy as hell but hey it works
+        for (int i = -ModConfig.trader_post_search_distance; i < ModConfig.trader_post_search_distance + 1; i++) {
+            for (int j = -ModConfig.trader_post_search_distance; j < ModConfig.trader_post_search_distance + 1; j++) {
+                boolean c = IsTraderPostAtPos(world, chunk.x + i, chunk.z + j);
+                if (c) {
+                    resultpos = new BlockPos((chunk.x + i) << 4, 60, (chunk.z + j) << 4);
                     break;
                 }
             }
@@ -453,6 +480,37 @@ public class CommandLocateLich implements ICommand {
         if (i == k && j == l && isAllowedDimensionTooSpawnInGaelonSanctuary(world.provider.getDimension())) {
             BlockPos pos = new BlockPos((i << 4), WorldConfig.gaelon_sanctuary_y_height, (j << 4));
             return isAbleToSpawnHereGaelonSanctuary(pos, world);
+        } else {
+
+            return false;
+        }
+    }
+
+    protected static boolean IsTraderPostAtPos(World world, int chunkX, int chunkZ) {
+        int spacing = WorldConfig.mysterious_trader_post_spacing;
+        int separation = 16;
+        int i = chunkX;
+        int j = chunkZ;
+
+        if (chunkX < 0) {
+            chunkX -= spacing - 1;
+        }
+
+        if (chunkZ < 0) {
+            chunkZ -= spacing - 1;
+        }
+
+        int k = chunkX / spacing;
+        int l = chunkZ / spacing;
+        Random random = world.setRandomSeed(k, l, 98438247);
+        k = k * spacing;
+        l = l * spacing;
+        k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+        l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+
+        if (i == k && j == l && isAllowedDimensionTooSpawnInTraderPost(world.provider.getDimension())) {
+            BlockPos pos = new BlockPos((i << 4), 60, (j << 4));
+            return isAbleToSpawnHereTraderPost(pos, world);
         } else {
 
             return false;
@@ -776,6 +834,16 @@ public class CommandLocateLich implements ICommand {
         return false;
     }
 
+    public static boolean isAbleToSpawnHereTraderPost(BlockPos pos, World world) {
+        for(BiomeDictionary.Type types : getSpawnBiomeTypesTraderPost()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(BiomeDictionary.hasType(biomeCurrently, types) && !(BiomeDictionary.hasType(biomeCurrently, BiomeDictionary.Type.OCEAN))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public static boolean isAbleToSpawnHereBurningFlameArena(BlockPos pos, World world) {
         for(BiomeDictionary.Type types : getSpawnBiomeTypesBurningFlameArena()) {
@@ -869,6 +937,27 @@ public class CommandLocateLich implements ICommand {
         }
 
         return gaelonSanctuaryBiomeTypes;
+    }
+
+    private static List<BiomeDictionary.Type> traderPostBiomeTypes;
+
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypesTraderPost() {
+        if(traderPostBiomeTypes == null) {
+            traderPostBiomeTypes = Lists.newArrayList();
+
+            for(String str : WorldConfig.biome_types_blacklist_trader_outpost) {
+                try {
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) traderPostBiomeTypes.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
+                } catch (Exception e) {
+                    DALogger.logError(str + " is not a valid type name", e);
+                }
+            }
+        }
+
+        return traderPostBiomeTypes;
     }
 
     public static boolean isAbleToSpawnHereBlossom(BlockPos pos, World world) {
@@ -968,6 +1057,15 @@ public class CommandLocateLich implements ICommand {
 
     public static boolean isAllowedDimensionTooSpawnInGaelonSanctuary(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions_gaelon_sanctuary) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInTraderPost(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_mysterious_trader_post) {
             if(i == dimensionIn)
                 return true;
         }

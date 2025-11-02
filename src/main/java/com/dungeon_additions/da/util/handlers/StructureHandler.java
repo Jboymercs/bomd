@@ -12,6 +12,8 @@ import com.dungeon_additions.da.world.high_city.HighCityTemplate;
 import com.dungeon_additions.da.world.high_city.WorldGenHighCity;
 import com.dungeon_additions.da.world.lich_tower.LichTowerTemplate;
 import com.dungeon_additions.da.world.lich_tower.WorldGenLichTower;
+import com.dungeon_additions.da.world.mysterious_trader.MysteriousTraderPostTemplate;
+import com.dungeon_additions.da.world.mysterious_trader.WorldGenMysteriousTraderPost;
 import com.dungeon_additions.da.world.nether_arena.NetherArenaTemplate;
 import com.dungeon_additions.da.world.nether_arena.WorldGenNetherArena;
 import com.dungeon_additions.da.world.obsidilith_arena.ObsidilithArenaTemplate;
@@ -49,5 +51,8 @@ public class StructureHandler {
         //Gaelon Sanctuary
         MapGenStructureIO.registerStructure(WorldGenGaelonSanctuary.Start.class, "GaelonSanctuary");
         MapGenStructureIO.registerStructureComponent(GaelonSanctuaryTemplate.class, "GSP");
+        //Mysterious Trader Post
+        MapGenStructureIO.registerStructure(WorldGenMysteriousTraderPost.Start.class, "MysteriousTraderPost");
+        MapGenStructureIO.registerStructureComponent(MysteriousTraderPostTemplate.class, "MTP");
     }
 }

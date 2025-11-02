@@ -46,6 +46,17 @@
       "entries": [
         {
           "type": "item",
+          "name": "da:silver_coin",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "name" : "da:volactile_spirit",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
           "name": "da:volatile_orb",
           "weight": 1,
           "functions": [

@@ -1,0 +1,255 @@
+{
+  "pools": [
+    {
+      "name" : "da:golden_loot_bag",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:voidiant_core",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 2,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "da:draugr_ingot",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 2,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "da:novik_plate",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 2,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "da:aegyptia_metal_ingot",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "da:gaelon_ingot",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 2,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "da:lightning_ingot",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "da:light_mana",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 4,
+                "max": 7
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:emerald_block",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 2,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "da:crumble_berries",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 7,
+                "max": 11
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "da:sealed_flame",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 2,
+                "max": 5
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "da:sealed_spear_wave",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:diamond",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 9,
+                "max": 13
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:emerald",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 8,
+                "max": 14
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:experience_bottle",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 16,
+                "max": 23
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "da:sentinel_part",
+          "weight": 10
+        },
+        {
+          "type": "item",
+          "name": "minecraft:diamond_block",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "da:flame_trinket",
+          "weight": 11
+        },
+        {
+          "type": "item",
+          "name": "da:glass_cannon_trinket",
+          "weight": 11
+        },
+        {
+          "type": "item",
+          "name": "da:diamond_shield_trinket",
+          "weight": 11
+        },
+        {
+          "type": "item",
+          "name": "da:death_trinket",
+          "weight": 11
+        },
+        {
+          "type": "item",
+          "name": "da:void_trinket",
+          "weight": 11
+        },
+        {
+          "type": "item",
+          "name": "da:heart_trinket",
+          "weight": 11
+        }
+      ]
+    }
+  ]
+}

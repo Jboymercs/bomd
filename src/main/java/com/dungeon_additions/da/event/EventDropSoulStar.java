@@ -8,7 +8,10 @@ import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
 import com.dungeon_additions.da.entity.gaelon_dungeon.EntityFriendlyCursedGolem;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.damage.ModDamageSource;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.google.common.base.Predicate;
 import net.minecraft.block.BlockPumpkin;
 import net.minecraft.block.material.Material;
@@ -25,9 +28,13 @@ import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -54,6 +61,33 @@ public class EventDropSoulStar {
 
         boolean hasFoundWyrk = false;
         //keep consitency with the undead only able to spawn souls to fuel Wyrks
+
+        //Death's Prosper Trinket
+        if(event.getSource().getImmediateSource() instanceof EntityPlayer) {
+            EntityPlayer player = ((EntityPlayer) event.getSource().getImmediateSource());
+            ItemStack DeathStack = ModUtils.findTrinket(ModItems.DEATH_TRINKET.getDefaultInstance(), player);
+            ItemStack gambleStack = ModUtils.findTrinket(ModItems.GAMBLE_TRINKET.getDefaultInstance(), player);
+            if(!DeathStack.isEmpty()) {
+                int randI = ModRand.range(1, 101);
+                if(randI < 8) {
+                    player.heal(4);
+                    DeathStack.damageItem(1, player);
+                }
+            }
+
+            if(!gambleStack.isEmpty()) {
+                int randI = ModRand.range(1, 101);
+                if(randI < 5) {
+                    //prevents bosses from this effect being applied too.
+                    if(target.isNonBoss()) {
+                        event.getDrops().clear();
+                        event.getDrops().add(new EntityItem(target.world, target.posX, target.posY, target.posZ, new ItemStack(ModItems.COPPER_COIN, ModRand.range(1, 2))));
+                        gambleStack.damageItem(1, player);
+                    }
+                }
+            }
+        }
+
         if(target.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) {
 
             List<EntityWyrk> nearbyWyrkEnemy = target.world.getEntitiesWithinAABB(EntityWyrk.class, target.getEntityBoundingBox().grow(20.0D), e -> !e.getIsInvulnerable());

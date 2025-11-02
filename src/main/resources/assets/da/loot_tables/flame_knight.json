@@ -47,6 +47,17 @@
       "entries": [
         {
           "type": "item",
+          "name": "da:golden_coin",
+          "weight": 10
+        }
+      ]
+    },
+    {
+      "name" : "da:flame_knight",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
           "name": "da:flame_metal_scrap",
           "weight": 10,
           "functions": [

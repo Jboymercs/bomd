@@ -1,15 +1,15 @@
 [
   {
     "modid": "da",
-    "name": "Dungeon Additions",
-    "description": "Backports some things from Bosses of Mass Destruction + Some of my own added in creatures",
+    "name": "Unseen's Dungeon Additions",
+    "description": "Massive non-invasive RPG mod that backports some bosses from Bosses of Mass Destruction and adding many of my own. Mod is built around the idea of solo and multiplayer play.",
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "modpage",
     "authorList": [
       "UnseenDontRun"
     ],
-    "credits": "Barribob",
+    "credits": "Sir Squidly, UnOriginal, Foreck",
     "logoFile": "modlogo.png",
     "screenshots": [],
     "dependencies": [

@@ -488,6 +488,11 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static int gaelon_sanctuary_search_distance = 190;
 
+    @Config.Name("Trader Post Search Radius")
+    @Config.Comment("Change how far the command searches for the Mysterious Trader post. In chunks not blocks!")
+    @Config.RequiresMcRestart
+    public static int trader_post_search_distance = 125;
+
     @Config.Name("Soul Star Drops Advancement Requirements")
     @Config.Comment("What advancements are required for players to use and unlock Soul Stars dropping from Mobs")
     @Config.RequiresMcRestart
@@ -654,7 +659,10 @@ public class ModConfig {
             "da:novik_helmet",
             "da:novik_chestplate",
             "da:novik_leggings",
-            "da:novik_boots"
+            "da:novik_boots",
+            "da:apathyr_helmet",
+            "da:apathyr_axe",
+            "da:golem_cannon"
     };
 
     @Config.Name("Boss Enraged State Enable/Disable")
