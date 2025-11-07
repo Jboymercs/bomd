@@ -328,6 +328,7 @@ public class SoundsHandler {
     public static SoundEvent CURSED_SENTINEL_STEP;
     public static SoundEvent CURSED_SENTINEL_HURT;
     public static SoundEvent CURSED_SENTINEL_AWAKE;
+    public static SoundEvent CONFETTI_SOUND;
 
     //MUSIC
     public static SoundEvent HIGH_DRAGON_TRACK;
@@ -628,6 +629,8 @@ public class SoundsHandler {
         CURSED_SENTINEL_HURT = registerSound("cursed_sentinel.hurt","entity");
         CURSED_SENTINEL_STEP = registerSound("cursed_sentinel.step","entity");
         CURSED_SENTINEL_AWAKE = registerSound("cursed_sentinel.awake","entity");
+        //
+        CONFETTI_SOUND = registerSound("confetti.party", "entity");
         //MUSIC
         HIGH_DRAGON_TRACK = registerSound("ambient.high_dragon", "music");
         HIGH_KING_TRACK = registerSound("ambient.high_king", "music");

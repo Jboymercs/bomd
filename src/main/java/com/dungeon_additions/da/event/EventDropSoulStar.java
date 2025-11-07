@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.event;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityFrostBase;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
@@ -67,6 +68,27 @@ public class EventDropSoulStar {
             EntityPlayer player = ((EntityPlayer) event.getSource().getImmediateSource());
             ItemStack DeathStack = ModUtils.findTrinket(ModItems.DEATH_TRINKET.getDefaultInstance(), player);
             ItemStack gambleStack = ModUtils.findTrinket(ModItems.GAMBLE_TRINKET.getDefaultInstance(), player);
+            ItemStack confettiStack = ModUtils.findTrinket(ModItems.CONFETTI_TRINKET.getDefaultInstance(), player);
+
+            if(!confettiStack.isEmpty()) {
+                int randI = ModRand.range(1, 101);
+
+                if(!player.world.isRemote && randI < 37 && randI > 31) {
+                    ModUtils.performNTimes(9, (i) -> {
+                        Main.proxy.spawnParticle(23, target.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), target.posY + ModRand.range(0, 3) + ModRand.getFloat(1), target.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, 0, 0, 3145519);
+                    });
+                    ModUtils.performNTimes(9, (i) -> {
+                        Main.proxy.spawnParticle(23, target.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), target.posY + ModRand.range(0, 3) + ModRand.getFloat(1), target.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, 0, 0, 3099391);
+                    });
+                    ModUtils.performNTimes(9, (i) -> {
+                        Main.proxy.spawnParticle(23, target.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), target.posY + ModRand.range(0, 3) + ModRand.getFloat(1), target.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, 0, 0, 16450048);
+                    });
+                    ModUtils.performNTimes(9, (i) -> {
+                        Main.proxy.spawnParticle(23, target.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), target.posY + ModRand.range(0, 3) + ModRand.getFloat(1), target.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, 0, 0, 16450255);
+                    });
+                    player.world.playSound((EntityPlayer) null, target.posX, target.posY, target.posZ, SoundsHandler.CONFETTI_SOUND, SoundCategory.NEUTRAL, 1f, 1f);
+                }
+            }
             if(!DeathStack.isEmpty()) {
                 int randI = ModRand.range(1, 101);
                 if(randI < 8) {

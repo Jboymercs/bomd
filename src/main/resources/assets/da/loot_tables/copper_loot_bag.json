@@ -119,32 +119,37 @@
         {
           "type": "item",
           "name": "da:charm_trinket",
-          "weight": 11
+          "weight": 9
         },
         {
           "type": "item",
           "name": "da:shield_trinket",
-          "weight": 11
+          "weight": 9
         },
         {
           "type": "item",
           "name": "da:creeper_trinket",
-          "weight": 11
+          "weight": 9
         },
         {
           "type": "item",
           "name": "da:weakness_trinket",
-          "weight": 11
+          "weight": 9
         },
         {
           "type": "item",
           "name": "da:gamble_trinket",
-          "weight": 11
+          "weight": 9
         },
         {
           "type": "item",
           "name": "da:wind_trinket",
-          "weight": 11
+          "weight": 9
+        },
+        {
+          "type": "item",
+          "name": "da:confetti_trinket",
+          "weight": 9
         },
         {
           "type": "item",

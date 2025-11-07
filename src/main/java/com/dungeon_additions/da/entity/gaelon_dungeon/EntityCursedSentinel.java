@@ -246,7 +246,7 @@ public class EntityCursedSentinel extends EntityGaelonBase implements IAnimatabl
           ghost_proj.setPosition(relPos.x, relPos.y, relPos.z);
           float inaccuracy = 0.0f;
           float speed = 0.7f;
-          ghost_proj.shoot(this, 2, this.rotationYaw, 0.0F, speed, inaccuracy);
+          ghost_proj.shoot(this, 0, this.rotationYaw, 0.0F, speed, inaccuracy);
           ghost_proj.rotationYaw = this.rotationYaw;
           ghost_proj.setTravelRange(24);
           world.spawnEntity(ghost_proj);

@@ -101,6 +101,15 @@ public class ParticleSSBase extends Particle {
         return j | k << 16;
     }
 
+    public float[] decimalIntToRGB(int color)
+    {
+        int r = (color & 16711680) >> 16;
+        int g = (color & 65280) >> 8;
+        int b = (color & 255);
+
+        return new float[] {r / 255.0F, g / 255.0F, b / 255.0F};
+    }
+
     @Override
     public int getFXLayer()
     { return 3; }

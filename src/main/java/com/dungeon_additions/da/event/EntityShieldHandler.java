@@ -10,6 +10,7 @@ import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.damage.ModIndirectDamage;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityItem;
@@ -30,6 +31,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.List;
 import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = ModReference.MOD_ID)
@@ -42,18 +44,48 @@ public class EntityShieldHandler {
         if(event.getEntityLiving() instanceof EntityPlayer) {
             EntityPlayer player = ((EntityPlayer) event.getEntityLiving());
             ItemStack creepersWillTrinket = ModUtils.findTrinket(ModItems.CREEPER_TRINKET.getDefaultInstance(), player);
-            if(!creepersWillTrinket.isEmpty()) {
-                creepersWillTrinket.damageItem(1, player);
-                DamageSource source = ModDamageSource.builder()
-                        .type(ModDamageSource.EXPLOSION)
-                        .directEntity(player)
-                        .stoppedByArmorNotShields().disablesShields().build();
+            ItemStack confettiTrinket = ModUtils.findTrinket(ModItems.CONFETTI_TRINKET.getDefaultInstance(), player);
+            if(!player.world.isRemote) {
+                if (!creepersWillTrinket.isEmpty()) {
+                    creepersWillTrinket.damageItem(1, player);
+                    DamageSource source = ModDamageSource.builder()
+                            .type(ModDamageSource.EXPLOSION)
+                            .directEntity(player)
+                            .stoppedByArmorNotShields().disablesShields().build();
 
-                ModUtils.handleAreaImpact(5, (e) -> (float) 9, player, player.getPositionVector().add(ModUtils.yVec(1)), source);
-                player.getEntityWorld().playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.NEUTRAL, 1f, 1F);
-                Main.proxy.spawnParticle(19, player.posX, player.posY + 0.25, player.posZ, 0, 0, 0);
-                Main.proxy.spawnParticle(19, player.posX, player.posY + 1.25, player.posZ, 0, 0, 0);
-                Main.proxy.spawnParticle(19, player.posX, player.posY + 2.25, player.posZ, 0, 0, 0);
+                    ModUtils.handleAreaImpact(5, (e) -> (float) 9, player, player.getPositionVector().add(ModUtils.yVec(1)), source);
+                    player.getEntityWorld().playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.NEUTRAL, 1f, 1F);
+                    Main.proxy.spawnParticle(19, player.posX, player.posY + 0.25, player.posZ, 0, 0, 0);
+                    Main.proxy.spawnParticle(19, player.posX, player.posY + 1.25, player.posZ, 0, 0, 0);
+                    Main.proxy.spawnParticle(19, player.posX, player.posY + 2.25, player.posZ, 0, 0, 0);
+                }
+
+                if(!confettiTrinket.isEmpty()) {
+
+                        ModUtils.performNTimes(12, (i) -> {
+                            Main.proxy.spawnParticle(23, player.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), player.posY + ModRand.range(0, 3) + ModRand.getFloat(1), player.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, 0, 0, 3145519);
+                        });
+                        ModUtils.performNTimes(12, (i) -> {
+                            Main.proxy.spawnParticle(23, player.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), player.posY + ModRand.range(0, 3) + ModRand.getFloat(1), player.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, 0, 0, 3099391);
+                        });
+                        ModUtils.performNTimes(12, (i) -> {
+                            Main.proxy.spawnParticle(23, player.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), player.posY + ModRand.range(0, 3) + ModRand.getFloat(1), player.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, 0, 0, 16450048);
+                        });
+                        ModUtils.performNTimes(12, (i) -> {
+                            Main.proxy.spawnParticle(23, player.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), player.posY + ModRand.range(0, 3) + ModRand.getFloat(1), player.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, 0, 0, 16450255);
+                        });
+                        player.world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.CONFETTI_SOUND, SoundCategory.NEUTRAL, 1f, 1f);
+
+                    List<EntityPlayer> targets = player.world.getEntitiesWithinAABB(EntityPlayer.class, player.getEntityBoundingBox().grow(10, 1.5, 10), e -> !e.getIsInvulnerable());
+
+                    if(!targets.isEmpty()) {
+                        for(EntityPlayer playerToo : targets) {
+                            playerToo.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 300, 1, false, true));
+
+                        }
+                        confettiTrinket.damageItem(1, player);
+                    }
+                }
             }
         }
     }

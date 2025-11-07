@@ -3,8 +3,11 @@ package com.dungeon_additions.da.event;
 
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
+import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkSorcerer;
+import com.dungeon_additions.da.entity.dark_dungeon.EntityShadowHand;
+import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBolt;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
 import com.dungeon_additions.da.init.ModItems;
@@ -13,6 +16,7 @@ import com.dungeon_additions.da.items.shield.BOMDShieldItem;
 import com.dungeon_additions.da.items.tools.ToolSword;
 import com.dungeon_additions.da.items.util.ISweepAttackOverride;
 import com.dungeon_additions.da.packets.MessageEmptySwing;
+import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.player.PlayerMeleeAttack;
@@ -21,6 +25,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
@@ -104,7 +109,44 @@ public class EventWearFlameArmor {
                     ItemStack heartTrinket = ModUtils.findTrinket(ModItems.HEART_TRINKET.getDefaultInstance(), player);
                     ItemStack voidTrinket = ModUtils.findTrinket(ModItems.VOID_TRINKET.getDefaultInstance(), player);
                     ItemStack wind_trinket = ModUtils.findTrinket(ModItems.WIND_TRINKET.getDefaultInstance(), player);
+                    ItemStack void_hand_trinket = ModUtils.findTrinket(ModItems.VOID_HAND_TRINKET.getDefaultInstance(), player);
 
+                    if(!void_hand_trinket.isEmpty() && !player.getCooldownTracker().hasCooldown(void_hand_trinket.getItem())) {
+                        int randI = ModRand.range(1, 101);
+                        if(player.isPotionActive(MobEffects.POISON) || player.isPotionActive(MobEffects.WEAKNESS) || player.isPotionActive(MobEffects.SLOWNESS) ||
+                                player.isPotionActive(MobEffects.WITHER) || player.isPotionActive(MobEffects.HUNGER)) {
+
+                        if(randI < 60 && randI > 55 && player.ticksExisted % 20 == 0) {
+                            List<EntityLivingBase> targets = player.world.getEntitiesWithinAABB(EntityLivingBase.class, player.getEntityBoundingBox().grow(8, 1.5, 8), e -> !e.getIsInvulnerable());
+                            if (!targets.isEmpty()) {
+                                int maxHandSpawns = 0;
+                                for (EntityLivingBase target : targets) {
+                                    if (target != player) {
+                                        if (target instanceof EntityMob && maxHandSpawns < 5) {
+                                            EntityShadowHand hand = new EntityShadowHand(player.world, true);
+                                            hand.setPosition(target.posX, target.posY, target.posZ);
+                                            player.world.spawnEntity(hand);
+                                            maxHandSpawns++;
+                                        }
+                                        if (target instanceof EntityAbstractBase && maxHandSpawns < 5) {
+                                            EntityAbstractBase mod_mob = ((EntityAbstractBase) target);
+                                            if (!mod_mob.isFriendlyCreature) {
+                                                EntityShadowHand hand = new EntityShadowHand(player.world, true);
+                                                hand.setPosition(mod_mob.posX, mod_mob.posY, mod_mob.posZ);
+                                                player.world.spawnEntity(hand);
+                                                maxHandSpawns++;
+                                            }
+                                        }
+                                    }
+                                }
+                                if (maxHandSpawns > 0) {
+                                    void_hand_trinket.damageItem(1, player);
+                                    player.getCooldownTracker().setCooldown(void_hand_trinket.getItem(), 600);
+                                }
+                            }
+                        }
+                        }
+                    }
                     if(!wind_trinket.isEmpty() && !player.getCooldownTracker().hasCooldown(wind_trinket.getItem())) {
                         if(player.isSneaking() && player.motionY > 0.075) {
                             EntitySkyTornado tornado = new EntitySkyTornado(player.world, true, player);

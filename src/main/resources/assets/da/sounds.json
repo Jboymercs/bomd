@@ -90,6 +90,16 @@
       }
     ]
   },
+  "entity.confetti.party": {
+    "category": "entity",
+    "subtitle": "confetti.party",
+    "sounds": [
+      {
+        "name": "da:entity/confetti/party",
+        "stream": false
+      }
+    ]
+  },
   "entity.obsi.cast": {
     "category": "entity",
     "subtitle": "entity.obsi.cast",

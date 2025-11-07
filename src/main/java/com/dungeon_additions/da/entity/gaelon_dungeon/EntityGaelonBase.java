@@ -118,7 +118,7 @@ public class EntityGaelonBase extends EntityAbstractBase {
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        if(source.getImmediateSource() instanceof EntityGaelonBase) {
+        if(source.getImmediateSource() instanceof EntityGaelonBase && !this.isFriendlyCreature) {
             return false;
         }
 

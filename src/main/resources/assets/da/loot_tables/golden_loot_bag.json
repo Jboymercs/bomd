@@ -248,6 +248,11 @@
           "type": "item",
           "name": "da:heart_trinket",
           "weight": 11
+        },
+        {
+          "type": "item",
+          "name": "da:void_hand_trinket",
+          "weight": 11
         }
       ]
     }

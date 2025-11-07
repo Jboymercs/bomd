@@ -63,6 +63,17 @@ public class EntityShadowHand extends EntityDarkBase implements IAnimatable, IAn
         this.setNoAI(true);
     }
 
+    private boolean effect;
+
+    public EntityShadowHand(World worldIn, boolean effect) {
+        super(worldIn);
+        this.setSize(1.0F, 1.5F);
+        this.noClip = true;
+        this.effect = effect;
+        this.setImmovable(true);
+        this.setNoAI(true);
+    }
+
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("Swing_Melee", this.isSwingMelee());
@@ -108,7 +119,7 @@ public class EntityShadowHand extends EntityDarkBase implements IAnimatable, IAn
             if(ticksExisted == 2) {
                 this.playSound(SoundsHandler.SHADOW_HAND_SUMMON, 1.0f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f));
             }
-            List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntityDarkBase)));
+            List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(1.4), e -> !e.getIsInvulnerable() && (!(e instanceof EntityDarkBase)));
 
             if(ticksExisted < 1150 && !targets.isEmpty()) {
                 for(EntityLivingBase target : targets) {
@@ -130,7 +141,7 @@ public class EntityShadowHand extends EntityDarkBase implements IAnimatable, IAn
         this.setSwingMelee(true);
         this.playSound(SoundsHandler.SHADOW_HAND_ATTACK, 1.0f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f));
         addEvent(()-> {
-            List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntityDarkBase)));
+            List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(1.5), e -> !e.getIsInvulnerable() && (!(e instanceof EntityDarkBase)));
 
             if(!targets.isEmpty()) {
                 for(EntityLivingBase base : targets) {
@@ -141,6 +152,9 @@ public class EntityShadowHand extends EntityDarkBase implements IAnimatable, IAn
                         float damage = this.getAttack();
                         ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, offset, source, 0.15f, 0, false);
                         base.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 200, 0, false, false));
+                        if(effect) {
+                            base.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 200, 1, false, false));
+                        }
                     }
                 }
             }

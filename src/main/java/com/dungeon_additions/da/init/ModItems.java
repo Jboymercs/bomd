@@ -86,15 +86,17 @@ public class ModItems {
     public static final List<Item> ITEMS = new ArrayList<Item>();
 
     //Crafting Items
-    public static final Item ROT_KNIGHT_FRAGMENT = new ItemCraftingMaterial("knight_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
-    public static final Item ROT_KNIGHT_INGOT = new ItemCraftingMaterial("knight_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
-    public static final Item VOID_THORNS = new ItemCraftingMaterial("void_thorns", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
-    public static final Item DARK_MANA = new ItemCraftingMaterial("dark_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
-    public static final Item DARK_CORE = new ItemCraftingMaterial("dark_core", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
-    public static final Item CRYPT_PLATE = new ItemCraftingMaterial("crypt_plate", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item COPPER_COIN = new ItemCraftingMaterial("copper_coin","trader_coin_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item SILVER_COIN = new ItemCraftingMaterial("silver_coin","trader_coin_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item GOLDEN_COIN = new ItemCraftingMaterial("golden_coin","trader_coin_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item ROT_KNIGHT_FRAGMENT = new ItemCraftingMaterial("knight_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item ROT_KNIGHT_INGOT = new ItemCraftingMaterial("knight_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item VOID_THORNS = new ItemCraftingMaterial("void_thorns", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item ADVENTURE_METAL = new ItemCraftingMaterial("adventure_metal", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item MAGIC_LEATHER = new ItemCraftingMaterial("magic_leather","crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item DARK_MANA = new ItemCraftingMaterial("dark_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item DARK_CORE = new ItemCraftingMaterial("dark_core", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item CRYPT_PLATE = new ItemCraftingMaterial("crypt_plate", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item RED_ANICIENT_MANA = new ItemCraftingMaterial("red_ancient_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_SHARD = new ItemCraftingMaterial("frost_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_INGOT = new ItemCraftingMaterial("frost_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -158,6 +160,8 @@ public class ModItems {
     public static final Item VOID_TRINKET = new ItemTrinket("void_trinket","void_trinket_desc", 64);
     public static final Item WIND_TRINKET = new ItemTrinket("wind_trinket", "wind_trinket_desc", 96);
     public static final Item WEAKNESS_TRINKET = new ItemTrinket("weakness_trinket", "weakness_trinket_desc", 84);
+    public static final Item VOID_HAND_TRINKET = new ItemTrinket("void_hand_trinket", "void_hand_trinket_desc", 84);
+    public static final Item CONFETTI_TRINKET = new ItemTrinket("confetti_trinket", "confetti_trinket_desc", 64);
     public static final Item WYRK_TOTEM = new ItemWyrkTotem("wyrk_totem", "wyrk_totem_desc", DungeonAdditionsTab.ALL);
     public static final Item NOVIK_AID = new ItemNovikAid("call_to_arms", "call_to_arms_desc", DungeonAdditionsTab.ALL);
     public static final Item KINGS_AID = new ItemKingsAid("king_aid", "king_aid_desc", DungeonAdditionsTab.ALL);
