@@ -25,6 +25,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -88,20 +89,19 @@ public class BlockPuzzleMirror extends BlockContainer implements IHasModel, IBlo
 
     private int delay = 0;
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
         TileEntity te = world.getTileEntity(pos);
-        if(delay <= 0) {
+        if(!world.isRemote && delay <= 0)
+        {
             delay = 5;
-            if (te instanceof TileEntityPuzzleMirror) {
-                //isUpdating = true;
+            if (te instanceof TileEntityPuzzleMirror)
+            {
                 TileEntityPuzzleMirror mirror = ((TileEntityPuzzleMirror) te);
-                if (player.getHeldItemMainhand().isEmpty()) {
-                    if(world.isRemote) {
-                        world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundsHandler.MIRROR_MOVE, SoundCategory.BLOCKS, 0.4F, world.rand.nextFloat() * 0.8F + 0.3F, false);
-                    }
-                    if(!world.isRemote) {
-                        mirror.addRotationTooSkull();
-                    }
+                if (player.getHeldItemMainhand().isEmpty())
+                {
+                    world.playSound(null, pos, SoundsHandler.MIRROR_MOVE, SoundCategory.BLOCKS, 0.4F, world.rand.nextFloat() * 0.8F + 0.3F);
+                    mirror.addRotationTooSkull();
                 }
             }
         }
@@ -137,11 +137,14 @@ public class BlockPuzzleMirror extends BlockContainer implements IHasModel, IBlo
     }
 
     @Override
-    public void update(World world, BlockPos pos) {
+    public void update(World world, BlockPos pos)
+    {
         counter++;
         delay--;
-        if (counter % 5 == 0) {
-            List<EntityPlayerSP> list = world.<EntityPlayerSP>getPlayers(EntityPlayerSP.class, new Predicate<EntityPlayerSP>() {
+        if (counter % 5 == 0)
+        {
+            List<EntityPlayerSP> list = world.<EntityPlayerSP>getPlayers(EntityPlayerSP.class, new Predicate<EntityPlayerSP>()
+            {
                 @Override
                 public boolean apply(@Nullable EntityPlayerSP player) {
                     return player.getHeldItem(EnumHand.MAIN_HAND).isEmpty();

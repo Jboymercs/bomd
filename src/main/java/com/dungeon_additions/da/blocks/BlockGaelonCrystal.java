@@ -75,11 +75,6 @@ public class BlockGaelonCrystal extends BlockBase{
         return state.getValue(FACING).ordinal();
     }
 
-    @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        worldIn.setBlockState(pos, state.withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer)), 2);
-    }
-
     @Deprecated
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return CRYSTAL_SIZE;
@@ -147,10 +142,7 @@ public class BlockGaelonCrystal extends BlockBase{
         return false;
     }
 
-
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float lookX, float lookY, float lookZ, int meta, EntityLivingBase player) {
-        return this.getDefaultState().withProperty(FACING, facing);
-    }
-
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float lookX, float lookY, float lookZ, int meta, EntityLivingBase player)
+    { return this.getDefaultState().withProperty(FACING, facing); }
 }
