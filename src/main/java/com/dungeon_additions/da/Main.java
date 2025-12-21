@@ -1,7 +1,6 @@
 package com.dungeon_additions.da;
 
 
-import com.dungeon_additions.da.blocks.BlockLeaveBase;
 import com.dungeon_additions.da.init.ModEntities;
 import com.dungeon_additions.da.init.ModRecipes;
 import com.dungeon_additions.da.proxy.CommonProxy;

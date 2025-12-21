@@ -12,6 +12,8 @@ import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityDesertBeam;
+import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianColossus;
+import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianWarlord;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.EntityEverator;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
 import com.dungeon_additions.da.entity.flame_knight.*;
@@ -40,10 +42,7 @@ import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkAssassin;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkRoyal;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkSorcerer;
 import com.dungeon_additions.da.entity.render.dark_dungeon.RenderShadowHand;
-import com.dungeon_additions.da.entity.render.desert_dungeon.RenderAegyptia;
-import com.dungeon_additions.da.entity.render.desert_dungeon.RenderDesertBeam;
-import com.dungeon_additions.da.entity.render.desert_dungeon.RenderEverator;
-import com.dungeon_additions.da.entity.render.desert_dungeon.RenderScutterBeetle;
+import com.dungeon_additions.da.entity.render.desert_dungeon.*;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderBareant;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderFlameOrb;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderIncendium;
@@ -318,8 +317,13 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityFriendlyCursedGolem.class, RenderFriendlyCursedGolem::new);
         //Mysterious Trader
         RenderingRegistry.registerEntityRenderingHandler(EntityMysteriousTrader.class, RenderMysteriousTrader::new);
+        //Aegyptian Warlord
+        RenderingRegistry.registerEntityRenderingHandler(EntityAegyptianWarlord.class, RenderAegyptianWarlord::new);
+        //Aegyptian Colossus
+        RenderingRegistry.registerEntityRenderingHandler(EntityAegyptianColossus.class, RenderAegyptianColossus::new);
         //Puzzle Mirror
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPuzzleMirror.class, new RenderPuzzleMirror());
+
     }
 
 }

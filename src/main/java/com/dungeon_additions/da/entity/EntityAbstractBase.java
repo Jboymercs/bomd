@@ -347,6 +347,11 @@ public abstract class EntityAbstractBase extends EntityCreature {
     }
 
     @Override
+    protected boolean canDespawn() {
+        return false;
+    }
+
+    @Override
     public boolean isNonBoss() {
         return !this.iAmBossMob && !this.iAmBossMobWyrkNerf;
     }

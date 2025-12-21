@@ -47,7 +47,7 @@ public class ItemSealedSpearWave extends ItemBase{
             stack.shrink(1);
             new ActionSpearWave().performAction(player);
             Vec3d relPos = player.getPositionVector().add(ModUtils.getRelativeOffset(player, new Vec3d(0, 1.2, 0)));
-            Main.proxy.spawnParticle(21, relPos.x, player.posY, relPos.z, 0, 0, 0);
+            Main.proxy.spawnParticle( 21, worldIn, relPos.x, player.posY, relPos.z, 0, 0, 0);
             player.getCooldownTracker().setCooldown(this, SwordCoolDown);
         }
 

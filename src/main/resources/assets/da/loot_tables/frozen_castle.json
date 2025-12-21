@@ -104,7 +104,7 @@
         {
           "type": "item",
           "name": "da:copper_coin",
-          "weight": 5,
+          "weight": 9,
           "functions": [
             {
               "function": "set_count",

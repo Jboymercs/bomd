@@ -43,8 +43,8 @@ public class EntityShieldHandler {
     public static void onEntityDeath(LivingDeathEvent event) {
         if(event.getEntityLiving() instanceof EntityPlayer) {
             EntityPlayer player = ((EntityPlayer) event.getEntityLiving());
-            ItemStack creepersWillTrinket = ModUtils.findTrinket(ModItems.CREEPER_TRINKET.getDefaultInstance(), player);
-            ItemStack confettiTrinket = ModUtils.findTrinket(ModItems.CONFETTI_TRINKET.getDefaultInstance(), player);
+            ItemStack creepersWillTrinket = ModUtils.findTrinket(new ItemStack(ModItems.CREEPER_TRINKET), player);
+            ItemStack confettiTrinket = ModUtils.findTrinket(new ItemStack(ModItems.CONFETTI_TRINKET), player);
             if(!player.world.isRemote) {
                 if (!creepersWillTrinket.isEmpty()) {
                     creepersWillTrinket.damageItem(1, player);
@@ -105,11 +105,11 @@ public class EntityShieldHandler {
         if(event.getEntityLiving() instanceof EntityPlayer) {
             EntityPlayer player = ((EntityPlayer) event.getEntityLiving());
             if(player != null) {
-                ItemStack crystalFruitTrinket = ModUtils.findTrinket(ModItems.FROZEN_CRYSTAL_TRINKET.getDefaultInstance(), player);
-                ItemStack magicCharmTrinket = ModUtils.findTrinket(ModItems.MAGIC_CHARM_TRINKET.getDefaultInstance(), player);
-                ItemStack weaknessTrinket = ModUtils.findTrinket(ModItems.WEAKNESS_TRINKET.getDefaultInstance(), player);
-                ItemStack poisonTrinket = ModUtils.findTrinket(ModItems.POISON_TRINKET.getDefaultInstance(), player);
-                ItemStack slamTrinket = ModUtils.findTrinket(ModItems.FROZEN_SLAM_TRINKET.getDefaultInstance(), player);
+                ItemStack crystalFruitTrinket = ModUtils.findTrinket(new ItemStack(ModItems.FROZEN_CRYSTAL_TRINKET), player);
+                ItemStack magicCharmTrinket = ModUtils.findTrinket(new ItemStack(ModItems.MAGIC_CHARM_TRINKET), player);
+                ItemStack weaknessTrinket = ModUtils.findTrinket(new ItemStack(ModItems.WEAKNESS_TRINKET), player);
+                ItemStack poisonTrinket = ModUtils.findTrinket(new ItemStack(ModItems.POISON_TRINKET), player);
+                ItemStack slamTrinket = ModUtils.findTrinket(new ItemStack(ModItems.FROZEN_SLAM_TRINKET), player);
                 if(!crystalFruitTrinket.isEmpty()) {
                     int randI = ModRand.range(1, 11);
                     if (randI == 3) {
@@ -176,8 +176,8 @@ public class EntityShieldHandler {
                 }
             }
 
-            ItemStack flameTrinket = ModUtils.findTrinket(ModItems.FLAMES_RAGE_TRINKET.getDefaultInstance(), player);
-            ItemStack vampireTrinket = ModUtils.findTrinket(ModItems.VAMPIRIC_TRINKET.getDefaultInstance(), player);
+            ItemStack flameTrinket = ModUtils.findTrinket(new ItemStack(ModItems.FLAMES_RAGE_TRINKET), player);
+            ItemStack vampireTrinket = ModUtils.findTrinket(new ItemStack(ModItems.VAMPIRIC_TRINKET), player);
             int flameTrinketBonus = 0;
             if(!flameTrinket.isEmpty()) {
                 flameTrinketBonus = player.isBurning() ? 2 : 1;

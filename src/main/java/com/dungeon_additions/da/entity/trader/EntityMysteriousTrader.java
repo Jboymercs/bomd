@@ -162,11 +162,11 @@ public class EntityMysteriousTrader extends EntityAbstractBase implements IAnima
                     } else if (playerStack.getItem() == ModItems.AEGYPTIA_METAL_INGOT) {
                         this.equipItemInHand(TRADER_HAND.HAND, new ItemStack(ModItems.ROT_KNIGHT_INGOT));
                     } else if (playerStack.getItem() == ModItems.ROT_KNIGHT_FRAGMENT) {
-                        this.equipItemInHand(TRADER_HAND.HAND, new ItemStack(Items.IRON_INGOT));
+                        this.equipItemInHand(TRADER_HAND.HAND, new ItemStack(ModItems.ADVENTURE_METAL));
                     } else if (playerStack.getItem() == ModItems.ROT_KNIGHT_INGOT) {
                         this.equipItemInHand(TRADER_HAND.HAND, new ItemStack(ModItems.GAELON_LOCATOR));
                     } else if (playerStack.getItem() == ModItems.FROST_SHARD) {
-                        this.equipItemInHand(TRADER_HAND.HAND, new ItemStack(Items.ENDER_PEARL));
+                        this.equipItemInHand(TRADER_HAND.HAND, new ItemStack(ModItems.MAGIC_LEATHER));
                     } else if (playerStack.getItem() == ModItems.ABBERRANT_EYE) {
                         this.equipItemInHand(TRADER_HAND.HAND, new ItemStack(ModItems.DARK_MANA));
                     } else if (playerStack.getItem() == ModItems.DRAUGR_METAL) {
@@ -189,8 +189,6 @@ public class EntityMysteriousTrader extends EntityAbstractBase implements IAnima
                         this.equipItemInHand(TRADER_HAND.HAND, new ItemStack(Items.GHAST_TEAR));
                     } else if (playerStack.getItem() == ModItems.LITIC_SHARD) {
                         this.equipItemInHand(TRADER_HAND.HAND, new ItemStack(Items.DIAMOND));
-                    } else if (playerStack.getItem() == ModItems.DIVINE_SCROLL) {
-                        this.equipItemInHand(TRADER_HAND.HAND, new ItemStack(Items.COAL));
                     } else if (playerStack.getItem() == ModItems.SENTINEL_PART) {
                         this.equipItemInHand(TRADER_HAND.HAND, new ItemStack(Items.GOLD_INGOT));
                     } else if (playerStack.getItem() == ModItems.INCENDIUM_CORE) {
@@ -222,7 +220,7 @@ public class EntityMysteriousTrader extends EntityAbstractBase implements IAnima
         if(!world.isRemote && selectedPlayer != null && !this.isNodNo() && !this.isThrowItemPlayer() && traderCooldown < 0) {
             if(stack.getItem() == ModItems.ROT_KNIGHT_FRAGMENT) {
                 stack.shrink(1);
-                this.throwItemAfterTrade(new ItemStack(Items.IRON_INGOT, 3), selectedPlayer);
+                this.throwItemAfterTrade(new ItemStack(ModItems.ADVENTURE_METAL, 1), selectedPlayer);
             } else if(stack.getItem() == ModItems.FROST_INGOT) {
                 stack.shrink(1);
                 this.throwItemAfterTrade(new ItemStack(ModItems.COPPER_COIN), selectedPlayer);
@@ -246,7 +244,7 @@ public class EntityMysteriousTrader extends EntityAbstractBase implements IAnima
                 this.throwItemAfterTrade(new ItemStack(ModItems.GAELON_LOCATOR), selectedPlayer);
             } else if(stack.getItem() == ModItems.FROST_SHARD) {
                 stack.shrink(1);
-                this.throwItemAfterTrade(new ItemStack(Items.ENDER_PEARL, 2), selectedPlayer);
+                this.throwItemAfterTrade(new ItemStack(ModItems.MAGIC_LEATHER, 2), selectedPlayer);
             } else if(stack.getItem() == ModItems.ABBERRANT_EYE) {
                 stack.shrink(1);
                 this.throwItemAfterTrade(new ItemStack(ModItems.DARK_CORE), selectedPlayer);
@@ -280,9 +278,6 @@ public class EntityMysteriousTrader extends EntityAbstractBase implements IAnima
             } else if(stack.getItem() == ModItems.LITIC_SHARD) {
                 stack.shrink(1);
                 this.throwItemAfterTrade(new ItemStack(Items.DIAMOND, 2), selectedPlayer);
-            } else if(stack.getItem() == ModItems.DIVINE_SCROLL) {
-                stack.shrink(1);
-                this.throwItemAfterTrade(new ItemStack(Items.COAL, 12), selectedPlayer);
             } else if(stack.getItem() == ModItems.SENTINEL_PART) {
                 stack.shrink(1);
                 this.throwItemAfterTrade(new ItemStack(Items.GOLD_INGOT, 8), selectedPlayer);
@@ -407,7 +402,6 @@ public class EntityMysteriousTrader extends EntityAbstractBase implements IAnima
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
         data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
         data.addAnimationController(new AnimationController(this, "other_controller", 0, this::predicateOther));
     }

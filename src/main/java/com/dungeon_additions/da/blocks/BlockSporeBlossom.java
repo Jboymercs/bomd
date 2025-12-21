@@ -75,7 +75,6 @@ public class BlockSporeBlossom extends BlockLeaveBase implements  ITileEntityPro
                     ParticleManager.spawnColoredSmoke(worldIn, particlePos, ModColors.PINK, new Vec3d(0, 0, 0));
                 }
             }
-
     }
 
     @Override

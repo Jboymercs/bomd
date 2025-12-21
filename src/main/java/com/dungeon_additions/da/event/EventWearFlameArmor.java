@@ -102,14 +102,14 @@ public class EventWearFlameArmor {
             //Trinkets
             if(base instanceof EntityPlayer) {
                 EntityPlayer player = ((EntityPlayer) base);
-                    ItemStack speedTrinket = ModUtils.findTrinket(ModItems.SPEED_BOOTS_TRINKET.getDefaultInstance(), player);
-                    ItemStack strengthTrinket = ModUtils.findTrinket(ModItems.GLASS_CANNON_TRINKET.getDefaultInstance(), player);
-                    ItemStack shieldTrinket = ModUtils.findTrinket(ModItems.SHIELD_TRINKET.getDefaultInstance(), player);
-                    ItemStack diamondShieldTrinket = ModUtils.findTrinket(ModItems.DIAMOND_SHIELD_TRINKET.getDefaultInstance(), player);
-                    ItemStack heartTrinket = ModUtils.findTrinket(ModItems.HEART_TRINKET.getDefaultInstance(), player);
-                    ItemStack voidTrinket = ModUtils.findTrinket(ModItems.VOID_TRINKET.getDefaultInstance(), player);
-                    ItemStack wind_trinket = ModUtils.findTrinket(ModItems.WIND_TRINKET.getDefaultInstance(), player);
-                    ItemStack void_hand_trinket = ModUtils.findTrinket(ModItems.VOID_HAND_TRINKET.getDefaultInstance(), player);
+                    ItemStack speedTrinket = ModUtils.findTrinket(new ItemStack(ModItems.SPEED_BOOTS_TRINKET), player);
+                    ItemStack strengthTrinket = ModUtils.findTrinket(new ItemStack(ModItems.GLASS_CANNON_TRINKET), player);
+                    ItemStack shieldTrinket = ModUtils.findTrinket(new ItemStack(ModItems.SHIELD_TRINKET), player);
+                    ItemStack diamondShieldTrinket = ModUtils.findTrinket(new ItemStack(ModItems.DIAMOND_SHIELD_TRINKET), player);
+                    ItemStack heartTrinket = ModUtils.findTrinket(new ItemStack(ModItems.HEART_TRINKET), player);
+                    ItemStack voidTrinket = ModUtils.findTrinket(new ItemStack(ModItems.VOID_TRINKET), player);
+                    ItemStack wind_trinket = ModUtils.findTrinket(new ItemStack(ModItems.WIND_TRINKET), player);
+                    ItemStack void_hand_trinket = ModUtils.findTrinket(new ItemStack(ModItems.VOID_HAND_TRINKET), player);
 
                     if(!void_hand_trinket.isEmpty() && !player.getCooldownTracker().hasCooldown(void_hand_trinket.getItem())) {
                         int randI = ModRand.range(1, 101);

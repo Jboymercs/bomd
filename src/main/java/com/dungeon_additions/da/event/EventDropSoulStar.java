@@ -66,9 +66,9 @@ public class EventDropSoulStar {
         //Death's Prosper Trinket
         if(event.getSource().getImmediateSource() instanceof EntityPlayer) {
             EntityPlayer player = ((EntityPlayer) event.getSource().getImmediateSource());
-            ItemStack DeathStack = ModUtils.findTrinket(ModItems.DEATH_TRINKET.getDefaultInstance(), player);
-            ItemStack gambleStack = ModUtils.findTrinket(ModItems.GAMBLE_TRINKET.getDefaultInstance(), player);
-            ItemStack confettiStack = ModUtils.findTrinket(ModItems.CONFETTI_TRINKET.getDefaultInstance(), player);
+            ItemStack DeathStack = ModUtils.findTrinket(new ItemStack(ModItems.DEATH_TRINKET), player);
+            ItemStack gambleStack = ModUtils.findTrinket(new ItemStack(ModItems.GAMBLE_TRINKET), player);
+            ItemStack confettiStack = ModUtils.findTrinket(new ItemStack(ModItems.CONFETTI_TRINKET), player);
 
             if(!confettiStack.isEmpty()) {
                 int randI = ModRand.range(1, 101);

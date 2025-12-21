@@ -11,6 +11,8 @@ import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityDesertBeam;
+import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianColossus;
+import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianWarlord;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.EntityEverator;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
 import com.dungeon_additions.da.entity.flame_knight.*;
@@ -125,6 +127,8 @@ public class ModEntities {
         registerEntityWithID("scutter_beetle", EntityScutterBeetle.class, ENTITY_START_ID++, 70, scutter_beetle);
         registerEntityWithID("aegyptia", EntityAegyptia.class, ENTITY_START_ID++, 70, aegyptian_recurian);
         registerEntityWithID("everator", EntityEverator.class, ENTITY_START_ID++, 70, everator);
+        registerEntityWithID("aegyptian_warlord", EntityAegyptianWarlord.class, ENTITY_START_ID++, 70, night_lich);
+        registerEntityWithID("aegyptian_colossus", EntityAegyptianColossus.class, ENTITY_START_ID++, 70, night_lich);
         // Burning Flame Arena
         registerEntityWithID("nether_aberant", EntityNetherAbberrant.class, ENTITY_START_ID++, 50, nether_spirit);
         registerEntityWithID("incendium_spirit", EntityIncendium.class, ENTITY_START_ID++, 70, incendium_spirit);

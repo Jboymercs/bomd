@@ -45,6 +45,7 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
 
     protected static final byte stopLazerByte = 39;
     public IMultiAction lazerAttack =  new ActionWyrkLazer(this, stopLazerByte, (vec3d) -> {});
+
     public Vec3d renderLazerPos;
     public Vec3d prevRenderLazerPos;
     private final MultiPartEntityPart model = new MultiPartEntityPart(this, "model", 0.0f, 0.0f);
