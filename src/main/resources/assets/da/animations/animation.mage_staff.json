@@ -1,0 +1,93 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"idle": {
+			"loop": true,
+			"animation_length": 2.5,
+			"bones": {
+				"Orb": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.125": {
+							"vector": [-360, 0, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.25": {
+							"vector": [0, 0, 0]
+						},
+						"1.125": {
+							"vector": [0, 6, 14]
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.25": {
+							"vector": [1, 1, 1]
+						},
+						"1.125": {
+							"vector": [0, 0, 0]
+						}
+					}
+				}
+			}
+		},
+		"fight": {
+			"animation_length": 8,
+			"bones": {
+				"Orb": {
+					"rotation": {
+						"7.5": {
+							"vector": [0, 0, 0]
+						},
+						"8.0": {
+							"vector": [-360, 0, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.125": {
+							"vector": [0, 4, 0]
+						},
+						"0.25": {
+							"vector": [0, 0, 0]
+						},
+						"7.5": {
+							"vector": [0, 0, 0]
+						},
+						"8.0": {
+							"vector": [0, 6, 14]
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.125": {
+							"vector": [2, 2, 2]
+						},
+						"0.25": {
+							"vector": [1.5, 1.5, 1.5]
+						},
+						"7.5": {
+							"vector": [1.5, 1.5, 1.5]
+						},
+						"8.0": {
+							"vector": [0, 0, 0]
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

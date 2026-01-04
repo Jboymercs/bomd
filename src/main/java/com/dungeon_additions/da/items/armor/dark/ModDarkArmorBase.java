@@ -45,7 +45,7 @@ public class ModDarkArmorBase extends ItemArmor implements IHasModel {
         setRegistryName(name);
         this.texture = textureName;
         ModItems.ITEMS.add(this);
-        this.knockbackResistance = new AttributeModifier("darkKnockbackResistance", 0.1, 0);
+        this.knockbackResistance = new AttributeModifier("darkSpeedBoost" + slotIn.getName(), 0.02, 1);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ModDarkArmorBase extends ItemArmor implements IHasModel {
 
         if (equipmentSlot == this.armorType) {
             multimap.put(SharedMonsterAttributes.ARMOR.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.damageReduceAmount * ModConfig.armor_scaling, 0));
-            multimap.put(SharedMonsterAttributes.KNOCKBACK_RESISTANCE.getName(), this.knockbackResistance);
+            multimap.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(), this.knockbackResistance);
             // Override armor toughness to make is adjustable in game
             //Come back to Re-use when needed IF needed
             multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor toughness", 2.5F * ModConfig.armor_toughness_scaling, 0));

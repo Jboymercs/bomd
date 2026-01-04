@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V"
+  ],
+  "key": {
+    "V": {
+      "item": "da:adventure_block"
+    }
+  },
+  "result": {
+    "item": "da:adventure_metal",
+    "count": 9
+  }
+}

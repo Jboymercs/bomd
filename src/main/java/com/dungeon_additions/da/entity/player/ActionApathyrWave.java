@@ -18,11 +18,11 @@ public class ActionApathyrWave implements IActionPlayer {
     public void performAction(EntityPlayer actor) {
         float inaccuracy = 0.0f;
         float speed = 0.35f;
-        ProjectileCrystalWave projectile = new ProjectileCrystalWave(actor.world, actor, damage, null);
-        ProjectileCrystalWave projectile2 = new ProjectileCrystalWave(actor.world, actor, damage, null);
-        ProjectileCrystalWave projectile3 = new ProjectileCrystalWave(actor.world, actor, damage, null);
-        ProjectileCrystalWave projectile4 = new ProjectileCrystalWave(actor.world, actor, damage, null);
-        ProjectileCrystalWave projectile5 = new ProjectileCrystalWave(actor.world, actor, damage, null);
+        ProjectileCrystalWave projectile = new ProjectileCrystalWave(actor.world, actor, damage + ModUtils.addMageSetBonus(actor, 0), null);
+        ProjectileCrystalWave projectile2 = new ProjectileCrystalWave(actor.world, actor, damage + ModUtils.addMageSetBonus(actor, 0), null);
+        ProjectileCrystalWave projectile3 = new ProjectileCrystalWave(actor.world, actor, damage + ModUtils.addMageSetBonus(actor, 0), null);
+        ProjectileCrystalWave projectile4 = new ProjectileCrystalWave(actor.world, actor, damage + ModUtils.addMageSetBonus(actor, 0), null);
+        ProjectileCrystalWave projectile5 = new ProjectileCrystalWave(actor.world, actor, damage + ModUtils.addMageSetBonus(actor, 0), null);
 
         Vec3d relPos = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(2, 0, 0)));
 

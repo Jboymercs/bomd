@@ -101,7 +101,7 @@ public class ItemFlowerCrown extends ItemArmor implements IHasModel {
                     this.hitCounter = 0;
                 } else {
                     if (worldIn.rand.nextInt(8) == 0) {
-                        Main.proxy.spawnParticle(1, player.posX + ModRand.range(-2, 2), player.posY + 0.25 + ModRand.getFloat(2F), player.posZ + ModRand.range(-2, 2), 0, 0, 0);
+                        Main.proxy.spawnParticle(1, worldIn, player.posX + ModRand.range(-2, 2), player.posY + 0.25 + ModRand.getFloat(2F), player.posZ + ModRand.range(-2, 2), 0, 0, 0);
                     }
                 }
 

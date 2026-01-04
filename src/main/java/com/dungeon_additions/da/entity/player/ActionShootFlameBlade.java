@@ -12,7 +12,7 @@ public class ActionShootFlameBlade implements IActionPlayer{
     @Override
     public void performAction(EntityPlayer actor) {
         float damage = actor.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET ? (float) (7 * ModConfig.incendium_helmet_multipler): 7;
-        ProjectileFlameBlade blade = new ProjectileFlameBlade(actor.world, actor, damage);
+        ProjectileFlameBlade blade = new ProjectileFlameBlade(actor.world, actor, damage + ModUtils.addMageSetBonus(actor, 0) + ModUtils.addAbilityBonusDamage(actor.getHeldItemMainhand(), 1.25F));
         blade.setTravelRange(10);
         float speed = 0.7F;
 

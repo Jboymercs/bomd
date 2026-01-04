@@ -289,7 +289,7 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
           //Weird Damage Handling
           ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 1.4f, 0, false);
           Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2.5, 0.5, 0)));
-          Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
+          Main.proxy.spawnParticle(18,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
       }, 20);
 
       addEvent(()-> this.lockLook =false, 40);

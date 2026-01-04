@@ -556,7 +556,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f + ModRand.getFloat(0.1f));
         this.world.setEntityState(this, ModUtils.THIRD_PARTICLE_BYTE);
         Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
-        Main.proxy.spawnParticle(20, relPos.x, this.posY + 0.1, relPos.z, 0, 0, 0);
+        Main.proxy.spawnParticle(20,world, relPos.x, this.posY + 0.1, relPos.z, 0, 0, 0);
         this.setShaking(true);
         this.shakeTime = 30;
         addEvent(()-> {

@@ -13,12 +13,14 @@ import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.armor.VoidiantChestplate;
 import com.dungeon_additions.da.items.shield.BOMDShieldItem;
+import com.dungeon_additions.da.items.tools.ItemMageStaff;
 import com.dungeon_additions.da.items.tools.ToolSword;
 import com.dungeon_additions.da.items.util.ISweepAttackOverride;
 import com.dungeon_additions.da.packets.MessageEmptySwing;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.dungeon_additions.da.util.player.PlayerMeleeAttack;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -35,6 +37,7 @@ import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
@@ -189,7 +192,7 @@ public class EventWearFlameArmor {
                     //shield Trinkets
                     if(!shieldTrinket.isEmpty()) {
                         if(attributeInShield.getModifier(SHIELD_TRINKET_MODIFIER) == null) {
-                            attributeInShield.applyModifier(new AttributeModifier(SHIELD_TRINKET_MODIFIER, "shield_trinket_modifier", 2, 1).setSaved(false));
+                            attributeInShield.applyModifier(new AttributeModifier(SHIELD_TRINKET_MODIFIER, "shield_trinket_modifier", 0.1, 1).setSaved(false));
                         }
                         if(player.hurtTime == 1) {
                             shieldTrinket.damageItem(1, player);
@@ -200,7 +203,7 @@ public class EventWearFlameArmor {
 
                     if(!diamondShieldTrinket.isEmpty()) {
                             if(attributeInDiamond.getModifier(DIAMOND_SHIELD_TRINKET_MODIFIER) == null) {
-                                attributeInDiamond.applyModifier(new AttributeModifier(DIAMOND_SHIELD_TRINKET_MODIFIER, "diamond_shield_trinket_modifier", 1, 1).setSaved(false));
+                                attributeInDiamond.applyModifier(new AttributeModifier(DIAMOND_SHIELD_TRINKET_MODIFIER, "diamond_shield_trinket_modifier", 0.05, 1).setSaved(false));
                             }
                         if(player.hurtTime == 1) {
                             diamondShieldTrinket.damageItem(1, player);
@@ -312,7 +315,6 @@ public class EventWearFlameArmor {
                     }
                 }
             }
-
         }
     }
 
@@ -338,14 +340,14 @@ public class EventWearFlameArmor {
 
 
     private static void summonLightningOnPlayerPos(EntityPlayer actor) {
-        EntitySkyBolt bolt = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor);
-        EntitySkyBolt bolt2 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor);
-        EntitySkyBolt bolt3 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor);
-        EntitySkyBolt bolt4 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor);
-        EntitySkyBolt bolt5 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor);
-        EntitySkyBolt bolt6 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor);
-        EntitySkyBolt bolt7 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor);
-        EntitySkyBolt bolt8 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor);
+        EntitySkyBolt bolt = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor, 10);
+        EntitySkyBolt bolt2 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor, 10);
+        EntitySkyBolt bolt3 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor, 10);
+        EntitySkyBolt bolt4 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor, 10);
+        EntitySkyBolt bolt5 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor, 10);
+        EntitySkyBolt bolt6 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor, 10);
+        EntitySkyBolt bolt7 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor, 10);
+        EntitySkyBolt bolt8 = new EntitySkyBolt(actor.world, actor.getPositionVector().add(0, 10, 0), actor, 10);
 
         Vec3d actorPos = actor.getPositionVector();
         bolt.setPosition(actorPos.x + 2.5, actor.posY, actor.posZ);

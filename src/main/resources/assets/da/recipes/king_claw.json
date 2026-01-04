@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "FFF",
+    "FFC",
     "RBC",
     " X "
   ],
@@ -19,7 +19,7 @@
       "item": "da:dragon_scale"
     },
     "C": {
-      "item": "minecraft:leather"
+      "item": "da:magic_leather"
     }
   },
   "result": {

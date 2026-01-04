@@ -92,7 +92,7 @@ public class EntityKingHolyWave extends Projectile {
                 entity.setFire(burnTime);
 
                 DamageSource source = ModDamageSource.builder()
-                        .type(ModDamageSource.PROJECTILE)
+                        .type(ModDamageSource.MAGIC)
                         .indirectEntity(shootingEntity)
                         .directEntity(this)
                         .stoppedByArmorNotShields().disablesShields().build();

@@ -30,11 +30,11 @@ public class ItemKingHelmet extends ItemArmor implements IHasModel {
     private String info_loc;
 
     private final AttributeModifier knockbackResistance;
+    private final AttributeModifier kingSpeedBoost;
     private static final UUID[] ARMOR_MODIFIERS = new UUID[]{UUID.fromString("a3578781-e4a8-4d70-9d32-cd952aeae1df"),
             UUID.fromString("e2d1f056-f539-48c7-b353-30d7a367ebd0"), UUID.fromString("db13047a-bb47-4621-a025-65ed22ce461a"),
             UUID.fromString("abb5df20-361d-420a-8ec7-4bdba33378eb")};
 
-    public static final UUID MOVEMENT_SPEED_MODIFIER = UUID.fromString("0483aa4a-af8d-36a2-8693-22bec9caa265");
     private String armorBonusDesc = "";
 
     public ItemKingHelmet(String name, ArmorMaterial materialIn, int renderIdx, EntityEquipmentSlot slotIn, String info_loc) {
@@ -44,7 +44,8 @@ public class ItemKingHelmet extends ItemArmor implements IHasModel {
         setTranslationKey(name);
         setRegistryName(name);
         ModItems.ITEMS.add(this);
-        this.knockbackResistance = new AttributeModifier("kingKnockbackResistance", 0.1, 0);
+        this.knockbackResistance = new AttributeModifier("kingKnockbackResistance", 0.1, 1);
+        this.kingSpeedBoost = new AttributeModifier("kingSpeedHelmetBoost", 0.1, 1);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class ItemKingHelmet extends ItemArmor implements IHasModel {
             // Override armor toughness to make is adjustable in game
             //Come back to Re-use when needed IF needed
             multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor toughness", 1.5F * ModConfig.armor_toughness_scaling, 0));
-            multimap.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(), new AttributeModifier(MOVEMENT_SPEED_MODIFIER, "Movement Speed", 0.01, 0));
+            multimap.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(), this.kingSpeedBoost);
 
         }
 

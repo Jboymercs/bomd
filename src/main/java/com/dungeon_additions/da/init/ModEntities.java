@@ -29,6 +29,7 @@ import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
 import com.dungeon_additions.da.entity.gaelon_dungeon.*;
 import com.dungeon_additions.da.entity.gaelon_dungeon.apathyr.*;
 import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.EntityFriendlyCursedRevenant;
+import com.dungeon_additions.da.entity.generic.EntityDelayedExplosion;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
@@ -173,25 +174,25 @@ public class ModEntities {
         registerEntity("boss_spawner", EntityBossSpawner.class, ENTITY_START_ID++, 40);
         registerEntity("aoe_tile", EntityMoveTile.class, ENTITY_START_ID++, 50);
             registerEntity("flame_sling", ProjectileFlameSling.class, ENTITY_START_ID++, 50);
-            registerEntity("flame_projectile", ProjectileTrackingFlame.class, ENTITY_START_ID++, 30);
+            registerEntity("flame_projectile", ProjectileTrackingFlame.class, PROJECTILE_START_ID++, 30);
             registerEntity("nether_pyre", EntityPyre.class, ENTITY_START_ID++, 30);
             registerEntity("fire_resist_item", EntityFireResistantItems.class, ENTITY_START_ID++, 30);
             registerEntity("rot_spike", EntityRotSpike.class, ENTITY_START_ID++, 30);
-            registerEntity("soul_star", EntitySoulStar.class, ENTITY_START_ID++, 30);
-            registerEntity("lily_locator", EntityLily.class, ENTITY_START_ID++, 30);
-            registerEntity("magic_missile", ProjectileMagicMissile.class, ENTITY_START_ID++, 30);
-            registerEntity("magic_fireball", ProjectileMagicFireBall.class, ENTITY_START_ID++, 30);
+            registerEntity("soul_star", EntitySoulStar.class, PROJECTILE_START_ID++, 30);
+            registerEntity("lily_locator", EntityLily.class, PROJECTILE_START_ID++, 30);
+            registerEntity("magic_missile", ProjectileMagicMissile.class, PROJECTILE_START_ID++, 30);
+            registerEntity("magic_fireball", ProjectileMagicFireBall.class, PROJECTILE_START_ID++, 30);
             registerEntity("lich_staff", EntityLichStaffAOE.class, ENTITY_START_ID++, 30);
-            registerEntity("track_missile", ProjectileTrackingMagicMissile.class, ENTITY_START_ID++, 30);
-            registerEntity("ground_missile", ProjectileMagicGround.class, ENTITY_START_ID++, 30);
+            registerEntity("track_missile", ProjectileTrackingMagicMissile.class, PROJECTILE_START_ID++, 30);
+            registerEntity("ground_missile", ProjectileMagicGround.class, PROJECTILE_START_ID++, 30);
             registerEntity("lich_spawn", EntityLichSpawn.class, ENTITY_START_ID++, 40);
             registerEntity("ice_spike", EntityIcicleSpike.class, ENTITY_START_ID++, 40);
-            registerEntity("ice_bullet", ProjectileFrostBullet.class, ENTITY_START_ID++, 30);
-            registerEntity("soul_bullet", ProjectileSoul.class, ENTITY_START_ID++, 30);
-            registerEntity("frost_locator", EntityFrozenCastleLocator.class, ENTITY_START_ID++, 30);
-            registerEntity("frost_magic", ProjectileFrostGround.class, ENTITY_START_ID++, 30);
+            registerEntity("ice_bullet", ProjectileFrostBullet.class, PROJECTILE_START_ID++, 30);
+            registerEntity("soul_bullet", ProjectileSoul.class, PROJECTILE_START_ID++, 30);
+            registerEntity("frost_locator", EntityFrozenCastleLocator.class, PROJECTILE_START_ID++, 30);
+            registerEntity("frost_magic", ProjectileFrostGround.class, PROJECTILE_START_ID++, 30);
             registerEntity("wyrk_foot", EntityWyrkFoot.class, ENTITY_START_ID++, 70);
-            registerEntity("wyrk_lazer", EntityWyrkLazer.class, ENTITY_START_ID++, 90);
+            registerEntity("wyrk_lazer", EntityWyrkLazer.class,PROJECTILE_START_ID++, 90);
             registerEntity("voidiant_lazer", EntityVoidiantLazer.class, ENTITY_START_ID++, 90);
             registerEntity("sky_lightning_bolt", EntitySkyBolt.class, ENTITY_START_ID++, 50);
             registerEntity("sky_arrow", EntitySkyArrow.class, ENTITY_START_ID++, 60);
@@ -236,6 +237,7 @@ public class ModEntities {
             registerEntity("apathyr_spear", EntityApathyrSpear.class, ENTITY_START_ID++, 40);
             registerEntity("apathyr_eye", EntityApathyrEye.class, ENTITY_START_ID++, 40);
             registerEntity("gaelon_locator", EntityGaelonSanctuaryLocator.class, ENTITY_START_ID++, 40);
+            registerEntity("delayed_explosion_da", EntityDelayedExplosion.class, ENTITY_START_ID++, 60);
 
 
 

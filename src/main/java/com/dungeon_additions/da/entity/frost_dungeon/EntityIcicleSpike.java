@@ -71,7 +71,7 @@ public class EntityIcicleSpike extends EntityFrostBase implements IAnimatable, I
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(22D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(26D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5D);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
@@ -101,7 +101,7 @@ public class EntityIcicleSpike extends EntityFrostBase implements IAnimatable, I
                         if(base != this && base != player) {
                             Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.5D));
                             DamageSource source;
-                            source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
+                            source = ModDamageSource.builder().disablesShields().type(ModDamageSource.PLAYER).directEntity(this).build();
                             float damage = this.getAttack();
                             ModUtils.handleAreaImpact(0.25f, (e) -> damageIn, this, offset, source, 0.15f, 0, false);
                         }
@@ -114,7 +114,7 @@ public class EntityIcicleSpike extends EntityFrostBase implements IAnimatable, I
                     if(!(base instanceof EntityFrostBase) && !(base instanceof IEntityMultiPart) && !(base instanceof EntityIcicleSpike) && !(base instanceof EntityFriendWyrk)) {
                         Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.5D));
                         DamageSource source;
-                        source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
+                        source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                         float damage = this.getAttack();
                         ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, offset, source, 0.15f, 0, false);
                     }

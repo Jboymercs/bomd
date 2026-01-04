@@ -20,7 +20,7 @@ public class ActionPlayerShootComet implements IActionPlayer{
             additionalDamage = 0.7;
         }
 
-        ProjectileMagicFireBall fireBall = new ProjectileMagicFireBall(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage));
+        ProjectileMagicFireBall fireBall = new ProjectileMagicFireBall(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage) + ModUtils.addMageSetBonus(actor, 0));
         fireBall.setTravelRange(50);
         fireBall.setNoGravity(true);
         float speed = (float) (MobConfig.magic_fireball_velocity - 0.6);

@@ -67,7 +67,7 @@ public class ItemVoidHammer extends ItemSword implements IAnimatable, IHasModel,
         if(!world.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
             if(player.isSneaking()) {
                 world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, SoundCategory.NEUTRAL, 3.0f, 0.3f / (world.rand.nextFloat() * 0.4F + 0.2f));
-                EntityVoidBlackHole blackHole = new EntityVoidBlackHole(world, player, this.getAttackDamage());
+                EntityVoidBlackHole blackHole = new EntityVoidBlackHole(world, player, this.getAttackDamage() + ModUtils.addMageSetBonus(player, 0));
                 Vec3d playerLookVec = player.getLookVec();
                 blackHole.setPosition(player.posX + playerLookVec.x * 1.4D, player.posY + player.getEyeHeight() + playerLookVec.y * 1.4D, player.posZ + playerLookVec.z * 1.4D);
                 world.spawnEntity(blackHole);

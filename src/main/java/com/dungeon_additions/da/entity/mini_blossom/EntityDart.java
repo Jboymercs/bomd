@@ -18,9 +18,10 @@ public class EntityDart extends EntityBlossomDart{
 
     }
 
-    public EntityDart(World world, EntityLivingBase entity)
+    public EntityDart(World world, EntityLivingBase entity, float damage)
     {
         super(world, entity);
+        this.setDamage(damage);
     }
 
     public void entityInit()

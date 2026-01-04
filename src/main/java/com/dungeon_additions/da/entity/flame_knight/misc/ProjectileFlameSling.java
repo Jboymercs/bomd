@@ -101,7 +101,7 @@ public class ProjectileFlameSling extends Projectile {
                     entity.setFire(8);
                 }
                 DamageSource source = ModDamageSource.builder()
-                        .type(ModDamageSource.PROJECTILE)
+                        .type(ModDamageSource.MAGIC)
                         .indirectEntity(shootingEntity)
                         .directEntity(this)
                         .stoppedByArmorNotShields().build();

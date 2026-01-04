@@ -20,9 +20,9 @@ public class ActionPlayerGroundMissiles implements IActionPlayer{
             additionalDamage = 0.65;
         }
 
-        ProjectileMagicGround missile = new ProjectileMagicGround(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage), null, actor);
-        ProjectileMagicGround missile_2 = new ProjectileMagicGround(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage), null, actor);
-        ProjectileMagicGround missile_3 = new ProjectileMagicGround(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage), null, actor);
+        ProjectileMagicGround missile = new ProjectileMagicGround(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage) + ModUtils.addMageSetBonus(actor, 0), null, actor);
+        ProjectileMagicGround missile_2 = new ProjectileMagicGround(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage) + ModUtils.addMageSetBonus(actor, 0), null, actor);
+        ProjectileMagicGround missile_3 = new ProjectileMagicGround(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage) + ModUtils.addMageSetBonus(actor, 0), null, actor);
         Vec3d relPos = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0, 0, -1)));
         Vec3d relPos2 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0, 0, 1)));
         Vec3d relPos3 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0, 0, 0)));

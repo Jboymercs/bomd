@@ -489,7 +489,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
             world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
             this.setImmovable(true);
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 1.2, 0)));
-            Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
+            Main.proxy.spawnParticle(18,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
         }, 50);
 
         addEvent(()-> {

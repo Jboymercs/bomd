@@ -58,7 +58,7 @@ public class MobConfig {
     @Config.Name("Obsidilith Health")
     @Config.Comment("Change the health of the Obsidilith boss")
     @Config.RequiresMcRestart
-    public static double obsidilith_health = 300;
+    public static double obsidilith_health = 350;
 
     @Config.Name("Obsidilith Armor")
     @Config.Comment("Change the armor of the Obsidilith")
@@ -73,7 +73,7 @@ public class MobConfig {
     @Config.Name("Obsidilith Attack Damage")
     @Config.Comment("Change the attack damage of the Obsidilith")
     @Config.RequiresMcRestart
-    public static double obsidilith_attack_damage = 22;
+    public static double obsidilith_attack_damage = 26;
 
     @Config.Name("Obsidilith Experience Drop")
     @Config.Comment("Take in mind, this boss drops x number of experience 16 times, you can change the value of the given orb summoned below")
@@ -108,12 +108,12 @@ public class MobConfig {
     @Config.Name("Voidclysm Health")
     @Config.Comment("Change the Health of the Voidclysm")
     @Config.RequiresMcRestart
-    public static double voidclysm_health = 400;
+    public static double voidclysm_health = 415;
 
     @Config.Name("Voidclysm Attack Damage")
     @Config.Comment("Change the attack damage of the Voidclysm")
     @Config.RequiresMcRestart
-    public static double voidclysm_attack_damage = 26;
+    public static double voidclysm_attack_damage = 27;
 
     @Config.Name("Voidclysm Armor")
     @Config.Comment("Change the armor value of the Voidclysm")
@@ -168,17 +168,17 @@ public class MobConfig {
     @Config.Name("Nether Abberrant Attack Damage")
     @Config.Comment("Change the attack damage of the Nether Abberrant")
     @Config.RequiresMcRestart
-    public static double abberrant_damage = 12;
+    public static double abberrant_damage = 16;
 
     @Config.Name("Incendium Attack Damage")
     @Config.Comment("Change the Attack Damage of the Incendium Spirit")
     @Config.RequiresMcRestart
-    public static double incendium_attack_damage = 14;
+    public static double incendium_attack_damage = 16;
 
     @Config.Name("Incendium Health")
     @Config.Comment("Change the Health of the Incendium Spirit")
     @Config.RequiresMcRestart
-    public static double incendium_health = 45;
+    public static double incendium_health = 50;
 
     @Config.Name("Incendium Armor")
     @Config.Comment("Change the Armor Value of the Incendium Spirit")
@@ -188,7 +188,7 @@ public class MobConfig {
     @Config.Name("Bareant Spirit Health")
     @Config.Comment("Change the Health of the Bareant Spirit")
     @Config.RequiresMcRestart
-    public static double bareant_health = 20;
+    public static double bareant_health = 22;
 
     @Config.Name("Bareant Spirit Attack Damage")
     @Config.Comment("Change the Attack Damage of the Bareant Spirit")
@@ -203,12 +203,12 @@ public class MobConfig {
     @Config.Name("Volactile Spirit Inspired Damage Multiplier")
     @Config.Comment("When Volactile raises its sword and buffs itself, it does base damage times this multiplier for melee attacks")
     @Config.RequiresMcRestart
-    public static double volactile_inspired_multiplier = 1.4;
+    public static double volactile_inspired_multiplier = 1.5;
 
     @Config.Name("Volactile Spirit Health")
     @Config.Comment("Change the Health of the Volactile Spirit")
     @Config.RequiresMcRestart
-    public static double volactile_spirit_health = 210;
+    public static double volactile_spirit_health = 270;
 
     @Config.Name("Volactile Armor")
     @Config.Comment("Change the Armor of the Volactile Spirit")
@@ -218,12 +218,12 @@ public class MobConfig {
     @Config.Name("Volactile Armor Toughness")
     @Config.Comment("Change the Armor Toughness of the Volactile Spirit")
     @Config.RequiresMcRestart
-    public static double volactile_armor_toughness = 4;
+    public static double volactile_armor_toughness = 5;
 
     @Config.Name("Volactile Attack Damage")
     @Config.Comment("Change the Attack Damage of the Volactile Spirit")
     @Config.RequiresMcRestart
-    public static double volactile_attack_damage = 22;
+    public static double volactile_attack_damage = 24;
 
     @Config.Name("Volactile Projectile Resistance")
     @Config.Comment("When a projectile is fired at the Volactile Spirit, it will only take x percentage of the damage")
@@ -233,7 +233,7 @@ public class MobConfig {
     @Config.Name("Volactile Summoning Radius")
     @Config.Comment("Change how far the Flame orb to summon the Volactile Spirit detects for any dungeon mobs. if this check finds mobs, it will not summon the mini-boss")
     @Config.RequiresMcRestart
-    public static double volactile_ritual_radius = 30;
+    public static double volactile_ritual_radius = 24;
 
     @Config.Name("Volactile Damage Cap")
     @Config.Comment("Change the damage cap of how much damage can be done at one time to the Volactile Spirit. Disable this feature entirely in general_config")
@@ -253,12 +253,12 @@ public class MobConfig {
     @Config.Name("Knight of Burning Flame Attack Damage")
     @Config.Comment("Change the attack damage of this boss (Knight of Burning Flame)")
     @Config.RequiresMcRestart
-    public static double burning_knight_damage = 26;
+    public static double burning_knight_damage = 27;
 
     @Config.Name("Knight of Burning Flame Health")
     @Config.Comment("Change the health of this boss (Knight of Burning Flame)")
     @Config.RequiresMcRestart
-    public static double burning_knight_health = 390;
+    public static double burning_knight_health = 420;
 
     @Config.Name("Knight of Burning Flame Block Cooldown")
     @Config.Comment("Change the timer when the Knight of Burning Flame can block attacks, take note this is only fired between cool downs of each attack in seconds")
@@ -403,12 +403,12 @@ public class MobConfig {
     @Config.Name("Night Lich Health")
     @Config.Comment("Change the Health of the Night Lich")
     @Config.RequiresMcRestart
-    public static double night_lich_health = 470;
+    public static double night_lich_health = 475;
 
     @Config.Name("Night Lich Attack Damage")
     @Config.Comment("Change the Attack Damage of the Night Lich")
     @Config.RequiresMcRestart
-    public static double night_lich_attack_damage = 26;
+    public static double night_lich_attack_damage = 30;
 
     @Config.Name("Night Lich Staff AOE Damage Multiplier")
     @Config.Comment("Change the damage done by the Lich's staffs in the AOE attacks, used by baseAttackDamage * x")
@@ -527,7 +527,7 @@ public class MobConfig {
     @Config.Name("Frostborn Draugr Champion Health")
     @Config.Comment("Change the health of the Frostborn Draugr Champion")
     @Config.RequiresMcRestart
-    public static double champion_health = 175;
+    public static double champion_health = 190;
 
     @Config.Name("Frostborn Draugr Champion Attack Damage")
     @Config.Comment("Change the attack damage of the Frostborn Draugr Champion")
@@ -721,7 +721,7 @@ public class MobConfig {
     @Config.Name("High King/Dragon Attack Damage")
     @Config.Comment("Change the attack damage of the High King/Dragon")
     @Config.RequiresMcRestart
-    public static double high_dragon_king_damage = 32;
+    public static double high_dragon_king_damage = 34;
 
     @Config.Name("High King of the Sky Dragon Armor")
     @Config.Comment("Change the armor value of the High King of the Sky Dragon")
@@ -786,7 +786,7 @@ public class MobConfig {
     @Config.Name("The High King Health")
     @Config.Comment("Change the health of the High King")
     @Config.RequiresMcRestart
-    public static double high_king_health = 440;
+    public static double high_king_health = 450;
 
     @Config.Name("The High King Armor")
     @Config.Comment("Change the armor value of the High King")
@@ -846,12 +846,12 @@ public class MobConfig {
     @Config.Name("Voidiant Health")
     @Config.Comment("Change the health of the Voidiant.")
     @Config.RequiresMcRestart
-    public static double voidiant_health = 60;
+    public static double voidiant_health = 75;
 
     @Config.Name("Voidiant Attack Damage")
     @Config.Comment("Change the attack damage of the Voidiant")
     @Config.RequiresMcRestart
-    public static double voidiant_attack_damage = 20;
+    public static double voidiant_attack_damage = 28;
 
     @Config.Name("Voidiant Armor")
     @Config.Comment("Change the armor of the Voidiant")
@@ -957,12 +957,12 @@ public class MobConfig {
     @Config.Name("Apathyr Health")
     @Config.Comment("Change the health of the Apathyr.")
     @Config.RequiresMcRestart
-    public static double apathyr_health = 430;
+    public static double apathyr_health = 450;
 
     @Config.Name("Apathyr Attack Damage")
     @Config.Comment("Change the attack damage of the Apathyr")
     @Config.RequiresMcRestart
-    public static double apathyr_damage = 26;
+    public static double apathyr_damage = 32;
 
     @Config.Name("Apathyr Armor")
     @Config.Comment("Change the armor of the Apathyr")

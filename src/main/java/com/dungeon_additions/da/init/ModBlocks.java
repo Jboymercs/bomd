@@ -87,6 +87,7 @@ public class ModBlocks {
 
     //Metal Blocks
     public static final Block STORMVIER_BLOCK = new BlockBase("stormvier_block", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.METAL_BLOCK).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block ADVENTURE_BLOCK = new BlockBase("adventure_block", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.METAL_BLOCK).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block FROSTBORN_BLOCK = new BlockBase("frostborn_block", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.METAL_BLOCK).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block CRYPT_BLOCK = new BlockBase("crypt_block", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.METAL_BLOCK).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block NOVIK_BLOCK = new BlockDescriptionBase("novik_block", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.METAL_BLOCK, "novik_block_desc").setCreativeTab(DungeonAdditionsTab.BLOCKS);

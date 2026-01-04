@@ -127,7 +127,7 @@ public class ProjectileTrackingFlame extends Projectile {
                                 if(this.shootingEntity instanceof EntityBareant) {
                                     this.world.newExplosion(this, this.posX, this.posY, this.posZ, 1, false, false);
                                     Vec3d offset = entityIn.getPositionVector().add(new Vec3d(0, 1, 0));
-                                    DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).disablesShields().directEntity(this).build();
+                                    DamageSource source = ModDamageSource.builder().type(ModDamageSource.MAGIC).disablesShields().directEntity(this).build();
                                     float damage = (float) (MobConfig.bareant_attack_damage * 0.5);
                                     ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.3f, 3, false);
                                 } else {
@@ -140,7 +140,7 @@ public class ProjectileTrackingFlame extends Projectile {
                             if(this.shootingEntity instanceof EntityBareant) {
                                 this.world.newExplosion(this, this.posX, this.posY, this.posZ, 1, false, false);
                                 Vec3d offset = entityIn.getPositionVector().add(new Vec3d(0, 1, 0));
-                                DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).disablesShields().directEntity(this).build();
+                                DamageSource source = ModDamageSource.builder().type(ModDamageSource.MAGIC).disablesShields().directEntity(this).build();
                                 float damage = (float) (MobConfig.bareant_attack_damage * 0.5);
                                 ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.3f, 3, false);
                             } else {
@@ -166,7 +166,7 @@ public class ProjectileTrackingFlame extends Projectile {
     protected void onHit(RayTraceResult result) {
         if(this.setExplodeOnImpact && !world.isRemote) {
             this.world.newExplosion(this, this.posX, this.posY, this.posZ, 2, MobConfig.let_the_world_burn, false);
-            Main.proxy.spawnParticle(18, this.posX, this.posY + 1.2, this.posZ, 0, 0, 0);
+            Main.proxy.spawnParticle(18,world, this.posX, this.posY + 1.2, this.posZ, 0, 0, 0);
         }
 
         if(!this.isImmune) {

@@ -120,7 +120,7 @@ public class EntityKingHolyAOE extends EntitySkyBase implements IAnimatable, IAn
                         for (EntityLivingBase base : targets) {
                             if (!(base instanceof EntitySkyBase)) {
                                 Vec3d offset = base.getPositionVector().add(ModUtils.yVec(1.0D));
-                                DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
+                                DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                                 float damage = this.getAttack();
                                 ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, offset, source, 0.2f, 0, false);
                             }

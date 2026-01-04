@@ -57,6 +57,8 @@ public class ClientProxy extends CommonProxy{
     private final ModelBiped MODEL_NOVIK_HELMET = new ModelNovikHelmet(0f);
     private final ModelBiped MODEL_NOVIK_CHESTPLATE = new ModelNovikChestplate(0f);
     private final ModelBiped MODEL_APATHYR_HELMET = new ModelApathyrHelmet(0f);
+    private final ModelBiped MODEL_ADVENTURIC_HELMET = new ModelAdventuricHelmet(0f);
+    private final ModelBiped MODEL_MAGE_HAT = new ModelMageHat(0F);
 
     @Override
     public void init() {
@@ -138,6 +140,12 @@ public class ClientProxy extends CommonProxy{
         }
         if(item == ModItems.APATHYR_HELMET) {
             return MODEL_APATHYR_HELMET;
+        }
+        if(item == ModItems.ADVENTUIC_HELMET) {
+            return MODEL_ADVENTURIC_HELMET;
+        }
+        if(item == ModItems.MAGE_HELMET) {
+            return MODEL_MAGE_HAT;
         }
         return null;
     }

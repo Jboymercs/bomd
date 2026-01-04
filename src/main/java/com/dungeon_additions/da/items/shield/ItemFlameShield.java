@@ -87,20 +87,21 @@ public class ItemFlameShield extends BOMDShieldItem implements IAnimatable {
                     hitCounter--;
                     usedHitCounter++;
 
-                    float damage = ModConfig.incendium_shield_damage;
+                    float damage = ModConfig.incendium_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1);
 
                     if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
                             player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
-                        damage = (float) (ModConfig.incendium_shield_damage * ModConfig.dark_armor_multiplier);
+                        damage = (float) (ModConfig.incendium_shield_damage * ModConfig.dark_armor_multiplier) + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1);
                     }
-
-                        ProjectileFlameSpit spit = new ProjectileFlameSpit(worldIn, player, damage);
-                        Vec3d playerLookVec = player.getLookVec();
-                        Vec3d playerPos = new Vec3d(player.posX + playerLookVec.x * 1.4D, player.posY + playerLookVec.y + 1.4, player.posZ + playerLookVec.z * 1.4D);
-                        spit.setPosition(playerPos.x, playerPos.y, playerPos.z);
-                        spit.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 0.7F, 1F);
-                        spit.setTravelRange(8);
-                        worldIn.spawnEntity(spit);
+                        if(!worldIn.isRemote) {
+                            ProjectileFlameSpit spit = new ProjectileFlameSpit(worldIn, player, damage);
+                            Vec3d playerLookVec = player.getLookVec();
+                            Vec3d playerPos = new Vec3d(player.posX + playerLookVec.x * 1.4D, player.posY + playerLookVec.y + 1.4, player.posZ + playerLookVec.z * 1.4D);
+                            spit.setPosition(playerPos.x, playerPos.y, playerPos.z);
+                            spit.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 0.7F, 1F);
+                            spit.setTravelRange(8);
+                            worldIn.spawnEntity(spit);
+                        }
 
                     worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.NEUTRAL, 0.6f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.4f));
                     usedAbility = true;
@@ -132,6 +133,7 @@ public class ItemFlameShield extends BOMDShieldItem implements IAnimatable {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         ItemBanner.appendHoverTextFromTileEntityTag(stack, tooltip);
     }
 

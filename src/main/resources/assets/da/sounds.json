@@ -100,6 +100,26 @@
       }
     ]
   },
+  "entity.confetti.deathblow": {
+    "category": "entity",
+    "subtitle": "entity.deathblow",
+    "sounds": [
+      {
+        "name": "da:entity/confetti/deathblow",
+        "stream": false
+      }
+    ]
+  },
+  "entity.confetti.key_unlock": {
+    "category": "entity",
+    "subtitle": "block.key_unlock",
+    "sounds": [
+      {
+        "name": "da:entity/confetti/key_unlock",
+        "stream": false
+      }
+    ]
+  },
   "entity.obsi.cast": {
     "category": "entity",
     "subtitle": "entity.obsi.cast",

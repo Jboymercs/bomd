@@ -279,7 +279,7 @@ public class EntityRotKnight extends EntityAbstractBase implements IAnimatable, 
       this.setImmovable(true);
 
       addEvent(()-> {
-          Main.proxy.spawnParticle(18, this.posX, this.posY, this.posZ, 0, 0, 0);
+          Main.proxy.spawnParticle(18,world, this.posX, this.posY, this.posZ, 0, 0, 0);
       }, 18);
       addEvent(()-> {
         Vec3d targetSaved = target.getPositionVector();

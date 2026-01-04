@@ -507,7 +507,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                             float damage = this.getAttack();
                             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.25, 1.2, 0)));
-                            Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
+                            Main.proxy.spawnParticle(18,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
                             ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.4f, 0, false);
                             addEvent(()-> {
                                 //AOE ACTION
@@ -748,7 +748,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                     float damage = this.getAttack();
                     ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.4f, 0, false);
                     Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 1.2, 0)));
-                    Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
+                    Main.proxy.spawnParticle(18,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
                     addEvent(()-> {
                         //AOE ACTION
                         float distance = this.getDistance(target);

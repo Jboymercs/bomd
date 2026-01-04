@@ -289,7 +289,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
               this.setUpdateIcicles = false;
           }, 5);
               Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
-              Main.proxy.spawnParticle(20, relPos.x, this.posY, relPos.z, 0, 0, 0);
+              Main.proxy.spawnParticle(20,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
       }, 55);
 
       addEvent(()-> {
@@ -389,7 +389,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
           ModUtils.handleAreaImpact(3.0f, (e) -> damage, this, offset, source, 0.6f, 0, false);
           new ActionProgressiveRing().performAction(this, target);
               Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.2, 0)));
-              Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
+              Main.proxy.spawnParticle(18,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
         //  this.playSound(SoundsHandler.DRAUGR_ELITE_SWING, 1.0f, 0.5f / (rand.nextFloat() * 0.4F + 0.4f));
           addEvent(()-> {
               this.setImmovable(true);
@@ -419,27 +419,27 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
           this.setShaking(true);
           this.shakeTime = 20;
           Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 1.2, 0)));
-          Main.proxy.spawnParticle(20, relPos.x, this.posY, relPos.z, 0, 0, 0);
+          Main.proxy.spawnParticle(20,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
       }, 45);
 
       addEvent(()-> {
           Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
-          Main.proxy.spawnParticle(20, relPos.x, this.posY, relPos.z, 0, 0, 0);
+          Main.proxy.spawnParticle(20,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
       }, 58);
 
         addEvent(()-> {
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
-            Main.proxy.spawnParticle(20, relPos.x, this.posY, relPos.z, 0, 0, 0);
+            Main.proxy.spawnParticle(20,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
         }, 70);
 
         addEvent(()-> {
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
-            Main.proxy.spawnParticle(20, relPos.x, this.posY, relPos.z, 0, 0, 0);
+            Main.proxy.spawnParticle(20,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
         }, 90);
 
         addEvent(()-> {
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
-            Main.proxy.spawnParticle(20, relPos.x, this.posY, relPos.z, 0, 0, 0);
+            Main.proxy.spawnParticle(20,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
         }, 110);
 
       addEvent(()-> {
@@ -542,7 +542,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
           float damage = (float) (this.getAttack() * 0.75);
           ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 1.5f, 0, false);
           Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 1.2, 0)));
-          Main.proxy.spawnParticle(20, relPos.x, this.posY, relPos.z, 0, 0, 0);
+          Main.proxy.spawnParticle(20,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
       }, 45);
 
       addEvent(()-> this.lockLook = false, 80);

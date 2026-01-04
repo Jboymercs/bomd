@@ -100,7 +100,7 @@ public class ItemDraugrShield extends BOMDShieldItem implements IAnimatable {
             }
 
             if(this.isDashing) {
-                Main.proxy.spawnParticle(2, player.posX, player.posY + 1, player.posZ, 0,0,0);
+                Main.proxy.spawnParticle(2, worldIn, player.posX, player.posY + 1, player.posZ, 0,0,0);
                 List<EntityLivingBase> targets = worldIn.getEntitiesWithinAABB(EntityLivingBase.class, player.getEntityBoundingBox().grow(1.5), e -> e != player);
 
                 for(EntityLivingBase target : targets) {
@@ -135,13 +135,13 @@ public class ItemDraugrShield extends BOMDShieldItem implements IAnimatable {
 
     public void onEnemyRammed(EntityLivingBase user, EntityLivingBase enemy, Vec3d rammingDir) {
         boolean attacked = false;
-        float damage = ModConfig.frostborn_shield_damage;
+        float damage = ModConfig.frostborn_shield_damage + ModUtils.addShieldBonusDamage(user.getHeldItemOffhand(), 1.5F);
 
         if(user instanceof EntityPlayer) {
             EntityPlayer actor = ((EntityPlayer) user);
             if(actor.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && actor.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
                     actor.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && actor.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
-                damage = (float) (ModConfig.frostborn_shield_damage * ModConfig.dark_armor_multiplier);
+                damage = (float) (ModConfig.frostborn_shield_damage * ModConfig.dark_armor_multiplier) + ModUtils.addShieldBonusDamage(user.getHeldItemOffhand(), 1.5F);
             }
         }
 
@@ -163,6 +163,7 @@ public class ItemDraugrShield extends BOMDShieldItem implements IAnimatable {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         ItemBanner.appendHoverTextFromTileEntityTag(stack, tooltip);
     }
 

@@ -22,6 +22,11 @@ public class ModRand {
         return rand.nextFloat() * randSign() * range;
     }
 
+
+    public static float getFloatPositive(float range) {
+        return rand.nextFloat() * range;
+    }
+
     /**
      * Chooses a random integer between the min [inclusive] and the max [exclusive]
      *

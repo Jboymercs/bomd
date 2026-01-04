@@ -1156,7 +1156,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         addEvent(()-> new ActionApathyrStomp().performAction(this, target), 47);
         addEvent(()-> {
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2.25, 1.2, 0)));
-            Main.proxy.spawnParticle(21, relPos.x, this.posY + 0.5, relPos.z, 0, 0, 0);
+            Main.proxy.spawnParticle(21,world, relPos.x, this.posY + 0.5, relPos.z, 0, 0, 0);
         }, 46);
         addEvent(()-> {
         this.setImmovable(true);
@@ -1244,7 +1244,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 1.2, 0)));
-            Main.proxy.spawnParticle(21, relPos.x, this.posY, relPos.z, 0, 0, 0);
+            Main.proxy.spawnParticle(21,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
             if(this.onGround) {
                 this.setImmovable(true);
             }
@@ -1386,7 +1386,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             this.setImmovable(true);
             //do projectile attack
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2.75, 1.2, 0)));
-            Main.proxy.spawnParticle(21, relPos.x, this.posY, relPos.z, 0, 0, 0);
+            Main.proxy.spawnParticle(21,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
                 new ActionEveratorProjectileYellow(crystal_wave_projectiles).performAction(this, target);
                 this.playSound(SoundsHandler.APATHYR_CAST_MAGIC, 0.75f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
 
@@ -1920,7 +1920,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 1.2, 0)));
-            Main.proxy.spawnParticle(21, relPos.x, this.posY, relPos.z, 0, 0, 0);
+            Main.proxy.spawnParticle(21,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
             if(this.onGround) {
                 this.setImmovable(true);
             }

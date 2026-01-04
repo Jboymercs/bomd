@@ -51,7 +51,7 @@ public class EntityRotSpike extends EntityAbstractBase implements IAnimatable, I
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.fallen_attack_damage * 0.8);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.fallen_attack_damage * 0.75);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5D);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
@@ -77,8 +77,8 @@ public class EntityRotSpike extends EntityAbstractBase implements IAnimatable, I
                 for(EntityLivingBase base : targets) {
                     if(base != this && !(base instanceof EntityRotKnightBoss)) {
                         Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
-                        DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
-                        float damage = this.getAttack();
+                        DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
+                        float damage = (float) (this.getAttack());
                         ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
                     }
                 }

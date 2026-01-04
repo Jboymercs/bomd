@@ -946,9 +946,9 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         //do spike action
           new ActionClapAttack().performAction(this, target);
           Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
-          Main.proxy.spawnParticle(22, relPos.x, this.posY, relPos.z, 0, 0, 0);
-          Main.proxy.spawnParticle(22, relPos.x, this.posY + 1, relPos.z, 0, 0, 0);
-          Main.proxy.spawnParticle(22, relPos.x, this.posY + 2, relPos.z, 0, 0, 0);
+          Main.proxy.spawnParticle(22,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
+          Main.proxy.spawnParticle(22,world, relPos.x, this.posY + 1, relPos.z, 0, 0, 0);
+          Main.proxy.spawnParticle(22,world, relPos.x, this.posY + 2, relPos.z, 0, 0, 0);
       }, 20);
 
         addEvent(()-> {

@@ -15,6 +15,7 @@ public class ProjectileFlameSpit extends Projectile {
 
     public ProjectileFlameSpit(World worldIn, EntityLivingBase throwerIn, float damage) {
         super(worldIn, throwerIn, damage);
+        this.setDamage(damage);
         this.setNoGravity(true);
     }
 

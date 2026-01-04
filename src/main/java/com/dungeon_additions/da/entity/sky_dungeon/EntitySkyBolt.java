@@ -59,12 +59,15 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
         this.setSize(0.9F, 0.5F);
     }
 
-    public EntitySkyBolt(World worldIn, Vec3d renderLazerPos, EntityPlayer summoner) {
+    private float damageIn;
+
+    public EntitySkyBolt(World worldIn, Vec3d renderLazerPos, EntityPlayer summoner, float damageIn) {
         super(worldIn);
         this.renderLazerPos = renderLazerPos;
         this.noClip = true;
         this.setImmovable(true);
         this.setNoAI(true);
+        this.damageIn = damageIn;
         this.setSize(0.9F, 0.5F);
         this.player = summoner;
     }
@@ -125,7 +128,7 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
                     for (EntityLivingBase target : targets) {
                         if (!(target instanceof EntitySkyBase)) {
                             Vec3d offset = target.getPositionVector().add(ModUtils.yVec(1.0D));
-                            DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
+                            DamageSource source = ModDamageSource.builder().type(ModDamageSource.PLAYER).directEntity(this).build();
                             float damage = this.getAttack();
                             ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.1f, 0, false);
                         }
@@ -158,8 +161,8 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
                     for (EntityLivingBase target : targets) {
                         if (!(target instanceof EntityPlayer)) {
                             Vec3d offset = target.getPositionVector().add(ModUtils.yVec(1.0D));
-                            DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
-                            float damage = (float) (this.getAttack() * 0.7);
+                            DamageSource source = ModDamageSource.builder().type(ModDamageSource.MAGIC).directEntity(this).build();
+                            float damage = (float) (damageIn);
                             ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.1f, 0, false);
                         }
                     }

@@ -6,10 +6,10 @@
   ],
   "key": {
     "R": {
-      "item": "minecraft:leather"
+      "item": "da:magic_leather"
     },
     "V": {
-      "item": "da:knight_ingot"
+      "item": "da:aegyptia_metal"
     },
     "B": {
       "item": "da:ancient_mana"

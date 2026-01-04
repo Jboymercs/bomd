@@ -77,7 +77,7 @@ public class ProjectileKingBlood extends Projectile {
 
             if(!(result.entityHit instanceof EntitySkyBase) && !(result.entityHit instanceof Projectile)) {
                 DamageSource source = ModDamageSource.builder()
-                        .type(ModDamageSource.PROJECTILE)
+                        .type(ModDamageSource.MAGIC)
                         .directEntity(this)
                         .indirectEntity(shootingEntity)
                         .stoppedByArmorNotShields().build();

@@ -112,7 +112,7 @@ public class ProjectileLightRing extends Projectile {
     protected void onHit(RayTraceResult result) {
         if(!(result.entityHit instanceof EntitySkyBase) && !(result.entityHit instanceof Projectile) && !(result.entityHit instanceof IEntityMultiPart)) {
             DamageSource source = ModDamageSource.builder()
-                    .type(ModDamageSource.PROJECTILE)
+                    .type(ModDamageSource.MAGIC)
                     .directEntity(this)
                     .indirectEntity(shootingEntity)
                     .stoppedByArmorNotShields().build();

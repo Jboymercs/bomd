@@ -101,12 +101,12 @@ public class ItemWyrkStaff extends ItemBase {
                             }
                             if (closestPart != null) {
                                 lazerEnd = closestPart.getEntityBoundingBox().calculateIntercept(player.getPositionEyes(1), lazerEnd).hitVec;
-                                ((IEntityMultiPart) closestEntity).attackEntityFromPart(closestPart, ModUtils.causeStaffDamage(player).setDamageBypassesArmor(), (float) 4 + damage_buffer);
+                                ((IEntityMultiPart) closestEntity).attackEntityFromPart(closestPart, ModUtils.causeStaffDamage(player).setDamageBypassesArmor(), (float) 4 + damage_buffer + ModUtils.addMageSetBonus(player, 0));
                             }
                         }
                     } else {
                         lazerEnd = closestEntity.getEntityBoundingBox().calculateIntercept(player.getPositionEyes(1), lazerEnd).hitVec;
-                        closestEntity.attackEntityFrom(ModUtils.causeStaffDamage(player).setDamageBypassesArmor(), (float) 4 + damage_buffer);
+                        closestEntity.attackEntityFrom(ModUtils.causeStaffDamage(player).setDamageBypassesArmor(), (float) 4 + damage_buffer + ModUtils.addMageSetBonus(player, 0));
                     }
                 }
                 world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.WYRK_STAFF_LAZER, SoundCategory.NEUTRAL, 1.0f, 0.8f / (world.rand.nextFloat() * 0.4F + 0.2f));
@@ -136,7 +136,7 @@ public class ItemWyrkStaff extends ItemBase {
               world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.WYRK_STAFF_SHOOT, SoundCategory.NEUTRAL, 1.0f, 0.7f / (world.rand.nextFloat() * 0.4F + 0.2f));
               Vec3d playerLookVec = player.getLookVec();
               Vec3d playerPos = new Vec3d(player.posX + playerLookVec.x * 1.4D,player.posY + playerLookVec.y + player.getEyeHeight(), player. posZ + playerLookVec.z * 1.4D);
-              ProjectileFrostBullet bullet = new ProjectileFrostBullet(world, player, ModConfig.wyrk_staff_bullet_damage);
+              ProjectileFrostBullet bullet = new ProjectileFrostBullet(world, player, ModConfig.wyrk_staff_bullet_damage + ModUtils.addMageSetBonus(player, 0));
               bullet.setPosition(playerPos.x, playerPos.y, playerPos.z);
               bullet.shoot(playerLookVec.x, playerLookVec.y, playerLookVec.z, 1.7f, 1.0f);
               world.spawnEntity(bullet);

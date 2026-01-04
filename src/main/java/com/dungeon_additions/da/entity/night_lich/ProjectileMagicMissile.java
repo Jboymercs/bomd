@@ -39,7 +39,7 @@ public class ProjectileMagicMissile extends Projectile {
     @Override
     protected void onHit(RayTraceResult result) {
         DamageSource source = ModDamageSource.builder()
-                .type(ModDamageSource.PROJECTILE)
+                .type(ModDamageSource.MAGIC)
                 .directEntity(this)
                 .indirectEntity(shootingEntity)
                 .stoppedByArmorNotShields().build();

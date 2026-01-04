@@ -36,6 +36,7 @@ public class ItemObsidianHelmet extends ItemArmor implements IHasModel {
     private String info_loc;
 
     private final AttributeModifier knockbackResistance;
+    private final AttributeModifier attackSpeedModif;
     private static final UUID[] ARMOR_MODIFIERS = new UUID[]{UUID.fromString("a3578781-e4a8-4d70-9d32-cd952aeae1df"),
             UUID.fromString("e2d1f056-f539-48c7-b353-30d7a367ebd0"), UUID.fromString("db13047a-bb47-4621-a025-65ed22ce461a"),
             UUID.fromString("abb5df20-361d-420a-8ec7-4bdba33378eb")};
@@ -50,7 +51,8 @@ public class ItemObsidianHelmet extends ItemArmor implements IHasModel {
         setRegistryName(name);
         this.texture = textureName;
         ModItems.ITEMS.add(this);
-        this.knockbackResistance = new AttributeModifier("darkKnockbackResistance", 0.3, 0);
+        this.knockbackResistance = new AttributeModifier("ObsidianKnockBackResistance", 0.1, 1);
+        this.attackSpeedModif = new AttributeModifier("ObsidianAttackSpeedModif", -0.5, 1);
     }
 
     @Override
@@ -65,6 +67,7 @@ public class ItemObsidianHelmet extends ItemArmor implements IHasModel {
         if (equipmentSlot == this.armorType) {
             multimap.put(SharedMonsterAttributes.ARMOR.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.damageReduceAmount * ModConfig.armor_scaling, 0));
             multimap.put(SharedMonsterAttributes.KNOCKBACK_RESISTANCE.getName(), this.knockbackResistance);
+            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), this.attackSpeedModif);
             // Override armor toughness to make is adjustable in game
             //Come back to Re-use when needed IF needed
             multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor toughness", 2.5F * ModConfig.armor_toughness_scaling, 0));
@@ -96,7 +99,7 @@ public class ItemObsidianHelmet extends ItemArmor implements IHasModel {
                         this.hitCounter = 0;
                     } else {
                         if (worldIn.rand.nextInt(8) == 0) {
-                            Main.proxy.spawnParticle(12, player.posX + ModRand.range(-2, 2), player.posY + 0.25 + ModRand.getFloat(2F), player.posZ + ModRand.range(-2, 2), 0, 0, 0);
+                            Main.proxy.spawnParticle(12,worldIn, player.posX + ModRand.range(-2, 2), player.posY + 0.25 + ModRand.getFloat(2F), player.posZ + ModRand.range(-2, 2), 0, 0, 0);
                         }
                     }
 

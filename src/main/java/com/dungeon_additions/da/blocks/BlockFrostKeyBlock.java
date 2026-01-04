@@ -5,6 +5,7 @@ import com.dungeon_additions.da.entity.tileEntity.TileEntityUpdaterFrost;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.keys.ItemFrostKey;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.google.common.base.Predicate;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -14,10 +15,12 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -94,7 +97,7 @@ public class BlockFrostKeyBlock extends BlockBase implements IBlockUpdater, ITil
                                     float hitZ) {
 
         if (playerIn.getHeldItemMainhand().getItem() == this.activationItem && !worldIn.isRemote || playerIn.getHeldItemMainhand().getItem() instanceof ItemFrostKey && !worldIn.isRemote) {
-
+            worldIn.playSound((EntityPlayer)null, pos, SoundsHandler.KEY_UNLOCK_SOUND, SoundCategory.BLOCKS, 1.5F, 1.0F);
             playerIn.getHeldItem(hand).shrink(1);
             worldIn.spawnEntity(this.spawnPortal.apply(worldIn, pos));
             worldIn.setBlockToAir(pos);

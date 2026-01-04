@@ -1522,7 +1522,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
           this.playSound(SoundsHandler.B_KNIGHT_SWING, 0.6f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           new ActionFlameSling(flame_sling_projectiles, false).performAction(this, target);
           Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.2, 0)));
-          Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
+          Main.proxy.spawnParticle(18,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
       }, 85);
 
       addEvent(()-> {
@@ -1636,7 +1636,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
               float distance = this.getDistance(target);
               new ActionTileAOE((int) (distance + 2)).performAction(this, target);
                   Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
-                  Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
+                  Main.proxy.spawnParticle(18,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
               this.setShaking(true);
               this.shakeTime = 20;
           }, 15);
@@ -1728,7 +1728,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
           this.setShaking(true);
           this.shakeTime = 7;
           Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.2, 0)));
-          Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
+          Main.proxy.spawnParticle(18,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
       }, 32);
 
       addEvent(()-> {

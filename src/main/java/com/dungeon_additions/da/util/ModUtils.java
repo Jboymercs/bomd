@@ -9,6 +9,8 @@ import com.dungeon_additions.da.entity.tileEntity.TileEntityLichSpawner;
 import com.dungeon_additions.da.event.EventScheduler;
 import com.dungeon_additions.da.event.Services;
 import com.dungeon_additions.da.init.ModBlocks;
+import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.items.tools.ItemMageStaff;
 import com.dungeon_additions.da.packets.EnumModParticles;
 import com.dungeon_additions.da.packets.MessageModParticles;
 import com.dungeon_additions.da.util.damage.Element;
@@ -25,7 +27,9 @@ import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -33,6 +37,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
+import net.minecraftforge.client.gui.ForgeGuiFactory;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.lwjgl.Sys;
@@ -177,6 +182,41 @@ public class ModUtils {
         }
     }
 
+    /**
+     * Gets enchantments on weapon for bonus damage to abilities
+     * @param stack
+     * @return
+     */
+    public static float addAbilityBonusDamage(ItemStack stack, float multiplier) {
+        int damage_bonus = EnchantmentHelper.getEnchantmentLevel(Enchantments.SHARPNESS, stack);
+        int damage_bonus_2 = EnchantmentHelper.getEnchantmentLevel(Enchantments.SMITE, stack);
+        int damage_bonus_3 = EnchantmentHelper.getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS, stack);
+
+        return (damage_bonus + ((float) damage_bonus_2 /2) + ((float) damage_bonus_3 /2)) * multiplier;
+    }
+
+    /**
+     * Gets Shield Enchantments like Unbreaking and Mending and applies damage
+     * @param stack
+     * @param multiplier
+     * @return
+     */
+    public static float addShieldBonusDamage(ItemStack stack, float multiplier) {
+        int damage_bonus = EnchantmentHelper.getEnchantmentLevel(Enchantments.UNBREAKING, stack);
+        int damage_bonus_2 = EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack);
+
+        return (damage_bonus + (damage_bonus_2 != 0 ? 1.5F : 0)) * multiplier;
+    }
+
+    public static ItemStack findArmorPiece(ItemStack stack, EntityPlayer player, EntityEquipmentSlot slot)
+    {
+       if(player.getItemStackFromSlot(slot).getItem() == stack.getItem()) {
+           return stack;
+       }
+            return ItemStack.EMPTY;
+
+    }
+
     public static BlockPos searchForBlocks(AxisAlignedBB box, World world, Entity entity, IBlockState block) {
         int i = MathHelper.floor(box.minX);
         int j = MathHelper.floor(box.minY);
@@ -201,6 +241,22 @@ public class ModUtils {
         }
 
         return null;
+    }
+
+    public static float addMageSetBonus(EntityPlayer player, float bonusDamage) {
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.MAGE_HELMET) {
+            bonusDamage += 0.5;
+        }
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.MAGE_CHESTPLATE) {
+            bonusDamage += 0.5;
+        }
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.MAGE_LEGGINGS) {
+            bonusDamage += 0.5;
+        }
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.MAGE_BOOTS) {
+            bonusDamage += 0.5;
+        }
+        return bonusDamage;
     }
 
     public static BlockPos searchForBlocksObsdilith(AxisAlignedBB box, World world, Entity entity, IBlockState block) {
@@ -518,6 +574,12 @@ public class ModUtils {
     public static void handleAreaImpact(float radius, Function<Entity, Float> maxDamage, Entity source, Vec3d pos, DamageSource damageSource,
                                         float knockbackFactor, int fireFactor) {
         handleAreaImpact(radius, maxDamage, source, pos, damageSource, knockbackFactor, fireFactor, true);
+    }
+
+    public static void handleAreaImpactMagic(float radius, Function<Entity, Float> maxDamage, Entity source, Vec3d pos, DamageSource damageSource,
+                                        float knockbackFactor, int fireFactor, boolean damageDecay) {
+        DamageSource Dsource = DamageSource.MAGIC.setDamageBypassesArmor();
+        handleAreaImpact(radius, maxDamage, source, pos, Dsource, knockbackFactor, fireFactor, true);
     }
 
     public static void handleBulletImpact(Entity hitEntity, Projectile projectile, float damage, DamageSource damageSource) {

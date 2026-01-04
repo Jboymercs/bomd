@@ -110,7 +110,7 @@ public class ProjectileYellowWave extends Projectile {
             if (entity instanceof EntityLivingBase && this.shootingEntity != null && entity != this.shootingEntity && !(entity instanceof EntityDesertBase) && (!(entity instanceof EntityGaelonBase))) {
 
                 DamageSource source = ModDamageSource.builder()
-                        .type(ModDamageSource.PROJECTILE)
+                        .type(ModDamageSource.MAGIC)
                         .indirectEntity(shootingEntity)
                         .directEntity(this)
                         .stoppedByArmorNotShields().disablesShields().build();

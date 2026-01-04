@@ -26,6 +26,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -42,6 +43,7 @@ public class ItemAmbitionSword extends ToolSword{
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.GOLD + ModUtils.translateDesc(info_loc));
+        tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
     }
 
     @Override
@@ -59,7 +61,7 @@ public class ItemAmbitionSword extends ToolSword{
         if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET) {
 
         }
-        float damage = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET ? (float) (9 * ModConfig.incendium_helmet_multipler): 9;
+        float damage = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET ? (float) (9 * ModConfig.incendium_helmet_multipler) + ModUtils.addAbilityBonusDamage(player.getHeldItemMainhand(), 1): 9 + ModUtils.addAbilityBonusDamage(player.getHeldItemMainhand(), 1);
         if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
             worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.B_KNIGHT_STOMP, SoundCategory.NEUTRAL, 1.0f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
             ModUtils.circleCallback(1, 8, (pos)-> {

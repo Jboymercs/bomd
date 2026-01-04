@@ -674,7 +674,7 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
                     new ActionRotShortAOE().performAction(this, target);
                     this.setImmovable(true);
                     Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 1.2, 0)));
-                    Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
+                    Main.proxy.spawnParticle(18,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
                 }, 8);
             }, 47);
 

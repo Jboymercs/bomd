@@ -30,6 +30,7 @@ import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
 import com.dungeon_additions.da.entity.gaelon_dungeon.*;
 import com.dungeon_additions.da.entity.gaelon_dungeon.apathyr.*;
 import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.EntityFriendlyCursedRevenant;
+import com.dungeon_additions.da.entity.generic.EntityDelayedExplosion;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
@@ -49,6 +50,7 @@ import com.dungeon_additions.da.entity.render.flame_dungeon.RenderIncendium;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderVolatileSpirit;
 import com.dungeon_additions.da.entity.render.frost_dungeon.*;
 import com.dungeon_additions.da.entity.render.gaelon_dungeon.*;
+import com.dungeon_additions.da.entity.render.generic.RenderDelayedExplosion;
 import com.dungeon_additions.da.entity.render.lich.RenderLichSpawn;
 import com.dungeon_additions.da.entity.render.lich.RenderLichStaff;
 import com.dungeon_additions.da.entity.render.lich.RenderNightLich;
@@ -321,6 +323,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityAegyptianWarlord.class, RenderAegyptianWarlord::new);
         //Aegyptian Colossus
         RenderingRegistry.registerEntityRenderingHandler(EntityAegyptianColossus.class, RenderAegyptianColossus::new);
+        //Delayed Explosion
+        RenderingRegistry.registerEntityRenderingHandler(EntityDelayedExplosion.class, RenderDelayedExplosion::new);
         //Puzzle Mirror
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPuzzleMirror.class, new RenderPuzzleMirror());
 

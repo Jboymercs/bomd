@@ -65,7 +65,7 @@ public class ActionSuperDash implements IMultiAction {
                 //stop the teleport prepping 10 ticks before teleporting
                 if(!this.preppingTeleport && this.teleportPosition != null) {
                     if(timerTick % 5 == 0) {
-                        Main.proxy.spawnParticle(16, teleportPosition.x, teleportPosition.y + 1, teleportPosition.z, 0, 0, 0, 20);
+                        Main.proxy.spawnParticle(16,actor.world, teleportPosition.x, teleportPosition.y + 1, teleportPosition.z, 0, 0, 0, 20);
                     }
                     //locate the position and guestimate player tracking
                 } else {
@@ -76,7 +76,7 @@ public class ActionSuperDash implements IMultiAction {
                                 if(actor.getAttackTarget() != null) {
                                     this.teleportPosition = laserShootPos;
                                     if(timerTick % 10 == 0) {
-                                        Main.proxy.spawnParticle(16, teleportPosition.x, teleportPosition.y + 1, teleportPosition.z, 0, 0, 0, 20);
+                                        Main.proxy.spawnParticle(16,actor.world, teleportPosition.x, teleportPosition.y + 1, teleportPosition.z, 0, 0, 0, 20);
                                     }
                                 }
                             }, 4);

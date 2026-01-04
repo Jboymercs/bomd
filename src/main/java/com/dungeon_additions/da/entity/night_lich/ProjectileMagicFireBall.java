@@ -49,7 +49,7 @@ public class ProjectileMagicFireBall extends Projectile {
     protected void onHit(RayTraceResult result) {
         //Spawns an Explosion on Impact
         if(!world.isRemote) {
-            Main.proxy.spawnParticle(21, this.posX, this.posY, this.posZ, 0, 0, 0);
+            Main.proxy.spawnParticle(21,world, this.posX, this.posY, this.posZ, 0, 0, 0);
             if(player != null) {
                 if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.NIGHT_LICH_HELMET) {
                     world.newExplosion(this, this.posX, this.posY, this.posZ, 2, false, false);
@@ -62,7 +62,7 @@ public class ProjectileMagicFireBall extends Projectile {
         }
 
         DamageSource source = ModDamageSource.builder()
-                .type(ModDamageSource.PROJECTILE)
+                .type(ModDamageSource.MAGIC)
                 .directEntity(this)
                 .indirectEntity(shootingEntity)
                 .stoppedByArmorNotShields().build();

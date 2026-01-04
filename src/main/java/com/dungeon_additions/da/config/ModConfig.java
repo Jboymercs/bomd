@@ -44,6 +44,11 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static double armor_scaling = 1.0;
 
+    @Config.Name("Armor Durability Scaling")
+    @Config.Comment("Scale the durability of the armor in the mod universally")
+    @Config.RequiresMcRestart
+    public static int armor_durability_scaling = 1;
+
     @Config.Name("Armor Toughness Scaling")
     @Config.Comment("Scale the armor toughness values of all the armor items in the mod")
     @Config.RequiresMcRestart
@@ -151,7 +156,7 @@ public class ModConfig {
     @Config.Name("Soul Spear Ability Cooldown")
     @Config.Comment("Change the cooldown of the Soul Spears ability in seconds Both types!")
     @Config.RequiresMcRestart
-    public static int soul_spear_cooldown = 10;
+    public static int soul_spear_cooldown = 15;
 
     @Config.Name("Void Dagger Damage")
     @Config.Comment("Change the damage factor of the Void Dagger")
@@ -543,7 +548,7 @@ public class ModConfig {
     @Config.Name("Gaelon Dungeon Mob Attack Damage Boost")
     @Config.Comment("Per boost level of what advancements the player has, Gaelon mobs will boost there Attack Damage x per level")
     @Config.RequiresMcRestart
-    public static double gaelon_attack_damage_boost = 4;
+    public static double gaelon_attack_damage_boost = 5;
 
     @Config.Name("Cult of Roh Assassin Spawn Rate")
     @Config.Comment("Change the spawn rate of Cult of Roh Assassins, change to 0 to disable")

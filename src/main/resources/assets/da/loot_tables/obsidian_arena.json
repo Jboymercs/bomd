@@ -84,6 +84,20 @@
         },
         {
           "type": "item",
+          "name": "da:magic_leather",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
           "name": "minecraft:end_rod",
           "weight": 20,
           "functions": [

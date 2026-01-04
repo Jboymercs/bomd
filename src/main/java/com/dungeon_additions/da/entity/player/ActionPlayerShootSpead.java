@@ -18,16 +18,16 @@ public class ActionPlayerShootSpead implements IActionPlayer{
     @Override
     public void performAction(EntityPlayer actor) {
 
-        double additionalDamage = 0.2;
+        double additionalDamage = 5;
         if(actor.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.NIGHT_LICH_HELMET) {
-            additionalDamage = 0.45;
+            additionalDamage = 8;
         }
 
-        ProjectileMagicMissile missile = new ProjectileMagicMissile(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage));
-        ProjectileMagicMissile missile_2 = new ProjectileMagicMissile(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage));
-        ProjectileMagicMissile missile_3 = new ProjectileMagicMissile(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage));
-        ProjectileMagicMissile missile_4 = new ProjectileMagicMissile(actor.world, actor,(float) (MobConfig.night_lich_attack_damage * additionalDamage));
-        ProjectileMagicMissile missile_5 = new ProjectileMagicMissile(actor.world, actor, (float) (MobConfig.night_lich_attack_damage * additionalDamage));
+        ProjectileMagicMissile missile = new ProjectileMagicMissile(actor.world, actor, (float) (additionalDamage) + ModUtils.addMageSetBonus(actor, 0));
+        ProjectileMagicMissile missile_2 = new ProjectileMagicMissile(actor.world, actor, (float) (additionalDamage) + ModUtils.addMageSetBonus(actor, 0));
+        ProjectileMagicMissile missile_3 = new ProjectileMagicMissile(actor.world, actor, (float) (additionalDamage) + ModUtils.addMageSetBonus(actor, 0));
+        ProjectileMagicMissile missile_4 = new ProjectileMagicMissile(actor.world, actor,(float) (additionalDamage) + ModUtils.addMageSetBonus(actor, 0));
+        ProjectileMagicMissile missile_5 = new ProjectileMagicMissile(actor.world, actor, (float) (additionalDamage) + ModUtils.addMageSetBonus(actor, 0));
 
         Vec3d relPos = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0,3.0,0)));
         Vec3d relPos2 = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(0,2.8,0.8)));

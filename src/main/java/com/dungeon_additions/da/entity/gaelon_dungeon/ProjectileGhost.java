@@ -40,7 +40,7 @@ public class ProjectileGhost extends Projectile {
         if(result.entityHit != null) {
             if(!(result.entityHit instanceof EntityApathyr)) {
                 DamageSource source = ModDamageSource.builder()
-                        .type(ModDamageSource.PROJECTILE)
+                        .type(ModDamageSource.MAGIC)
                         .directEntity(this)
                         .indirectEntity(shootingEntity)
                         .stoppedByArmorNotShields().build();

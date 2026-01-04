@@ -72,7 +72,7 @@ public class ItemApathyrAxe extends ItemSword implements IAnimatable, IHasModel 
                 } else {
                     damage = ModConfig.midnight_reign_ability_damage + 1;
                 }
-                ModUtils.performNTimes(20, (i) -> Main.proxy.spawnParticle(17, player.posX + ModRand.range(-2, 2), player.posY + ModRand.range(1, 3), player.posZ + ModRand.range(-2, 2), 0, 0.08, 0, 20));
+                ModUtils.performNTimes(20, (i) -> Main.proxy.spawnParticle(17,worldIn, player.posX + ModRand.range(-2, 2), player.posY + ModRand.range(1, 3), player.posZ + ModRand.range(-2, 2), 0, 0.08, 0, 20));
                 worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.APATHYR_CAST_HEAVY, SoundCategory.NEUTRAL, 1.5f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.4f));
                 //do crystal wave
                 new ActionApathyrWave(damage).performAction(player);
@@ -87,7 +87,7 @@ public class ItemApathyrAxe extends ItemSword implements IAnimatable, IHasModel 
                         targetedEntity = entityIn;
                         targetOriginalPosition = entityIn.getPositionVector();
                         stack.damageItem(2, player);
-                        ModUtils.performNTimes(10, (i) -> Main.proxy.spawnParticle(15, player.posX + ModRand.range(-2, 2), player.posY + ModRand.range(1, 3), player.posZ + ModRand.range(-2, 2), 0, 0.08, 0, 20));
+                        ModUtils.performNTimes(10, (i) -> Main.proxy.spawnParticle(15, worldIn,player.posX + ModRand.range(-2, 2), player.posY + ModRand.range(1, 3), player.posZ + ModRand.range(-2, 2), 0, 0.08, 0, 20));
                         worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.APATHYR_CAST_SPIKES, SoundCategory.NEUTRAL, 1.5f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.4f));
                     }
                 }

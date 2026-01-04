@@ -4,6 +4,7 @@ import com.dungeon_additions.da.blocks.base.IBlockUpdater;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityUpdater;
 import com.dungeon_additions.da.items.keys.ItemRotKnightKey;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.google.common.base.Predicate;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -17,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -95,6 +97,7 @@ public class BlockKnightBossKeyBlock extends BlockBase implements IBlockUpdater,
                                     float hitZ) {
 
         if (playerIn.getHeldItemMainhand() != null && playerIn.getHeldItemMainhand().getItem() == this.activationItem && !worldIn.isRemote || playerIn.getHeldItemMainhand().getItem() instanceof ItemRotKnightKey && !worldIn.isRemote) {
+            worldIn.playSound((EntityPlayer)null, pos, SoundsHandler.KEY_UNLOCK_SOUND, SoundCategory.BLOCKS, 1.5F, 1.0F);
             playerIn.getHeldItem(hand).shrink(1);
             worldIn.spawnEntity(this.spawnPortal.apply(worldIn, pos));
             worldIn.setBlockToAir(pos);

@@ -50,7 +50,7 @@ public class ItemSoulSpear extends ToolSword {
                 Vec3d pos = player.getPositionVector();
                 worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.LICH_SHOOT_FIREBALL, SoundCategory.NEUTRAL, 1.0f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
                 stack.damageItem(10, player);
-                player.getCooldownTracker().setCooldown(this, SwordCoolDown);
+                player.getCooldownTracker().setCooldown(this, SwordCoolDown * 2);
             } else {
                 new ActionPlayerShootSpead().performAction(player);
                 Vec3d pos = player.getPositionVector();

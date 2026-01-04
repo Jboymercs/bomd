@@ -47,7 +47,7 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
 
     public EntityLichStaffAOE(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
-        this.setSize(0.7f, 2.0f);
+        this.setSize(1f, 2.0f);
         this.noClip = true;
         this.setImmovable(true);
         this.setNoAI(true);
@@ -60,7 +60,7 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
 
     public EntityLichStaffAOE(World worldIn) {
         super(worldIn);
-        this.setSize(0.7f, 2.0f);
+        this.setSize(1f, 2.0f);
         this.noClip = true;
         this.setImmovable(true);
         this.setNoAI(true);
@@ -77,7 +77,7 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
         this.noClip = true;
         this.setImmovable(true);
         this.setNoAI(true);
-        this.setSize(0.7f, 2.0f);
+        this.setSize(1f, 2.0f);
         if(isFromSky) {
             ANIM_FROM_SELECTION = "from_sky";
         } else {
@@ -94,7 +94,7 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
         this.noClip = true;
         this.setImmovable(true);
         this.setNoAI(true);
-        this.setSize(0.7f, 2.0f);
+        this.setSize(1f, 2.0f);
         this.owner = owner;
         this.damageFromOwner = damage;
         if(isFromSky) {
@@ -128,7 +128,7 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
                     for(EntityLivingBase base : targets) {
                         if(base != this && !(base instanceof EntityNightLich) && !(base instanceof EntityMob)) {
                             Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
-                            DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
+                            DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                             float damage = this.getAttack();
                             ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
                         }
@@ -173,14 +173,14 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
 
                     }
                 } else {
-                    List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntityLichStaffAOE || e instanceof EntityNightLich | e instanceof EntityMob)));
+                    List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(1.1), e -> !e.getIsInvulnerable() && (!(e instanceof EntityLichStaffAOE || e instanceof EntityNightLich | e instanceof EntityMob)));
 
 
                     if(!targets.isEmpty()) {
                         for(EntityLivingBase base : targets) {
                             if(base != this && !(base instanceof EntityNightLich) && !(base instanceof EntityMob)) {
                                 Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
-                                DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
+                                DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                                 float damage = this.getAttack();
                                 ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.8f, 0, false);
                             }

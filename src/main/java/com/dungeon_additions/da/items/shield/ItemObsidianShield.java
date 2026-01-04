@@ -93,10 +93,10 @@ public class ItemObsidianShield extends BOMDShieldItem implements IAnimatable {
                     player.motionZ = 0;
                 }
                 //Do Quick AOE
-                float damage = ModConfig.obsidilith_shield_damage;
+                float damage = ModConfig.obsidilith_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1.25F);
                 if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
                         player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
-                    damage = (float) (ModConfig.obsidilith_shield_damage * ModConfig.dark_armor_multiplier);
+                    damage = (float) (ModConfig.obsidilith_shield_damage * ModConfig.dark_armor_multiplier) + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1.25F);
                 }
 
                 Entity entityToo = findClosestEntity(player, worldIn);
@@ -107,7 +107,7 @@ public class ItemObsidianShield extends BOMDShieldItem implements IAnimatable {
                         Vec3d particleStart = player.getPositionEyes(1.0F);
                         Vec3d particleEnd = entityToo.getPositionVector().add(0, 1.5, 0);
                         ModUtils.lineCallback(particleStart, particleEnd, (int) player.getDistance(entityIn), (pos, i) -> {
-                            Main.proxy.spawnParticle(7, pos.x, pos.y, pos.z, 0,0,0);
+                            Main.proxy.spawnParticle(7,worldIn, pos.x, pos.y, pos.z, 0,0,0);
                         });
                         if(!initiatedAttack) {
                             //old position
@@ -291,6 +291,7 @@ public class ItemObsidianShield extends BOMDShieldItem implements IAnimatable {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         ItemBanner.appendHoverTextFromTileEntityTag(stack, tooltip);
     }
 

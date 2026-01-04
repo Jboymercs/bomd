@@ -124,7 +124,7 @@ public class EntityBloodPile extends EntitySkyBase implements IAnimatable {
                     for(EntityLivingBase base : targets) {
                         if(base != this && !(base instanceof EntitySkyBase)) {
                             Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.5D));
-                            DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
+                            DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                             float damage = this.getAttack();
                             ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
                             //  addPotionEffect(new PotionEffect(MobEffects.POISON, 9, 3));

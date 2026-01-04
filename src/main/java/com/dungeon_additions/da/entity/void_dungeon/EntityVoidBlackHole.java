@@ -134,7 +134,7 @@ public class EntityVoidBlackHole extends EntityEndBase implements IAnimatable, I
                                     target.setHealth((float) target.getHealth() - 1);
                                     target.hurtResistantTime = 0;
                                     DamageSource source = ModDamageSource.builder()
-                                            .type(ModDamageSource.MOB)
+                                            .type(ModDamageSource.MAGIC)
                                             .directEntity(this)
                                             .stoppedByArmorNotShields().build();
 
@@ -171,7 +171,7 @@ public class EntityVoidBlackHole extends EntityEndBase implements IAnimatable, I
                                     target.setHealth((float) target.getHealth() - 1);
                                     target.hurtResistantTime = 0;
                                     DamageSource source = ModDamageSource.builder()
-                                            .type(ModDamageSource.MOB)
+                                            .type(ModDamageSource.MAGIC)
                                             .directEntity(this)
                                             .stoppedByArmorNotShields().build();
 

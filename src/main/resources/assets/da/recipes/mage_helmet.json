@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XRX",
+    "X X"
+  ],
+  "key": {
+    "X": {
+      "item": "da:magic_leather"
+    },
+    "R": {
+      "item": "minecraft:gold_nugget"
+    }
+  },
+  "result": {
+    "item": "da:mage_helmet"
+  }
+}

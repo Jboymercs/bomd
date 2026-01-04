@@ -22,6 +22,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class ItemBlossomDagger extends ToolSword{
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
     }
 
     @Override
@@ -60,7 +62,7 @@ public class ItemBlossomDagger extends ToolSword{
             worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.BLOSSOM_PETAL_WAVE, SoundCategory.NEUTRAL, 1.0f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
             // Shoots projectiles in a small arc
             for (int i = 0; i < 5; i++) {
-                EntityDart projectile = new EntityDart(worldIn, player);
+                EntityDart projectile = new EntityDart(worldIn, player, 6 + ModUtils.addMageSetBonus(player, 0) + ModUtils.addAbilityBonusDamage(player.getHeldItemMainhand(), 1));
                 projectile.shoot(player, pitch, player.rotationYaw - 30 + (i * 15), 0.0F, speed, inaccuracy);
                 projectile.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
                 player.world.spawnEntity(projectile);

@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.player;
 
 import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.EntityKingHolyWave;
+import com.dungeon_additions.da.util.ModUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
 
@@ -19,11 +20,11 @@ public class ActionDoClawSlash implements IActionPlayer{
         float inaccuracy = 0.0f;
         float speed = 0.4f;
 
-        EntityKingHolyWave wave = new EntityKingHolyWave(actor.world, actor, damage);
-        EntityKingHolyWave wave2 = new EntityKingHolyWave(actor.world, actor, damage);
-        EntityKingHolyWave wave3 = new EntityKingHolyWave(actor.world, actor, damage);
-        EntityKingHolyWave wave4 = new EntityKingHolyWave(actor.world, actor, damage);
-        EntityKingHolyWave wave5 = new EntityKingHolyWave(actor.world, actor, damage);
+        EntityKingHolyWave wave = new EntityKingHolyWave(actor.world, actor, damage + ModUtils.addMageSetBonus(actor, 0));
+        EntityKingHolyWave wave2 = new EntityKingHolyWave(actor.world, actor, damage + ModUtils.addMageSetBonus(actor, 0));
+        EntityKingHolyWave wave3 = new EntityKingHolyWave(actor.world, actor, damage + ModUtils.addMageSetBonus(actor, 0));
+        EntityKingHolyWave wave4 = new EntityKingHolyWave(actor.world, actor, damage + ModUtils.addMageSetBonus(actor, 0));
+        EntityKingHolyWave wave5 = new EntityKingHolyWave(actor.world, actor, damage + ModUtils.addMageSetBonus(actor, 0));
 
         wave.setPosition(relPos.x, relPos.y, relPos.z);
         wave2.setPosition(relPos.x, relPos.y, relPos.z);

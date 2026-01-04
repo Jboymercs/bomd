@@ -83,8 +83,8 @@ public class ModDamageSource {
 
         public DamageSource build() {
             if (this.damageType != null && this.directEntity != null) {
-                ModIndirectDamage source = new ModIndirectDamage(this.damageType, this.directEntity, this.indirectEntity, this.element);
-
+                ModIndirectDamage source;
+                     source = new ModIndirectDamage(this.damageType, this.directEntity, this.indirectEntity, this.element);
                 if (this.stoppedByArmorNotShields) {
                     source.setStoppedByArmor(true);
                     source.isUnblockable = true;

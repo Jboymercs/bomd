@@ -339,7 +339,7 @@ public class EntityFriendlyCursedRevenant extends EntityGaelonBase implements IA
                 Vec3d targetedPosNew = target.getPositionVector();
                 Vec3d predictedPosition = ModUtils.predictPlayerPosition(targetOldPos, targetedPosNew, 3);
                 Vec3d posSet = predictedPosition.subtract(this.getPositionVector()).normalize();
-                Vec3d targetedPos = predictedPosition.add(posSet.scale(-1));
+                Vec3d targetedPos = predictedPosition.add(posSet.scale(-2));
                 addEvent(()-> {
                     this.setImmovable(false);
                     ModUtils.attemptTeleport(targetedPos, this);
@@ -348,15 +348,15 @@ public class EntityFriendlyCursedRevenant extends EntityGaelonBase implements IA
                     this.setImmovable(true);
                     this.playSound(SoundsHandler.B_KNIGHT_PREPARE, 1.75f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f));
                 }, 3);
-            }, 3);
-        }, 22);
+            }, 4);
+        }, 21);
 
 
         addEvent(()-> {
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack() * 1.5);
-            ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false);
             this.playSound(SoundsHandler.REANIMATE_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 40);
 

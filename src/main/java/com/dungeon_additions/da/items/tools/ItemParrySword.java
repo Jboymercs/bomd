@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -47,6 +48,7 @@ public class ItemParrySword extends ToolSword {
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
     }
 
     @Override
@@ -100,7 +102,7 @@ public class ItemParrySword extends ToolSword {
                 if(didBlockDamage && !this.dealtDamage) {
                     EntityLivingBase attacker = player.getAttackingEntity();
                     assert attacker != null;
-                    float damage = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET ? (float) (8 * ModConfig.incendium_helmet_multipler): 8;
+                    float damage = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET ? (float) (8 * ModConfig.incendium_helmet_multipler) + ModUtils.addAbilityBonusDamage(player.getHeldItemMainhand(), 2): 8 + ModUtils.addAbilityBonusDamage(player.getHeldItemMainhand(), 2);
                     attacker.attackEntityFrom(ModUtils.causeAxeDamage(player).setDamageBypassesArmor(), damage);
                     attacker.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1, false, false));
                     worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.IMPERIAL_SWORD_PARRY, SoundCategory.NEUTRAL, 1.0f, 0.8f / (worldIn.rand.nextFloat() * 0.4F + 0.3f));

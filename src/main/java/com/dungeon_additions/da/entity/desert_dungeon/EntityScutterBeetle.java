@@ -184,7 +184,7 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
 
             scuttleTimer--;
             if(this.ticksExisted % 2 == 0) {
-                Main.proxy.spawnParticle(2, this.posX, this.posY + 0.6, this.posZ, 0,0,0);
+                Main.proxy.spawnParticle(2,world, this.posX, this.posY + 0.6, this.posZ, 0,0,0);
             }
             if(scuttleTimer < 0 || Math.abs(this.motionX) + Math.abs(this.motionZ) < 0.01f) {
                 this.endScuttleAttack();

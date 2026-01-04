@@ -125,10 +125,10 @@ public class ItemDarkShield extends BOMDShieldItem implements IAnimatable {
                     ModUtils.circleCallback(3, 24, (pos) -> {
                         pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
                         int y = getSurfaceHeight(worldIn, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
-                        float damage = ModConfig.dark_shield_damage;
+                        float damage = ModConfig.dark_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1);
                         if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
                                 player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
-                            damage = (float) (ModConfig.dark_shield_damage * ModConfig.dark_armor_multiplier);
+                            damage = (float) (ModConfig.dark_shield_damage * ModConfig.dark_armor_multiplier) + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1);
                         }
                         EntityMoveTile spike = new EntityMoveTile(worldIn, player, damage);
                         spike.setPosition(pos.x, y + 1, pos.z);
@@ -153,6 +153,7 @@ public class ItemDarkShield extends BOMDShieldItem implements IAnimatable {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         ItemBanner.appendHoverTextFromTileEntityTag(stack, tooltip);
     }
 

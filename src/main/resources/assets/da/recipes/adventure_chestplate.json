@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "da:adventure_metal"
+    }
+  },
+  "result": {
+    "item": "da:adventure_chestplate"
+  }
+}

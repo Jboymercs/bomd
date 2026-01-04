@@ -52,7 +52,7 @@ public class ActionShootLightRing implements IActionPlayer{
                         }
                     }
                     if (closestPart != null) {
-                        ring = new ProjectileLightRing(actor.world, actor, damage, ((EntityLivingBase) closestEntity));
+                        ring = new ProjectileLightRing(actor.world, actor, damage + ModUtils.addMageSetBonus(actor, 0), ((EntityLivingBase) closestEntity));
                         Vec3d playerPos = new Vec3d(actor.posX + playerLookVec.x * 1.4D,actor.posY + playerLookVec.y + actor.getEyeHeight(), actor. posZ + playerLookVec.z * 1.4D);
                         ring.setPosition(playerPos.x, playerPos.y, playerPos.z);
                         ring.setTravelRange(60F);
@@ -61,7 +61,7 @@ public class ActionShootLightRing implements IActionPlayer{
                     }
                 }
             } else if (closestEntity instanceof EntityLivingBase){
-                ring = new ProjectileLightRing(actor.world, actor, damage, ((EntityLivingBase) closestEntity));
+                ring = new ProjectileLightRing(actor.world, actor, damage + ModUtils.addMageSetBonus(actor, 0), ((EntityLivingBase) closestEntity));
                 Vec3d playerPos = new Vec3d(actor.posX + playerLookVec.x * 1.4D,actor.posY + playerLookVec.y + actor.getEyeHeight(), actor. posZ + playerLookVec.z * 1.4D);
                 ring.setPosition(playerPos.x, playerPos.y, playerPos.z);
                 ring.setTravelRange(60F);
@@ -69,7 +69,7 @@ public class ActionShootLightRing implements IActionPlayer{
                 ring.shoot(actor, actor.rotationPitch, actor.rotationYaw, 0.0F, speed, inaccuracy);
             }
         } else {
-            ring = new ProjectileLightRing(actor.world, actor, damage);
+            ring = new ProjectileLightRing(actor.world, actor, damage + ModUtils.addMageSetBonus(actor, 0));
             Vec3d playerPos = new Vec3d(actor.posX + playerLookVec.x * 1.4D,actor.posY + playerLookVec.y + actor.getEyeHeight(), actor. posZ + playerLookVec.z * 1.4D);
             ring.setPosition(playerPos.x, playerPos.y, playerPos.z);
             ring.setTravelRange(60F);

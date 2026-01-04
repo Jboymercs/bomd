@@ -31,7 +31,7 @@ public class TileEntityObsidilithRune extends TileEntity implements ITickable {
                         Vec3d blossomPos = blossom.getPositionVector().add(0, 2, 0);
                         ModUtils.lineCallback(currPos, blossomPos,(int) (blossom.getDistance(currPos.x, currPos.y, currPos.z) * 1.5), (particlePos, j) -> {
                             blossom.addEvent(()-> {
-                                Main.proxy.spawnParticle(7, particlePos.x, particlePos.y + (j * 0.1), particlePos.z, 0, 0, 0);
+                                Main.proxy.spawnParticle(7,world, particlePos.x, particlePos.y + (j * 0.1), particlePos.z, 0, 0, 0);
                             }, j * 3);
                         });
                     }

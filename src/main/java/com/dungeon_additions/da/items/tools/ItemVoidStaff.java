@@ -19,6 +19,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -40,6 +41,7 @@ public class ItemVoidStaff extends ToolSword implements IAnimatable {
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
     }
 
     @Override
@@ -66,7 +68,7 @@ public class ItemVoidStaff extends ToolSword implements IAnimatable {
                 world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.LICH_SHOOT_MISSILE, SoundCategory.NEUTRAL, 1.0f, 0.7f / (world.rand.nextFloat() * 0.4F + 0.2f));
                 Vec3d playerLookVec = player.getLookVec();
                 Vec3d playerPos = new Vec3d(player.posX + playerLookVec.x * 1.4D,player.posY + playerLookVec.y + player.getEyeHeight(), player. posZ + playerLookVec.z * 1.4D);
-                ProjectileVoidClysmBolt bullet = new ProjectileVoidClysmBolt(world, player, damage);
+                ProjectileVoidClysmBolt bullet = new ProjectileVoidClysmBolt(world, player, damage + ModUtils.addMageSetBonus(player, 0));
                 bullet.setPosition(playerPos.x, playerPos.y, playerPos.z);
                 bullet.shoot(playerLookVec.x, playerLookVec.y, playerLookVec.z, 1.6f, 1.0f);
                 bullet.rotationPitch = player.rotationPitch;

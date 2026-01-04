@@ -22,7 +22,7 @@ public class ActionBeginStaffThrow implements IActionLich{
         staff_main.setPosition(target.posX, y, target.posZ);
         actor.world.spawnEntity(staff_main);
         Vec3d relPos = target.getPositionVector().add(ModUtils.getRelativeOffset(staff_main, new Vec3d(0, 1.2, 0)));
-        Main.proxy.spawnParticle(21, relPos.x, target.posY, relPos.z, 0, 0, 0);
+        Main.proxy.spawnParticle(21,actor.world, relPos.x, target.posY, relPos.z, 0, 0, 0);
 
         actor.addEvent(()-> {
             EntityLichStaffAOE staff_1 = new EntityLichStaffAOE(actor.world, true);

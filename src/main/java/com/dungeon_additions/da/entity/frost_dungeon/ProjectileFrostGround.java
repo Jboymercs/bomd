@@ -92,7 +92,7 @@ public class ProjectileFrostGround extends Projectile {
             if (entity instanceof EntityLivingBase && this.shootingEntity != null && entity != this.shootingEntity) {
 
                 DamageSource source = ModDamageSource.builder()
-                        .type(ModDamageSource.PROJECTILE)
+                        .type(ModDamageSource.MAGIC)
                         .indirectEntity(shootingEntity)
                         .directEntity(this)
                         .stoppedByArmorNotShields().disablesShields().build();

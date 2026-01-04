@@ -15,7 +15,7 @@ public class ActionDoLightningAttack implements IActionPlayer {
         Vec3d playerLookVec = actor.getLookVec();
         for(int i = 1; i < 11; i += 1) {
             Vec3d playerPos = new Vec3d(actor.posX + playerLookVec.x * i, actor.posY, actor.posZ + playerLookVec.z * i);
-            EntitySkyBolt bolt = new EntitySkyBolt(actor.world, playerPos.add(ModRand.getFloat(1.25F), 10, ModRand.getFloat(1.25F)), actor);
+            EntitySkyBolt bolt = new EntitySkyBolt(actor.world, playerPos.add(ModRand.getFloat(1.25F), 10, ModRand.getFloat(1.25F)), actor, 10 + ModUtils.addAbilityBonusDamage(actor.getHeldItemMainhand(), 1.5F));
                 int yVar = ModUtils.getSurfaceHeightGeneral(actor.world, new BlockPos(playerPos.x, actor.posY, playerPos.z), (int) actor.posY - 6, (int) actor.posY + 3);
                 bolt.setPosition(playerPos.x, yVar, playerPos.z);
                 actor.world.spawnEntity(bolt);

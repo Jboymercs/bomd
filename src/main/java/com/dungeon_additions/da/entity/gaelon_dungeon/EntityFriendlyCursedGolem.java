@@ -380,7 +380,7 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
             world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
             this.playSound(SoundsHandler.VOIDCLYSM_IMPACT, 0.8f, 0.2f / (rand.nextFloat() * 0.4f + 0.2f));
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 1.2, 0)));
-            Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
+            Main.proxy.spawnParticle(18,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
         }, 40);
 
         addEvent(()-> {

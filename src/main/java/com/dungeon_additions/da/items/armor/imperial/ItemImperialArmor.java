@@ -35,8 +35,10 @@ public class ItemImperialArmor extends ItemArmor implements IHasModel {
             UUID.fromString("e2d1f056-f539-48c7-b353-30d7a367ebd0"), UUID.fromString("db13047a-bb47-4621-a025-65ed22ce461a"),
             UUID.fromString("abb5df20-361d-420a-8ec7-4bdba33378eb")};
 
-    public static final UUID MOVEMENT_SPEED_MODIFIER = UUID.fromString("0483aa4a-af8d-36a2-8693-22bec9caa265");
+    private final AttributeModifier movementSpeedModif;
+    private final AttributeModifier healthBoostModif;
     private String armorBonusDesc = "";
+
     public ItemImperialArmor(String name, ArmorMaterial materialIn, int renderIdx, EntityEquipmentSlot slotIn, String textureName, String info_loc) {
         super(materialIn, renderIdx, slotIn);
         setCreativeTab(DungeonAdditionsTab.ALL);
@@ -45,7 +47,8 @@ public class ItemImperialArmor extends ItemArmor implements IHasModel {
         setRegistryName(name);
         this.texture = textureName;
         ModItems.ITEMS.add(this);
-
+        this.movementSpeedModif = new AttributeModifier("imperialMovementDebuff_" + slotIn.getName(), -0.05, 1);
+        this.healthBoostModif = new AttributeModifier("imperialHealthBoost_" + slotIn.getName(), 2, 0);
     }
 
     @Override
@@ -62,7 +65,8 @@ public class ItemImperialArmor extends ItemArmor implements IHasModel {
             // Override armor toughness to make is adjustable in game
             //Come back to Re-use when needed IF needed
             multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor toughness", 3F * ModConfig.armor_toughness_scaling, 0));
-            multimap.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(), new AttributeModifier(MOVEMENT_SPEED_MODIFIER, "Movement Speed", -0.02, 0));
+            multimap.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(), movementSpeedModif);
+            multimap.put(SharedMonsterAttributes.MAX_HEALTH.getName(), healthBoostModif);
         }
 
 

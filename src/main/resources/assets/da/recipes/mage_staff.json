@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  B",
+    " CX",
+    "XR "
+  ],
+  "key": {
+    "X": {
+      "item": "da:magic_leather"
+    },
+    "B": {
+      "item": "minecraft:diamond"
+    },
+    "C": {
+      "item": "minecraft:stick"
+    },
+    "R": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "da:mage_staff"
+  }
+}

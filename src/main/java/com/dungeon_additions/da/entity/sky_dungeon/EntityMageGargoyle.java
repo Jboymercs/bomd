@@ -190,7 +190,7 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
       addEvent(()-> this.playSound(SoundsHandler.GARGOYLE_CAST_SPECIAL, 1.0f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 33);
         addEvent(()-> {
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.1, 1.2, 0)));
-            Main.proxy.spawnParticle(18, relPos.x, this.posY, relPos.z, 0, 0, 0);
+            Main.proxy.spawnParticle(18,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
         }, 33);
       addEvent(()-> {
         //cast special attack
