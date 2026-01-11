@@ -14,6 +14,7 @@ import com.dungeon_additions.da.entity.blossom.EntityVoidSpike;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
 import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
+import com.dungeon_additions.da.entity.generic.EntityDelayedExplosion;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityObsidilithRune;
@@ -559,6 +560,14 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         Main.proxy.spawnParticle(20,world, relPos.x, this.posY + 0.1, relPos.z, 0, 0, 0);
         this.setShaking(true);
         this.shakeTime = 30;
+
+        if(this.getHealth() / this.getMaxHealth() <= 0.5) {
+            if(savedPos != null) {
+                this.doExplosivesMove(savedPos);
+            } else if (this.getSpawnLocation() != null) {
+                this.doExplosivesMove(new Vec3d(this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ()));
+            }
+        }
         addEvent(()-> {
             //teleports entity back
             this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
@@ -571,6 +580,17 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
             this.setFightMode(false);
             this.setPurpleAttack(false);
         }, 30);
+    }
+
+    private void doExplosivesMove(Vec3d posToo) {
+        for(int i = 0; i <= 40; i+= 1) {
+            addEvent(()-> {
+                EntityDelayedExplosion explosion = new EntityDelayedExplosion(world, this, this.getAttack(), false, true);
+                Vec3d randIPos = new Vec3d(posToo.x + ModRand.getFloat(14), posToo.y, posToo.z + ModRand.getFloat(14));
+                explosion.setPosition(randIPos.x, randIPos.y, randIPos.z);
+                world.spawnEntity(explosion);
+            }, i * 5);
+        }
     }
 
     private final Consumer<EntityLivingBase> red_attack = (target) -> {

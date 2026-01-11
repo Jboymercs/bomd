@@ -29,6 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -54,6 +55,7 @@ public class ItemApathyrAxe extends ItemSword implements IAnimatable, IHasModel 
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
     }
 
     private EntityLivingBase targetedEntity;
@@ -75,7 +77,7 @@ public class ItemApathyrAxe extends ItemSword implements IAnimatable, IHasModel 
                 ModUtils.performNTimes(20, (i) -> Main.proxy.spawnParticle(17,worldIn, player.posX + ModRand.range(-2, 2), player.posY + ModRand.range(1, 3), player.posZ + ModRand.range(-2, 2), 0, 0.08, 0, 20));
                 worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.APATHYR_CAST_HEAVY, SoundCategory.NEUTRAL, 1.5f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.4f));
                 //do crystal wave
-                new ActionApathyrWave(damage).performAction(player);
+                new ActionApathyrWave(damage + ModUtils.addAbilityBonusDamage(stack, 0.75F)).performAction(player);
                 player.getCooldownTracker().setCooldown(stack.getItem(), (ModConfig.midnight_reign_cooldown * 2) * 20);
                 stack.damageItem(4, player);
             } else {
@@ -111,7 +113,7 @@ public class ItemApathyrAxe extends ItemSword implements IAnimatable, IHasModel 
                         } else {
                             damage = ModConfig.midnight_reign_ability_damage;
                         }
-                        this.spawnSpikeAction(player, damage, targetedEntity, predictedPosition, worldIn);
+                        this.spawnSpikeAction(player, damage + ModUtils.addAbilityBonusDamage(player.getHeldItemMainhand(), 0.75F), targetedEntity, predictedPosition, worldIn);
                         player.resetActiveHand();
                         this.waitTime = 4;
                         this.targetOriginalPosition = null;

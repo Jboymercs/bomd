@@ -53,8 +53,8 @@
             {
               "function": "set_count",
               "count": {
-                "min": 9,
-                "max": 13
+                "min": 13,
+                "max": 18
               }
             }
           ]

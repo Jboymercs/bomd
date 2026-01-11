@@ -15,7 +15,7 @@ public class ActionVoidFlay implements IActionPlayer{
         float pitch = 0; // Projectiles aim straight ahead always
         float inaccuracy = 0.0f;
         float speed = 1.3f;
-        float damage = ModConfig.void_hammer_projectile_damage;
+        float damage = ModConfig.void_hammer_projectile_damage + ModUtils.addAbilityBonusDamage(actor.getHeldItemMainhand(), 0.75F);
         Vec3d playerLookVec = actor.getLookVec();
         ProjectileVoidClysmBolt blood = new ProjectileVoidClysmBolt(actor.world, actor, damage + ModUtils.addMageSetBonus(actor, 0));
         Vec3d playerPos = new Vec3d(actor.posX + playerLookVec.x * 1.4D,actor.posY + playerLookVec.y + actor.getEyeHeight(), actor. posZ + playerLookVec.z * 1.4D);

@@ -31,6 +31,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -58,6 +59,7 @@ public class ItemVoidHammer extends ItemSword implements IAnimatable, IHasModel,
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
     }
 
     @Override
@@ -67,7 +69,7 @@ public class ItemVoidHammer extends ItemSword implements IAnimatable, IHasModel,
         if(!world.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
             if(player.isSneaking()) {
                 world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, SoundCategory.NEUTRAL, 3.0f, 0.3f / (world.rand.nextFloat() * 0.4F + 0.2f));
-                EntityVoidBlackHole blackHole = new EntityVoidBlackHole(world, player, this.getAttackDamage() + ModUtils.addMageSetBonus(player, 0));
+                EntityVoidBlackHole blackHole = new EntityVoidBlackHole(world, player, this.getAttackDamage() + ModUtils.addMageSetBonus(player, 0) + ModUtils.addAbilityBonusDamage(stack, 0.75F));
                 Vec3d playerLookVec = player.getLookVec();
                 blackHole.setPosition(player.posX + playerLookVec.x * 1.4D, player.posY + player.getEyeHeight() + playerLookVec.y * 1.4D, player.posZ + playerLookVec.z * 1.4D);
                 world.spawnEntity(blackHole);

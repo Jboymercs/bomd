@@ -33,6 +33,8 @@ public class SoundsHandler {
     public static SoundEvent B_KNIGHT_STOMP;
     public static SoundEvent B_KNIGHT_DASH;
     public static SoundEvent B_KNIGHT_SWING;
+    public static SoundEvent B_KNIGHT_FLAME_IMPACT_PREPARE;
+    public static SoundEvent B_KNIGHT_FLAME_IMPACT;
 
     //Rot Knight
     public static SoundEvent ROT_KNIGHT_HURT;
@@ -331,6 +333,8 @@ public class SoundsHandler {
     public static SoundEvent CONFETTI_SOUND;
     public static SoundEvent DEATHBLOW_SOUND;
     public static SoundEvent KEY_UNLOCK_SOUND;
+    public static SoundEvent DELAYED_EXPLOSION_CAST;
+    public static SoundEvent DELAYED_EXPLOSION_IMPACT;
 
     //MUSIC
     public static SoundEvent HIGH_DRAGON_TRACK;
@@ -400,6 +404,8 @@ public class SoundsHandler {
         B_KNIGHT_STOMP = registerSound("b_knight.stomp", "entity");
         B_KNIGHT_DASH = registerSound("b_knight.dash", "entity");
         B_KNIGHT_SWING = registerSound("b_knight.swing", "entity");
+        B_KNIGHT_FLAME_IMPACT = registerSound("b_knight.flame_impact", "entity");
+        B_KNIGHT_FLAME_IMPACT_PREPARE = registerSound("b_knight.flame_impact_prepare","entity");
         //
         ROT_SPIKE_SHOOT = registerSound("rot_spike.shoot", "entity");
         ROT_KNIGHT_HURT = registerSound("rot_knight.hurt", "entity");
@@ -635,6 +641,8 @@ public class SoundsHandler {
         CONFETTI_SOUND = registerSound("confetti.party", "entity");
         DEATHBLOW_SOUND = registerSound("confetti.deathblow", "entity");
         KEY_UNLOCK_SOUND = registerSound("confetti.key_unlock", "entity");
+        DELAYED_EXPLOSION_CAST = registerSound("confetti.explosion_cast", "entity");
+        DELAYED_EXPLOSION_IMPACT = registerSound("confetti.explosion_impact", "entity");
         //MUSIC
         HIGH_DRAGON_TRACK = registerSound("ambient.high_dragon", "music");
         HIGH_KING_TRACK = registerSound("ambient.high_king", "music");

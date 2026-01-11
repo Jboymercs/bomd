@@ -76,16 +76,16 @@ public class EventDropSoulStar {
 
                 if(!player.world.isRemote && randI < 37 && randI > 31) {
                     ModUtils.performNTimes(9, (i) -> {
-                        Main.proxy.spawnParticle(23,player.world, target.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), target.posY + ModRand.range(0, 3) + ModRand.getFloat(1), target.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, 0, 0, 3145519);
+                        Main.proxy.spawnParticle(23,player.world, target.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), target.posY + ModRand.range(0, 3) + ModRand.getFloat(1), target.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, -0.03, 0, 3145519);
                     });
                     ModUtils.performNTimes(9, (i) -> {
-                        Main.proxy.spawnParticle(23,player.world, target.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), target.posY + ModRand.range(0, 3) + ModRand.getFloat(1), target.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, 0, 0, 3099391);
+                        Main.proxy.spawnParticle(23,player.world, target.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), target.posY + ModRand.range(0, 3) + ModRand.getFloat(1), target.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, -0.03, 0, 3099391);
                     });
                     ModUtils.performNTimes(9, (i) -> {
-                        Main.proxy.spawnParticle(23,player.world, target.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), target.posY + ModRand.range(0, 3) + ModRand.getFloat(1), target.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, 0, 0, 16450048);
+                        Main.proxy.spawnParticle(23,player.world, target.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), target.posY + ModRand.range(0, 3) + ModRand.getFloat(1), target.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, -0.03, 0, 16450048);
                     });
                     ModUtils.performNTimes(9, (i) -> {
-                        Main.proxy.spawnParticle(23,player.world, target.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), target.posY + ModRand.range(0, 3) + ModRand.getFloat(1), target.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, 0, 0, 16450255);
+                        Main.proxy.spawnParticle(23,player.world, target.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), target.posY + ModRand.range(0, 3) + ModRand.getFloat(1), target.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, -0.03, 0, 16450255);
                     });
                     player.world.playSound((EntityPlayer) null, target.posX, target.posY, target.posZ, SoundsHandler.CONFETTI_SOUND, SoundCategory.NEUTRAL, 1f, 1f);
                 }
@@ -257,7 +257,7 @@ public class EventDropSoulStar {
             output.setTagCompound(tags);
             event.setOutput(output);
             event.setMaterialCost(1);
-            event.setCost(5);
+            event.setCost(3);
         }
     }
 

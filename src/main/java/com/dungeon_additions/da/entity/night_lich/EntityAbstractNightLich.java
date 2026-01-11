@@ -57,6 +57,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
     private static final DataParameter<Boolean> THROW_STAFF = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> RAGE_MODE = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> MELEE_COMBO = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> EXPLOSIVE_LINE = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
 
     private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntityAbstractNightLich.class, DataSerializers.BOOLEAN);
@@ -79,6 +80,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
     public void setThrowStaff(boolean value) {this.dataManager.set(THROW_STAFF, Boolean.valueOf(value));}
     public void setRageMode(boolean value) {this.dataManager.set(RAGE_MODE, Boolean.valueOf(value));}
     public void setMeleeCombo(boolean value) {this.dataManager.set(MELEE_COMBO, Boolean.valueOf(value));}
+    public void setExplosiveLine(boolean value) {this.dataManager.set(EXPLOSIVE_LINE, Boolean.valueOf(value));}
 
     public boolean isGreenAttack() {return this.dataManager.get(GREEN_ATTACK);}
     public boolean isRedAttack() {return this.dataManager.get(RED_ATTACK);}
@@ -94,6 +96,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
     public boolean isThrowStaff() {return this.dataManager.get(THROW_STAFF);}
     public boolean isRageMode() {return this.dataManager.get(RAGE_MODE);}
     public boolean isMeleeCombo() {return this.dataManager.get(MELEE_COMBO);}
+    public boolean isExplosiveLine() {return this.dataManager.get(EXPLOSIVE_LINE);}
 
     public boolean isHadPreviousTarget() {return this.dataManager.get(HAD_PREVIOUS_TARGET);}
     public void setHadPreviousTarget(boolean value) {this.dataManager.set(HAD_PREVIOUS_TARGET, Boolean.valueOf(value));}
@@ -241,6 +244,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
         nbt.setBoolean("Throw_Staff", this.isThrowStaff());
         nbt.setBoolean("Rage_Mode", this.isRageMode());
         nbt.setBoolean("Melee_Combo", this.isMeleeCombo());
+        nbt.setBoolean("Explosive_Line", this.isExplosiveLine());
         nbt.setBoolean("Shaking", this.isShaking());
         nbt.setBoolean("Had_Target", this.dataManager.get(HAD_PREVIOUS_TARGET));
         nbt.setFloat("Look", this.getPitch());
@@ -269,6 +273,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
         this.setThrowStaff(nbt.getBoolean("Throw_Staff"));
         this.setRageMode(nbt.getBoolean("Rage_Mode"));
         this.setMeleeCombo(nbt.getBoolean("Melee_Combo"));
+        this.setExplosiveLine(nbt.getBoolean("Explosive_Line"));
         this.setHadPreviousTarget(nbt.getBoolean("Had_Target"));
         this.setShaking(nbt.getBoolean("Shaking"));
         this.dataManager.set(LOOK, nbt.getFloat("Look"));
@@ -292,6 +297,7 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
         this.dataManager.register(THROW_STAFF, Boolean.valueOf(false));
         this.dataManager.register(RAGE_MODE, Boolean.valueOf(false));
         this.dataManager.register(MELEE_COMBO, Boolean.valueOf(false));
+        this.dataManager.register(EXPLOSIVE_LINE, Boolean.valueOf(false));
         this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
         this.dataManager.register(SHAKING, Boolean.valueOf(false));
     }

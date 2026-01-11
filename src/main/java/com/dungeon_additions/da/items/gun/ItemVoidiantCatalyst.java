@@ -23,6 +23,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -40,6 +41,7 @@ public class ItemVoidiantCatalyst extends ItemBase implements IAnimatable {
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.LIGHT_PURPLE + ModUtils.translateDesc(info_loc));
+        tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
     }
 
 
@@ -72,7 +74,7 @@ public class ItemVoidiantCatalyst extends ItemBase implements IAnimatable {
                     }
                 }
 
-                int damage_buffer = ModConfig.voidiant_catalyst_damage;
+                int damage_buffer = (int) (ModConfig.voidiant_catalyst_damage + ModUtils.addShieldBonusDamage(player.getHeldItemMainhand(), 1));
                 int damage_boost = 0;
                 if(player.isBurning()) {
                     damage_boost = 6;

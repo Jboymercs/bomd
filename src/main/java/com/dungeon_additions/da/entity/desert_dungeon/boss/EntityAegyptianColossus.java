@@ -1,13 +1,20 @@
 package com.dungeon_additions.da.entity.desert_dungeon.boss;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityAIAegyptiaWarlord;
+import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityAIAegyptianColossus;
+import com.dungeon_additions.da.entity.desert_dungeon.boss.colossus.ActionColossusMaceSlam;
+import com.dungeon_additions.da.entity.desert_dungeon.boss.colossus.ActionMaceWave;
 import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
 import com.dungeon_additions.da.util.ModRand;
+import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -15,11 +22,14 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
@@ -30,6 +40,9 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class EntityAegyptianColossus extends EntitySharedDesertBoss implements IAnimatable, IAnimationTickable, IAttack, IScreenShake {
@@ -176,6 +189,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     public void initEntityAI() {
         super.initEntityAI();
      //   this.tasks.addTask(4, new EntityAIAegyptiaWarlord<EntityAegyptianWarlord>(this, 1.0D, 20, 20, 0.2F));
+        this.tasks.addTask(4, new EntityAIAegyptianColossus<EntityAegyptianColossus>(this, 1.0D, 40, 11, 0.2F));
         this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.75D));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 1, true, false, null));
@@ -211,10 +225,176 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         double distance = Math.sqrt(distanceSq);
         double healtFac = this.getHealth()/this.getMaxHealth();
         if(!this.isFightMode()) {
+            List<Consumer<EntityLivingBase>> attacksMelee = new ArrayList<>(Arrays.asList(swing_attack, mace_slam, call_mace));
+            double[] weights = {
+                    (prevAttack != swing_attack && distance < 8) ? 1/distance : 0, //Double Swing Attack
+                    (prevAttack != mace_slam && distance < 12) ? 1/distance : 0, //Mace Slam
+                    (prevAttack != call_mace) ? distance * 0.02 : 0 //Call Mace Spell
 
+            };
+            prevAttack = ModRand.choice(attacksMelee, rand, weights).next();
+            prevAttack.accept(target);
         }
-        return 0;
+        return 90;
     }
+
+    private final Consumer<EntityLivingBase> call_mace = (target) -> {
+      this.setCallMace(true);
+      this.setFightMode(true);
+
+      addEvent(()-> {
+        //call mace attack
+        new ActionMaceWave().performAction(this, target);
+      }, 40);
+
+      addEvent(()-> {
+            this.setCallMace(false);
+            this.setFightMode(false);
+      }, 60);
+    };
+
+    private final Consumer<EntityLivingBase> mace_slam = (target) -> {
+      this.setMaceSmash(true);
+      this.setFullBodyUsage(true);
+      this.setFightMode(true);
+      this.setImmovable(true);
+
+      addEvent(()-> {
+          this.lockLook = true;
+      }, 20);
+
+      addEvent(()-> {
+          //mace smash attack
+          Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(3, 1.8, 0)));
+          DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+          float damage =(float) (this.getAttack());
+          ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+          //do barrier wave
+          Main.proxy.spawnParticle(20,world, offset.x, this.posY + 0.5, offset.z, 0, 0, 0);
+            new ActionColossusMaceSlam(9).performAction(this, target);
+            this.setShaking(true);
+            this.shakeTime = 13;
+      }, 50);
+
+      addEvent(()-> {
+          this.setShaking(false);
+          this.lockLook = false;
+      }, 65);
+
+      addEvent(()-> {
+          boolean randB = rand.nextBoolean();
+          this.setMaceSmash(false);
+          if(randB) {
+              setMaceSLamTwice(target);
+          } else {
+              this.setFullBodyUsage(false);
+              this.setFightMode(false);
+              this.setImmovable(false);
+          }
+      }, 80);
+    };
+
+    private void setMaceSLamTwice(EntityLivingBase target) {
+        mace_slam_two.accept(target);
+    }
+
+
+    private final Consumer<EntityLivingBase> mace_slam_two = (target) -> {
+        this.setMaceSmashTwo(true);
+        addEvent(()-> {
+            this.lockLook = true;
+        }, 20);
+
+        addEvent(()-> {
+            //mace smash attack
+            Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(3, 1.8, 0)));
+            DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+            float damage =(float) (this.getAttack());
+            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+            this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+            //do barrier wave
+            Main.proxy.spawnParticle(20,world, offset.x, this.posY + 0.5, offset.z, 0, 0, 0);
+            new ActionColossusMaceSlam(15).performAction(this, target);
+            this.setShaking(true);
+            this.shakeTime = 13;
+        }, 50);
+
+        addEvent(()-> {
+            this.setShaking(false);
+            this.lockLook = false;
+        }, 65);
+
+        addEvent(()-> {
+            this.setMaceSmashTwo(false);
+            this.setFullBodyUsage(false);
+            this.setFightMode(false);
+            this.setImmovable(false);
+        }, 80);
+    };
+
+    private final Consumer<EntityLivingBase> swing_attack = (target) -> {
+      this.setSwingAttack(true);
+      this.setFightMode(true);
+
+      addEvent(()-> {
+          this.lockLook = true;
+      }, 15);
+      addEvent(()-> {
+          Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2, 1.8, 0)));
+          DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+          float damage =(float) (this.getAttack());
+          ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+          this.setImmovable(true);
+      }, 37);
+
+      addEvent(()-> this.setImmovable(false),  45);
+
+      addEvent(()-> {
+          this.setSwingAttack(false);
+          this.lockLook = false;
+          boolean randBoolean = rand.nextBoolean();
+
+          //continue with follow up
+          if(this.getDistance(target) < 7 || randBoolean) {
+            this.setSwingContinue(true);
+
+            addEvent(()-> {
+                this.lockLook= true;
+                this.setImmovable(true);
+            }, 25);
+
+            addEvent(()-> {
+                Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2, 1.8, 0)));
+                DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+                float damage =(float) (this.getAttack());
+                ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+                this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+            }, 35);
+
+            addEvent(()-> {
+                this.lockLook = false;
+                this.setImmovable(false);
+            }, 63);
+
+            addEvent(()-> {
+                this.setFightMode(false);
+                this.setSwingContinue(false);
+            }, 75);
+
+
+          } else {
+           this.setSwingFinish(true);
+
+           addEvent(()-> {
+               this.setFightMode(false);
+               this.setSwingFinish(false);
+           }, 15);
+          }
+
+      }, 50);
+    };
 
     @Override
     public void registerControllers(AnimationData data) {

@@ -667,7 +667,17 @@ public class ModConfig {
             "da:novik_boots",
             "da:apathyr_helmet",
             "da:apathyr_axe",
-            "da:golem_cannon"
+            "da:golem_cannon",
+            "da:adventure_sword",
+            "da:adventure_helmet",
+            "da:adventure_chestplate",
+            "da:adventure_leggings",
+            "da:adventure_boots",
+            "da:mage_staff",
+            "da:mage_helmet",
+            "da:mage_chestplate",
+            "da:mage_leggings",
+            "da:mage_boots"
     };
 
     @Config.Name("Boss Enraged State Enable/Disable")

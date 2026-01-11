@@ -9,10 +9,13 @@ import com.dungeon_additions.da.entity.ai.EntityAIFlameKnightAttack;
 import com.dungeon_additions.da.entity.ai.EntityTimedAttackAIImproved;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
+import com.dungeon_additions.da.entity.blossom.EntityVoidSpike;
 import com.dungeon_additions.da.entity.flame_knight.misc.*;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityAbstractGreatWyrk;
+import com.dungeon_additions.da.entity.generic.EntityDelayedExplosion;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
+import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
 import com.dungeon_additions.da.entity.util.IEntitySound;
 import com.dungeon_additions.da.init.ModBlocks;
@@ -91,6 +94,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
     private static final DataParameter<Boolean> COMBO_FAR_DASH = EntityDataManager.createKey(EntityFlameKnight.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> COMBO_WATERFOUL = EntityDataManager.createKey(EntityFlameKnight.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> COMBO_STRIKE = EntityDataManager.createKey(EntityFlameKnight.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> FLAME_GROUND_STRIKE = EntityDataManager.createKey(EntityFlameKnight.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DRINK_POTION = EntityDataManager.createKey(EntityFlameKnight.class, DataSerializers.BOOLEAN);
 
     private static final DataParameter<Boolean> LOST_HEAD = EntityDataManager.createKey(EntityFlameKnight.class, DataSerializers.BOOLEAN);
@@ -137,6 +141,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
     public void setReleaseFlames(boolean value) {this.dataManager.set(RELEASE_FLAMES, Boolean.valueOf(value));}
     public void setJumpWithoutAttack(boolean value) {this.dataManager.set(JUMP_WITHOUT_ATTACK, Boolean.valueOf(value));}
     public void setJumpWithAttack(boolean value) {this.dataManager.set(JUMP_WITH_ATTACK, Boolean.valueOf(value));}
+    public void setFlameGroundStrike(boolean value) {this.dataManager.set(FLAME_GROUND_STRIKE, Boolean.valueOf(value));}
     public void setSummon(boolean value) {this.dataManager.set(SUMMON, Boolean.valueOf(value));}
     public void setDeathPlay(boolean value) {this.dataManager.set(DEATH_PlAY, Boolean.valueOf(value));}
     public void setSpamDetected(boolean value) {this.dataManager.set(SPAM_DETECTED, Boolean.valueOf(value));}
@@ -164,6 +169,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
     public boolean isJumpWitAttack() {return this.dataManager.get(JUMP_WITH_ATTACK);}
     public boolean isSummon() {return this.dataManager.get(SUMMON);}
     public boolean isDeathPlay() {return this.dataManager.get(DEATH_PlAY);}
+    public boolean isFlameGroundStrike() {return this.dataManager.get(FLAME_GROUND_STRIKE);}
     public boolean isSetSpawnLoc() {
         return this.dataManager.get(SET_SPAWN_LOC);
     }
@@ -202,6 +208,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
     private final String ANIM_SMALL_STOMP = "small_stomp";
 
     private final String ANIM_OVERHEAD_DASH = "overhead_dash";
+    private final String ANIM_FLAME_GROUND_STRIKE = "flame_ground_strike";
 
     //Regular-Far Attacks
     private final String ANIM_FLAME_SLING = "flame_sling";
@@ -383,6 +390,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
         this.dataManager.register(SPAM_DETECTED, Boolean.valueOf(false));
         this.dataManager.register(SET_SPAWN_LOC, Boolean.valueOf(false));
         this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
+        this.dataManager.register(FLAME_GROUND_STRIKE, Boolean.valueOf(false));
         this.dataManager.register(SHAKING, Boolean.valueOf(false));
         //
         this.dataManager.register(SPAWN_LOCATION, new BlockPos(this.getPositionVector().x, this.getPositionVector().y, this.getPositionVector().z));
@@ -418,6 +426,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
         nbt.setBoolean("Jump_Without", this.isJumpWithoutAttack());
         nbt.setBoolean("Summon", this.isSummon());
         nbt.setBoolean("Shaking", this.isShaking());
+        nbt.setBoolean("Flame_Ground_Strike", this.isFlameGroundStrike());
         nbt.setBoolean("Death_Play", this.isDeathPlay());
         nbt.setBoolean("Had_Target", this.isHadPreviousTarget());
         nbt.setBoolean("Spam_Detected", this.isSpamDetected());
@@ -457,6 +466,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
         this.setJumpWithoutAttack(nbt.getBoolean("Jump_Without"));
         this.setJumpWithAttack(nbt.getBoolean("Jump_With_Attack"));
         this.setSummon(nbt.getBoolean("Summon"));
+        this.setFlameGroundStrike(nbt.getBoolean("Flame_Ground_Strike"));
         this.setHadPreviousTarget(nbt.getBoolean("Had_Target"));
         this.setDeathPlay(nbt.getBoolean("Death_Play"));
         this.setSpamDetected(nbt.getBoolean("Spam_Detected"));
@@ -578,6 +588,9 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
                 if(this.isSpamDetected()) {
                     event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SPAM_DETECTED, false));
                 }
+                if(this.isFlameGroundStrike()) {
+                    event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_FLAME_GROUND_STRIKE));
+                }
 
             return PlayState.CONTINUE;
         }
@@ -648,6 +661,10 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
     private int stopSpammingAttacks = 0;
     private int reCheckDelay = 80;
     private boolean setSpamCheck = false;
+
+    private boolean grabDetection = false;
+    private boolean maintainGrabPose = false;
+    private EntityLivingBase grabbedEntity;
     @Override
     public void onUpdate() {
         super.onUpdate();
@@ -658,6 +675,35 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
         if(this.isComboMode()) {
             combat_delay--;
         }
+
+        if(HoverTimeIncrease > 0) {
+            this.motionY = 0.25;
+            HoverTimeIncrease--;
+        }
+
+        if(grabDetection && grabbedEntity == null) {
+            List<EntityLivingBase> nearbyEntities = this.world.getEntitiesWithinAABB(EntityLivingBase.class,
+                    this.getEntityBoundingBox().offset(ModUtils.getRelativeOffset(this, new Vec3d(1, 0, 0))).grow(1.5D, 0.5D, 1.5D),
+                    e -> !e.getIsInvulnerable());
+
+            if(!nearbyEntities.isEmpty()) {
+                for(EntityLivingBase base : nearbyEntities) {
+                    if(!(base instanceof EntityAbstractBase)) {
+                        this.maintainGrabPose = true;
+                        grabbedEntity = base;
+                        this.playSound(SoundsHandler.KING_GRAB_SUCCESS, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
+                    }
+                }
+            }
+
+        } else if (grabbedEntity != null) {
+            if(this.maintainGrabPose) {
+                Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 0.2, 0)));
+                grabbedEntity.setPosition(offset.x, offset.y, offset.z);
+                grabbedEntity.setPositionAndUpdate(offset.x, offset.y, offset.z);
+            }
+        }
+
         //timer for Drinking Potions
         potionCooldown--;
         if(potionCooldown < 0) {
@@ -992,7 +1038,15 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
 
     public void movementBoss(EntityLivingBase target, double distSq, boolean canSee) {
         int maxAttackDistance = wantedDistance * wantedDistance;
-        if (!this.lockLook) {
+        if(this.hasHoverMovement) {
+            double d0 = (target.posX - this.posX) * 0.018;
+            double d2 = (target.posZ - this.posZ) * 0.018;
+            this.addVelocity(d0, 0, d2);
+            this.motionY = 0;
+            if(!this.lockLook) {
+                this.faceEntity(target, 30F, 30F);
+            }
+        } else if (!this.lockLook) {
             if(!this.isJumpWithoutAttack() && !this.isJumpWitAttack()) {
                 if (wantedDistance == 4 || this.isComboMode()) {
                     if (distSq <= maxAttackDistance && canSee) {
@@ -1129,9 +1183,10 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
                 prevAttack = ModRand.choice(combo_attacks, rand, weights).next();
                 prevAttack.accept(target);
             } else {
-                List<Consumer<EntityLivingBase>> close_attacks = new ArrayList<>(Arrays.asList(swing_one_attack, swing_two_attack, swing_three_attack, small_stomp, overhead_Dash, Flame_Sling, summon_flame, jump_without_attack, stop_spam_attacks));
+                List<Consumer<EntityLivingBase>> close_attacks = new ArrayList<>(Arrays.asList(swing_one_attack, flame_ground_strike, swing_two_attack, swing_three_attack, small_stomp, overhead_Dash, Flame_Sling, summon_flame, jump_without_attack, stop_spam_attacks));
                 double[] weights = {
                         (distance <= 3 && prevAttack != swing_one_attack) ? 1 / distance : 0, //Swing One
+                        (distance <= 16 && prevAttack != flame_ground_strike && HealthChange <= 0.6) ? 1/distance : 0, //Flame Ground Strike
                         (distance <= 7 && prevAttack != swing_two_attack) ? 1 / distance : 0, //Swing Two, uses flame slings in 2nd Phase
                         (distance <= 3 && prevAttack != swing_three_attack) ? 1 / distance : 0, // Swing Three
                         (distance <= 8 && prevAttack != small_stomp) ? 1 / distance : 0, // Uses another melee attack but switches to a stomp following 2nd Phase
@@ -1151,6 +1206,138 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
         //old 60, 15
         return this.isComboMode() ? MobConfig.knight_aggrivate_state_cooldown : this.wantedDistance == 14 ? MobConfig.knight_cooldown_long_distance + 5 : distance >= 8 ? MobConfig.knight_cooldown_long_distance : HealthChange <= 0.5 ? MobConfig.knight_cooldown_short_distance - 5 : MobConfig.knight_cooldown_short_distance;
     }
+
+    private boolean hasHoverMovement = false;
+    private int HoverTimeIncrease = 0;
+    private boolean setFlamesArise = false;
+
+
+    private final Consumer<EntityLivingBase> flame_ground_strike = (target) -> {
+      this.setFlameGroundStrike(true);
+      this.setFightMode(true);
+      this.setFullBodyUsage(true);
+      this.setNoGravity(true);
+      this.HoverTimeIncrease = 2;
+      addEvent(()-> {
+            this.hasHoverMovement = true;
+          this.playSound(SoundsHandler.B_KNIGHT_FLAME_IMPACT_PREPARE, 1f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+      }, 13);
+
+      addEvent(()-> {
+          this.hasHoverMovement = false;
+          this.grabDetection = true;
+          this.setNoGravity(false);
+          this.lockLook = true;
+      }, 43);
+
+      addEvent(()-> {
+          //do attack stuff
+          Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 0.5, 0)));
+          DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+          float damage = (float) (this.getAttack() * 1.3);
+          this.playSound(SoundsHandler.B_KNIGHT_FLAME_IMPACT, 2f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.6f, 5, false);
+          this.playSound(SoundEvents.ITEM_FIRECHARGE_USE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.playSound(SoundsHandler.VOIDCLYSM_IMPACT, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          this.setShaking(true);
+          this.shakeTime = 15;
+          Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 0.2, 0)));
+          Main.proxy.spawnParticle(20,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
+          this.setImmovable(true);
+          this.setFlamesArise = true;
+
+          ModUtils.circleCallback(5, 5, (pos)-> {
+              pos = new Vec3d(pos.x, 0, pos.y).add(this.getPositionVector());
+              int y = ModUtils.getSurfaceHeightGeneral(world, new BlockPos(pos.x, 0, pos.z), (int) this.posY - 5, (int) this.posY + 7);
+              EntityDelayedExplosion spike = new EntityDelayedExplosion(world, this, this.getAttack(), true, false);
+              spike.setPosition(pos.x, y + 2, pos.z);
+              world.spawnEntity(spike);
+          });
+
+      }, 55);
+
+      addEvent(()-> this.setShaking(false), 70);
+      addEvent(()-> this.grabDetection = false, 58);
+
+      //first flame wave
+      addEvent(()-> {
+          this.setShaking(true);
+          this.shakeTime = 15;
+          this.playSound(SoundsHandler.B_KNIGHT_FLAME_IMPACT, 2f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
+          ModUtils.circleCallback(5, 5, (pos)-> {
+              pos = new Vec3d(pos.x, 0, pos.y).add(this.getPositionVector());
+              int y = ModUtils.getSurfaceHeightGeneral(world, new BlockPos(pos.x, 0, pos.z), (int) this.posY - 5, (int) this.posY + 7);
+              EntityDelayedExplosion spike = new EntityDelayedExplosion(world, this, this.getAttack(), true, false);
+              spike.setPosition(pos.x, y + 2, pos.z);
+              world.spawnEntity(spike);
+          });
+
+          ModUtils.circleCallback(10, 12, (pos)-> {
+              pos = new Vec3d(pos.x, 0, pos.y).add(this.getPositionVector());
+              int y = ModUtils.getSurfaceHeightGeneral(world, new BlockPos(pos.x, 0, pos.z), (int) this.posY - 5, (int) this.posY + 7);
+              EntityDelayedExplosion spike = new EntityDelayedExplosion(world, this, this.getAttack(), true, false);
+              spike.setPosition(pos.x, y + 2, pos.z);
+              world.spawnEntity(spike);
+          });
+
+          if(grabbedEntity != null) {
+              Vec3d offset = grabbedEntity.getPositionVector();
+              DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+              float damage = (float) (this.getAttack());
+              ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0f, 5, false);
+          }
+      }, 80);
+
+      addEvent(()-> this.setShaking(false), 93);
+
+      //second wave
+      addEvent(()-> {
+          if(grabbedEntity != null) {
+              Vec3d offset = grabbedEntity.getPositionVector();
+              DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+              float damage = (float) (this.getAttack() * 0.5);
+              ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0f, 5, false);
+          }
+          this.setFlamesArise = false;
+
+          this.playSound(SoundsHandler.B_KNIGHT_SWING, 2f, 1.0f / (rand.nextFloat() * 0.1F + 0.4f));
+          ModUtils.circleCallback(5, 5, (pos)-> {
+              pos = new Vec3d(pos.x, 0, pos.y).add(this.getPositionVector());
+              int y = ModUtils.getSurfaceHeightGeneral(world, new BlockPos(pos.x, 0, pos.z), (int) this.posY - 5, (int) this.posY + 7);
+              EntityDelayedExplosion spike = new EntityDelayedExplosion(world, this, this.getAttack(), true, false);
+              spike.setPosition(pos.x, y + 2, pos.z);
+              world.spawnEntity(spike);
+          });
+
+          ModUtils.circleCallback(10, 12, (pos)-> {
+              pos = new Vec3d(pos.x, 0, pos.y).add(this.getPositionVector());
+              int y = ModUtils.getSurfaceHeightGeneral(world, new BlockPos(pos.x, 0, pos.z), (int) this.posY - 5, (int) this.posY + 7);
+              EntityDelayedExplosion spike = new EntityDelayedExplosion(world, this, this.getAttack(), true, false);
+              spike.setPosition(pos.x, y + 2, pos.z);
+              world.spawnEntity(spike);
+          });
+
+          ModUtils.circleCallback(16, 20, (pos)-> {
+              pos = new Vec3d(pos.x, 0, pos.y).add(this.getPositionVector());
+              int y = ModUtils.getSurfaceHeightGeneral(world, new BlockPos(pos.x, 0, pos.z), (int) this.posY - 5, (int) this.posY + 7);
+              EntityDelayedExplosion spike = new EntityDelayedExplosion(world, this, this.getAttack(), true, false);
+              spike.setPosition(pos.x, y + 2, pos.z);
+              world.spawnEntity(spike);
+          });
+      }, 115);
+
+      addEvent(()-> {
+          this.grabbedEntity = null;
+          this.lockLook = false;
+      }, 130);
+
+      addEvent(()-> {
+            this.setFullBodyUsage(false);
+            this.setImmovable(false);
+            this.setFightMode(false);
+            this.setFlameGroundStrike(false);
+      }, 145);
+    };
 
     private final Consumer<EntityLivingBase> stop_spam_attacks = (target) -> {
       this.setFullBodyUsage(true);
@@ -1841,7 +2028,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        if(this.isPhaseTransition() || this.isReleaseFlames() || this.isSummon() || source.isExplosion() || this.currentlyInIFrame || this.isBeginCombo()) {
+        if(this.isPhaseTransition() || this.isReleaseFlames() || this.isSummon() || source.isExplosion() || this.currentlyInIFrame || this.isBeginCombo() || grabbedEntity != null) {
             return false;
         }
         if (amount > 0.0F && this.canBlockDamageSource(source) && !this.isFightMode() && !this.isComboMode()) {
@@ -1989,6 +2176,13 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
                 ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(3)), ModColors.FIREBALL_ORANGE, pos.normalize().scale(0.1), ModRand.range(10, 15));
             });
         }
+        if(id == ModUtils.SIXTH_PARTICLE_BYTE) {
+            ModUtils.performNTimes( 6, (i) -> {
+                Vec3d pos = this.getPositionVector().add(new Vec3d(ModRand.getFloat(10), 0, ModRand.getFloat(10)));
+                Vec3d vel = new Vec3d((world.rand.nextFloat() - world.rand.nextFloat())/3,  0.1, (world.rand.nextFloat() - world.rand.nextFloat())/3);
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.x, pos.y, pos.z, vel.x, vel.y, vel.z, ModRand.range(10, 15));
+            });
+        }
         super.handleStatusUpdate(id);
     }
 
@@ -1997,6 +2191,12 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
         if(this.isComboMode()) {
             if(rand.nextInt(4) == 0) {
                 world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
+            }
+        }
+
+        if(this.setFlamesArise) {
+            if(world.rand.nextInt(2) == 0) {
+                world.setEntityState(this, ModUtils.SIXTH_PARTICLE_BYTE);
             }
         }
 
@@ -2077,12 +2277,21 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
     @Override
     public float getShakeIntensity(Entity viewer, float partialTicks) {
         if(this.isShaking()) {
-            double dist = getDistance(viewer);
-            float screamMult = (float) (1.0F - dist / 16.0F);
-            if (dist >= 16.0F) {
-                return 0.0F;
+            if(this.isFlameGroundStrike()) {
+                double dist = getDistance(viewer);
+                float screamMult = (float) (1.0F - dist / 24.0F);
+                if (dist >= 24.0F) {
+                    return 0.0F;
+                }
+                return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.5F) * 1.2F * screamMult);
+            } else {
+                double dist = getDistance(viewer);
+                float screamMult = (float) (1.0F - dist / 16.0F);
+                if (dist >= 16.0F) {
+                    return 0.0F;
+                }
+                return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 1.1F * screamMult);
             }
-            return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 1.1F * screamMult);
         }
         return 0;
     }
@@ -2220,7 +2429,13 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
   //      return ModSoundHandler.KNIGHT_IDLE;
  //   }
 
+    @Override
+    public void fall(float distance, float damageMultiplier) {
+    }
 
+    @Override
+    protected void updateFallState(double y, boolean onGroundIn, @Nonnull IBlockState state, @Nonnull BlockPos pos) {
+    }
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {

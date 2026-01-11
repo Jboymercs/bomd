@@ -13,6 +13,7 @@ import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityDesertBeam;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianColossus;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianWarlord;
+import com.dungeon_additions.da.entity.desert_dungeon.boss.EntitySummonedMace;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.EntityEverator;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
 import com.dungeon_additions.da.entity.flame_knight.*;
@@ -238,6 +239,7 @@ public class ModEntities {
             registerEntity("apathyr_eye", EntityApathyrEye.class, ENTITY_START_ID++, 40);
             registerEntity("gaelon_locator", EntityGaelonSanctuaryLocator.class, ENTITY_START_ID++, 40);
             registerEntity("delayed_explosion_da", EntityDelayedExplosion.class, ENTITY_START_ID++, 60);
+            registerEntity("summoned_mace", EntitySummonedMace.class, ENTITY_START_ID++, 50);
 
 
 

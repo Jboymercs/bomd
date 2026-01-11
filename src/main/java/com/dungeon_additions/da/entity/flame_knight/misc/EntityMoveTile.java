@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.flame_knight.misc;
 
 import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.entity.desert_dungeon.boss.EntitySharedDesertBoss;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameBase;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
@@ -125,7 +126,7 @@ public class EntityMoveTile extends Entity implements IEntityAdditionalSpawnData
             List<EntityLivingBase> entities = this.world.getEntitiesWithinAABB(EntityLivingBase.class, getEntityBoundingBox().grow(0.1D, 0.1D, 0.1D));
             for(EntityLivingBase entity : entities) {
                 if (entity != null) {
-                    if (entity instanceof EntityLivingBase && entity != getOwner() && !(entity instanceof EntityFlameBase) || getOwner() instanceof EntityPlayer && entity != getOwner() && entity instanceof EntityLivingBase) { // needs null check on owner?
+                    if (entity instanceof EntityLivingBase && entity != getOwner() && !(entity instanceof EntityFlameBase) && !(entity instanceof EntitySharedDesertBoss) || getOwner() instanceof EntityPlayer && entity != getOwner() && entity instanceof EntityLivingBase) { // needs null check on owner?
                         if(entity.attackEntityFrom(damageSource, (damage != 0) ? damage : MobConfig.aoe_block_damage)) {
                             float knockback = 1.5F;
                             Vec3d dir = new Vec3d(this.posX - this.waveStartX, 0, this.posZ - this.waveStartZ);

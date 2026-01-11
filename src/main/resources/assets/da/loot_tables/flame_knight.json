@@ -48,7 +48,8 @@
         {
           "type": "item",
           "name": "da:golden_coin",
-          "weight": 10
+          "weight": 10,
+          "count" : 2
         }
       ]
     },
@@ -64,7 +65,7 @@
             {
               "function": "set_count",
               "count": {
-                "min": 1,
+                "min": 2,
                 "max": 4
               }
             }

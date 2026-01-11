@@ -40,7 +40,8 @@
         {
           "type": "item",
           "name": "da:silver_coin",
-          "weight": 1
+          "weight": 1,
+          "count": 2
         }
       ]
     },
@@ -106,15 +107,8 @@
               "function": "enchant_with_levels",
               "treasure": true,
               "levels": {
-                "min": 18,
+                "min": 25,
                 "max": 30
-              }
-            },
-            {
-              "function": "set_count",
-              "count": {
-                "min": 2,
-                "max": 5
               }
             }
           ]

@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.generic;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
@@ -7,11 +8,13 @@ import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -117,17 +120,29 @@ public class EntityDelayedExplosion extends EntityAbstractBase implements IAnima
         this.rotationYawHead = 0;
         this.renderYawOffset = 0;
 
+        if(ticksExisted == 2) {
+            this.playSound(SoundsHandler.DELAYED_EXPLOSION_CAST, 1F, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+        }
+
         if(ticksExisted == 26) {
             if(!world.isRemote) {
                 if (owner != null) {
-                    List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(2.5), e -> !e.getIsInvulnerable() && (!(e instanceof EntityAbstractBase)));
+                    List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(3.5), e -> !e.getIsInvulnerable() && (!(e instanceof EntityAbstractBase)));
                     if(!targets.isEmpty() && !initiatedAttack) {
                         for(EntityLivingBase base : targets) {
-                            if(base != this && base != owner) {
+                            if(base != this && base != owner && !(base instanceof EntityAbstractBase)) {
                                 Vec3d offset = this.getPositionVector().add(ModUtils.yVec(0.5D));
                                 DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(owner).build();
-                                ModUtils.handleAreaImpact(2f, (e) -> damageIn, this, offset, source, 0.6f, this.isOrangeStyle() ? 5 : 0, false);
+                                ModUtils.handleAreaImpact(3.5f, (e) -> damageIn, this, offset, source, 0.6f, this.isOrangeStyle() ? 5 : 0, false);
                                 this.initiatedAttack = true;
+
+                                if(this.isPurpleStyle()) {
+                                    base.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 100, 1, false, false));
+                                } else if (this.isOrangeStyle()) {
+                                    base.setFire(5);
+                                } else {
+                                    base.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1, false, false));
+                                }
                             }
                         }
                     }
@@ -138,15 +153,14 @@ public class EntityDelayedExplosion extends EntityAbstractBase implements IAnima
                             if(base != this && base != player) {
                                 Vec3d offset = this.getPositionVector().add(ModUtils.yVec(0.5D));
                                 DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(player).build();
-                                ModUtils.handleAreaImpact(2f, (e) -> damageIn, this, offset, source, 0.9f, 0, false);
+                                ModUtils.handleAreaImpact(2.5f, (e) -> damageIn, this, offset, source, 0.9f, 0, false);
                                 this.initiatedAttack = true;
                             }
                         }
                     }
                 }
             }
-            this.playSound(SoundEvents.ITEM_FIRECHARGE_USE, 0.6f, 1.0f);
-            this.playSound(SoundsHandler.VOIDCLYSM_IMPACT, 0.5F, 0.5f + ModRand.getFloat(0.6f));
+            this.playSound(SoundsHandler.DELAYED_EXPLOSION_IMPACT, 1.25F, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             if(this.isOrangeStyle()) {
                 world.setEntityState(this, ModUtils.THIRD_PARTICLE_BYTE);
             } else if (this.isPurpleStyle()) {
@@ -166,14 +180,21 @@ public class EntityDelayedExplosion extends EntityAbstractBase implements IAnima
         super.handleStatusUpdate(id);
             //blue
         if(id == ModUtils.PARTICLE_BYTE) {
-
+            Main.proxy.spawnParticle(21,world, this.posX, this.posY + 0.3, this.posZ, 0, 0, 0);
+            ModUtils.performNTimes(10, (i) -> {
+                Main.proxy.spawnParticle(17, this.posX + ModRand.range(-2, 2), this.posY + ModRand.range(-1, 2), this.posZ + ModRand.range(-2, 2), 0, 0.05, 0, 20);
+            });
             //purple
         } else if (id == ModUtils.SECOND_PARTICLE_BYTE) {
-
-
+            Main.proxy.spawnParticle(22,world, this.posX, this.posY + 0.3, this.posZ, 0, 0, 0);
+            ModUtils.performNTimes(10, (i) -> {
+                Main.proxy.spawnParticle(23, this.posX + ModRand.range(-2, 2), this.posY + ModRand.range(-1, 2), this.posZ + ModRand.range(-2, 2), 0, 0.05, 0, 9765119);
+            });
             //orange
         } else if (id == ModUtils.THIRD_PARTICLE_BYTE) {
-
+            ModUtils.performNTimes(10, (i) -> {
+            Main.proxy.spawnParticle(23, this.posX + ModRand.range(-2, 2), this.posY + ModRand.range(-1, 2), this.posZ + ModRand.range(-2, 2), 0, 0.05, 0, 16750593);
+            });
         }
     }
 

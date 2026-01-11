@@ -40,6 +40,6 @@ public class ParticleConfetti extends ParticleSSBase {
         @Override
         public Particle createParticle(int particleId, World world, double posX, double posY, double posZ, double speedX, double speedY, double speedZ, int... parameters)
         {
-            return new ParticleConfetti(Minecraft.getMinecraft().getTextureManager(), world, posX, posY, posZ, 0, -0.03, 0, parameters[0]); }
+            return new ParticleConfetti(Minecraft.getMinecraft().getTextureManager(), world, posX, posY, posZ, speedX, speedY, speedZ, parameters[0]); }
     }
 }

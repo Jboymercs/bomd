@@ -210,8 +210,10 @@ public class ClientProxy extends CommonProxy{
             case 20:
                 return new ParticleBigImpact.Factory();
             case 21:
+                //Blue Impact
                 return new ParticleBlueImpact.Factory();
             case 22:
+                //Purple Impact
                 return new ParticlePurpleImpact.Factory();
             case 23:
                 return new ParticleConfetti.Factory();

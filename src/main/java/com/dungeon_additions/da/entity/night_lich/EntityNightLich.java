@@ -87,6 +87,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     private final String ANIM_COMBO_AOE = "combo_aoe";
     private final String ANIM_THROW_STAFF = "throw_staff";
     private final String ANIM_RAGE_MODE = "rage_mode";
+    private final String ANIM_EXPLOSIVE_LINE = "explosive_arena";
     //Non Colored
     private final String ANIM_SWING = "swing";
     private final String ANIM_DOUBLE_SWING = "double_swing";
@@ -309,11 +310,13 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         double HealthChange = this.getHealth() / this.getMaxHealth();
 
         if(!this.isFightMode()) {
-            List<Consumer<EntityLivingBase>> close_attacks = new ArrayList<>(Arrays.asList(shoot_magic_projectiles, shoot_magic_fireball, summon_mobs, combo_magic, throw_staff, dash_attack_red, green_attack, regular_swing, double_swing, combo_aoe_dash, track_projectiles, rage_mode_attack, melee_combo));
+            List<Consumer<EntityLivingBase>> close_attacks = new ArrayList<>(Arrays.asList(shoot_magic_projectiles, shoot_magic_fireball, explosive_line_attack, summon_mobs, combo_magic, throw_staff, dash_attack_red, green_attack, regular_swing, double_swing, combo_aoe_dash, track_projectiles, rage_mode_attack, melee_combo));
             double[] weights = {
                     //PHASE ONE 0-100% HP
                     (shoot_magic_projectiles != prevAttack && !this.isAngeredState()) ? distance * 0.02 : 0,
                     (shoot_magic_fireball != prevAttack && !this.isAngeredState()) ? distance * 0.02 : 0,
+                    //Explosive Line Attack
+                    (explosive_line_attack != prevAttack && HealthChange <= 0.6) ? distance * 0.02 : 0, //Explosive Line Attack testing
                     (summon_mobs != prevAttack && !this.isAngeredState() && current_mobs.size() <= MobConfig.lich_active_mob_count + (playersNearbyAmount * MobConfig.lich_active_mob_count_multiplayer)) ? distance * 0.02 : 0,
                     //PHASE TWO 0-75% HP
                     (combo_magic != prevAttack && !this.isAngeredState() && HealthChange <= 0.75) ? distance * 0.02 : 0,
@@ -476,6 +479,89 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.setComboTrackProjectiles(false);
         this.setFightMode(false);
       }, 60);
+    };
+
+    private final Consumer<EntityLivingBase> explosive_line_attack = (target) -> {
+      this.setExplosiveLine(true);
+      this.setFightMode(true);
+      this.animationLength = 115;
+        this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+
+        //teleport the lich to a far designated spot, while trying to find ground
+        addEvent(()-> {
+            Vec3d playerPos = target.getPositionVector();
+            Vec3d targetedPos = playerPos.add(16 * ModRand.randSign(), 3, 16 * ModRand.randSign());
+            this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
+            int y = ModUtils.getSurfaceHeightLich(world, new BlockPos(targetedPos.x, 0, targetedPos.z),(int) target.posY - 8, (int)target.posY + 10);
+            if(y != 0) {
+                new ActionLichTeleport(ModColors.AZURE, new Vec3d(targetedPos.x, y + 2, targetedPos.z)).performAction(this, target);
+                this.destroyCloseBlocks = true;
+                this.clearCurrentVelocity = true;
+                this.setImmovable(true);
+            } else {
+                new ActionLichTeleport(ModColors.AZURE, new Vec3d(targetedPos.x, targetedPos.y, targetedPos.z)).performAction(this, target);
+                this.destroyCloseBlocks = true;
+                this.clearCurrentVelocity = true;
+                this.setImmovable(true);
+            }
+        }, 10);
+
+        addEvent(()-> this.playSound(SoundsHandler.LICH_USE_SPEAR, 2.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 20);
+
+        addEvent(()-> {
+            this.lockLook = true;
+            this.clearCurrentVelocity = true;
+        }, 25);
+
+        addEvent(()-> {
+            this.playSound(SoundsHandler.LICH_MAGIC_SWING, 3.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
+            //do explosive line action
+            new ActionExplosiveLine().performAction(this, target);
+        }, 40);
+
+        addEvent(()-> {
+            //teleports the lich again but to a different spot
+            this.lockLook = false;
+            this.destroyCloseBlocks = false;
+            this.setImmovable(false);
+            Vec3d playerPos = target.getPositionVector();
+            Vec3d targetedPos = playerPos.add(ModRand.range(-2 ,2) + 14, 3, ModRand.range(-2, 2) + 14);
+            this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
+            int y = ModUtils.getSurfaceHeightLich(world, new BlockPos(targetedPos.x, 0, targetedPos.z),(int) target.posY - 8, (int)target.posY + 10);
+            if(y != 0) {
+                new ActionLichTeleport(ModColors.AZURE, new Vec3d(targetedPos.x, y + 2, targetedPos.z)).performAction(this, target);
+                this.destroyCloseBlocks = true;
+                this.clearCurrentVelocity = true;
+                this.setImmovable(true);
+            } else {
+                new ActionLichTeleport(ModColors.AZURE, new Vec3d(targetedPos.x, targetedPos.y, targetedPos.z)).performAction(this, target);
+                this.destroyCloseBlocks = true;
+                this.clearCurrentVelocity = true;
+                this.setImmovable(true);
+            }
+        }, 45);
+
+        addEvent(()-> {
+            this.lockLook = true;
+        }, 75);
+
+        addEvent(()-> {
+            this.playSound(SoundsHandler.LICH_MAGIC_SWING, 3.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
+            //do explosive line action
+            new ActionExplosiveLine().performAction(this, target);
+        }, 85);
+
+        addEvent(()-> {
+            this.standbyOnVel = false;
+            this.lockLook = false;
+            this.setImmovable(false);
+            this.destroyCloseBlocks = false;
+        }, 105);
+
+        addEvent(()-> {
+            this.setExplosiveLine(false);
+            this.setFightMode(false);
+        }, 115);
     };
 
     private final Consumer<EntityLivingBase> combo_aoe_dash = (target) -> {
@@ -1107,6 +1193,10 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             }
             if(this.isMeleeCombo()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MELEE_COMBO, false));
+                return PlayState.CONTINUE;
+            }
+            if(this.isExplosiveLine()) {
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_EXPLOSIVE_LINE));
                 return PlayState.CONTINUE;
             }
 

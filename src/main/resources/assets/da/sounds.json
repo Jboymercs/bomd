@@ -120,6 +120,26 @@
       }
     ]
   },
+  "entity.confetti.explosion_cast": {
+    "category": "entity",
+    "subtitle": "entity.explosion_cast",
+    "sounds": [
+      {
+        "name": "da:entity/confetti/explosion_cast",
+        "stream": false
+      }
+    ]
+  },
+  "entity.confetti.explosion_impact": {
+    "category": "entity",
+    "subtitle": "entity.explosion_impact",
+    "sounds": [
+      {
+        "name": "da:entity/confetti/explosion_impact",
+        "stream": false
+      }
+    ]
+  },
   "entity.obsi.cast": {
     "category": "entity",
     "subtitle": "entity.obsi.cast",
@@ -495,6 +515,26 @@
     "sounds": [
       {
         "name": "da:entity/b_knight/swing",
+        "stream": false
+      }
+    ]
+  },
+  "entity.b_knight.flame_impact_prepare": {
+    "category": "entity",
+    "subtitle": "entity.burning_knight.flame_impact_prepare",
+    "sounds": [
+      {
+        "name": "da:entity/b_knight/flame_impact_prepare",
+        "stream": false
+      }
+    ]
+  },
+  "entity.b_knight.flame_impact": {
+    "category": "entity",
+    "subtitle": "entity.burning_knight.flame_impact",
+    "sounds": [
+      {
+        "name": "da:entity/b_knight/flame_impact",
         "stream": false
       }
     ]
