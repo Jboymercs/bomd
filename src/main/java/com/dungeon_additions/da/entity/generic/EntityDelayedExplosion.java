@@ -127,7 +127,7 @@ public class EntityDelayedExplosion extends EntityAbstractBase implements IAnima
         if(ticksExisted == 26) {
             if(!world.isRemote) {
                 if (owner != null) {
-                    List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(3.5), e -> !e.getIsInvulnerable() && (!(e instanceof EntityAbstractBase)));
+                    List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(3), e -> !e.getIsInvulnerable() && (!(e instanceof EntityAbstractBase)));
                     if(!targets.isEmpty() && !initiatedAttack) {
                         for(EntityLivingBase base : targets) {
                             if(base != this && base != owner && !(base instanceof EntityAbstractBase)) {
@@ -192,6 +192,7 @@ public class EntityDelayedExplosion extends EntityAbstractBase implements IAnima
             });
             //orange
         } else if (id == ModUtils.THIRD_PARTICLE_BYTE) {
+            Main.proxy.spawnParticle(18,world, this.posX, this.posY + 0.3, this.posZ, 0, 0, 0);
             ModUtils.performNTimes(10, (i) -> {
             Main.proxy.spawnParticle(23, this.posX + ModRand.range(-2, 2), this.posY + ModRand.range(-1, 2), this.posZ + ModRand.range(-2, 2), 0, 0.05, 0, 16750593);
             });

@@ -5,6 +5,8 @@ import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
+import com.dungeon_additions.da.entity.generic.EntityDelayedExplosion;
+import com.dungeon_additions.da.entity.night_lich.action.ActionLichTeleport;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
 import com.dungeon_additions.da.entity.sky_dungeon.city_knights.ActionHalberdSpecial;
@@ -13,11 +15,9 @@ import com.dungeon_additions.da.entity.sky_dungeon.high_king.action.ActionBloodS
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.action.*;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.ai.EntityHighKingTimedAttack;
 import com.dungeon_additions.da.entity.util.IEntitySound;
-import com.dungeon_additions.da.util.ModRand;
-import com.dungeon_additions.da.util.ModReference;
-import com.dungeon_additions.da.util.ModUtils;
-import com.dungeon_additions.da.util.ServerScaleUtil;
+import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
+import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -36,8 +36,10 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
@@ -70,6 +72,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     public boolean currentlyInIFrame = false;
     protected int blockCooldown = MobConfig.high_king_block_cooldown * 20;
     private int HoverTimeIncrease = 0;
+    private boolean destroyCloseBlocks = false;
+    private boolean setTooUltraAOE = false;
 
     private boolean hasHoverMovement = false;
     private boolean spearThrustGrabDetection = false;
@@ -96,6 +100,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     private final String ANIM_CAST_LIGHTNING = "cast_lightning";
     private final String ANIM_CAST_CLAW = "cast_claw";
     private final String ANIM_HOLY_WAVE = "holy_wave";
+    private final String ANIM_CAST_ULTRA_ATTACK = "cast_ultra_attack";
     //Connecting Animations
     private final String ANIM_HEAVY_SWING = "heavy_swing";
     private final String ANIM_HEAVY_SWING_CONTINUE = "heavy_swing_continue";
@@ -129,6 +134,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     private final String ANIM_BLOODY_GRAB_END = "bloody_grab_end";
     private final String ANIM_BLOODY_GRAB_CONTINUE = "bloody_grab_continue";
 
+    private final String ANIM_ULTRA_CONTINUE = "cast_ultra_continue";
+    private final String ANIM_ULTRA_FINISH = "cast_ultra_finish";
+
     private static final DataParameter<Boolean> SUMMON_BOSS = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> PHASE_TRANSITION = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DEATH_BOSS = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
@@ -161,6 +169,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     private static final DataParameter<Boolean> BLOODY_GRAB_END = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> BLOODY_GRAB_CONTINUE = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> BLOODIED = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> ULTRA_ATTACK = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> ULTRA_CONTINUE = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> ULTRA_FINISH = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     public boolean isSummonBoss() {return this.dataManager.get(SUMMON_BOSS);}
     private void setSummonBoss(boolean value) {this.dataManager.set(SUMMON_BOSS, Boolean.valueOf(value));}
     public boolean isPhaseTransition() {return this.dataManager.get(PHASE_TRANSITION);}
@@ -225,6 +236,12 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     private void setBloodyGrabContinue(boolean value) {this.dataManager.set(BLOODY_GRAB_CONTINUE, Boolean.valueOf(value));}
     public boolean isBloodied() {return this.dataManager.get(BLOODIED);}
     private void setBloodied(boolean value) {this.dataManager.set(BLOODIED, Boolean.valueOf(value));}
+    public boolean isUltraAttack() {return this.dataManager.get(ULTRA_ATTACK);}
+    private void setUltraAttack(boolean value) {this.dataManager.set(ULTRA_ATTACK, Boolean.valueOf(value));}
+    public boolean isUltraFinish() {return this.dataManager.get(ULTRA_FINISH);}
+    private void setUltraFinish(boolean value) {this.dataManager.set(ULTRA_FINISH, Boolean.valueOf(value));}
+    public boolean isUltraContinue() {return this.dataManager.get(ULTRA_CONTINUE);}
+    private void setUltraContinue(boolean value) {this.dataManager.set(ULTRA_CONTINUE, Boolean.valueOf(value));}
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("Bloodied", this.isBloodied());
@@ -259,6 +276,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         nbt.setBoolean("Death_Boss", this.isDeathBoss());
         nbt.setBoolean("Fast_aoe", this.isFastAoe());
         nbt.setBoolean("Holy_Wave", this.isHolyWave());
+        nbt.setBoolean("Ultra_Attack", this.isUltraAttack());
+        nbt.setBoolean("Ultra_Finish", this.isUltraFinish());
+        nbt.setBoolean("Ultra_Continue", this.isUltraContinue());
         super.writeEntityToNBT(nbt);
     }
 
@@ -296,6 +316,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.setDeathBoss(nbt.getBoolean("Death_Boss"));
         this.setFastAoe(nbt.getBoolean("Fast_aoe"));
         this.setHolyWave(nbt.getBoolean("Holy_Wave"));
+        this.setUltraAttack(nbt.getBoolean("Ultra_Attack"));
+        this.setUltraContinue(nbt.getBoolean("Ultra_Continue"));
+        this.setUltraFinish(nbt.getBoolean("Ultra_Finish"));
         super.readEntityFromNBT(nbt);
     }
 
@@ -334,6 +357,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.dataManager.register(DEATH_BOSS, Boolean.valueOf(false));
         this.dataManager.register(FAST_AOE, Boolean.valueOf(false));
         this.dataManager.register(HOLY_WAVE, Boolean.valueOf(false));
+        this.dataManager.register(ULTRA_CONTINUE, Boolean.valueOf(false));
+        this.dataManager.register(ULTRA_ATTACK, Boolean.valueOf(false));
+        this.dataManager.register(ULTRA_FINISH, Boolean.valueOf(false));
     }
     private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -452,6 +478,12 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         }
 
         if(!world.isRemote) {
+
+            if(this.destroyCloseBlocks) {
+                AxisAlignedBB box = getEntityBoundingBox().grow(1.25, 0.1, 1.25).offset(0, 0.1, 0);
+                ModUtils.destroyBlocksInAABB(box, world, this);
+            }
+
             blockCooldown--;
             aoeCooldown--;
 
@@ -586,9 +618,10 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         double healthFactor = this.getHealth() / this.getMaxHealth();
 
         if(!this.isFightMode() && !this.isBlockWithRanged() && !this.isBlockAction() && !this.isDeathBoss()) {
-            List<Consumer<EntityLivingBase>> attacks = new ArrayList<>(Arrays.asList(heavy_swing_begin, fast_aoe_attack, double_swing, cast_lightning_attack, cast_claw_attack, dodge_action, circle_air_attack, spear_thrust_attack, stomp_attack, holy_wave, bloody_fly_attack, bloody_grab_attack, strafe_thrust_attack));
+            List<Consumer<EntityLivingBase>> attacks = new ArrayList<>(Arrays.asList(heavy_swing_begin, cast_ultra_attack, fast_aoe_attack, double_swing, cast_lightning_attack, cast_claw_attack, dodge_action, circle_air_attack, spear_thrust_attack, stomp_attack, holy_wave, bloody_fly_attack, bloody_grab_attack, strafe_thrust_attack));
             double[] weights = {
                     (prevAttacks != heavy_swing_begin && distance <= 9) ? 1/distance : 0, //Heavy Swing, can do a second swing as well
+                    (prevAttacks != cast_ultra_attack && healthFactor <= 0.75) ? 1/distance : 0, //Ultra Slash Dash Attack
                     (prevAttacks != fast_aoe_attack && distance <= 12 && aoeCooldown < 0) ? 1/distance : 0, //Fast AOE attack
                     (prevAttacks != double_swing && distance <= 9) ? 1/distance : 0, //Double Swing that can end with a jump AOE
                     (prevAttacks != cast_lightning_attack && distance > 9) ? distance * 0.02 : 0, //Cast Lightning Attack
@@ -607,6 +640,307 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         }
         return healthFactor <= 0.5 && this.isBloodied() ? 0 : ModRand.range(MobConfig.high_king_cooldown_min * 20, MobConfig.high_king_cooldown_max * 20);
     }
+
+    private final Consumer<EntityLivingBase> cast_ultra_attack = (target) -> {
+      this.setUltraAttack(true);
+      this.setImmovable(true);
+      this.setFullBodyUsage(true);
+      this.setFightMode(true);
+
+      addEvent(()-> {
+          this.playSound(SoundsHandler.KING_CAST_ULTRA_START, 1.5f, 1.0f / (rand.nextFloat() * 0.7F + 0.4f));
+          this.setTooUltraAOE = true;
+      }, 10);
+
+      //self AOE
+      addEvent(()-> {
+          this.setTooUltraAOE = false;
+          world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
+          this.playSound(SoundsHandler.KING_CAST_ULTRA_AOE, 1.5f, 1.0f / (rand.nextFloat() * 0.7F + 0.4f));
+          Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1, 0)));
+          DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+          float damage = (float) (this.getAttack());
+          ModUtils.handleAreaImpact(5f, (e) -> damage, this, offset, source, 0.7f, 0, false);
+          this.setNoGravity(true);
+          this.setImmovable(false);
+          this.HoverTimeIncrease = 3;
+      }, 30);
+
+      addEvent(()-> {
+          Vec3d playerPos = target.getPositionVector();
+          Vec3d targetedPos = playerPos.add(10 * ModRand.randSign(), 1, 10 * ModRand.randSign());
+          this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
+          int y = ModUtils.getSurfaceHeightLich(world, new BlockPos(targetedPos.x, 0, targetedPos.z),(int) target.posY - 8, (int)target.posY + 10);
+          if(y != 0) {
+              this.setPosition(targetedPos.x, y + 2, targetedPos.z);
+              this.destroyCloseBlocks = true;
+              this.setImmovable(true);
+          } else {
+              this.setPosition(targetedPos.x, targetedPos.y + 1, targetedPos.z);
+              this.destroyCloseBlocks = true;
+              this.setImmovable(true);
+          }
+      }, 60);
+
+
+      //first Dash
+      addEvent(()-> {
+          this.lockLook = true;
+          Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
+          Vec3d targetedPos = target.getPositionVector().add(posSet.scale(9));
+        addEvent(()-> {
+            this.setImmovable(false);
+            double distance = this.getPositionVector().distanceTo(targetedPos);
+            ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.15),0F);
+            this.playSound(SoundsHandler.KING_CAST_ULTRA_DASH, 2.5f, 1.0f / (rand.nextFloat() * 0.7F + 0.4f));
+            this.setShaking(true);
+            this.shakeTime = 30;
+            Vec3d lineStart = this.getPositionVector();
+            Vec3d lineEnd = targetedPos;
+
+            ModUtils.lineCallback(lineStart, lineEnd, 50, (posV, j) -> {
+                Main.proxy.spawnParticle(23, posV.x, lineStart.y, posV.z, 0, 0.03, 0, 16763721);
+            });
+            //adds several hit points during this dash
+            for(int i = 0; i <= 40; i += 5) {
+                addEvent(()-> {
+                    Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2, 0.5, 0)));
+                    DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+                    float damage = (float) (this.getAttack() * 1.25);
+                    ModUtils.handleAreaImpact(2.4f, (e) -> damage, this, offset, source, 0.3f, 0, false);
+                }, i);
+            }
+
+            addEvent(()-> this.setShaking(false), 30);
+
+            //creates line of Explosives
+            addEvent(()-> {
+
+                ModUtils.lineCallback(lineStart, lineEnd, 8, (posV, j) -> {
+                    addEvent(()-> {
+                        EntityDelayedExplosion explosion = new EntityDelayedExplosion(world, this, this.getAttack(), true, false);
+                        int y = ModUtils.getSurfaceHeightGeneral(world, new BlockPos(posV.x, 0, posV.z), (int) posV.y - 10, (int) posV.y + 10);
+                        explosion.setPosition(posV.x, y + 2, posV.z);
+                        world.spawnEntity(explosion);
+                    }, j * 3);
+                });
+            }, 30);
+        }, 5);
+      }, 85);
+
+        //set still and prep for next strike
+      addEvent(()-> {
+          this.lockLook = false;
+          Vec3d playerPos = target.getPositionVector();
+          Vec3d targetedPos = playerPos.add(10 * ModRand.randSign(), 1, 10 * ModRand.randSign());
+          this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
+          int y = ModUtils.getSurfaceHeightLich(world, new BlockPos(targetedPos.x, 0, targetedPos.z),(int) target.posY - 8, (int)target.posY + 10);
+          if(y != 0) {
+              this.setPosition(targetedPos.x, y + 2, targetedPos.z);
+              this.destroyCloseBlocks = true;
+              this.setImmovable(true);
+          } else {
+              this.setPosition(targetedPos.x, targetedPos.y + 1, targetedPos.z);
+              this.destroyCloseBlocks = true;
+              this.setImmovable(true);
+          }
+          this.faceEntity(target, 180, 30);
+      }, 130);
+
+        //second dash
+      addEvent(()-> {
+          this.lockLook = true;
+          Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
+          Vec3d targetedPos = target.getPositionVector().add(posSet.scale(9));
+          addEvent(()-> {
+              this.setImmovable(false);
+              double distance = this.getPositionVector().distanceTo(targetedPos);
+              this.playSound(SoundsHandler.KING_CAST_ULTRA_DASH, 2.5f, 1.0f / (rand.nextFloat() * 0.7F + 0.4f));
+              ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.15),0F);
+              this.setShaking(true);
+              this.shakeTime = 30;
+              Vec3d lineStart = this.getPositionVector();
+              Vec3d lineEnd = targetedPos;
+              ModUtils.lineCallback(lineStart, lineEnd, 50, (posV, j) -> {
+                  Main.proxy.spawnParticle(23, posV.x, lineStart.y, posV.z, 0, 0.03, 0, 16763721);
+              });
+
+              //adds several hit points during this dash
+              for(int i = 0; i <= 40; i += 5) {
+                  addEvent(()-> {
+                      Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2, 0.5, 0)));
+                      DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+                      float damage = (float) (this.getAttack() * 1.25);
+                      ModUtils.handleAreaImpact(2.4f, (e) -> damage, this, offset, source, 0.3f, 0, false);
+                  }, i);
+              }
+
+              addEvent(()-> this.setShaking(false), 30);
+
+              //creates line of Explosives
+              addEvent(()-> {
+
+                  ModUtils.lineCallback(lineStart, lineEnd, 8, (posV, j) -> {
+                      addEvent(()-> {
+                          EntityDelayedExplosion explosion = new EntityDelayedExplosion(world, this, this.getAttack(), true, false);
+                          int y = ModUtils.getSurfaceHeightGeneral(world, new BlockPos(posV.x, 0, posV.z), (int) posV.y - 10, (int) posV.y + 10);
+                          explosion.setPosition(posV.x, y + 2, posV.z);
+                          world.spawnEntity(explosion);
+                      }, j * 3);
+                  });
+              }, 30);
+          }, 5);
+      }, 170);
+
+      addEvent(()-> {
+          this.setImmovable(true);
+          this.lockLook = false;
+      }, 220);
+
+      addEvent(()-> {
+            this.setUltraAttack(false);
+            boolean randB = rand.nextBoolean();
+
+            if(randB || this.getHealth() / this.getMaxHealth() <= 0.4) {
+                this.setUltraAttackTooContinue(target);
+            } else {
+                this.setUltraFinish(true);
+
+                addEvent(()-> {
+                    this.setImmovable(false);
+                    if(this.getSpawnLocation() != null) {
+                        this.setPosition(this.getSpawnLocation().getX(), this.getSpawnLocation().getY() + 4, this.getSpawnLocation().getZ());
+                    } else {
+                        this.setPosition(target.posX, target.posY + 4, target.posZ);
+                    }
+                    this.destroyCloseBlocks = false;
+                }, 10);
+
+                addEvent(()-> {
+                    this.setNoGravity(false);
+                }, 20);
+
+                addEvent(()-> {
+                    this.setUltraFinish(false);
+                    this.setFullBodyUsage(false);
+                    this.setFightMode(false);
+                }, 30);
+            }
+      }, 230);
+    };
+
+    private void setUltraAttackTooContinue(EntityLivingBase target) {
+        ultra_attack_continue.accept(target);
+    }
+
+    private final Consumer<EntityLivingBase> ultra_attack_continue = (target) -> {
+      this.setUltraContinue(true);
+      this.setImmovable(false);
+        this.lockLook = false;
+        Vec3d playerPos = target.getPositionVector();
+        Vec3d targetedPos2 = playerPos.add(10 * ModRand.randSign(), 1, 10 * ModRand.randSign());
+        this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
+        int y2 = ModUtils.getSurfaceHeightLich(world, new BlockPos(targetedPos2.x, 0, targetedPos2.z),(int) target.posY - 8, (int)target.posY + 10);
+        if(y2 != 0) {
+            this.setPosition(targetedPos2.x, y2 + 2, targetedPos2.z);
+            this.destroyCloseBlocks = true;
+            this.setImmovable(true);
+        } else {
+            this.setPosition(targetedPos2.x, targetedPos2.y + 1, targetedPos2.z);
+            this.destroyCloseBlocks = true;
+            this.setImmovable(true);
+        }
+
+        addEvent(()-> {
+            this.lockLook = true;
+            Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
+            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(9));
+            addEvent(()-> {
+                this.setImmovable(false);
+                double distance = this.getPositionVector().distanceTo(targetedPos);
+                this.playSound(SoundsHandler.KING_CAST_ULTRA_DASH, 2.5f, 1.0f / (rand.nextFloat() * 0.7F + 0.4f));
+                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.15),0F);
+                this.setShaking(true);
+                this.shakeTime = 30;
+                Vec3d lineStart = this.getPositionVector();
+                Vec3d lineEnd = targetedPos;
+                ModUtils.lineCallback(lineStart, lineEnd, 50, (posV, j) -> {
+                    Main.proxy.spawnParticle(23, posV.x, lineStart.y, posV.z, 0, 0.03, 0, 16763721);
+                });
+                //adds several hit points during this dash
+                for(int i = 0; i <= 40; i += 5) {
+                    addEvent(()-> {
+                        Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2, 0.5, 0)));
+                        DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+                        float damage = (float) (this.getAttack() * 1.25);
+                        ModUtils.handleAreaImpact(2.4f, (e) -> damage, this, offset, source, 0.3f, 0, false);
+                    }, i);
+                }
+
+                addEvent(()-> this.setShaking(false), 30);
+
+                //creates line of Explosives
+                addEvent(()-> {
+
+                    ModUtils.lineCallback(lineStart, lineEnd, 8, (posV, j) -> {
+                        addEvent(()-> {
+                            EntityDelayedExplosion explosion = new EntityDelayedExplosion(world, this, this.getAttack(), true, false);
+                            int y = ModUtils.getSurfaceHeightGeneral(world, new BlockPos(posV.x, 0, posV.z), (int) posV.y - 10, (int) posV.y + 10);
+                            explosion.setPosition(posV.x, y + 2, posV.z);
+                            world.spawnEntity(explosion);
+                        }, j * 3);
+                    });
+                }, 20);
+            }, 5);
+        }, 20);
+
+
+        addEvent(()-> {
+            this.setImmovable(true);
+            this.lockLook = false;
+            this.destroyCloseBlocks = false;
+        }, 80);
+
+        addEvent(()-> {
+            this.setImmovable(false);
+            if(target != null) {
+                this.setPosition(target.posX + 1, target.posY + 2, target.posZ + 1);
+                this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
+            } else if(this.getSpawnLocation() != null) {
+                this.setPosition(this.getSpawnLocation().getX(), this.getSpawnLocation().getY() + 2, this.getSpawnLocation().getZ());
+                this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
+            }
+            this.setImmovable(true);
+            this.lockLook = true;
+        }, 85);
+
+        addEvent(()-> {this.playSound(SoundsHandler.KING_CAST_ULTRA_START, 1.5f, 1.0f / (rand.nextFloat() * 0.7F + 0.4f));
+            this.setTooUltraAOE = true;
+        }, 95);
+
+        addEvent(()-> {
+            this.setTooUltraAOE = false;
+            world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
+            this.playSound(SoundsHandler.KING_CAST_ULTRA_AOE, 1.5f, 1.0f / (rand.nextFloat() * 0.7F + 0.4f));
+            Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 0.5, 0)));
+            DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+            float damage = (float) (this.getAttack());
+            ModUtils.handleAreaImpact(5f, (e) -> damage, this, offset, source, 0.7f, 0, false);
+            this.setImmovable(false);
+        }, 115);
+
+        addEvent(()-> {
+            this.lockLook = false;
+            this.setNoGravity(false);
+        }, 140);
+
+        addEvent(()-> {
+            this.setUltraContinue(false);
+            this.setFightMode(false);
+            this.setFullBodyUsage(false);
+            this.setImmovable(false);
+        }, 145);
+    };
 
     private final Consumer<EntityLivingBase> strafe_thrust_attack = (target) -> {
       this.setStrafeThrust(true);
@@ -1854,6 +2188,18 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                 event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BLOODY_GRAB_END, false));
                 return PlayState.CONTINUE;
             }
+            if(this.isUltraAttack()) {
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_CAST_ULTRA_ATTACK));
+                return PlayState.CONTINUE;
+            }
+            if(this.isUltraContinue()) {
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_ULTRA_CONTINUE));
+                return PlayState.CONTINUE;
+            }
+            if(this.isUltraFinish()) {
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_ULTRA_FINISH));
+                return PlayState.CONTINUE;
+            }
         }
         event.getController().markNeedsReload();
         return PlayState.STOP;
@@ -1863,12 +2209,31 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     public void onEntityUpdate() {
         super.onEntityUpdate();
 
+        if(this.setTooUltraAOE && rand.nextInt(2) == 0) {
+            world.setEntityState(this, ModUtils.PARTICLE_BYTE);
+        }
+
     }
 
     @Override
     public void handleStatusUpdate(byte id) {
         super.handleStatusUpdate(id);
 
+        if(id == ModUtils.PARTICLE_BYTE) {
+            ModUtils.performNTimes( 6, (i) -> {
+                Vec3d pos = this.getPositionVector().add(new Vec3d(ModRand.getFloat(5), ModRand.range(0, 2), ModRand.getFloat(5)));
+                Main.proxy.spawnParticle(23, pos.x, pos.y, pos.z, 0, 0.03, 0, 16763721);
+            });
+        }
+
+        if(id == ModUtils.SECOND_PARTICLE_BYTE) {
+            ModUtils.circleCallback(3, 25, (pos)-> {
+                pos = new Vec3d(pos.x, 0, pos.y);
+                ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(1)), ModColors.YELLOW, pos.normalize().scale(0.1), ModRand.range(10, 15));
+                ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(2)), ModColors.YELLOW, pos.normalize().scale(0.1), ModRand.range(10, 15));
+                ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(3)), ModColors.YELLOW, pos.normalize().scale(0.1), ModRand.range(10, 15));
+            });
+        }
     }
 
     @Override

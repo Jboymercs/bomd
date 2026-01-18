@@ -5,6 +5,7 @@ import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianWarlor
 import com.dungeon_additions.da.entity.model.desert_dungeon.ModelAegyptia;
 import com.dungeon_additions.da.entity.model.desert_dungeon.ModelAegyptianWarlord;
 import com.dungeon_additions.da.entity.render.layer.GeoSpecificGlow;
+import com.dungeon_additions.da.entity.render.layer.LayerObsidilithShield;
 import com.dungeon_additions.da.entity.render.util.RenderGargoyleExtended;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraft.block.state.IBlockState;
@@ -24,6 +25,7 @@ public class RenderAegyptianWarlord extends RenderGargoyleExtended<EntityAegypti
     public RenderAegyptianWarlord(RenderManager renderManager) {
         super(renderManager, new ModelAegyptianWarlord(MODEL_RESLOC, TEXTURE, "aegyptian_warlord"));
         this.addLayer(new GeoSpecificGlow<>(this, this.TEXTURE_GETTER, this.MODEL_ID_GETTER));
+        this.addLayer(new LayerWarlordShield(this, this.TEXTURE_GETTER, this.MODEL_ID_GETTER));
     }
 
     @Nullable

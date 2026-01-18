@@ -403,7 +403,7 @@ public class MobConfig {
     @Config.Name("Night Lich Health")
     @Config.Comment("Change the Health of the Night Lich")
     @Config.RequiresMcRestart
-    public static double night_lich_health = 475;
+    public static double night_lich_health = 500;
 
     @Config.Name("Night Lich Attack Damage")
     @Config.Comment("Change the Attack Damage of the Night Lich")

@@ -1787,6 +1787,36 @@
       }
     ]
   },
+  "entity.high_king.ultra_aoe_start": {
+    "category": "entity",
+    "subtitle": "entity.high_king.ultra_aoe_start",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/ultra_aoe_start",
+        "stream": false
+      }
+    ]
+  },
+  "entity.high_king.ultra_aoe_cast": {
+    "category": "entity",
+    "subtitle": "entity.high_king.ultra_aoe_cast",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/ultra_aoe_cast",
+        "stream": false
+      }
+    ]
+  },
+  "entity.high_king.ultra_dash": {
+    "category": "entity",
+    "subtitle": "entity.high_king.ultra_dash",
+    "sounds": [
+      {
+        "name": "da:entity/high_king/ultra_dash",
+        "stream": false
+      }
+    ]
+  },
   "entity.high_king.spear_impact": {
     "category": "entity",
     "subtitle": "entity.high_king.spear_impact",

@@ -1330,11 +1330,13 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
 
     private static final ResourceLocation LOOT_BOSS = new ResourceLocation(ModReference.MOD_ID, "high_dragon");
 
+    private boolean spawnedBoss = false;
+
     @Override
     public void onDeath(DamageSource cause) {
         this.setImmovable(true);
         if(!world.isRemote) {
-            if(MobConfig.high_dragon_after_death && this.getSpawnLocation() != null) {
+            if(MobConfig.high_dragon_after_death && this.getSpawnLocation() != null && !spawnedBoss) {
                 this.experienceValue = 0;
                 //Spawn the High King for the second part of the boss fight
                 EntityHighKing king;
@@ -1344,9 +1346,9 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
                 } else {
                     king = new EntityHighKing(world, this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
                 }
-
+                this.spawnedBoss = true;
                 this.world.spawnEntity(king);
-            } else {
+            } else if(!spawnedBoss) {
                 //Spawn a chest with the loot table for this boss
                 if(this.getSpawnLocation() != null) {
                     BlockPos pos = this.getSpawnLocation();

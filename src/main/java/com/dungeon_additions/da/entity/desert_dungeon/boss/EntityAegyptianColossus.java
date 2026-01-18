@@ -526,4 +526,13 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         }
         return 0;
     }
+
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if(this.isShielded()) {
+            this.playSound(SoundsHandler.OBSIDILITH_SHIELD, 0.75f, 0.8f + ModRand.getFloat(0.4f));
+            return false;
+        }
+        return super.attackEntityFrom(source, amount);
+    }
 }

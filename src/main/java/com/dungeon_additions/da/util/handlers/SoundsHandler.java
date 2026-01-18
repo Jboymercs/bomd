@@ -207,6 +207,9 @@ public class SoundsHandler {
     public static SoundEvent HIGH_KING_SWING_MAGIC;
     public static SoundEvent HIGH_KING_STEP;
     public static SoundEvent HIGH_KING_SWING_IMPALE;
+    public static SoundEvent KING_CAST_ULTRA_START;
+    public static SoundEvent KING_CAST_ULTRA_AOE;
+    public static SoundEvent KING_CAST_ULTRA_DASH;
 
     public static SoundEvent HIGH_KING_CLAW_DRAW;
 
@@ -532,6 +535,10 @@ public class SoundsHandler {
         BLOOD_FLY_BEGIN = registerSound("high_king.blood_fly_begin", "entity");
         BLOODY_FLY_SWING = registerSound("high_king.blood_fly", "entity");
         KING_GRAB_SUCCESS = registerSound("high_king.grab_success", "entity");
+        KING_CAST_ULTRA_AOE = registerSound("high_king.ultra_aoe_cast","entity");
+        KING_CAST_ULTRA_START = registerSound("high_king.ultra_aoe_start","entity");
+        KING_CAST_ULTRA_DASH = registerSound("high_king.ultra_dash","entity");
+
         //
         BLOOD_SPEAR_USE = registerSound("high_king.blood_spear_use", "entity");
         //

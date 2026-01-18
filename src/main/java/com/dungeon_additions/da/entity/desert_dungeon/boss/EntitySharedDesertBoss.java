@@ -25,7 +25,11 @@ public class EntitySharedDesertBoss extends EntityDesertBase {
 
 
  protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.<Optional<UUID>>createKey(EntitySharedDesertBoss.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+    private static final DataParameter<Boolean> SHIELDED = EntityDataManager.createKey(EntitySharedDesertBoss.class, DataSerializers.BOOLEAN);
 
+
+    public void setShielded(boolean value) {this.dataManager.set(SHIELDED, Boolean.valueOf(value));}
+    public boolean isShielded() {return this.dataManager.get(SHIELDED);}
 
     @Nullable
     public UUID getOtherBossId()
@@ -61,6 +65,7 @@ public class EntitySharedDesertBoss extends EntityDesertBase {
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
+        nbt.setBoolean("Shielded", this.isShielded());
         if (this.getOtherBossId() == null)
         {
             nbt.setString("OwnerUUID", "");
@@ -74,6 +79,7 @@ public class EntitySharedDesertBoss extends EntityDesertBase {
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
+        this.setShielded(nbt.getBoolean("Shielded"));
         String s;
         if (nbt.hasKey("OwnerUUID", 8))
         {
@@ -95,6 +101,7 @@ public class EntitySharedDesertBoss extends EntityDesertBase {
     @Override
     public void entityInit() {
         super.entityInit();
+        this.dataManager.register(SHIELDED, Boolean.valueOf(false));
         this.dataManager.register(OWNER_UNIQUE_ID, Optional.absent());
     }
 

@@ -975,6 +975,8 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         return this.ticksExisted;
     }
 
+    private boolean spawnedBoss = false;
+
     @Override
     public void onDeath(DamageSource cause) {
         this.setHealth(0.00001F);
@@ -1016,7 +1018,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         addEvent(()-> {
             this.playSound(SoundsHandler.VOIDCLYSM_IMPACT, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
             if(this.getSpawnLocation() != null) {
-                if(MobConfig.obsidilith_two_part_boss) {
+                if(MobConfig.obsidilith_two_part_boss && !spawnedBoss) {
                     //spawns two part boss fight
                     this.experienceValue = 0;
                     this.setDropItemsWhenDead(false);
@@ -1028,9 +1030,10 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
                         } else {
                             voidiclysm = new EntityVoidiclysm(world, this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
                         }
+                        spawnedBoss = true;
                         world.spawnEntity(voidiclysm);
                     }
-                } else if (ModConfig.boss_resummon_enabled && this.timesUsed <= ModConfig.boss_resummon_max_uses){
+                } else if (ModConfig.boss_resummon_enabled && this.timesUsed <= ModConfig.boss_resummon_max_uses && !spawnedBoss){
                     //turns boss into spawner
                     this.turnBossIntoSummonSpawner(this.getSpawnLocation());
                 }

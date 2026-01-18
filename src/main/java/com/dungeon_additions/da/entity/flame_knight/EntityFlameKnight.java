@@ -683,7 +683,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
 
         if(grabDetection && grabbedEntity == null) {
             List<EntityLivingBase> nearbyEntities = this.world.getEntitiesWithinAABB(EntityLivingBase.class,
-                    this.getEntityBoundingBox().offset(ModUtils.getRelativeOffset(this, new Vec3d(1, 0, 0))).grow(1.5D, 0.5D, 1.5D),
+                    this.getEntityBoundingBox().offset(ModUtils.getRelativeOffset(this, new Vec3d(1, 0, 0))).grow(1.25D, 0.5D, 1.25D),
                     e -> !e.getIsInvulnerable());
 
             if(!nearbyEntities.isEmpty()) {
@@ -1186,7 +1186,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
                 List<Consumer<EntityLivingBase>> close_attacks = new ArrayList<>(Arrays.asList(swing_one_attack, flame_ground_strike, swing_two_attack, swing_three_attack, small_stomp, overhead_Dash, Flame_Sling, summon_flame, jump_without_attack, stop_spam_attacks));
                 double[] weights = {
                         (distance <= 3 && prevAttack != swing_one_attack) ? 1 / distance : 0, //Swing One
-                        (distance <= 16 && prevAttack != flame_ground_strike && HealthChange <= 0.6) ? 1/distance : 0, //Flame Ground Strike
+                        (distance <= 16 && distance > 7 && prevAttack != flame_ground_strike && HealthChange <= 0.6) ? 1/distance : 0, //Flame Ground Strike
                         (distance <= 7 && prevAttack != swing_two_attack) ? 1 / distance : 0, //Swing Two, uses flame slings in 2nd Phase
                         (distance <= 3 && prevAttack != swing_three_attack) ? 1 / distance : 0, // Swing Three
                         (distance <= 8 && prevAttack != small_stomp) ? 1 / distance : 0, // Uses another melee attack but switches to a stomp following 2nd Phase
@@ -1253,11 +1253,10 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
               spike.setPosition(pos.x, y + 2, pos.z);
               world.spawnEntity(spike);
           });
-
+          this.grabDetection = false;
       }, 55);
 
       addEvent(()-> this.setShaking(false), 70);
-      addEvent(()-> this.grabDetection = false, 58);
 
       //first flame wave
       addEvent(()-> {
@@ -1300,7 +1299,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
           }
           this.setFlamesArise = false;
 
-          this.playSound(SoundsHandler.B_KNIGHT_SWING, 2f, 1.0f / (rand.nextFloat() * 0.1F + 0.4f));
+          this.playSound(SoundsHandler.B_KNIGHT_FLAME_IMPACT, 2f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           ModUtils.circleCallback(5, 5, (pos)-> {
               pos = new Vec3d(pos.x, 0, pos.y).add(this.getPositionVector());
               int y = ModUtils.getSurfaceHeightGeneral(world, new BlockPos(pos.x, 0, pos.z), (int) this.posY - 5, (int) this.posY + 7);
@@ -1317,16 +1316,19 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
               world.spawnEntity(spike);
           });
 
-          ModUtils.circleCallback(16, 20, (pos)-> {
+          ModUtils.circleCallback(15, 20, (pos)-> {
               pos = new Vec3d(pos.x, 0, pos.y).add(this.getPositionVector());
               int y = ModUtils.getSurfaceHeightGeneral(world, new BlockPos(pos.x, 0, pos.z), (int) this.posY - 5, (int) this.posY + 7);
               EntityDelayedExplosion spike = new EntityDelayedExplosion(world, this, this.getAttack(), true, false);
               spike.setPosition(pos.x, y + 2, pos.z);
               world.spawnEntity(spike);
           });
+          this.setShaking(true);
+          this.shakeTime = 15;
       }, 115);
 
       addEvent(()-> {
+          this.setShaking(false);
           this.grabbedEntity = null;
           this.lockLook = false;
       }, 130);
