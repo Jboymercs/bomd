@@ -16,6 +16,7 @@ import com.dungeon_additions.da.items.armor.novik.ItemNovikArmor;
 import com.dungeon_additions.da.items.armor.novik.ItemNovikChestplate;
 import com.dungeon_additions.da.items.armor.novik.ItemNovikHelmet;
 import com.dungeon_additions.da.items.food.ItemBeetleMorsel;
+import com.dungeon_additions.da.items.food.ItemDungeonBread;
 import com.dungeon_additions.da.items.food.ItemUncookedFood;
 import com.dungeon_additions.da.items.gun.ItemGolemCannon;
 import com.dungeon_additions.da.items.gun.ItemSealedTornado;
@@ -136,6 +137,7 @@ public class ModItems {
     public static final Item DRAGON_SCALES = new ItemCraftingMaterial("dragon_scale", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
 
     //Food
+    public static final Item DUNGEON_BREAD = new ItemDungeonBread("dungeon_bread", 5, 0.1F, false).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item VOID_FRUIT = new ItemFoodBase("crystal_fruit", "regen_fruit", 5, 1, false).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item GLOW_BERRY = new ItemGlowBerry("glow_berry", 4, 0.4F, false, ModBlocks.AZAELA_VINES).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item UNCOOKED_BEETLE_MORSEL = new ItemUncookedFood("beetle_morsel", 3, 0, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 300), 0.2F).setCreativeTab(DungeonAdditionsTab.ALL);
@@ -301,6 +303,7 @@ public class ModItems {
     public static final Item FAKE_BOW = new ItemBase("fake_bow", null);
     public static final Item TRADER_BAG = new ItemBase("trader_bag", null);
     public static final Item DESERT_LOCATOR_PROJ = new ItemBase("desert_locator_projectile", null);
+    public static final Item DESERT_PROJECTILE = new ItemBase("desert_projectile", null);
 
     public static final Item MOD_LOGO = new ItemBase("bomd_mod_logo", null);
 

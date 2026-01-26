@@ -21,6 +21,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -120,5 +122,16 @@ public class ProjectileLightRing extends Projectile {
             super.onHit(result);
         }
         this.playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.8f, 0.8f / (rand.nextFloat() * 0.4f + 0.4f));
+    }
+
+    public float getBrightness()
+    {
+        return 1.0F;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender()
+    {
+        return 15728880;
     }
 }

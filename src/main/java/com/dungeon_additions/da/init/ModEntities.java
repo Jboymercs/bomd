@@ -8,7 +8,9 @@ import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.dark_dungeon.*;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
+import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertOrb;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
+import com.dungeon_additions.da.entity.desert_dungeon.ProjectileThousandCuts;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityDesertBeam;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianColossus;
@@ -240,6 +242,8 @@ public class ModEntities {
             registerEntity("gaelon_locator", EntityGaelonSanctuaryLocator.class, ENTITY_START_ID++, 40);
             registerEntity("delayed_explosion_da", EntityDelayedExplosion.class, ENTITY_START_ID++, 60);
             registerEntity("summoned_mace", EntitySummonedMace.class, ENTITY_START_ID++, 50);
+            registerEntity("thousand_cuts", ProjectileThousandCuts.class, PROJECTILE_START_ID++, 40);
+            registerEntity("desert_projectile", ProjectileDesertOrb.class, PROJECTILE_START_ID++, 40);
 
 
 

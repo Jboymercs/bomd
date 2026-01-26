@@ -12,6 +12,8 @@ import com.dungeon_additions.da.util.handlers.CameraPositionHandler;
 import com.dungeon_additions.da.util.handlers.RenderHandler;
 import com.dungeon_additions.da.util.particle.*;
 import com.dungeon_additions.da.util.particle.confetti.ParticleConfetti;
+import com.dungeon_additions.da.util.particle.cuts.ParticleLeftCut;
+import com.dungeon_additions.da.util.particle.cuts.ParticleRightCut;
 import com.dungeon_additions.da.util.particle.impact.*;
 import com.dungeon_additions.da.util.particle.obsidilith.*;
 import net.minecraft.advancements.Advancement;
@@ -217,6 +219,10 @@ public class ClientProxy extends CommonProxy{
                 return new ParticlePurpleImpact.Factory();
             case 23:
                 return new ParticleConfetti.Factory();
+            case 24:
+                return new ParticleLeftCut.Factory();
+            case 25:
+                return new ParticleRightCut.Factory();
         }
     }
 

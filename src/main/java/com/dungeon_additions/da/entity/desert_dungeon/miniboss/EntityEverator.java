@@ -804,7 +804,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
         }
 
         if(ModConfig.boss_cap_damage_enabled && amount > MobConfig.everator_damage_cap) {
-            return super.attackEntityFrom(source, MobConfig.champion_damage_cap);
+            return super.attackEntityFrom(source, MobConfig.everator_damage_cap);
         }
 
         return super.attackEntityFrom(source, amount);

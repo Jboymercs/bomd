@@ -158,6 +158,17 @@ public class ProjectileEndlessEnderpearl extends EntityThrowable {
         }
     }
 
+    public float getBrightness()
+    {
+        return 1.0F;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender()
+    {
+        return 15728880;
+    }
+
     @SideOnly(Side.CLIENT)
     protected void spawnImpactParticles() {
             //spawns the impact Particles

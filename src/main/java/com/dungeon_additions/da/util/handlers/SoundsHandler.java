@@ -339,6 +339,10 @@ public class SoundsHandler {
     public static SoundEvent DELAYED_EXPLOSION_CAST;
     public static SoundEvent DELAYED_EXPLOSION_IMPACT;
 
+    //Aegyptian Warlord
+    public static SoundEvent WARLORD_CUTS_SWING;
+    public static SoundEvent WARLORD_CUTS_CAST;
+
     //MUSIC
     public static SoundEvent HIGH_DRAGON_TRACK;
     public static SoundEvent HIGH_KING_TRACK;
@@ -644,6 +648,9 @@ public class SoundsHandler {
         CURSED_SENTINEL_HURT = registerSound("cursed_sentinel.hurt","entity");
         CURSED_SENTINEL_STEP = registerSound("cursed_sentinel.step","entity");
         CURSED_SENTINEL_AWAKE = registerSound("cursed_sentinel.awake","entity");
+        //
+        WARLORD_CUTS_CAST = registerSound("warlord.cuts_cast", "entity");
+        WARLORD_CUTS_SWING = registerSound("warlord.cuts_swing", "entity");
         //
         CONFETTI_SOUND = registerSound("confetti.party", "entity");
         DEATHBLOW_SOUND = registerSound("confetti.deathblow", "entity");

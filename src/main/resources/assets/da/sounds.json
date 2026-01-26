@@ -2895,6 +2895,26 @@
       }
     ]
   },
+  "entity.warlord.cuts_swing": {
+    "category": "entity",
+    "subtitle": "entity.warlord.cuts_swing",
+    "sounds": [
+      {
+        "name": "da:entity/warlord/cuts_swing",
+        "stream": false
+      }
+    ]
+  },
+  "entity.warlord.cuts_cast": {
+    "category": "entity",
+    "subtitle": "entity.warlord.cuts_cast",
+    "sounds": [
+      {
+        "name": "da:entity/warlord/cuts_cast",
+        "stream": false
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",

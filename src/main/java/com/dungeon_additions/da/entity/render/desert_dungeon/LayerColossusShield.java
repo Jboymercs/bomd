@@ -27,7 +27,7 @@ public class LayerColossusShield extends RenderAbstractLayer<EntityAegyptianColo
 
     @Override
     public void render(EntityAegyptianColossus entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, Color renderColor) {
-        if(!entitylivingbaseIn.isShielded()) {
+        if(entitylivingbaseIn.isShielded()) {
             RenderManager manager = Minecraft.getMinecraft().getRenderManager();
 
             EmissiveLighting.preEmissiveTextureRendering();

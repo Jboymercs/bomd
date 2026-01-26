@@ -11,6 +11,8 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ProjectileVoidLeaf extends Projectile {
     public ProjectileVoidLeaf(World worldIn, EntityLivingBase throwerIn, float damage) {
@@ -45,5 +47,16 @@ public class ProjectileVoidLeaf extends Projectile {
         }
         this.playSound(SoundEvents.BLOCK_SNOW_BREAK, 1.0f + ModRand.getFloat(0.2f), 1.0f + ModRand.getFloat(0.2f));
         super.onHit(result);
+    }
+
+    public float getBrightness()
+    {
+        return 1.0F;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender()
+    {
+        return 15728880;
     }
 }

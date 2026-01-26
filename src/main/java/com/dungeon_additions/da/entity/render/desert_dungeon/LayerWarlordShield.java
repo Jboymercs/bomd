@@ -27,7 +27,7 @@ public class LayerWarlordShield extends RenderAbstractLayer<EntityAegyptianWarlo
 
     @Override
     public void render(EntityAegyptianWarlord entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, Color renderColor) {
-            if(!entitylivingbaseIn.isShielded()) {
+            if(entitylivingbaseIn.isShielded()) {
                 RenderManager manager = Minecraft.getMinecraft().getRenderManager();
 
                 EmissiveLighting.preEmissiveTextureRendering();

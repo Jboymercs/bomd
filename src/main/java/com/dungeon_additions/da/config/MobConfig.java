@@ -873,10 +873,70 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static double aegyptia_armor = 12;
 
+    @Config.Name("Aegyptian Bosses Revive Health Bonus")
+    @Config.Comment("Change the percentage one of the bosses get after being revived from near death. This percentage is times there max health.")
+    @Config.RequiresMcRestart
+    public static double desert_bosses_revive_health_bonus = 0.5;
+
+    @Config.Name("Aegyptian Bosses Second Phase Health Healing")
+    @Config.Comment("When either of the bosses are the last one and doing there phase transition. What percentage of there health do they gain back going into second phase")
+    @Config.RequiresMcRestart
+    public static double desert_bosses_second_phase_healing = 1;
+
+    @Config.Name("Aegyptian Warlord Health")
+    @Config.Comment("Change the health of the Aegyptian Warlord.")
+    @Config.RequiresMcRestart
+    public static double warlord_health = 150;
+
+    @Config.Name("Aegyptian Warlord Attack Damage")
+    @Config.Comment("Change the attack damage of the Aegyptian Warlord")
+    @Config.RequiresMcRestart
+    public static double warlord_attack_damage = 18;
+
+    @Config.Name("Aegyptian Warlord Armor")
+    @Config.Comment("Change the armor of the Aegyptian Warlord")
+    @Config.RequiresMcRestart
+    public static double warlord_armor = 16;
+
+    @Config.Name("Aegyptian Warlord Armor Toughness")
+    @Config.Comment("Change the armor toughness of the Aegyptian Warlord")
+    @Config.RequiresMcRestart
+    public static double warlord_armor_toughness = 4;
+
+    @Config.Name("Aegyptian Warlord Damage Cap")
+    @Config.Comment("Change the damage cap of how much damage can be done at one time to the Aegyptian Warlord. Disable this feature entirely in general_config")
+    @Config.RequiresMcRestart
+    public static float warlord_damage_cap = 23;
+
+    @Config.Name("Aegyptian c Health")
+    @Config.Comment("Change the health of the Aegyptian Colossus.")
+    @Config.RequiresMcRestart
+    public static double colossus_health = 200;
+
+    @Config.Name("Aegyptian Colossus Attack Damage")
+    @Config.Comment("Change the attack damage of the Aegyptian Colossus")
+    @Config.RequiresMcRestart
+    public static double colossus_attack_damage = 25;
+
+    @Config.Name("Aegyptian Colossus Armor")
+    @Config.Comment("Change the armor of the Aegyptian Colossus")
+    @Config.RequiresMcRestart
+    public static double colossus_armor = 20;
+
+    @Config.Name("Aegyptian Colossus Armor Toughness")
+    @Config.Comment("Change the armor toughness of the Aegyptian Colossus")
+    @Config.RequiresMcRestart
+    public static double colossus_armor_toughness = 6;
+
+    @Config.Name("Aegyptian Colossus Damage Cap")
+    @Config.Comment("Change the damage cap of how much damage can be done at one time to the Aegyptian Colossus. Disable this feature entirely in general_config")
+    @Config.RequiresMcRestart
+    public static float colossus_damage_cap = 23;
+
     @Config.Name("Everator Health")
     @Config.Comment("Change the health of the Everator.")
     @Config.RequiresMcRestart
-    public static double everator_health = 200;
+    public static double everator_health = 175;
 
     @Config.Name("Everator Attack Damage")
     @Config.Comment("Change the attack damage of the Everator")

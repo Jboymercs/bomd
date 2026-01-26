@@ -9,7 +9,9 @@ import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
 import com.dungeon_additions.da.entity.dark_dungeon.*;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
+import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertOrb;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
+import com.dungeon_additions.da.entity.desert_dungeon.ProjectileThousandCuts;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityDesertBeam;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianColossus;
@@ -166,6 +168,8 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectilePuzzleBall.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(EntityForgottenTempleLocator.class, ModItems.DESERT_LOCATOR_PROJ);
         registerProjectileRenderer(EntityRottenHoldLocator.class, ModItems.ROTTEN_HOLD_LOCATOR);
+        registerProjectileRenderer(ProjectileThousandCuts.class, ModItems.INVISISBLE_ITEM);
+        registerProjectileRenderer(ProjectileDesertOrb.class, ModItems.DESERT_PROJECTILE);
     }
 
     //Handles Rendering

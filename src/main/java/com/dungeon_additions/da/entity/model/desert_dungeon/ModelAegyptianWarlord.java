@@ -22,7 +22,11 @@ public class ModelAegyptianWarlord extends GeoModelExtended<EntityAegyptianWarlo
 
     @Override
     public ResourceLocation getTextureLocation(EntityAegyptianWarlord animatable) {
-        return new ResourceLocation(ModReference.MOD_ID, "textures/entity/aegyptia/aegyptian_warlord.png");
+        if(animatable.isHasPhaseTransitioned()) {
+            return new ResourceLocation(ModReference.MOD_ID, "textures/entity/aegyptia/aegyptian_warlord_transition.png");
+        } else {
+            return new ResourceLocation(ModReference.MOD_ID, "textures/entity/aegyptia/aegyptian_warlord.png");
+        }
     }
 
     @Override

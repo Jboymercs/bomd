@@ -16,7 +16,7 @@ public class EntityDesertBase extends EntityAbstractBase {
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        if(source.getImmediateSource() instanceof EntityDesertBase) {
+        if(source.getImmediateSource() instanceof EntityDesertBase || source.getImmediateSource() instanceof ProjectileThousandCuts || source.getImmediateSource() instanceof ProjectileDesertOrb) {
             return false;
         }
 

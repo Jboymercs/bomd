@@ -12,6 +12,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ProjectileFastGhostCrystal extends Projectile {
     public ProjectileFastGhostCrystal(World worldIn, EntityLivingBase throwerIn, float damage) {
@@ -72,5 +74,16 @@ public class ProjectileFastGhostCrystal extends Projectile {
             this.playSound(SoundsHandler.VOIDCLYSM_IMPACT, 1.1F, 1.0f + ModRand.getFloat(0.1f));
         }
         super.onHit(result);
+    }
+
+    public float getBrightness()
+    {
+        return 1.0F;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender()
+    {
+        return 15728880;
     }
 }

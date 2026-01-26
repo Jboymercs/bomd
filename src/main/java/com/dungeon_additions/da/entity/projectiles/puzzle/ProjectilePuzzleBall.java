@@ -1,18 +1,21 @@
 package com.dungeon_additions.da.entity.projectiles.puzzle;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.entity.desert_dungeon.boss.EntitySharedDesertBoss;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityGrumBlocker;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityPuzzleMirror;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
+import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -47,6 +50,7 @@ public class ProjectilePuzzleBall extends Projectile {
         this.setNoGravity(true);
         this.noClip = true;
     }
+
 
     @Override
     protected void spawnParticles() {
@@ -118,6 +122,20 @@ public class ProjectilePuzzleBall extends Projectile {
                     }
                     this.setDead();
                 }
+            } else if(result.entityHit != null) {
+                if(result.entityHit instanceof EntitySharedDesertBoss) {
+                    EntitySharedDesertBoss boss = ((EntitySharedDesertBoss) result.entityHit);
+                    if(boss.isShielded()) {
+                        DamageSource source = ModDamageSource.builder()
+                                .indirectEntity(this)
+                                .directEntity(this)
+                                .type(ModDamageSource.MAGIC)
+                                .stoppedByArmorNotShields().build();
+                        boss.attackEntityFrom(source, 100);
+                        this.setDead();
+                        super.onHit(result);
+                    }
+                }
             }
 
                 this.setDead();
@@ -133,41 +151,5 @@ public class ProjectilePuzzleBall extends Projectile {
     }
 
 
-    private double getYawOffsetForRot(int skullVal) {
-        if(skullVal == 16 || skullVal == 0) {
-            return 0;
-        } else if (skullVal == 8) {
-            return 180;
-        } else if (skullVal == 1) {
-            return 35;
-        }  else if (skullVal == 2) {
-            return 63;
-        }  else if (skullVal == 3) {
-            return 85;
-        }  else if (skullVal == 4) {
-            return 115;
-        }  else if (skullVal == 5) {
-            return 140;
-        }  else if (skullVal == 6) {
-            return 153;
-        }  else if (skullVal == 7) {
-            return 165;
-        }  else if (skullVal == 9) {
-            return 195;
-        }  else if (skullVal == 10) {
-            return 207;
-        }  else if (skullVal == 11) {
-            return 220;
-        }   else if (skullVal == 12) {
-            return 245;
-        }   else if (skullVal == 13) {
-            return 275;
-        }  else if (skullVal == 14) {
-            return 297;
-        }  else if (skullVal == 15) {
-            return 323;
-        }
-        return 0;
-    }
 
 }

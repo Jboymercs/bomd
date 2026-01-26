@@ -1,7 +1,9 @@
 package com.dungeon_additions.da.entity.desert_dungeon.boss;
 
+import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityDesertBase;
+import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
 import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.EntityFriendlyCursedRevenant;
 import com.google.common.base.Optional;
 import net.minecraft.block.state.IBlockState;
@@ -23,13 +25,50 @@ import java.util.UUID;
 
 public class EntitySharedDesertBoss extends EntityDesertBase {
 
+    public final String ANIM_SET_SHIELDED = "set_shielded";
+    public final String ANIM_SHIELDED = "shielded";
+    public final String ANIM_END_SHIELDED = "end_shielded";
+    public final String ANIM_PHASE_TRANSITION = "phase_transition";
+
+    protected boolean inLowHealthState = false;
+    protected int lowHealthTimer = 25 * 20;
 
  protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.<Optional<UUID>>createKey(EntitySharedDesertBoss.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     private static final DataParameter<Boolean> SHIELDED = EntityDataManager.createKey(EntitySharedDesertBoss.class, DataSerializers.BOOLEAN);
-
+    private static final DataParameter<Boolean> START_SHIELDED = EntityDataManager.createKey(EntitySharedDesertBoss.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> END_SHIELDED = EntityDataManager.createKey(EntitySharedDesertBoss.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> ENRAGED = EntityDataManager.createKey(EntitySharedDesertBoss.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> HAS_PHASE_TRANSITIONED = EntityDataManager.createKey(EntitySharedDesertBoss.class, DataSerializers.BOOLEAN);
+    public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntitySharedDesertBoss.class, DataSerializers.BLOCK_POS);
+    public static DataParameter<Boolean> SET_SPAWN_LOC = EntityDataManager.createKey(EntitySharedDesertBoss.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntitySharedDesertBoss.class, DataSerializers.BOOLEAN);
 
     public void setShielded(boolean value) {this.dataManager.set(SHIELDED, Boolean.valueOf(value));}
     public boolean isShielded() {return this.dataManager.get(SHIELDED);}
+    public void setStartShielded(boolean value) {this.dataManager.set(START_SHIELDED, Boolean.valueOf(value));}
+    public boolean isStartShielded() {return this.dataManager.get(START_SHIELDED);}
+    public void setEndShielded(boolean value) {this.dataManager.set(END_SHIELDED, Boolean.valueOf(value));}
+    public boolean isEndShielded() {return this.dataManager.get(END_SHIELDED);}
+    public void setEnraged(boolean value) {this.dataManager.set(ENRAGED, Boolean.valueOf(value));}
+    public boolean isEnraged() {return this.dataManager.get(ENRAGED);}
+    public void setHasPhaseTransitioned(boolean value) {this.dataManager.set(HAS_PHASE_TRANSITIONED, Boolean.valueOf(value));}
+    public boolean isHasPhaseTransitioned() {return this.dataManager.get(HAS_PHASE_TRANSITIONED);}
+    public void setSetSpawnLoc(boolean value) {
+        this.dataManager.set(SET_SPAWN_LOC, Boolean.valueOf(value));
+    }
+    public boolean isSetSpawnLoc() {
+        return this.dataManager.get(SET_SPAWN_LOC);
+    }
+    public void setSpawnLocation(BlockPos pos) {
+        this.dataManager.set(SPAWN_LOCATION, pos);
+    }
+
+    public BlockPos getSpawnLocation() {
+        return this.dataManager.get(SPAWN_LOCATION);
+    }
+    public boolean isHadPreviousTarget() {return this.dataManager.get(HAD_PREVIOUS_TARGET);}
+    public void setHadPreviousTarget(boolean value) {this.dataManager.set(HAD_PREVIOUS_TARGET, Boolean.valueOf(value));}
+
 
     @Nullable
     public UUID getOtherBossId()
@@ -66,6 +105,15 @@ public class EntitySharedDesertBoss extends EntityDesertBase {
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("Shielded", this.isShielded());
+        nbt.setBoolean("Start_Shielded", this.isStartShielded());
+        nbt.setBoolean("End_Shielded", this.isEndShielded());
+        nbt.setBoolean("Enraged", this.isEnraged());
+        nbt.setBoolean("Has_Phase_Transitioned", this.isHasPhaseTransitioned());
+        nbt.setBoolean("Had_Target", this.isHadPreviousTarget());
+        nbt.setInteger("Spawn_Loc_X", this.getSpawnLocation().getX());
+        nbt.setInteger("Spawn_Loc_Y", this.getSpawnLocation().getY());
+        nbt.setInteger("Spawn_Loc_Z", this.getSpawnLocation().getZ());
+        nbt.setBoolean("Set_Spawn_Loc", this.dataManager.get(SET_SPAWN_LOC));
         if (this.getOtherBossId() == null)
         {
             nbt.setString("OwnerUUID", "");
@@ -78,8 +126,58 @@ public class EntitySharedDesertBoss extends EntityDesertBase {
     }
 
     @Override
+    public void onUpdate() {
+
+        if(!world.isRemote) {
+            if(this.isShielded()) {
+                if(lowHealthTimer <= 0) {
+                    this.setEndLowHealthState();
+                    this.lowHealthTimer = 20 * 25;
+                } else {
+                    lowHealthTimer--;
+                }
+
+
+            }
+
+            //slight handling for the other relative boss
+            if(this.getOtherBoss() != null) {
+                    if(!this.getOtherBoss().isEntityAlive()) {
+                        this.setOtherBossId(null);
+                        this.setEnraged(true);
+                        //have this do something with phase transitioning
+                }
+
+                if(this.getOtherBoss() instanceof EntitySharedDesertBoss) {
+                    EntitySharedDesertBoss boss = ((EntitySharedDesertBoss) this.getOtherBoss());
+
+                    //sets for a faster cooldown
+                    if(boss.isShielded()) {
+                        this.setEnraged(true);
+                    } else {
+                        this.setEnraged(false);
+                    }
+
+                    //lessens the cooldown time if both bosses are shielded
+                    if(boss.isShielded() && this.isShielded()) {
+                        lowHealthTimer -=5;
+                    }
+                }
+            }
+        }
+        super.onUpdate();
+    }
+
+    @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.setShielded(nbt.getBoolean("Shielded"));
+        this.setStartShielded(nbt.getBoolean("Start_Shielded"));
+        this.setEndShielded(nbt.getBoolean("End_Shielded"));
+        this.setEnraged(nbt.getBoolean("Enraged"));
+        this.setHasPhaseTransitioned(nbt.getBoolean("Has_Phase_Transitioned"));
+        this.setHadPreviousTarget(nbt.getBoolean("Had_Target"));
+        this.dataManager.set(SET_SPAWN_LOC, nbt.getBoolean("Set_Spawn_Loc"));
+        this.setSpawnLocation(new BlockPos(nbt.getInteger("Spawn_Loc_X"), nbt.getInteger("Spawn_Loc_Y"), nbt.getInteger("Spawn_Loc_Z")));
         String s;
         if (nbt.hasKey("OwnerUUID", 8))
         {
@@ -102,7 +200,14 @@ public class EntitySharedDesertBoss extends EntityDesertBase {
     public void entityInit() {
         super.entityInit();
         this.dataManager.register(SHIELDED, Boolean.valueOf(false));
+        this.dataManager.register(START_SHIELDED, Boolean.valueOf(false));
+        this.dataManager.register(END_SHIELDED, Boolean.valueOf(false));
+        this.dataManager.register(ENRAGED, Boolean.valueOf(false));
+        this.dataManager.register(HAS_PHASE_TRANSITIONED, Boolean.valueOf(false));
+        this.dataManager.register(SET_SPAWN_LOC, Boolean.valueOf(false));
+        this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
         this.dataManager.register(OWNER_UNIQUE_ID, Optional.absent());
+        this.dataManager.register(SPAWN_LOCATION, new BlockPos(this.getPositionVector().x, this.getPositionVector().y, this.getPositionVector().z));
     }
 
 
@@ -120,6 +225,37 @@ public class EntitySharedDesertBoss extends EntityDesertBase {
     public EntitySharedDesertBoss(World worldIn) {
         super(worldIn);
         this.iAmBossMob = true;
+    }
+
+
+    protected void setLowHealthState() {
+        this.clearEvents();
+        this.setStartShielded(true);
+        this.setFightMode(true);
+        this.setImmovable(true);
+        addEvent(()-> {
+            this.setStartShielded(false);
+            this.setFightMode(false);
+            this.setShielded(true);
+            this.lockLook = true;
+            this.setImmovable(true);
+        }, 40);
+    }
+
+    protected void setEndLowHealthState() {
+        this.setShielded(false);
+        this.setEndShielded(true);
+        this.setFightMode(true);
+        //play sound for healing
+        this.heal((float) (this.getMaxHealth() * MobConfig.desert_bosses_revive_health_bonus));
+        this.inLowHealthState = false;
+
+        addEvent(() -> {
+            this.setFightMode(false);
+            this.setEndShielded(false);
+            this.setImmovable(false);
+            this.lockLook = false;
+        }, 30);
     }
 
 

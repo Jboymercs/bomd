@@ -1,6 +1,8 @@
 package com.dungeon_additions.da.entity.desert_dungeon.boss;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityAIAegyptiaWarlord;
@@ -8,6 +10,7 @@ import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityAIAegyptianColoss
 import com.dungeon_additions.da.entity.desert_dungeon.boss.colossus.ActionColossusMaceSlam;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.colossus.ActionMaceWave;
 import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
+import com.dungeon_additions.da.entity.projectiles.puzzle.ProjectilePuzzleBall;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
@@ -50,6 +53,12 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     private final AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttack;
     private int shakeTime = 0;
+
+    //Post Phase Transition Ideas
+    // Summon Melee Maces - SUmmons four Maces around the Colossus that do the melee sweep
+    // Rage Mode - Colossus Swings multiple times towards the target ending in a mega AOE
+    // Batter Up - Colossus summons a orb then hits it flying towards the target causing a big explosion
+    // Mace Hilt Slam - Colossus slams the hilt of the mace into the ground causing a large wave of Yellow waves to spawn
 
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityAegyptianColossus.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> STEP_SHAKE = EntityDataManager.createKey(EntityAegyptianColossus.class, DataSerializers.BOOLEAN);
@@ -177,11 +186,11 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(50D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(25);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.colossus_attack_damage);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.22D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(20);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(6);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MobConfig.colossus_health);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(MobConfig.colossus_armor);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(MobConfig.colossus_armor_toughness);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1D);
     }
 
@@ -216,6 +225,11 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
                 }
             }
 
+            //preps for Phase Transition
+            if(this.getOtherBoss() == null && this.isEnraged() && !this.isFightMode() && !this.isHasPhaseTransitioned()) {
+
+            }
+
         }
     }
 
@@ -224,7 +238,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     public int startAttack(EntityLivingBase target, float distanceSq, boolean strafingBackwards) {
         double distance = Math.sqrt(distanceSq);
         double healtFac = this.getHealth()/this.getMaxHealth();
-        if(!this.isFightMode()) {
+        if(!this.isFightMode() && !this.isShielded() && !this.isSummon()) {
             List<Consumer<EntityLivingBase>> attacksMelee = new ArrayList<>(Arrays.asList(swing_attack, mace_slam, call_mace));
             double[] weights = {
                     (prevAttack != swing_attack && distance < 8) ? 1/distance : 0, //Double Swing Attack
@@ -235,7 +249,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
             prevAttack = ModRand.choice(attacksMelee, rand, weights).next();
             prevAttack.accept(target);
         }
-        return 90;
+        return this.isEnraged() ? 20 : 90;
     }
 
     private final Consumer<EntityLivingBase> call_mace = (target) -> {
@@ -404,7 +418,17 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         data.addAnimationController(new AnimationController(this, "arms_controller_idle", 0, this::predicateArmsIdle));
         data.addAnimationController(new AnimationController(this, "attacks_controller", 0, this::predicateAttacks));
         data.addAnimationController(new AnimationController(this, "states_controller", 0, this::predicateStates));
+        data.addAnimationController(new AnimationController(this, "shielded_controller", 0, this::predicateShielded));
     }
+
+    private <E extends IAnimatable> PlayState predicateShielded(AnimationEvent<E> event) {
+        if(this.isShielded()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SHIELDED, true));
+            return PlayState.CONTINUE;
+        }
+        return PlayState.STOP;
+    }
+
 
     private<E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
         if(this.isFightMode()) {
@@ -442,6 +466,14 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
             event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SUMMON));
             return PlayState.CONTINUE;
         }
+        if(this.isStartShielded()) {
+            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SET_SHIELDED));
+            return PlayState.CONTINUE;
+        }
+        if(this.isEndShielded()) {
+            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_END_SHIELDED));
+            return PlayState.CONTINUE;
+        }
         event.getController().markNeedsReload();
         return PlayState.STOP;
     }
@@ -455,7 +487,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     }
 
     private <E extends IAnimatable> PlayState predicateArmsIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.07F && event.getLimbSwingAmount() <= 0.07F && !this.isFightMode() && !this.isSummon()) {
+        if(event.getLimbSwingAmount() >= -0.07F && event.getLimbSwingAmount() <= 0.07F && !this.isFightMode() && !this.isSummon() && !this.isShielded()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_UPPER, true));
             return PlayState.CONTINUE;
         }
@@ -471,7 +503,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     }
 
     private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.08F && event.getLimbSwingAmount() <= 0.08F) && !this.isFightMode() && !this.isSummon()) {
+        if(!(event.getLimbSwingAmount() >= -0.08F && event.getLimbSwingAmount() <= 0.08F) && !this.isFightMode() && !this.isSummon() && !this.isShielded()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER, true));
             return PlayState.CONTINUE;
         }
@@ -529,10 +561,30 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        if(this.isShielded()) {
-            this.playSound(SoundsHandler.OBSIDILITH_SHIELD, 0.75f, 0.8f + ModRand.getFloat(0.4f));
-            return false;
+        if(this.isShielded() || this.isStartShielded()) {
+            if(source.getImmediateSource() instanceof ProjectilePuzzleBall && this.getOtherBoss() != null) {
+                return super.attackEntityFrom(source, 100);
+            } else {
+                this.playSound(SoundsHandler.OBSIDILITH_SHIELD, 0.75f, 0.8f + ModRand.getFloat(0.4f));
+                return false;
+            }
         }
+
+        if(ModConfig.boss_cap_damage_enabled && amount > MobConfig.colossus_damage_cap) {
+            return super.attackEntityFrom(source, MobConfig.colossus_damage_cap);
+        }
+
         return super.attackEntityFrom(source, amount);
+    }
+
+    @Override
+    public void onDeath(DamageSource cause) {
+        if(this.getOtherBoss() != null && !this.inLowHealthState) {
+            this.setHealth(0.00001F);
+            this.inLowHealthState = true;
+            this.setLowHealthState();
+        } else if (this.inLowHealthState && this.isShielded() || this.getOtherBoss() == null) {
+            super.onDeath(cause);
+        }
     }
 }
