@@ -15,6 +15,7 @@ import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityDesertBeam;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianColossus;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianWarlord;
+import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityColossusSigil;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntitySummonedMace;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.EntityEverator;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
@@ -244,6 +245,7 @@ public class ModEntities {
             registerEntity("summoned_mace", EntitySummonedMace.class, ENTITY_START_ID++, 50);
             registerEntity("thousand_cuts", ProjectileThousandCuts.class, PROJECTILE_START_ID++, 40);
             registerEntity("desert_projectile", ProjectileDesertOrb.class, PROJECTILE_START_ID++, 40);
+            registerEntity("colossus_sigil", EntityColossusSigil.class, PROJECTILE_START_ID++, 50);
 
 
 

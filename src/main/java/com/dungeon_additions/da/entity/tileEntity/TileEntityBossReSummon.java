@@ -67,6 +67,8 @@ public class TileEntityBossReSummon extends TileEntity implements ITickable {
                 this.setState(BlockEnumBossSummonState.OBSIDILITH);
             } else if (boss.equals("apathyr")) {
                 this.setState(BlockEnumBossSummonState.APATHYR);
+            } else if (boss.equals("aegyptian")) {
+                this.setState(BlockEnumBossSummonState.AEGYPTIAN);
             }
         }
 

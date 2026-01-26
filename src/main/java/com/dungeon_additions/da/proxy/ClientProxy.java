@@ -12,6 +12,7 @@ import com.dungeon_additions.da.util.handlers.CameraPositionHandler;
 import com.dungeon_additions.da.util.handlers.RenderHandler;
 import com.dungeon_additions.da.util.particle.*;
 import com.dungeon_additions.da.util.particle.confetti.ParticleConfetti;
+import com.dungeon_additions.da.util.particle.cuts.ParticleColossusSigil;
 import com.dungeon_additions.da.util.particle.cuts.ParticleLeftCut;
 import com.dungeon_additions.da.util.particle.cuts.ParticleRightCut;
 import com.dungeon_additions.da.util.particle.impact.*;
@@ -223,6 +224,8 @@ public class ClientProxy extends CommonProxy{
                 return new ParticleLeftCut.Factory();
             case 25:
                 return new ParticleRightCut.Factory();
+            case 26:
+                return new ParticleColossusSigil.Factory();
         }
     }
 

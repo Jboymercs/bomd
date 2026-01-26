@@ -5,11 +5,12 @@ import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
-import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityAIAegyptiaWarlord;
 import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityAIAegyptianColossus;
+import com.dungeon_additions.da.entity.desert_dungeon.boss.colossus.ActionColossusHiltSlam;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.colossus.ActionColossusMaceSlam;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.colossus.ActionMaceWave;
-import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
+import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
+import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.projectiles.puzzle.ProjectilePuzzleBall;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
@@ -17,7 +18,6 @@ import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -25,14 +25,18 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BossInfo;
+import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
@@ -43,21 +47,25 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class EntityAegyptianColossus extends EntitySharedDesertBoss implements IAnimatable, IAnimationTickable, IAttack, IScreenShake {
 
     private final AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttack;
     private int shakeTime = 0;
-
+    Supplier<Projectile> yellow_wave_projectiles = () -> new ProjectileYellowWave(world, this, (float) this.getAttack(), null);
+    private BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.YELLOW, BossInfo.Overlay.NOTCHED_6));
+    private int checkBossStatus = 60;
     //Post Phase Transition Ideas
     // Summon Melee Maces - SUmmons four Maces around the Colossus that do the melee sweep
-    // Rage Mode - Colossus Swings multiple times towards the target ending in a mega AOE
-    // Batter Up - Colossus summons a orb then hits it flying towards the target causing a big explosion
+    // Bring Forth Helper - SUmmons a small entity that constantly shoots projectiles at the player
+    // Jump Slam - Colossus jumps then teleports onto the player causing a slam attack in that area
     // Mace Hilt Slam - Colossus slams the hilt of the mace into the ground causing a large wave of Yellow waves to spawn
 
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityAegyptianColossus.class, DataSerializers.BOOLEAN);
@@ -69,6 +77,11 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     private static final DataParameter<Boolean> CALL_MACE = EntityDataManager.createKey(EntityAegyptianColossus.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> MACE_SMASH = EntityDataManager.createKey(EntityAegyptianColossus.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> MACE_SMASH_TWO = EntityDataManager.createKey(EntityAegyptianColossus.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> JUMP_SLAM = EntityDataManager.createKey(EntityAegyptianColossus.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SUMMON_MELEE_MACE = EntityDataManager.createKey(EntityAegyptianColossus.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> HILT_SLAM = EntityDataManager.createKey(EntityAegyptianColossus.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SUMMON_HELPER = EntityDataManager.createKey(EntityAegyptianColossus.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> PHASE_TRANSITION = EntityDataManager.createKey(EntityAegyptianColossus.class, DataSerializers.BOOLEAN);
 
     public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
     public boolean isShaking() {return this.dataManager.get(SHAKING);}
@@ -88,6 +101,16 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     private void setMaceSmash(boolean value) {this.dataManager.set(MACE_SMASH, Boolean.valueOf(value));}
     public boolean isMaceSmashTwo() {return this.dataManager.get(MACE_SMASH_TWO);}
     private void setMaceSmashTwo(boolean value) {this.dataManager.set(MACE_SMASH_TWO, Boolean.valueOf(value));}
+    public boolean isJumpSlam() {return this.dataManager.get(JUMP_SLAM);}
+    private void setJumpSlam(boolean value) {this.dataManager.set(JUMP_SLAM, Boolean.valueOf(value));}
+    public boolean isSummonMeleeMace() {return this.dataManager.get(SUMMON_MELEE_MACE);}
+    private void setSummonMeleeMace(boolean value) {this.dataManager.set(SUMMON_MELEE_MACE, Boolean.valueOf(value));}
+    public boolean isHiltSlam() {return this.dataManager.get(HILT_SLAM);}
+    private void setHiltSlam(boolean value) {this.dataManager.set(HILT_SLAM, Boolean.valueOf(value));}
+    public boolean isSummonHelper() {return this.dataManager.get(SUMMON_HELPER);}
+    private void setSummonHelper(boolean value) {this.dataManager.set(SUMMON_HELPER, Boolean.valueOf(value));}
+    public boolean isPhaseTransition() {return this.dataManager.get(PHASE_TRANSITION);}
+    private void setPhaseTransition(boolean value) {this.dataManager.set(PHASE_TRANSITION, Boolean.valueOf(value));}
 
     private final String ANIM_IDLE_LOWER = "idle_lower";
     private final String ANIM_IDLE_UPPER = "idle_upper";
@@ -103,22 +126,35 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     private final String ANIM_MACE_SMASH_TWO = "mace_smash_two";
     private final String ANIM_CALL_MACE = "call_mace";
 
+    //second phase
+    private final String ANIM_SUMMON_HELPER = "summon_helper";
+    private final String ANIM_SUMMON_MELEE_MACE = "summon_melee_maces";
+    private final String ANIM_HILT_SLAM = "hilt_slam";
+    private final String ANIM_JUMP_SLAM = "jump_slam";
+
     public EntityAegyptianColossus(World world, int timesUsed, BlockPos pos) {
         super(world, timesUsed, pos);
         this.setSize(2.5F, 4.95F);
         this.startBossSetup();
+        this.bossInfo.setVisible(false);
+        this.timesUsed = timesUsed;
+        this.iAmBossMob = true;
     }
 
     public EntityAegyptianColossus(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
         this.setSize(2.5F, 4.95F);
         this.startBossSetup();
+        this.bossInfo.setVisible(false);
+        this.iAmBossMob = true;
     }
 
     public EntityAegyptianColossus(World worldIn) {
         super(worldIn);
         this.setSize(2.5F, 4.95F);
         this.startBossSetup();
+        this.bossInfo.setVisible(false);
+        this.iAmBossMob = true;
     }
 
     private void startBossSetup() {
@@ -150,6 +186,11 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         nbt.setBoolean("Call_Mace", this.isCallMace());
         nbt.setBoolean("Mace_Smash", this.isMaceSmash());
         nbt.setBoolean("Mace_Smash_Two", this.isMaceSmashTwo());
+        nbt.setBoolean("Jump_Slam", this.isJumpSlam());
+        nbt.setBoolean("Summon_Melee_Mace", this.isSummonMeleeMace());
+        nbt.setBoolean("Hilt_Slam", this.isHiltSlam());
+        nbt.setBoolean("Summon_Helper", this.isSummonHelper());
+        nbt.setBoolean("Phase_Transition", this.isPhaseTransition());
         super.writeEntityToNBT(nbt);
     }
 
@@ -164,6 +205,14 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         this.setCallMace(nbt.getBoolean("Call_Mace"));
         this.setMaceSmash(nbt.getBoolean("Mace_Smash"));
         this.setMaceSmashTwo(nbt.getBoolean("Mace_Smash_Two"));
+        this.setJumpSlam(nbt.getBoolean("Jump_Slam"));
+        this.setSummonMeleeMace(nbt.getBoolean("Summon_Melee_Mace"));
+        this.setHiltSlam(nbt.getBoolean("Hilt_Slam"));
+        this.setSummonHelper(nbt.getBoolean("Summon_Helper"));
+        this.setPhaseTransition(nbt.getBoolean("Phase_Transition"));
+        if (this.hasCustomName()) {
+            this.bossInfo.setName(this.getDisplayName());
+        }
         super.readEntityFromNBT(nbt);
     }
 
@@ -178,6 +227,11 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         this.dataManager.register(CALL_MACE, Boolean.valueOf(false));
         this.dataManager.register(MACE_SMASH, Boolean.valueOf(false));
         this.dataManager.register(MACE_SMASH_TWO, Boolean.valueOf(false));
+        this.dataManager.register(JUMP_SLAM, Boolean.valueOf(false));
+        this.dataManager.register(SUMMON_MELEE_MACE, Boolean.valueOf(false));
+        this.dataManager.register(HILT_SLAM, Boolean.valueOf(false));
+        this.dataManager.register(SUMMON_HELPER, Boolean.valueOf(false));
+        this.dataManager.register(PHASE_TRANSITION, Boolean.valueOf(false));
         super.entityInit();
 
     }
@@ -205,11 +259,32 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         this.targetTasks.addTask(5, new EntityAIHurtByTarget(this, false));
     }
 
+    private boolean deleteNearbyBlocks = false;
+
     @Override
     public void onUpdate() {
         super.onUpdate();
         this.shakeTime--;
+        this.checkBossStatus--;
+
+        if(checkBossStatus <=0 && this.getOtherBoss() == null && this.isHasPhaseTransitioned()) {
+            this.bossInfo.setVisible(true);
+        }
+
+        if(this.getOtherBoss() == null && this.bossInfo != null) {
+            double healthFac = this.getHealth() / this.getMaxHealth();
+            this.bossInfo.setPercent((float) healthFac);
+        }
+
         if(!world.isRemote) {
+
+            if(deleteNearbyBlocks) {
+                if(this.onGround) {
+                    deleteNearbyBlocks = false;
+                }
+                AxisAlignedBB box = getEntityBoundingBox().grow(1, 0.8, 1).offset(ModUtils.getRelativeOffset(this, new Vec3d(0, 0.4, 0)));
+                ModUtils.destroyBlocksInAABB(box, world, this);
+            }
 
             if(this.getOtherBoss() != null) {
                 if(this.getOtherBoss() instanceof EntityAegyptianWarlord) {
@@ -226,10 +301,9 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
             }
 
             //preps for Phase Transition
-            if(this.getOtherBoss() == null && this.isEnraged() && !this.isFightMode() && !this.isHasPhaseTransitioned()) {
-
+            if(this.getOtherBoss() == null && this.isEnraged() && !this.isFightMode() && !this.isHasPhaseTransitioned() && !this.isPhaseTransition()) {
+                this.doPhaseTransition();
             }
-
         }
     }
 
@@ -237,20 +311,146 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     @Override
     public int startAttack(EntityLivingBase target, float distanceSq, boolean strafingBackwards) {
         double distance = Math.sqrt(distanceSq);
-        double healtFac = this.getHealth()/this.getMaxHealth();
-        if(!this.isFightMode() && !this.isShielded() && !this.isSummon()) {
-            List<Consumer<EntityLivingBase>> attacksMelee = new ArrayList<>(Arrays.asList(swing_attack, mace_slam, call_mace));
+        if(!this.isFightMode() && !this.isShielded() && !this.isSummon() && !this.isPhaseTransition()) {
+            List<Consumer<EntityLivingBase>> attacksMelee = new ArrayList<>(Arrays.asList(swing_attack, mace_slam, call_mace, hilt_slam, summon_melee_maces, summon_helper, jump_slam));
             double[] weights = {
                     (prevAttack != swing_attack && distance < 8) ? 1/distance : 0, //Double Swing Attack
                     (prevAttack != mace_slam && distance < 12) ? 1/distance : 0, //Mace Slam
-                    (prevAttack != call_mace) ? distance * 0.02 : 0 //Call Mace Spell
+                    (prevAttack != call_mace) ? distance * 0.02 : 0, //Call Mace Spell
+                    (this.isHasPhaseTransitioned() && prevAttack != hilt_slam && distance > 4) ? distance * 0.02 : 0, //Hilt Slam Attack
+                    (this.isHasPhaseTransitioned() && prevAttack != summon_melee_maces && distance < 12) ? 1/distance : 0, //Summon Melee Maces
+                    (this.isHasPhaseTransitioned() && prevAttack != summon_helper) ? distance * 0.02 : 0, //Summon Helper Entity
+                    (this.isHasPhaseTransitioned() && prevAttack != jump_slam && distance > 5) ? distance * 0.02 : 0 //Jump Slam Attack
 
             };
             prevAttack = ModRand.choice(attacksMelee, rand, weights).next();
             prevAttack.accept(target);
         }
-        return this.isEnraged() ? 20 : 90;
+        return this.isHasPhaseTransitioned() ? 10 : this.isEnraged() ? 60 : 110;
     }
+
+    private final Consumer<EntityLivingBase> jump_slam = (target) -> {
+      this.setJumpSlam(true);
+      this.setFullBodyUsage(true);
+      this.setFightMode(true);
+      this.setImmovable(true);
+
+      addEvent(()-> {
+        this.setImmovable(false);
+        this.setNoGravity(true);
+        this.setPosition(target.posX, target.posY + 4, target.posZ);
+        this.deleteNearbyBlocks = true;
+        this.setImmovable(true);
+      }, 43);
+
+      addEvent(()-> {
+            this.lockLook = true;
+            this.setNoGravity(false);
+            this.setImmovable(false);
+      }, 60);
+
+      addEvent(()-> {
+          new ActionColossusMaceSlam(12).performAction(this, target);
+          this.setImmovable(true);
+          this.setShaking(true);
+          this.shakeTime = 15;
+      }, 75);
+
+      addEvent(()-> this.setShaking(false), 90);
+
+      addEvent(()-> this.lockLook = false, 105);
+
+      addEvent(()-> {
+        this.setJumpSlam(false);
+        this.setFullBodyUsage(false);
+        this.setFightMode(false);
+        this.setImmovable(false);
+      }, 115);
+    };
+
+    private final Consumer<EntityLivingBase> summon_helper = (target) -> {
+      this.setSummonHelper(true);
+      this.setFightMode(true);
+      this.setFullBodyUsage(true);
+      this.setImmovable(true);
+
+      addEvent(()-> {
+          //summon helper entity
+          EntityColossusSigil sigil = new EntityColossusSigil(world, this, this.getAttack(), target);
+          sigil.setPosition(this.posX, this.posY + 5.75, this.posZ);
+          world.spawnEntity(sigil);
+      }, 28);
+
+      addEvent(()-> {
+        this.setSummonHelper(false);
+        this.setFightMode(false);
+        this.setFullBodyUsage(false);
+        this.setImmovable(false);
+      }, 50);
+    };
+
+    private final Consumer<EntityLivingBase> summon_melee_maces = (target) -> {
+      this.setSummonMeleeMace(true);
+      this.setFightMode(true);
+      this.setFullBodyUsage(true);
+      this.setImmovable(true);
+
+      addEvent(()-> this.lockLook = true, 20);
+
+      addEvent(()-> {
+          Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2, 1.8, 0)));
+          DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+          float damage =(float) (this.getAttack());
+          ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+          Vec3d currPos = this.getPositionVector();
+          ModUtils.circleCallback(5, 4, (pos)-> {
+              pos = new Vec3d(pos.x, 0, pos.y);
+              EntitySummonedMace cut_projectile = new EntitySummonedMace(world, true, this.getAttack(), this);
+              cut_projectile.setPosition(currPos.x + pos.x, currPos.y + 0.5, currPos.z + pos.z);
+              world.spawnEntity(cut_projectile);
+          });
+      }, 30);
+
+      addEvent(()-> this.lockLook = false, 50);
+
+      addEvent(()-> {
+            this.setSummonMeleeMace(false);
+            this.setFightMode(false);
+            this.setFullBodyUsage(false);
+            this.setImmovable(false);
+          Vec3d currPos = this.getPositionVector();
+          ModUtils.circleCallback(11, 8, (pos)-> {
+              pos = new Vec3d(pos.x, 0, pos.y);
+              EntitySummonedMace cut_projectile = new EntitySummonedMace(world, true, this.getAttack(), this);
+              cut_projectile.setPosition(currPos.x + pos.x, currPos.y + 0.5, currPos.z + pos.z);
+              world.spawnEntity(cut_projectile);
+          });
+      }, 60);
+    };
+
+    private final Consumer<EntityLivingBase> hilt_slam = (target) -> {
+      this.setHiltSlam(true);
+      this.setFightMode(true);
+      this.setFullBodyUsage(true);
+      this.setImmovable(true);
+
+      addEvent(()-> this.lockLook = true, 20);
+
+      addEvent(()-> {
+            //do hilt slam attack
+          new ActionColossusHiltSlam(yellow_wave_projectiles).performAction(this, target);
+      }, 30);
+
+      addEvent(()-> this.lockLook = false, 50);
+
+      addEvent(()-> {
+            this.setHiltSlam(false);
+            this.setFightMode(false);
+            this.setFullBodyUsage(false);
+            this.setImmovable(false);
+      }, 60);
+    };
 
     private final Consumer<EntityLivingBase> call_mace = (target) -> {
       this.setCallMace(true);
@@ -410,6 +610,29 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
       }, 50);
     };
 
+    private void doPhaseTransition() {
+        this.setPhaseTransition(true);
+        this.setFullBodyUsage(true);
+        this.setFightMode(true);
+        this.setImmovable(true);
+        this.lockLook = true;
+
+        addEvent(()-> {
+            this.setHasPhaseTransitioned(true);
+            this.heal((float) (this.getMaxHealth() * MobConfig.desert_bosses_second_phase_healing));
+            this.bossInfo.setVisible(true);
+        }, 45);
+
+        addEvent(()-> this.lockLook = false, 60);
+
+        addEvent(()-> {
+            this.setPhaseTransition(false);
+            this.setFullBodyUsage(false);
+            this.setFightMode(false);
+            this.setImmovable(false);
+        }, 70);
+    }
+
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
@@ -456,6 +679,22 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_CALL_MACE));
                 return PlayState.CONTINUE;
             }
+            if(this.isHiltSlam()) {
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_HILT_SLAM));
+                return PlayState.CONTINUE;
+            }
+            if(this.isJumpSlam()) {
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_JUMP_SLAM));
+                return PlayState.CONTINUE;
+            }
+            if(this.isSummonHelper()) {
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SUMMON_HELPER));
+                return PlayState.CONTINUE;
+            }
+            if(this.isSummonMeleeMace()) {
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SUMMON_MELEE_MACE));
+                return PlayState.CONTINUE;
+            }
         }
         event.getController().markNeedsReload();
         return PlayState.STOP;
@@ -474,6 +713,10 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
             event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_END_SHIELDED));
             return PlayState.CONTINUE;
         }
+        if(this.isPhaseTransition()) {
+            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PHASE_TRANSITION));
+            return PlayState.CONTINUE;
+        }
         event.getController().markNeedsReload();
         return PlayState.STOP;
     }
@@ -487,7 +730,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     }
 
     private <E extends IAnimatable> PlayState predicateArmsIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.07F && event.getLimbSwingAmount() <= 0.07F && !this.isFightMode() && !this.isSummon() && !this.isShielded()) {
+        if(event.getLimbSwingAmount() >= -0.07F && event.getLimbSwingAmount() <= 0.07F && !this.isFightMode() && !this.isSummon() && !this.isShielded() && !this.isPhaseTransition()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_UPPER, true));
             return PlayState.CONTINUE;
         }
@@ -503,7 +746,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     }
 
     private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.08F && event.getLimbSwingAmount() <= 0.08F) && !this.isFightMode() && !this.isSummon() && !this.isShielded()) {
+        if(!(event.getLimbSwingAmount() >= -0.08F && event.getLimbSwingAmount() <= 0.08F) && !this.isFightMode() && !this.isSummon() && !this.isShielded() && !this.isPhaseTransition()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER, true));
             return PlayState.CONTINUE;
         }
@@ -560,7 +803,30 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     }
 
     @Override
+    public void setCustomNameTag(@Nonnull String name) {
+        super.setCustomNameTag(name);
+        this.bossInfo.setName(this.getDisplayName());
+    }
+
+    @Override
+    public void addTrackingPlayer(@Nonnull EntityPlayerMP player) {
+        super.addTrackingPlayer(player);
+        this.bossInfo.addPlayer(player);
+    }
+
+    @Override
+    public void removeTrackingPlayer(@Nonnull EntityPlayerMP player) {
+        super.removeTrackingPlayer(player);
+        this.bossInfo.removePlayer(player);
+    }
+
+    @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
+
+        if(this.isPhaseTransition()) {
+            return false;
+        }
+
         if(this.isShielded() || this.isStartShielded()) {
             if(source.getImmediateSource() instanceof ProjectilePuzzleBall && this.getOtherBoss() != null) {
                 return super.attackEntityFrom(source, 100);
@@ -584,6 +850,9 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
             this.inLowHealthState = true;
             this.setLowHealthState();
         } else if (this.inLowHealthState && this.isShielded() || this.getOtherBoss() == null) {
+            if(this.getSpawnLocation() != null && this.getOtherBoss() == null) {
+                this.turnBossIntoSummonSpawner(this.getSpawnLocation());
+            }
             super.onDeath(cause);
         }
     }

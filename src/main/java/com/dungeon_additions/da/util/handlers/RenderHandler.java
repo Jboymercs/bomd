@@ -16,6 +16,7 @@ import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityDesertBeam;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianColossus;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianWarlord;
+import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityColossusSigil;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntitySummonedMace;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.EntityEverator;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
@@ -170,6 +171,7 @@ public class RenderHandler {
         registerProjectileRenderer(EntityRottenHoldLocator.class, ModItems.ROTTEN_HOLD_LOCATOR);
         registerProjectileRenderer(ProjectileThousandCuts.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(ProjectileDesertOrb.class, ModItems.DESERT_PROJECTILE);
+        registerProjectileRenderer(EntityColossusSigil.class, ModItems.INVISISBLE_ITEM);
     }
 
     //Handles Rendering

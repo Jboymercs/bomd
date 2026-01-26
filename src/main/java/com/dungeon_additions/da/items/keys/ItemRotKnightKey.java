@@ -18,6 +18,7 @@ public class ItemRotKnightKey extends ItemBase {
         super(name);
         this.setCreativeTab(CreativeTabs.MATERIALS);
         this.info_loc = info_loc;
+        this.setMaxStackSize(1);
     }
 
     @Override

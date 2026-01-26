@@ -103,26 +103,26 @@ public class EntityShieldHandler {
 
 
                 if (!adventureHelmet.isEmpty()) {
-                    deathChance += 0.25;
+                    deathChance += 0.1;
                 }
                 if (!adventureChestplate.isEmpty()) {
-                    deathChance += 0.25;
+                    deathChance += 0.1;
                 }
                 if (!adventureLeggings.isEmpty()) {
-                    deathChance += 0.25;
+                    deathChance += 0.1;
                 }
                 if (!adventureBoots.isEmpty()) {
-                    deathChance += 0.25;
+                    deathChance += 0.1;
                 }
 
-                float rand_B = ModRand.getFloatPositive(1);
                 //do death ability
-                if (rand_B <= deathChance && !player.getCooldownTracker().hasCooldown(adventureHelmet.getItem()) && !player.getCooldownTracker().hasCooldown(adventureChestplate.getItem()) &
+                if (deathChance > 0.09 && !player.getCooldownTracker().hasCooldown(adventureHelmet.getItem()) && !player.getCooldownTracker().hasCooldown(adventureChestplate.getItem()) &
                         !player.getCooldownTracker().hasCooldown(adventureLeggings.getItem()) & !player.getCooldownTracker().hasCooldown(adventureBoots.getItem())) {
                     player.isDead = false;
                     player.deathTime = 0;
                     player.hurtResistantTime = 30;
-                    player.setHealth(player.getMaxHealth() * 0.25F);
+
+                    player.setHealth((float) (player.getMaxHealth() * deathChance));
                     player.world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.DEATHBLOW_SOUND, SoundCategory.NEUTRAL, 1.1f, 1f);
                     ModUtils.circleCallback(2, 9, (pos) -> {
                         pos = new Vec3d(pos.x, 0, pos.y);

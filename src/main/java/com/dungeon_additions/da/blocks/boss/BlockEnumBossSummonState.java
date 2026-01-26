@@ -13,7 +13,8 @@ public enum BlockEnumBossSummonState implements IStringSerializable {
     HIGH_KING("high", true),
 
     OBSIDILITH("obsidian", true),
-    APATHYR("apathyr", true);
+    APATHYR("apathyr", true),
+    AEGYPTIAN("aegyptian", true);
 
 
     private final String name;

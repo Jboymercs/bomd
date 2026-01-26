@@ -21,6 +21,7 @@ import com.dungeon_additions.da.blocks.vine.BlockAzealaVines;
 import com.dungeon_additions.da.blocks.void_blocks.BlockObsdilithRune;
 import com.dungeon_additions.da.blocks.void_blocks.BlockObsidianKeyBlock;
 import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianWarlord;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityGreatWyrk;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake;
@@ -80,6 +81,7 @@ public class ModBlocks {
     public static final Block KNIGHT_STONE = new BlockBase("knight_stone", Material.ROCK, STONE_HARDNESS, STONE_RESISTANCE, SoundType.STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block KNIGHT_KEY_BLOCK = new BlockKnightBossKeyBlock("knight_key_block", ModItems.ROT_KNIGHT_KEY, ((world, pos) -> new EntityRotKnightBoss(world, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F))).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block FROZEN_CASTLE_KEY_BLOCK = new BlockFrostKeyBlock("frost_key_block", ModItems.FROST_KEY, ((worldv, posr) -> new EntityGreatWyrk(worldv, posr.getX(), posr.getY(), posr.getZ()))).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block AEGYPTIAN_KEY_BLOCK = new BlockAegyptianKeyBlock("aegyptian_spawner", ModItems.AEGYPTIAN_KEY, ((world, pos) -> new EntityAegyptianWarlord(world, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F))).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block OBSIDIAN_KEY_BLOCK = new BlockObsidianKeyBlock("obsidian_end_frame", Material.ROCK, ((world, pos) -> new EntityObsidilith(world, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F)));
     public static final Block SKY_KEY_BLOCK = new BlockLightningKeyBlock("sky_key_block", MobConfig.dragon_starts_first ? ((worldv, posr) -> new EntityHighKingDrake(worldv, posr.getX(), posr.getY() + 25, posr.getZ())) : ((worldv, posr) -> new EntityHighKing(worldv, posr.getX(), posr.getY(), posr.getZ()))).setCreativeTab(DungeonAdditionsTab.BLOCKS);
 

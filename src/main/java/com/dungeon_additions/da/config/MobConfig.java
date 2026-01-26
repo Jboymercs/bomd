@@ -883,10 +883,15 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static double desert_bosses_second_phase_healing = 1;
 
+    @Config.Name("Aegyptian Bosses Shield Time")
+    @Config.Comment("When getting one of the desert bosses to 0 health and they start shielding. How long do they stay in this state for. In seconds")
+    @Config.RequiresMcRestart
+    public static int desert_bosses_shield_time = 25;
+
     @Config.Name("Aegyptian Warlord Health")
     @Config.Comment("Change the health of the Aegyptian Warlord.")
     @Config.RequiresMcRestart
-    public static double warlord_health = 150;
+    public static double warlord_health = 135;
 
     @Config.Name("Aegyptian Warlord Attack Damage")
     @Config.Comment("Change the attack damage of the Aegyptian Warlord")
@@ -901,7 +906,7 @@ public class MobConfig {
     @Config.Name("Aegyptian Warlord Armor Toughness")
     @Config.Comment("Change the armor toughness of the Aegyptian Warlord")
     @Config.RequiresMcRestart
-    public static double warlord_armor_toughness = 4;
+    public static double warlord_armor_toughness = 3;
 
     @Config.Name("Aegyptian Warlord Damage Cap")
     @Config.Comment("Change the damage cap of how much damage can be done at one time to the Aegyptian Warlord. Disable this feature entirely in general_config")
@@ -911,12 +916,12 @@ public class MobConfig {
     @Config.Name("Aegyptian c Health")
     @Config.Comment("Change the health of the Aegyptian Colossus.")
     @Config.RequiresMcRestart
-    public static double colossus_health = 200;
+    public static double colossus_health = 175;
 
     @Config.Name("Aegyptian Colossus Attack Damage")
     @Config.Comment("Change the attack damage of the Aegyptian Colossus")
     @Config.RequiresMcRestart
-    public static double colossus_attack_damage = 25;
+    public static double colossus_attack_damage = 26;
 
     @Config.Name("Aegyptian Colossus Armor")
     @Config.Comment("Change the armor of the Aegyptian Colossus")

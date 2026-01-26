@@ -30,6 +30,9 @@
     },
     "state=apathyr": {
       "model": "da:boss/boss_active_8"
+    },
+    "state=aegyptian": {
+      "model": "da:boss/boss_active_9"
     }
   }
 }

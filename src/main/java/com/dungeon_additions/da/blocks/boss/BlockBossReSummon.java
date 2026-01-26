@@ -6,6 +6,7 @@ import com.dungeon_additions.da.blocks.base.IBlockUpdater;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.blossom.EntityVoidBlossom;
+import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianWarlord;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityGreatWyrk;
 import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
@@ -121,6 +122,14 @@ public class BlockBossReSummon extends BlockBase implements ITileEntityProvider,
                         knight.onSummonViaBlock(pos);
                         world.spawnEntity(knight);
                         player.getHeldItem(hand).shrink(1);
+                    }  else if (boss_spawner.getState() == BlockEnumBossSummonState.AEGYPTIAN) {
+                        EntityAegyptianWarlord warlord = new EntityAegyptianWarlord(world, timesUsed, pos);
+                        warlord.setSetSpawnLoc(true);
+                        warlord.setSpawnLocation(new BlockPos(pos.getX(), pos.getY(), pos.getZ()));
+                        warlord.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+                        world.setBlockToAir(pos);
+                        world.spawnEntity(warlord);
+                        player.getHeldItem(hand).shrink(1);
                     } else if (boss_spawner.getState() == BlockEnumBossSummonState.NIGHT_LICH) {
                         if(MobConfig.lich_enable_daylight && world.getWorldTime() < MobConfig.lich_summon_time) {
                             player.sendStatusMessage(new TextComponentTranslation("da.lich_wrong_time", new Object[0]), true);
@@ -204,6 +213,9 @@ public class BlockBossReSummon extends BlockBase implements ITileEntityProvider,
             }   else if (spawner.getState() == BlockEnumBossSummonState.APATHYR) {
                 Vec3d particlePos = new Vec3d(pos.getX() -0.1 + ModRand.getFloat(1.1F), pos.getY() + 0.9 + ModRand.getFloat(1F), pos.getZ() -0.1 + ModRand.getFloat(1.1F));
                 Main.proxy.spawnParticle(15, worldIn, particlePos.x, particlePos.y, particlePos.z, worldIn.rand.nextFloat()/6 - worldIn.rand.nextFloat()/6, 0.04, worldIn.rand.nextFloat()/6 - worldIn.rand.nextFloat()/6, 100);
+            }    else if (spawner.getState() == BlockEnumBossSummonState.AEGYPTIAN) {
+                Vec3d particlePos = new Vec3d(pos.getX() -0.1 + ModRand.getFloat(1.1F), pos.getY() + 0.9 + ModRand.getFloat(1F), pos.getZ() -0.1 + ModRand.getFloat(1.1F));
+                Main.proxy.spawnParticle(23, worldIn, particlePos.x, particlePos.y, particlePos.z, 0, 0.03, 0, 15128888);
             }
         }
     }

@@ -5,27 +5,22 @@ import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityAIAegyptiaWarlord;
-import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityScutterBeetleAI;
+import com.dungeon_additions.da.entity.desert_dungeon.EntityDesertBase;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileThousandCuts;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.warlord.*;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
-import com.dungeon_additions.da.entity.gaelon_dungeon.apathyr.ActionApathyrSwing;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.projectiles.puzzle.ProjectilePuzzleBall;
-import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
-import com.google.common.base.Optional;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
@@ -36,14 +31,12 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
-import org.lwjgl.Sys;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
@@ -149,6 +142,9 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.setSize(0.7F, 2.45F);
         this.startSummonSetUp();
         this.bossInfo.setVisible(false);
+        this.timesUsed = timesUsed;
+        this.timesUsed++;
+        this.iAmBossMob = true;
     }
 
     public EntityAegyptianWarlord(World worldIn, float x, float y, float z) {
@@ -156,6 +152,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.setSize(0.7F, 2.45F);
         this.startSummonSetUp();
         this.bossInfo.setVisible(false);
+        this.iAmBossMob = true;
     }
 
     public EntityAegyptianWarlord(World worldIn) {
@@ -163,6 +160,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.setSize(0.7F, 2.45F);
         this.startSummonSetUp();
         this.bossInfo.setVisible(false);
+        this.iAmBossMob = true;
     }
 
 
@@ -171,7 +169,12 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.setFullBodyUsage(true);
         this.setImmovable(true);
         addEvent(()-> {
-            EntityAegyptianColossus colossus = new EntityAegyptianColossus(world);
+            EntityAegyptianColossus colossus;
+            if(this.timesUsed != 0) {
+                colossus = new EntityAegyptianColossus(world, this.timesUsed, this.getPosition());
+            } else {
+                colossus = new EntityAegyptianColossus(world);
+            }
             Vec3d pos = this.getPositionVector();
             colossus.setPosition(pos.x + 3, pos.y, pos.z);
             if(this.getSpawnLocation() != null && !this.isSetSpawnLoc()) {
@@ -204,7 +207,9 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
 
         addEvent(()-> {
             this.bossInfo.setVisible(true);
-            this.bossInfo.setName(new TextComponentString("Aegyptian Royalty"));
+            if(!this.isHasPhaseTransitioned()) {
+                this.bossInfo.setName(new TextComponentString("Aegyptian Royalty"));
+            }
             this.setSummon(false);
             this.setFullBodyUsage(false);
             this.setImmovable(false);
@@ -296,21 +301,6 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.parryCooldown--;
         if(!world.isRemote) {
 
-            if(checkSpamDelay > 0) {
-                if(this.hurtTime > 0) {
-                    this.spamAttackCounter++;
-                }
-
-                if(this.spamAttackCounter > 20) {
-                    this.isBeingPushed = true;
-                }
-            } else if (checkSpamDelay < 1){
-                this.checkSpamDelay = 80;
-                this.spamAttackCounter = 0;
-                if(this.getOtherBoss() == null) {
-                    this.isBeingPushed = false;
-                }
-            }
             //other boss stuff
             if(this.getOtherBoss() != null) {
                 if(this.getOtherBoss() instanceof EntityAegyptianColossus) {
@@ -326,6 +316,11 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
 
 
                 }
+            }
+
+            if(this.getOtherBoss() == null && this.bossInfo != null) {
+                double healthFac = this.getHealth() / this.getMaxHealth();
+                this.bossInfo.setPercent((float) healthFac);
             }
 
             if(this.onGround && this.isJumping) {
@@ -348,6 +343,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         addEvent(()-> {
             this.setHasPhaseTransitioned(true);
             this.heal((float) (this.getMaxHealth() * MobConfig.desert_bosses_second_phase_healing));
+            this.bossInfo.setName(this.getDisplayName());
         }, 45);
 
         addEvent(()-> {
@@ -362,7 +358,6 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
     @Override
     public int startAttack(EntityLivingBase target, float distanceSq, boolean strafingBackwards) {
         double distance = Math.sqrt(distanceSq);
-        double healtFac = this.getHealth()/this.getMaxHealth();
 
         if(!this.isFightMode() && !this.isSummon() && !this.isShielded()) {
             List<Consumer<EntityLivingBase>> attacksMelee = new ArrayList<>(Arrays.asList(double_swing, jump_attack, summon_storm, dash_attack, circle_swing, thousand_slices, thousand_slices_jump, fly_swing));
@@ -379,7 +374,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             prevAttack = ModRand.choice(attacksMelee, rand, weights).next();
             prevAttack.accept(target);
         }
-        return this.isHasPhaseTransitioned() ? 20 : 50;
+        return this.isHasPhaseTransitioned() ? 15 : this.isEnraged() ? 30 : 60;
     }
 
     private final Consumer<EntityLivingBase> fly_swing = (target) -> {
@@ -909,8 +904,10 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         if(!source.isProjectile() && !source.isUnblockable && parryCooldown <= 0 && !this.isParry() && !this.isFightMode()) {
             if(source.getImmediateSource() instanceof EntityLivingBase) {
                 EntityLivingBase base = ((EntityLivingBase) source.getImmediateSource());
-                this.doParryAttack(base);
-                return false;
+                if(!(base instanceof EntityDesertBase)) {
+                    this.doParryAttack(base);
+                    return false;
+                }
             }
         }
 
@@ -974,6 +971,9 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             this.inLowHealthState = true;
             this.setLowHealthState();
         } else if (this.inLowHealthState && this.isShielded() || this.getOtherBoss() == null) {
+            if(this.getSpawnLocation() != null && this.getOtherBoss() == null) {
+                this.turnBossIntoSummonSpawner(this.getSpawnLocation());
+            }
             super.onDeath(cause);
         }
     }

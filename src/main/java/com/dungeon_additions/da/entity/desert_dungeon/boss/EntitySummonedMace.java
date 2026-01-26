@@ -65,6 +65,7 @@ public class EntitySummonedMace extends EntityDesertBase implements IAnimatable,
         }
         this.noClip = true;
         this.setImmovable(true);
+        this.setMeleeVariation(isMeleeVariant);
         this.setNoAI(true);
         this.damageIn = damageIn;
         this.ownerIn = ownerInIn;

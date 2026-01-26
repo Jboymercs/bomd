@@ -186,6 +186,7 @@ public class ModItems {
     //Boss keys and regular keys
     public static final Item ROT_KNIGHT_KEY = new ItemRotKnightKey("knight_key", "rot_knight_key").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_KEY = new ItemFrostKey("frost_key", "dungeon_frost_key_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item AEGYPTIAN_KEY = new ItemAegyptianKey("aegyptian_key", "aegyptian_key_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FLAME_OF_AMBITION = new ItemAmbitionFlame("ambition_flame", "flame_of_ambition").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item APATHYR_HEART = new ItemCraftingMaterial("apathyr_heart", "apathyr_heart_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item GOLDEN_APATHYR_HEART = new ItemCraftingMaterial("golden_apathyr_heart", "golden_apathyr_heart_desc").setCreativeTab(DungeonAdditionsTab.ALL);

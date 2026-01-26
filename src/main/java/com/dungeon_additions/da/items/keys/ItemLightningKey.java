@@ -18,6 +18,7 @@ public class ItemLightningKey extends ItemBase {
     public ItemLightningKey(String name, String info_loc) {
         super(name);
         this.info_loc = info_loc;
+        this.setMaxStackSize(1);
     }
 
     @Override

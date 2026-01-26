@@ -18,6 +18,7 @@ public class ItemSoulKey extends ItemBase {
     public ItemSoulKey(String name, CreativeTabs tab, String info_loc) {
         super(name, tab);
         this.info_loc = info_loc;
+        this.setMaxStackSize(1);
     }
 
     @Override

@@ -33,6 +33,8 @@ public class ForgottenTempleTemplate extends ModStructureTemplate {
 
     private static final WorldGenTempleTop temple_top = new WorldGenTempleTop("temple_top");
     private static final ResourceLocation LOOT = new ResourceLocation(ModReference.MOD_ID, "forgotten_temple");
+    private static final ResourceLocation LOOT_KEY = new ResourceLocation(ModReference.MOD_ID, "forgotten_temple_key");
+    private static final ResourceLocation LOOT_PUZZLE = new ResourceLocation(ModReference.MOD_ID, "forgotten_temple_puzzle");
     private static final ResourceLocation CRYPT_LOOT = new ResourceLocation(ModReference.MOD_ID, "crypt_forgotten_temple");
     public ForgottenTempleTemplate(TemplateManager manager, String type, BlockPos pos, Rotation rot, int distance, boolean overWriteIn) {
         super(manager, type, pos,distance, rot, overWriteIn);
@@ -132,7 +134,7 @@ public class ForgottenTempleTemplate extends ModStructureTemplate {
                 world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
                 if (tileEntity instanceof TileEntityChest) {
                     TileEntityChest chest = (TileEntityChest) tileEntity;
-                    chest.setLootTable(LOOT, rand.nextLong());
+                    chest.setLootTable(LOOT_PUZZLE, rand.nextLong());
                 }
             } else {
                 world.setBlockToAir(pos);
@@ -146,6 +148,19 @@ public class ForgottenTempleTemplate extends ModStructureTemplate {
                 if (tileEntity instanceof TileEntityChest) {
                     TileEntityChest chest = (TileEntityChest) tileEntity;
                     chest.setLootTable(LOOT, rand.nextLong());
+                }
+            } else {
+                world.setBlockToAir(pos);
+                world.setBlockToAir(pos.down());
+            }
+        } else if (function.startsWith("key_chest")) {
+            BlockPos blockPos = pos.down();
+            if(sbb.isVecInside(blockPos)) {
+                TileEntity tileEntity = world.getTileEntity(blockPos);
+                world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+                if (tileEntity instanceof TileEntityChest) {
+                    TileEntityChest chest = (TileEntityChest) tileEntity;
+                    chest.setLootTable(LOOT_KEY, rand.nextLong());
                 }
             } else {
                 world.setBlockToAir(pos);

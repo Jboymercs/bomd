@@ -21,6 +21,15 @@ public class ModelAegyptiaColossus extends GeoModelExtended<EntityAegyptianColos
     }
 
     @Override
+    public ResourceLocation getTextureLocation(EntityAegyptianColossus animatable) {
+        if(animatable.isHasPhaseTransitioned()) {
+            return new ResourceLocation(ModReference.MOD_ID, "textures/entity/aegyptia/aegyptian_colossus_transition.png");
+        } else {
+            return new ResourceLocation(ModReference.MOD_ID, "textures/entity/aegyptia/aegyptian_colossus.png");
+        }
+    }
+
+    @Override
     public void setLivingAnimations(EntityAegyptianColossus entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         IBone head = this.getAnimationProcessor().getBone("Head");

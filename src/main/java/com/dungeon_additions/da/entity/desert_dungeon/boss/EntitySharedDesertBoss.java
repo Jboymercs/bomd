@@ -1,20 +1,33 @@
 package com.dungeon_additions.da.entity.desert_dungeon.boss;
 
+import com.dungeon_additions.da.blocks.boss.BlockEnumBossSummonState;
 import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityDesertBase;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
+import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.EntityFriendlyCursedRevenant;
+import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
+import com.dungeon_additions.da.init.ModBlocks;
+import com.dungeon_additions.da.util.ModReference;
+import com.dungeon_additions.da.util.ServerScaleUtil;
 import com.google.common.base.Optional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.server.management.PreYggdrasilConverter;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -23,7 +36,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class EntitySharedDesertBoss extends EntityDesertBase {
+public abstract class EntitySharedDesertBoss extends EntityDesertBase {
 
     public final String ANIM_SET_SHIELDED = "set_shielded";
     public final String ANIM_SHIELDED = "shielded";
@@ -31,7 +44,7 @@ public class EntitySharedDesertBoss extends EntityDesertBase {
     public final String ANIM_PHASE_TRANSITION = "phase_transition";
 
     protected boolean inLowHealthState = false;
-    protected int lowHealthTimer = 25 * 20;
+    protected int lowHealthTimer = MobConfig.desert_bosses_shield_time * 20;
 
  protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.<Optional<UUID>>createKey(EntitySharedDesertBoss.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     private static final DataParameter<Boolean> SHIELDED = EntityDataManager.createKey(EntitySharedDesertBoss.class, DataSerializers.BOOLEAN);
@@ -129,10 +142,56 @@ public class EntitySharedDesertBoss extends EntityDesertBase {
     public void onUpdate() {
 
         if(!world.isRemote) {
+
+            if(this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
+                Vec3d SpawnLoc = new Vec3d(this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
+
+                double distSq = this.getDistanceSq(SpawnLoc.x, SpawnLoc.y, SpawnLoc.z);
+                double distance = Math.sqrt(distSq);
+                if(!world.isRemote) {
+                    if (distance > 28) {
+                        this.teleportTarget(SpawnLoc.x, SpawnLoc.y, SpawnLoc.z);
+                    }
+                }
+            }
+
+            EntityLivingBase target = this.getAttackTarget();
+
+            if (this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
+                if (target != null) {
+                    if (target instanceof EntityPlayer) {
+                        this.setHadPreviousTarget(true);
+                    }
+                }
+
+                //Creates a Target tracking to ensure if it can despawn or not
+                if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled) {
+                    int nearbyPlayers = ServerScaleUtil.getPlayersForReset(this, world);
+                    if (nearbyPlayers == 0) {
+                        if (targetTrackingTimer > 0) {
+                            targetTrackingTimer--;
+                        }
+                        if (targetTrackingTimer < 1) {
+                            if(this.timesUsed != 0) {
+                                this.timesUsed--;
+                                turnBossIntoSummonSpawner(this.getSpawnLocation());
+                                this.setDead();
+                                if(this.getOtherBoss() != null) {
+                                    this.getOtherBoss().setDead();
+                                }
+                            } else {
+                                this.resetBossTask();
+                            }
+                        }
+                    }
+                }
+            }
+
+
             if(this.isShielded()) {
                 if(lowHealthTimer <= 0) {
                     this.setEndLowHealthState();
-                    this.lowHealthTimer = 20 * 25;
+                    this.lowHealthTimer = 20 * MobConfig.desert_bosses_shield_time;
                 } else {
                     lowHealthTimer--;
                 }
@@ -167,6 +226,43 @@ public class EntitySharedDesertBoss extends EntityDesertBase {
         }
         super.onUpdate();
     }
+
+    private static final ResourceLocation LOO_RESET = new ResourceLocation(ModReference.MOD_ID, "forgotten_temple_reset");
+
+    private void resetBossTask() {
+        this.setImmovable(true);
+        this.setHadPreviousTarget(false);
+        BlockPos pos = this.getSpawnLocation();
+        world.setBlockState(pos, ModBlocks.AEGYPTIAN_KEY_BLOCK.getDefaultState());
+        world.setBlockState(pos.add(0, 2, 0), Blocks.CHEST.getDefaultState());
+        TileEntity te = world.getTileEntity(pos.add(0, 2, 0));
+        if(te instanceof TileEntityChest) {
+            TileEntityChest chest = (TileEntityChest) te;
+            chest.setLootTable(LOO_RESET, rand.nextLong());
+        }
+        this.experienceValue = 0;
+        this.setDropItemsWhenDead(false);
+        this.setDead();
+
+        if(this.getOtherBoss() != null) {
+            this.getOtherBoss().setDropItemsWhenDead(false);
+            this.getOtherBoss().setDead();
+        }
+    }
+
+    protected void turnBossIntoSummonSpawner(BlockPos pos) {
+        if(ModConfig.boss_resummon_enabled) {
+            if (this.timesUsed <= ModConfig.boss_resummon_max_uses && !world.isRemote) {
+                world.setBlockState(pos, ModBlocks.BOSS_RESUMMON_BLOCK.getDefaultState());
+                TileEntity te = world.getTileEntity(pos);
+                if (te instanceof TileEntityBossReSummon) {
+                    TileEntityBossReSummon boss_spawner = ((TileEntityBossReSummon) te);
+                    boss_spawner.setState(BlockEnumBossSummonState.INACTIVE, this.timesUsed, "aegyptian");
+                }
+            }
+        }
+    }
+
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
@@ -213,18 +309,14 @@ public class EntitySharedDesertBoss extends EntityDesertBase {
 
     public EntitySharedDesertBoss(World world, int timesUsed, BlockPos pos) {
         super(world);
-        this.timesUsed = timesUsed;
-        this.iAmBossMob = true;
     }
 
     public EntitySharedDesertBoss(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
-        this.iAmBossMob = true;
     }
 
     public EntitySharedDesertBoss(World worldIn) {
         super(worldIn);
-        this.iAmBossMob = true;
     }
 
 
