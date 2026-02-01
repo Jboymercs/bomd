@@ -49,7 +49,7 @@ public class ParticleGaelonGleam extends ParticleSSBase {
 
     @Override
     public int getBrightnessForRender(float partialTicks)
-    { return brightnessIncreaseToFull(partialTicks); }
+    { return 15728880; }
 
     @SideOnly(Side.CLIENT)
     public static class Factory implements IParticleFactory

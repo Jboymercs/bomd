@@ -3,6 +3,7 @@ package com.dungeon_additions.da.event;
 
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
+import com.dungeon_additions.da.config.PotionTrinketConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkSorcerer;
@@ -11,6 +12,7 @@ import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBolt;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.init.ModPotions;
 import com.dungeon_additions.da.items.armor.VoidiantChestplate;
 import com.dungeon_additions.da.items.shield.BOMDShieldItem;
 import com.dungeon_additions.da.items.tools.ItemMageStaff;
@@ -39,10 +41,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -61,6 +60,8 @@ public class EventWearFlameArmor {
     public static double cooldownDelegation = 5.0;
 
     public static final UUID INCENDIUM_HEALTH_MODIFIER = UUID.fromString("0483aa4a-af8d-36a2-8693-22bec9caa265");
+    public static final UUID GOLDEN_DEVOTION_HEALTH_MODIFIER = UUID.fromString("1249aa4a-af8d-45a2-0012-22bec9caa395");
+    public static final UUID GOLDEN_VOW_SPEED_MODIFIER = UUID.fromString("8824aa4a-af8d-09a2-3723-22bec9caa193");
 
     public static final UUID SHIELD_TRINKET_MODIFIER = UUID.fromString("9812aa4a-afc8-33b2-8956-22bec9cab736");
     public static final UUID DIAMOND_SHIELD_TRINKET_MODIFIER = UUID.fromString("7843aa4a-af8d-36a2-1293-69bec9caa675");
@@ -69,6 +70,10 @@ public class EventWearFlameArmor {
     @SubscribeEvent
     public static void onEquipArmor(LivingEvent.LivingUpdateEvent event) {
         EntityLivingBase base = event.getEntityLiving();
+
+        if(base.isPotionActive(ModPotions.HUNTERS_MARK) && base.ticksExisted % 5 == 0) {
+            Main.proxy.spawnParticle(27, base.posX, base.posY + base.getEyeHeight() + 1.5, base.posZ, 0, 0, 0);
+        }
 
         if(!base.world.isRemote) {
             //Flame Metal Armor
@@ -334,6 +339,18 @@ public class EventWearFlameArmor {
     }
 
     @SubscribeEvent
+    public static void onPlayerFall(LivingFallEvent event) {
+        if(event.getEntityLiving() == null) {
+            return;
+        }
+
+        if(event.getEntityLiving().isPotionActive(ModPotions.GOLDEN_VOW)) {
+            event.setDistance(0);
+        }
+
+    }
+
+    @SubscribeEvent
     public static void doShieldUpdates(LivingAttackEvent e) {
         BOMDShieldItem.handleDamageEvent(e);
     }
@@ -399,7 +416,7 @@ public class EventWearFlameArmor {
     public static void onAttackEntityEvent(AttackEntityEvent event) {
         // Overrides the melee attack of the player if the item used is the sweep attack
         // override interface
-        if (event.getEntityPlayer().getHeldItemMainhand().getItem() instanceof ISweepAttackOverride) {
+        if (event.getEntityPlayer().getHeldItemMainhand().getItem() instanceof ISweepAttackOverride && event.getEntityPlayer().getHeldItemMainhand().getItem() == ModItems.DARK_SICLE) {
             PlayerMeleeAttack.attackTargetEntityWithCurrentItem(event.getEntityPlayer(), event.getTarget());
             event.setCanceled(true);
         } else {

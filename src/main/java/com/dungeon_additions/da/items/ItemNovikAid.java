@@ -3,13 +3,16 @@ package com.dungeon_additions.da.items;
 import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
 import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.EntityFriendlyCursedRevenant;
 import com.dungeon_additions.da.entity.sky_dungeon.friendly.EntityFriendlyHalberd;
+import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -45,7 +48,7 @@ public class ItemNovikAid extends ItemBase{
 
         if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
             List<EntityFriendlyCursedRevenant> nearbyWyrk = player.world.getEntitiesWithinAABB(EntityFriendlyCursedRevenant.class, player.getEntityBoundingBox().grow(30D), e -> !e.getIsInvulnerable());
-
+            ItemStack summonerTrinket = ModUtils.findTrinket(new ItemStack(ModItems.STALWART_SUMMONER), player);
             boolean flag = false;
 
             if(!nearbyWyrk.isEmpty()) {
@@ -63,6 +66,11 @@ public class ItemNovikAid extends ItemBase{
                 friend_halberd.onSummonViaPlayer(player.getPosition(), player);
                 player.world.spawnEntity(friend_halberd);
                 player.getCooldownTracker().setCooldown(this, SwordCoolDown);
+                if(!summonerTrinket.isEmpty()) {
+                    summonerTrinket.damageItem(1, player);
+                    friend_halberd.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 700, 0, false, true));
+                    friend_halberd.addPotionEffect(new PotionEffect(MobEffects.SPEED, 700, 0, false, true));
+                }
                 worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.LICH_SUMMON_MINION, SoundCategory.NEUTRAL, 1.0f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
             } else {
                 player.sendStatusMessage(new TextComponentTranslation("da.friend_revenant", new Object[0]), true);

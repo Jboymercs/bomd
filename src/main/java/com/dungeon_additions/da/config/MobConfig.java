@@ -786,7 +786,7 @@ public class MobConfig {
     @Config.Name("The High King Health")
     @Config.Comment("Change the health of the High King")
     @Config.RequiresMcRestart
-    public static double high_king_health = 450;
+    public static double high_king_health = 475;
 
     @Config.Name("The High King Armor")
     @Config.Comment("Change the armor value of the High King")

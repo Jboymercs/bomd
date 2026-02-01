@@ -13,6 +13,7 @@ import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowW
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.projectiles.puzzle.ProjectilePuzzleBall;
 import com.dungeon_additions.da.util.ModRand;
+import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -32,6 +33,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -139,6 +141,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         this.bossInfo.setVisible(false);
         this.timesUsed = timesUsed;
         this.iAmBossMob = true;
+        this.experienceValue = 225;
     }
 
     public EntityAegyptianColossus(World worldIn, float x, float y, float z) {
@@ -147,6 +150,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         this.startBossSetup();
         this.bossInfo.setVisible(false);
         this.iAmBossMob = true;
+        this.experienceValue = 225;
     }
 
     public EntityAegyptianColossus(World worldIn) {
@@ -155,6 +159,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         this.startBossSetup();
         this.bossInfo.setVisible(false);
         this.iAmBossMob = true;
+        this.experienceValue = 225;
     }
 
     private void startBossSetup() {
@@ -843,6 +848,18 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         return super.attackEntityFrom(source, amount);
     }
 
+    private static final ResourceLocation LOOT_MOB = new ResourceLocation(ModReference.MOD_ID, "aegyptian_colossus");
+
+    @Override
+    protected ResourceLocation getLootTable() {
+        return LOOT_MOB;
+    }
+
+    @Override
+    protected boolean canDropLoot() {
+        return this.getOtherBoss() == null;
+    }
+
     @Override
     public void onDeath(DamageSource cause) {
         if(this.getOtherBoss() != null && !this.inLowHealthState) {
@@ -853,6 +870,14 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
             if(this.getSpawnLocation() != null && this.getOtherBoss() == null) {
                 this.turnBossIntoSummonSpawner(this.getSpawnLocation());
             }
+
+            if(this.getOtherBoss() == null) {
+                this.setDropItemsWhenDead(true);
+            } else {
+                this.setDropItemsWhenDead(false);
+            }
+
+
             super.onDeath(cause);
         }
     }

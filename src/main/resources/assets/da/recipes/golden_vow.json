@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "R",
+    "V",
+    "X"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:glass_bottle"
+    },
+    "V": {
+      "item": "da:warlord_crystal"
+    },
+    "R": {
+      "item": "da:abberrant_eye"
+    }
+  },
+  "result": {
+    "item": "da:golden_vow",
+    "count" : 1
+  }
+}

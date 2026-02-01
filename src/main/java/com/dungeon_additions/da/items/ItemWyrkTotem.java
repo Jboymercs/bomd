@@ -2,14 +2,17 @@ package com.dungeon_additions.da.items;
 
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
+import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -44,7 +47,7 @@ public class ItemWyrkTotem extends ItemBase {
 
         if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
             List<EntityFriendWyrk> nearbyWyrk = player.world.getEntitiesWithinAABB(EntityFriendWyrk.class, player.getEntityBoundingBox().grow(30D), e -> !e.getIsInvulnerable());
-
+            ItemStack summonerTrinket = ModUtils.findTrinket(new ItemStack(ModItems.STALWART_SUMMONER), player);
             boolean flag = false;
 
             if(!nearbyWyrk.isEmpty()) {
@@ -62,6 +65,11 @@ public class ItemWyrkTotem extends ItemBase {
                 friend_wyrk.onSummonViaPlayer(player.getPosition(), player);
                 player.world.spawnEntity(friend_wyrk);
                 player.getCooldownTracker().setCooldown(this, SwordCoolDown);
+                if(!summonerTrinket.isEmpty()) {
+                    summonerTrinket.damageItem(1, player);
+                    friend_wyrk.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 700, 0, false, true));
+                    friend_wyrk.addPotionEffect(new PotionEffect(MobEffects.SPEED, 700, 0, false, true));
+                }
                 worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.LICH_SUMMON_MINION, SoundCategory.NEUTRAL, 1.0f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
             } else {
                 player.sendStatusMessage(new TextComponentTranslation("da.friend_wyrk", new Object[0]), true);

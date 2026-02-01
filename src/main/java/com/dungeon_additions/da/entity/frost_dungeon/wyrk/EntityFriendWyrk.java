@@ -431,6 +431,13 @@ public class EntityFriendWyrk extends EntityAbstractBase implements IAnimatable,
             return false;
         }
 
+        if(source.getImmediateSource() instanceof EntityAbstractBase) {
+            EntityAbstractBase base = ((EntityAbstractBase) source.getImmediateSource());
+            if(base.isFriendlyCreature) {
+                this.setAttackTarget(null);
+                return false;
+            }
+        }
 
         return super.attackEntityFrom(source, amount);
     }

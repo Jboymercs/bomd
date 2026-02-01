@@ -37,6 +37,20 @@
         },
         {
           "type": "item",
+          "name": "da:dungeon_bread",
+          "weight": 15,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 8
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
           "name": "minecraft:string",
           "weight": 20,
           "functions": [

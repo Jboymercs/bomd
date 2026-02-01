@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "R",
+    "V",
+    "X"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:glass_bottle"
+    },
+    "V": {
+      "item": "da:colossus_bone"
+    },
+    "R": {
+      "item": "da:draugr_shard"
+    }
+  },
+  "result": {
+    "item": "da:golden_devotion",
+    "count" : 1
+  }
+}

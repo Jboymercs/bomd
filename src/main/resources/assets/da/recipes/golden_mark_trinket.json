@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "R",
+    "F"
+  ],
+  "key": {
+    "V": {
+      "item": "da:warlord_crystal"
+    },
+    "R": {
+      "item": "minecraft:stick"
+    },
+    "F": {
+      "item": "minecraft:feather"
+    }
+  },
+  "result": {
+    "item": "da:golden_mark_trinket"
+  }
+}

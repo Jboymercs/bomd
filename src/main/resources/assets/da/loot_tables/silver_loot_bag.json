@@ -264,6 +264,11 @@
           "type": "item",
           "name": "da:confetti_trinket",
           "weight": 10
+        },
+        {
+          "type": "item",
+          "name": "da:stalwart_summoner",
+          "weight": 9
         }
       ]
     }

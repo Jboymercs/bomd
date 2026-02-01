@@ -12,6 +12,7 @@ import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowW
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.projectiles.puzzle.ProjectilePuzzleBall;
 import com.dungeon_additions.da.util.ModRand;
+import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -31,6 +32,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
@@ -145,6 +147,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.timesUsed = timesUsed;
         this.timesUsed++;
         this.iAmBossMob = true;
+        this.experienceValue = 225;
     }
 
     public EntityAegyptianWarlord(World worldIn, float x, float y, float z) {
@@ -153,6 +156,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.startSummonSetUp();
         this.bossInfo.setVisible(false);
         this.iAmBossMob = true;
+        this.experienceValue = 225;
     }
 
     public EntityAegyptianWarlord(World worldIn) {
@@ -161,6 +165,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.startSummonSetUp();
         this.bossInfo.setVisible(false);
         this.iAmBossMob = true;
+        this.experienceValue = 225;
     }
 
 
@@ -964,6 +969,18 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         }, 60);
     }
 
+    private static final ResourceLocation LOOT_MOB = new ResourceLocation(ModReference.MOD_ID, "aegyptian_warlord");
+
+    @Override
+    protected ResourceLocation getLootTable() {
+        return LOOT_MOB;
+    }
+
+    @Override
+    protected boolean canDropLoot() {
+        return this.getOtherBoss() == null;
+    }
+
     @Override
     public void onDeath(DamageSource cause) {
         if(this.getOtherBoss() != null && !this.inLowHealthState) {
@@ -973,6 +990,12 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         } else if (this.inLowHealthState && this.isShielded() || this.getOtherBoss() == null) {
             if(this.getSpawnLocation() != null && this.getOtherBoss() == null) {
                 this.turnBossIntoSummonSpawner(this.getSpawnLocation());
+            }
+
+            if(this.getOtherBoss() == null) {
+                this.setDropItemsWhenDead(true);
+            } else {
+                this.setDropItemsWhenDead(false);
             }
             super.onDeath(cause);
         }

@@ -226,6 +226,8 @@ public class ClientProxy extends CommonProxy{
                 return new ParticleRightCut.Factory();
             case 26:
                 return new ParticleColossusSigil.Factory();
+            case 27:
+                return new ParticleHuntersMark.Factory();
         }
     }
 

@@ -2,6 +2,7 @@ package com.dungeon_additions.da.entity.gaelon_dungeon.friendly;
 
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.gaelon_dungeon.EntityReAnimateAttackAI;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
@@ -620,7 +621,13 @@ public class EntityFriendlyCursedRevenant extends EntityGaelonBase implements IA
             this.coolDownTime = 20;
         }
 
-
+        if(source.getImmediateSource() instanceof EntityAbstractBase) {
+            EntityAbstractBase base = ((EntityAbstractBase) source.getImmediateSource());
+            if(base.isFriendlyCreature) {
+                this.setAttackTarget(null);
+                return false;
+            }
+        }
 
         hurtCounter++;
         return super.attackEntityFrom(source, amount);

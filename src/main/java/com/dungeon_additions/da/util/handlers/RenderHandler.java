@@ -18,6 +18,7 @@ import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianColoss
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianWarlord;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityColossusSigil;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntitySummonedMace;
+import com.dungeon_additions.da.entity.desert_dungeon.friendly.EntityFriendlyScutterBeetle;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.EntityEverator;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
 import com.dungeon_additions.da.entity.flame_knight.*;
@@ -334,6 +335,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityDelayedExplosion.class, RenderDelayedExplosion::new);
         //Summoned Mace
         RenderingRegistry.registerEntityRenderingHandler(EntitySummonedMace.class, RenderSummonedMace::new);
+        //Friendly Scutter Beetle
+        RenderingRegistry.registerEntityRenderingHandler(EntityFriendlyScutterBeetle.class, RenderFriendlyScutterBeetle::new);
         //Puzzle Mirror
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPuzzleMirror.class, new RenderPuzzleMirror());
 

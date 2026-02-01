@@ -105,6 +105,7 @@ entity.delayed_explosion_da.name=Delayed Explosion
 entity.summoned_mace.name=Colossus's Summoned Mace
 entity.thousand_cuts.name=Thousand Cuts
 entity.colossus_sigil.name=Colossus's Sigil
+entity.scutter_beetle_friendly.name=Friendly Scutter Beetle
 item.void_leaf.name=Void Leaf
 item.spore.name=Void Blossom Spore
 item.crystal_fruit.name=Crystal Fruit
@@ -165,6 +166,7 @@ item.aegyptia_metal.name=Aegyptia Metal Shard
 item.aegyptia_metal_ingot.name=Aegyptia Metal Ingot
 item.sealed_tornado.name=Sealed Tornado Bottle
 item.desert_storm.name=Desert Storm Projectile
+item.stalwart_summoner.name=Stalwart Summoner
 da.desc.draugr_shield_name=Frostborn Shield
 da.desc.dragon_shield_name=Dragon Scourage Shield
 da.desc.flame_shield_name=Incendium Shield
@@ -294,7 +296,13 @@ item.mage_boots.name=Spellcaster Boots
 item.mage_staff.name=Spellcaster Combat Wand
 item.dungeon_bread.name=Dungeon Bread
 item.desert_projectile.name=Warlord's Projectile
+item.warlord_crystal.name=Ancient Crystalized Mana
+item.colossus_bone.name=Ancient Bone
 item.aegyptian_key.name=Aegyptian Soul Key
+item.golden_mark_trinket.name=Golden Mark
+item.golden_vow.name=Golden Vow
+item.golden_devotion.name=Golden Devotion
+item.aegyptian_flute.name=Aegyptian Flute
 tile.spore_blossom.name=Void Blossom
 tile.moss_block.name=Moss Block
 tile.moss_carpet.name=Moss Carpet
@@ -471,6 +479,26 @@ da.solo_mode=You must be alone...
 da.other_players=The ritual is not being performed as there are other players nearby...
 da.heart_required=A heart is needed.
 description.dungeon_additions.scaled_weapon.name=-Enchantments scale weapon abilities
+description.dungeon_additions.trinket_item.name=-Effect applies anywhere in inventory
+
+potion.da.hunters_mark=Hunters Mark
+potion.da.golden_vow=Golden Vow
+potion.da.golden_devotion=Golden Devotion
+
+
+## Potion Descriptions compatibility
+effect.da.hunters_mark=Hunters Mark
+effect.da.golden_vow=Golden Vow
+effect.da.golden_devotion=Golden Devotion
+
+effect.da.golden_devotion.0.desc=Gives more max health greatly, and defensive prowess increases.
+effect.da.golden_vow.0.desc=Gives increased speed, immunity to fall damage and increases attack damage when used.
+effect.da.hunters_mark.0.desc=When hit with this effect, you will take increased damage from all sources.
+
+potion.effect.potionHuntersMark=Potion of Hunters Mark
+splash_potion.effect.potionHuntersMark=Splash Potion of Hunters Mark
+lingering_potion.effect.potionHuntersMark=Lingering Potion of Hunters Mark
+tipped_arrow.effect.potionHuntersMark=Arrow of Hunters Mark
 
 
 da.desc.regen_fruit=Grants brief regen and resistance
@@ -561,7 +589,7 @@ da.desc.sealed_spear_wave_desc=Right clicking will summon a massive spear wave a
 da.desc.golem_cannon_desc=Requires Gaelon Shards as ammo. Right clicking will shoot a powerful shard bullet.
 da.desc.trader_coin_desc=Used with a Mysterious Trader..
 da.desc.crystal_trinket_desc=10 Percent chance you take half of the damage from incoming attacks.
-da.desc.flame_trinket_desc=Increases damage by 1, 2 if on fire.
+da.desc.flame_trinket_desc=Increases damage by 2, 4 if on fire.
 da.desc.death_trinket_desc=7 Percent chance on enemy slain you gain 2 hearts.
 da.desc.glass_cannon_trinket_desc=Strength is constantly given as long as you're at full health.
 da.desc.boots_trinket_desc=Speed is constantly given as long as you're at full health.
@@ -584,6 +612,11 @@ da.desc.adventure_sword_desc=Right click will launch you in the air and end in a
 da.desc.mage_set_desc=Baseline spellcaster set with each piece reducing magic damage by 10 percent. Additionally each piece adds damage to projectiles casted by weapons.
 da.desc.mage_staff_desc=Right clicking will set your wand into a combat mode boosting damage for a time. Sneaking and Right Clicking will summon a delayed explosion a bit in front of you.
 da.desc.aegyptian_key_desc=Used to bring the soul of a powerful being back to life in the Forgotten Temple.
+da.desc.golden_mark_trinket_desc=15 percent chance when hurt by a mob. A mark will be applied to them and will take increased damage from any source while the mark is active. Scales with other buffs.
+da.desc.golden_devotion_desc=Gives more max health greatly, and defensive prowess increases.
+da.desc.golden_vow_desc=Gives increased speed, immunity to fall damage and increases attack damage when used.
+da.desc.aegyptian_flute_desc=When used it will summon a friendly Scutter Beetle.
+da.desc.stalwart_summoner_desc=Using summoning items will give your summons Strength and Speed upon entering the battlefield.
 death.attack.da:maelstrom=%1$s succumbed to the void
 death.attack.da:mobMaelstrom=%1$s was killed by a %2$s
 death.attack.da:playerMaelstrom=%1$s was killed by %2$s

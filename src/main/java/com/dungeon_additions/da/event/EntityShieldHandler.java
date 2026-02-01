@@ -1,16 +1,21 @@
 package com.dungeon_additions.da.event;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.config.ModConfig;
+import com.dungeon_additions.da.config.PotionTrinketConfig;
 import com.dungeon_additions.da.entity.EntityFireResistantItems;
 import com.dungeon_additions.da.entity.player.ActionPlayerFallSlam;
 import com.dungeon_additions.da.entity.player.ActionPlayerSmallSpearWave;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.init.ModPotions;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.damage.ModIndirectDamage;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import com.dungeon_additions.da.util.player.PlayerMeleeAttack;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -20,7 +25,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -155,6 +162,8 @@ public class EntityShieldHandler {
     }
     @SubscribeEvent
     public static void afterShieldAndBeforeArmor(LivingHurtEvent event) {
+
+        //shields
         if(event.getSource() instanceof ModIndirectDamage) {
             ModIndirectDamage damageSource = ((ModIndirectDamage)event.getSource());
             if(damageSource.getStoppedByArmor()) {
@@ -166,7 +175,13 @@ public class EntityShieldHandler {
             }
         }
 
+        final float originalDamage = event.getAmount();
+        float totalDamage = event.getAmount();
+
+        //damage calculations start
         if(event.getEntityLiving() instanceof EntityPlayer) {
+            //damage calculation
+
             EntityPlayer player = ((EntityPlayer) event.getEntityLiving());
             if(player != null) {
 
@@ -174,6 +189,7 @@ public class EntityShieldHandler {
 
                 }
 
+                //reduces damage based on source
                 //mage set
                 if(event.getSource() instanceof ModIndirectDamage && Objects.equals(((ModIndirectDamage) event.getSource()).damageType, ModDamageSource.MAGIC) || event.getSource() == DamageSource.MAGIC) {
                     double magicDamageReduction = 0;
@@ -194,18 +210,47 @@ public class EntityShieldHandler {
                         magicDamageReduction += 0.05;
                     }
                     //reduces the damage if its magic based on how many pieces of the mages set the player is wearing
-                    event.setAmount((float) (event.getAmount() - (event.getAmount() * magicDamageReduction)));
+                  //  event.setAmount((float) (totalDamage - (originalDamage * magicDamageReduction)));
+                    totalDamage -= (float) (originalDamage * magicDamageReduction);
                 }
+
+                //golden devotion buff
+                if(!(event.getSource() instanceof ModIndirectDamage && Objects.equals(((ModIndirectDamage) event.getSource()).damageType, ModDamageSource.MAGIC)) && !(event.getSource() == DamageSource.MAGIC)) {
+                    if(player.isPotionActive(ModPotions.GOLDEN_DEVOTION)) {
+                     //   event.setAmount((float) (totalDamage - (originalDamage * PotionTrinketConfig.golden_devotion_reduction_amount)));
+                        totalDamage -= (float) (originalDamage * PotionTrinketConfig.golden_devotion_reduction_amount);
+                    }
+                }
+
                 ItemStack crystalFruitTrinket = ModUtils.findTrinket(new ItemStack(ModItems.FROZEN_CRYSTAL_TRINKET), player);
                 ItemStack magicCharmTrinket = ModUtils.findTrinket(new ItemStack(ModItems.MAGIC_CHARM_TRINKET), player);
                 ItemStack weaknessTrinket = ModUtils.findTrinket(new ItemStack(ModItems.WEAKNESS_TRINKET), player);
                 ItemStack poisonTrinket = ModUtils.findTrinket(new ItemStack(ModItems.POISON_TRINKET), player);
                 ItemStack slamTrinket = ModUtils.findTrinket(new ItemStack(ModItems.FROZEN_SLAM_TRINKET), player);
+                ItemStack goldenMarkTrinket = ModUtils.findTrinket(new ItemStack(ModItems.GOLDEN_MARK_TRINKET), player);
+
+
+                //reduces damage by chance
                 if(!crystalFruitTrinket.isEmpty()) {
                     int randI = ModRand.range(1, 11);
                     if (randI == 3) {
-                        event.setAmount((float) (event.getAmount() * 0.5));
+                      //  event.setAmount((float)(totalDamage - (originalDamage * 0.5)));
+                        totalDamage -= (float) (originalDamage * 0.5);
                         crystalFruitTrinket.damageItem(1, player);
+                    }
+                }
+
+                //golden mark trinket
+                if(!goldenMarkTrinket.isEmpty()) {
+                    int randI = ModRand.range(1, 16);
+                    if(randI == 7) {
+                        if(event.getSource().getImmediateSource() instanceof EntityLivingBase) {
+                            EntityLivingBase base = ((EntityLivingBase) event.getSource().getImmediateSource());
+                            if(base != null) {
+                                base.addPotionEffect(new PotionEffect(ModPotions.HUNTERS_MARK, 600, 0, false, false));
+                                goldenMarkTrinket.damageItem(1, player);
+                            }
+                        }
                     }
                 }
 
@@ -256,8 +301,8 @@ public class EntityShieldHandler {
             }
         }
 
-        if(event.getSource().getImmediateSource() instanceof EntityPlayer) {
-            EntityPlayer player = ((EntityPlayer) event.getSource().getImmediateSource());
+        if(event.getSource().getTrueSource() instanceof EntityPlayer) {
+            EntityPlayer player = ((EntityPlayer) event.getSource().getTrueSource());
             if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.NOVIK_HELMET) {
                 if(event.getEntityLiving() != null) {
                     int randI = ModRand.range(1, 11);
@@ -269,9 +314,11 @@ public class EntityShieldHandler {
 
             ItemStack flameTrinket = ModUtils.findTrinket(new ItemStack(ModItems.FLAMES_RAGE_TRINKET), player);
             ItemStack vampireTrinket = ModUtils.findTrinket(new ItemStack(ModItems.VAMPIRIC_TRINKET), player);
-            int flameTrinketBonus = 0;
             if(!flameTrinket.isEmpty()) {
-                flameTrinketBonus = player.isBurning() ? 2 : 1;
+                int flameTrinketBonus = player.isBurning() ? 4 : 2;
+              //  event.setAmount(flameTrinketBonus + totalDamage);
+                totalDamage += flameTrinketBonus;
+                flameTrinket.damageItem(1, player);
             }
 
             if(!vampireTrinket.isEmpty()) {
@@ -283,53 +330,41 @@ public class EntityShieldHandler {
             }
 
             //Novik Set
-            if((player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.NOVIK_HELMET || player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.APATHYR_HELMET) && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.NOVIK_CHESTPLATE &&
+            if(((player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.NOVIK_HELMET || player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.APATHYR_HELMET)) && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.NOVIK_CHESTPLATE &&
                     player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.NOVIK_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.NOVIK_BOOTS) {
                 if(event.getEntityLiving() != null) {
                      if(event.getEntityLiving().getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) {
                          float newDamage = event.getAmount();
                          if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.APATHYR_HELMET && player.getHealth() / player.getMaxHealth() <= 0.5) {
-                             newDamage = (float) ((event.getAmount() * 1.2) + 1 + flameTrinketBonus);
+                             newDamage = (float) ((originalDamage * 0.2) + 2);
                          } else {
-                            newDamage = (float) ((event.getAmount() * 1.2) + flameTrinketBonus);
+                            newDamage = (float) ((originalDamage * 0.2));
                          }
-                         if(!flameTrinket.isEmpty()) {
-                             flameTrinket.damageItem(1, player);
-                         }
-                         event.setAmount(newDamage);
-                         return;
+                         totalDamage += newDamage;
+                        // event.setAmount(totalDamage + newDamage);
                      }
                 }
-            }
-
-            //Apathyr Helmet
-            if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.APATHYR_HELMET && player.getHealth() / player.getMaxHealth() <= 0.5) {
+                //Apathyr Helmet only
+            } else if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.APATHYR_HELMET && player.getHealth() / player.getMaxHealth() <= 0.5) {
                 if(event.getEntityLiving() != null) {
-                    event.setAmount(event.getAmount() + 2 + flameTrinketBonus);
-                    if(!flameTrinket.isEmpty()) {
-                        flameTrinket.damageItem(1, player);
-                    }
-                    return;
+                 //   event.setAmount(totalDamage + 2);
+                    totalDamage += 2;
                 }
             }
 
+        }
 
-            //flame Trinket
-            if(!flameTrinket.isEmpty()) {
-                if(event.getEntityLiving() != null) {
-                    event.setAmount(event.getAmount() + flameTrinketBonus);
-                    flameTrinket.damageItem(1, player);
-                    return;
-                }
+        //universal effects
+        if(event.getEntityLiving() != null) {
+            EntityLivingBase base = ((EntityLivingBase) event.getEntityLiving());
+            if(base.isPotionActive(ModPotions.HUNTERS_MARK)) {
+                //  event.setAmount((float) (totalDamage + (originalDamage * PotionTrinketConfig.hunters_mark_damage_increase)));
+                totalDamage += (float) (totalDamage * PotionTrinketConfig.hunters_mark_damage_increase);
             }
         }
 
-        float damage = event.getAmount();
-        // Factor in elemental armor first
 
-        // Factor in maelstrom armor second
+        event.setAmount(totalDamage);
 
-
-        event.setAmount(damage);
     }
 }

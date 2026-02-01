@@ -38,6 +38,20 @@
         },
         {
           "type": "item",
+          "name": "da:dungeon_bread",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 6
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
           "name": "minecraft:carrot",
           "weight": 15,
           "functions": [

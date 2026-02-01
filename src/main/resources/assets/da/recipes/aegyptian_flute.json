@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  V",
+    " XD",
+    "R  "
+  ],
+  "key": {
+    "V": {
+      "item": "da:aegyptia_metal_ingot"
+    },
+    "R": {
+      "item": "da:beetle_shell"
+    },
+    "X": {
+      "item": "da:aegyptia_bone"
+    },
+    "D": {
+      "item": "da:dark_mana"
+    }
+  },
+  "result": {
+    "item": "da:aegyptian_flute"
+  }
+}

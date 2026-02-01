@@ -9,6 +9,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -31,8 +32,7 @@ public class ItemTrinket extends ItemBase {
 
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        if(ModConfig.enable_crafting_tooltips) {
             tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
-        }
+            tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.trinket_item.name"));
     }
 }

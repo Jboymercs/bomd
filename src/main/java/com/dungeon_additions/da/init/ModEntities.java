@@ -17,6 +17,7 @@ import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianColoss
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianWarlord;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityColossusSigil;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntitySummonedMace;
+import com.dungeon_additions.da.entity.desert_dungeon.friendly.EntityFriendlyScutterBeetle;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.EntityEverator;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
 import com.dungeon_additions.da.entity.flame_knight.*;
@@ -130,6 +131,7 @@ public class ModEntities {
         registerEntityWithID("great_wyrk", EntityGreatWyrk.class, ENTITY_START_ID++, 90, ancient_wyrk);
         //Forgotten Temple
         registerEntityWithID("scutter_beetle", EntityScutterBeetle.class, ENTITY_START_ID++, 70, scutter_beetle);
+        registerEntity("scutter_beetle_friendly", EntityFriendlyScutterBeetle.class, ENTITY_START_ID++, 70);
         registerEntityWithID("aegyptia", EntityAegyptia.class, ENTITY_START_ID++, 70, aegyptian_recurian);
         registerEntityWithID("everator", EntityEverator.class, ENTITY_START_ID++, 70, everator);
         registerEntityWithID("aegyptian_warlord", EntityAegyptianWarlord.class, ENTITY_START_ID++, 70, night_lich);

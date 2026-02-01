@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.sky_dungeon.friendly;
 
 import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.sky_dungeon.EntityImperialHalberdAI;
 import com.dungeon_additions.da.entity.frost_dungeon.friendly_wyrk.EntityAIWyrkFollow;
@@ -613,6 +614,15 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if(source.getImmediateSource() == this || this.getOwner() != null && source.getImmediateSource() == this.getOwner()) {
             return false;
+        }
+
+
+        if(source.getImmediateSource() instanceof EntityAbstractBase) {
+            EntityAbstractBase base = ((EntityAbstractBase) source.getImmediateSource());
+            if(base.isFriendlyCreature) {
+                this.setAttackTarget(null);
+                return false;
+            }
         }
 
 

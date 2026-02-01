@@ -22,6 +22,8 @@ import com.dungeon_additions.da.items.gun.ItemGolemCannon;
 import com.dungeon_additions.da.items.gun.ItemSealedTornado;
 import com.dungeon_additions.da.items.gun.ItemVoidiantCatalyst;
 import com.dungeon_additions.da.items.keys.*;
+import com.dungeon_additions.da.items.potions.ItemGoldenDevotion;
+import com.dungeon_additions.da.items.potions.ItemGoldenVow;
 import com.dungeon_additions.da.items.projectile.*;
 import com.dungeon_additions.da.items.shield.*;
 import com.dungeon_additions.da.items.tools.*;
@@ -116,6 +118,8 @@ public class ModItems {
     public static final Item AEGYPTIA_BONE = new ItemCraftingMaterial("aegyptia_bone", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item AEGYPTIA_METAL_INGOT = new ItemCraftingMaterial("aegyptia_metal_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item GLADIATOR_IDOL = new ItemCraftingMaterial("gladiator_idol", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item COLOSSUS_BONE = new ItemCraftingMaterial("colossus_bone", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item WARLORD_CRYSTAL = new ItemCraftingMaterial("warlord_crystal","crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item INCENDIUM_CORE = new ItemCraftingMaterial("incendium_core", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item VOLATILE_PEARL = new ItemCraftingMaterial("volatile_orb", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ABBERRANT_EYE = new ItemCraftingMaterial("abberrant_eye", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -152,6 +156,8 @@ public class ModItems {
     public static final Item SEALED_TORNADO_BOTTLE = new ItemSealedTornado("sealed_tornado","sealed_tornado_desc", DungeonAdditionsTab.ALL);
     public static final Item SEALED_SPEAR_WAVE_BOTTLE = new ItemSealedSpearWave("sealed_spear_wave", "sealed_spear_wave_desc", DungeonAdditionsTab.ALL);
     public static final Item SEALED_FLAME_BOTTLE = new ItemSealedFlame("sealed_flame", "sealed_flame_desc", DungeonAdditionsTab.ALL);
+    public static final Item GOLDEN_DEVOTION = new ItemGoldenDevotion("golden_devotion", "golden_devotion_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item GOLDEN_VOW = new ItemGoldenVow("golden_vow", "golden_vow_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROZEN_CRYSTAL_TRINKET = new ItemTrinket("crystal_trinket", "crystal_trinket_desc", 128);
     public static final Item GLASS_CANNON_TRINKET = new ItemTrinket("glass_cannon_trinket", "glass_cannon_trinket_desc", 128);
     public static final Item SPEED_BOOTS_TRINKET = new ItemTrinket("boots_trinket", "boots_trinket_desc", 128);
@@ -171,8 +177,11 @@ public class ModItems {
     public static final Item WEAKNESS_TRINKET = new ItemTrinket("weakness_trinket", "weakness_trinket_desc", 84);
     public static final Item VOID_HAND_TRINKET = new ItemTrinket("void_hand_trinket", "void_hand_trinket_desc", 84);
     public static final Item CONFETTI_TRINKET = new ItemTrinket("confetti_trinket", "confetti_trinket_desc", 64);
+    public static final Item STALWART_SUMMONER = new ItemTrinket("stalwart_summoner", "stalwart_summoner_desc", 32);
+    public static final Item GOLDEN_MARK_TRINKET = new ItemTrinket("golden_mark_trinket", "golden_mark_trinket_desc", 128);
     public static final Item WYRK_TOTEM = new ItemWyrkTotem("wyrk_totem", "wyrk_totem_desc", DungeonAdditionsTab.ALL);
     public static final Item NOVIK_AID = new ItemNovikAid("call_to_arms", "call_to_arms_desc", DungeonAdditionsTab.ALL);
+    public static final Item AEGYPTIAN_FLUTE = new ItemAegyptianFlute("aegyptian_flute", "aegyptian_flute_desc", DungeonAdditionsTab.ALL);
     public static final Item KINGS_AID = new ItemKingsAid("king_aid", "king_aid_desc", DungeonAdditionsTab.ALL);
     public static final Item ROTTEN_HOLD_LOCATOR = new ItemRottenHoldLocator("rot_locator", "rot_locator_desc");
     public static final Item FROZEN_CASTLE_LOCATOR = new ItemFrozenCastleLocator("frost_locator", "frost_locator_desc");

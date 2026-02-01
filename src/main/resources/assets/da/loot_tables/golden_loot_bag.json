@@ -253,6 +253,11 @@
           "type": "item",
           "name": "da:void_hand_trinket",
           "weight": 11
+        },
+        {
+          "type": "item",
+          "name": "da:stalwart_summoner",
+          "weight": 11
         }
       ]
     }
