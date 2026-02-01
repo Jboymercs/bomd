@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class ParticleSSMesage implements IMessage
 {
@@ -72,12 +73,16 @@ public class ParticleSSMesage implements IMessage
     {
         @Override
         public IMessage onMessage(ParticleSSMesage message, MessageContext ctx) {
-            Minecraft.getMinecraft().addScheduledTask(() -> {
-                for (int i = 0; i < message.count; i++)
-                {
-                    Main.proxy.spawnParticle(message.particleId, message.x, message.y, message.z, message.xSpeed, message.ySpeed, message.zSpeed, message.parameters);
-                }
-            });
+
+            if (ctx.side == Side.CLIENT)
+            {
+                Minecraft.getMinecraft().addScheduledTask(() -> {
+                    for (int i = 0; i < message.count; i++)
+                    {
+                        Main.proxy.spawnParticle(message.particleId, message.x, message.y, message.z, message.xSpeed, message.ySpeed, message.zSpeed, message.parameters);
+                    }
+                });
+            }
             return null;
         }
     }
