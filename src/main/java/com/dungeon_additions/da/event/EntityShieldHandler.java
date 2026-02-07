@@ -197,9 +197,13 @@ public class EntityShieldHandler {
                         magicDamageReduction += 0.1;
                     } else if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.WYRK_HELMET) {
                         magicDamageReduction += 0.05;
+                    } else if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.WARLORD_HELMET) {
+                        magicDamageReduction += 0.1;
                     }
                     if(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.MAGE_CHESTPLATE) {
                         magicDamageReduction += 0.1;
+                    } else if (player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.COLOSSUS_CHESTPLATE) {
+                        magicDamageReduction += 0.05;
                     }
                     if(player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.MAGE_LEGGINGS) {
                         magicDamageReduction += 0.1;
@@ -220,6 +224,11 @@ public class EntityShieldHandler {
                      //   event.setAmount((float) (totalDamage - (originalDamage * PotionTrinketConfig.golden_devotion_reduction_amount)));
                         totalDamage -= (float) (originalDamage * PotionTrinketConfig.golden_devotion_reduction_amount);
                     }
+                }
+
+                //poison garnish
+                if(player.isPotionActive(ModPotions.POISON_GARNISH)) {
+                    totalDamage += 3;
                 }
 
                 ItemStack crystalFruitTrinket = ModUtils.findTrinket(new ItemStack(ModItems.FROZEN_CRYSTAL_TRINKET), player);
@@ -349,6 +358,35 @@ public class EntityShieldHandler {
                 if(event.getEntityLiving() != null) {
                  //   event.setAmount(totalDamage + 2);
                     totalDamage += 2;
+                }
+            }
+
+            //Warlord Helmet
+            if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.WARLORD_HELMET) {
+                if(!(event.getEntityLiving().getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) && !(event.getEntityLiving().getCreatureAttribute() == EnumCreatureAttribute.ARTHROPOD)) {
+                    totalDamage += 1;
+                } else {
+                    totalDamage -= 1;
+                }
+            }
+
+            if(player.isPotionActive(ModPotions.POISON_GARNISH)) {
+                if(event.getEntityLiving().isPotionActive(MobEffects.POISON)) {
+                    totalDamage += 1;
+                }
+                if(event.getEntityLiving() != null) {
+                    if(event.getEntityLiving().getHealth() / event.getEntityLiving().getMaxHealth() <= 0.5) {
+                        event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.POISON, 680, 1, false, true));
+                    } else {
+                        event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.POISON, 680, 0, false, true));
+                    }
+                }
+            }
+
+            //Fiery Respite
+            if(player.isPotionActive(ModPotions.FIERY_RESPITE)) {
+                if(event.getEntityLiving() != null) {
+                    event.getEntityLiving().setFire(6);
                 }
             }
 

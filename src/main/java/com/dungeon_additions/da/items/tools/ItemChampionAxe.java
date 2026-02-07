@@ -1,6 +1,5 @@
 package com.dungeon_additions.da.items.tools;
 
-import com.deeperdepths.common.Constants;
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.init.ModItems;

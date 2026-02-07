@@ -102,6 +102,8 @@ public class ModEntities {
     public static Vec3i high_king = new Vec3i(0x262852,0xe0c03f,0);
     public static Vec3i dark_sorcerer = new Vec3i(0x233547,0x69057b,0);
     public static Vec3i aegyptian_recurian = new Vec3i(0xEDEDCE,0x6E2C36,0);
+    public static Vec3i aegyptian_colossus = new Vec3i(0xEDEDCE,0x7D002F,0);
+    public static Vec3i aegyptian_warlord = new Vec3i(0xEDEDCE,0xA38600,0);
     public static Vec3i everator = new Vec3i(0xEDEDCE,0xEBD463,0);
 
     public static Vec3i dark_royal = new Vec3i(0x233547,0xb42507,0);
@@ -134,8 +136,8 @@ public class ModEntities {
         registerEntity("scutter_beetle_friendly", EntityFriendlyScutterBeetle.class, ENTITY_START_ID++, 70);
         registerEntityWithID("aegyptia", EntityAegyptia.class, ENTITY_START_ID++, 70, aegyptian_recurian);
         registerEntityWithID("everator", EntityEverator.class, ENTITY_START_ID++, 70, everator);
-        registerEntityWithID("aegyptian_warlord", EntityAegyptianWarlord.class, ENTITY_START_ID++, 70, night_lich);
-        registerEntityWithID("aegyptian_colossus", EntityAegyptianColossus.class, ENTITY_START_ID++, 70, night_lich);
+        registerEntityWithID("aegyptian_warlord", EntityAegyptianWarlord.class, ENTITY_START_ID++, 70, aegyptian_warlord);
+        registerEntityWithID("aegyptian_colossus", EntityAegyptianColossus.class, ENTITY_START_ID++, 70, aegyptian_colossus);
         // Burning Flame Arena
         registerEntityWithID("nether_aberant", EntityNetherAbberrant.class, ENTITY_START_ID++, 50, nether_spirit);
         registerEntityWithID("incendium_spirit", EntityIncendium.class, ENTITY_START_ID++, 70, incendium_spirit);

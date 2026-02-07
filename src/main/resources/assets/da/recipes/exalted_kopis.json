@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  V",
+    " XV",
+    "BR "
+  ],
+  "key": {
+    "V": {
+      "item": "minecraft:iron_ingot"
+    },
+    "X": {
+      "item": "da:warlord_crystal"
+    },
+    "R": {
+      "item": "da:aegyptia_metal_ingot"
+    },
+    "B": {
+      "item": "da:aegyptia_bone"
+    }
+  },
+  "result": {
+    "item": "da:exalted_kopis"
+  }
+}

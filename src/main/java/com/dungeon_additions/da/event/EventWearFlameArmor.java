@@ -8,12 +8,14 @@ import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkSorcerer;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityShadowHand;
+import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityColossusSigil;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBolt;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.init.ModPotions;
 import com.dungeon_additions.da.items.armor.VoidiantChestplate;
+import com.dungeon_additions.da.items.armor.aegyptia.ItemColossusChestplate;
 import com.dungeon_additions.da.items.shield.BOMDShieldItem;
 import com.dungeon_additions.da.items.tools.ItemMageStaff;
 import com.dungeon_additions.da.items.tools.ToolSword;
@@ -60,8 +62,6 @@ public class EventWearFlameArmor {
     public static double cooldownDelegation = 5.0;
 
     public static final UUID INCENDIUM_HEALTH_MODIFIER = UUID.fromString("0483aa4a-af8d-36a2-8693-22bec9caa265");
-    public static final UUID GOLDEN_DEVOTION_HEALTH_MODIFIER = UUID.fromString("1249aa4a-af8d-45a2-0012-22bec9caa395");
-    public static final UUID GOLDEN_VOW_SPEED_MODIFIER = UUID.fromString("8824aa4a-af8d-09a2-3723-22bec9caa193");
 
     public static final UUID SHIELD_TRINKET_MODIFIER = UUID.fromString("9812aa4a-afc8-33b2-8956-22bec9cab736");
     public static final UUID DIAMOND_SHIELD_TRINKET_MODIFIER = UUID.fromString("7843aa4a-af8d-36a2-1293-69bec9caa675");
@@ -72,7 +72,7 @@ public class EventWearFlameArmor {
         EntityLivingBase base = event.getEntityLiving();
 
         if(base.isPotionActive(ModPotions.HUNTERS_MARK) && base.ticksExisted % 5 == 0) {
-            Main.proxy.spawnParticle(27, base.posX, base.posY + base.getEyeHeight() + 1.5, base.posZ, 0, 0, 0);
+            Main.proxy.spawnParticle(27, base.world, base.posX, base.posY + base.getEyeHeight() + 1.5, base.posZ, 0, 0, 0);
         }
 
         if(!base.world.isRemote) {
@@ -118,6 +118,17 @@ public class EventWearFlameArmor {
                     ItemStack voidTrinket = ModUtils.findTrinket(new ItemStack(ModItems.VOID_TRINKET), player);
                     ItemStack wind_trinket = ModUtils.findTrinket(new ItemStack(ModItems.WIND_TRINKET), player);
                     ItemStack void_hand_trinket = ModUtils.findTrinket(new ItemStack(ModItems.VOID_HAND_TRINKET), player);
+                    ItemStack sigil_trinket = ModUtils.findTrinket(new ItemStack(ModItems.SIGIL_TRINKET), player);
+
+                    if(!sigil_trinket.isEmpty() && !player.getCooldownTracker().hasCooldown(sigil_trinket.getItem()) && player.isSneaking() &&
+                    player.getAttackingEntity() != null && player.ticksExisted % 2 == 0) {
+
+                        EntityColossusSigil sigil = new EntityColossusSigil(player.world, player, 5, true);
+                        sigil.setPosition(player.posX, player.posY + 2, player.posZ);
+                        player.world.spawnEntity(sigil);
+                        sigil_trinket.damageItem(1, player);
+                        player.getCooldownTracker().setCooldown(sigil_trinket.getItem(), 1200);
+                    }
 
                     if(!void_hand_trinket.isEmpty() && !player.getCooldownTracker().hasCooldown(void_hand_trinket.getItem())) {
                         int randI = ModRand.range(1, 101);
@@ -228,6 +239,23 @@ public class EventWearFlameArmor {
                     } else if(attributeInHeart.getModifier(HEART_TRINKET_MODIFIER) != null) {
                         attributeInHeart.removeModifier(HEART_TRINKET_MODIFIER);
                     }
+            }
+
+            if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.WARLORD_HELMET) {
+                if(base.ticksExisted % 40 == 0 && base.isPotionActive(MobEffects.WITHER)) {
+                    base.removePotionEffect(MobEffects.WITHER);
+                }
+            }
+
+            if(base.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.COLOSSUS_CHESTPLATE && base.getHealth() / base.getMaxHealth() <= 0.5) {
+                ItemStack chestplate = base.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+                if(base instanceof EntityPlayer) {
+                    EntityPlayer player = ((EntityPlayer) base);
+                    if(!player.getCooldownTracker().hasCooldown(chestplate.getItem())) {
+                        player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 500, 0, false, false));
+                        player.getCooldownTracker().setCooldown(chestplate.getItem(), 3200);
+                    }
+                }
             }
 
             //Dark Metal Helmet

@@ -23,8 +23,8 @@ public class ModelLichHelmet extends ModelBiped {
 
 		head = new ModelRenderer(this);
 		head.setRotationPoint(0.0F, 0.0F, 0.0F);
-		head.cubeList.add(new ModelBox(head, 0, 0, -4.5F, -9.0F, -4.5F, 9, 12, 9, 0.05F, false));
-		head.cubeList.add(new ModelBox(head, 0, 21, -4.5F, -13.0F, -4.5F, 9, 9, 9, 0.3F, false));
+		head.cubeList.add(new ModelBox(head, 0, 0, -4.5F, -9.0F, -4.5F, 9, 12, 9, 0.25F, false));
+		head.cubeList.add(new ModelBox(head, 0, 21, -4.5F, -13.0F, -4.5F, 9, 9, 9, 0.55F, false));
 		this.bipedHead.addChild(head);
 	}
 

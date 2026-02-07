@@ -22,8 +22,8 @@ public class ModelWyrkHelmet extends ModelBiped {
 
 		head = new ModelRenderer(this);
 		head.setRotationPoint(0.0F, 0.0F, 0.0F);
-		head.cubeList.add(new ModelBox(head, 0, 17, -4.0F, -9.0F, -4.0F, 8, 10, 8, 0.3F, false));
-		head.cubeList.add(new ModelBox(head, 0, 34, -4.5F, -15.0F, -4.5F, 9, 9, 9, -0.5F, false));
+		head.cubeList.add(new ModelBox(head, 0, 17, -4.0F, -9.0F, -4.0F, 8, 10, 8, 0.55F, false));
+		head.cubeList.add(new ModelBox(head, 0, 34, -4.5F, -15.0F, -4.5F, 9, 9, 9, -0.35F, false));
 		this.bipedHead.addChild(head);
 	}
 

@@ -500,6 +500,10 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
         data.addAnimationController(new AnimationController(this, "orb_controller", 0, this::predicateOrbMode));
     }
 
+    private World getWorld() {
+        return this.world;
+    }
+
     @Override
     public void handleStatusUpdate(byte id) {
         super.handleStatusUpdate(id);

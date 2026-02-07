@@ -269,6 +269,11 @@
           "type": "item",
           "name": "da:stalwart_summoner",
           "weight": 9
+        },
+        {
+          "type": "item",
+          "name": "da:sigil_trinket",
+          "weight": 10
         }
       ]
     }

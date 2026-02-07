@@ -24,7 +24,7 @@ public class ModelIncendiumHelmet extends ModelBiped {
 
 		head = new ModelRenderer(this);
 		head.setRotationPoint(0.0F, 0.0F, 0.0F);
-		head.cubeList.add(new ModelBox(head, 0, 38, -4.0F, -8.0F, -4.0F, 8, 8, 8, 0.5F, false));
+		head.cubeList.add(new ModelBox(head, 0, 38, -4.0F, -8.0F, -4.0F, 8, 8, 8, 0.55F, false));
 		head.cubeList.add(new ModelBox(head, 0, 29, -8.0F, -7.0F, -1.0F, 16, 2, 2, 0.0F, false));
 		head.cubeList.add(new ModelBox(head, 32, 6, -8.0F, -12.0F, -1.0F, 2, 5, 2, 0.0F, false));
 		head.cubeList.add(new ModelBox(head, 32, 13, -8.0F, -12.0F, -4.0F, 2, 2, 3, 0.0F, false));

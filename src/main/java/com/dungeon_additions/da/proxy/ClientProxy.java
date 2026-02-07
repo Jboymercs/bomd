@@ -6,6 +6,8 @@ import com.dungeon_additions.da.entity.util.EntityMusicPlayer;
 import com.dungeon_additions.da.event.EventBossMusic;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.model.*;
+import com.dungeon_additions.da.util.ModReference;
+import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSection;
 import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSectionSerializer;
 import com.dungeon_additions.da.util.handlers.CameraPositionHandler;
@@ -14,6 +16,7 @@ import com.dungeon_additions.da.util.particle.*;
 import com.dungeon_additions.da.util.particle.confetti.ParticleConfetti;
 import com.dungeon_additions.da.util.particle.cuts.ParticleColossusSigil;
 import com.dungeon_additions.da.util.particle.cuts.ParticleLeftCut;
+import com.dungeon_additions.da.util.particle.cuts.ParticleParry;
 import com.dungeon_additions.da.util.particle.cuts.ParticleRightCut;
 import com.dungeon_additions.da.util.particle.impact.*;
 import com.dungeon_additions.da.util.particle.obsidilith.*;
@@ -35,11 +38,13 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(value = Side.CLIENT, modid = ModReference.MOD_ID)
 public class ClientProxy extends CommonProxy{
 
     private final ModelBiped MODEL_LICH_HELMET = new ModelLichHelmet(0F);
@@ -62,6 +67,8 @@ public class ClientProxy extends CommonProxy{
     private final ModelBiped MODEL_APATHYR_HELMET = new ModelApathyrHelmet(0f);
     private final ModelBiped MODEL_ADVENTURIC_HELMET = new ModelAdventuricHelmet(0f);
     private final ModelBiped MODEL_MAGE_HAT = new ModelMageHat(0F);
+    private final ModelBiped MODEL_WARLORD_HELMET = new ModelWarlordHelmet(0F);
+    private final ModelBiped MODEL_COLOSSUS_CHESTPLATE =new ModelColossusChestplate(0F);
 
     @Override
     public void init() {
@@ -150,6 +157,12 @@ public class ClientProxy extends CommonProxy{
         if(item == ModItems.MAGE_HELMET) {
             return MODEL_MAGE_HAT;
         }
+        if(item == ModItems.WARLORD_HELMET) {
+            return MODEL_WARLORD_HELMET;
+        }
+        if(item == ModItems.COLOSSUS_CHESTPLATE) {
+            return MODEL_COLOSSUS_CHESTPLATE;
+        }
         return null;
     }
 
@@ -228,6 +241,8 @@ public class ClientProxy extends CommonProxy{
                 return new ParticleColossusSigil.Factory();
             case 27:
                 return new ParticleHuntersMark.Factory();
+            case 28:
+                return new ParticleParry.Factory();
         }
     }
 

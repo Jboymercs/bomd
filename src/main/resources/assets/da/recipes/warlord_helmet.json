@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " B ",
+    "VXV",
+    "V V"
+  ],
+  "key": {
+    "V": {
+      "item": "da:aegyptia_metal_ingot"
+    },
+    "X": {
+      "item": "da:warlord_crystal"
+    },
+    "B": {
+      "item": "da:magic_leather"
+    }
+  },
+  "result": {
+    "item": "da:warlord_helmet"
+  }
+}

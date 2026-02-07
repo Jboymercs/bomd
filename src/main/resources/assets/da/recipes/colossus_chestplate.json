@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V V",
+    "VBV",
+    "RXR"
+  ],
+  "key": {
+    "B": {
+      "item": "da:colossus_bone"
+    },
+    "V": {
+      "item": "da:aegyptia_metal_ingot"
+    },
+    "R": {
+      "item": "da:aegyptia_bone"
+    },
+    "X": {
+      "item": "da:beetle_shell"
+    },
+    "R": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "da:colossus_chestplate"
+  }
+}

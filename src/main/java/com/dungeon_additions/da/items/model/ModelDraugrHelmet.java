@@ -23,7 +23,7 @@ public class ModelDraugrHelmet extends ModelBiped {
 
 		head = new ModelRenderer(this);
 		head.setRotationPoint(0.0F, 0.0F, 0.0F);
-		head.cubeList.add(new ModelBox(head, 0, 0, -4.0F, -8.0F, -4.0F, 8, 8, 8, 0.3F, false));
+		head.cubeList.add(new ModelBox(head, 0, 0, -4.0F, -8.0F, -4.0F, 8, 8, 8, 0.55F, false));
 		head.cubeList.add(new ModelBox(head, 24, 20, -5.0F, -7.5F, -2.0F, 10, 4, 4, 0.0F, false));
 		head.cubeList.add(new ModelBox(head, 0, 16, -10.0F, -6.5F, -1.0F, 20, 2, 2, 0.0F, false));
 		head.cubeList.add(new ModelBox(head, 24, 28, 8.0F, -13.5F, -1.0F, 2, 7, 2, 0.0F, false));

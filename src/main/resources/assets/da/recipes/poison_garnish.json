@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "X"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:glass_bottle"
+    },
+    "V": {
+      "item": "da:void_thorns"
+    }
+  },
+  "result": {
+    "item": "da:poison_garnish",
+    "count" : 1
+  }
+}

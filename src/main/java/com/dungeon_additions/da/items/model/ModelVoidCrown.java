@@ -29,7 +29,7 @@ public class ModelVoidCrown extends ModelBiped {
 		head = new ModelRenderer(this);
 		head.setRotationPoint(0.0F, 0.0F, 0.0F);
 		head.cubeList.add(new ModelBox(head, 0, 18, -4.0F, -8.0F, -4.0F, 8, 8, 8, 0.2F, false));
-		head.cubeList.add(new ModelBox(head, 28, 43, -4.0F, -15.0F, -4.0F, 8, 10, 8, 0.4F, false));
+		head.cubeList.add(new ModelBox(head, 28, 43, -4.0F, -15.0F, -4.0F, 8, 10, 8, 0.55F, false));
 
 		cube_r1 = new ModelRenderer(this);
 		cube_r1.setRotationPoint(0.0F, -7.0F, 4.0F);
@@ -56,7 +56,7 @@ public class ModelVoidCrown extends ModelBiped {
 		cube_r4.cubeList.add(new ModelBox(cube_r4, 32, 0, 0.0F, -8.0F, -4.0F, 0, 8, 8, 0.0F, false));
 
 		cube_r5 = new ModelRenderer(this);
-		cube_r5.setRotationPoint(-4.5F, -7.0F, 0.0F);
+		cube_r5.setRotationPoint(-4.75F, -7.0F, 0.0F);
 		head.addChild(cube_r5);
 		setRotationAngle(cube_r5, -0.7854F, 0.0F, 0.0F);
 		cube_r5.cubeList.add(new ModelBox(cube_r5, 22, 34, 0.0F, -1.5F, -1.5F, 0, 3, 3, 0.0F, false));

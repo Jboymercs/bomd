@@ -76,7 +76,7 @@ public class ItemAdventureSword extends ToolSword{
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if (entityIn instanceof EntityPlayer && !worldIn.isRemote) {
             EntityPlayer player = (EntityPlayer) entityIn;
-            if(this.isGroundSlam && ticksSaved + 10 < player.ticksExisted) {
+            if(this.isGroundSlam && ticksSaved + 10 < player.ticksExisted && player.getHeldItemMainhand().getItem() == this) {
                 if (player.onGround) {
                     List<EntityLivingBase> targets = worldIn.getEntitiesWithinAABB(EntityLivingBase.class, player.getEntityBoundingBox().grow(2.75, 0.1, 2.75), e -> e != player);
                     if (!targets.isEmpty()) {

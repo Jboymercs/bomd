@@ -1,14 +1,21 @@
 package com.dungeon_additions.da.entity.desert_dungeon.boss;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertOrb;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.util.ModUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class EntityColossusSigil extends Projectile {
 
@@ -18,6 +25,15 @@ public class EntityColossusSigil extends Projectile {
         super(worldIn, throwerIn, damage);
         this.setNoGravity(true);
         this.setSize(0.5F, 0.5F);
+    }
+
+    private boolean summonedFromTrinket;
+
+    public EntityColossusSigil(World worldIn, EntityLivingBase throwerIn, float damage, boolean summonedFromTrinket) {
+        super(worldIn, throwerIn, damage);
+        this.setNoGravity(true);
+        this.setSize(0.5F, 0.5F);
+        this.summonedFromTrinket = summonedFromTrinket;
     }
 
     public EntityColossusSigil(World worldIn, EntityLivingBase throwerIn, float damage, EntityLivingBase target) {
@@ -58,12 +74,51 @@ public class EntityColossusSigil extends Projectile {
                 world.spawnEntity(orb);
                 Vec3d targetPos = target.getPositionEyes(1.0F);
                 Vec3d fromTargetTooActor = this.getPositionVector().subtract(targetPos);
-                Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(1);
+                Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(0);
                 Vec3d lineStart = targetPos.subtract(lineDir);
                 Vec3d lineEnd = targetPos.add(lineDir);
                 ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
                     ModUtils.throwProjectileNoSpawn(pos, orb, 0F, 1.2F);
                 });
+            } else if (this.shootingEntity instanceof EntityPlayer && this.summonedFromTrinket ? this.ticksExisted % 30 == 0 : this.ticksExisted % 15 == 0) {
+                boolean firedOrb = false;
+                List<EntityAbstractBase> nearbyMobs = this.world.getEntitiesWithinAABB(EntityAbstractBase.class, this.getEntityBoundingBox().grow(16D), e -> !e.getIsInvulnerable());
+                List<EntityMob> nearbyCreatures = this.world.getEntitiesWithinAABB(EntityMob.class, this.getEntityBoundingBox().grow(16D), e -> !e.getIsInvulnerable());
+                if(!nearbyMobs.isEmpty()) {
+                    for(EntityAbstractBase base : nearbyMobs) {
+                        if(!base.isFriendlyCreature && this.canEntityBeSeen(base) && !firedOrb) {
+                            ProjectileDesertOrb orb = new ProjectileDesertOrb(world, this.shootingEntity, this.getDamage());
+                            orb.setPosition(this.posX, this.posY + 0.5, this.posZ);
+                            world.spawnEntity(orb);
+                            Vec3d targetPos = base.getPositionEyes(1.0F).add(0, -0.25, 0);
+                            Vec3d fromTargetTooActor = this.getPositionVector().subtract(targetPos);
+                            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(0);
+                            Vec3d lineStart = targetPos.subtract(lineDir);
+                            Vec3d lineEnd = targetPos.add(lineDir);
+                            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                                ModUtils.throwProjectileNoSpawn(pos, orb, 0F, 1.2F);
+                            });
+                            firedOrb = true;
+                        }
+                    }
+                } else if (!nearbyCreatures.isEmpty()) {
+                    for(EntityMob base : nearbyCreatures) {
+                        if(this.canEntityBeSeen(base) && !firedOrb) {
+                            ProjectileDesertOrb orb = new ProjectileDesertOrb(world, this.shootingEntity, this.getDamage());
+                            orb.setPosition(this.posX, this.posY + 0.5, this.posZ);
+                            world.spawnEntity(orb);
+                            Vec3d targetPos = base.getPositionEyes(1.0F);
+                            Vec3d fromTargetTooActor = this.getPositionVector().subtract(targetPos).add(0, -0.25, 0);
+                            Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(0);
+                            Vec3d lineStart = targetPos.subtract(lineDir);
+                            Vec3d lineEnd = targetPos.add(lineDir);
+                            ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                                ModUtils.throwProjectileNoSpawn(pos, orb, 0F, 1.2F);
+                            });
+                            firedOrb = true;
+                        }
+                    }
+                }
             }
 
 
@@ -73,6 +128,10 @@ public class EntityColossusSigil extends Projectile {
             }
         }
         super.onUpdate();
+    }
+
+    public boolean canEntityBeSeen(Entity entityIn) {
+        return this.world.rayTraceBlocks(new Vec3d(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ), new Vec3d(entityIn.posX, entityIn.posY + (double)entityIn.getEyeHeight(), entityIn.posZ), false, true, false) == null;
     }
 
 

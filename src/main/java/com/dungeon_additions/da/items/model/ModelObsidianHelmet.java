@@ -28,9 +28,9 @@ public class ModelObsidianHelmet extends ModelBiped {
 
 		head = new ModelRenderer(this);
 		head.setRotationPoint(0.0F, 0.0F, 0.0F);
-		head.cubeList.add(new ModelBox(head, 0, 21, -4.0F, -8.0F, -4.0F, 8, 8, 8, 0.4F, false));
-		head.cubeList.add(new ModelBox(head, 57, 41, -1.5F, -10.0F, -3.0F, 3, 9, 12, 0.0F, false));
-		head.cubeList.add(new ModelBox(head, 20, 47, -1.5F, -13.0F, 1.0F, 3, 3, 8, 0.0F, false));
+		head.cubeList.add(new ModelBox(head, 0, 21, -4.0F, -8.0F, -4.0F, 8, 8, 8, 0.55F, false));
+		head.cubeList.add(new ModelBox(head, 57, 41, -1.5F, -10.0F, -3.0F, 3, 9, 12, 0.15F, false));
+		head.cubeList.add(new ModelBox(head, 20, 47, -1.5F, -13.0F, 1.0F, 3, 3, 8, 0.1F, false));
 
 		cube_r1 = new ModelRenderer(this);
 		cube_r1.setRotationPoint(1.5F, -1.0F, 6.0F);

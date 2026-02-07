@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "R",
+    "V",
+    "X"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:glass_bottle"
+    },
+    "V": {
+      "item": "da:gladiator_idol"
+    },
+    "R": {
+      "item": "da:incendium_core"
+    }
+  },
+  "result": {
+    "item": "da:fiery_respite",
+    "count" : 2
+  }
+}

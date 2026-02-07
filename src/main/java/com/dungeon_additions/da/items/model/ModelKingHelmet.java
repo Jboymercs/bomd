@@ -23,7 +23,7 @@ public class ModelKingHelmet extends ModelBiped {
 
 		head = new ModelRenderer(this);
 		head.setRotationPoint(0.0F, 0.0F, 0.0F);
-		head.cubeList.add(new ModelBox(head, 0, 21, -4.5F, -14.0F, -4.5F, 9, 12, 9, 0.3F, false));
+		head.cubeList.add(new ModelBox(head, 0, 21, -4.5F, -14.0F, -4.5F, 9, 12, 9, 0.55F, false));
 		head.cubeList.add(new ModelBox(head, 0, 0, -4.0F, -8.0F, -4.0F, 8, 8, 8, 0.1F, false));
 		this.bipedHead.addChild(head);
 	}

@@ -23,7 +23,7 @@ public class ModelApathyrHelmet extends ModelBiped {
 
 		head = new ModelRenderer(this);
 		head.setRotationPoint(0.0F, 0.0F, 0.0F);
-		head.cubeList.add(new ModelBox(head, 27, 44, -4.5F, -9.0F, -4.5F, 9, 10, 9, 0.1F, false));
+		head.cubeList.add(new ModelBox(head, 27, 44, -4.5F, -9.0F, -4.5F, 9, 10, 9, 0.25F, false));
 		head.cubeList.add(new ModelBox(head, 0, 19, -2.0F, -10.0F, -5.0F, 4, 4, 9, 0.0F, false));
 		head.cubeList.add(new ModelBox(head, 0, 32, 3.0F, -7.0F, -1.5F, 7, 3, 3, 0.0F, false));
 		head.cubeList.add(new ModelBox(head, 26, 19, 7.0F, -7.0F, -7.5F, 3, 3, 6, 0.0F, false));

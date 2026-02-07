@@ -24,7 +24,7 @@ public class ModelAdventuricHelmet extends ModelBiped {
 
 		head = new ModelRenderer(this);
 		head.setRotationPoint(0.0F, 0.0F, 0.0F);
-		head.cubeList.add(new ModelBox(head, 30, 26, -4.0F, -9.0F, -4.0F, 8, 10, 8, 0.4F, false));
+		head.cubeList.add(new ModelBox(head, 30, 26, -4.0F, -9.0F, -4.0F, 8, 10, 8, 0.55F, false));
 		head.cubeList.add(new ModelBox(head, 0, 18, 0.0F, -17.0F, -1.0F, 0, 10, 10, 0.0F, false));
 		head.cubeList.add(new ModelBox(head, 22, 43, -1.0F, -13.0F, 0.0F, 2, 4, 0, 0.0F, false));
 

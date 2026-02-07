@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VXV",
+    "BRB",
+    " V "
+  ],
+  "key": {
+    "V": {
+      "item": "da:beetle_shell"
+    },
+    "R": {
+      "item": "da:gladiator_idol"
+    },
+    "X": {
+      "item": "da:aegyptia_metal_ingot"
+    },
+    "B": {
+      "item": "da:aegyptia_metal"
+    }
+  },
+  "result": {
+    "item": "da:everator_shield"
+  }
+}

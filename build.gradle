@@ -132,7 +132,7 @@ dependencies {
     implementation (fg.deobf('software.bernie.geckolib:geckolib-forge-1.12.2:3.0.31'))
 
     //Deeper Depths
-    implementation fg.deobf("curse.maven:deeper-depths-1101129:7512773")
+  //  implementation fg.deobf("curse.maven:deeper-depths-1101129:7512773")
 
 
     //Shaded `shade`

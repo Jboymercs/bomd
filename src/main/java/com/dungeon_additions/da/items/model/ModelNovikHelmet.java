@@ -25,7 +25,7 @@ public class ModelNovikHelmet extends ModelBiped {
 
 		head = new ModelRenderer(this);
 		head.setRotationPoint(0.0F, 0.0F, 0.0F);
-		head.cubeList.add(new ModelBox(head, 2, 45, -4.0F, -8.0F, -4.0F, 8, 8, 8, 0.45F, false));
+		head.cubeList.add(new ModelBox(head, 2, 45, -4.0F, -8.0F, -4.0F, 8, 8, 8, 0.55F, false));
 		head.cubeList.add(new ModelBox(head, 22, 16, 4.0F, -6.0F, -1.0F, 5, 2, 2, 0.0F, false));
 		head.cubeList.add(new ModelBox(head, 22, 20, 7.0F, -6.0F, -5.0F, 2, 2, 4, 0.0F, false));
 		head.cubeList.add(new ModelBox(head, 22, 26, 7.0F, -12.0F, -5.0F, 2, 6, 2, 0.0F, false));
