@@ -651,7 +651,7 @@ death.attack.da.wyrk_staff.item=%1$s was magicked by %2$s using %3$s
 death.attack.da.magma_stomp=%1$s burned too %2$s
 
 advancements.da.root.title=Dungeon Additions Mod
-advancements.da.root.description=Welcome to Dungeon Additions, originally a backport of BOMD but now extended into bringing new bosses and dungeons!
+advancements.da.root.description=Welcome to Unseen's Dungeon Additions, originally a backport of BOMD but now extended into bringing a RPG experience!
 #Stormvier
 advancements.da.kill_fallen_stormvier.title=And so the Journey Begins!
 advancements.da.kill_fallen_stormvier.description=Slay A Fallen Stormvier in the Rotten Hold
@@ -700,6 +700,21 @@ advancements.da.kill_cursed_sentinel.description=Kill a Cursed Sentinel
 #Kill The Apathyr
 advancements.da.kill_apathyr.title=Next level.
 advancements.da.kill_apathyr.description=Kill the Apathyr.
+#Kill Scutter Beetle
+advancements.da.kill_scutter_beetle.title=Why they so cute though?
+advancements.da.kill_scutter_beetle.description=Kill a Scutter Beetle
+# Kill Aegyptian Recurian
+advancements.da.kill_aegyptia.title=The lizard people we're behind it!
+advancements.da.kill_aegyptia.description=Kill a Aegyptian Recurian
+#Kill the Everator
+advancements.da.kill_everator.title=Big Brother.
+advancements.da.kill_everator.description=Kill the Everator.
+#Kill Aegyptian Colossus
+advancements.da.kill_aegyptian_colossus.title=From the halls it falls!
+advancements.da.kill_aegyptian_colossus.description=Slay the Aegyptian Colossus
+#Kill Aegyptian Warlord
+advancements.da.kill_aegyptian_warlord.title=Paper cuts everywhere!
+advancements.da.kill_aegyptian_warlord.description=Slay the Aegyptian Warlord
 #Find Soul Star
 advancements.da.find_soul_star.title=The stars lead the way
 advancements.da.find_soul_star.description=Obtain a Soul Star
@@ -864,7 +879,7 @@ advancements.da.craft_apathyr_heart.title=Waking of the Champion
 advancements.da.craft_apathyr_heart.description=Craft the Heart of the Apathyr.
 #Craft the Apathyr Helmet
 advancements.da.craft_apathyr_helmet.title=The Unbridled King
-advancements.da.craft_apathyr_helmet.description=Craft the Apathyr's Helmet
+advancements.da.craft_apathyr_helmet.description=Craft the Apathyr's Helmet.
 #Craft the Midnight Reign
 advancements.da.craft_apathyr_axe.title=I am the enemy now...
 advancements.da.craft_apathyr_axe.description=Craft the Midnight Reign.
@@ -873,8 +888,85 @@ advancements.da.craft_call_to_arms.title=Personal Support Guard
 advancements.da.craft_call_to_arms.description=Craft the Call To Arms.
 #Craft Sealed Spear Bottle
 advancements.da.sealed_spear_wave.title=Magic Connoisseur
-advancements.da.sealed_spear_wave.description=Craft a Sealed Spear Bottle
+advancements.da.sealed_spear_wave.description=Craft a Sealed Spear Bottle.
 #Craft Sentinel Cannon
 advancements.da.golem_cannon.title=Locked N' Loaded
-advancements.da.golem_cannon.description=Craft the Sentinel Cannon
-
+advancements.da.golem_cannon.description=Craft the Sentinel Cannon.
+#Craft Dungeon Bread
+advancements.da.craft_dungeon_bread.title=Stinks like squid...
+advancements.da.craft_dungeon_bread.description=Find Dungeon Bread.
+#Craft Stormvier Locator
+advancements.da.craft_stormvier_locator.title=First dungeon, kind of nervous!
+advancements.da.craft_stormvier_locator.description=Craft the Rotten Core with 4 bones and an Iron ingot.
+#Craft Poison Garnish
+advancements.da.craft_poison_garnish.title=Poison is a virtue, right?
+advancements.da.craft_poison_garnish.description=Craft a bottle of Poison Garnish.
+#Get Copper Coin
+advancements.da.craft_copper_coin.title=Gamble rumble!
+advancements.da.craft_copper_coin.description=Obtain a Copper Trader Coin. Give to a Mysterious Trader to redeem it!
+#Get Silver Coin
+advancements.da.craft_silver_coin.title=Does this repel vampires?
+advancements.da.craft_silver_coin.description=Obtain a Silver Trader Coin.
+#Get Gold Coin
+advancements.da.craft_gold_coin.title=We're ricchh!
+advancements.da.craft_gold_coin.description=Obtain a Golden Trader Coin.
+#Get Magic Leather
+advancements.da.craft_magic_leather.title=Magic user incoming!
+advancements.da.craft_magic_leather.description=Obtain Magic Imbued Leather from a Mysterious Trader with Wyrk Shards.
+#Get Adventuric Ingots
+advancements.da.craft_adventure_metal.title=Melee user incoming!
+advancements.da.craft_adventure_metal.description=Obtain Adventuric Ingots from a Mysterious Trader with Stormvier Shards.
+#Craft Mage Armor
+advancements.da.craft_mage_armor.title=Stay in the backlines much?
+advancements.da.craft_mage_armor.description=Craft the full Spellcaster set.
+#Craft Adventuric Armor
+advancements.da.craft_adventure_armor.title=Still alive by sheer luck!
+advancements.da.craft_adventure_armor.description=Craft the full Adventuric set.
+#Craft Adventuric Sword
+advancements.da.craft_adventure_sword.title=The angry sword.
+advancements.da.craft_adventure_sword.description=Craft the Adventuric Sword.
+#Craft Combat Wand
+advancements.da.craft_mage_staff.title=Versatile wand you got there.
+advancements.da.craft_mage_staff.description=Craft the Spellcaster Combat Wand.
+#Craft Confetti Trinket
+advancements.da.confetti_trinket.title=Party time!
+advancements.da.confetti_trinket.description=Give this your buddy who dies a lot.
+#Craft Desolate Trinket
+advancements.da.craft_desert_locator.title=Sand in the boots.
+advancements.da.craft_desert_locator.description=Craft the Desolate Trinket.
+#Craft Cooked Beetle Morsel
+advancements.da.craft_cooked_beetle_morsel.title=Bugatarian
+advancements.da.craft_cooked_beetle_morsel.description=Cook a Beetle Morsel.
+#Craft Aegyptian Flute
+advancements.da.craft_aegyptian_flute.title=The Beetle Piper.
+advancements.da.craft_aegyptian_flute.description=Craft the Aegyptian Flute.
+#Craft Kopis
+advancements.da.craft_kopis.title=Why is it so sharp?
+advancements.da.craft_kopis.description=Craft the Kopis.
+#Craft Everator Shield
+advancements.da.craft_everator_shield.title=The player built like a brick.
+advancements.da.craft_everator_shield.description=Craft the Everator's Shield
+#Craft Fiery Respite
+advancements.da.craft_fiery_respite.title=Flame O Flame
+advancements.da.craft_fiery_respite.description=Craft a bottle of Fiery Respite.
+#Craft Colossal Mace
+advancements.da.craft_colossus_mace.title=Big as a block.
+advancements.da.craft_colossus_mace.description=Craft the Colossal Mace.
+#Craft Ancient Colossal Chestplate
+advancements.da.craft_colossus_chestplate.title=And strong like Steel.
+advancements.da.craft_colossus_chestplate.description=Craft the Ancient Colossal Chestplate.
+#Craft Golden Devotion
+advancements.da.craft_golden_devotion.title=Stand strong player!
+advancements.da.craft_golden_devotion.description=Craft a bottle of Golden Devotion.
+#Craft the Exalted Kopis
+advancements.da.craft_exalted_kopis.title=Will of the Sword master.
+advancements.da.craft_exalted_kopis.description=Craft the Exalted Kopis.
+#Craft Golden Mark
+advancements.da.craft_golden_mark_trinket.title=Aggro Monster
+advancements.da.craft_golden_mark_trinket.description=Craft the Golden Mark Trinket
+#Craft Ancient Warlord Helmet
+advancements.da.craft_warlord_helmet.title=Warmonger
+advancements.da.craft_warlord_helmet.description=Craft the Ancient Warlord Helmet.
+#Craft Golden Vow
+advancements.da.craft_golden_vow.title=Chosen by the Light
+advancements.da.craft_golden_vow.description=Craft a bottle of Golden Vow.

@@ -4,6 +4,7 @@ import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -73,24 +74,27 @@ public class ItemEveratorShield extends BOMDShieldItem implements IAnimatable {
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if (entityIn instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entityIn;
-            if (stack == player.getActiveItemStack() && player.isSneaking() && hitCounter > 2 && !worldIn.isRemote) {
-                float damage = 0;
-                if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
-                        player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
-                    damage = (float) ((1) * ModConfig.dark_armor_multiplier) + hitCounter + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1F);
-                } else {
-                    damage = (float) (1 + hitCounter + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1F));
+            if (stack == player.getActiveItemStack() && player.isSneaking() && hitCounter > 2) {
+                worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.COLOSSUS_HILT_SLAM, SoundCategory.NEUTRAL, 1f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
+                if(!worldIn.isRemote) {
+                    float damage = 0;
+                    if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
+                            player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
+                        damage = (float) ((1) * ModConfig.dark_armor_multiplier) + hitCounter + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1F);
+                    } else {
+                        damage = (float) (1 + hitCounter + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1F));
+                    }
+                    ProjectileYellowWave wave = new ProjectileYellowWave(worldIn, player, damage, null, true);
+                    wave.shoot(player, 0, player.rotationYaw, 0F, 0.6F, 0F);
+                    wave.setPosition(player.posX, player.posY, player.posZ);
+                    wave.rotationYaw = player.rotationYaw;
+                    wave.setTravelRange(16F);
+                    worldIn.spawnEntity(wave);
+                    this.hitCounter = 0;
+                    player.resetActiveHand();
+                    player.disableShield(true);
+                    player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.frostborn_shield_cooldown * 20);
                 }
-                ProjectileYellowWave wave = new ProjectileYellowWave(worldIn, player, damage, null, true);
-                wave.shoot(player, 0, player.rotationYaw, 0F, 0.6F, 0F);
-                wave.setPosition(player.posX, player.posY, player.posZ);
-                wave.rotationYaw = player.rotationYaw;
-                wave.setTravelRange(16F);
-                worldIn.spawnEntity(wave);
-                this.hitCounter = 0;
-                player.resetActiveHand();
-                player.disableShield(true);
-                player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.frostborn_shield_cooldown * 20);
             }
         }
     }

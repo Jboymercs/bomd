@@ -2393,7 +2393,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         }, 180);
 
         addEvent(()-> {
-            if(this.getSpawnLocation() != null) {
+            if(this.getSpawnLocation() != null && !world.isRemote) {
                 this.turnBossIntoSummonSpawner(this.getSpawnLocation());
             }
             this.setDead();

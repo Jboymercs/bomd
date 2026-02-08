@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:beetle_shell"
+    },
+    "title": {
+      "translate": "advancements.da.kill_scutter_beetle.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_scutter_beetle.description"
+    }
+  },
+  "parent": "da:craft_desolate_trinket",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:scutter_beetle"
+        }
+      }
+    }
+  }
+}

@@ -651,7 +651,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
                 initiateDeathText = true;
             }
         }
-        if(this.getSpawnLocation() != null) {
+        if(this.getSpawnLocation() != null && !world.isRemote) {
             this.turnBossIntoSummonSpawner(this.getSpawnLocation());
         }
         super.onDeath(cause);

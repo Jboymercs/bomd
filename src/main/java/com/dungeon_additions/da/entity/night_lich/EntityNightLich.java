@@ -1358,7 +1358,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                 initiateDeathText = true;
             }
         }
-        if(ModConfig.boss_resummon_enabled && this.timesUsed <= ModConfig.boss_resummon_max_uses) {
+        if(ModConfig.boss_resummon_enabled && this.timesUsed <= ModConfig.boss_resummon_max_uses && !world.isRemote) {
             BlockPos pos = this.getPosition();
             int y = getSurfaceHeight(world, new BlockPos(pos.getX(), 0, pos.getZ()), (int) this.posY - 45, (int) this.posY + 10);
             BlockPos posModified = new BlockPos(pos.getX(), y + 2, pos.getZ());

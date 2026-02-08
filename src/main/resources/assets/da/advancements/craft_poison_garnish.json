@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:poison_garnish"
+    },
+    "title": {
+      "translate": "advancements.da.craft_poison_garnish.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_poison_garnish.description"
+    }
+  },
+  "parent": "da:kill_void_blossom",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:poison_garnish"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -48,8 +48,9 @@ public class ItemKopis extends ToolSword {
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
+        attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.WARLORD_SWING, SoundCategory.NEUTRAL, 0.6f, 0.5f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
         if (attacker.world.isRemote) return false;
-        int axeCoolDown = (int) (14 * 20);
+        int axeCoolDown = (int) (ModConfig.kopis_cooldown * 20);
         stack.damageItem(1, attacker);
         float realAttackDamage = this.getAttackDamage();
         double playerVec = (Math.abs(attacker.motionX + attacker.motionZ + attacker.motionY) * 12) - 1.5;

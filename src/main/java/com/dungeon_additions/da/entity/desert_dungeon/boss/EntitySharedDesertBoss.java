@@ -12,6 +12,7 @@ import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ServerScaleUtil;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.google.common.base.Optional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -189,11 +190,16 @@ public abstract class EntitySharedDesertBoss extends EntityDesertBase {
 
 
             if(this.isShielded()) {
+
+                if(ticksExisted % 95 == 0) {
+                    this.playSound(SoundsHandler.DESERT_BOSS_DOWN, 1f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+                }
                 if(lowHealthTimer <= 0) {
                     this.setEndLowHealthState();
                     this.lowHealthTimer = 20 * MobConfig.desert_bosses_shield_time;
                 } else {
                     lowHealthTimer--;
+                    this.setImmovable(true);
                 }
 
 
@@ -307,9 +313,7 @@ public abstract class EntitySharedDesertBoss extends EntityDesertBase {
     }
 
 
-    public EntitySharedDesertBoss(World world, int timesUsed, BlockPos pos) {
-        super(world);
-    }
+
 
     public EntitySharedDesertBoss(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -331,6 +335,7 @@ public abstract class EntitySharedDesertBoss extends EntityDesertBase {
             this.setShielded(true);
             this.lockLook = true;
             this.setImmovable(true);
+            this.playSound(SoundsHandler.DESERT_BOSS_DOWN, 1f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 40);
     }
 
@@ -341,6 +346,7 @@ public abstract class EntitySharedDesertBoss extends EntityDesertBase {
         //play sound for healing
         this.heal((float) (this.getMaxHealth() * MobConfig.desert_bosses_revive_health_bonus));
         this.inLowHealthState = false;
+        this.playSound(SoundsHandler.DESERT_BOSS_REVIVE, 1f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
 
         addEvent(() -> {
             this.setFightMode(false);

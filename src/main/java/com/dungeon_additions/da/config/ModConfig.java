@@ -422,6 +422,76 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static int void_staff_cooldown = 3;
 
+    @Config.Name("Exalted Kopis Damage")
+    @Config.Comment("Change the damage of the Exalted Kopis")
+    @Config.RequiresMcRestart
+    public static double exalted_kopis_damage = 6;
+
+    @Config.Name("Exalted Kopis Cooldown")
+    @Config.Comment("Change the cooldown in seconds of the Exalted Kopis.")
+    @Config.RequiresMcRestart
+    public static int exalted_kopis_cooldown = 11;
+
+    @Config.Name("Exalted Kopis Ability Damage")
+    @Config.Comment("Base ability damage of the Kopis when doing the dash attack")
+    @Config.RequiresMcRestart
+    public static int exalted_kopis_dash_damage = 6;
+
+    @Config.Name("Colossal Mace Damage")
+    @Config.Comment("Change the damage of the Colossal Mace")
+    @Config.RequiresMcRestart
+    public static double colossal_mace_damage = 8.5;
+
+    @Config.Name("Colossal Mace Cooldown")
+    @Config.Comment("Change the cooldown of the Colossal Mace's abilities. In seconds.")
+    @Config.RequiresMcRestart
+    public static int colossal_mace_cooldown = 30;
+
+    @Config.Name("Colossal Mace Ability Damage")
+    @Config.Comment("Change the ability damage of the Colossal Mace")
+    @Config.RequiresMcRestart
+    public static float colossal_mace_ability_damage = 6;
+
+    @Config.Name("Kopis Damage")
+    @Config.Comment("Change the damage of the Aegyptian Kopis")
+    @Config.RequiresMcRestart
+    public static float aegyptian_kopis_damage = 5;
+
+    @Config.Name("Kopis Ability Cooldown")
+    @Config.Comment("Change the cooldown of the Aegyptian Kopis's ability. In seconds.")
+    @Config.RequiresMcRestart
+    public static int kopis_cooldown = 14;
+
+    @Config.Name("Adventuric Sword Damage")
+    @Config.Comment("Change the damage of the Adventuric Sword")
+    @Config.RequiresMcRestart
+    public static double adventuric_sword_damage = 6;
+
+    @Config.Name("Adventuric Sword Ability Damage")
+    @Config.Comment("Change the ability damage of the Adventuric Sword")
+    @Config.RequiresMcRestart
+    public static float adventuric_sword_jump_damage = 6;
+
+    @Config.Name("Adventuric Sword Cooldown")
+    @Config.Comment("Change the cooldown of the Adventuric Sword. In seconds.")
+    @Config.RequiresMcRestart
+    public static int adventuric_sword_cooldown = 15;
+
+    @Config.Name("Combat Mage Wand Melee Damage")
+    @Config.Comment("Change the damage when the wand is in melee mode that it does")
+    @Config.RequiresMcRestart
+    public static double combat_wand_melee_damage = 5;
+
+    @Config.Name("Combat Mage Wand Delayed Explosion Damage")
+    @Config.Comment("Change the damage of the delayed explosion summoned by the combat mage wand.")
+    @Config.RequiresMcRestart
+    public static double combat_wand_explosion_damage = 7.5;
+
+    @Config.Name("Combat Mage Wand Projectile Damage")
+    @Config.Comment("Change the damage of the projectiles fired by the Combat Mage Wand.")
+    @Config.RequiresMcRestart
+    public static double combat_wand_projectile_damage = 5;
+
     @Config.Name("Crafting Material ToolTip")
     @Config.Comment("Should Items listed as Crafting Material state that is a crafting material. False will disable the tool tip")
     @Config.RequiresMcRestart
@@ -588,7 +658,7 @@ public class ModConfig {
     @Config.Name("Boss Resummon Cooldown")
     @Config.Comment("Change the cooldown of the Boss Summon Block. In minutes")
     @Config.RequiresMcRestart
-    public static int boss_resummon_cooldown = 15;
+    public static int boss_resummon_cooldown = 10;
 
     @Config.Name("Boss Reset Timer")
     @Config.Comment("A timer before boss reset occurs in seconds, basically if any players are not within the bosses follow radius (sight is not needed) and the boss has engaged any player in the past. This timer will countdown till reset")
@@ -677,7 +747,12 @@ public class ModConfig {
             "da:mage_helmet",
             "da:mage_chestplate",
             "da:mage_leggings",
-            "da:mage_boots"
+            "da:mage_boots",
+            "da:warlord_helmet",
+            "da:colossus_chestplate",
+            "da:exalted_kopis",
+            "da:colossus_mace",
+            "da:everator_shield"
     };
 
     @Config.Name("Boss Enraged State Enable/Disable")

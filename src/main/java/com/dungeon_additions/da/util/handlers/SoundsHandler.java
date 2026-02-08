@@ -342,6 +342,32 @@ public class SoundsHandler {
     //Aegyptian Warlord
     public static SoundEvent WARLORD_CUTS_SWING;
     public static SoundEvent WARLORD_CUTS_CAST;
+    public static SoundEvent WARLORD_HURT;
+    public static SoundEvent WARLORD_IDLE;
+    public static SoundEvent WARLORD_SWING;
+    public static SoundEvent WARLORD_SWING_MAGIC;
+    public static SoundEvent WARLORD_TAIL_WHIP;
+    public static SoundEvent WARLORD_SUMMON_PORJECTILE;
+
+    //Shared
+    public static SoundEvent DESERT_BOSS_DOWN;
+    public static SoundEvent DESERT_BOSS_REVIVE;
+    public static SoundEvent DESERT_BOSS_SUMMON_HELPER;
+    public static SoundEvent DESERT_BOSS_TELEPORT;
+    public static SoundEvent DESERT_BOSS_TRANSITION;
+    public static SoundEvent DESERT_BOSS_DOWNED_DEATH;
+
+    //Aegyptian Colossus
+    public static SoundEvent COLOSSUS_HURT;
+    public static SoundEvent COLOSSUS_IDLE;
+    public static SoundEvent COLOSSUS_SWING;
+    public static SoundEvent COLOSSUS_SWING_SLAM;
+    public static SoundEvent COLOSSUS_ARMOR;
+    public static SoundEvent COLOSSUS_SUMMON_MACE;
+    public static SoundEvent COLOSSUS_MACE_SPELL;
+    public static SoundEvent COLOSSUS_HILT_SLAM;
+
+    public static SoundEvent AEGYPTIAN_FLUTE_PLAY;
 
     //MUSIC
     public static SoundEvent HIGH_DRAGON_TRACK;
@@ -354,6 +380,8 @@ public class SoundsHandler {
     public static SoundEvent OBSIDILITH_TRACK;
     public static SoundEvent VOIDCLYSM_TRACK;
     public static SoundEvent APATHYR_TRACK;
+    public static SoundEvent WARLORD_TRACK;
+    public static SoundEvent COLOSSUS_TRACK;
 
     public static void registerSounds() {
         //
@@ -651,6 +679,28 @@ public class SoundsHandler {
         //
         WARLORD_CUTS_CAST = registerSound("warlord.cuts_cast", "entity");
         WARLORD_CUTS_SWING = registerSound("warlord.cuts_swing", "entity");
+        WARLORD_HURT = registerSound("warlord.hurt", "entity");
+        WARLORD_IDLE = registerSound("warlord.idle", "entity");
+        WARLORD_SWING = registerSound("warlord.swing", "entity");
+        WARLORD_SWING_MAGIC = registerSound("warlord.swing_magic", "entity");
+        WARLORD_TAIL_WHIP = registerSound("warlord.tail_whip","entity");
+        WARLORD_SUMMON_PORJECTILE = registerSound("warlord.summon_projectile", "entity");
+        AEGYPTIAN_FLUTE_PLAY = registerSound("warlord.flute", "entity");
+        //
+        COLOSSUS_HURT = registerSound("colossus.hurt","entity");
+        COLOSSUS_IDLE = registerSound("colossus.idle","entity");
+        COLOSSUS_ARMOR = registerSound("colossus.armor", "entity");
+        COLOSSUS_SWING = registerSound("colossus.swing", "entity");
+        COLOSSUS_SWING_SLAM =  registerSound("colossus.swing_slam", "entity");
+        COLOSSUS_HILT_SLAM = registerSound("colossus.hilt_slam", "entity");
+        COLOSSUS_MACE_SPELL = registerSound("colossus.mace_spell", "entity");
+        COLOSSUS_SUMMON_MACE = registerSound("colossus.summon_mace", "entity");
+        DESERT_BOSS_DOWN = registerSound("colossus.downed", "entity");
+        DESERT_BOSS_REVIVE = registerSound("colossus.downed_up","entity");
+        DESERT_BOSS_SUMMON_HELPER = registerSound("warlord.summon_helper","entity");
+        DESERT_BOSS_TELEPORT = registerSound("warlord.teleport", "entity");
+        DESERT_BOSS_TRANSITION = registerSound("warlord.transition", "entity");
+        DESERT_BOSS_DOWNED_DEATH = registerSound("warlord.downed_death","entity");
         //
         CONFETTI_SOUND = registerSound("confetti.party", "entity");
         DEATHBLOW_SOUND = registerSound("confetti.deathblow", "entity");
@@ -668,6 +718,8 @@ public class SoundsHandler {
         VOIDCLYSM_TRACK = registerSound("ambient.voidclysm", "music");
         OBSIDILITH_TRACK = registerSound("ambient.obsidilith", "music");
         APATHYR_TRACK = registerSound("ambient.apathyr","music");
+        WARLORD_TRACK = registerSound("ambient.warlord", "music");
+        COLOSSUS_TRACK = registerSound("ambient.colossus", "music");
     }
 
 

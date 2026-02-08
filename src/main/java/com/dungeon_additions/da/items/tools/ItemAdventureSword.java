@@ -53,7 +53,7 @@ public class ItemAdventureSword extends ToolSword{
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        int SwordCoolDown = 15 * 20;
+        int SwordCoolDown = ModConfig.adventuric_sword_cooldown * 20;
         if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
             Vec3d moveVec = player.getLookVec().scale(((1.1 * 0.6) + 0.1D));
             if(player.canBePushed()) {
@@ -100,10 +100,10 @@ public class ItemAdventureSword extends ToolSword{
     }
 
     public void onEnemyHit(EntityLivingBase user, EntityLivingBase enemy, Vec3d rammingDir) {
-        double attackDamage = (double) (this.getAttackDamage() + 1);
+        double attackDamage = (double) (ModConfig.adventuric_sword_jump_damage + 1);
         if(user instanceof EntityPlayer) {
             if(user.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET) {
-               attackDamage = (double) (this.getAttackDamage() + 1) * ModConfig.incendium_helmet_multipler;
+               attackDamage = (double) (ModConfig.adventuric_sword_jump_damage + 1) * ModConfig.incendium_helmet_multipler;
             }
         }
         enemy.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer)user), (float) attackDamage + ModUtils.addAbilityBonusDamage(user.getHeldItemMainhand(), 1.25F));

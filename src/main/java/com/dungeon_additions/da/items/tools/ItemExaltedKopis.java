@@ -47,16 +47,23 @@ public class ItemExaltedKopis extends ToolSword{
     }
 
     @Override
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
+    {
+        attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.WARLORD_SWING, SoundCategory.NEUTRAL, 0.6f, 0.5f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
+        return true;
+    }
+
+    @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        int SwordCoolDown = 10 * 20;
         if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this) && player.hurtTime == 0) {
 
             if(this.parryCharge > 2) {
                 //do dash attack
                 Vec3d moveVec = player.getLookVec().scale(3.1F);
                 if(player.canBePushed()) {
+                    worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.WARLORD_SWING_MAGIC, SoundCategory.NEUTRAL, 1.4f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
                     player.motionX = moveVec.x;
                     player.motionY = 0.15;
                     player.motionZ = moveVec.z;
@@ -65,7 +72,7 @@ public class ItemExaltedKopis extends ToolSword{
                     stack.damageItem(5, player);
                     this.isDashing = true;
                     this.parryCharge = 0;
-                    player.getCooldownTracker().setCooldown(this, 200);
+                    player.getCooldownTracker().setCooldown(this, ModConfig.exalted_kopis_cooldown * 20);
                     player.world.playSound(player.posX + 0.5D, player.posY, player.posZ + 0.5D, SoundsHandler.DRAUGR_ELITE_STOMP, SoundCategory.BLOCKS,(float) 1.0F, 1.0F, false);
                 }
             } else {
@@ -134,7 +141,6 @@ public class ItemExaltedKopis extends ToolSword{
                         if (didBlockDamage && !this.dealtDamage) {
                             EntityLivingBase attacker = player.getAttackingEntity();
                             assert attacker != null;
-                            float damage = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET ? (float) (8 * ModConfig.incendium_helmet_multipler) + ModUtils.addAbilityBonusDamage(player.getHeldItemMainhand(), 2) : 8 + ModUtils.addAbilityBonusDamage(player.getHeldItemMainhand(), 2);
                             attacker.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1, false, false));
                             worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.IMPERIAL_SWORD_PARRY, SoundCategory.NEUTRAL, 1.0f, 0.8f / (worldIn.rand.nextFloat() * 0.4F + 0.3f));
                             this.isParrying = false;
@@ -148,6 +154,14 @@ public class ItemExaltedKopis extends ToolSword{
                                 Vec3d playerPos = new Vec3d(player.posX + playerLookVec.x * 0.7D,player.posY + playerLookVec.y + player.getEyeHeight(), player. posZ + playerLookVec.z * 0.7D);
                                 Main.proxy.spawnParticle(28, worldIn, playerPos.x + ModRand.getFloat(0.5F), playerPos.y + ModRand.getFloat(0.5F), playerPos.z + ModRand.getFloat(0.5F), 0,0,0);
                             });
+
+                            if(player.canBePushed()) {
+                                Vec3d moveVec = player.getLookVec().scale(-((2.0 * 0.2) + 0.1D));
+                                player.motionX = moveVec.x;
+                                player.motionY = 0.14;
+                                player.motionZ = moveVec.z;
+                                player.velocityChanged = true;
+                            }
                         }
                     } else {
                         this.isParrying = false;
@@ -161,12 +175,12 @@ public class ItemExaltedKopis extends ToolSword{
 
     public void onEnemyRammed(EntityLivingBase user, EntityLivingBase enemy, Vec3d rammingDir) {
         boolean attacked = false;
-        float damage = (float) (this.getAttackDamage() * 1.75) + ModUtils.addAbilityBonusDamage(user.getHeldItemMainhand(), 1.5F);
+        float damage = (float) (ModConfig.exalted_kopis_dash_damage * 1.75) + ModUtils.addAbilityBonusDamage(user.getHeldItemMainhand(), 1.5F);
 
         if(user instanceof EntityPlayer) {
             EntityPlayer actor = ((EntityPlayer) user);
             if(actor.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET) {
-                damage = (float) (((this.getAttackDamage() * 1.75) + ModUtils.addAbilityBonusDamage(user.getHeldItemMainhand(), 1.5F)) * ModConfig.incendium_helmet_multipler);
+                damage = (float) (((ModConfig.exalted_kopis_dash_damage * 1.75) + ModUtils.addAbilityBonusDamage(user.getHeldItemMainhand(), 1.5F)) * ModConfig.incendium_helmet_multipler);
             }
         }
 

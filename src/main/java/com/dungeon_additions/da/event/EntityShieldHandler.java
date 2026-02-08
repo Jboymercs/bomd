@@ -228,7 +228,7 @@ public class EntityShieldHandler {
 
                 //poison garnish
                 if(player.isPotionActive(ModPotions.POISON_GARNISH)) {
-                    totalDamage += 3;
+                    totalDamage +=  (float) PotionTrinketConfig.poison_garnish_debuff_damage;
                 }
 
                 ItemStack crystalFruitTrinket = ModUtils.findTrinket(new ItemStack(ModItems.FROZEN_CRYSTAL_TRINKET), player);
@@ -372,11 +372,11 @@ public class EntityShieldHandler {
 
             if(player.isPotionActive(ModPotions.POISON_GARNISH)) {
                 if(event.getEntityLiving().isPotionActive(MobEffects.POISON)) {
-                    totalDamage += 1;
+                    totalDamage += (float) PotionTrinketConfig.poison_garnish_additive_damage;
                 }
                 if(event.getEntityLiving() != null) {
-                    if(event.getEntityLiving().getHealth() / event.getEntityLiving().getMaxHealth() <= 0.5) {
-                        event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.POISON, 680, 1, false, true));
+                    if(event.getEntityLiving().getHealth() / event.getEntityLiving().getMaxHealth() <= 0.5 && PotionTrinketConfig.poison_garnish_buff) {
+                        event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.POISON, 380, 1, false, true));
                     } else {
                         event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.POISON, 680, 0, false, true));
                     }
@@ -386,7 +386,7 @@ public class EntityShieldHandler {
             //Fiery Respite
             if(player.isPotionActive(ModPotions.FIERY_RESPITE)) {
                 if(event.getEntityLiving() != null) {
-                    event.getEntityLiving().setFire(6);
+                    event.getEntityLiving().setFire(PotionTrinketConfig.fiery_respite_fire_time);
                 }
             }
 

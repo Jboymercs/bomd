@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:silver_coin"
+    },
+    "title": {
+      "translate": "advancements.da.craft_silver_coin.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_silver_coin.description"
+    }
+  },
+  "parent": "da:craft_copper_coin",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:silver_coin"
+          }
+        ]
+      }
+    }
+  }
+}

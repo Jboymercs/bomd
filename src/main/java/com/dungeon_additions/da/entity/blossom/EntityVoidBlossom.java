@@ -482,7 +482,7 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
         addEvent(()-> this.setDropItemsWhenDead(true), 65);
         addEvent(()-> this.playSound(SoundsHandler.BLOSSOM_DEATH, 2.0f, 1.0f), 50);
         addEvent(()-> {
-            if(this.getSpawnLocation() != null) {
+            if(this.getSpawnLocation() != null && !world.isRemote) {
                 this.turnBossIntoSummonSpawner(this.getSpawnLocation());
             }
             this.setDead();

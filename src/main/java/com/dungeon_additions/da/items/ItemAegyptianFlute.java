@@ -43,6 +43,7 @@ public class ItemAegyptianFlute extends ItemBase{
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
         if (!playerIn.getCooldownTracker().hasCooldown(this)) {
+            worldIn.playSound((EntityPlayer) null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundsHandler.AEGYPTIAN_FLUTE_PLAY, SoundCategory.NEUTRAL, 1f, 0.7f / (worldIn.rand.nextFloat() * 0.2F + 0.2f));
             playerIn.setActiveHand(handIn);
             return new ActionResult(EnumActionResult.SUCCESS, itemstack);
         } else {

@@ -63,7 +63,7 @@ public class ModItems {
     private static final Item.ToolMaterial IMPERIAL_SWORD_MATERIAL = EnumHelper.addToolMaterial("imperial_material", 2, 2463, 6.0F, (float) ModConfig.master_parry_sword_damage, 30);
     private static final Item.ToolMaterial DAGGER_MATERIAL = EnumHelper.addToolMaterial("void_material", 2, 720, 6.0F, (float) ModConfig.void_dagger_damage, 45);
     private static final Item.ToolMaterial DARK_DAGGER_MATERIAL = EnumHelper.addToolMaterial("dark_material", 2, 520, 6.0F, (float) ModConfig.rah_void_Dagger_damage, 5);
-    private static final Item.ToolMaterial ADVENTURE_SWORD_MAT = EnumHelper.addToolMaterial("adventure_sword_material", 2, 836, 3.0F, (float) 6.5, 10);
+    private static final Item.ToolMaterial ADVENTURE_SWORD_MAT = EnumHelper.addToolMaterial("adventure_sword_material", 2, 836, 3.0F, (float) ModConfig.adventuric_sword_damage, 10);
     private static final Item.ToolMaterial MAGE_STAFF_MAT = EnumHelper.addToolMaterial("mage_staff_material", 2, 836, 2.0F, (float) 0.5, 20);
     private static final Item.ToolMaterial DRAUGR_SWORD = EnumHelper.addToolMaterial("draugr_material", 2, 974, 6.0F, (float) ModConfig.frost_sword_damage, 45);
     private static final Item.ToolMaterial FLAME_BLADE_MATERIAL = EnumHelper.addToolMaterial("flame_blade_material", 2, 1002, 5.0F, (float) ModConfig.flame_blade_damage, 10);
@@ -75,9 +75,9 @@ public class ModItems {
 
     private static final Item.ToolMaterial SOUL_SPEAR_WEAPON_MATERIAL = EnumHelper.addToolMaterial("soul_spear_weapon_material", 2, 1200, 5.0F, ModConfig.soul_weapon_damage, 20);
     private static final Item.ToolMaterial KNIGHT_RAPIER_MATERIAL = EnumHelper.addToolMaterial("knight_rapier_material", 2, 502, 5.0F, (float) ModConfig.rapier_damage, 10);
-    private static final Item.ToolMaterial KOPIS_MATERIAL = EnumHelper.addToolMaterial("kopis_material", 1, 900, 5.0F, (float) 5, 20);
-    private static final Item.ToolMaterial EXALTED_KOPIS_MATERIAL = EnumHelper.addToolMaterial("exalted_kopis_material", 1, 1400, 5.0F, (float) 6, 15);
-    private static final Item.ToolMaterial COLOSSUS_MACE_MAT = EnumHelper.addToolMaterial("colossus_mace_material", 1, 1032, 5.0F, (float) 9, 15);
+    private static final Item.ToolMaterial KOPIS_MATERIAL = EnumHelper.addToolMaterial("kopis_material", 1, 900, 5.0F, (float) ModConfig.aegyptian_kopis_damage, 20);
+    private static final Item.ToolMaterial EXALTED_KOPIS_MATERIAL = EnumHelper.addToolMaterial("exalted_kopis_material", 1, 1400, 5.0F, (float) ModConfig.exalted_kopis_damage, 15);
+    private static final Item.ToolMaterial COLOSSUS_MACE_MAT = EnumHelper.addToolMaterial("colossus_mace_material", 1, 1032, 5.0F, (float) ModConfig.colossal_mace_damage, 15);
     private static final Item.ToolMaterial NOVIK_MATERIAL = EnumHelper.addToolMaterial("novik_material", 2, 1200, 4.0F, (float) ModConfig.novik_sword_damage, 10);
 
     private static final ItemArmor.ArmorMaterial FLAME_ARMOR = EnumHelper.addArmorMaterial("flame", ModReference.MOD_ID + ":flame", 53 * ModConfig.armor_durability_scaling, new int[]{4, 7,9,4}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2F);

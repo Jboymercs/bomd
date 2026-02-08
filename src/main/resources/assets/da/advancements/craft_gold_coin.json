@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:golden_coin"
+    },
+    "title": {
+      "translate": "advancements.da.craft_gold_coin.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_gold_coin.description"
+    }
+  },
+  "parent": "da:craft_silver_coin",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:golden_coin"
+          }
+        ]
+      }
+    }
+  }
+}

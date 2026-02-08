@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:adventure_sword"
+    },
+    "title": {
+      "translate": "advancements.da.craft_adventure_sword.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_adventure_sword.description"
+    }
+  },
+  "parent": "da:craft_adventure_armor",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:adventure_sword"
+          }
+        ]
+      }
+    }
+  }
+}

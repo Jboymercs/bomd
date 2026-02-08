@@ -1,0 +1,56 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:adventure_helmet"
+    },
+    "title": {
+      "translate": "advancements.da.craft_adventure_armor.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_adventure_armor.description"
+    }
+  },
+  "parent": "da:craft_adventure_ingot",
+  "criteria": {
+    "adventureHelmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:adventure_helmet"
+          }
+        ]
+      }
+    },
+    "adventureChestplate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:adventure_chestplate"
+          }
+        ]
+      }
+    },
+    "adventureLeggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:adventure_leggings"
+          }
+        ]
+      }
+    },
+    "adventureBoots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:adventure_boots"
+          }
+        ]
+      }
+    }
+  }
+}

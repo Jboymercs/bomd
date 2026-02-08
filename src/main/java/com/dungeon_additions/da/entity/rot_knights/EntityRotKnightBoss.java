@@ -941,7 +941,7 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
 
     @Override
     public void onDeath(DamageSource cause) {
-        if(this.getSpawnLocation() != null) {
+        if(this.getSpawnLocation() != null && !world.isRemote) {
             this.turnBossIntoSummonSpawner(this.getSpawnLocation());
         }
         super.onDeath(cause);

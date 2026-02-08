@@ -1,0 +1,56 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:mage_helmet"
+    },
+    "title": {
+      "translate": "advancements.da.craft_mage_armor.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_mage_armor.description"
+    }
+  },
+  "parent": "da:craft_magic_leather",
+  "criteria": {
+    "mageHelmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:mage_helmet"
+          }
+        ]
+      }
+    },
+    "mageChestplate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:mage_chestplate"
+          }
+        ]
+      }
+    },
+    "mageLeggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:mage_leggings"
+          }
+        ]
+      }
+    },
+    "mageBoots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:mage_boots"
+          }
+        ]
+      }
+    }
+  }
+}

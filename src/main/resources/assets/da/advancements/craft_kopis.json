@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:kopis"
+    },
+    "title": {
+      "translate": "advancements.da.craft_kopis.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_kopis.description"
+    }
+  },
+  "parent": "da:kill_aegyptian_recurian",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:kopis"
+          }
+        ]
+      }
+    }
+  }
+}

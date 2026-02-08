@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:fiery_respite"
+    },
+    "title": {
+      "translate": "advancements.da.craft_fiery_respite.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_fiery_respite.description"
+    }
+  },
+  "parent": "da:kill_everator",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:fiery_respite"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.player;
 
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAction;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.util.ModUtils;
@@ -19,7 +20,7 @@ public class ActionPlayerDesertSlam implements IActionPlayer {
     @Override
     public void performAction(EntityPlayer actor) {
         Vec3d playerPos = actor.getPositionVector();
-        float damage = 6 + ModUtils.addAbilityBonusDamage(actor.getHeldItemMainhand(), 1.25F);
+        float damage = ModConfig.colossal_mace_ability_damage + ModUtils.addAbilityBonusDamage(actor.getHeldItemMainhand(), 1.25F);
 
         for(int i = 0; i < lengthOfAOE; i++) {
             int finalI = i;

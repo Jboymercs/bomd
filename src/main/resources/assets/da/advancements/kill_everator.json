@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:gladiator_idol"
+    },
+    "title": {
+      "translate": "advancements.da.kill_everator.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_everator.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "da:kill_aegyptian_recurian",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:everator"
+        }
+      }
+    }
+  }
+}

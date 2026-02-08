@@ -18,6 +18,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -253,6 +254,13 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
                 if (target != null) {
                     if (target instanceof EntityPlayer) {
                         this.setHadPreviousTarget(true);
+                        //remove nearby mobs
+                        List<EntityMob> nearbyEntities = this.world.getEntitiesWithinAABB(EntityMob.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable());
+                        if(!nearbyEntities.isEmpty()) {
+                            for(EntityMob mob : nearbyEntities) {
+                                mob.setDead();
+                            }
+                        }
                     }
                 }
 

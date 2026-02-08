@@ -12,6 +12,7 @@ import com.dungeon_additions.da.entity.desert_dungeon.boss.colossus.ActionMaceWa
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.projectiles.puzzle.ProjectilePuzzleBall;
+import com.dungeon_additions.da.entity.util.IEntitySound;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
@@ -34,6 +35,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -50,13 +52,14 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityAegyptianColossus extends EntitySharedDesertBoss implements IAnimatable, IAnimationTickable, IAttack, IScreenShake {
+public class EntityAegyptianColossus extends EntitySharedDesertBoss implements IAnimatable, IAnimationTickable, IAttack, IScreenShake, IEntitySound {
 
     private final AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttack;
@@ -135,13 +138,14 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     private final String ANIM_JUMP_SLAM = "jump_slam";
 
     public EntityAegyptianColossus(World world, int timesUsed, BlockPos pos) {
-        super(world, timesUsed, pos);
+        super(world);
         this.setSize(2.5F, 4.95F);
         this.startBossSetup();
         this.bossInfo.setVisible(false);
         this.timesUsed = timesUsed;
         this.iAmBossMob = true;
         this.experienceValue = 225;
+        this.doBossReSummonScaling();
     }
 
     public EntityAegyptianColossus(World worldIn, float x, float y, float z) {
@@ -339,6 +343,11 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setImmovable(true);
+      addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 15);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 30);
+        addEvent(()-> this.playSound(SoundsHandler.DESERT_BOSS_TELEPORT, 1.4f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 30);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 100);
 
       addEvent(()-> {
         this.setImmovable(false);
@@ -350,11 +359,13 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
 
       addEvent(()-> {
             this.lockLook = true;
+          this.playSound(SoundsHandler.DESERT_BOSS_TELEPORT, 1.4f, 0.7f / (rand.nextFloat() * 0.2f + 0.2f));
             this.setNoGravity(false);
             this.setImmovable(false);
       }, 60);
 
       addEvent(()-> {
+          this.playSound(SoundsHandler.VOLACTILE_SMASH, 1.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           new ActionColossusMaceSlam(12).performAction(this, target);
           this.setImmovable(true);
           this.setShaking(true);
@@ -378,7 +389,9 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
       this.setFightMode(true);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 10);
+        addEvent(()-> this.playSound(SoundsHandler.DESERT_BOSS_SUMMON_HELPER, 1.3f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 24);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 30);
       addEvent(()-> {
           //summon helper entity
           EntityColossusSigil sigil = new EntityColossusSigil(world, this, this.getAttack(), target);
@@ -399,7 +412,10 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
       this.setFightMode(true);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 10);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_SWING, 1.3f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 27);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_MACE_SPELL, 1.4f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 50);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 50);
       addEvent(()-> this.lockLook = true, 20);
 
       addEvent(()-> {
@@ -407,7 +423,6 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage =(float) (this.getAttack());
           ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 0.9f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           Vec3d currPos = this.getPositionVector();
           ModUtils.circleCallback(5, 4, (pos)-> {
               pos = new Vec3d(pos.x, 0, pos.y);
@@ -439,11 +454,14 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
       this.setFightMode(true);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 3);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 45);
 
       addEvent(()-> this.lockLook = true, 20);
 
       addEvent(()-> {
             //do hilt slam attack
+          this.playSound(SoundsHandler.COLOSSUS_HILT_SLAM, 1.3f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           new ActionColossusHiltSlam(yellow_wave_projectiles).performAction(this, target);
       }, 30);
 
@@ -460,6 +478,9 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     private final Consumer<EntityLivingBase> call_mace = (target) -> {
       this.setCallMace(true);
       this.setFightMode(true);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_MACE_SPELL, 1.4f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 30);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 45);
 
       addEvent(()-> {
         //call mace attack
@@ -477,6 +498,9 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setImmovable(true);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 10);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_SWING_SLAM, 1.3f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 40);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 65);
 
       addEvent(()-> {
           this.lockLook = true;
@@ -488,7 +512,6 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage =(float) (this.getAttack());
           ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           //do barrier wave
           Main.proxy.spawnParticle(20,world, offset.x, this.posY + 0.5, offset.z, 0, 0, 0);
             new ActionColossusMaceSlam(9).performAction(this, target);
@@ -521,6 +544,9 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
 
     private final Consumer<EntityLivingBase> mace_slam_two = (target) -> {
         this.setMaceSmashTwo(true);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 10);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_SWING_SLAM, 1.3f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 40);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 65);
         addEvent(()-> {
             this.lockLook = true;
         }, 20);
@@ -531,7 +557,6 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack());
             ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false);
-            this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             //do barrier wave
             Main.proxy.spawnParticle(20,world, offset.x, this.posY + 0.5, offset.z, 0, 0, 0);
             new ActionColossusMaceSlam(15).performAction(this, target);
@@ -555,6 +580,8 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     private final Consumer<EntityLivingBase> swing_attack = (target) -> {
       this.setSwingAttack(true);
       this.setFightMode(true);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_SWING, 1.3f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 34);
 
       addEvent(()-> {
           this.lockLook = true;
@@ -564,7 +591,6 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage =(float) (this.getAttack());
           ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.9f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           this.setImmovable(true);
       }, 37);
 
@@ -578,7 +604,9 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
           //continue with follow up
           if(this.getDistance(target) < 7 || randBoolean) {
             this.setSwingContinue(true);
-
+              addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 7);
+              addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_SWING, 1.3f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 28);
+              addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 63);
             addEvent(()-> {
                 this.lockLook= true;
                 this.setImmovable(true);
@@ -589,7 +617,6 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage =(float) (this.getAttack());
                 ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.9f, 0, false);
-                this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             }, 35);
 
             addEvent(()-> {
@@ -605,6 +632,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
 
           } else {
            this.setSwingFinish(true);
+              addEvent(()-> this.playSound(SoundsHandler.COLOSSUS_ARMOR, 1f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 3);
 
            addEvent(()-> {
                this.setFightMode(false);
@@ -621,11 +649,12 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         this.setFightMode(true);
         this.setImmovable(true);
         this.lockLook = true;
-
+        this.playSound(SoundsHandler.DESERT_BOSS_TRANSITION, 1.5f, 0.7f / (rand.nextFloat() * 0.5f + 0.2f));
         addEvent(()-> {
             this.setHasPhaseTransitioned(true);
             this.heal((float) (this.getMaxHealth() * MobConfig.desert_bosses_second_phase_healing));
             this.bossInfo.setVisible(true);
+            this.playMusic(this);
         }, 45);
 
         addEvent(()-> this.lockLook = false, 60);
@@ -778,7 +807,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound(SoundsHandler.APATHYR_STEP, 0.35F, 0.8f + ModRand.getFloat(0.5F));
+        this.playSound(SoundsHandler.APATHYR_STEP, 0.5F, 0.8f + ModRand.getFloat(0.5F));
         this.setStepShake(true);
         this.shakeTime = 5;
         addEvent(() -> {
@@ -851,6 +880,21 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
     private static final ResourceLocation LOOT_MOB = new ResourceLocation(ModReference.MOD_ID, "aegyptian_colossus");
 
     @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundsHandler.COLOSSUS_HURT;
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundsHandler.COLOSSUS_IDLE;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundsHandler.DESERT_BOSS_DOWNED_DEATH;
+    }
+
+    @Override
     protected ResourceLocation getLootTable() {
         return LOOT_MOB;
     }
@@ -880,5 +924,11 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
 
             super.onDeath(cause);
         }
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getBossMusic() {
+        return SoundsHandler.COLOSSUS_TRACK;
     }
 }

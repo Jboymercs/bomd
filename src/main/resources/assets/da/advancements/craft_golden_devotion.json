@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:golden_devotion"
+    },
+    "title": {
+      "translate": "advancements.da.craft_golden_devotion.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_golden_devotion.description"
+    }
+  },
+  "parent": "da:kill_aegyptian_colossus",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:golden_devotion"
+          }
+        ]
+      }
+    }
+  }
+}

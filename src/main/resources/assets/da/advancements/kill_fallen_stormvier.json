@@ -11,7 +11,7 @@
     },
     "frame": "challenge"
   },
-  "parent": "da:root",
+  "parent": "da:craft_dungeon_bread",
   "criteria": {
     "Lamentor": {
       "trigger": "minecraft:player_killed_entity",

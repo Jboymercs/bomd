@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:aegyptian_spawner"
+    },
+    "title": {
+      "translate": "advancements.da.kill_aegyptian_warlord.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_aegyptian_warlord.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "da:craft_desolate_trinket",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:aegyptian_warlord"
+        }
+      }
+    }
+  }
+}

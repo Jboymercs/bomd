@@ -188,6 +188,7 @@ public abstract class EntityAbstractBase extends EntityCreature {
             }
 
             if(!this.hasStartedScaling && target instanceof EntityPlayer && !this.world.isRemote) {
+                ModUtils.destroyBlocksInAABB(this.getEntityBoundingBox().offset(0, 0.5, 0), world, this);
                 double changeAttackDamage = ServerScaleUtil.scaleAttackDamageInAccordanceWithPlayers(this, world);
                 double changeAttackDamageWyrk = ServerScaleUtil.scaleAttackDamageInAccordanceWithPlayersWyrk(this, world);
                 float healthCurrently = ServerScaleUtil.changeHealthAccordingToPlayers(this, world);

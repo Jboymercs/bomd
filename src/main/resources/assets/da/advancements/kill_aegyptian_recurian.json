@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:aegyptia_bone"
+    },
+    "title": {
+      "translate": "advancements.da.kill_aegyptia.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_aegyptia.description"
+    }
+  },
+  "parent": "da:craft_desolate_trinket",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:aegyptia"
+        }
+      }
+    }
+  }
+}

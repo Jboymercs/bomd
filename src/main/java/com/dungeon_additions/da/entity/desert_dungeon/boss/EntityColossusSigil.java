@@ -5,6 +5,7 @@ import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertOrb;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -40,6 +41,7 @@ public class EntityColossusSigil extends Projectile {
         super(worldIn, throwerIn, damage);
         this.setNoGravity(true);
         this.setSize(0.5F, 0.5F);
+        this.summonedFromTrinket = false;
         this.target = target;
     }
 
@@ -62,6 +64,10 @@ public class EntityColossusSigil extends Projectile {
         this.motionZ = 0;
         if(!world.isRemote) {
 
+            if(ticksExisted == 2) {
+                this.playSound(SoundsHandler.WYRK_STAFF_SHOOT, 0.75f, 0.7f / (rand.nextFloat() * 0.2f + 0.2f));
+            }
+
             //spawns a particle that stays at this position
             if(this.ticksExisted % 20 == 0) {
                 Main.proxy.spawnParticle(26, this.posX, this.posY + 0.5, this.posZ, 0,0,0);
@@ -76,6 +82,7 @@ public class EntityColossusSigil extends Projectile {
                 Vec3d fromTargetTooActor = this.getPositionVector().subtract(targetPos);
                 Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(0);
                 Vec3d lineStart = targetPos.subtract(lineDir);
+                this.playSound(SoundsHandler.VOLACTILE_SHOOT_CANNON, 0.75f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f));
                 Vec3d lineEnd = targetPos.add(lineDir);
                 ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
                     ModUtils.throwProjectileNoSpawn(pos, orb, 0F, 1.2F);
@@ -94,6 +101,7 @@ public class EntityColossusSigil extends Projectile {
                             Vec3d fromTargetTooActor = this.getPositionVector().subtract(targetPos);
                             Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(0);
                             Vec3d lineStart = targetPos.subtract(lineDir);
+                            this.playSound(SoundsHandler.VOLACTILE_SHOOT_CANNON, 0.75f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f));
                             Vec3d lineEnd = targetPos.add(lineDir);
                             ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
                                 ModUtils.throwProjectileNoSpawn(pos, orb, 0F, 1.2F);
@@ -111,6 +119,7 @@ public class EntityColossusSigil extends Projectile {
                             Vec3d fromTargetTooActor = this.getPositionVector().subtract(targetPos).add(0, -0.25, 0);
                             Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(0);
                             Vec3d lineStart = targetPos.subtract(lineDir);
+                            this.playSound(SoundsHandler.VOLACTILE_SHOOT_CANNON, 0.75f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f));
                             Vec3d lineEnd = targetPos.add(lineDir);
                             ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
                                 ModUtils.throwProjectileNoSpawn(pos, orb, 0F, 1.2F);

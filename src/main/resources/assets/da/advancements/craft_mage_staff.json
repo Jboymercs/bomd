@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:mage_staff"
+    },
+    "title": {
+      "translate": "advancements.da.craft_mage_staff.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_mage_staff.description"
+    }
+  },
+  "parent": "da:craft_mage_armor",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:mage_staff"
+          }
+        ]
+      }
+    }
+  }
+}

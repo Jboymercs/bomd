@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:adventure_metal"
+    },
+    "title": {
+      "translate": "advancements.da.craft_adventure_metal.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_adventure_metal.description"
+    }
+  },
+  "parent": "da:craft_copper_coin",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:adventure_metal"
+          }
+        ]
+      }
+    }
+  }
+}

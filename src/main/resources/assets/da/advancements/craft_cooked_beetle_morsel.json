@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:cooked_beetle_morsel"
+    },
+    "title": {
+      "translate": "advancements.da.craft_cooked_beetle_morsel.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_cooked_beetle_morsel.description"
+    }
+  },
+  "parent": "da:kill_scutter_beetle",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:cooked_beetle_morsel"
+          }
+        ]
+      }
+    }
+  }
+}

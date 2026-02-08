@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:everator_shield"
+    },
+    "title": {
+      "translate": "advancements.da.craft_everator_shield.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_everator_shield.description"
+    }
+  },
+  "parent": "da:kill_everator",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:everator_shield"
+          }
+        ]
+      }
+    }
+  }
+}

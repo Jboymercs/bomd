@@ -2895,6 +2895,142 @@
       }
     ]
   },
+  "entity.colossus.hurt": {
+    "category": "entity",
+    "subtitle": "entity.colossus.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/colossus/hurt1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/colossus/hurt2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/colossus/hurt3",
+        "stream": false
+      }
+    ]
+  },
+  "entity.colossus.idle": {
+    "category": "entity",
+    "subtitle": "entity.colossus.idle",
+    "sounds": [
+      {
+        "name": "da:entity/colossus/idle1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/colossus/idle2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/colossus/idle3",
+        "stream": false
+      }
+    ]
+  },
+  "entity.colossus.swing": {
+    "category": "entity",
+    "subtitle": "entity.colossus.swing",
+    "sounds": [
+      {
+        "name": "da:entity/colossus/swing1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/colossus/swing2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/colossus/swing3",
+        "stream": false
+      }
+    ]
+  },
+  "entity.colossus.swing_slam": {
+    "category": "entity",
+    "subtitle": "entity.colossus.swing_slam",
+    "sounds": [
+      {
+        "name": "da:entity/colossus/swing_slam",
+        "stream": false
+      }
+    ]
+  },
+  "entity.colossus.hilt_slam": {
+    "category": "entity",
+    "subtitle": "entity.colossus.hilt_slam",
+    "sounds": [
+      {
+        "name": "da:entity/colossus/hilt_slam",
+        "stream": false
+      }
+    ]
+  },
+  "entity.colossus.mace_spell": {
+    "category": "entity",
+    "subtitle": "entity.colossus.mace_spell",
+    "sounds": [
+      {
+        "name": "da:entity/colossus/mace_spell",
+        "stream": false
+      }
+    ]
+  },
+  "entity.colossus.summon_mace": {
+    "category": "entity",
+    "subtitle": "entity.colossus.summon_mace",
+    "sounds": [
+      {
+        "name": "da:entity/colossus/summon_mace",
+        "stream": false
+      }
+    ]
+  },
+  "entity.colossus.downed": {
+    "category": "entity",
+    "subtitle": "entity.colossus.downed",
+    "sounds": [
+      {
+        "name": "da:entity/colossus/downed",
+        "stream": false
+      }
+    ]
+  },
+  "entity.colossus.downed_up": {
+    "category": "entity",
+    "subtitle": "entity.colossus.downed_up",
+    "sounds": [
+      {
+        "name": "da:entity/colossus/downed_up",
+        "stream": false
+      }
+    ]
+  },
+  "entity.colossus.armor": {
+    "category": "entity",
+    "subtitle": "entity.colossus.armor",
+    "sounds": [
+      {
+        "name": "da:entity/colossus/armor1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/colossus/armor2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/colossus/armor3",
+        "stream": false
+      },
+      {
+        "name": "da:entity/colossus/armor4",
+        "stream": false
+      }
+    ]
+  },
   "entity.warlord.cuts_swing": {
     "category": "entity",
     "subtitle": "entity.warlord.cuts_swing",
@@ -2911,6 +3047,132 @@
     "sounds": [
       {
         "name": "da:entity/warlord/cuts_cast",
+        "stream": false
+      }
+    ]
+  },
+  "entity.warlord.swing": {
+    "category": "entity",
+    "subtitle": "entity.warlord.swing",
+    "sounds": [
+      {
+        "name": "da:entity/warlord/swing",
+        "stream": false
+      }
+    ]
+  },
+  "entity.warlord.swing_magic": {
+    "category": "entity",
+    "subtitle": "entity.warlord.swing_magic",
+    "sounds": [
+      {
+        "name": "da:entity/warlord/swing_magic",
+        "stream": false
+      }
+    ]
+  },
+  "entity.warlord.tail_whip": {
+    "category": "entity",
+    "subtitle": "entity.warlord.tail_whip",
+    "sounds": [
+      {
+        "name": "da:entity/warlord/tail_whip",
+        "stream": false
+      }
+    ]
+  },
+  "entity.warlord.summon_projectile": {
+    "category": "entity",
+    "subtitle": "entity.warlord.summon_projectile",
+    "sounds": [
+      {
+        "name": "da:entity/warlord/summon_projectile",
+        "stream": false
+      }
+    ]
+  },
+  "entity.warlord.teleport": {
+    "category": "entity",
+    "subtitle": "entity.warlord.teleport",
+    "sounds": [
+      {
+        "name": "da:entity/warlord/teleport",
+        "stream": false
+      }
+    ]
+  },
+  "entity.warlord.summon_helper": {
+    "category": "entity",
+    "subtitle": "entity.warlord.summon_helper",
+    "sounds": [
+      {
+        "name": "da:entity/warlord/summon_helper",
+        "stream": false
+      }
+    ]
+  },
+  "entity.warlord.transition": {
+    "category": "entity",
+    "subtitle": "entity.warlord.transition",
+    "sounds": [
+      {
+        "name": "da:entity/warlord/transition",
+        "stream": false
+      }
+    ]
+  },
+  "entity.warlord.downed_death": {
+    "category": "entity",
+    "subtitle": "entity.warlord.downed_death",
+    "sounds": [
+      {
+        "name": "da:entity/warlord/downed_death",
+        "stream": false
+      }
+    ]
+  },
+  "entity.warlord.flute": {
+    "category": "entity",
+    "subtitle": "item.flute.play",
+    "sounds": [
+      {
+        "name": "da:entity/warlord/flute",
+        "stream": false
+      }
+    ]
+  },
+  "entity.warlord.hurt": {
+    "category": "entity",
+    "subtitle": "entity.warlord.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/warlord/hurt1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/warlord/hurt2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/warlord/hurt3",
+        "stream": false
+      }
+    ]
+  },
+  "entity.warlord.idle": {
+    "category": "entity",
+    "subtitle": "entity.warlord.idle",
+    "sounds": [
+      {
+        "name": "da:entity/warlord/idle1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/warlord/idle2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/warlord/idle3",
         "stream": false
       }
     ]
@@ -3563,6 +3825,24 @@
     "sounds": [
       {
         "name": "da:music/apathyr_track",
+        "stream": true
+      }
+    ]
+  },
+  "music.ambient.colossus": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "da:music/colossus_track",
+        "stream": true
+      }
+    ]
+  },
+  "music.ambient.warlord": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "da:music/warlord_track",
         "stream": true
       }
     ]

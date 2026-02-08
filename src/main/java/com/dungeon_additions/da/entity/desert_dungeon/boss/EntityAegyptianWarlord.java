@@ -11,11 +11,13 @@ import com.dungeon_additions.da.entity.desert_dungeon.boss.warlord.*;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.projectiles.puzzle.ProjectilePuzzleBall;
+import com.dungeon_additions.da.entity.util.IEntitySound;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -33,6 +35,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
@@ -49,13 +52,14 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IAnimatable, IAttack, IAnimationTickable {
+public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IAnimatable, IAttack, IAnimationTickable, IEntitySound {
 
     //Abilities to Add
     // Parry Attack - Warlord will parry the player if they attack with a melee weapon
@@ -140,14 +144,15 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
     Supplier<Projectile> yellow_wave_projectiles = () -> new ProjectileYellowWave(world, this, (float) this.getAttack(), null);
 
     public EntityAegyptianWarlord(World world, int timesUsed, BlockPos pos) {
-        super(world, timesUsed, pos);
+        super(world);
+        this.timesUsed = timesUsed;
         this.setSize(0.7F, 2.45F);
         this.startSummonSetUp();
         this.bossInfo.setVisible(false);
-        this.timesUsed = timesUsed;
-        this.timesUsed++;
         this.iAmBossMob = true;
         this.experienceValue = 225;
+        this.timesUsed++;
+        this.doBossReSummonScaling();
     }
 
     public EntityAegyptianWarlord(World worldIn, float x, float y, float z) {
@@ -211,6 +216,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         }, 5);
 
         addEvent(()-> {
+            this.playMusic(this);
             this.bossInfo.setVisible(true);
             if(!this.isHasPhaseTransitioned()) {
                 this.bossInfo.setName(new TextComponentString("Aegyptian Royalty"));
@@ -344,7 +350,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.setFullBodyUsage(true);
         this.setFightMode(true);
         this.setImmovable(true);
-
+        this.playSound(SoundsHandler.DESERT_BOSS_TRANSITION, 1.5f, 0.7f / (rand.nextFloat() * 0.5f + 0.2f));
         addEvent(()-> {
             this.setHasPhaseTransitioned(true);
             this.heal((float) (this.getMaxHealth() * MobConfig.desert_bosses_second_phase_healing));
@@ -388,6 +394,9 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
       this.setFightMode(true);
       this.setFullBodyUsage(true);
 
+      addEvent(()-> this.playSound(SoundsHandler.DESERT_BOSS_TELEPORT, 1.4f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 15);
+        addEvent(()-> this.playSound(SoundsHandler.DESERT_BOSS_TELEPORT, 1.4f, 0.7f / (rand.nextFloat() * 0.2f + 0.2f)), 33);
+
       addEvent(()-> {
         this.setNoGravity(true);
         this.setImmovable(false);
@@ -402,11 +411,13 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
 
       addEvent(()-> {
           //wave projectiles one
+          this.playSound(SoundsHandler.WARLORD_SUMMON_PORJECTILE, 1.2f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           new ActionWarlordProjectileSplay(true).performAction(this, target);
       }, 35);
 
       addEvent(()-> {
           //wave projectile two
+          this.playSound(SoundsHandler.WARLORD_SUMMON_PORJECTILE, 1.2f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           new ActionWarlordProjectileSplay(false).performAction(this, target);
       }, 62);
 
@@ -415,6 +426,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
           ProjectileThousandCuts cuts_projectile = new ProjectileThousandCuts(world, this, this.getAttack());
           cuts_projectile.setPosition(this.posX, this.posY - 3, this.posZ);
           world.spawnEntity(cuts_projectile);
+          this.playSound(SoundsHandler.WARLORD_SUMMON_PORJECTILE, 1.2f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           new ActionWarlordCutsProjectileSplay().performAction(this, target);
       }, 110);
 
@@ -438,9 +450,14 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
       this.setImmovable(true);
 
       addEvent(()-> {
+          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.3f, 0.7f / (rand.nextFloat() * 0.1f + 0.2f));
+      }, 20);
+
+      addEvent(()-> {
           this.setImmovable(false);
           this.setPosition(this.posX, this.posY + 4, this.posZ);
           this.setImmovable(true);
+          this.playSound(SoundsHandler.DESERT_BOSS_TELEPORT, 1.3f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f));
       }, 25);
 
       addEvent(()-> {
@@ -448,6 +465,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             this.setPosition(target.posX, target.posY, target.posZ);
             this.setImmovable(true);
             this.lockLook = true;
+          this.playSound(SoundsHandler.DESERT_BOSS_TELEPORT, 1.3f, 0.7f / (rand.nextFloat() * 0.2f + 0.2f));
       }, 60);
 
       addEvent(()-> {
@@ -455,7 +473,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage =(float) (this.getAttack() * 1.25);
           ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.4f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+          this.playSound(SoundsHandler.WARLORD_TAIL_WHIP, 1.3f, 0.7f / (rand.nextFloat() * 0.5f + 0.2f));
           addEvent(() -> {
                 //Do Cuts Projectile in a circle like manner
               Vec3d currPos = this.getPositionVector();
@@ -493,7 +511,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage =(float) (this.getAttack() * 1.25);
           ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.7f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+          this.playSound(SoundsHandler.WARLORD_TAIL_WHIP, 1.3f, 0.7f / (rand.nextFloat() * 0.5f + 0.2f));
           //do cuts in a line like manner
           new ActionWarlordCutsLine().performAction(this, target);
           addEvent(()-> {
@@ -530,7 +548,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
               DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
               float damage =(float) (this.getAttack() * 1.25);
               ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.9f, 0, false);
-              this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+              this.playSound(SoundsHandler.WARLORD_SWING, 1f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           }, 5);
       }, 15);
 
@@ -539,7 +557,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage =(float) (this.getAttack() * 1.25);
           ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.9f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+          this.playSound(SoundsHandler.COLOSSUS_HILT_SLAM, 1.3f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           this.setImmovable(true);
           //do wave action
           new ActionWarlordCircleSwing(yellow_wave_projectiles).performAction(this, target);
@@ -590,7 +608,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
                 float damage =(float) (this.getAttack() * 1.25);
                 ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false);
             }
-            this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+            this.playSound(SoundsHandler.WARLORD_SWING, 1.4f, 0.7f / (rand.nextFloat() * 0.5f + 0.2f));
         }, 30);
 
         addEvent(()-> {
@@ -620,6 +638,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             Vec3d randPosToo = target.getPositionVector().add(ModRand.randVec()).scale(14);
             Vec3d targetedPos = target.getPositionVector().add(posSet.scale(-3));
             ModUtils.leapTowards(this, targetedPos.add(randPosToo), (float) 1.5F,1.9F);
+            this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 0.8f / (rand.nextFloat() * 0.2f + 0.2f));
         }, 10);
 
         addEvent(()-> {
@@ -646,7 +665,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage =(float) (this.getAttack());
           ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false);
-          this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+          this.playSound(SoundsHandler.WARLORD_SWING_MAGIC, 1.3f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           this.setImmovable(true);
       }, 40);
 
@@ -681,7 +700,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (this.getAttack());
             ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false);
-            this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+            this.playSound(SoundsHandler.WARLORD_SWING, 1f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.setImmovable(true);
         }, 21);
 
@@ -704,7 +723,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (this.getAttack());
             ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false);
-            this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+            this.playSound(SoundsHandler.WARLORD_SWING, 1f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.setImmovable(true);
         }, 35);
 
@@ -954,7 +973,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack());
             ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.9f, 0, false);
-            this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+            this.playSound(SoundsHandler.WARLORD_SWING, 1f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.setImmovable(true);
         }, 41);
 
@@ -977,6 +996,27 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
     }
 
     @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundsHandler.WARLORD_HURT;
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundsHandler.WARLORD_IDLE;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundsHandler.DESERT_BOSS_DOWNED_DEATH;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(SoundsHandler.AEGYPTIA_STEP, 0.4F, 0.4f + ModRand.getFloat(0.3F));
+    }
+
+    @Override
     protected boolean canDropLoot() {
         return this.getOtherBoss() == null;
     }
@@ -988,7 +1028,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             this.inLowHealthState = true;
             this.setLowHealthState();
         } else if (this.inLowHealthState && this.isShielded() || this.getOtherBoss() == null) {
-            if(this.getSpawnLocation() != null && this.getOtherBoss() == null) {
+            if(this.getSpawnLocation() != null && this.getOtherBoss() == null && !world.isRemote) {
                 this.turnBossIntoSummonSpawner(this.getSpawnLocation());
             }
 
@@ -999,5 +1039,11 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             }
             super.onDeath(cause);
         }
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getBossMusic() {
+        return SoundsHandler.WARLORD_TRACK;
     }
 }
