@@ -256,6 +256,12 @@ public class ModUtils {
         if(player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.MAGE_BOOTS) {
             bonusDamage += 0.5;
         }
+
+       ItemStack magic_boost =  findTrinket(new ItemStack(ModItems.MAGIC_BOOST_TRINKET), player);
+        if(!magic_boost.isEmpty()) {
+            bonusDamage += 1;
+            magic_boost.damageItem(1, player);
+        }
         return bonusDamage;
     }
 

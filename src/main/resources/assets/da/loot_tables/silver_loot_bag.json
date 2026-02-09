@@ -274,6 +274,11 @@
           "type": "item",
           "name": "da:sigil_trinket",
           "weight": 10
+        },
+        {
+          "type": "item",
+          "name": "da:magic_boost_trinket",
+          "weight": 8
         }
       ]
     }
