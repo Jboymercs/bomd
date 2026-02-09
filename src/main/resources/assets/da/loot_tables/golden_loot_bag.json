@@ -258,6 +258,11 @@
           "type": "item",
           "name": "da:stalwart_summoner",
           "weight": 11
+        },
+        {
+          "type": "item",
+          "name": "da:magic_boost_trinket",
+          "weight": 11
         }
       ]
     }

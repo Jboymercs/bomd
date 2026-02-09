@@ -190,6 +190,7 @@ public class ModItems {
     public static final Item STALWART_SUMMONER = new ItemTrinket("stalwart_summoner", "stalwart_summoner_desc", 32);
     public static final Item GOLDEN_MARK_TRINKET = new ItemTrinket("golden_mark_trinket", "golden_mark_trinket_desc", 128);
     public static final Item SIGIL_TRINKET = new ItemTrinket("sigil_trinket", "sigil_trinket_desc", 64);
+    public static final Item MAGIC_BOOST_TRINKET = new ItemTrinket("magic_boost_trinket", "magic_boost_trinket_desc", 836);
     //
     public static final Item WYRK_TOTEM = new ItemWyrkTotem("wyrk_totem", "wyrk_totem_desc", DungeonAdditionsTab.ALL);
     public static final Item NOVIK_AID = new ItemNovikAid("call_to_arms", "call_to_arms_desc", DungeonAdditionsTab.ALL);
