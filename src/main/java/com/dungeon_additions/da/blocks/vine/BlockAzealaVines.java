@@ -90,7 +90,7 @@ public class BlockAzealaVines extends BlockBush implements IGrowable, IHasModel,
 
     @Override
     public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
-    { return worldIn.getBlockState(pos.up()).isSideSolid(worldIn, pos, EnumFacing.DOWN) || worldIn.getBlockState(pos.up()).getBlock() == ModBlocks.AZAELA_VINES || worldIn.getBlockState(pos.up()).getBlock() == ModBlocks.AZAELA_BERRY_VINES; }
+    { return worldIn.getBlockState(pos.up()).isSideSolid(worldIn, pos.up(), EnumFacing.DOWN) || worldIn.getBlockState(pos.up()).getBlock() == ModBlocks.AZAELA_VINES || worldIn.getBlockState(pos.up()).getBlock() == ModBlocks.AZAELA_BERRY_VINES; }
 
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {

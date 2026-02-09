@@ -44,7 +44,7 @@ public class ItemGlowBerry extends ItemFood implements IHasModel, IPlantable {
         boolean isReplaceable = worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos);
         BlockPos blockpos = isReplaceable ? pos : pos.offset(facing);
 
-        if (facing == EnumFacing.DOWN && player.canPlayerEdit(blockpos, facing, itemstack) && crops.canPlaceBlockAt(worldIn, blockpos))
+        if (facing == EnumFacing.DOWN && player.canPlayerEdit(blockpos, facing.getOpposite(), itemstack) && crops.canPlaceBlockAt(worldIn, blockpos))
         {
             if (!worldIn.isRemote) {
                 worldIn.setBlockState(blockpos, this.crops.getDefaultState());
