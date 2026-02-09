@@ -5,10 +5,13 @@ import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.IHasModel;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemFood;
@@ -36,24 +39,45 @@ public class ItemGlowBerry extends ItemFood implements IHasModel, IPlantable {
         ModItems.ITEMS.add(this);
     }
 
-
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         ItemStack itemstack = player.getHeldItem(hand);
 
-        boolean isReplaceable = worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos);
-        BlockPos blockpos = isReplaceable ? pos : pos.offset(facing);
+        IBlockState iblockstate = worldIn.getBlockState(pos);
+        Block block = iblockstate.getBlock();
 
-        if (facing == EnumFacing.DOWN && player.canPlayerEdit(blockpos, facing.getOpposite(), itemstack) && crops.canPlaceBlockAt(worldIn, blockpos))
+        if (!block.isReplaceable(worldIn, pos)) pos = pos.offset(facing);
+
+        if (!itemstack.isEmpty() && player.canPlayerEdit(pos, facing, itemstack) && worldIn.mayPlace(this.crops, pos, false, facing, player))
         {
-            if (!worldIn.isRemote) {
-                worldIn.setBlockState(blockpos, this.crops.getDefaultState());
-                worldIn.playSound((EntityPlayer) null, pos, SoundsHandler.MOSS_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-                if (!player.capabilities.isCreativeMode) itemstack.shrink(1);
+            int i = this.getMetadata(itemstack.getMetadata());
+            IBlockState iblockstate1 = this.crops.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);
+
+            if (placeBlockAt(itemstack, player, worldIn, pos, facing, hitX, hitY, hitZ, iblockstate1))
+            {
+                worldIn.playSound(player, pos, SoundsHandler.MOSS_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                itemstack.shrink(1);
             }
+
             return EnumActionResult.SUCCESS;
         }
         return EnumActionResult.FAIL;
+    }
+
+    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState)
+    {
+        if (!world.setBlockState(pos, newState, 11)) return false;
+
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() == this.crops)
+        {
+            this.crops.onBlockPlacedBy(world, pos, state, player, stack);
+
+            if (player instanceof EntityPlayerMP)
+                CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)player, pos, stack);
+        }
+
+        return true;
     }
 
     @Override
