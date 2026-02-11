@@ -13,6 +13,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -75,7 +76,6 @@ public class BlockAzealaVines extends BlockBush implements IGrowable, IHasModel,
     }
 
     /** Drops Glow Berries */
-    /** TODO: Replace `getItemFromBlock` with the actual Glow Berries when they are added! */
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     { return ModItems.GLOW_BERRY; }
 
@@ -90,7 +90,7 @@ public class BlockAzealaVines extends BlockBush implements IGrowable, IHasModel,
 
     @Override
     public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
-    { return worldIn.getBlockState(pos.up()).isSideSolid(worldIn, pos.up(), EnumFacing.DOWN) || worldIn.getBlockState(pos.up()).getBlock() == ModBlocks.AZAELA_VINES || worldIn.getBlockState(pos.up()).getBlock() == ModBlocks.AZAELA_BERRY_VINES; }
+    { return worldIn.getBlockState(pos.up()).getBlockFaceShape(worldIn, pos.up(), EnumFacing.DOWN) == BlockFaceShape.SOLID || worldIn.getBlockState(pos.up()).getBlock() == ModBlocks.AZAELA_VINES || worldIn.getBlockState(pos.up()).getBlock() == ModBlocks.AZAELA_BERRY_VINES; }
 
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
