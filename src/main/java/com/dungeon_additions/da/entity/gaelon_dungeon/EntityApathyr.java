@@ -947,7 +947,9 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             this.setImmovable(false);
             this.lockLook = false;
             this.bossInfo.setVisible(true);
-            this.playMusic(this);
+            if(ModConfig.experimental_features && MobConfig.apathyr_boss_music) {
+                this.playMusic(this);
+            }
 
         }, 220);
     }

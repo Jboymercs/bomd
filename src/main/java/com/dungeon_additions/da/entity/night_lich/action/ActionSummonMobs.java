@@ -4,8 +4,6 @@ import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.night_lich.EntityLichSpawn;
 import com.dungeon_additions.da.entity.night_lich.EntityNightLich;
 import com.dungeon_additions.da.util.ModRand;
-import com.dungeon_additions.da.util.ModUtils;
-import com.sun.corba.se.spi.activation.BadServerDefinition;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.*;
 import net.minecraft.init.Items;

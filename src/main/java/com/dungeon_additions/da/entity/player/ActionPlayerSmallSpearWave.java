@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.player;
 
+import com.dungeon_additions.da.config.PotionTrinketConfig;
 import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyrSpear;
 import com.dungeon_additions.da.util.ModUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +16,7 @@ public class ActionPlayerSmallSpearWave implements IActionPlayer{
         ModUtils.circleCallback(1, 4, (pos)-> {
             pos = new Vec3d(pos.x, 0, pos.y).add(targetPos);
             int y = getSurfaceHeight(actor.world, new BlockPos(pos.x, 0, pos.z), (int) actor.posY - 7, (int) actor.posY + 3);
-            EntityApathyrSpear spike = new EntityApathyrSpear(actor.world, actor, 7);
+            EntityApathyrSpear spike = new EntityApathyrSpear(actor.world, actor, PotionTrinketConfig.magic_charm_spear_damage);
             spike.setPosition(pos.x, y + 1, pos.z);
             actor.world.spawnEntity(spike);
         });
@@ -23,7 +24,7 @@ public class ActionPlayerSmallSpearWave implements IActionPlayer{
         ModUtils.circleCallback(2, 4, (pos)-> {
             pos = new Vec3d(pos.x, 0, pos.y).add(targetPos);
             int y = getSurfaceHeight(actor.world, new BlockPos(pos.x, 0, pos.z), (int) actor.posY - 7, (int) actor.posY + 3);
-            EntityApathyrSpear spike = new EntityApathyrSpear(actor.world, actor, 7);
+            EntityApathyrSpear spike = new EntityApathyrSpear(actor.world, actor, PotionTrinketConfig.magic_charm_spear_damage);
             spike.setPosition(pos.x, y + 1, pos.z);
             actor.world.spawnEntity(spike);
         });

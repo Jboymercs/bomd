@@ -473,7 +473,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     public void onUpdate() {
         super.onUpdate();
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
-        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features && MobConfig.high_king_boss_music) {
             this.playMusic(this);
         }
 

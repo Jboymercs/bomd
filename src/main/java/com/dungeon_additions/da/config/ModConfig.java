@@ -9,11 +9,6 @@ import net.minecraftforge.common.config.Config;
 @Config(modid = ModReference.MOD_ID, name = "BOMD DA Backport/general_config")
 public class ModConfig {
 
-    @Config.Name("Aether Content Compat")
-    @Config.Comment("If Aether Continuation, Aether Legacy, and Aether Lost Content are istalled, will they change the High Court City structure")
-    @Config.RequiresMcRestart
-    public static boolean aether_compat = true;
-
     @Config.Name("Experimental Features Enabled/Disabled")
     @Config.Comment("Change if experimental features are enabled. this mostly includes boss music. default: false")
     @Config.RequiresMcRestart

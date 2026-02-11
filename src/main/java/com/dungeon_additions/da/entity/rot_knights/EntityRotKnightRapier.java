@@ -225,10 +225,10 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
         if(!this.isFightMode() && !isRandomGetAway && !this.isIdleMode()) {
             List<Consumer<EntityLivingBase>> attacks = new ArrayList<>(Arrays.asList(randomGetAway, basic_swing, pierce, pierce_combo, drink_potion));
             double[] weights = {
-                    (distance <= 5 && prevAttack != randomGetAway) ? 1/distance : 0,
+                    (distance <= 6 && prevAttack != randomGetAway) ? 1/distance : 0,
                     (distance <= 3 && prevAttack != basic_swing) ? 1/distance : 0,
-                    (distance <= 5 && prevAttack != pierce && prevAttack != pierce_combo) ? 1/distance : 0,
-                    (distance <= 5 && prevAttack != pierce_combo) ? 1/distance : 0,
+                    (distance <= 6 && prevAttack != pierce && prevAttack != pierce_combo) ? 1/distance : 0,
+                    (distance <= 6 && prevAttack != pierce_combo) ? 1/distance : 0,
                     (healthF <= 0.8 && !hasDrankPotion) ? 1/distance : 0
             };
 

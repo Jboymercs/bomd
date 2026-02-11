@@ -396,7 +396,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features && MobConfig.voidclysm_boss_music) {
             this.playMusic(this);
         }
         this.shakeTime--;

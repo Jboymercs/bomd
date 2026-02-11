@@ -216,7 +216,9 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         }, 5);
 
         addEvent(()-> {
-            this.playMusic(this);
+            if(ModConfig.experimental_features && MobConfig.aegyptia_warlord_boss_music) {
+                this.playMusic(this);
+            }
             this.bossInfo.setVisible(true);
             if(!this.isHasPhaseTransitioned()) {
                 this.bossInfo.setName(new TextComponentString("Aegyptian Royalty"));
@@ -352,6 +354,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.setImmovable(true);
         this.playSound(SoundsHandler.DESERT_BOSS_TRANSITION, 1.5f, 0.7f / (rand.nextFloat() * 0.5f + 0.2f));
         addEvent(()-> {
+            world.setEntityState(this, ModUtils.PARTICLE_BYTE);
             this.setHasPhaseTransitioned(true);
             this.heal((float) (this.getMaxHealth() * MobConfig.desert_bosses_second_phase_healing));
             this.bossInfo.setName(this.getDisplayName());
@@ -363,6 +366,17 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             this.setFightMode(false);
             this.setImmovable(false);
         }, 70);
+    }
+
+    @Override
+    public void handleStatusUpdate(byte id) {
+        super.handleStatusUpdate(id);
+        if(id == ModUtils.PARTICLE_BYTE) {
+            ModUtils.circleCallback(3, 15, (pos)-> {
+                pos = new Vec3d(pos.x, 0, pos.y);
+                Main.proxy.spawnParticle(14, this.posX + pos.x, this.posY + 2, this.posZ + pos.z, 0,0.025,0);
+            });
+        }
     }
 
 
@@ -385,7 +399,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             prevAttack = ModRand.choice(attacksMelee, rand, weights).next();
             prevAttack.accept(target);
         }
-        return this.isHasPhaseTransitioned() ? 15 : this.isEnraged() ? 30 : 60;
+        return this.isHasPhaseTransitioned() ? 15 : this.isEnraged() ? 30 : 65;
     }
 
     private final Consumer<EntityLivingBase> fly_swing = (target) -> {
@@ -474,6 +488,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
           float damage =(float) (this.getAttack() * 1.25);
           ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.4f, 0, false);
           this.playSound(SoundsHandler.WARLORD_TAIL_WHIP, 1.3f, 0.7f / (rand.nextFloat() * 0.5f + 0.2f));
+          Main.proxy.spawnParticle(18,world, this.posX, this.posY + 0.5, this.posZ, 0, 0, 0);
           addEvent(() -> {
                 //Do Cuts Projectile in a circle like manner
               Vec3d currPos = this.getPositionVector();

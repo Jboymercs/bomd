@@ -279,6 +279,11 @@
           "type": "item",
           "name": "da:magic_boost_trinket",
           "weight": 8
+        },
+        {
+          "type": "item",
+          "name": "da:arrow_trinket",
+          "weight": 10
         }
       ]
     }

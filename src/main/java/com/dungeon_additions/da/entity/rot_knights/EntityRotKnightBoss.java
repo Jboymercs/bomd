@@ -262,7 +262,7 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
         super.onUpdate();
 
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
-        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features && MobConfig.fallen_stormvier_boss_music) {
             this.playMusic(this);
         }
         EntityLivingBase target = this.getAttackTarget();

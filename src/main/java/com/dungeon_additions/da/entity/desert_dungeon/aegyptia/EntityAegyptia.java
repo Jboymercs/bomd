@@ -420,7 +420,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
 
             prevAttack.accept(target);
         }
-        return this.isHasKopis() ? 10 : 20;
+        return this.isHasKopis() ? 5 : 10;
     }
 
     private final Consumer<EntityLivingBase> throw_potion_attack = (target) -> {

@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.world.high_city;
 
+import com.dungeon_additions.da.config.CompatConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
@@ -151,7 +152,7 @@ public class HighCityTemplate extends ModStructureTemplate {
 
     @Override
     public String templateLocation() {
-        if(ModIntegration.IS_AETHER_LOADED && ModIntegration.IS_AETHER_LOST_CONTENT_LOADED && ModIntegration.IS_AETHER_CONTINUATION_LOADED && ModConfig.aether_compat) {
+        if(ModIntegration.IS_AETHER_LOADED && ModIntegration.IS_AETHER_LOST_CONTENT_LOADED && ModIntegration.IS_AETHER_CONTINUATION_LOADED && CompatConfig.aether_compat) {
             return "aether_high_city";
         }
         return "high_city";

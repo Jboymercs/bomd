@@ -22,6 +22,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -64,7 +65,7 @@ public class EntityShieldHandler {
                             .directEntity(player)
                             .stoppedByArmorNotShields().disablesShields().build();
 
-                    ModUtils.handleAreaImpact(5, (e) -> (float) 9, player, player.getPositionVector().add(ModUtils.yVec(1)), source);
+                    ModUtils.handleAreaImpact(5, (e) -> (float) PotionTrinketConfig.creepers_will_damage, player, player.getPositionVector().add(ModUtils.yVec(1)), source);
                     player.getEntityWorld().playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.NEUTRAL, 1f, 1F);
                     Main.proxy.spawnParticle(19, player.world, player.posX, player.posY + 0.25, player.posZ, 0, 0, 0);
                     Main.proxy.spawnParticle(19, player.world,  player.posX, player.posY + 1.25, player.posZ, 0, 0, 0);
@@ -175,8 +176,26 @@ public class EntityShieldHandler {
             }
         }
 
+        //I hope this doesn't break anything
+        if(event.getEntityLiving().world.isRemote) {
+            return;
+        }
+
         final float originalDamage = event.getAmount();
         float totalDamage = event.getAmount();
+
+        if(event.getSource().isProjectile() && event.getSource().getTrueSource() instanceof EntityPlayer) {
+            EntityPlayer player = ((EntityPlayer)event.getSource().getTrueSource());
+
+            if(event.getSource().getImmediateSource() instanceof EntityArrow) {
+                ItemStack bloodStainedArrowTrinket = ModUtils.findTrinket(new ItemStack(ModItems.ARROW_TRINKET), player);
+                int randI = ModRand.range(1, 16);
+                if(!bloodStainedArrowTrinket.isEmpty() && randI == 11 && event.getEntityLiving() != null && player != null) {
+                    event.getEntityLiving().addPotionEffect(new PotionEffect(ModPotions.HUNTERS_MARK, 400, 0, false, false));
+                    bloodStainedArrowTrinket.damageItem(1, player);
+                }
+            }
+        }
 
         //damage calculations start
         if(event.getEntityLiving() instanceof EntityPlayer) {
@@ -244,7 +263,7 @@ public class EntityShieldHandler {
                     int randI = ModRand.range(1, 11);
                     if (randI == 3) {
                       //  event.setAmount((float)(totalDamage - (originalDamage * 0.5)));
-                        totalDamage -= (float) (originalDamage * 0.5);
+                        totalDamage -= (float) (originalDamage * PotionTrinketConfig.frozen_crystal_damage_deduction);
                         crystalFruitTrinket.damageItem(1, player);
                     }
                 }
@@ -324,7 +343,7 @@ public class EntityShieldHandler {
             ItemStack flameTrinket = ModUtils.findTrinket(new ItemStack(ModItems.FLAMES_RAGE_TRINKET), player);
             ItemStack vampireTrinket = ModUtils.findTrinket(new ItemStack(ModItems.VAMPIRIC_TRINKET), player);
             if(!flameTrinket.isEmpty()) {
-                int flameTrinketBonus = player.isBurning() ? 4 : 2;
+                int flameTrinketBonus = player.isBurning() ? PotionTrinketConfig.flames_rage_on_fire_damage : PotionTrinketConfig.flames_rage_default_damage;
               //  event.setAmount(flameTrinketBonus + totalDamage);
                 totalDamage += flameTrinketBonus;
                 flameTrinket.damageItem(1, player);

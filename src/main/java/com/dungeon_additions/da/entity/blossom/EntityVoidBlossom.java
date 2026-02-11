@@ -167,7 +167,7 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features && MobConfig.blossom_boss_music) {
             this.playMusic(this);
         }
 

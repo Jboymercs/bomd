@@ -123,7 +123,7 @@ public class EventWearFlameArmor {
                     if(!sigil_trinket.isEmpty() && !player.getCooldownTracker().hasCooldown(sigil_trinket.getItem()) && player.isSneaking() &&
                     player.getAttackingEntity() != null && player.ticksExisted % 2 == 0) {
 
-                        EntityColossusSigil sigil = new EntityColossusSigil(player.world, player, 5, true);
+                        EntityColossusSigil sigil = new EntityColossusSigil(player.world, player, PotionTrinketConfig.golden_ritual_damage, true);
                         sigil.setPosition(player.posX, player.posY + 2, player.posZ);
                         player.world.spawnEntity(sigil);
                         sigil_trinket.damageItem(1, player);
@@ -208,7 +208,7 @@ public class EventWearFlameArmor {
                     //shield Trinkets
                     if(!shieldTrinket.isEmpty()) {
                         if(attributeInShield.getModifier(SHIELD_TRINKET_MODIFIER) == null) {
-                            attributeInShield.applyModifier(new AttributeModifier(SHIELD_TRINKET_MODIFIER, "shield_trinket_modifier", 0.1, 1).setSaved(false));
+                            attributeInShield.applyModifier(new AttributeModifier(SHIELD_TRINKET_MODIFIER, "shield_trinket_modifier", PotionTrinketConfig.mythic_shield_armor_value, 1).setSaved(false));
                         }
                         if(player.hurtTime == 1) {
                             shieldTrinket.damageItem(1, player);
@@ -219,7 +219,7 @@ public class EventWearFlameArmor {
 
                     if(!diamondShieldTrinket.isEmpty()) {
                             if(attributeInDiamond.getModifier(DIAMOND_SHIELD_TRINKET_MODIFIER) == null) {
-                                attributeInDiamond.applyModifier(new AttributeModifier(DIAMOND_SHIELD_TRINKET_MODIFIER, "diamond_shield_trinket_modifier", 0.05, 1).setSaved(false));
+                                attributeInDiamond.applyModifier(new AttributeModifier(DIAMOND_SHIELD_TRINKET_MODIFIER, "diamond_shield_trinket_modifier", PotionTrinketConfig.exalted_shield_armor_value, 1).setSaved(false));
                             }
                         if(player.hurtTime == 1) {
                             diamondShieldTrinket.damageItem(1, player);
@@ -230,7 +230,7 @@ public class EventWearFlameArmor {
 
                     if(!heartTrinket.isEmpty()) {
                         if (attributeInHeart.getModifier(HEART_TRINKET_MODIFIER) == null) {
-                            attributeInHeart.applyModifier(new AttributeModifier(HEART_TRINKET_MODIFIER, "heart_trinket_modifier", 0.2, 1).setSaved(false));
+                            attributeInHeart.applyModifier(new AttributeModifier(HEART_TRINKET_MODIFIER, "heart_trinket_modifier", PotionTrinketConfig.vigorous_journey_health_amount, 1).setSaved(false));
                         }
 
                         if(player.hurtTime == 1) {
@@ -253,7 +253,7 @@ public class EventWearFlameArmor {
                     EntityPlayer player = ((EntityPlayer) base);
                     if(!player.getCooldownTracker().hasCooldown(chestplate.getItem())) {
                         player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 500, 0, false, false));
-                        player.getCooldownTracker().setCooldown(chestplate.getItem(), 3200);
+                        player.getCooldownTracker().setCooldown(chestplate.getItem(), 4800);
                     }
                 }
             }

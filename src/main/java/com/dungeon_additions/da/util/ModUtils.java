@@ -3,6 +3,7 @@ package com.dungeon_additions.da.util;
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.blocks.lich.EnumLichSpawner;
 import com.dungeon_additions.da.config.ModConfig;
+import com.dungeon_additions.da.config.PotionTrinketConfig;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityLichSpawner;
@@ -10,7 +11,9 @@ import com.dungeon_additions.da.event.EventScheduler;
 import com.dungeon_additions.da.event.Services;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.integration.BaublesIntegration;
 import com.dungeon_additions.da.items.tools.ItemMageStaff;
+import com.dungeon_additions.da.items.trinket.ItemTrinket;
 import com.dungeon_additions.da.packets.EnumModParticles;
 import com.dungeon_additions.da.packets.MessageModParticles;
 import com.dungeon_additions.da.util.damage.Element;
@@ -158,28 +161,44 @@ public class ModUtils {
 
     public static ItemStack findTrinket(ItemStack stack, EntityPlayer player)
     {
-        if (player.getHeldItem(EnumHand.OFF_HAND).getItem() == stack.getItem())
-        {
-            return player.getHeldItem(EnumHand.OFF_HAND);
-        }
-        else if (player.getHeldItem(EnumHand.MAIN_HAND).getItem() == stack.getItem())
-        {
-            return player.getHeldItem(EnumHand.MAIN_HAND);
-        }
-        else
-        {
-            for (int i = 0; i < player.inventory.getSizeInventory(); ++i)
-            {
-                ItemStack itemstack = player.inventory.getStackInSlot(i);
-
-                if (itemstack.getItem() == stack.getItem())
-                {
-                    return itemstack;
+        if(BaublesIntegration.isEnabled()) {
+            if (!BaublesIntegration.getEquippedArtifacts(player, ItemTrinket.baubleSlot.CHARM).isEmpty()) {
+                ItemStack stackBaubles = BaublesIntegration.getArtifactItemstack(player, ItemTrinket.baubleSlot.CHARM);
+                if (stackBaubles.getItem() == stack.getItem()) {
+                    return stackBaubles;
                 }
             }
 
-            return ItemStack.EMPTY;
+            if(!BaublesIntegration.getEquippedArtifacts(player, ItemTrinket.baubleSlot.AMULET).isEmpty()) {
+                ItemStack stackBaubles3 = BaublesIntegration.getArtifactItemstack(player, ItemTrinket.baubleSlot.AMULET);
+                if (stackBaubles3.getItem() == stack.getItem()) {
+                    return stackBaubles3;
+                }
+            }
+            if (!BaublesIntegration.getEquippedArtifacts(player, ItemTrinket.baubleSlot.TRINKET).isEmpty()) {
+                ItemStack stackBaubles2 = BaublesIntegration.getArtifactItemstack(player, ItemTrinket.baubleSlot.TRINKET);
+                if (stackBaubles2.getItem() == stack.getItem()) {
+                    return stackBaubles2;
+                }
+            }
+        } else  {
+            if (player.getHeldItem(EnumHand.OFF_HAND).getItem() == stack.getItem()) {
+                return player.getHeldItem(EnumHand.OFF_HAND);
+            } else if (player.getHeldItem(EnumHand.MAIN_HAND).getItem() == stack.getItem()) {
+                return player.getHeldItem(EnumHand.MAIN_HAND);
+            } else {
+                for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
+                    ItemStack itemstack = player.inventory.getStackInSlot(i);
+
+                    if (itemstack.getItem() == stack.getItem()) {
+                        return itemstack;
+                    }
+                }
+
+                return ItemStack.EMPTY;
+            }
         }
+        return ItemStack.EMPTY;
     }
 
     /**
@@ -259,7 +278,7 @@ public class ModUtils {
 
        ItemStack magic_boost =  findTrinket(new ItemStack(ModItems.MAGIC_BOOST_TRINKET), player);
         if(!magic_boost.isEmpty()) {
-            bonusDamage += 1;
+            bonusDamage += PotionTrinketConfig.magic_reservoir_damage;
             magic_boost.damageItem(1, player);
         }
         return bonusDamage;

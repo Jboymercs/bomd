@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.player;
 
+import com.dungeon_additions.da.config.PotionTrinketConfig;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityIcicleSpike;
 import com.dungeon_additions.da.util.ModUtils;
@@ -23,7 +24,7 @@ public class ActionPlayerFallSlam implements IActionPlayer{
             for(int t = 1; t < 6; t++ ) {
                 ModUtils.circleCallback(t, (4 * t), (pos) -> {
                     pos = new Vec3d(pos.x, 0, pos.y).add(savedPos);
-                    EntityIcicleSpike tile = new EntityIcicleSpike(actor.world, actor, 10);
+                    EntityIcicleSpike tile = new EntityIcicleSpike(actor.world, actor, PotionTrinketConfig.frozen_slam_ice_damage);
                     tile.setPosition(pos.x, pos.y, pos.z);
                     int y = getSurfaceHeight(actor.world, new BlockPos(pos.x, 0, pos.z), (int) actor.posY - 3, (int) actor.posY + 2);
                     BlockPos posToo = new BlockPos(pos.x, y + 1, pos.z);
@@ -36,7 +37,7 @@ public class ActionPlayerFallSlam implements IActionPlayer{
             for(int t = 1; t < rings; t++ ) {
                 ModUtils.circleCallback(t, (4 * t), (pos) -> {
                     pos = new Vec3d(pos.x, 0, pos.y).add(savedPos);
-                    EntityIcicleSpike tile = new EntityIcicleSpike(actor.world, actor, 10);
+                    EntityIcicleSpike tile = new EntityIcicleSpike(actor.world, actor, PotionTrinketConfig.frozen_slam_ice_damage);
                     tile.setPosition(pos.x, pos.y, pos.z);
                     int y = getSurfaceHeight(actor.world, new BlockPos(pos.x, 0, pos.z), (int) actor.posY - 3, (int) actor.posY + 2);
                     BlockPos posToo = new BlockPos(pos.x, y + 1, pos.z);

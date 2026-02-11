@@ -316,6 +316,17 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         }
     }
 
+    @Override
+    public void handleStatusUpdate(byte id) {
+        super.handleStatusUpdate(id);
+        if(id == ModUtils.PARTICLE_BYTE) {
+            ModUtils.circleCallback(5, 15, (pos)-> {
+                pos = new Vec3d(pos.x, 0, pos.y);
+                Main.proxy.spawnParticle(14, this.posX + pos.x, this.posY + 2.5, this.posZ + pos.z, 0,0.025,0);
+            });
+        }
+    }
+
 
     @Override
     public int startAttack(EntityLivingBase target, float distanceSq, boolean strafingBackwards) {
@@ -365,6 +376,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
       }, 60);
 
       addEvent(()-> {
+          Main.proxy.spawnParticle(20,world, this.posX, this.posY + 0.5, this.posZ, 0, 0, 0);
           this.playSound(SoundsHandler.VOLACTILE_SMASH, 1.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           new ActionColossusMaceSlam(12).performAction(this, target);
           this.setImmovable(true);
@@ -651,10 +663,13 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         this.lockLook = true;
         this.playSound(SoundsHandler.DESERT_BOSS_TRANSITION, 1.5f, 0.7f / (rand.nextFloat() * 0.5f + 0.2f));
         addEvent(()-> {
+            world.setEntityState(this, ModUtils.PARTICLE_BYTE);
             this.setHasPhaseTransitioned(true);
             this.heal((float) (this.getMaxHealth() * MobConfig.desert_bosses_second_phase_healing));
             this.bossInfo.setVisible(true);
-            this.playMusic(this);
+            if(ModConfig.experimental_features && MobConfig.aegyptian_colossus_boss_music) {
+                this.playMusic(this);
+            }
         }, 45);
 
         addEvent(()-> this.lockLook = false, 60);

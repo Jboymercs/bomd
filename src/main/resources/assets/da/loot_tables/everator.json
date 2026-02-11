@@ -43,8 +43,8 @@
             {
               "function": "set_count",
               "count": {
-                "min": 3,
-                "max": 6
+                "min": 5,
+                "max": 8
               }
             }
           ]

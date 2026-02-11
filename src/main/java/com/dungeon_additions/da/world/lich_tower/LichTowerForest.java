@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.world.lich_tower;
 
+import com.dungeon_additions.da.config.CompatConfig;
 import com.dungeon_additions.da.integration.ModIntegration;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -24,7 +25,7 @@ public class LichTowerForest {
 
     public void startTower(BlockPos pos, Rotation rot) {
         LichTowerTemplate templateAdjusted;
-        if(ModIntegration.IS_DEEPER_DEPTHS_LOADED) {
+        if(ModIntegration.IS_DEEPER_DEPTHS_LOADED && CompatConfig.deeper_depths_compat) {
             templateAdjusted = new LichTowerTemplate(manager, "tower_base_compat", pos, rot, 0, true);
         } else {
             templateAdjusted = new LichTowerTemplate(manager, "tower_base_f", pos, rot, 0, true);
@@ -41,7 +42,7 @@ public class LichTowerForest {
     //Second part
     public boolean generateSecondFloor(LichTowerTemplate parent, BlockPos pos, Rotation rot) {
         LichTowerTemplate second_floor;
-        if(ModIntegration.IS_DEEPER_DEPTHS_LOADED) {
+        if(ModIntegration.IS_DEEPER_DEPTHS_LOADED && CompatConfig.deeper_depths_compat) {
             second_floor = addAdjustedPiece(parent, BlockPos.ORIGIN.add(-27, 21, 0), "tower_middle_compat", rot);
         } else {
             second_floor = addAdjustedPiece(parent, BlockPos.ORIGIN.add(-27, 21, 0), "tower_middle_f", rot);
@@ -54,7 +55,7 @@ public class LichTowerForest {
     //Third Part and last part
     public boolean generateTopFloor(LichTowerTemplate parent, BlockPos pos, Rotation rotation) {
         LichTowerTemplate top_floor;
-        if(ModIntegration.IS_DEEPER_DEPTHS_LOADED) {
+        if(ModIntegration.IS_DEEPER_DEPTHS_LOADED && CompatConfig.deeper_depths_compat) {
             top_floor = addAdjustedPiece(parent, BlockPos.ORIGIN.add(-27, 25,0), "tower_top_compat", rotation);
         } else {
             top_floor = addAdjustedPiece(parent, BlockPos.ORIGIN.add(-27, 25,0), "tower_top_f", rotation);

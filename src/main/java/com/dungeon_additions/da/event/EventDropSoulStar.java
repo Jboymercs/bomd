@@ -2,6 +2,7 @@ package com.dungeon_additions.da.event;
 
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
+import com.dungeon_additions.da.config.PotionTrinketConfig;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityFrostBase;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.ProjectileSoul;
@@ -93,7 +94,7 @@ public class EventDropSoulStar {
             if(!DeathStack.isEmpty()) {
                 int randI = ModRand.range(1, 101);
                 if(randI < 8) {
-                    player.heal(4);
+                    player.heal(PotionTrinketConfig.deaths_prosper_heal_amount);
                     DeathStack.damageItem(1, player);
                 }
             }

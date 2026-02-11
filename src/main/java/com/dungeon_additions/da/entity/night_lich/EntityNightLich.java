@@ -178,7 +178,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         super.onUpdate();
 
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
-        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features && MobConfig.night_lich_boss_music) {
             this.playMusic(this);
         }
         EntityLivingBase target = this.getAttackTarget();

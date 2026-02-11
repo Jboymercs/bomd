@@ -257,7 +257,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features && MobConfig.obsidilith_boss_music) {
             this.playMusic(this);
         }
         double currentHealth = this.getHealth() / this.getMaxHealth();

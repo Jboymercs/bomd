@@ -61,24 +61,29 @@ public class ProjectileDesertStorm extends Projectile {
         }
     }
 
+    private int grabCooldown = 0;
+
     @Override
     public void onUpdate() {
         super.onUpdate();
 
+        grabCooldown--;
         // Keeps the projectile on the surface of the ground
         for (int i = 0; i < updates; i++) {
             if (!world.getBlockState(new BlockPos(this.posX, this.posY, this.posZ)).isFullCube()) {
-                this.setPosition(this.posX, this.posY - 0.25f, this.posZ);
+                this.setPosition(this.posX, this.posY - 0.1f, this.posZ);
             } else if (world.getBlockState(new BlockPos(this.posX, this.posY + 1, this.posZ)).isFullCube()) {
-                this.setPosition(this.posX, this.posY + 0.25f, this.posZ);
+                this.setPosition(this.posX, this.posY + 0.1f, this.posZ);
             }
         }
 
         if(grabbedEntity != null) {
-            if(world.getBlockState(this.getPosition().add(0, 1, 0)).causesSuffocation()) {
+            if(world.getBlockState(this.getPosition().add(0, 1, 0)).causesSuffocation() || world.getBlockState(this.getPosition()).causesSuffocation() ) {
                 this.setDead();
             }
-            if(grabbedEntityTime != 0) {
+
+
+            if(grabbedEntityTime != 0 && grabbedEntity != null) {
                 Vec3d offset = this.getPositionVector().add(0, 0.5, 0);
                 grabbedEntity.setPosition(offset.x, offset.y, offset.z);
                 grabbedEntity.setPositionAndUpdate(offset.x, offset.y, offset.z);
@@ -88,7 +93,7 @@ public class ProjectileDesertStorm extends Projectile {
             grabbedEntityTime--;
         }
 
-        if(grabbedEntity == null) {
+        if(grabbedEntity == null && grabCooldown < 0) {
             onQuakeUpdate();
         }
 

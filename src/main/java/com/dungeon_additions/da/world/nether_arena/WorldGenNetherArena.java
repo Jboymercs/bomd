@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.world.nether_arena;
 
+import com.dungeon_additions.da.config.CompatConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.integration.ModIntegration;
@@ -129,7 +130,7 @@ public class WorldGenNetherArena extends WorldGenerator {
                 components.clear();
                 BlockPos blockpos = posI.add(0, WorldConfig.burning_arena_y_level, 0);
 
-                if(ModIntegration.IS_NETHER_BACKPORT_LOADED) {
+                if(ModIntegration.IS_NETHER_BACKPORT_LOADED && CompatConfig.nether_backport_compat) {
                     Biome biomeEntry = Biome.REGISTRY.getObject(new ResourceLocation("nb:crimson_forest"));
                     Biome biomeEntry_warped = Biome.REGISTRY.getObject(new ResourceLocation("nb:warped_forest"));
 

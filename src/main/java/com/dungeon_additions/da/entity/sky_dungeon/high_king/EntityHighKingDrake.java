@@ -392,7 +392,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
         super.onUpdate();
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
 
-        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features && MobConfig.high_king_drake_boss_music) {
             this.playMusic(this);
         }
 

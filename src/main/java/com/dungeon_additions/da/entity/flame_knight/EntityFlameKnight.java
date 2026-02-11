@@ -710,7 +710,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
             hasNotDrankPotion = false;
         }
 
-        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features && MobConfig.flame_knight_boss_music) {
             this.playMusic(this);
         }
 

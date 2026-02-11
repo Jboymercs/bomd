@@ -151,7 +151,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         super.onUpdate();
 
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
-        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features) {
+        if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features && MobConfig.ancient_wyrk_boss_music) {
             this.playMusic(this);
         }
         EntityLivingBase target = this.getAttackTarget();

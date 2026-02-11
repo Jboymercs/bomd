@@ -28,12 +28,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -62,7 +60,7 @@ public class BlockPuzzleMirror extends BlockContainer implements IHasModel, IBlo
         setTranslationKey(name);
         setRegistryName(name);
         this.hasTileEntity = true;
-
+        this.setBlockUnbreakable();
 
         // Add both an item as a block and the block itself
         ModBlocks.BLOCKS.add(this);
@@ -147,7 +145,7 @@ public class BlockPuzzleMirror extends BlockContainer implements IHasModel, IBlo
             {
                 @Override
                 public boolean apply(@Nullable EntityPlayerSP player) {
-                    return player.getHeldItem(EnumHand.MAIN_HAND).isEmpty();
+                    return true;
                 }
             });
 

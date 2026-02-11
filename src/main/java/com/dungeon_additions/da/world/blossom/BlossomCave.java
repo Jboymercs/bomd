@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.world.blossom;
 
+import com.dungeon_additions.da.config.CompatConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.integration.ModIntegration;
@@ -12,7 +13,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
-import sun.java2d.pipe.SpanClipRenderer;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class BlossomCave {
 
     public void startVault(BlockPos pos, Rotation rot) {
         BlossomTemplate templateAdjusted;
-        if(ModIntegration.IS_DEEPER_DEPTHS_LOADED) {
+        if(ModIntegration.IS_DEEPER_DEPTHS_LOADED && CompatConfig.deeper_depths_compat) {
             templateAdjusted = new BlossomTemplate(manager, "dd/arena_1", pos, rot, 0, true);
             generateArenaDD(templateAdjusted, pos, rot);
         } else {

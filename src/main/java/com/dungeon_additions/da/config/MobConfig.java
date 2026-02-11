@@ -5,6 +5,67 @@ import net.minecraftforge.common.config.Config;
 
 @Config(modid = ModReference.MOD_ID, name = "BOMD DA Backport/mob_config")
 public class MobConfig {
+
+    @Config.Name("Fallen Stormvier Boss Music")
+    @Config.Comment("When experimental features are enabled in mod_config, can boss music play for the Fallen Stormvier?")
+    @Config.RequiresMcRestart
+    public static boolean fallen_stormvier_boss_music = true;
+
+    @Config.Name("Void Blossom Boss Music")
+    @Config.Comment("When experimental features are enabled in mod_config, can boss music play for the Void Blossom?")
+    @Config.RequiresMcRestart
+    public static boolean blossom_boss_music = true;
+
+    @Config.Name("Ancient Wyrk Boss Music")
+    @Config.Comment("When experimental features are enabled in mod_config, can boss music play for the Ancient Wyrk?")
+    @Config.RequiresMcRestart
+    public static boolean ancient_wyrk_boss_music = true;
+
+    @Config.Name("Aegyptian Warlord Boss Music")
+    @Config.Comment("When experimental features are enabled in mod_config, can boss music play for the Aegyptia Warlord?")
+    @Config.RequiresMcRestart
+    public static boolean aegyptia_warlord_boss_music = true;
+
+    @Config.Name("Aegyptian Colossus Boss Music")
+    @Config.Comment("When experimental features are enabled in mod_config, can boss music play for the Aegyptian Colossus?")
+    @Config.RequiresMcRestart
+    public static boolean aegyptian_colossus_boss_music = true;
+
+    @Config.Name("Knight of Burning Flame Boss Music")
+    @Config.Comment("When experimental features are enabled in mod_config, can boss music play for the Knight of Burning Flame?")
+    @Config.RequiresMcRestart
+    public static boolean flame_knight_boss_music = true;
+
+    @Config.Name("Apathyr Boss Music")
+    @Config.Comment("When experimental features are enabled in mod_config, can boss music play for the Apathyr?")
+    @Config.RequiresMcRestart
+    public static boolean apathyr_boss_music = true;
+
+    @Config.Name("Night Lich Colossus Boss Music")
+    @Config.Comment("When experimental features are enabled in mod_config, can boss music play for the Night Lich?")
+    @Config.RequiresMcRestart
+    public static boolean night_lich_boss_music = true;
+
+    @Config.Name("Obsidilith Boss Music")
+    @Config.Comment("When experimental features are enabled in mod_config, can boss music play for the Obsidilith?")
+    @Config.RequiresMcRestart
+    public static boolean obsidilith_boss_music = true;
+
+    @Config.Name("Voidclysm Boss Music")
+    @Config.Comment("When experimental features are enabled in mod_config, can boss music play for the Voidclysm?")
+    @Config.RequiresMcRestart
+    public static boolean voidclysm_boss_music = true;
+
+    @Config.Name("High King of the Sky Boss Music")
+    @Config.Comment("When experimental features are enabled in mod_config, can boss music play for the High King of the Sky?")
+    @Config.RequiresMcRestart
+    public static boolean high_king_drake_boss_music = true;
+
+    @Config.Name("High King Boss Music")
+    @Config.Comment("When experimental features are enabled in mod_config, can boss music play for the High King?")
+    @Config.RequiresMcRestart
+    public static boolean high_king_boss_music = true;
+
     @Config.Name("Void Blossom Health")
     @Config.Comment("Change the health of the Void Blossom boss")
     @Config.RequiresMcRestart
