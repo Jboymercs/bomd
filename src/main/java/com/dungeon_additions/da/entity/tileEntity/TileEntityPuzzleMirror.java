@@ -1,25 +1,22 @@
 package com.dungeon_additions.da.entity.tileEntity;
 
 import com.dungeon_additions.da.blocks.base.IBlockUpdater;
-import com.dungeon_additions.da.blocks.desert_dungeon.BlockPuzzleMirror;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemSkull;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class TileEntityPuzzleMirror extends TileEntity implements ITickable {
-
+public class TileEntityPuzzleMirror extends TileEntity implements ITickable
+{
+    public long lastInteractTime = 0;
     private int skullRotation;
 
 

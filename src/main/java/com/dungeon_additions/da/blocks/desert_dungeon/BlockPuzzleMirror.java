@@ -1,31 +1,20 @@
 package com.dungeon_additions.da.blocks.desert_dungeon;
 
 import com.dungeon_additions.da.Main;
-import com.dungeon_additions.da.blocks.BlockBase;
 import com.dungeon_additions.da.blocks.base.IBlockUpdater;
-import com.dungeon_additions.da.entity.tileEntity.TileEntityLichSpawner;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityPuzzleMirror;
-import com.dungeon_additions.da.entity.tileEntity.TileEntitySporeBlossom;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.IHasModel;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
-import com.google.common.base.Predicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
-import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
@@ -38,14 +27,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Random;
 
 public class BlockPuzzleMirror extends BlockContainer implements IHasModel, IBlockUpdater {
 
     protected static final AxisAlignedBB CRYSTAL_AABB = new AxisAlignedBB(0.2D, 0D, 0.2D, 0.8D, 0.9D, 0.8D);
-
-    int counter = 0;
 
     public BlockPuzzleMirror(String name, Material material) {
         super(material);
@@ -85,21 +70,22 @@ public class BlockPuzzleMirror extends BlockContainer implements IHasModel, IBlo
     }
 
 
-    private int delay = 0;
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         TileEntity te = world.getTileEntity(pos);
-        if(!world.isRemote && delay <= 0)
+        if(!world.isRemote)
         {
-            delay = 5;
+            long time = world.getTotalWorldTime();
+
             if (te instanceof TileEntityPuzzleMirror)
             {
                 TileEntityPuzzleMirror mirror = ((TileEntityPuzzleMirror) te);
-                if (player.getHeldItemMainhand().isEmpty())
+                if (player.getHeldItemMainhand().isEmpty() && time > mirror.lastInteractTime)
                 {
                     world.playSound(null, pos, SoundsHandler.MIRROR_MOVE, SoundCategory.BLOCKS, 0.4F, world.rand.nextFloat() * 0.8F + 0.3F);
                     mirror.addRotationTooSkull();
+                    mirror.lastInteractTime = time + 5;
                 }
             }
         }
@@ -135,20 +121,5 @@ public class BlockPuzzleMirror extends BlockContainer implements IHasModel, IBlo
     }
 
     @Override
-    public void update(World world, BlockPos pos)
-    {
-        counter++;
-        delay--;
-        if (counter % 5 == 0)
-        {
-            List<EntityPlayerSP> list = world.<EntityPlayerSP>getPlayers(EntityPlayerSP.class, new Predicate<EntityPlayerSP>()
-            {
-                @Override
-                public boolean apply(@Nullable EntityPlayerSP player) {
-                    return true;
-                }
-            });
-
-        }
-    }
+    public void update(World world, BlockPos pos) {}
 }
