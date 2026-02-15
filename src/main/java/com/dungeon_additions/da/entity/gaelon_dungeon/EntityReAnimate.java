@@ -316,7 +316,7 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
         addEvent(()-> {
             //do melee attack
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
-            DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+            DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (this.getAttack());
             ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.5f, 0, false);
              this.playSound(SoundsHandler.REANIMATE_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
@@ -356,7 +356,7 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
 
       addEvent(()-> {
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
-          DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+          DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage =(float) (this.getAttack());
           ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.5f, 0, false);
           this.playSound(SoundsHandler.REANIMATE_SWING, 0.8f, 0.5f / (rand.nextFloat() * 0.4f + 0.2f));

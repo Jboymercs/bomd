@@ -1088,7 +1088,7 @@ public class MobConfig {
     @Config.Name("Apathyr Attack Damage")
     @Config.Comment("Change the attack damage of the Apathyr")
     @Config.RequiresMcRestart
-    public static double apathyr_damage = 32;
+    public static double apathyr_damage = 30;
 
     @Config.Name("Apathyr Armor")
     @Config.Comment("Change the armor of the Apathyr")

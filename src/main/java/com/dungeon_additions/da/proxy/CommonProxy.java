@@ -5,10 +5,7 @@ import com.dungeon_additions.da.animation.AnimationMessage;
 import com.dungeon_additions.da.blocks.BlockLeaveBase;
 import com.dungeon_additions.da.event.EventSwordResistance;
 import com.dungeon_additions.da.integration.BaublesIntegration;
-import com.dungeon_additions.da.packets.MessageDirectionForRender;
-import com.dungeon_additions.da.packets.MessageEmptySwing;
-import com.dungeon_additions.da.packets.MessageModParticles;
-import com.dungeon_additions.da.packets.ParticleSSMesage;
+import com.dungeon_additions.da.packets.*;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.entity.Entity;
@@ -35,6 +32,7 @@ public class CommonProxy{
         Main.network.registerMessage(MessageDirectionForRender.Handler.class, MessageDirectionForRender.class, packetId++, Side.CLIENT);
         Main.network.registerMessage(ParticleSSMesage.Handler.class, ParticleSSMesage.class, packetId++, Side.CLIENT);
         Main.network.registerMessage(MessageEmptySwing.Handler.class, MessageEmptySwing.class, packetId++, Side.SERVER);
+        Main.network.registerMessage(PacketControlInput.class, PacketControlInput.Message.class, packetId++, Side.SERVER);
         BaublesIntegration.init();
     }
 
@@ -43,6 +41,8 @@ public class CommonProxy{
     public void registerEventHandlers() {
 
     }
+
+    public void registerKeyBindings(){}
 
     public Object getArmorModel(Item item, EntityLivingBase entity) {
         return null;

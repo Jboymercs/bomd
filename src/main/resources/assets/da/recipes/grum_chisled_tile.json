@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "R"
+  ],
+  "key": {
+    "V": {
+      "item": "da:grum_brick_half",
+      "data": 0
+    },
+    "R": {
+      "item": "da:grum_tile"
+    }
+  },
+  "result": {
+    "item": "da:grum_chisled_tile",
+    "count": 1
+  }
+}

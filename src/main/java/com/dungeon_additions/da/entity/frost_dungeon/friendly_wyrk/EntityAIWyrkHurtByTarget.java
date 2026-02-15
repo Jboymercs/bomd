@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.frost_dungeon.friendly_wyrk;
 
+import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
 import com.dungeon_additions.da.entity.sky_dungeon.friendly.EntityFriendlyHalberd;
@@ -22,8 +23,8 @@ public class EntityAIWyrkHurtByTarget extends EntityAITarget {
     {
         EntityLivingBase entitylivingbase = this.tameable.getOwner();
 
-        if(entitylivingbase instanceof EntityFriendlyHalberd) {
-            if(((EntityFriendlyHalberd) entitylivingbase).getOwner() == this.tameable.getOwner()) {
+        if(entitylivingbase instanceof EntityAbstractBase) {
+            if(((EntityAbstractBase) entitylivingbase).isFriendlyCreature) {
                 return false;
             }
         }

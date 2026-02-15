@@ -29,6 +29,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.multiplayer.ClientAdvancementManager;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,10 +38,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
 
@@ -70,6 +74,10 @@ public class ClientProxy extends CommonProxy{
     private final ModelBiped MODEL_WARLORD_HELMET = new ModelWarlordHelmet(0F);
     private final ModelBiped MODEL_COLOSSUS_CHESTPLATE =new ModelColossusChestplate(0F);
 
+
+    public static final KeyBinding SHIELD_ABILITY = new KeyBinding("key." + ModReference.MOD_ID + ".shield_ability", KeyConflictContext.IN_GAME, Keyboard.KEY_G, "key.categories." + ModReference.MOD_ID);
+  //  public static final KeyBinding ARMOR_ABILITY = new KeyBinding("key." + ModReference.MOD_ID + ".armor_ability", KeyConflictContext.IN_GAME, Keyboard.KEY_H, "key.categories." + ModReference.MOD_ID);
+
     @Override
     public void init() {
 
@@ -88,6 +96,12 @@ public class ClientProxy extends CommonProxy{
     public void registerEventHandlers() {
         MinecraftForge.EVENT_BUS.register(CameraPositionHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(EventBossMusic.INSTANCE);
+    }
+
+    @Override
+    public void registerKeyBindings(){
+        ClientRegistry.registerKeyBinding(SHIELD_ABILITY);
+     //   ClientRegistry.registerKeyBinding(ARMOR_ABILITY);
     }
 
 

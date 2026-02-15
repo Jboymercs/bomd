@@ -51,6 +51,13 @@ public class BOMDShieldItem extends ItemShield {
         }
     }
 
+
+
+
+    public boolean onApplyButtonPressed(EntityPlayer player, World world, ItemStack stack){
+        return false;
+    }
+
     @Override
     public EnumAction getItemUseAction(ItemStack stack) {
         return EnumAction.BLOCK;

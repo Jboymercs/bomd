@@ -3,6 +3,7 @@ package com.dungeon_additions.da.items.shield;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.flame_knight.ProjectileFlameSpit;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.proxy.ClientProxy;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
@@ -79,47 +80,53 @@ public class ItemFlameShield extends BOMDShieldItem implements IAnimatable {
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if (entityIn instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entityIn;
-            if(hitCounter > 5) {
+            if(hitCounter > 7) {
                 hitCounter--;
             }
-            if (stack == player.getActiveItemStack() && player.isSneaking() && hitCounter > 0) {
-                if(player.ticksExisted % 12 == 0) {
-                    hitCounter--;
-                    usedHitCounter++;
+        }
+    }
 
-                    float damage = ModConfig.incendium_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1);
+    @Override
+    public boolean onApplyButtonPressed(EntityPlayer player, World world, ItemStack stack){
+        if (stack == player.getActiveItemStack() && hitCounter > 0) {
+            if(player.ticksExisted % 12 == 0) {
+                hitCounter--;
+                usedHitCounter++;
 
-                    if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
-                            player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
-                        damage = (float) (ModConfig.incendium_shield_damage * ModConfig.dark_armor_multiplier) + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1);
-                    }
-                        if(!worldIn.isRemote) {
-                            ProjectileFlameSpit spit = new ProjectileFlameSpit(worldIn, player, damage);
-                            Vec3d playerLookVec = player.getLookVec();
-                            Vec3d playerPos = new Vec3d(player.posX + playerLookVec.x * 1.4D, player.posY + playerLookVec.y + 1.4, player.posZ + playerLookVec.z * 1.4D);
-                            spit.setPosition(playerPos.x, playerPos.y, playerPos.z);
-                            spit.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 0.7F, 1F);
-                            spit.setTravelRange(8);
-                            worldIn.spawnEntity(spit);
-                        }
+                float damage = ModConfig.incendium_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1);
 
-                    worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.NEUTRAL, 0.6f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.4f));
-                    usedAbility = true;
-
-                    if (usedHitCounter > 6) {
-                        usedHitCounter = 0;
-                        hitCounter = 0;
-                        usedAbility = false;
-                        if(!worldIn.isRemote) {
-                            player.resetActiveHand();
-                            player.disableShield(true);
-                            player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.incendium_shield_cooldown * 20);
-                        }
-                        worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.NEUTRAL, 0.9f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.4f));
-                    }
+                if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
+                        player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
+                    damage = (float) (ModConfig.incendium_shield_damage * ModConfig.dark_armor_multiplier) + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1);
                 }
+                if(!world.isRemote) {
+                    ProjectileFlameSpit spit = new ProjectileFlameSpit(world, player, damage);
+                    Vec3d playerLookVec = player.getLookVec();
+                    Vec3d playerPos = new Vec3d(player.posX + playerLookVec.x * 1.4D, player.posY + playerLookVec.y + 1.4, player.posZ + playerLookVec.z * 1.4D);
+                    spit.setPosition(playerPos.x, playerPos.y, playerPos.z);
+                    spit.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 0.7F, 1F);
+                    spit.setTravelRange(8);
+                    world.spawnEntity(spit);
+                }
+
+                world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.NEUTRAL, 0.6f, 0.7f / (world.rand.nextFloat() * 0.4F + 0.4f));
+                usedAbility = true;
+
+                if (usedHitCounter > 6) {
+                    usedHitCounter = 0;
+                    hitCounter = 0;
+                    usedAbility = false;
+                    if(!world.isRemote) {
+                        player.resetActiveHand();
+                        player.disableShield(true);
+                        player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.incendium_shield_cooldown * 20);
+                    }
+                    world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.NEUTRAL, 0.9f, 0.7f / (world.rand.nextFloat() * 0.4F + 0.4f));
+                }
+                return true;
             }
         }
+        return false;
     }
 
     @Override
@@ -134,6 +141,7 @@ public class ItemFlameShield extends BOMDShieldItem implements IAnimatable {
     {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
         tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
+        tooltip.add(TextFormatting.GOLD + I18n.translateToLocal("description.dungeon_additions.shield_pre.name") + TextFormatting.AQUA + I18n.translateToLocal(ClientProxy.SHIELD_ABILITY.getDisplayName()));
         ItemBanner.appendHoverTextFromTileEntityTag(stack, tooltip);
     }
 

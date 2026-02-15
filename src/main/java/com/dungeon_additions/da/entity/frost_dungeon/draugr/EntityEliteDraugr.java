@@ -437,7 +437,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
                         Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.3, 0)));
                         DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                         float damage = (float) (this.getAttack());
-                        ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                        ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.6f, 0, false, MobEffects.SLOWNESS, 2, 100);
                     }
                 }, b);
             }

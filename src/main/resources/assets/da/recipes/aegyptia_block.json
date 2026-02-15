@@ -1,15 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "VV",
-    "VV"
+    "VVV",
+    "VVV",
+    "VVV"
   ],
   "key": {
     "V": {
-      "item": "da:gaelon_shard"
+      "item": "da:aegyptia_metal_ingot"
     }
   },
   "result": {
-    "item": "da:gaelon_ingot"
+    "item": "da:aegyptia_block"
   }
 }

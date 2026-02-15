@@ -77,6 +77,13 @@ public abstract class EntityAbstractBase extends EntityCreature {
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
 
+        if(this.isFriendlyCreature && source.getImmediateSource() instanceof EntityAbstractBase) {
+            EntityAbstractBase base = ((EntityAbstractBase) source.getImmediateSource());
+            if(base.isFriendlyCreature) {
+                return false;
+            }
+        }
+
         return super.attackEntityFrom(source, amount);
     }
 

@@ -12,7 +12,7 @@ public class ModConfig {
     @Config.Name("Experimental Features Enabled/Disabled")
     @Config.Comment("Change if experimental features are enabled. this mostly includes boss music. default: false")
     @Config.RequiresMcRestart
-    public static boolean experimental_features = true;
+    public static boolean experimental_features = false;
 
     @Config.Name("Boss Music Volume")
     @Config.Comment("Change the overall music volume of every track used for the bosses")
@@ -68,6 +68,11 @@ public class ModConfig {
     @Config.Comment("Change the damage factor")
     @Config.RequiresMcRestart
     public static float sword_of_ambition_damage = 9;
+
+    @Config.Name("Gaelon Ingot Repair Percentage")
+    @Config.Comment("When using a Gaelon ingot to repair equipment, what is the percentage of durability it heals?")
+    @Config.RequiresMcRestart
+    public static float gaelon_ingot_heal_percentage = 30;
 
     @Config.Name("Incendium Helmet Sword Boost Multiplier")
     @Config.Comment("Change the multiplier of how much damage or effects are added when using a swords ability and weaing the Incendium Helmet")
@@ -516,17 +521,17 @@ public class ModConfig {
     @Config.Name("Night Lich Tower Search Radius")
     @Config.Comment("Change how far the Soul Star and Locate command searches for a Night Lich's Tower. In chunks not blocks!")
     @Config.RequiresMcRestart
-    public static int lich_search_distance = 150;
+    public static int lich_search_distance = 175;
 
     @Config.Name("Void Blossom Cave Search Radius")
     @Config.Comment("Change how far the Void Lily and Locate command searches for a Void Blossoms Cave. In chunks not blocks!")
     @Config.RequiresMcRestart
-    public static int void_blosom_search_distance = 120;
+    public static int void_blosom_search_distance = 130;
 
     @Config.Name("Burning Flame Arena Search Radius")
     @Config.Comment("Change how far The Spark of Ambition searches for the the Burning Flame Arena. In chunks not blocks!")
     @Config.RequiresMcRestart
-    public static int burning_flame_arena_search_radius = 130;
+    public static int burning_flame_arena_search_radius = 100;
 
     @Config.Name("Frozen Castle Search Radius")
     @Config.Comment("Change how far the Frozen Soul Star and Locate command searches for a Frozen Castle. In chunks not blocks!")
@@ -546,7 +551,7 @@ public class ModConfig {
     @Config.Name("High Court City Search Radius")
     @Config.Comment("Change how far the Orb of Light and command searches for the High Court City. In chunks not blocks!")
     @Config.RequiresMcRestart
-    public static int high_court_city_search_distance = 225;
+    public static int high_court_city_search_distance = 245;
 
     @Config.Name("Obsidilith Arena Search Radius")
     @Config.Comment("Change how far the Call of the Void and command searches for the Obsidilith Arena. In chunks not blocks!")

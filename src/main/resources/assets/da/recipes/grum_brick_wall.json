@@ -1,15 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "VV",
-    "VV"
+    "VVV",
+    "VVV"
   ],
   "key": {
     "V": {
-      "item": "da:gaelon_shard"
+      "item": "da:grum_brick"
     }
   },
   "result": {
-    "item": "da:gaelon_ingot"
+    "item": "da:grum_brick_wall",
+    "count": 6
   }
 }

@@ -35,6 +35,7 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -1060,15 +1061,30 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
 
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_CAST_HEAVY, 1.25f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 22);
        addEvent(()-> this.lockLook = true, 22);
+
        addEvent(()-> {
-           ProjectileFastGhostCrystal fast_ghost_bolt = new ProjectileFastGhostCrystal(world, this, this.getAttack());
-           Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5,2,0)));
-           fast_ghost_bolt.setPosition(relPos.x, relPos.y, relPos.z);
-           fast_ghost_bolt.setTravelRange(40);
-           fast_ghost_bolt.shoot(this, 0, this.rotationYaw, 0, 0.8F, 0);
-           fast_ghost_bolt.rotationYaw = this.rotationYaw;
-           world.spawnEntity(fast_ghost_bolt);
-       }, 25);
+           Vec3d targetedPos = target.getPositionEyes(1.0f).add(ModUtils.getRelativeOffset(this, new Vec3d(0, -0.25, 0)));
+           addEvent(()-> {
+               ProjectileFastGhostCrystal fast_ghost_bolt = new ProjectileFastGhostCrystal(world, this, this.getAttack());
+               Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5,2,0)));
+               fast_ghost_bolt.setPosition(relPos.x, relPos.y, relPos.z);
+               fast_ghost_bolt.setTravelRange(40);
+               Vec3d targetPos = targetedPos;
+
+               Vec3d fromTargetTooActor = this.getPositionVector().subtract(targetPos);
+               Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(0);
+               Vec3d lineStart = targetPos.subtract(lineDir);
+               Vec3d lineEnd = targetPos.add(lineDir);
+
+               float speed = (float) 0.8;
+
+               ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                   ModUtils.throwProjectileNoSpawn(pos,fast_ghost_bolt,1F, speed);
+               });
+               fast_ghost_bolt.rotationYaw = this.rotationYaw;
+               world.spawnEntity(fast_ghost_bolt);
+           }, 4);
+       }, 21);
        addEvent(()-> this.lockLook = false, 35);
 
        addEvent(()-> {
@@ -1242,7 +1258,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack() * 1.5);
-            ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 1.2f, 0, false);
+            ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 1.2f, 0, false, MobEffects.SLOWNESS, 0, 150);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 1.2, 0)));
@@ -1348,7 +1364,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack() * 1.25);
-            ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 1.2f, 0, false);
+            ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 1.2f, 0, false, MobEffects.WEAKNESS, 0, 200);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 1.2f / (rand.nextFloat() * 0.4f + 0.2f));
             double healFac = this.getMaxHealth() * MobConfig.apathyr_life_steal_amount;
             this.heal((float) healFac);

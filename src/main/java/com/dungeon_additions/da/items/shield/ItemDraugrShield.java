@@ -4,6 +4,7 @@ import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.packets.MessageModParticles;
+import com.dungeon_additions.da.proxy.ClientProxy;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.BlockDispenser;
@@ -17,6 +18,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.tileentity.TileEntityBanner;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -86,20 +88,8 @@ public class ItemDraugrShield extends BOMDShieldItem implements IAnimatable {
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if (entityIn instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entityIn;
-            if (stack == player.getActiveItemStack() && player.isSneaking() && hitCounter > 4) {
-                Vec3d moveVec = player.getLookVec().scale(2.6F);
-                if(player.canBePushed()) {
-                    player.motionX = moveVec.x;
-                    player.motionY = 0.1;
-                    player.motionZ = moveVec.z;
-                    player.velocityChanged = true;
-                    hitCounter = 0;
-                    this.isDashing = true;
-                    player.world.playSound(player.posX + 0.5D, player.posY, player.posZ + 0.5D, SoundsHandler.DRAUGR_ELITE_STOMP, SoundCategory.BLOCKS,(float) 1.0F, 1.0F, false);
-                }
-            }
 
-            if(this.isDashing) {
+            if(this.isDashing && !worldIn.isRemote) {
                 Main.proxy.spawnParticle(2, worldIn, player.posX, player.posY + 1, player.posZ, 0,0,0);
                 List<EntityLivingBase> targets = worldIn.getEntitiesWithinAABB(EntityLivingBase.class, player.getEntityBoundingBox().grow(1.5), e -> e != player);
 
@@ -133,6 +123,25 @@ public class ItemDraugrShield extends BOMDShieldItem implements IAnimatable {
         }
 
 
+    @Override
+    public boolean onApplyButtonPressed(EntityPlayer player, World world, ItemStack stack){
+        if (stack == player.getActiveItemStack() && hitCounter > 4) {
+            Vec3d moveVec = player.getLookVec().scale(2.6F);
+            if(player.canBePushed()) {
+                player.motionX = moveVec.x;
+                player.motionY = 0.1;
+                player.motionZ = moveVec.z;
+                player.velocityChanged = true;
+                hitCounter = 0;
+                this.isDashing = true;
+                world.playSound(player, new BlockPos(player.posX, player.posY, player.posZ), SoundsHandler.DRAUGR_ELITE_STOMP, SoundCategory.BLOCKS,(float) 1.0F, 1.0F);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public void onEnemyRammed(EntityLivingBase user, EntityLivingBase enemy, Vec3d rammingDir) {
         boolean attacked = false;
         float damage = ModConfig.frostborn_shield_damage + ModUtils.addShieldBonusDamage(user.getHeldItemOffhand(), 1.5F);
@@ -164,6 +173,7 @@ public class ItemDraugrShield extends BOMDShieldItem implements IAnimatable {
     {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
         tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
+        tooltip.add(TextFormatting.GOLD + I18n.translateToLocal("description.dungeon_additions.shield_pre.name") + TextFormatting.AQUA + I18n.translateToLocal(ClientProxy.SHIELD_ABILITY.getDisplayName()));
         ItemBanner.appendHoverTextFromTileEntityTag(stack, tooltip);
     }
 

@@ -21,6 +21,9 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Many thanks to UnOriginal for a baubles compatibility. This source code is taken from his project, Beast Slayer
+ */
 public class BaublesIntegration {
 
     private static boolean isBaublesLoaded;
@@ -33,10 +36,6 @@ public class BaublesIntegration {
         ARTEFACT_TYPE_MAP.put(ItemTrinket.baubleSlot.TRINKET, BaubleType.BELT);
         ARTEFACT_TYPE_MAP.put(ItemTrinket.baubleSlot.AMULET, BaubleType.AMULET);
 
-    }
-
-    public static boolean isBaubleEquipped(EntityPlayer player, Item item){
-        return BaublesApi.isBaubleEquipped(player, item) >= 0;
     }
 
     public static List<ItemTrinket> getEquippedArtifacts(EntityPlayer player, ItemTrinket.baubleSlot... types){

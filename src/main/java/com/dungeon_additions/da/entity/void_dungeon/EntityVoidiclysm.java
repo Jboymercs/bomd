@@ -844,7 +844,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.0, 0)));
         DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
         float damage = (float) (0);
-        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.1f, 0, false, MobEffects.WEAKNESS, 0, 200);
         target.hurtResistantTime = 0;
         if(target.getMaxHealth() > 40) {
             target.setHealth((float) (target.getHealth() - 20));

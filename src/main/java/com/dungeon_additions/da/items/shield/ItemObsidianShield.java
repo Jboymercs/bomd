@@ -5,6 +5,7 @@ import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.void_dungeon.EntityBlueWave;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.proxy.ClientProxy;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
@@ -81,17 +82,14 @@ public class ItemObsidianShield extends BOMDShieldItem implements IAnimatable {
     private boolean initiatedAttack;
     private Vec3d targetOriginalPos;
     private int waitTime = 4;
+    private Entity entityFound = null;
 
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if (entityIn instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entityIn;
-            if (stack == player.getActiveItemStack() && player.isSneaking() && hitCounter > 4) {
-                if(player.canBePushed()) {
-                    player.motionX = 0;
-                    player.motionY = 0;
-                    player.motionZ = 0;
-                }
+            if (entityFound != null) {
+
                 //Do Quick AOE
                 float damage = ModConfig.obsidilith_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1.25F);
                 if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
@@ -99,13 +97,10 @@ public class ItemObsidianShield extends BOMDShieldItem implements IAnimatable {
                     damage = (float) (ModConfig.obsidilith_shield_damage * ModConfig.dark_armor_multiplier) + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1.25F);
                 }
 
-                Entity entityToo = findClosestEntity(player, worldIn);
-                if(entityToo != null) {
-
-                    if(entityToo instanceof EntityLivingBase) {
+                    if(entityFound instanceof EntityLivingBase) {
                         player.world.playSound(player.posX + 0.5D, player.posY, player.posZ + 0.5D, SoundsHandler.OBSIDILITH_CAST, SoundCategory.BLOCKS,(float) 1.0F, 1.0F, false);
                         Vec3d particleStart = player.getPositionEyes(1.0F);
-                        Vec3d particleEnd = entityToo.getPositionVector().add(0, 1.5, 0);
+                        Vec3d particleEnd = entityFound.getPositionVector().add(0, 1.5, 0);
                         ModUtils.lineCallback(particleStart, particleEnd, (int) player.getDistance(entityIn), (pos, i) -> {
                             Main.proxy.spawnParticle(7,worldIn, pos.x, pos.y, pos.z, 0,0,0);
                         });
@@ -117,24 +112,43 @@ public class ItemObsidianShield extends BOMDShieldItem implements IAnimatable {
                         if (!worldIn.isRemote) {
                             if(waitTime < 0) {
                                 //send attack and reset everything
-                                Vec3d predictedPosition = ModUtils.predictPlayerPosition(targetOriginalPos, entityToo.getPositionVector(), 3);
-                                this.summonSpikesOnEnemy(player, damage, ((EntityLivingBase) entityToo), worldIn, predictedPosition);
+                                Vec3d predictedPosition = ModUtils.predictPlayerPosition(targetOriginalPos, entityFound.getPositionVector(), 3);
+                                this.summonSpikesOnEnemy(player, damage, ((EntityLivingBase) entityFound), worldIn, predictedPosition);
                                 player.resetActiveHand();
                                 player.disableShield(true);
                                 player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.obsidilith_shield_ability * 20);
                                 this.waitTime = 4;
                                 this.initiatedAttack = false;
                                 targetOriginalPos = null;
+                                entityFound = null;
                                 this.hitCounter = 0;
                             } else {
                                 waitTime--;
                             }
                         }
                     }
-                }
+
 
             }
         }
+    }
+
+    @Override
+    public boolean onApplyButtonPressed(EntityPlayer player, World world, ItemStack stack){
+        if (stack == player.getActiveItemStack() && hitCounter > 4) {
+            if(player.canBePushed()) {
+                player.motionX = 0;
+                player.motionY = 0;
+                player.motionZ = 0;
+            }
+            Entity entityToo = findClosestEntity(player, world);
+            if(entityToo != null) {
+                this.entityFound = entityToo;
+                //then goes to onUpdate
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -292,6 +306,7 @@ public class ItemObsidianShield extends BOMDShieldItem implements IAnimatable {
     {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
         tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
+        tooltip.add(TextFormatting.GOLD + I18n.translateToLocal("description.dungeon_additions.shield_pre.name") + TextFormatting.AQUA + I18n.translateToLocal(ClientProxy.SHIELD_ABILITY.getDisplayName()));
         ItemBanner.appendHoverTextFromTileEntityTag(stack, tooltip);
     }
 

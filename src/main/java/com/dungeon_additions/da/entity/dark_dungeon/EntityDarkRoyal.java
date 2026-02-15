@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.dark_dungeon;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.dark_dungeon.EntityAIRoyalAttack;
@@ -335,6 +336,11 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
 
             if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ)))
             {
+                //particles
+                ModUtils.performNTimes(15, (i) -> {
+                    Main.proxy.spawnParticle(23, world, this.posX + ModRand.getFloat(1), this.posY + ModRand.getFloat(1) + 0.5, this.posZ + ModRand.getFloat(1), 0,0.07,0, 0);
+                });
+                this.playSound(SoundsHandler.DARK_ASSASSIN_DASH, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.7f));
                 this.setDead();
             }
         }

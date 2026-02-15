@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V",
+    "R"
+  ],
+  "key": {
+    "V": {
+      "item": "da:grum_brick"
+    },
+    "R": {
+      "item": "minecraft:gold_nugget"
+    }
+  },
+  "result": {
+    "item": "da:grum_chisled",
+    "count": 1
+  }
+}

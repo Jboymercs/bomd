@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.dark_dungeon;
 
+import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.animation.IAnimatedEntity;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
@@ -23,6 +24,7 @@ import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -31,6 +33,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -207,6 +210,11 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
 
             if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ)))
             {
+                //particles
+                ModUtils.performNTimes(15, (i) -> {
+                    Main.proxy.spawnParticle(23, world, this.posX + ModRand.getFloat(1), this.posY + ModRand.getFloat(1) + 0.5, this.posZ + ModRand.getFloat(1), 0,0.07,0, 0);
+                });
+                this.playSound(SoundsHandler.DARK_ASSASSIN_DASH, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.7f));
                     this.setDead();
             }
         }
@@ -333,7 +341,7 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.firstStrike ? (float) (this.getAttack() * 2) : (float) (this.getAttack());
             this.firstStrike = false;
-            ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+            ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.2f, 0, false, MobEffects.BLINDNESS, 0, 200);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.7f));
         }, 18);
 
@@ -368,7 +376,7 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.firstStrike ? (float) (this.getAttack() * 2) : (float) (this.getAttack());
           this.firstStrike = false;
-          ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+          ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.2f, 0, false, MobEffects.BLINDNESS, 0, 200);
           this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.7f));
       }, 20);
 

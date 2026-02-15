@@ -75,7 +75,7 @@ entity.proj_dark_matter.name=Void Mana
 entity.dark_royal.name=Roh Crypt Guard
 entity.puzzle_orb.name=Grum Puzzle Ball
 entity.scutter_beetle.name=Scutter Beetle
-entity.aegyptia.name=Aegyptia Recurian
+entity.aegyptia.name=Aegyptian Recurian
 entity.obsidilith.name=Obsidilith
 entity.blue_wave.name=Obsidilith's Magic
 entity.voidiant.name=Voidiant
@@ -299,7 +299,7 @@ item.dungeon_bread.name=Dungeon Bread
 item.desert_projectile.name=Warlord's Projectile
 item.warlord_crystal.name=Ancient Crystalized Mana
 item.colossus_bone.name=Ancient Bone
-item.aegyptian_key.name=Aegyptian Soul Key
+item.aegyptian_key.name=Aegyptia Soul Key
 item.golden_mark_trinket.name=Golden Mark
 item.golden_vow.name=Golden Vow
 item.golden_devotion.name=Golden Devotion
@@ -469,6 +469,7 @@ tile.adventure_block.name=Block of Adventuric Metal
 tile.crypt_block.name=Block of Dark Metal
 tile.novik_block.name=Block of Novik Metal
 tile.litic_block.name=Block of Lithic Metal
+tile.aegyptia_block.name=Block of Aegyptian Metal
 tile.gaelon_spawner.name=Disappearing Gaelon Sanctuary Spawner
 tile.aegyptian_spawner.name=Skull of the Past
 
@@ -490,10 +491,14 @@ da.other_players=The ritual is not being performed as there are other players ne
 da.heart_required=A heart is needed.
 description.dungeon_additions.scaled_weapon.name=-Enchantments scale weapon abilities
 description.dungeon_additions.trinket_item.name=-Effect applies anywhere in inventory
+description.dungeon_additions.shield_pre.name=-While blocking, use ability by pressing ->
 
 potion.da.hunters_mark=Hunters Mark
 potion.da.golden_vow=Golden Vow
 potion.da.golden_devotion=Golden Devotion
+
+key.categories.da=Unseen's Dungeon Additions
+key.da.shield_ability=Ability use action
 
 
 ## Potion Descriptions compatibility
@@ -535,8 +540,8 @@ da.desc.levitation_block_desc=Gives Levitation to nearby mobs if not powered, wh
 da.desc.dungeon_frost_key_desc=Used in the giant room in the Frozen Castle
 da.desc.champion_axe_desc=You deal more damage the lower your health is, jumping crits negate this effect.
 da.desc.draugr_sword_desc=Applies slowness to creatures hit by this sword.
-da.desc.draugr_shield_desc=Blocking attacks charges the shield, when you've charged it 5 times. Sneak and block to unleash a ram attack.
-da.desc.everator_shield_desc=Blocking attacks charges this shield, when charged atleast 3 times. Sneak and block to unleash a wave projectile.
+da.desc.draugr_shield_desc=Blocking attacks charges the shield, when you've charged it 5 times. You will do a ram attack.
+da.desc.everator_shield_desc=Blocking attacks charges this shield, when charged atleast 3 times. You will release a wave projectile.
 da.desc.dragon_shield_desc=Gives a nice Health Bonus when in offhand.
 da.desc.draugr_armor_desc=Full set allows for a chance of strength to be given when taking damage, increasing that chance the lower your health is.
 da.desc.wyrk_helmet_desc=Grants Resistance to Slowness and reduces magic damage by 5 percent. Full set bonus grants a chance of regeneration the lower your health is.
@@ -567,10 +572,10 @@ da.desc.incendium_helmet_desc=Boosts swords ability damage and effects. Full set
 da.desc.incendium_leggings_desc=Grants Speed Briefly when using a Shield. Full set bonus grants +4 Max Health.
 da.desc.flame_blade_desc=Right Clicking will release a Flame Blade before you that can hit multiple entities.
 da.desc.sealed_flame_desc=Right Clicking will cast a flame wave in front of you.
-da.desc.flame_shield_desc=Blocking attacks charges the shield, upon sneaking and blocking you will shoot flames from your shield.
+da.desc.flame_shield_desc=Blocking attacks charges the shield, upon using the ability you will shoot flames from your shield.
 da.desc.dark_metal_desc=Full set boosts shield ability damage significantly.
 da.desc.dark_metal_helmet_desc=Gives Night Vision during night time. Full set boosts shield ability damage significantly.
-da.desc.dark_shield_desc=Blocking attacks charges the shield, after 5 charges and sneaking you will do a short AOE attack.
+da.desc.dark_shield_desc=Blocking attacks charges the shield, after 5 charges. You will do a short AOE attack.
 da.desc.dark_sicle_desc=Attacking causes a sweep attack, Right Clicking shoots a dark matter projectile.
 da.desc.soul_key_desc=Used to re-summon defeated bosses on a Soul Altar.
 da.desc.desert_locator_desc=It itches to return back to its civilization.
@@ -581,12 +586,11 @@ da.desc.kopis_desc=Momentum while jumping summons a thousand cuts attack on the 
 da.desc.obsidian_eye_desc=Used in the Obsidilith's arena.
 da.desc.voidiant_catalyst_desc=Right clicking will shoot a laser in your direction. Quicker reload time and higher damage if you are on fire.
 da.desc.voidiant_armor_desc=Getting hit charges this chestplate, when Runic particles appear and crouching you can do a blast attack at your position.
-da.desc.obsidian_shield_desc=Blocking attacks charges the shield. After 5 charges and sneaking and blocking you will summon a magic attack on the entity you are looking at.
+da.desc.obsidian_shield_desc=Blocking attacks charges the shield. After 5 charges and using the ability key you will release a magic attack at the entity you're looking at.
 da.desc.obsidian_locator_desc=The void seems to call your name...
 da.desc.void_hammer_desc=Right click releases 3 projectiles, Shift + Right Click summons forth a black hole. Additionally half of this weapons damage bypasses armor and does a sweep attack.
 da.desc.obsidian_armor_desc=Negates Levitation and Blindness. After taking damage multiple times and fire rune particles start spawning around you, By sneaking you can summons a fire wave around you.
 da.desc.flower_crown_desc=After taking several hits, the last entity that hit you will have void thorns summoned upon them.
-da.desc.void_staff_desc=Right click shoots a void bolt, sneaking and right clicking summons a void aoe. Being at full health provides extra damage.
 da.desc.void_staff_desc=Right click shoots a void bolt, sneaking and right clicking summons a void aoe. Being at full health provides extra damage.
 da.desc.sealed_tornado_desc=Right click will release a desert storm tornado before you.
 da.desc.gaelon_ingot_desc=Can repair any armor or weapons from Dungeon Additions!
@@ -681,7 +685,7 @@ advancements.da.kill_great_wyrk.description=Slay an Ancient Wyrk
 advancements.da.kill_imperial_halberd.title=The Definition of Forgotten.
 advancements.da.kill_imperial_halberd.description=Slay a High Court Halbidier
 #Kill Cult of Roh Assassin
-advancements.da.kill_dark_assassin.title=The Cult sends there regards!
+advancements.da.kill_dark_assassin.title=The Cult sends their regards!
 advancements.da.kill_dark_assassin.description=Slay a Cult of Roh Assassin
 #Kill the High King
 advancements.da.kill_high_king.title=Dethroned!

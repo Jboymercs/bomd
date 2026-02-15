@@ -35,6 +35,8 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
@@ -583,6 +585,58 @@ public class ModUtils {
                 if(entity.attackEntityFrom(damageSource, (float) damage)) {
                     double entitySizeFactor = avgEntitySize == 0 ? 1 : Math.max(0.5, Math.min(1, 1 / avgEntitySize));
                     double entitySizeFactorSq = Math.pow(entitySizeFactor, 2);
+
+                    // Velocity depends on the entity's size and the damage dealt squared
+                    Vec3d velocity = getCenter(entity.getEntityBoundingBox()).subtract(pos).normalize().scale(damageFactorSq).scale(knockbackFactor).scale(entitySizeFactorSq);
+                    entity.addVelocity(velocity.x, velocity.y, velocity.z);
+                }
+            }
+        });
+    }
+
+    //Add a potion effect upon successful hit
+    public static void handleAreaImpact(float radius, Function<Entity, Float> maxDamage, Entity source, Vec3d pos, DamageSource damageSource,
+                                        float knockbackFactor, int fireFactor, boolean damageDecay, Potion effectIn, int amflifier, int time) {
+        if (source == null) {
+            return;
+        }
+
+        List<Entity> list = source.world.getEntitiesWithinAABBExcludingEntity(source, new AxisAlignedBB(pos.x, pos.y, pos.z, pos.x, pos.y, pos.z).grow(radius));
+
+        Predicate<Entity> isInstance = i -> i instanceof EntityLivingBase || i instanceof MultiPartEntityPart || i.canBeCollidedWith();
+        double radiusSq = Math.pow(radius, 2);
+
+        list.stream().filter(isInstance).forEach((entity) -> {
+
+            // Get the hitbox size of the entity because otherwise explosions are less
+            // effective against larger mobs
+            double avgEntitySize = entity.getEntityBoundingBox().getAverageEdgeLength() * 0.75;
+
+            // Choose the closest distance from the center or the head to encourage
+            // headshots
+            double distance = Math.min(Math.min(getCenter(entity.getEntityBoundingBox()).distanceTo(pos),
+                            entity.getPositionVector().add(ModUtils.yVec(entity.getEyeHeight())).distanceTo(pos)),
+                    entity.getPositionVector().distanceTo(pos));
+
+            // Subtracting the average size makes it so that the full damage can be dealt
+            // with a direct hit
+            double adjustedDistance = Math.max(distance - avgEntitySize, 0);
+            double adjustedDistanceSq = Math.pow(adjustedDistance, 2);
+            double damageFactor = damageDecay ? Math.max(0, Math.min(1, (radiusSq - adjustedDistanceSq) / radiusSq)) : 1;
+
+            // Damage decays by the square to make missed impacts less powerful
+            double damageFactorSq = Math.pow(damageFactor, 2);
+            double damage = maxDamage.apply(entity) * damageFactorSq;
+            if (damage > 0 && adjustedDistanceSq < radiusSq) {
+                entity.setFire((int) (fireFactor * damageFactorSq));
+                if(entity.attackEntityFrom(damageSource, (float) damage)) {
+                    double entitySizeFactor = avgEntitySize == 0 ? 1 : Math.max(0.5, Math.min(1, 1 / avgEntitySize));
+                    double entitySizeFactorSq = Math.pow(entitySizeFactor, 2);
+
+                    //adds potion effect
+                    if(entity instanceof EntityLivingBase) {
+                        ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(effectIn, time, amflifier, false, true));
+                    }
 
                     // Velocity depends on the entity's size and the damage dealt squared
                     Vec3d velocity = getCenter(entity.getEntityBoundingBox()).subtract(pos).normalize().scale(damageFactorSq).scale(knockbackFactor).scale(entitySizeFactorSq);

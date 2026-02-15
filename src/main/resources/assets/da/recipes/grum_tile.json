@@ -6,10 +6,11 @@
   ],
   "key": {
     "V": {
-      "item": "da:gaelon_shard"
+      "item": "da:grum_brick"
     }
   },
   "result": {
-    "item": "da:gaelon_ingot"
+    "item": "da:grum_tile",
+    "count": 4
   }
 }

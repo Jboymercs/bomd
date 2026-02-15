@@ -28,8 +28,8 @@
         {
           "type": "item",
           "name": "da:silver_coin",
-          "weight": 1,
-          "count": 2
+          "weight": 2,
+          "count": 4
         }
       ]
     },

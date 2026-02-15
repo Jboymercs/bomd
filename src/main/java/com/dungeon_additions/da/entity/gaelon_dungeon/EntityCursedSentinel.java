@@ -24,6 +24,7 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -239,18 +240,30 @@ public class EntityCursedSentinel extends EntityGaelonBase implements IAnimatabl
 
       addEvent(()-> this.lockLook = true, 15);
       addEvent(()-> {
-          ProjectileFastGhostCrystal ghost_proj = new ProjectileFastGhostCrystal(world, this, this.getAttack());
-          this.playSound(SoundsHandler.VOLACTILE_SHOOT_CANNON, 1.5f, 0.4f / (world.rand.nextFloat() * 0.4f + 0.2f));
-          Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.3,2,0)));
-          ghost_proj.setPosition(relPos.x, relPos.y, relPos.z);
-          float inaccuracy = 0.0f;
-          float speed = 0.7f;
-          ghost_proj.shoot(this, 0, this.rotationYaw, 0.0F, speed, inaccuracy);
-          ghost_proj.rotationYaw = this.rotationYaw;
-          ghost_proj.setTravelRange(24);
-          world.spawnEntity(ghost_proj);
+          Vec3d targetedPos = target.getPositionEyes(1.0f).add(ModUtils.getRelativeOffset(this, new Vec3d(0, -0.25, 0)));
+          addEvent(()-> {
+              ProjectileFastGhostCrystal ghost_proj = new ProjectileFastGhostCrystal(world, this, this.getAttack());
+              Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.3,2,0)));
+              ghost_proj.setPosition(relPos.x, relPos.y, relPos.z);
+              this.playSound(SoundsHandler.VOLACTILE_SHOOT_CANNON, 1.5f, 0.4f / (world.rand.nextFloat() * 0.4f + 0.2f));
+              world.spawnEntity(ghost_proj);
+              Vec3d targetPos = targetedPos;
+
+              Vec3d fromTargetTooActor = this.getPositionVector().subtract(targetPos);
+              Vec3d lineDir = ModUtils.rotateVector2(fromTargetTooActor.crossProduct(ModUtils.Y_AXIS), fromTargetTooActor, 0).normalize().scale(0);
+              Vec3d lineStart = targetPos.subtract(lineDir);
+              Vec3d lineEnd = targetPos.add(lineDir);
+
+              float speed = (float) 0.7;
+
+              ModUtils.lineCallback(lineStart, lineEnd, 1, (pos, i) -> {
+                  ModUtils.throwProjectileNoSpawn(pos,ghost_proj,1F, speed);
+              });
+              ghost_proj.rotationYaw = this.rotationYaw;
+              ghost_proj.setTravelRange(24);
+          }, 6);
           this.setImmovable(true);
-      }, 25);
+      }, 19);
 
       addEvent(()-> {
         this.lockLook = false;
@@ -344,7 +357,7 @@ public class EntityCursedSentinel extends EntityGaelonBase implements IAnimatabl
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 0.5f, 0, false);
+            ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 0.5f, 0, false, MobEffects.BLINDNESS, 0, 60);
             world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
             this.playSound(SoundsHandler.VOIDCLYSM_IMPACT, 0.8f, 0.2f / (rand.nextFloat() * 0.4f + 0.2f));
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 1.2, 0)));

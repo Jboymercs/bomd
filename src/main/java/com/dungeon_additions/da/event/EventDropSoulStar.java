@@ -253,7 +253,7 @@ public class EventDropSoulStar {
             NBTTagCompound tags = leftInput.getTagCompound();
             output = new ItemStack(leftInput.getItem());
             int itemDamage = (int) ModUtils.getPercentageOf(leftInput.getMaxDamage(), leftInput.getItemDamage());
-            int calculatedDamage = (int) ModUtils.calculateValueWithPrecentage(output.getMaxDamage(), (itemDamage - 30));
+            int calculatedDamage = (int) ModUtils.calculateValueWithPrecentage(output.getMaxDamage(), (itemDamage - ModConfig.gaelon_ingot_heal_percentage));
             output.setItemDamage((calculatedDamage));
             output.setTagCompound(tags);
             event.setOutput(output);

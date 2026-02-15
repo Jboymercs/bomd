@@ -346,7 +346,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
             prevAttack = ModRand.choice(attacksMelee, rand, weights).next();
             prevAttack.accept(target);
         }
-        return this.isHasPhaseTransitioned() ? 10 : this.isEnraged() ? 60 : 110;
+        return this.isHasPhaseTransitioned() ? 10 : this.isEnraged() ? 60 : 120;
     }
 
     private final Consumer<EntityLivingBase> jump_slam = (target) -> {

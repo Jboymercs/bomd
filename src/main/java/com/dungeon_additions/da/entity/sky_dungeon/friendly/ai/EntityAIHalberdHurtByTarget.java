@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.sky_dungeon.friendly.ai;
 
+import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
 import com.dungeon_additions.da.entity.sky_dungeon.friendly.EntityFriendlyHalberd;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,8 +22,8 @@ public class EntityAIHalberdHurtByTarget extends EntityAITarget {
     {
         EntityLivingBase entitylivingbase = this.tameable.getOwner();
 
-        if(entitylivingbase instanceof EntityFriendWyrk) {
-            if(((EntityFriendWyrk) entitylivingbase).getOwner() == this.tameable.getOwner()) {
+        if(entitylivingbase instanceof EntityAbstractBase) {
+            if(((EntityAbstractBase) entitylivingbase).isFriendlyCreature) {
                 return false;
             }
         }

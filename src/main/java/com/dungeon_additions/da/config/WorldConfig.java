@@ -8,7 +8,7 @@ public class WorldConfig {
     @Config.Name("Void Blossom Cave Weight")
     @Config.Comment("Change the spacing between Void Blossom caves, lower means more frequent, higher means less")
     @Config.RequiresMcRestart
-    public static int void_blossom_cave_weight = 100;
+    public static int void_blossom_cave_weight = 130;
 
     @Config.Name("Void Blossom Arena Dimensions allowed in!")
     @Config.Comment("Take note that any ocean type biomes this structure will NOT spawn in, but you can select which dimension you'd like the structure to spawn in")
@@ -54,7 +54,7 @@ public class WorldConfig {
     @Config.Name("Burning Flame Arena Spawn Weight")
     @Config.Comment("Change the spawn weight of the Burning Flame Arena (The Nether Dungeon), higher number means lower frequency")
     @Config.RequiresMcRestart
-    public static int burning_arena_weight = 80;
+    public static int burning_arena_weight = 85;
 
     @Config.Name("Burning Flame Arena Size")
     @Config.Comment("Change the size of the Burning Flame Arena, basically how many extra pieces are added onto the boss arena")
@@ -114,7 +114,7 @@ public class WorldConfig {
     @Config.Name("Rotten Hold Spawn Weight")
     @Config.Comment("Change the spacing between each Rotten Hold, higher means further apart, lower means closer. This number will not add to spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int rot_hold_spacing = 55;
+    public static int rot_hold_spacing = 85;
 
     @Config.Name("Rotten Hold Minimum Y")
     @Config.Comment("Change the minimum y the surface part of this structure can spawn at, the dungeon will always follow along with what the surface part is")
@@ -154,7 +154,7 @@ public class WorldConfig {
     @Config.Name("Night Lich Tower Spacing")
     @Config.Comment("Change the spacing between each Night Lich tower, higher means further apart, lower means closer. This number will not add to spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int lich_tower_spacing = 150;
+    public static int lich_tower_spacing = 175;
 
     @Config.Name("Night Lich Blacklisted Biome Types")
     @Config.Comment("Add Biome types that DISALLOW the Night Lich Tower from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
@@ -232,7 +232,7 @@ public class WorldConfig {
     @Config.Name("High Court City Spacing")
     @Config.Comment("Change the spacing between each High Court City, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int high_city_spacing = 220;
+    public static int high_city_spacing = 240;
 
     @Config.Name("High Court City Size")
     @Config.Comment("Change the size of the High Court City")
@@ -392,7 +392,7 @@ public class WorldConfig {
     @Config.Name("Mysterious Trader Post Spacing")
     @Config.Comment("Change the spacing between each Mysterious Trader Post, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int mysterious_trader_post_spacing = 95;
+    public static int mysterious_trader_post_spacing = 85;
 
     @Config.Name("Petrogloom Ore Gen")
     @Config.Comment("Allowed Dimension for Petrogloom to spawn in")

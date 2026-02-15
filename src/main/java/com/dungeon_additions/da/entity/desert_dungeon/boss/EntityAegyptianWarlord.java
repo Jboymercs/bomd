@@ -621,7 +621,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.3, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage =(float) (this.getAttack() * 1.25);
-                ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+                ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false, MobEffects.SLOWNESS, 0, 100);
             }
             this.playSound(SoundsHandler.WARLORD_SWING, 1.4f, 0.7f / (rand.nextFloat() * 0.5f + 0.2f));
         }, 30);

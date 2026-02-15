@@ -3,6 +3,7 @@ package com.dungeon_additions.da.items.shield;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.proxy.ClientProxy;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.BlockDispenser;
@@ -75,85 +76,13 @@ public class ItemDarkShield extends BOMDShieldItem implements IAnimatable {
         super.onBlockingDamage(shield, player);
     }
 
-    @Override
-    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        if (entityIn instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) entityIn;
-            if (stack == player.getActiveItemStack() && player.isSneaking() && hitCounter > 4) {
-                if(player.canBePushed()) {
-                    player.motionX = 0;
-                    player.motionY = 0;
-                    player.motionZ = 0;
-                }
-
-                player.world.playSound(player.posX + 0.5D, player.posY, player.posZ + 0.5D, SoundsHandler.B_KNIGHT_STOMP, SoundCategory.BLOCKS,(float) 1.0F, 1.0F, false);
-                //Do Quick AOE
-
-                if(!worldIn.isRemote) {
-                    ModUtils.circleCallback(1, 8, (pos) -> {
-                        pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
-                        int y = getSurfaceHeight(worldIn, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
-                        float damage = ModConfig.dark_shield_damage;
-                        if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
-                                player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
-                            damage = (float) (ModConfig.dark_shield_damage * ModConfig.dark_armor_multiplier);
-                        }
-                        EntityMoveTile spike = new EntityMoveTile(worldIn, player, damage);
-                        spike.setPosition(pos.x, y + 1, pos.z);
-                        BlockPos posToo = new BlockPos(pos.x, y, pos.z);
-                        spike.setOrigin(posToo, 5, posToo.getX() + 0.5D, posToo.getZ() + 0.5D);
-                        spike.setLocationAndAngles(posToo.getX() + 0.5D, y, posToo.getZ() + 0.5D, 0.0f, 0.0F);
-                        spike.setBlock(Blocks.STONE, 0);
-                        worldIn.spawnEntity(spike);
-                    });
-                    ModUtils.circleCallback(2, 16, (pos) -> {
-                        pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
-                        int y = getSurfaceHeight(worldIn, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
-                        float damage = ModConfig.dark_shield_damage;
-                        if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
-                                player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
-                            damage = (float) (ModConfig.dark_shield_damage * ModConfig.dark_armor_multiplier);
-                        }
-                        EntityMoveTile spike = new EntityMoveTile(worldIn, player, damage);
-                        spike.setPosition(pos.x, y + 1, pos.z);
-                        BlockPos posToo = new BlockPos(pos.x, y, pos.z);
-                        spike.setOrigin(posToo, 5, posToo.getX() + 0.5D, posToo.getZ() + 0.5D);
-                        spike.setLocationAndAngles(posToo.getX() + 0.5D, y, posToo.getZ() + 0.5D, 0.0f, 0.0F);
-                        spike.setBlock(Blocks.STONE, 0);
-                        worldIn.spawnEntity(spike);
-                    });
-                    ModUtils.circleCallback(3, 24, (pos) -> {
-                        pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
-                        int y = getSurfaceHeight(worldIn, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
-                        float damage = ModConfig.dark_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1);
-                        if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
-                                player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
-                            damage = (float) (ModConfig.dark_shield_damage * ModConfig.dark_armor_multiplier) + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1);
-                        }
-                        EntityMoveTile spike = new EntityMoveTile(worldIn, player, damage);
-                        spike.setPosition(pos.x, y + 1, pos.z);
-                        BlockPos posToo = new BlockPos(pos.x, y, pos.z);
-                        spike.setOrigin(posToo, 5, posToo.getX() + 0.5D, posToo.getZ() + 0.5D);
-                        spike.setLocationAndAngles(posToo.getX() + 0.5D, y, posToo.getZ() + 0.5D, 0.0f, 0.0F);
-                        spike.setBlock(Blocks.STONE, 0);
-                        worldIn.spawnEntity(spike);
-                    });
-
-                    player.resetActiveHand();
-                    player.disableShield(true);
-                    player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.dark_shield_cooldown * 20);
-                    this.hitCounter = 0;
-                }
-            }
-        }
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
         tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
+        tooltip.add(TextFormatting.GOLD + I18n.translateToLocal("description.dungeon_additions.shield_pre.name") + TextFormatting.AQUA + I18n.translateToLocal(ClientProxy.SHIELD_ABILITY.getDisplayName()));
         ItemBanner.appendHoverTextFromTileEntityTag(stack, tooltip);
     }
 
@@ -171,6 +100,82 @@ public class ItemDarkShield extends BOMDShieldItem implements IAnimatable {
         }
 
         return pos.getY();
+    }
+
+
+    @Override
+    public boolean onApplyButtonPressed(EntityPlayer player, World world, ItemStack stack){
+        if(this.hitCounter > 4 && stack == player.getActiveItemStack()) {
+            if(player.canBePushed()) {
+                player.motionX = 0;
+                player.motionY = 0;
+                player.motionZ = 0;
+            }
+
+            world.playSound(player, new BlockPos(player.posX, player.posY, player.posZ), SoundsHandler.B_KNIGHT_STOMP, SoundCategory.BLOCKS,(float) 1.0F, 1.0F);
+
+            //Do Quick AOE
+
+            if(!world.isRemote) {
+                ModUtils.circleCallback(1, 8, (pos) -> {
+                    pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
+                    int y = getSurfaceHeight(world, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
+                    float damage = ModConfig.dark_shield_damage;
+                    if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
+                            player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
+                        damage = (float) (ModConfig.dark_shield_damage * ModConfig.dark_armor_multiplier);
+                    }
+                    EntityMoveTile spike = new EntityMoveTile(world, player, damage);
+                    spike.setPosition(pos.x, y + 1, pos.z);
+                    BlockPos posToo = new BlockPos(pos.x, y, pos.z);
+                    spike.setOrigin(posToo, 5, posToo.getX() + 0.5D, posToo.getZ() + 0.5D);
+                    spike.setLocationAndAngles(posToo.getX() + 0.5D, y, posToo.getZ() + 0.5D, 0.0f, 0.0F);
+                    spike.setBlock(Blocks.STONE, 0);
+                    world.spawnEntity(spike);
+                });
+                ModUtils.circleCallback(2, 16, (pos) -> {
+                    pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
+                    int y = getSurfaceHeight(world, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
+                    float damage = ModConfig.dark_shield_damage;
+                    if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
+                            player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
+                        damage = (float) (ModConfig.dark_shield_damage * ModConfig.dark_armor_multiplier);
+                    }
+                    EntityMoveTile spike = new EntityMoveTile(world, player, damage);
+                    spike.setPosition(pos.x, y + 1, pos.z);
+                    BlockPos posToo = new BlockPos(pos.x, y, pos.z);
+                    spike.setOrigin(posToo, 5, posToo.getX() + 0.5D, posToo.getZ() + 0.5D);
+                    spike.setLocationAndAngles(posToo.getX() + 0.5D, y, posToo.getZ() + 0.5D, 0.0f, 0.0F);
+                    spike.setBlock(Blocks.STONE, 0);
+                    world.spawnEntity(spike);
+                });
+                ModUtils.circleCallback(3, 24, (pos) -> {
+                    pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
+                    int y = getSurfaceHeight(world, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
+                    float damage = ModConfig.dark_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1);
+                    if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
+                            player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
+                        damage = (float) (ModConfig.dark_shield_damage * ModConfig.dark_armor_multiplier) + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1);
+                    }
+                    EntityMoveTile spike = new EntityMoveTile(world, player, damage);
+                    spike.setPosition(pos.x, y + 1, pos.z);
+                    BlockPos posToo = new BlockPos(pos.x, y, pos.z);
+                    spike.setOrigin(posToo, 5, posToo.getX() + 0.5D, posToo.getZ() + 0.5D);
+                    spike.setLocationAndAngles(posToo.getX() + 0.5D, y, posToo.getZ() + 0.5D, 0.0f, 0.0F);
+                    spike.setBlock(Blocks.STONE, 0);
+                    world.spawnEntity(spike);
+                });
+
+                player.resetActiveHand();
+                player.disableShield(true);
+                player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.dark_shield_cooldown * 20);
+                this.hitCounter = 0;
+                return true;
+            }
+
+        }
+
+        return false;
     }
 
     @Override

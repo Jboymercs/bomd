@@ -65,6 +65,7 @@ public class Main {
         ModEntities.RegisterEntitySpawns();
         GameRegistry.registerWorldGenerator(new ModWorldGen(), 1);
         GameRegistry.registerWorldGenerator(new BOMDOreGen(), 1);
+        proxy.registerKeyBindings();
     }
 
     @Mod.EventHandler
