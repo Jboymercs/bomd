@@ -52,18 +52,20 @@ public class ProjectileDesertOrb extends Projectile {
 
     @Override
     protected void onHit(RayTraceResult result) {
-        if(!hasNoGravity && !world.isRemote) {
-            ProjectileThousandCuts cuts_projectile = new ProjectileThousandCuts(world, this.shootingEntity, this.getDamage());
-            cuts_projectile.setPosition(this.posX, this.posY + 2, this.posZ);
-            world.spawnEntity(cuts_projectile);
-        }
-        DamageSource source = ModDamageSource.builder()
-                .type(ModDamageSource.MAGIC)
-                .directEntity(this)
-                .indirectEntity(shootingEntity)
-                .stoppedByArmorNotShields().build();
+        if(shootingEntity != null) {
+            if (!hasNoGravity && !world.isRemote) {
+                ProjectileThousandCuts cuts_projectile = new ProjectileThousandCuts(world, this.shootingEntity, this.getDamage());
+                cuts_projectile.setPosition(this.posX, this.posY + 2, this.posZ);
+                world.spawnEntity(cuts_projectile);
+            }
+            DamageSource source = ModDamageSource.builder()
+                    .type(ModDamageSource.MAGIC)
+                    .directEntity(this)
+                    .indirectEntity(shootingEntity)
+                    .stoppedByArmorNotShields().build();
 
-        ModUtils.handleBulletImpact(result.entityHit, this, this.getDamage(), source);
+            ModUtils.handleBulletImpact(result.entityHit, this, this.getDamage(), source);
+        }
         this.playSound(SoundEvents.BLOCK_STONE_BREAK, 0.8f, 0.8f / (rand.nextFloat() * 0.4f + 0.4f));
         super.onHit(result);
     }

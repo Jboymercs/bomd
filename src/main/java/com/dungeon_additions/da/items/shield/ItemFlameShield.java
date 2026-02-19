@@ -93,12 +93,8 @@ public class ItemFlameShield extends BOMDShieldItem implements IAnimatable {
                 hitCounter--;
                 usedHitCounter++;
 
-                float damage = ModConfig.incendium_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1);
+                float damage = (ModConfig.incendium_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1)) * ModUtils.addDarkArmorBonusMultiplier(player, 1);
 
-                if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
-                        player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
-                    damage = (float) (ModConfig.incendium_shield_damage * ModConfig.dark_armor_multiplier) + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1);
-                }
                 if(!world.isRemote) {
                     ProjectileFlameSpit spit = new ProjectileFlameSpit(world, player, damage);
                     Vec3d playerLookVec = player.getLookVec();

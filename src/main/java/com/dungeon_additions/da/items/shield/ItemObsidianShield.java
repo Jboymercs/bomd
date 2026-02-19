@@ -91,11 +91,7 @@ public class ItemObsidianShield extends BOMDShieldItem implements IAnimatable {
             if (entityFound != null) {
 
                 //Do Quick AOE
-                float damage = ModConfig.obsidilith_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1.25F);
-                if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
-                        player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
-                    damage = (float) (ModConfig.obsidilith_shield_damage * ModConfig.dark_armor_multiplier) + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1.25F);
-                }
+                float damage = (ModConfig.obsidilith_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1.25F)) * ModUtils.addDarkArmorBonusMultiplier(player, 1);
 
                     if(entityFound instanceof EntityLivingBase) {
                         player.world.playSound(player.posX + 0.5D, player.posY, player.posZ + 0.5D, SoundsHandler.OBSIDILITH_CAST, SoundCategory.BLOCKS,(float) 1.0F, 1.0F, false);

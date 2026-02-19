@@ -433,7 +433,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
 
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
-            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(1));
+            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(2));
             this.lockLook = true;
             this.setImmovable(false);
             addEvent(()-> {
@@ -458,7 +458,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
 
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
-            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(1));
+            Vec3d targetedPos = target.getPositionVector().add(posSet.scale(2));
             this.lockLook = true;
             this.setImmovable(false);
             addEvent(()-> {

@@ -702,9 +702,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                 Main.proxy.spawnParticle(23, posV.x, lineStart.y, posV.z, 0, 0.03, 0, 16763721);
             });
             //adds several hit points during this dash
-            for(int i = 0; i <= 40; i += 5) {
+            for(int i = 0; i <= 60; i += 5) {
                 addEvent(()-> {
-                    Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2, 0.5, 0)));
+                    Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 0.5, 0)));
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                     float damage = (float) (this.getAttack() * 1.25);
                     ModUtils.handleAreaImpact(2.4f, (e) -> damage, this, offset, source, 0.3f, 0, false);
@@ -766,9 +766,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
               });
 
               //adds several hit points during this dash
-              for(int i = 0; i <= 40; i += 5) {
+              for(int i = 0; i <= 60; i += 5) {
                   addEvent(()-> {
-                      Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2, 0.5, 0)));
+                      Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 0.5, 0)));
                       DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                       float damage = (float) (this.getAttack() * 1.25);
                       ModUtils.handleAreaImpact(2.4f, (e) -> damage, this, offset, source, 0.3f, 0, false);
@@ -868,9 +868,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                     Main.proxy.spawnParticle(23, posV.x, lineStart.y, posV.z, 0, 0.03, 0, 16763721);
                 });
                 //adds several hit points during this dash
-                for(int i = 0; i <= 40; i += 5) {
+                for(int i = 0; i <= 60; i += 5) {
                     addEvent(()-> {
-                        Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2, 0.5, 0)));
+                        Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 0.5, 0)));
                         DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                         float damage = (float) (this.getAttack() * 1.25);
                         ModUtils.handleAreaImpact(2.4f, (e) -> damage, this, offset, source, 0.3f, 0, false);

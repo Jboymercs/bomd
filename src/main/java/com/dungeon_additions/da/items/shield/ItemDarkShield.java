@@ -120,11 +120,8 @@ public class ItemDarkShield extends BOMDShieldItem implements IAnimatable {
                 ModUtils.circleCallback(1, 8, (pos) -> {
                     pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
                     int y = getSurfaceHeight(world, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
-                    float damage = ModConfig.dark_shield_damage;
-                    if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
-                            player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
-                        damage = (float) (ModConfig.dark_shield_damage * ModConfig.dark_armor_multiplier);
-                    }
+                    float damage = (ModConfig.dark_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1)) * ModUtils.addDarkArmorBonusMultiplier(player, 1);
+
                     EntityMoveTile spike = new EntityMoveTile(world, player, damage);
                     spike.setPosition(pos.x, y + 1, pos.z);
                     BlockPos posToo = new BlockPos(pos.x, y, pos.z);
@@ -136,11 +133,8 @@ public class ItemDarkShield extends BOMDShieldItem implements IAnimatable {
                 ModUtils.circleCallback(2, 16, (pos) -> {
                     pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
                     int y = getSurfaceHeight(world, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
-                    float damage = ModConfig.dark_shield_damage;
-                    if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
-                            player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
-                        damage = (float) (ModConfig.dark_shield_damage * ModConfig.dark_armor_multiplier);
-                    }
+                    float damage = (ModConfig.dark_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1)) * ModUtils.addDarkArmorBonusMultiplier(player, 1);
+
                     EntityMoveTile spike = new EntityMoveTile(world, player, damage);
                     spike.setPosition(pos.x, y + 1, pos.z);
                     BlockPos posToo = new BlockPos(pos.x, y, pos.z);
@@ -152,11 +146,8 @@ public class ItemDarkShield extends BOMDShieldItem implements IAnimatable {
                 ModUtils.circleCallback(3, 24, (pos) -> {
                     pos = new Vec3d(pos.x, 0, pos.y).add(player.getPositionVector());
                     int y = getSurfaceHeight(world, new BlockPos(pos.x, 0, pos.z), (int) player.posY - 5, (int) player.posY + 2);
-                    float damage = ModConfig.dark_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1);
-                    if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
-                            player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
-                        damage = (float) (ModConfig.dark_shield_damage * ModConfig.dark_armor_multiplier) + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1);
-                    }
+                    float damage = (ModConfig.dark_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1)) * ModUtils.addDarkArmorBonusMultiplier(player, 1);
+
                     EntityMoveTile spike = new EntityMoveTile(world, player, damage);
                     spike.setPosition(pos.x, y + 1, pos.z);
                     BlockPos posToo = new BlockPos(pos.x, y, pos.z);

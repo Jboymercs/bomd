@@ -286,6 +286,23 @@ public class ModUtils {
         return bonusDamage;
     }
 
+
+    public static float addDarkArmorBonusMultiplier(EntityPlayer player, float baseModifier) {
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET) {
+            baseModifier += (float) ModConfig.dark_armor_multiplier;
+        }
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE) {
+            baseModifier += (float) ModConfig.dark_armor_main_multiplier;
+        }
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS) {
+            baseModifier += (float) ModConfig.dark_armor_main_multiplier;
+        }
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
+            baseModifier += (float) ModConfig.dark_armor_multiplier;
+        }
+        return baseModifier;
+    }
+
     public static BlockPos searchForBlocksObsdilith(AxisAlignedBB box, World world, Entity entity, IBlockState block) {
         int i = MathHelper.floor(box.minX);
         int j = MathHelper.floor(box.minY);

@@ -1316,7 +1316,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
               world.spawnEntity(spike);
           });
 
-          ModUtils.circleCallback(15, 20, (pos)-> {
+          ModUtils.circleCallback(14, 20, (pos)-> {
               pos = new Vec3d(pos.x, 0, pos.y).add(this.getPositionVector());
               int y = ModUtils.getSurfaceHeightGeneral(world, new BlockPos(pos.x, 0, pos.z), (int) this.posY - 5, (int) this.posY + 7);
               EntityDelayedExplosion spike = new EntityDelayedExplosion(world, this, this.getAttack(), true, false);

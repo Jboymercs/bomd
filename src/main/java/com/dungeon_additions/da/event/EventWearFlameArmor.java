@@ -123,7 +123,7 @@ public class EventWearFlameArmor {
                     if(!sigil_trinket.isEmpty() && !player.getCooldownTracker().hasCooldown(sigil_trinket.getItem()) && player.isSneaking() &&
                     player.getAttackingEntity() != null && player.ticksExisted % 2 == 0) {
 
-                        EntityColossusSigil sigil = new EntityColossusSigil(player.world, player, PotionTrinketConfig.golden_ritual_damage, true);
+                        EntityColossusSigil sigil = new EntityColossusSigil(player.world, player, PotionTrinketConfig.golden_ritual_damage + ModUtils.addMageSetBonus(player, 0), true);
                         sigil.setPosition(player.posX, player.posY + 2, player.posZ);
                         player.world.spawnEntity(sigil);
                         sigil_trinket.damageItem(1, player);

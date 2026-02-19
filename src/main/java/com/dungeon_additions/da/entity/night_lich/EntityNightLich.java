@@ -171,12 +171,13 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
     private int rageModeTimer = 0;
     private boolean hasRagedRecently = false;
-
+    private int explosiveLineAttackCooldown = 600;
 
     @Override
     public void onUpdate() {
         super.onUpdate();
 
+        this.explosiveLineAttackCooldown--;
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
         if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features && MobConfig.night_lich_boss_music) {
             this.playMusic(this);
@@ -316,7 +317,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                     (shoot_magic_projectiles != prevAttack && !this.isAngeredState()) ? distance * 0.02 : 0,
                     (shoot_magic_fireball != prevAttack && !this.isAngeredState()) ? distance * 0.02 : 0,
                     //Explosive Line Attack
-                    (explosive_line_attack != prevAttack && HealthChange <= 0.6) ? distance * 0.02 : 0, //Explosive Line Attack testing
+                    (explosive_line_attack != prevAttack && HealthChange <= 0.6) && explosiveLineAttackCooldown < 0 ? distance * 0.02 : 0, //Explosive Line Attack testing
                     (summon_mobs != prevAttack && !this.isAngeredState() && current_mobs.size() <= MobConfig.lich_active_mob_count + (playersNearbyAmount * MobConfig.lich_active_mob_count_multiplayer)) ? distance * 0.02 : 0,
                     //PHASE TWO 0-75% HP
                     (combo_magic != prevAttack && !this.isAngeredState() && HealthChange <= 0.75) ? distance * 0.02 : 0,
@@ -426,15 +427,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
       this.hasRagedRecently = true;
       this.animationLength = 130;
       this.setFightMode(true);
-        List<EntityPlayer> soundSender = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue()), e -> !e.getIsInvulnerable());
-        if(!soundSender.isEmpty()) {
-            for(EntityPlayer player : soundSender) {
-                //play world sound
-                if(!player.isSpectator() && !player.isCreative()) {
-                    BlockPos pos = player.getPosition();
-                    world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundsHandler.LICH_RAGE_PREPARE, SoundCategory.HOSTILE, 1.5F, world.rand.nextFloat() * 0.7F + 0.4F, false);
-                }}
-        }
+        this.playSound(SoundsHandler.LICH_RAGE_PREPARE, 4.0f, 1.F);
       //some silly sounds and a crazy attack
         addEvent(()-> {
             List<EntityPlayer> targets = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue()), e -> !e.getIsInvulnerable());
@@ -559,6 +552,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         }, 105);
 
         addEvent(()-> {
+            this.explosiveLineAttackCooldown = 500;
             this.setExplosiveLine(false);
             this.setFightMode(false);
         }, 115);
@@ -566,7 +560,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
     private final Consumer<EntityLivingBase> combo_aoe_dash = (target) -> {
         this.animationLength = 125;
-        this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+        this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       this.setComboAoeAttack(true);
       this.setFightMode(true);
 
@@ -575,7 +569,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             this.clearCurrentVelocity = true;
         }, 20);
 
-        addEvent(()-> this.playSound(SoundsHandler.LICH_USE_SPEAR, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 25);
+        addEvent(()-> this.playSound(SoundsHandler.LICH_USE_SPEAR, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 25);
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
             Vec3d softTargetPos = target.getPositionVector().add(posSet.scale(-4));
@@ -584,7 +578,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             addEvent(()-> {
                 if(y != 0) {
                     new ActionLichTeleport(ModColors.AZURE, new Vec3d(softTargetPos.x, y + 1, softTargetPos.z)).performAction(this, target);
-                    this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
+                    this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 3.5f, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
                     this.destroyCloseBlocks = true;
                     addEvent(()-> {
                         this.setImmovable(true);
@@ -606,7 +600,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
                 } else {
                     new ActionLichTeleport(ModColors.AZURE, new Vec3d(softTargetPos.x, target.posY, softTargetPos.z)).performAction(this, target);
-                    this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
+                    this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 3.5f, 0.8F / (rand.nextFloat() * 0.4F + 0.6F));
                     this.destroyCloseBlocks = true;
                     addEvent(()-> {
                         this.setImmovable(true);
@@ -803,7 +797,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
     private final Consumer<EntityLivingBase> green_attack = (target) -> {
         double healthCurr = this.getHealth() / this.getMaxHealth();
-        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
         if(!this.isAngeredState() && healthCurr >= 0.5) {
             this.setStateChange = true;
         }
@@ -893,7 +887,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     };
     private final Consumer<EntityLivingBase> dash_attack_red = (target) -> {
         this.animationLength = 95;
-        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
         double healthCurr = this.getHealth() / this.getMaxHealth();
         if(!this.isAngeredState() && healthCurr >= 0.75) {
             this.setStateChange = true;
@@ -979,7 +973,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     };
     private final Consumer<EntityLivingBase> throw_staff = (target) -> {
         this.animationLength = 110;
-        this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+        this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       this.setFightMode(true);
       this.setThrowStaff(true);
 
@@ -987,7 +981,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
           doesBossSlowDown = true;
       }, 20);
 
-      addEvent(()-> this.playSound(SoundsHandler.LICH_USE_SPEAR, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 40);
+      addEvent(()-> this.playSound(SoundsHandler.LICH_USE_SPEAR, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 40);
       addEvent(()-> {
           List<EntityPlayer> targets = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue()), e -> !e.getIsInvulnerable());
 
@@ -1014,7 +1008,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     private final Consumer<EntityLivingBase> combo_magic = (target) -> {
         this.animationLength = 105;
         this.doesBossSlowDown = true;
-        this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+        this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       this.setFightMode(true);
       this.setComboShootProjectiles(true);
 
@@ -1033,7 +1027,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.setStateChange = true;
         this.animationLength = 85;
         this.doesBossSlowDown = true;
-        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       this.setFightMode(true);
       this.setPurpleAttack(true);
 
@@ -1050,7 +1044,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     };
     private final Consumer<EntityLivingBase> shoot_magic_fireball = (target) -> {
         this.animationLength = 85;
-        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       this.setFightMode(true);
       this.setYellowAttack(true);
 
@@ -1060,7 +1054,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
           this.setImmovable(true);
           this.clearCurrentVelocity = true;
       }, 25);
-      addEvent(()-> this.playSound(SoundsHandler.LICH_PREPARE_FIREBALL, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 30);
+      addEvent(()-> this.playSound(SoundsHandler.LICH_PREPARE_FIREBALL, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 30);
       addEvent(()-> new ActionShootFireball().performAction(this, target), 60);
       addEvent(()-> {
           this.setImmovable(false);
@@ -1075,12 +1069,12 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
     private final Consumer<EntityLivingBase> shoot_magic_projectiles = (target) -> {
         this.animationLength = 85;
-        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+        this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
         this.setFightMode(true);
         this.setBlueAttack(true);
 
         addEvent(()-> {
-            this.playSound(SoundsHandler.LICH_PREPARE_MISSILE, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
+            this.playSound(SoundsHandler.LICH_PREPARE_MISSILE, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
             new ActionShootMagic().performAction(this, target);
             }, 30);
 

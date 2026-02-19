@@ -76,13 +76,8 @@ public class ItemEveratorShield extends BOMDShieldItem implements IAnimatable {
         if (stack == player.getActiveItemStack() && hitCounter > 2) {
             world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.COLOSSUS_HILT_SLAM, SoundCategory.NEUTRAL, 1f, 0.7f / (world.rand.nextFloat() * 0.4F + 0.2f));
             if(!world.isRemote) {
-                float damage = 0;
-                if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
-                        player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
-                    damage = (float) ((1) * ModConfig.dark_armor_multiplier) + hitCounter + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1F);
-                } else {
-                    damage = (float) (1 + hitCounter + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1F));
-                }
+                float damage = (float) (1 + hitCounter + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1F)) * ModUtils.addDarkArmorBonusMultiplier(player, 1);
+
                 ProjectileYellowWave wave = new ProjectileYellowWave(world, player, damage, null, true);
                 wave.shoot(player, 0, player.rotationYaw, 0F, 0.6F, 0F);
                 wave.setPosition(player.posX, player.posY, player.posZ);

@@ -1,6 +1,6 @@
 package com.dungeon_additions.da.world.forgotten_temple;
 
-import com.deeperdepths.common.world.chambers.TrialChambersTemplate;
+
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.util.ModRand;
 import com.google.common.collect.Lists;
@@ -124,7 +124,7 @@ public class ForgottenTemple {
 
     private boolean constructStraight(ForgottenTempleTemplate parent, BlockPos pos, Rotation rot) {
         String[] small_straight_types = {"small/straight_1","small/straight_2","small/straight_3","small/straight_4","small/straight_5","small/straight_6"};
-        String[] big_straight_types = {"big/b_straight_4","big/b_straight_5","big/b_straight_6"};
+        String[] big_straight_types = {"big/b_straight_4","big/b_straight_5","big/b_straight_6","big/b_straight_5","big/b_straight_6"};
         String[] modified_big_straight_types = {"big/b_straight_1","big/b_straight_2"};
         ForgottenTempleTemplate hallway;
         int randI = ModRand.range(1, 11);
@@ -201,9 +201,9 @@ public class ForgottenTemple {
         if(randI <= 5) {
             int randB = ModRand.range(1, 10);
             if(randB <= 3) {
-                if(!generatedMiniBossRoomOne) {
+                if(!generatedMiniBossRoomTwo) {
                     crossway = addAdjustedPiece(parent, pos.add(0, -12, 0), "big/b_cross_2", rot);
-                    generatedMiniBossRoomOne = true;
+                    generatedMiniBossRoomTwo= true;
                 } else {
                     crossway = addAdjustedPiece(parent, pos.add(0, -12, 0), "big/b_cross_1", rot);
                 }

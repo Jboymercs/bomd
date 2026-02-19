@@ -96,7 +96,7 @@ public class ItemParrySword extends ToolSword {
             EntityPlayer player = ((EntityPlayer) entityIn);
             boolean didBlockDamage = false;
 
-            if(player.ticksExisted < currentLife + 10) {
+            if(player.ticksExisted < currentLife + 13) {
                 if(player.hurtTime > 0) {
                     didBlockDamage = true;
                 }
@@ -107,7 +107,9 @@ public class ItemParrySword extends ToolSword {
                     assert attacker != null;
                     float damage = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET ? (float) (8 * ModConfig.incendium_helmet_multipler) + ModUtils.addAbilityBonusDamage(player.getHeldItemMainhand(), 2): 8 + ModUtils.addAbilityBonusDamage(player.getHeldItemMainhand(), 2);
                     attacker.attackEntityFrom(ModUtils.causeAxeDamage(player).setDamageBypassesArmor(), damage);
-                    attacker.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1, false, false));
+                    if(attacker instanceof EntityLivingBase) {
+                        attacker.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1, false, false));
+                    }
                     worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.IMPERIAL_SWORD_PARRY, SoundCategory.NEUTRAL, 1.0f, 0.8f / (worldIn.rand.nextFloat() * 0.4F + 0.3f));
                     this.isParrying = false;
                     player.stopActiveHand();
@@ -134,6 +136,13 @@ public class ItemParrySword extends ToolSword {
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged)
     {
         return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean isFull3D()
+    {
+        return true;
     }
 
     @Override

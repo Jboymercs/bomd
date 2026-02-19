@@ -3,6 +3,7 @@ package com.dungeon_additions.da.event;
 
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.items.shield.BOMDShieldItem;
+import com.dungeon_additions.da.items.tools.ItemExaltedKopis;
 import com.dungeon_additions.da.items.tools.ItemParrySword;
 import com.dungeon_additions.da.packets.PacketControlInput;
 import com.dungeon_additions.da.proxy.ClientProxy;
@@ -31,7 +32,7 @@ public class ClientEventHandler {
     public static void onRenderHand(RenderSpecificHandEvent event)
     {
         EntityPlayerSP player = mc.player;
-        if (player != null && player.isHandActive() && player.getActiveHand() == event.getHand() && player.getHeldItem(player.getActiveHand()).getItem() instanceof ItemParrySword)
+        if (player != null && player.isHandActive() && player.getActiveHand() == event.getHand() && (player.getHeldItem(player.getActiveHand()).getItem() instanceof ItemParrySword || player.getHeldItem(player.getActiveHand()).getItem() instanceof ItemExaltedKopis))
         {
             GlStateManager.pushMatrix();
             boolean rightHanded = (((event.getHand() == EnumHand.MAIN_HAND) ? player.getPrimaryHand() : player.getPrimaryHand().opposite()) == EnumHandSide.RIGHT);

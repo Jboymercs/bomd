@@ -144,14 +144,10 @@ public class ItemDraugrShield extends BOMDShieldItem implements IAnimatable {
 
     public void onEnemyRammed(EntityLivingBase user, EntityLivingBase enemy, Vec3d rammingDir) {
         boolean attacked = false;
-        float damage = ModConfig.frostborn_shield_damage + ModUtils.addShieldBonusDamage(user.getHeldItemOffhand(), 1.5F);
+        float damage = (ModConfig.frostborn_shield_damage + ModUtils.addShieldBonusDamage(user.getHeldItemOffhand(), 1.5F));
 
         if(user instanceof EntityPlayer) {
-            EntityPlayer actor = ((EntityPlayer) user);
-            if(actor.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET && actor.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.DARK_METAL_CHESTPLATE &&
-                    actor.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.DARK_METAL_LEGGINGS && actor.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
-                damage = (float) (ModConfig.frostborn_shield_damage * ModConfig.dark_armor_multiplier) + ModUtils.addShieldBonusDamage(user.getHeldItemOffhand(), 1.5F);
-            }
+            damage = (ModConfig.frostborn_shield_damage + ModUtils.addShieldBonusDamage(user.getHeldItemOffhand(), 1.5F)) * ModUtils.addDarkArmorBonusMultiplier((EntityPlayer) user, 1);
         }
 
         if(user instanceof EntityPlayer) {

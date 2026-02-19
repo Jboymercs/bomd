@@ -132,7 +132,7 @@ public class ItemExaltedKopis extends ToolSword{
             } else if (player.getHeldItemMainhand().getItem() == this && isParrying) {
                     boolean didBlockDamage = false;
 
-                    if (player.ticksExisted < currentLife + 13) {
+                    if (player.ticksExisted < currentLife + 11) {
                         if (player.hurtTime > 0) {
                             didBlockDamage = true;
                         }
@@ -141,7 +141,9 @@ public class ItemExaltedKopis extends ToolSword{
                         if (didBlockDamage && !this.dealtDamage) {
                             EntityLivingBase attacker = player.getAttackingEntity();
                             assert attacker != null;
-                            attacker.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1, false, false));
+                            if(attacker instanceof EntityLivingBase) {
+                                attacker.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1, false, false));
+                            }
                             worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.IMPERIAL_SWORD_PARRY, SoundCategory.NEUTRAL, 1.0f, 0.8f / (worldIn.rand.nextFloat() * 0.4F + 0.3f));
                             this.isParrying = false;
                             player.stopActiveHand();

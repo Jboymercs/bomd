@@ -292,9 +292,9 @@ public class MobConfig {
     public static double volactile_projectile_resistance = 0.6;
 
     @Config.Name("Volactile Summoning Radius")
-    @Config.Comment("Change how far the Flame orb to summon the Volactile Spirit detects for any dungeon mobs. if this check finds mobs, it will not summon the mini-boss")
+    @Config.Comment("Change how far the Flame orb to summon the Volactile Spirit detects for any dungeon mobs. If this check finds mobs, it will not summon the mini-boss")
     @Config.RequiresMcRestart
-    public static double volactile_ritual_radius = 24;
+    public static double volactile_ritual_radius = 18;
 
     @Config.Name("Volactile Damage Cap")
     @Config.Comment("Change the damage cap of how much damage can be done at one time to the Volactile Spirit. Disable this feature entirely in general_config")
@@ -302,7 +302,7 @@ public class MobConfig {
     public static float volactile_damage_cap = 25;
 
     @Config.Name("Knight of Burning Flame Armor")
-    @Config.Comment("Change the armor value of the this boss (Knight of Burning Flame)")
+    @Config.Comment("Change the armor value of the Knight of Burning Flame")
     @Config.RequiresMcRestart
     public static double burning_knight_armor = 16;
 
@@ -314,7 +314,7 @@ public class MobConfig {
     @Config.Name("Knight of Burning Flame Attack Damage")
     @Config.Comment("Change the attack damage of this boss (Knight of Burning Flame)")
     @Config.RequiresMcRestart
-    public static double burning_knight_damage = 27;
+    public static double burning_knight_damage = 26;
 
     @Config.Name("Knight of Burning Flame Health")
     @Config.Comment("Change the health of this boss (Knight of Burning Flame)")
@@ -327,7 +327,7 @@ public class MobConfig {
     public static double burning_knight_block_cooldown = 3.5;
 
     @Config.Name("Knight of Burning Flame Health Potion Amount")
-    @Config.Comment("Change the amount of health healed when the Knight of Burning Flame uses a health potion. this is measured in X / Maxhealth. so .07 would be 7% of it's max health")
+    @Config.Comment("Change the amount of health healed when the Knight of Burning Flame uses a health potion. This is measured in X / Maxhealth. So .07 would be 7% of it's max health")
     @Config.RequiresMcRestart
     public static double burning_knight_heal_amount = 0.07;
 
@@ -472,7 +472,7 @@ public class MobConfig {
     public static double night_lich_attack_damage = 30;
 
     @Config.Name("Night Lich Staff AOE Damage Multiplier")
-    @Config.Comment("Change the damage done by the Lich's staffs in the AOE attacks, used by baseAttackDamage * x")
+    @Config.Comment("Change the damage done by the Lich's spears in the AOE attacks, used by baseAttackDamage * x")
     @Config.RequiresMcRestart
     public static double night_lich_staff_multiplier = 1.25;
 
@@ -546,7 +546,7 @@ public class MobConfig {
     public static double lich_movement_speed = 0.1;
 
     @Config.Name("Night Lich Flying Speed Combat")
-    @Config.Comment("Change the Night Lich's speed when doing certain attacks in the air, this will make the boss slower so its easier to hit")
+    @Config.Comment("Change the Night Lich's speed when doing certain attacks in the air, this will make the boss slower so it's easier to hit")
     @Config.RequiresMcRestart
     public static double lich_movement_speed_combat = 0.055;
 
@@ -671,7 +671,7 @@ public class MobConfig {
     public static boolean cult_sorcerer_status = true;
 
     @Config.Name("Cult of Roh Crypt Guard Undead Enable/Disable")
-    @Config.Comment("Change if the Cult of Roh Assassin classifies as undead or not. Default: true")
+    @Config.Comment("Change if the Cult of Roh Crypt Guard classifies as undead or not. Default: true")
     @Config.RequiresMcRestart
     public static boolean cult_crypt_guard_status = true;
 
@@ -895,7 +895,7 @@ public class MobConfig {
     public static double high_king_lifesteal_grab = 0.07;
 
     @Config.Name("The High King Blood Phase")
-    @Config.Comment("When set to true, this will disable all blood related attacks from the High King. This will still keep the Phase Transition, it will just cut out the Phrases")
+    @Config.Comment("When set to true, this will disable all blood related attacks from the High King. This will still keep the Phase Transition, it will just cut out the phase attacks.")
     @Config.RequiresMcRestart
     public static boolean disable_blood_attacks = false;
 

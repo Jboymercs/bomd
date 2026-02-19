@@ -24,7 +24,7 @@
     },
     {
       "name" : "da:voidclysm",
-      "rolls": 1,
+      "rolls": 2,
       "entries": [
         {
           "type": "item",
@@ -41,7 +41,7 @@
           "type": "item",
           "name": "da:silver_coin",
           "weight": 3,
-          "count": 4
+          "count": 5
         }
       ]
     },

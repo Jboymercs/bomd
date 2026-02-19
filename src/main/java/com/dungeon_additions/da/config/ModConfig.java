@@ -134,10 +134,15 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static float dark_shield_damage = 9;
 
-    @Config.Name("Dark Metal Full Armor Set Bonus")
-    @Config.Comment("Change how much shield damage is boosted when having the full Dark Metal Armor set equipped")
+    @Config.Name("Dark Metal Low Set Bonus")
+    @Config.Comment("Change how much shield damage multiplier is boosted when Dark Metal Boots and Helmet are worn")
     @Config.RequiresMcRestart
-    public static double dark_armor_multiplier = 1.8;
+    public static double dark_armor_multiplier = 0.2;
+
+    @Config.Name("Dark Metal High Set Bonus")
+    @Config.Comment("Change how much shield damage multiplier is boosted when Dark Metal Chestplate and Leggings are worn")
+    @Config.RequiresMcRestart
+    public static double dark_armor_main_multiplier = 0.3;
 
     @Config.Name("Dark Metal Sicle Cooldown")
     @Config.Comment("Change the cooldown of the Dark Metal Sicle ability, in seconds")
