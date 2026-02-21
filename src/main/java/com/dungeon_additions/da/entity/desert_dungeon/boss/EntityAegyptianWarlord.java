@@ -1045,6 +1045,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         } else if (this.inLowHealthState && this.isShielded() || this.getOtherBoss() == null) {
             if(this.getSpawnLocation() != null && this.getOtherBoss() == null && !world.isRemote) {
                 this.turnBossIntoSummonSpawner(this.getSpawnLocation());
+                this.createCoinSpawns(this.getPositionVector(), 0, ModRand.range(3, 5), 0);
             }
 
             if(this.getOtherBoss() == null) {

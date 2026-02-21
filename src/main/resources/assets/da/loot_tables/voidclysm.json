@@ -24,29 +24,6 @@
     },
     {
       "name" : "da:voidclysm",
-      "rolls": 2,
-      "entries": [
-        {
-          "type": "item",
-          "name": "da:golden_coin",
-          "weight": 1
-        }
-      ]
-    },
-    {
-      "name" : "da:voidclysm",
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "item",
-          "name": "da:silver_coin",
-          "weight": 3,
-          "count": 5
-        }
-      ]
-    },
-    {
-      "name" : "da:voidclysm",
       "rolls": 1,
       "entries": [
         {

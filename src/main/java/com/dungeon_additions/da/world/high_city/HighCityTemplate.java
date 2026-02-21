@@ -29,7 +29,7 @@ import java.util.Random;
 
 public class HighCityTemplate extends ModStructureTemplate {
 
-    private static final ResourceLocation LOOT = new ResourceLocation(ModReference.MOD_ID, "high_court_city");
+    private static final ResourceLocation LOOT = new ResourceLocation(ModReference.MOD_ID, WorldConfig.coins_spawn_in_chests ? "high_court_city" : "high_court_city_nc");
     private static final ResourceLocation LOOT_KEY = new ResourceLocation(ModReference.MOD_ID, "high_court_city_key");
     public HighCityTemplate(TemplateManager manager, String type, BlockPos pos, Rotation rot, int distance, boolean overWriteIn) {
         super(manager, type, pos,distance, rot, overWriteIn);

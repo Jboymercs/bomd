@@ -1459,6 +1459,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
                     TileEntityShulkerBox chest = (TileEntityShulkerBox) te;
                     chest.setLootTable(LOOT_MOB, rand.nextLong());
                 }
+                this.createCoinSpawns(new Vec3d(this.getSpawnLocation().getX() + 4, this.getSpawnLocation().getY() + 1, this.getSpawnLocation().getZ()), 0, ModRand.range(4, 6), 2);
             } else {
                 world.setBlockState(blockpos, Blocks.BLACK_SHULKER_BOX.getDefaultState());
                 TileEntity te = world.getTileEntity(blockpos);
@@ -1466,6 +1467,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
                     TileEntityShulkerBox chest = (TileEntityShulkerBox) te;
                     chest.setLootTable(LOOT_MOB, rand.nextLong());
                 }
+                this.createCoinSpawns(this.getPositionVector(), 0, ModRand.range(4, 6), 2);
             }
         }
     }

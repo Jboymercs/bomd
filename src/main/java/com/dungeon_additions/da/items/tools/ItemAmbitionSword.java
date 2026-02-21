@@ -43,7 +43,9 @@ public class ItemAmbitionSword extends ToolSword{
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.GOLD + ModUtils.translateDesc(info_loc));
-        tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
+        if(ModConfig.enable_scaling_tooltips) {
+            tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
+        }
     }
 
     @Override

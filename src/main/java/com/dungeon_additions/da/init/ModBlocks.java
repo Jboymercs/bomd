@@ -114,6 +114,8 @@ public class ModBlocks {
     public static final Block CITY_PILLAR_CHISLED = new BlockPillarBase("city_pillar_chisled", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block GOLD_CITY_BRICK = new BlockBase("gold_city_brick", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block GRUM_BRICKS = new BlockBase("grum_brick", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.GRUM_STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block CORALITE = new BlockBase("coralite", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block CORALITE_BRICKS = new BlockBase("coralite_brick", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.PETRO_GLOOM).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block GRUM_CHISLED = new BlockBase("grum_chisled", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.GRUM_STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block GRUM_STONE = new BlockBase("grum_stone", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.GRUM_STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
     public static final Block GRUM_SMOOTH = new BlockBase("grum_smooth", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.GRUM_STONE).setCreativeTab(DungeonAdditionsTab.BLOCKS);

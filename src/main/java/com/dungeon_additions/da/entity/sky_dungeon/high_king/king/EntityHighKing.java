@@ -2395,6 +2395,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         addEvent(()-> {
             if(this.getSpawnLocation() != null && !world.isRemote) {
                 this.turnBossIntoSummonSpawner(this.getSpawnLocation());
+                this.createCoinSpawns(this.getPositionVector(), 0, ModRand.range(5, 8), 4);
             }
             this.setDead();
             this.setDropItemsWhenDead(true);

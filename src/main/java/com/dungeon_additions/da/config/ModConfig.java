@@ -502,6 +502,11 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static boolean enable_crafting_tooltips = true;
 
+    @Config.Name("Enchantments Scale ToolTip")
+    @Config.Comment("Should Items listed as Enchantments scale weapon abilities tool tip appear. False will disable the tool tip")
+    @Config.RequiresMcRestart
+    public static boolean enable_scaling_tooltips = true;
+
     @Config.Name("Soul Star Block Deletion")
     @Config.Comment("Do Soul Star Altar blocks disappear when all are activated, set to false to disable")
     @Config.RequiresMcRestart
@@ -759,6 +764,11 @@ public class ModConfig {
             "da:colossus_mace",
             "da:everator_shield"
     };
+
+    @Config.Name("Bosses drop Trader Coins")
+    @Config.Comment("Change if bosses should drop the three tiers of Trader Coins in the mod. If set too false, they will not.")
+    @Config.RequiresMcRestart
+    public static boolean bosses_drop_trader_coins = true;
 
     @Config.Name("Boss Enraged State Enable/Disable")
     @Config.Comment("When enabled, when a boss is below a set health, there attack damage will increase. Set to false to disable entirely")

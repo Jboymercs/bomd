@@ -484,6 +484,7 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
         addEvent(()-> {
             if(this.getSpawnLocation() != null && !world.isRemote) {
                 this.turnBossIntoSummonSpawner(this.getSpawnLocation());
+                this.createCoinSpawns(this.getPositionVector(), ModRand.range(5, 8), 0, 0);
             }
             this.setDead();
             }, 71);

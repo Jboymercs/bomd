@@ -472,6 +472,8 @@ tile.litic_block.name=Block of Lithic Metal
 tile.aegyptia_block.name=Block of Aegyptian Metal
 tile.gaelon_spawner.name=Disappearing Gaelon Sanctuary Spawner
 tile.aegyptian_spawner.name=Skull of the Past
+tile.coralite_brick.name=Coralite Stonebricks
+tile.coralite.name=Coralite
 
 itemGroup.dungeon_additions=Dungeon Additions Items
 itemGroup.dungeon_additions_blocks=Dungeon Additions Blocks

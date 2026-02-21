@@ -656,6 +656,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         }
         if(this.getSpawnLocation() != null && !world.isRemote) {
             this.turnBossIntoSummonSpawner(this.getSpawnLocation());
+            this.createCoinSpawns(this.getPositionVector(), ModRand.range(4, 8), 1, 0);
         }
         super.onDeath(cause);
     }

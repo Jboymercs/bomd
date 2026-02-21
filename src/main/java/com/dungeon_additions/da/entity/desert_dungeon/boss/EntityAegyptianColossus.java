@@ -928,6 +928,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         } else if (this.inLowHealthState && this.isShielded() || this.getOtherBoss() == null) {
             if(this.getSpawnLocation() != null && this.getOtherBoss() == null) {
                 this.turnBossIntoSummonSpawner(this.getSpawnLocation());
+                this.createCoinSpawns(this.getPositionVector(), 0, ModRand.range(3, 5), 0);
             }
 
             if(this.getOtherBoss() == null) {

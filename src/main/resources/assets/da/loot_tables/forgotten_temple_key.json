@@ -53,20 +53,6 @@
         },
         {
           "type": "item",
-          "name": "da:copper_coin",
-          "weight": 9,
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "min": 1,
-                "max": 3
-              }
-            }
-          ]
-        },
-        {
-          "type": "item",
           "name": "minecraft:rabbit",
           "weight": 5,
           "functions": [
@@ -253,11 +239,6 @@
               }
             }
           ]
-        },
-        {
-          "type": "item",
-          "name": "da:silver_coin",
-          "weight": 13
         },
         {
           "type": "item",

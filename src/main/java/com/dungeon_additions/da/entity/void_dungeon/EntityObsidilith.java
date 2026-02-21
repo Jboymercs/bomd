@@ -408,6 +408,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
                     TileEntityShulkerBox chest = (TileEntityShulkerBox) te;
                     chest.setLootTable(LOOT_MOB, rand.nextLong());
                 }
+                this.createCoinSpawns(new Vec3d(this.getSpawnLocation().getX() + 4, this.getSpawnLocation().getY() + 1, this.getSpawnLocation().getZ()), 0, ModRand.range(3, 7), 0);
             } else {
                 world.setBlockState(blockpos, Blocks.PINK_SHULKER_BOX.getDefaultState());
                 TileEntity te = world.getTileEntity(blockpos);
@@ -415,6 +416,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
                     TileEntityShulkerBox chest = (TileEntityShulkerBox) te;
                     chest.setLootTable(LOOT_MOB, rand.nextLong());
                 }
+                this.createCoinSpawns(this.getPositionVector(), 0, ModRand.range(3, 7), 0);
             }
         }
     }

@@ -2657,6 +2657,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             //actual death
             if(this.getSpawnLocation() != null && !world.isRemote) {
                 this.turnBossIntoSummonSpawner(this.getSpawnLocation());
+                this.createCoinSpawns(this.getPositionVector(), ModRand.range(4, 6), ModRand.range(3,5), 2);
             }
             this.setDead();
             this.setDropItemsWhenDead(true);

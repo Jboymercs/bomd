@@ -29,10 +29,10 @@ import java.util.Random;
 
 public class FrozenCastleTemplate extends ModStructureTemplate {
 
-    private static final ResourceLocation LOOT = new ResourceLocation(ModReference.MOD_ID, "frozen_castle");
+    private static final ResourceLocation LOOT = new ResourceLocation(ModReference.MOD_ID, WorldConfig.coins_spawn_in_chests ? "frozen_castle" : "frozen_castle_nc");
     private static final ResourceLocation LOOT_KEY = new ResourceLocation(ModReference.MOD_ID, "frozen_castle_key");
 
-    private static final ResourceLocation LOOT_SECRET = new ResourceLocation(ModReference.MOD_ID, "frozen_castle_secret");
+    private static final ResourceLocation LOOT_SECRET = new ResourceLocation(ModReference.MOD_ID, WorldConfig.coins_spawn_in_chests ? "frozen_castle_secret" : "frozen_castle_secret_nc");
     private WorldGenCenterPiece[] structure_piece = {new WorldGenCenterPiece("piece_1"),new WorldGenCenterPiece("piece_2"),new WorldGenCenterPiece("piece_3"),
             new WorldGenCenterPiece("piece_4"),new WorldGenCenterPiece("piece_5")};
 

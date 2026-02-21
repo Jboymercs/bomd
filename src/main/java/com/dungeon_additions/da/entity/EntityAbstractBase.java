@@ -2,10 +2,9 @@ package com.dungeon_additions.da.entity;
 
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.pathing.MobGroundNavigate;
-import com.dungeon_additions.da.entity.util.EntityMusicPlayer;
+import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.ServerScaleUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,9 +15,11 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityEnderCrystal;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -288,6 +289,24 @@ public abstract class EntityAbstractBase extends EntityCreature {
             }
         }
         super.onLivingUpdate();
+    }
+
+
+    protected void createCoinSpawns(Vec3d pos, int copperAmount, int silverAmount, int goldenAmount) {
+        if(!world.isRemote && ModConfig.bosses_drop_trader_coins) {
+            if (copperAmount != 0) {
+                EntityItem itemToThrow = new EntityItem(world, pos.x, pos.y + 0.25, pos.z, new ItemStack(ModItems.COPPER_COIN, copperAmount + playersNearbyAmount + timesUsed));
+                world.spawnEntity(itemToThrow);
+            }
+            if (silverAmount != 0) {
+                EntityItem itemToThrow = new EntityItem(world, pos.x, pos.y + 0.25, pos.z, new ItemStack(ModItems.SILVER_COIN, silverAmount + playersNearbyAmount + timesUsed));
+                world.spawnEntity(itemToThrow);
+            }
+            if (goldenAmount != 0) {
+                EntityItem itemToThrow = new EntityItem(world, pos.x, pos.y + 0.25, pos.z, new ItemStack(ModItems.GOLDEN_COIN, goldenAmount + playersNearbyAmount + timesUsed));
+                world.spawnEntity(itemToThrow);
+            }
+        }
     }
 
     @Override

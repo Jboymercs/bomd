@@ -572,13 +572,13 @@
         {
           "type": "item",
           "name": "da:copper_coin",
-          "weight": 16,
+          "weight": 19,
           "functions": [
             {
               "function": "set_count",
               "count": {
-                "min": 1,
-                "max": 4
+                "min": 2,
+                "max": 6
               }
             }
           ]

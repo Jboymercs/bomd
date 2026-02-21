@@ -394,6 +394,11 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static int mysterious_trader_post_spacing = 85;
 
+    @Config.Name("Mysterious Trader Coins spawn in dungeon chests")
+    @Config.Comment("Should Trader Coins spawn in dungeon chests throughout Dungeon Additions")
+    @Config.RequiresMcRestart
+    public static boolean coins_spawn_in_chests = true;
+
     @Config.Name("Petrogloom Ore Gen")
     @Config.Comment("Allowed Dimension for Petrogloom to spawn in")
     @Config.RequiresMcRestart

@@ -2100,6 +2100,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
         this.setDeathPlay(false);
         if(this.getSpawnLocation() != null && !world.isRemote) {
             this.turnBossIntoSummonSpawner(this.getSpawnLocation());
+            this.createCoinSpawns(this.getPositionVector(), 0, 2, 2);
         }
         this.setDead();
         this.setDropItemsWhenDead(true);

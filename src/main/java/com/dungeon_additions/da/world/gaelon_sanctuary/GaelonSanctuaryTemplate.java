@@ -28,7 +28,7 @@ import java.util.Random;
 
 public class GaelonSanctuaryTemplate extends ModStructureTemplate {
 
-    private static final ResourceLocation LOOT = new ResourceLocation(ModReference.MOD_ID, "gaelon_dungeon");
+    private static final ResourceLocation LOOT = new ResourceLocation(ModReference.MOD_ID, WorldConfig.coins_spawn_in_chests ? "gaelon_dungeon" : "gaelon_dungeon_nc");
     public GaelonSanctuaryTemplate(TemplateManager manager, String type, BlockPos pos, Rotation rot, int distance, boolean overWriteIn) {
         super(manager, type, pos,distance, rot, overWriteIn);
     }

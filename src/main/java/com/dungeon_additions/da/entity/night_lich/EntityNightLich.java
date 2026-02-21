@@ -1358,6 +1358,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             BlockPos posModified = new BlockPos(pos.getX(), y + 2, pos.getZ());
             world.setBlockState(posModified.down(), Blocks.STONEBRICK.getDefaultState());
             turnBossIntoSummonSpawner(posModified);
+            this.createCoinSpawns(this.getPositionVector(), ModRand.range(15, 28), 0, 0);
         }
         super.onDeath(cause);
     }

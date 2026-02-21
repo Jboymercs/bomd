@@ -27,7 +27,7 @@ import java.util.Random;
 public class RottenHoldTemplate extends ModStructureTemplate {
 
 
-    private static final ResourceLocation LOOT = new ResourceLocation(ModReference.MOD_ID, "rot_hold");
+    private static final ResourceLocation LOOT = new ResourceLocation(ModReference.MOD_ID, WorldConfig.coins_spawn_in_chests ? "rot_hold" : "rot_hold_nc");
     private static final ResourceLocation LOOT_KEY = new ResourceLocation(ModReference.MOD_ID, "rot_hold_key");
     public RottenHoldTemplate(TemplateManager manager, String type, BlockPos pos, Rotation rot, int distance, boolean overWriteIn) {
         super(manager, type, pos,distance, rot, overWriteIn);

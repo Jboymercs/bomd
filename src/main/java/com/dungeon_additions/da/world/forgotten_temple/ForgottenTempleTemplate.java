@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.world.forgotten_temple;
 
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
@@ -32,10 +33,10 @@ import java.util.Random;
 public class ForgottenTempleTemplate extends ModStructureTemplate {
 
     private static final WorldGenTempleTop temple_top = new WorldGenTempleTop("temple_top");
-    private static final ResourceLocation LOOT = new ResourceLocation(ModReference.MOD_ID, "forgotten_temple");
-    private static final ResourceLocation LOOT_KEY = new ResourceLocation(ModReference.MOD_ID, "forgotten_temple_key");
-    private static final ResourceLocation LOOT_PUZZLE = new ResourceLocation(ModReference.MOD_ID, "forgotten_temple_puzzle");
-    private static final ResourceLocation CRYPT_LOOT = new ResourceLocation(ModReference.MOD_ID, "crypt_forgotten_temple");
+    private static final ResourceLocation LOOT = new ResourceLocation(ModReference.MOD_ID, WorldConfig.coins_spawn_in_chests ? "forgotten_temple" : "forgotten_temple_nc");
+    private static final ResourceLocation LOOT_KEY = new ResourceLocation(ModReference.MOD_ID,"forgotten_temple_key");
+    private static final ResourceLocation LOOT_PUZZLE = new ResourceLocation(ModReference.MOD_ID, WorldConfig.coins_spawn_in_chests ? "forgotten_temple_puzzle" : "forgotten_temple_puzzle_nc");
+    private static final ResourceLocation CRYPT_LOOT = new ResourceLocation(ModReference.MOD_ID, WorldConfig.coins_spawn_in_chests ? "crypt_forgotten_temple" : "crypt_forgotten_temple_nc");
     public ForgottenTempleTemplate(TemplateManager manager, String type, BlockPos pos, Rotation rot, int distance, boolean overWriteIn) {
         super(manager, type, pos,distance, rot, overWriteIn);
     }
