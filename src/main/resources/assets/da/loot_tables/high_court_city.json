@@ -269,6 +269,16 @@
         },
         {
           "type": "item",
+          "name": "da:dagger_trinket",
+          "weight": 7
+        },
+        {
+          "type": "item",
+          "name": "da:wind_trinket",
+          "weight": 9
+        },
+        {
+          "type": "item",
           "name": "minecraft:map",
           "weight": 20
         },

@@ -120,6 +120,16 @@
         },
         {
           "type": "item",
+          "name": "da:blue_trinket",
+          "weight": 3
+        },
+        {
+          "type": "item",
+          "name": "da:stalwart_summoner",
+          "weight": 3
+        },
+        {
+          "type": "item",
           "name": "minecraft:redstone",
           "weight": 10,
           "functions": [

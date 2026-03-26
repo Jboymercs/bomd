@@ -37,16 +37,15 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class ItemApathyrAxe extends ItemSword implements IAnimatable, IHasModel {
+public class ItemApathyrAxe extends ItemAbilityWeapon implements IAnimatable, IHasModel {
     public AnimationFactory factory = new AnimationFactory(this);
 
     private String info_loc;
 
     public ItemApathyrAxe(String name, Item.ToolMaterial material, String info_loc) {
-        super(material);
+        super(name, material);
         this.setMaxDamage(986);
-        setTranslationKey(name);
-        setRegistryName(name);
+
         ModItems.ITEMS.add(this);
         setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
@@ -90,6 +89,7 @@ public class ItemApathyrAxe extends ItemSword implements IAnimatable, IHasModel 
                         EntityLivingBase entityIn = ((EntityLivingBase) entityToo);
                         targetedEntity = entityIn;
                         targetOriginalPosition = entityIn.getPositionVector();
+                        this.setAbilityVal(stack, true);
                         stack.damageItem(2, player);
                         ModUtils.performNTimes(10, (i) -> Main.proxy.spawnParticle(15, worldIn,player.posX + ModRand.range(-2, 2), player.posY + ModRand.range(1, 3), player.posZ + ModRand.range(-2, 2), 0, 0.08, 0, 20));
                         worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.APATHYR_CAST_SPIKES, SoundCategory.NEUTRAL, 1.5f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.4f));
@@ -107,7 +107,7 @@ public class ItemApathyrAxe extends ItemSword implements IAnimatable, IHasModel 
             EntityPlayer player = (EntityPlayer) entityIn;
             if (targetedEntity != null) {
                 if(!worldIn.isRemote) {
-                    if(waitTime < 0) {
+                    if(waitTime < 0 && this.getAbilityVal(stack)) {
                         Vec3d predictedPosition = ModUtils.predictPlayerPosition(targetOriginalPosition, targetedEntity.getPositionVector(), 3);
                         float damage;
                         if(!worldIn.isDaytime()) {
@@ -120,6 +120,7 @@ public class ItemApathyrAxe extends ItemSword implements IAnimatable, IHasModel 
                         this.waitTime = 4;
                         this.targetOriginalPosition = null;
                         player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.midnight_reign_cooldown * 20);
+                        this.setAbilityVal(stack, false);
                         this.targetedEntity = null;
                     } else {
                         waitTime--;
@@ -127,6 +128,7 @@ public class ItemApathyrAxe extends ItemSword implements IAnimatable, IHasModel 
                 }
             }
         }
+        super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
     }
 
     private Entity findClosestEntity(EntityPlayer player, World world) {

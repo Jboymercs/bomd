@@ -88,7 +88,7 @@ public class ItemMageStaff extends ToolSword implements IAnimatable {
                 int damage_bonus = EnchantmentHelper.getEnchantmentLevel(Enchantments.SHARPNESS, stack);
                 int damage_bonus_2 = EnchantmentHelper.getEnchantmentLevel(Enchantments.SMITE, stack);
                 int damage_bonus_3 = EnchantmentHelper.getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS, stack);
-                EntityDelayedExplosion delayedExplosion = new EntityDelayedExplosion(worldIn, player, (float) (this.getAttackDamage() + ModConfig.combat_wand_explosion_damage + damage_bonus + (damage_bonus_2 * 0.5) + (damage_bonus_3 * 0.5)) + ModUtils.addMageSetBonus(player, 0));
+                EntityDelayedExplosion delayedExplosion = new EntityDelayedExplosion(worldIn, player, (float) (this.getAttackDamage() + ModConfig.combat_wand_explosion_damage + damage_bonus + (damage_bonus_2 * 0.5) + (damage_bonus_3 * 0.5)) + ModUtils.addMageSetBonus(player, 0, 1.5F));
                 Vec3d playerLookVec = player.getLookVec();
                 Vec3d playerPos = new Vec3d(player.posX + playerLookVec.x * 5D,player.posY + playerLookVec.y + player.getEyeHeight(), player. posZ + playerLookVec.z * 5D);
                 delayedExplosion.setPosition(playerPos.x, playerPos.y, playerPos.z);

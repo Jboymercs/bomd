@@ -2,6 +2,8 @@ package com.dungeon_additions.da.util.handlers;
 
 import com.dungeon_additions.da.world.blossom.BlossomTemplate;
 import com.dungeon_additions.da.world.blossom.WorldGenBlossomCave;
+import com.dungeon_additions.da.world.cults_domain.CultsDomainTemplate;
+import com.dungeon_additions.da.world.cults_domain.WorldGenCultsDomain;
 import com.dungeon_additions.da.world.forgotten_temple.ForgottenTempleTemplate;
 import com.dungeon_additions.da.world.forgotten_temple.WorldGenForgottenTemple;
 import com.dungeon_additions.da.world.frozen_castle.FrozenCastleTemplate;
@@ -18,6 +20,8 @@ import com.dungeon_additions.da.world.nether_arena.NetherArenaTemplate;
 import com.dungeon_additions.da.world.nether_arena.WorldGenNetherArena;
 import com.dungeon_additions.da.world.obsidilith_arena.ObsidilithArenaTemplate;
 import com.dungeon_additions.da.world.obsidilith_arena.WorldGenObsidilithArena;
+import com.dungeon_additions.da.world.outposts.OutpostsTemplate;
+import com.dungeon_additions.da.world.outposts.WorldGenOutposts;
 import com.dungeon_additions.da.world.rot_hold.RottenHoldTemplate;
 import com.dungeon_additions.da.world.rot_hold.WorldGenRotHold;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
@@ -51,8 +55,14 @@ public class StructureHandler {
         //Gaelon Sanctuary
         MapGenStructureIO.registerStructure(WorldGenGaelonSanctuary.Start.class, "GaelonSanctuary");
         MapGenStructureIO.registerStructureComponent(GaelonSanctuaryTemplate.class, "GSP");
+        //Cults Domain
+        MapGenStructureIO.registerStructure(WorldGenCultsDomain.Start.class, "CultsDomain");
+        MapGenStructureIO.registerStructureComponent(CultsDomainTemplate.class, "CDP");
         //Mysterious Trader Post
         MapGenStructureIO.registerStructure(WorldGenMysteriousTraderPost.Start.class, "MysteriousTraderPost");
         MapGenStructureIO.registerStructureComponent(MysteriousTraderPostTemplate.class, "MTP");
+        //Outposts
+        MapGenStructureIO.registerStructure(WorldGenOutposts.Start.class, "ModOutposts");
+        MapGenStructureIO.registerStructureComponent(OutpostsTemplate.class, "MOP");
     }
 }

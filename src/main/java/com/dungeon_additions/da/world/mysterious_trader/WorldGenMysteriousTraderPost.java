@@ -133,7 +133,7 @@ public class WorldGenMysteriousTraderPost extends WorldGenerator {
             int rand = random.nextInt(Rotation.values().length);
 
             BlockPos posI = new BlockPos(chunkX * 16 + 8, 0, chunkZ * 16 + 8);
-            int y = getSurfaceHeight(worldIn, posI, 30, 150);
+            int y = getSurfaceHeight(worldIn, posI, WorldConfig.mysterious_trader_min_y, WorldConfig.mysterious_trader_max_y);
 
             //ensures theres ground somewhere within a range
             if(y != 0) {

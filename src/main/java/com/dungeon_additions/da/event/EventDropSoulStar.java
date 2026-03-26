@@ -31,10 +31,12 @@ import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -71,7 +73,20 @@ public class EventDropSoulStar {
             ItemStack DeathStack = ModUtils.findTrinket(new ItemStack(ModItems.DEATH_TRINKET), player);
             ItemStack gambleStack = ModUtils.findTrinket(new ItemStack(ModItems.GAMBLE_TRINKET), player);
             ItemStack confettiStack = ModUtils.findTrinket(new ItemStack(ModItems.CONFETTI_TRINKET), player);
+            ItemStack victoryStack = ModUtils.findTrinket(new ItemStack(ModItems.VICTORY_TRINKET), player);
+            if(!victoryStack.isEmpty()) {
+                int randI = ModRand.range(1, 101);
 
+                if(randI < 40 && randI >= 35) {
+                    if(!player.world.isRemote) {
+                        ModUtils.performNTimes(9, (i) -> {
+                            Main.proxy.spawnParticle(30,player.world, target.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), target.posY + ModRand.range(0, 3) + ModRand.getFloat(1), target.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, 0.06, 0, 24576);
+                        });
+                        player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 200, 0));
+                        victoryStack.damageItem(1, player);
+                    }
+                }
+            }
             if(!confettiStack.isEmpty()) {
                 int randI = ModRand.range(1, 101);
 
@@ -89,6 +104,7 @@ public class EventDropSoulStar {
                         Main.proxy.spawnParticle(23,player.world, target.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), target.posY + ModRand.range(0, 3) + ModRand.getFloat(1), target.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, -0.03, 0, 16450255);
                     });
                     player.world.playSound((EntityPlayer) null, target.posX, target.posY, target.posZ, SoundsHandler.CONFETTI_SOUND, SoundCategory.NEUTRAL, 1f, 1f);
+                    player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 200, 0));
                 }
             }
             if(!DeathStack.isEmpty()) {

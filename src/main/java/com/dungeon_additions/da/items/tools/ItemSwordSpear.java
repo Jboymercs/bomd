@@ -28,15 +28,13 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class ItemSwordSpear extends ToolSword implements IAnimatable {
+public class ItemSwordSpear extends ItemAbilityWeapon implements IAnimatable {
 
     public AnimationFactory factory = new AnimationFactory(this);
     private String info_loc;
 
     private String ANIM_STRIKE = "use_blade";
     private String controllerName = "attack_controller";
-
-    private boolean setRising = false;
 
     private boolean setTooAir = false;
     public ItemSwordSpear(String name, ToolMaterial material, String info_loc) {
@@ -64,9 +62,10 @@ public class ItemSwordSpear extends ToolSword implements IAnimatable {
     {
         ItemStack itemstack = player.getHeldItem(handIn);
         if(!world.isRemote && !player.getCooldownTracker().hasCooldown(this) ) {
+            ItemStack stack = player.getHeldItem(handIn);
             if(player.isSneaking()) {
                 player.setActiveHand(handIn);
-                this.setRising = true;
+                this.setAbilityVal(stack, true);
                 this.hoverTime = 100;
                 world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.HIGH_KING_CAST_CLAW, SoundCategory.NEUTRAL, 1.0f, 0.7f / (world.rand.nextFloat() * 0.4F + 0.2f));
                 return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
@@ -106,7 +105,7 @@ public class ItemSwordSpear extends ToolSword implements IAnimatable {
             }
 
 
-            this.setRising = false;
+            this.setAbilityVal(stack, false);
         }
     }
 
@@ -117,7 +116,7 @@ public class ItemSwordSpear extends ToolSword implements IAnimatable {
 
         if(entityIn instanceof EntityPlayer && !worldIn.isRemote) {
 
-            if(this.setRising) {
+            if(this.getAbilityVal(stack)) {
                 int y = getSurfaceHeight(worldIn, new BlockPos(entityIn.posX, 0, entityIn.posZ), (int) entityIn.posY - 20, (int) entityIn.posY + 1);
                 if(entityIn.canBePushed()) {
                     if(hoverTime > 1) {
@@ -132,7 +131,7 @@ public class ItemSwordSpear extends ToolSword implements IAnimatable {
                             entityIn.velocityChanged = true;
                         }
                     } else {
-                        this.setRising = false;
+                        this.setAbilityVal(stack, false);
                         hoverTime = 100;
                     }
                     hoverTime--;

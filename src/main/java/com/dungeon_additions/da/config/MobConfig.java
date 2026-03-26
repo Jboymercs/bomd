@@ -36,6 +36,11 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static boolean flame_knight_boss_music = true;
 
+    @Config.Name("Darkdrift Devil Boss Music")
+    @Config.Comment("When experimental features are enabled in mod_config, can boss music play for the Darkdrift Devil?")
+    @Config.RequiresMcRestart
+    public static boolean darkdrift_devil_boss_music = true;
+
     @Config.Name("Apathyr Boss Music")
     @Config.Comment("When experimental features are enabled in mod_config, can boss music play for the Apathyr?")
     @Config.RequiresMcRestart
@@ -774,6 +779,11 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static double gargoyle_armor = 10;
 
+    @Config.Name("High King Boss Weather Enable/Disable")
+    @Config.Comment("Change if it should always be thundering and raining while the High King Boss is spawned in. Default: true.")
+    @Config.RequiresMcRestart
+    public static boolean king_weather_enabled = true;
+
     @Config.Name("High King of the Sky Dragon Health")
     @Config.Comment("Change the health of the High King of the Sky Dragon")
     @Config.RequiresMcRestart
@@ -907,17 +917,32 @@ public class MobConfig {
     @Config.Name("Voidiant Health")
     @Config.Comment("Change the health of the Voidiant.")
     @Config.RequiresMcRestart
-    public static double voidiant_health = 75;
+    public static double voidiant_health = 55;
 
     @Config.Name("Voidiant Attack Damage")
     @Config.Comment("Change the attack damage of the Voidiant")
     @Config.RequiresMcRestart
-    public static double voidiant_attack_damage = 28;
+    public static double voidiant_attack_damage = 25;
 
     @Config.Name("Voidiant Armor")
     @Config.Comment("Change the armor of the Voidiant")
     @Config.RequiresMcRestart
     public static double voidiant_armor=8;
+
+    @Config.Name("Enderphrite Health")
+    @Config.Comment("Change the health of the Enderphrite and Enderphriton.")
+    @Config.RequiresMcRestart
+    public static double enderphrite_health = 95;
+
+    @Config.Name("Enderphrite Attack Damage")
+    @Config.Comment("Change the attack damage of the Enderphrite and Enderphriton.")
+    @Config.RequiresMcRestart
+    public static double enderphrite_attack_damage = 26;
+
+    @Config.Name("Enderphrite Armor")
+    @Config.Comment("Change the armor of the Enderphrite and Enderphriton")
+    @Config.RequiresMcRestart
+    public static double enderphrite_armor = 14;
 
     @Config.Name("Aegyptia Recurian Health")
     @Config.Comment("Change the health of the Aegyptia Recurian.")

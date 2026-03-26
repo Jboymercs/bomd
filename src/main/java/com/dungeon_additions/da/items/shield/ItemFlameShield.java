@@ -31,7 +31,6 @@ import java.util.List;
 public class ItemFlameShield extends BOMDShieldItem implements IAnimatable {
     public AnimationFactory factory = new AnimationFactory(this);
     private String info_loc;
-    private int hitCounter = 0;
     private int usedHitCounter = 0;
 
 
@@ -57,7 +56,7 @@ public class ItemFlameShield extends BOMDShieldItem implements IAnimatable {
 
     @Override
     public void onBlockingDamage(ItemStack shield, EntityPlayer player) {
-        hitCounter++;
+        this.setHitCounter(shield, this.getHitCounter(shield) + 1);
         super.onBlockingDamage(shield, player);
     }
 
@@ -80,17 +79,18 @@ public class ItemFlameShield extends BOMDShieldItem implements IAnimatable {
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if (entityIn instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entityIn;
-            if(hitCounter > 7) {
-                hitCounter--;
+            if(this.getHitCounter(stack) > 7) {
+                this.setHitCounter(stack, this.getHitCounter(stack) - 1);
             }
         }
+        super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
     }
 
     @Override
     public boolean onApplyButtonPressed(EntityPlayer player, World world, ItemStack stack){
-        if (stack == player.getActiveItemStack() && hitCounter > 0) {
+        if (stack == player.getActiveItemStack() && this.getHitCounter(stack) > 0) {
             if(player.ticksExisted % 12 == 0) {
-                hitCounter--;
+                this.setHitCounter(stack, this.getHitCounter(stack) - 1);
                 usedHitCounter++;
 
                 float damage = (ModConfig.incendium_shield_damage + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1)) * ModUtils.addDarkArmorBonusMultiplier(player, 1);
@@ -110,7 +110,7 @@ public class ItemFlameShield extends BOMDShieldItem implements IAnimatable {
 
                 if (usedHitCounter > 6) {
                     usedHitCounter = 0;
-                    hitCounter = 0;
+                    this.setHitCounter(stack, 0);
                     usedAbility = false;
                     if(!world.isRemote) {
                         player.resetActiveHand();

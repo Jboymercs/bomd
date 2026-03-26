@@ -37,8 +37,6 @@ public class ItemDarkShield extends BOMDShieldItem implements IAnimatable {
     public AnimationFactory factory = new AnimationFactory(this);
     private String info_loc;
 
-    public int hitCounter = 0;
-
     public ItemDarkShield(String name, CreativeTabs tabs, String info_loc) {
         super(name);
         setCreativeTab(tabs);
@@ -72,7 +70,8 @@ public class ItemDarkShield extends BOMDShieldItem implements IAnimatable {
 
     @Override
     public void onBlockingDamage(ItemStack shield, EntityPlayer player) {
-        hitCounter++;
+        //hitCounter++;
+        this.setHitCounter(shield, this.getHitCounter(shield) + 1);
         super.onBlockingDamage(shield, player);
     }
 
@@ -107,7 +106,7 @@ public class ItemDarkShield extends BOMDShieldItem implements IAnimatable {
 
     @Override
     public boolean onApplyButtonPressed(EntityPlayer player, World world, ItemStack stack){
-        if(this.hitCounter > 4 && stack == player.getActiveItemStack()) {
+        if(this.getHitCounter(stack) > 4 && stack == player.getActiveItemStack()) {
             if(player.canBePushed()) {
                 player.motionX = 0;
                 player.motionY = 0;
@@ -162,7 +161,8 @@ public class ItemDarkShield extends BOMDShieldItem implements IAnimatable {
                 player.resetActiveHand();
                 player.disableShield(true);
                 player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.dark_shield_cooldown * 20);
-                this.hitCounter = 0;
+                //this.hitCounter = 0;
+                this.setHitCounter(stack, 0);
                 return true;
             }
 

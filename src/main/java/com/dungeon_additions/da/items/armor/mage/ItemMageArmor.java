@@ -47,7 +47,7 @@ public class ItemMageArmor extends ItemArmor implements IHasModel {
         setRegistryName(name);
         this.texture = textureName;
         ModItems.ITEMS.add(this);
-        this.knockbackResistance = new AttributeModifier("mageSpeedBoost_" + slotIn.getName(), 0.01, 1);
+        this.knockbackResistance = new AttributeModifier("mageSpeedBoost_" + slotIn.getName(), 0.02, 1);
     }
 
     @Override

@@ -329,6 +329,7 @@ public class EntityShieldHandler {
             }
         }
 
+        //Player causing damage
         if(event.getSource().getTrueSource() instanceof EntityPlayer) {
             EntityPlayer player = ((EntityPlayer) event.getSource().getTrueSource());
             if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.NOVIK_HELMET) {
@@ -342,11 +343,37 @@ public class EntityShieldHandler {
 
             ItemStack flameTrinket = ModUtils.findTrinket(new ItemStack(ModItems.FLAMES_RAGE_TRINKET), player);
             ItemStack vampireTrinket = ModUtils.findTrinket(new ItemStack(ModItems.VAMPIRIC_TRINKET), player);
+            ItemStack dagger_trinket = ModUtils.findTrinket(new ItemStack(ModItems.DAGGER_TRINKET), player);
+
+            //comes before any buffs
+            if(!dagger_trinket.isEmpty()) {
+                int randI = ModRand.range(1, 101);
+                if(randI < 10 && randI >= 6) {
+                    totalDamage += totalDamage;
+                    dagger_trinket.damageItem(1, player);
+                    if(event.getEntityLiving() != null) {
+                        EntityLivingBase target = event.getEntityLiving();
+                        if(!player.world.isRemote) {
+                            Main.proxy.spawnParticle(31, player.world, target.posX, target.posY + target.getEntityBoundingBox().maxY + 0.4, target.posZ, 0, 0, 0);
+                        }
+                        player.world.playSound((EntityPlayer) null, target.posX, target.posY, target.posZ, SoundsHandler.DARK_ASSASSIN_DASH, SoundCategory.NEUTRAL, 1f, 1f);
+                        dagger_trinket.damageItem(1, player);
+                    }
+                }
+            }
+
             if(!flameTrinket.isEmpty()) {
                 int flameTrinketBonus = player.isBurning() ? PotionTrinketConfig.flames_rage_on_fire_damage : PotionTrinketConfig.flames_rage_default_damage;
               //  event.setAmount(flameTrinketBonus + totalDamage);
                 totalDamage += flameTrinketBonus;
                 flameTrinket.damageItem(1, player);
+            }
+
+            //Enderphrite Bonus Damage
+            if(player.getHeldItemMainhand().getItem() == ModItems.SWORD_SPEAR || player.getHeldItemMainhand().getItem() == ModItems.BLOODY_SWORD_SPEAR ||
+                    player.getHeldItemMainhand().getItem() == ModItems.CHAMPION_AXE || player.getHeldItemMainhand().getItem() == ModItems.VOID_HAMMER ||
+                    player.getHeldItemMainhand().getItem() == ModItems.APATHYR_AXE || player.getHeldItemMainhand().getItem() == ModItems.COLOSSUS_MACE) {
+                totalDamage += ModUtils.getEnderphriteBonusDamage(player);
             }
 
             if(!vampireTrinket.isEmpty()) {

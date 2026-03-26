@@ -265,6 +265,45 @@ public class ModUtils {
     }
 
     public static float addMageSetBonus(EntityPlayer player, float bonusDamage) {
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.MAGE_HELMET || player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.ENDERPHRITE_HELMET) {
+            bonusDamage += 0.5F;
+        }
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.MAGE_CHESTPLATE || player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.ENDERPHRITE_CHESTPLATE) {
+            bonusDamage += 0.5F;
+        }
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.MAGE_LEGGINGS || player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.ENDERPHRITE_LEGGINGS) {
+            bonusDamage += 0.5F;
+        }
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.MAGE_BOOTS || player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.ENDERPHRITE_BOOTS) {
+            bonusDamage += 0.5F;
+        }
+
+       ItemStack magic_boost =  findTrinket(new ItemStack(ModItems.MAGIC_BOOST_TRINKET), player);
+        if(!magic_boost.isEmpty()) {
+            bonusDamage += PotionTrinketConfig.magic_reservoir_damage;
+            magic_boost.damageItem(1, player);
+        }
+        return bonusDamage;
+    }
+
+    public static float getEnderphriteBonusDamage(EntityPlayer player) {
+        float bonusDamage = 0;
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.ENDERPHRITE_HELMET) {
+            bonusDamage += 0.25F;
+        }
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.ENDERPHRITE_CHESTPLATE) {
+            bonusDamage += 0.25F;
+        }
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.ENDERPHRITE_LEGGINGS) {
+            bonusDamage += 0.25F;
+        }
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.ENDERPHRITE_BOOTS) {
+            bonusDamage += 0.25F;
+        }
+        return bonusDamage;
+    }
+
+    public static float addMageSetBonus(EntityPlayer player, float bonusDamage, float multiplier) {
         if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.MAGE_HELMET) {
             bonusDamage += 0.5;
         }
@@ -278,12 +317,12 @@ public class ModUtils {
             bonusDamage += 0.5;
         }
 
-       ItemStack magic_boost =  findTrinket(new ItemStack(ModItems.MAGIC_BOOST_TRINKET), player);
+        ItemStack magic_boost =  findTrinket(new ItemStack(ModItems.MAGIC_BOOST_TRINKET), player);
         if(!magic_boost.isEmpty()) {
             bonusDamage += PotionTrinketConfig.magic_reservoir_damage;
             magic_boost.damageItem(1, player);
         }
-        return bonusDamage;
+        return bonusDamage * multiplier;
     }
 
 
@@ -575,7 +614,8 @@ public class ModUtils {
 
         Predicate<Entity> isInstance = i -> i instanceof EntityLivingBase || i instanceof MultiPartEntityPart || i.canBeCollidedWith();
         double radiusSq = Math.pow(radius, 2);
-
+        //Hitbox testing
+       // Main.proxy.spawnParticle(29, pos.x, pos.y, pos.z, 0, 0, 0, (int) radius);
         list.stream().filter(isInstance).forEach((entity) -> {
 
             // Get the hitbox size of the entity because otherwise explosions are less
@@ -593,7 +633,6 @@ public class ModUtils {
             double adjustedDistance = Math.max(distance - avgEntitySize, 0);
             double adjustedDistanceSq = Math.pow(adjustedDistance, 2);
             double damageFactor = damageDecay ? Math.max(0, Math.min(1, (radiusSq - adjustedDistanceSq) / radiusSq)) : 1;
-
             // Damage decays by the square to make missed impacts less powerful
             double damageFactorSq = Math.pow(damageFactor, 2);
             double damage = maxDamage.apply(entity) * damageFactorSq;

@@ -445,7 +445,7 @@ public class ModConfig {
     @Config.Name("Colossal Mace Damage")
     @Config.Comment("Change the damage of the Colossal Mace")
     @Config.RequiresMcRestart
-    public static double colossal_mace_damage = 8.5;
+    public static double colossal_mace_damage = 9.5;
 
     @Config.Name("Colossal Mace Cooldown")
     @Config.Comment("Change the cooldown of the Colossal Mace's abilities. In seconds.")
@@ -455,7 +455,7 @@ public class ModConfig {
     @Config.Name("Colossal Mace Ability Damage")
     @Config.Comment("Change the ability damage of the Colossal Mace")
     @Config.RequiresMcRestart
-    public static float colossal_mace_ability_damage = 6;
+    public static float colossal_mace_ability_damage = 5;
 
     @Config.Name("Kopis Damage")
     @Config.Comment("Change the damage of the Aegyptian Kopis")
@@ -572,6 +572,11 @@ public class ModConfig {
     @Config.Comment("Change how far the command searches for the Gaelon Sanctuary. In chunks not blocks!")
     @Config.RequiresMcRestart
     public static int gaelon_sanctuary_search_distance = 190;
+
+    @Config.Name("Cult Castle Search Radius")
+    @Config.Comment("Change how far the command searches for the Cult Castle. In chunks not blocks!")
+    @Config.RequiresMcRestart
+    public static int cult_castle_search_distance = 110;
 
     @Config.Name("Trader Post Search Radius")
     @Config.Comment("Change how far the command searches for the Mysterious Trader post. In chunks not blocks!")

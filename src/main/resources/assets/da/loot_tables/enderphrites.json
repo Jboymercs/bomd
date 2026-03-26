@@ -1,0 +1,44 @@
+{
+  "pools": [
+    {
+      "name" : "da:enderphrites",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:ender_crystal",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 2,
+                "max": 4
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "da:enderphrites",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:ender_pearl",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

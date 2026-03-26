@@ -3,14 +3,17 @@ package com.dungeon_additions.da.items.shield;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,6 +23,7 @@ import javax.annotation.Nullable;
 public class BOMDShieldItem extends ItemShield {
 
     protected boolean usedAbility = false;
+
     public BOMDShieldItem(String name) {
         setTranslationKey(name);
         setRegistryName(name);
@@ -27,6 +31,7 @@ public class BOMDShieldItem extends ItemShield {
         ModItems.ITEMS.add(this);
         this.setMaxDamage(256);
         this.setMaxStackSize(1);
+        //this.setNBTonShield(new ItemStack(this),this.hitCounter);
         this.addPropertyOverride(new ResourceLocation("blocking"), new IItemPropertyGetter() {
             @SideOnly(Side.CLIENT)
             public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
@@ -34,6 +39,45 @@ public class BOMDShieldItem extends ItemShield {
             }
         });
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, ItemArmor.DISPENSER_BEHAVIOR);
+    }
+
+    public void setNBTonShield(ItemStack stack, int hitCounter)
+    {
+        NBTTagCompound nbt;
+        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("counter"))
+        { nbt = stack.getTagCompound(); }
+        else
+        { nbt = new NBTTagCompound(); }
+
+        nbt.setInteger("counter", hitCounter);
+        stack.setTagCompound(nbt);
+    }
+
+    /** Preforms detection logic for the Lodestone. */
+    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
+    {
+        if (!worldIn.isRemote)
+        {
+            if(stack.getItem() instanceof BOMDShieldItem) {
+                if(!stack.hasTagCompound()) {
+                    this.setNBTonShield(stack, 0);
+                }
+            }
+        }
+    }
+
+
+    public int getHitCounter(ItemStack stack) {
+        return stack.hasTagCompound() && stack.getTagCompound().hasKey("counter") ? stack.getTagCompound().getInteger("counter") : 0;
+    }
+
+    public void setHitCounter(ItemStack stack, int amount) {
+        if(stack.hasTagCompound() && stack.getTagCompound().hasKey("counter")) {
+            NBTTagCompound nbt = stack.getTagCompound();
+            nbt.setInteger("counter", amount);
+            stack.setTagCompound(nbt);
+            System.out.println("Hit counter has gone up");
+        }
     }
 
     public static void handleDamageEvent(LivingAttackEvent e) {

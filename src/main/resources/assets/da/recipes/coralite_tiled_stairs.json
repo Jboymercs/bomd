@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  V",
+    " VV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "item": "da:coralite_tile"
+    }
+  },
+  "result": {
+    "item": "da:coralite_tiled_stairs",
+    "count": 4
+  }
+}

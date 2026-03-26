@@ -70,7 +70,8 @@ public class ItemBloodySwordSpear extends ToolSword implements IAnimatable {
                 world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.HIGH_KING_SWING_IMPALE, SoundCategory.NEUTRAL, 1.0f, 0.7f / (world.rand.nextFloat() * 0.4F + 0.2f));
                 new ActionPlayerShootBloodSpray().performAction(player);
                 itemstack.damageItem(1, player);
-                player.getCooldownTracker().setCooldown(this, (ModConfig.bloody_sword_spear_cooldown * 20));
+                double healthFac = player.getHealth() / player.getMaxHealth();
+                player.getCooldownTracker().setCooldown(this, (int) ((ModConfig.bloody_sword_spear_cooldown * 20) * healthFac));
                 return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
             }
         }
@@ -90,7 +91,8 @@ public class ItemBloodySwordSpear extends ToolSword implements IAnimatable {
                 if(player.canBePushed()) {
                     player.motionX = moveVec.x;
                     player.motionY = moveVec.y * 0.3;
-                    player.getCooldownTracker().setCooldown(this, (ModConfig.bloody_sword_spear_cooldown * 20) * 2);
+                    double healthFac = player.getHealth() / player.getMaxHealth();
+                    player.getCooldownTracker().setCooldown(this, (int) (((ModConfig.bloody_sword_spear_cooldown * 20) * 2) * healthFac));
                     player.motionZ = moveVec.z;
                     player.velocityChanged = true;
                 }

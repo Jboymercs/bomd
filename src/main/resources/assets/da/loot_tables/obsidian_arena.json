@@ -196,6 +196,11 @@
         },
         {
           "type": "item",
+          "name": "da:void_trinket",
+          "weight": 12
+        },
+        {
+          "type": "item",
           "name": "minecraft:diamond_chestplate",
           "weight": 10,
           "functions": [

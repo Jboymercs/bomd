@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V V",
+    "VRV",
+    "VVV"
+  ],
+  "key": {
+    "V": {
+      "item": "da:ender_crystal"
+    },
+    "R": {
+      "item": "da:voidiant_core"
+    }
+  },
+  "result": {
+    "item": "da:enderphrite_chestplate"
+  }
+}

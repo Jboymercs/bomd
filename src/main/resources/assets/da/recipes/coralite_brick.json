@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VV",
+    "VV"
+  ],
+  "key": {
+    "V": {
+      "item": "da:coralite"
+    }
+  },
+  "result": {
+    "item": "da:coralite_brick",
+    "count": 4
+  }
+}

@@ -168,6 +168,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> STEP_SHAKE = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> PLAYED_MUSIC = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
 
     private void setSwingAttack(boolean value) {this.dataManager.set(SWING, Boolean.valueOf(value));}
     private boolean isSwingAttack() {return this.dataManager.get(SWING);}
@@ -225,6 +226,8 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
     private void setStepShake(boolean value) {this.dataManager.set(STEP_SHAKE, Boolean.valueOf(value));}
     private void setSpawningWaves(boolean value) {this.dataManager.set(SPAWNING_WAVES, Boolean.valueOf(value));}
     public boolean isSpawningWaves() {return this.dataManager.get(SPAWNING_WAVES);}
+    private void setPlayedMusic(boolean value) {this.dataManager.set(PLAYED_MUSIC, Boolean.valueOf(value));}
+    public boolean isPlayedMusic() {return this.dataManager.get(PLAYED_MUSIC);}
 
     public void setStateLine(float value) {
         this.dataManager.set(STAT_LINE, Float.valueOf(value));
@@ -313,6 +316,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         nbt.setBoolean("Used_Golden_Heart", this.isUsedGoldenHeart());
         nbt.setBoolean("Idle_State", this.isIdleState());
         nbt.setBoolean("Idle_Awake", this.isIdleAwake());
+        nbt.setBoolean("Played_Music", this.isPlayedMusic());
         nbt.setBoolean("Spawning_Waves", this.isSpawningWaves());
         nbt.setBoolean("Had_Target", this.isHadPreviousTarget());
         nbt.setInteger("Spawn_Loc_X", this.getSpawnLocation().getX());
@@ -345,6 +349,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         this.setDeathState(nbt.getBoolean("Death_State"));
         this.setTeleportGhost(nbt.getBoolean("Teleport_Ghost"));
         this.setCrystalDomain(nbt.getBoolean("Crystal_Domain"));
+        this.setPlayedMusic(nbt.getBoolean("Played_Music"));
         this.setCastFast(nbt.getBoolean("Cast_Fast"));
         this.setCastSpell(nbt.getBoolean("Cast_Spell"));
         this.setArmSwipe(nbt.getBoolean("Arm_Swipe"));
@@ -391,6 +396,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         this.dataManager.register(USED_GOLDEN_HEART, Boolean.valueOf(false));
         this.dataManager.register(SHIELDED, Boolean.valueOf(false));
         this.dataManager.register(SET_SPAWN_LOC, Boolean.valueOf(false));
+        this.dataManager.register(PLAYED_MUSIC, Boolean.valueOf(false));
         this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
         this.dataManager.register(SHAKING, Boolean.valueOf(false));
         this.dataManager.register(SPAWNING_WAVES, Boolean.valueOf(false));
@@ -521,6 +527,11 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         double healthFac = this.getHealth() / this.getMaxHealth();
         if(this.bossInfo != null) {
             this.bossInfo.setPercent((float) healthFac);
+
+            if(this.isPlayedMusic() && world.isRemote && ModConfig.experimental_features && MobConfig.apathyr_boss_music) {
+                    this.playMusic(this);
+                    this.setPlayedMusic(false);
+            }
         }
         this.shakeTime--;
         this.spawnDelay--;
@@ -834,7 +845,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         } else {
             relPos = this.getPositionVector().add(ModRand.range(-1, 1) + ModRand.range(3, 7), 0, (ModRand.range(-1, 1) + ModRand.range(3, 7)));
         }
-        int yFor = ModUtils.getSurfaceHeightZeroReturn(world, new BlockPos(relPos.x, relPos.y, relPos.z), (int) relPos.y - 8, (int) relPos.y + 3);
+        int yFor = ModUtils.getSurfaceHeightZeroReturn(world, new BlockPos(relPos.x, 0, relPos.z), (int) relPos.y - 8, (int) relPos.y + 3);
         if(yFor != 0) {
             mob.setPosition(relPos.x + 0.5, yFor + 1, relPos.z + 0.5);
         } else {
@@ -852,7 +863,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         } else {
             relPos = this.getPositionVector().add(ModRand.range(-1, 1) + ModRand.range(3, 7), 0, (ModRand.range(-1, 1) + ModRand.range(3, 7)));
         }
-        int yFor = ModUtils.getSurfaceHeightZeroReturn(world, new BlockPos(relPos.x, relPos.y, relPos.z), (int) relPos.y - 8, (int) relPos.y + 3);
+        int yFor = ModUtils.getSurfaceHeightZeroReturn(world, new BlockPos(relPos.x, 0, relPos.z), (int) relPos.y - 8, (int) relPos.y + 3);
         if(yFor != 0) {
             mob.setPosition(relPos.x + 0.5, yFor + 1, relPos.z + 0.5);
         } else {
@@ -893,7 +904,11 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             }
         }
         this.clearEvents();
+        //helps re-scaling during idle mode and removes whatever health it gained from previous boss scaling
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MobConfig.apathyr_health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.apathyr_damage);
         this.setHealth((float) this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue());
+        this.hasStartedScaling = false;
         addEvent(()-> {
             this.hasLaunchedPhaseOne = false;
             this.hasLaunchedPhaseTwo = false;
@@ -948,10 +963,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             this.setImmovable(false);
             this.lockLook = false;
             this.bossInfo.setVisible(true);
-            if(ModConfig.experimental_features && MobConfig.apathyr_boss_music) {
-                this.playMusic(this);
-            }
-
+            this.setPlayedMusic(true);
         }, 220);
     }
 
@@ -1460,7 +1472,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+            ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.4f, 0, false);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.destroyBlocksInSwing(new Vec3d(1.5, 1.2, 0), 1.1);
         }, 30);
@@ -1588,7 +1600,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(2.25f, (e) -> damage, this, offset, source, 0.6f, 0, false);
                 this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
                 this.destroyBlocksInSwing(new Vec3d(1, 1.2, 0), 1.1);
                 double healthFac = this.getHealth()/this.getMaxHealth();
@@ -1617,7 +1629,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(2.25f, (e) -> damage, this, offset, source, 0.6f, 0, false);
                 this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
                 this.destroyBlocksInSwing(new Vec3d(1, 1.2, 0), 1.1);
                 double healthFac = this.getHealth()/this.getMaxHealth();
@@ -1679,7 +1691,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(2.25f, (e) -> damage, this, offset, source, 0.6f, 0, false);
                 this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
                 this.destroyBlocksInSwing(new Vec3d(1, 1.2, 0), 1.1);
                 double healthFac = this.getHealth()/this.getMaxHealth();
@@ -1934,7 +1946,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack() * 1.5);
-            ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 1.2f, 0, false);
+            ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 1.2f, 0, false);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 1.2, 0)));
@@ -2004,7 +2016,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+            ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.4f, 0, false);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.destroyBlocksInSwing(new Vec3d(1.5, 1.2, 0), 1.1);
         }, 30);
@@ -2272,7 +2284,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(2.25f, (e) -> damage, this, offset, source, 0.6f, 0, false);
                 this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
                 this.destroyBlocksInSwing(new Vec3d(1, 1.2, 0), 1.1);
                 double healthFac = this.getHealth()/this.getMaxHealth();

@@ -34,41 +34,13 @@
         },
         {
           "type": "item",
-          "name": "minecraft:gold_nugget",
-          "weight": 10,
+          "name": "minecraft:apple",
+          "weight": 12,
           "functions": [
             {
               "function": "set_count",
               "count": {
-                "min": 1,
-                "max": 5
-              }
-            }
-          ]
-        },
-        {
-          "type": "item",
-          "name": "minecraft:iron_ingot",
-          "weight": 10,
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "min": 1,
-                "max": 4
-              }
-            }
-          ]
-        },
-        {
-          "type": "item",
-          "name": "minecraft:reeds",
-          "weight": 10,
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "min": 4,
+                "min": 2,
                 "max": 8
               }
             }
@@ -76,28 +48,14 @@
         },
         {
           "type": "item",
-          "name": "minecraft:coal_block",
-          "weight": 10,
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "min": 1,
-                "max": 3
-              }
-            }
-          ]
-        },
-        {
-          "type": "item",
-          "name": "minecraft:paper",
+          "name": "minecraft:torch",
           "weight": 10,
           "functions": [
             {
               "function": "set_count",
               "count": {
                 "min": 10,
-                "max": 15
+                "max": 22
               }
             }
           ]
@@ -119,7 +77,7 @@
         {
           "type": "item",
           "name": "da:charm_trinket",
-          "weight": 9
+          "weight": 7
         },
         {
           "type": "item",
@@ -129,6 +87,11 @@
         {
           "type": "item",
           "name": "da:creeper_trinket",
+          "weight": 9
+        },
+        {
+          "type": "item",
+          "name": "da:dodge_trinket",
           "weight": 9
         },
         {
@@ -144,17 +107,12 @@
         {
           "type": "item",
           "name": "da:wind_trinket",
-          "weight": 9
+          "weight": 2
         },
         {
           "type": "item",
           "name": "da:confetti_trinket",
           "weight": 9
-        },
-        {
-          "type": "item",
-          "name": "minecraft:bucket",
-          "weight": 10
         },
         {
           "type": "item",
@@ -165,20 +123,6 @@
           "type": "item",
           "name": "da:sealed_tornado",
           "weight": 10
-        },
-        {
-          "type": "item",
-          "name": "da:dungeon_brick",
-          "weight": 10,
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "min": 8,
-                "max": 18
-              }
-            }
-          ]
         },
         {
           "type": "item",
@@ -196,42 +140,15 @@
         },
         {
           "type": "item",
-          "name": "minecraft:pumpkin",
-          "weight": 10,
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "min": 1,
-                "max": 3
-              }
-            }
-          ]
-        },
-        {
-          "type": "item",
           "name": "minecraft:book",
           "weight": 10,
           "functions": [
             {
-              "function": "set_count",
-              "count": {
-                "min": 3,
-                "max": 8
-              }
-            }
-          ]
-        },
-        {
-          "type": "item",
-          "name": "minecraft:bone",
-          "weight": 10,
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "min": 8,
-                "max": 14
+              "function": "enchant_with_levels",
+              "treasure": true,
+              "levels": {
+                "min": 5,
+                "max": 10
               }
             }
           ]
@@ -244,8 +161,8 @@
             {
               "function": "set_count",
               "count": {
-                "min": 1,
-                "max": 3
+                "min": 2,
+                "max": 5
               }
             }
           ]

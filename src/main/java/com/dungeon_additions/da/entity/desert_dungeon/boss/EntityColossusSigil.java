@@ -70,7 +70,7 @@ public class EntityColossusSigil extends Projectile {
 
             //spawns a particle that stays at this position
             if(this.ticksExisted % 20 == 0) {
-                Main.proxy.spawnParticle(26, this.posX, this.posY + 0.5, this.posZ, 0,0,0);
+                Main.proxy.spawnParticle(26, world, this.posX, this.posY + 0.5, this.posZ, 0,0,0);
             }
 
             //spawns a projectile every second and a half

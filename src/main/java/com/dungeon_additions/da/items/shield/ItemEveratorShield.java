@@ -37,8 +37,6 @@ public class ItemEveratorShield extends BOMDShieldItem implements IAnimatable {
     public AnimationFactory factory = new AnimationFactory(this);
     private String info_loc;
 
-    private int hitCounter = 0;
-
 
     public ItemEveratorShield(String name, CreativeTabs tabs, String  info_loc) {
         super(name);
@@ -73,10 +71,10 @@ public class ItemEveratorShield extends BOMDShieldItem implements IAnimatable {
 
     @Override
     public boolean onApplyButtonPressed(EntityPlayer player, World world, ItemStack stack){
-        if (stack == player.getActiveItemStack() && hitCounter > 2) {
+        if (stack == player.getActiveItemStack() && this.getHitCounter(stack) > 2) {
             world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.COLOSSUS_HILT_SLAM, SoundCategory.NEUTRAL, 1f, 0.7f / (world.rand.nextFloat() * 0.4F + 0.2f));
             if(!world.isRemote) {
-                float damage = (float) (1 + hitCounter + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1F)) * ModUtils.addDarkArmorBonusMultiplier(player, 1);
+                float damage = (float) (1 + this.getHitCounter(stack) + ModUtils.addShieldBonusDamage(player.getHeldItemOffhand(), 1F)) * ModUtils.addDarkArmorBonusMultiplier(player, 1);
 
                 ProjectileYellowWave wave = new ProjectileYellowWave(world, player, damage, null, true);
                 wave.shoot(player, 0, player.rotationYaw, 0F, 0.6F, 0F);
@@ -84,7 +82,7 @@ public class ItemEveratorShield extends BOMDShieldItem implements IAnimatable {
                 wave.rotationYaw = player.rotationYaw;
                 wave.setTravelRange(16F);
                 world.spawnEntity(wave);
-                this.hitCounter = 0;
+                this.setHitCounter(stack, 0);
                 player.resetActiveHand();
                 player.disableShield(true);
                 player.getCooldownTracker().setCooldown(stack.getItem(), ModConfig.frostborn_shield_cooldown * 20);
@@ -96,15 +94,15 @@ public class ItemEveratorShield extends BOMDShieldItem implements IAnimatable {
 
     @Override
     public void onBlockingDamage(ItemStack shield, EntityPlayer player) {
-        if(hitCounter < 17) {
-            hitCounter++;
+        if(this.getHitCounter(shield) < 17) {
+            this.setHitCounter(shield, this.getHitCounter(shield) + 1);
         }
         player.motionX = 0;
         player.motionY = 0;
         player.motionZ = 0;
         player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 0, false, false));
-        if(hitCounter < 8 && !player.world.isRemote) {
-            player.world.playSound(player.posX + 0.5D, player.posY, player.posZ + 0.5D, SoundEvents.BLOCK_NOTE_CHIME, SoundCategory.BLOCKS,(float) 0.2 * hitCounter, 1.0F, false);
+        if(this.getHitCounter(shield) < 8 && !player.world.isRemote) {
+            player.world.playSound(player.posX + 0.5D, player.posY, player.posZ + 0.5D, SoundEvents.BLOCK_NOTE_CHIME, SoundCategory.AMBIENT,(float) 0.2 * this.getHitCounter(shield), 1.0F, false);
         }
         super.onBlockingDamage(shield, player);
     }

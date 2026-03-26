@@ -2,16 +2,20 @@ package com.dungeon_additions.da.event;
 
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.items.armor.ModIncendiumHelmet;
 import com.dungeon_additions.da.items.shield.BOMDShieldItem;
 import com.dungeon_additions.da.items.tools.ItemExaltedKopis;
 import com.dungeon_additions.da.items.tools.ItemParrySword;
+import com.dungeon_additions.da.items.trinket.ItemTrinket;
 import com.dungeon_additions.da.packets.PacketControlInput;
 import com.dungeon_additions.da.proxy.ClientProxy;
 import com.dungeon_additions.da.util.ModReference;
+import com.dungeon_additions.da.util.ModUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -65,16 +69,24 @@ public class ClientEventHandler {
 
                 ItemStack stack = player.getHeldItemOffhand();
                 ItemStack stack2 = player.getHeldItemMainhand();
-                if(stack.getItem() instanceof BOMDShieldItem || stack2.getItem() instanceof BOMDShieldItem) {
-                    if(ClientProxy.SHIELD_ABILITY.isKeyDown() && Minecraft.getMinecraft().inGameHasFocus) {
+                if(ClientProxy.SHIELD_ABILITY.isKeyDown() && Minecraft.getMinecraft().inGameHasFocus) {
+                    //shields
+                    if(stack.getItem() instanceof BOMDShieldItem && player.getActiveItemStack() == stack || stack2.getItem() instanceof BOMDShieldItem&& player.getActiveItemStack() == stack2) {
                         performShieldAbility();
+                        //trinket abilities
+                    } else {
+                        performTrinketAbility();
                     }
                 }
+
             }
         }
     }
 
-
+    private static void performTrinketAbility() {
+        IMessage msg = new PacketControlInput.Message(PacketControlInput.ControlType.TRINKET_KEY);
+        Main.network.sendToServer(msg);
+    }
 
     //does shield ability handling
     private static void performShieldAbility() {

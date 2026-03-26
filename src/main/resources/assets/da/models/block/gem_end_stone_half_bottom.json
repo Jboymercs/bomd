@@ -1,0 +1,9 @@
+{
+  "parent": "block/half_slab",
+  "textures":
+  {
+    "bottom": "da:blocks/gem_end_stone",
+    "top": "da:blocks/gem_end_stone",
+    "side": "da:blocks/gem_end_stone"
+  }
+}

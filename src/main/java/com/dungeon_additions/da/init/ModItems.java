@@ -10,6 +10,9 @@ import com.dungeon_additions.da.items.armor.aegyptia.ItemColossusChestplate;
 import com.dungeon_additions.da.items.armor.aegyptia.ItemWarlordHelmet;
 import com.dungeon_additions.da.items.armor.dark.ModDarkArmorBase;
 import com.dungeon_additions.da.items.armor.dark.ModDarkMetalHelmet;
+import com.dungeon_additions.da.items.armor.enderphrite.ItemEnderphriteArmor;
+import com.dungeon_additions.da.items.armor.enderphrite.ItemEnderphriteChestplate;
+import com.dungeon_additions.da.items.armor.enderphrite.ItemEnderphriteHelmet;
 import com.dungeon_additions.da.items.armor.imperial.ItemImperialArmor;
 import com.dungeon_additions.da.items.armor.imperial.ItemImperialChestplate;
 import com.dungeon_additions.da.items.armor.mage.ItemMageArmor;
@@ -91,6 +94,7 @@ public class ModItems {
     private static final ItemArmor.ArmorMaterial INCENDIUM_HELMET_SET = EnumHelper.addArmorMaterial("incendium_h", ModReference.MOD_ID +":incendium_helmet", 60 * ModConfig.armor_durability_scaling, new int[] {3,6,8,3}, 20, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 2F);
     private static final ItemArmor.ArmorMaterial DARK_METAL_SET = EnumHelper.addArmorMaterial("dark_metal", ModReference.MOD_ID +":dark_metal", 55 * ModConfig.armor_durability_scaling, new int[] {3,5,8,3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 2.5F);
     private static final ItemArmor.ArmorMaterial NOVIK_SET = EnumHelper.addArmorMaterial("novik", ModReference.MOD_ID +":novik", 52 * ModConfig.armor_durability_scaling, new int[] {4,6,9,4}, 15, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2F);
+    private static final ItemArmor.ArmorMaterial ENDERPHRITE_SET = EnumHelper.addArmorMaterial("enderphrite", ModReference.MOD_ID +":enderphrite", 58 * ModConfig.armor_durability_scaling, new int[] {3,6,8,3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2.5F);
     private static final ItemArmor.ArmorMaterial APATHYR_SET = EnumHelper.addArmorMaterial("apathyr", ModReference.MOD_ID + ":apathyr", 63 * ModConfig.armor_durability_scaling, new int[]{5,7,10,5}, 25, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
     private static final ItemArmor.ArmorMaterial WYRK_ARMOR = EnumHelper.addArmorMaterial("wyrk", ModReference.MOD_ID +":wyrk", 55 * ModConfig.armor_durability_scaling, new int[] {3,6,8,3}, 30, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
     private static final ItemArmor.ArmorMaterial IMPERIAL_ARMOR = EnumHelper.addArmorMaterial("imperial", ModReference.MOD_ID +":imperial", 60 * ModConfig.armor_durability_scaling, new int[] {4,7,9,4}, 15, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
@@ -140,6 +144,7 @@ public class ModItems {
     public static final Item GAELON_INGOT = new ItemCraftingMaterial("gaelon_ingot", "gaelon_ingot_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item UNBRIDLED_SOUL = new ItemCraftingMaterial("unbridled_soul", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item VOIDIANT_CORE = new ItemCraftingMaterial("voidiant_core", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item ENDER_CRYSTAL = new ItemCraftingMaterial("ender_crystal", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item OBSIDIAN_HEART = new ItemCraftingMaterial("obsdian_heart", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item VOIDCLYSM_CRYSTAL = new ItemCraftingMaterial("voidclysm_crystal", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item LIGHT_MANA = new ItemCraftingMaterial("light_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -169,6 +174,7 @@ public class ModItems {
     public static final Item FIERY_RESPITE = new ItemFieryRespite("fiery_respite", "fiery_respite_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item GOLDEN_DEVOTION = new ItemGoldenDevotion("golden_devotion", "golden_devotion_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item GOLDEN_VOW = new ItemGoldenVow("golden_vow", "golden_vow_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    //Trinkets
     public static final Item FROZEN_CRYSTAL_TRINKET = new ItemTrinket("crystal_trinket", "crystal_trinket_desc", PotionTrinketConfig.frozen_crystal_durability, ItemTrinket.baubleSlot.TRINKET);
     public static final Item GLASS_CANNON_TRINKET = new ItemTrinket("glass_cannon_trinket", "glass_cannon_trinket_desc", PotionTrinketConfig.glass_cannon_durability, ItemTrinket.baubleSlot.CHARM);
     public static final Item SPEED_BOOTS_TRINKET = new ItemTrinket("boots_trinket", "boots_trinket_desc", PotionTrinketConfig.speed_runner_durability, ItemTrinket.baubleSlot.CHARM);
@@ -176,7 +182,7 @@ public class ModItems {
     public static final Item DEATH_TRINKET = new ItemTrinket("death_trinket","death_trinket_desc", PotionTrinketConfig.deaths_prosper_durability, ItemTrinket.baubleSlot.TRINKET);
     public static final Item SHIELD_TRINKET = new ItemTrinket("shield_trinket", "shield_trinket_desc", PotionTrinketConfig.mythic_shield_durability, ItemTrinket.baubleSlot.AMULET);
     public static final Item DIAMOND_SHIELD_TRINKET = new ItemTrinket("diamond_shield_trinket", "diamond_shield_trinket_desc", PotionTrinketConfig.exalted_shield_durability, ItemTrinket.baubleSlot.AMULET);
-    public static final Item CREEPER_TRINKET = new ItemTrinket("creeper_trinket","creeper_trinket_desc", PotionTrinketConfig.creepers_will_durability, ItemTrinket.baubleSlot.CHARM);
+    public static final Item CREEPER_TRINKET = new ItemTrinket("creeper_trinket","creeper_trinket_desc", PotionTrinketConfig.creepers_will_durability, ItemTrinket.baubleSlot.TRINKET);
     public static final Item MAGIC_CHARM_TRINKET = new ItemTrinket("charm_trinket", "charm_trinket_desc", PotionTrinketConfig.magic_charm_durability, ItemTrinket.baubleSlot.TRINKET);
     public static final Item FROZEN_SLAM_TRINKET = new ItemTrinket("slam_trinket", "slam_trinket_desc", PotionTrinketConfig.frozen_slam_durability, ItemTrinket.baubleSlot.CHARM);
     public static final Item VAMPIRIC_TRINKET = new ItemTrinket("vampire_trinket", "vampire_trinket_desc", PotionTrinketConfig.vampiric_durability, ItemTrinket.baubleSlot.TRINKET);
@@ -184,15 +190,26 @@ public class ModItems {
     public static final Item GAMBLE_TRINKET = new ItemTrinket("gamble_trinket", "gamble_trinket_desc", PotionTrinketConfig.chip_fortunate_durability, ItemTrinket.baubleSlot.TRINKET);
     public static final Item POISON_TRINKET = new ItemTrinket("poison_trinket", "poison_trinket_desc", PotionTrinketConfig.poison_touch_durability, ItemTrinket.baubleSlot.TRINKET);
     public static final Item VOID_TRINKET = new ItemTrinket("void_trinket","void_trinket_desc", PotionTrinketConfig.voids_item_durability, ItemTrinket.baubleSlot.TRINKET);
-    public static final Item WIND_TRINKET = new ItemTrinket("wind_trinket", "wind_trinket_desc", PotionTrinketConfig.storm_calling_durability, ItemTrinket.baubleSlot.CHARM);
+    public static final Item WIND_TRINKET = new ItemTrinket("wind_trinket", "wind_trinket_desc", PotionTrinketConfig.storm_calling_durability, ItemTrinket.baubleSlot.CHARM, true);
     public static final Item WEAKNESS_TRINKET = new ItemTrinket("weakness_trinket", "weakness_trinket_desc", PotionTrinketConfig.spiral_vain_durability, ItemTrinket.baubleSlot.TRINKET);
     public static final Item VOID_HAND_TRINKET = new ItemTrinket("void_hand_trinket", "void_hand_trinket_desc", PotionTrinketConfig.cult_classic_durability, ItemTrinket.baubleSlot.TRINKET);
-    public static final Item CONFETTI_TRINKET = new ItemTrinket("confetti_trinket", "confetti_trinket_desc", PotionTrinketConfig.party_starter_durability, ItemTrinket.baubleSlot.CHARM);
+    public static final Item CONFETTI_TRINKET = new ItemTrinket("confetti_trinket", "confetti_trinket_desc", PotionTrinketConfig.party_starter_durability, ItemTrinket.baubleSlot.TRINKET);
     public static final Item STALWART_SUMMONER = new ItemTrinket("stalwart_summoner", "stalwart_summoner_desc", PotionTrinketConfig.stalwart_summoner_durability, ItemTrinket.baubleSlot.CHARM);
     public static final Item GOLDEN_MARK_TRINKET = new ItemTrinket("golden_mark_trinket", "golden_mark_trinket_desc", PotionTrinketConfig.golden_mark_durability, ItemTrinket.baubleSlot.TRINKET);
-    public static final Item SIGIL_TRINKET = new ItemTrinket("sigil_trinket", "sigil_trinket_desc", PotionTrinketConfig.golden_ritual_durability, ItemTrinket.baubleSlot.CHARM);
+    public static final Item SIGIL_TRINKET = new ItemTrinket("sigil_trinket", "sigil_trinket_desc", PotionTrinketConfig.golden_ritual_durability, ItemTrinket.baubleSlot.CHARM, true);
     public static final Item MAGIC_BOOST_TRINKET = new ItemTrinket("magic_boost_trinket", "magic_boost_trinket_desc", PotionTrinketConfig.magic_reservoir_durability, ItemTrinket.baubleSlot.AMULET);
     public static final Item ARROW_TRINKET = new ItemTrinket("arrow_trinket", "arrow_trinket_desc", PotionTrinketConfig.blood_stained_arrow_durability, ItemTrinket.baubleSlot.TRINKET);
+    public static final Item VICTORY_TRINKET = new ItemTrinket("victory_trinket", "victory_trinket_desc", PotionTrinketConfig.victory_rush_durability, ItemTrinket.baubleSlot.TRINKET);
+    public static final Item DAGGER_TRINKET = new ItemTrinket("dagger_trinket", "dagger_trinket_desc", PotionTrinketConfig.dagger_trinket_durability, ItemTrinket.baubleSlot.TRINKET);
+    public static final Item TELEPORT_TRINKET = new ItemTrinket("teleport_trinket", "teleport_trinket_desc", PotionTrinketConfig.teleport_trinket_durability, ItemTrinket.baubleSlot.CHARM, true);
+    public static final Item DODGE_TRINKET = new ItemTrinket("dodge_trinket", "dodge_trinket_desc", PotionTrinketConfig.dodge_trinket_durability, ItemTrinket.baubleSlot.CHARM, true);
+    public static final Item ROTTEN_TRINKET = new ItemTrinket("rotten_trinket", "rotten_trinket_desc", PotionTrinketConfig.rotten_ring_durability, ItemTrinket.baubleSlot.CHARM, true);
+    public static final Item BLUE_TRINKET = new ItemTrinket("blue_trinket", "blue_trinket_desc", PotionTrinketConfig.blue_trinket_durability, ItemTrinket.baubleSlot.CHARM, true);
+    public static final Item FLAME_EXPLOSION_TRINKET = new ItemTrinket("flame_explosion_trinket", "flame_explosion_trinket_desc", PotionTrinketConfig.flame_explosion_trinket_durability, ItemTrinket.baubleSlot.CHARM, true);
+    public static final Item ENDERMEN_TRINKET = new ItemTrinket("endermen_trinket", "endermen_trinket_desc", PotionTrinketConfig.endermen_trinket_durability, ItemTrinket.baubleSlot.AMULET);
+    public static final Item MACE_TRINKET = new ItemTrinket("mace_trinket", "mace_trinket_desc", PotionTrinketConfig.mace_trinket_durability, ItemTrinket.baubleSlot.CHARM, true);
+    public static final Item RALLY_TRINKET = new ItemTrinket("rally_trinket", "rally_trinket_desc", PotionTrinketConfig.last_stand_trinket_durability, ItemTrinket.baubleSlot.CHARM, true);
+    public static final Item PETAL_TRINKET = new ItemTrinket("petal_trinket", "petal_trinket_desc", PotionTrinketConfig.thorn_ring_trinket_durability, ItemTrinket.baubleSlot.CHARM, true);
     //
     public static final Item WYRK_TOTEM = new ItemWyrkTotem("wyrk_totem", "wyrk_totem_desc", DungeonAdditionsTab.ALL);
     public static final Item NOVIK_AID = new ItemNovikAid("call_to_arms", "call_to_arms_desc", DungeonAdditionsTab.ALL);
@@ -289,6 +306,10 @@ public class ModItems {
     public static final ItemArmor NOVIK_BOOTS = new ItemNovikArmor("novik_boots", NOVIK_SET, 1, EntityEquipmentSlot.FEET, "novik", "novik_armor_desc");
     public static final ItemArmor APATHYR_HELMET = new ItemApathyrHelmet("apathyr_helmet", APATHYR_SET, 1, EntityEquipmentSlot.HEAD, "apathyr", "apathyr_helmet_desc");
     public static final ItemArmor VOIDIANT_CHESTPLATE = new VoidiantChestplate("voidiant_chestplate",VOIDIANT_ARMOR, 1, EntityEquipmentSlot.CHEST, "voidiant", "voidiant_armor_desc");
+    public static final ItemArmor ENDERPHRITE_HELMET = new ItemEnderphriteHelmet("enderphrite_helmet", ENDERPHRITE_SET, 1, EntityEquipmentSlot.HEAD, "enderphrite", "enderphrite_armor_desc");
+    public static final ItemArmor ENDERPHRITE_CHESTPLATE = new ItemEnderphriteChestplate("enderphrite_chestplate", ENDERPHRITE_SET,1, EntityEquipmentSlot.CHEST, "enderphrite", "enderphrite_armor_desc");
+    public static final ItemArmor ENDERPHRITE_LEGGINGS = new ItemEnderphriteArmor("enderphrite_leggings", ENDERPHRITE_SET, 2, EntityEquipmentSlot.LEGS, "enderphrite", "enderphrite_armor_desc");
+    public static final ItemArmor ENDERPHRITE_BOOTS = new ItemEnderphriteArmor("enderphrite_boots", ENDERPHRITE_SET, 1, EntityEquipmentSlot.FEET, "enderphrite", "enderphrite_armor_desc");
     public static final ItemArmor OBSIDIAN_HELMET = new ItemObsidianHelmet("obsidian_helm", OBSIDIAN_HELMET_MAT, 1, EntityEquipmentSlot.HEAD, "obsidian", "obsidian_armor_desc");
     public static final ItemArmor NIGHT_LICH_HELMET = new ModLichArmor("lich_helmet", LICH_HELMET, 1, EntityEquipmentSlot.HEAD,"night_lich", "night_lich_desc");
     public static final ItemArmor DARK_METAL_HELMET = new ModDarkMetalHelmet("dark_metal_helmet", DARK_METAL_SET, 1, EntityEquipmentSlot.HEAD, "dark_metal_helmet", "dark_metal_helmet_desc");
@@ -322,6 +343,7 @@ public class ModItems {
     public static final Item CRYSTAL_WAVE_PROJ = new ItemYellowWave("crystal_wave").setCreativeTab(null);
     public static final Item GHOST_BOLT_PROJ = new ItemProjectileGhost("ghost_bolt").setCreativeTab(null);
     public static final Item FAST_CRYSTAL_PROJ = new ItemFastCrystal("fast_crystal").setCreativeTab(null);
+    public static final Item BLOOD_METEOR = new ItemProjectileBloodMeteor("blood_meteor").setCreativeTab(null);
 
     public static final Item INVISISBLE_ITEM = new ItemBase("invisible_item", null);
     public static final Item PROJECTILE_FLAME = new ItemBase("projectile_flame", null);
@@ -336,6 +358,7 @@ public class ModItems {
     public static final Item TRADER_BAG = new ItemBase("trader_bag", null);
     public static final Item DESERT_LOCATOR_PROJ = new ItemBase("desert_locator_projectile", null);
     public static final Item DESERT_PROJECTILE = new ItemBase("desert_projectile", null);
+    public static final Item SORCERY_DAGGER = new ItemSorceryDagger("sorcery_dagger").setCreativeTab(null);
 
     public static final Item MOD_LOGO = new ItemBase("bomd_mod_logo", null);
 

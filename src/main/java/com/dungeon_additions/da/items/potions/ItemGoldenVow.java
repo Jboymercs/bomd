@@ -81,7 +81,7 @@ public class ItemGoldenVow extends ItemPotion implements IHasModel {
         }
 
         if (!worldIn.isRemote) {
-            entityLiving.addPotionEffect(new PotionEffect(ModPotions.GOLDEN_VOW, 2800, 0, false, true));
+            entityLiving.addPotionEffect(new PotionEffect(ModPotions.GOLDEN_VOW, 7200, 0, false, true));
         }
 
         if (entityplayer != null) {

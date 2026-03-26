@@ -249,6 +249,11 @@
         },
         {
           "type": "item",
+          "name": "da:flame_explosion_trinket",
+          "weight": 6
+        },
+        {
+          "type": "item",
           "name": "da:copper_coin",
           "weight": 13,
           "functions": [

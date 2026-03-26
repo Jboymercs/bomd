@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " R ",
+    "VXV",
+    " V "
+  ],
+  "key": {
+    "V": {
+      "item": "da:moss_block"
+    },
+    "R": {
+      "item": "da:knight_shard"
+    },
+    "X": {
+      "item": "da:void_thorns"
+    }
+  },
+  "result": {
+    "item": "da:petal_trinket",
+    "count": 1
+  }
+}

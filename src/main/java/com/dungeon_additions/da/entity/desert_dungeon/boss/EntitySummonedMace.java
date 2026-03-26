@@ -9,6 +9,7 @@ import com.dungeon_additions.da.entity.gaelon_dungeon.EntityGaelonBase;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -137,36 +138,41 @@ public class EntitySummonedMace extends EntityDesertBase implements IAnimatable,
         if(!world.isRemote) {
             if(this.isMeleeVariation()) {
 
-                if(ticksExisted == 27) {
-                    Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 2)));
-                    DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
-                    float damage =(float) (damageIn);
-                    this.playSound(SoundsHandler.COLOSSUS_SWING, 0.7f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
-                    ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 1.3f, 0, false);
-                }
+                    EntityLivingBase baseIn = this;
+                    if(player != null) {
+                        baseIn = player;
+                    }
 
-                if(ticksExisted == 30) {
-                    Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(-2, 1.2, 0)));
-                    DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
-                    float damage =(float) (damageIn);
-                    this.playSound(SoundsHandler.COLOSSUS_SWING, 0.7f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
-                    ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 1.3f, 0, false);
-                }
+                    if(ticksExisted == 27) {
+                        Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 2)));
+                        DamageSource source = ModDamageSource.builder().type(player != null ? ModDamageSource.MAGIC : ModDamageSource.PLAYER).directEntity(baseIn).disablesShields().build();
+                        float damage =(float) (damageIn);
+                        this.playSound(SoundsHandler.COLOSSUS_SWING, 0.7f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+                        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 1.3f, 0, false);
+                    }
 
-                if(ticksExisted == 32) {
-                    Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, -2)));
-                    DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
-                    float damage =(float) (damageIn);
-                    this.playSound(SoundsHandler.COLOSSUS_SWING, 0.7f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
-                    ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 1.3f, 0, false);
-                }
+                    if(ticksExisted == 30) {
+                        Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(-2, 1.2, 0)));
+                        DamageSource source = ModDamageSource.builder().type(player != null ? ModDamageSource.MAGIC : ModDamageSource.PLAYER).directEntity(baseIn).disablesShields().build();
+                        float damage =(float) (damageIn);
+                        this.playSound(SoundsHandler.COLOSSUS_SWING, 0.7f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+                        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 1.3f, 0, false);
+                    }
 
-                if(ticksExisted == 34) {
-                    Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2, 1.2, 0)));
-                    DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
-                    float damage =(float) (damageIn);
-                    this.playSound(SoundsHandler.COLOSSUS_SWING, 0.7f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
-                    ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 1.3f, 0, false);
+                    if(ticksExisted == 32) {
+                        Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, -2)));
+                        DamageSource source = ModDamageSource.builder().type(player != null ? ModDamageSource.MAGIC : ModDamageSource.PLAYER).directEntity(baseIn).disablesShields().build();
+                        float damage =(float) (damageIn);
+                        this.playSound(SoundsHandler.COLOSSUS_SWING, 0.7f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+                        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 1.3f, 0, false);
+                    }
+
+                    if(ticksExisted == 34) {
+                        Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2, 1.2, 0)));
+                        DamageSource source = ModDamageSource.builder().type(player != null ? ModDamageSource.MAGIC : ModDamageSource.PLAYER).directEntity(baseIn).disablesShields().build();
+                        float damage =(float) (damageIn);
+                        this.playSound(SoundsHandler.COLOSSUS_SWING, 0.7f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
+                        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 1.3f, 0, false);
                 }
 
                 if(ticksExisted > 49) {

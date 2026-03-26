@@ -66,6 +66,7 @@ public class EventWearFlameArmor {
     public static final UUID SHIELD_TRINKET_MODIFIER = UUID.fromString("9812aa4a-afc8-33b2-8956-22bec9cab736");
     public static final UUID DIAMOND_SHIELD_TRINKET_MODIFIER = UUID.fromString("7843aa4a-af8d-36a2-1293-69bec9caa675");
     public static final UUID HEART_TRINKET_MODIFIER = UUID.fromString("8724aa4a-af8d-22a2-8693-12bec9caa544");
+    public static final UUID SPEED_TRINKET_MODIFIER = UUID.fromString("8321aa4a-af3d-42a2-1983-42bec9caa503");
 
     @SubscribeEvent
     public static void onEquipArmor(LivingEvent.LivingUpdateEvent event) {
@@ -115,20 +116,9 @@ public class EventWearFlameArmor {
                     ItemStack shieldTrinket = ModUtils.findTrinket(new ItemStack(ModItems.SHIELD_TRINKET), player);
                     ItemStack diamondShieldTrinket = ModUtils.findTrinket(new ItemStack(ModItems.DIAMOND_SHIELD_TRINKET), player);
                     ItemStack heartTrinket = ModUtils.findTrinket(new ItemStack(ModItems.HEART_TRINKET), player);
+                    ItemStack endermenTrinket = ModUtils.findTrinket(new ItemStack(ModItems.ENDERMEN_TRINKET), player);
                     ItemStack voidTrinket = ModUtils.findTrinket(new ItemStack(ModItems.VOID_TRINKET), player);
-                    ItemStack wind_trinket = ModUtils.findTrinket(new ItemStack(ModItems.WIND_TRINKET), player);
                     ItemStack void_hand_trinket = ModUtils.findTrinket(new ItemStack(ModItems.VOID_HAND_TRINKET), player);
-                    ItemStack sigil_trinket = ModUtils.findTrinket(new ItemStack(ModItems.SIGIL_TRINKET), player);
-
-                    if(!sigil_trinket.isEmpty() && !player.getCooldownTracker().hasCooldown(sigil_trinket.getItem()) && player.isSneaking() &&
-                    player.getAttackingEntity() != null && player.ticksExisted % 2 == 0) {
-
-                        EntityColossusSigil sigil = new EntityColossusSigil(player.world, player, PotionTrinketConfig.golden_ritual_damage + ModUtils.addMageSetBonus(player, 0), true);
-                        sigil.setPosition(player.posX, player.posY + 2, player.posZ);
-                        player.world.spawnEntity(sigil);
-                        sigil_trinket.damageItem(1, player);
-                        player.getCooldownTracker().setCooldown(sigil_trinket.getItem(), 1200);
-                    }
 
                     if(!void_hand_trinket.isEmpty() && !player.getCooldownTracker().hasCooldown(void_hand_trinket.getItem())) {
                         int randI = ModRand.range(1, 101);
@@ -166,15 +156,6 @@ public class EventWearFlameArmor {
                         }
                         }
                     }
-                    if(!wind_trinket.isEmpty() && !player.getCooldownTracker().hasCooldown(wind_trinket.getItem())) {
-                        if(player.isSneaking() && player.motionY > 0.075) {
-                            EntitySkyTornado tornado = new EntitySkyTornado(player.world, true, player);
-                            tornado.setPosition(player.posX, player.posY, player.posZ);
-                            player.world.spawnEntity(tornado);
-                            wind_trinket.damageItem(1, player);
-                            player.getCooldownTracker().setCooldown(wind_trinket.getItem(), 600);
-                        }
-                    }
 
                     if(!speedTrinket.isEmpty() && player.getHealth() / player.getMaxHealth() > 0.98) {
                         if(player.ticksExisted % 45 == 0) {
@@ -204,6 +185,7 @@ public class EventWearFlameArmor {
                     IAttributeInstance attributeInShield = base.getEntityAttribute(SharedMonsterAttributes.ARMOR);
                     IAttributeInstance attributeInDiamond = base.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS);
                     IAttributeInstance attributeInHeart = base.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);
+                IAttributeInstance attributeInSpeed = base.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
 
                     //shield Trinkets
                     if(!shieldTrinket.isEmpty()) {
@@ -239,6 +221,18 @@ public class EventWearFlameArmor {
                     } else if(attributeInHeart.getModifier(HEART_TRINKET_MODIFIER) != null) {
                         attributeInHeart.removeModifier(HEART_TRINKET_MODIFIER);
                     }
+
+                if(!endermenTrinket.isEmpty()) {
+                    if (attributeInSpeed.getModifier(SPEED_TRINKET_MODIFIER) == null) {
+                        attributeInSpeed.applyModifier(new AttributeModifier(SPEED_TRINKET_MODIFIER, "endermen_trinket_modifier", PotionTrinketConfig.endermen_trinket_speed_amount, 1).setSaved(false));
+                    }
+
+                    if(player.hurtTime == 1) {
+                        endermenTrinket.damageItem(1, player);
+                    }
+                } else if(attributeInSpeed.getModifier(SPEED_TRINKET_MODIFIER) != null) {
+                    attributeInSpeed.removeModifier(SPEED_TRINKET_MODIFIER);
+                }
             }
 
             if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.WARLORD_HELMET) {

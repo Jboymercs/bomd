@@ -50,7 +50,7 @@ public class ActionSuperDash implements IMultiAction {
                         .directEntity(this.actor)
                         .stoppedByArmorNotShields().disablesShields().build();
 
-                ModUtils.handleAreaImpact(4, (e) -> this.actor.getAttack(), this.actor, this.actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(2.5, 0, 0))), source);
+                ModUtils.handleAreaImpact(1.5F, (e) -> this.actor.getAttack(), this.actor, this.actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(2.5, 0, 0))), source);
                 actor.playSound(SoundsHandler.APATHYR_AXE_IMPACT, 1.5f, 0.7f / (new Random().nextFloat() * 0.4f + 0.2f));
             }, 12);
         },teleportTime);

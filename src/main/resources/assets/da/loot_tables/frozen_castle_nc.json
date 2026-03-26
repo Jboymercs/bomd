@@ -501,6 +501,16 @@
         },
         {
           "type": "item",
+          "name": "da:victory_trinket",
+          "weight": 9
+        },
+        {
+          "type": "item",
+          "name": "da:slam_trinket",
+          "weight": 7
+        },
+        {
+          "type": "item",
           "name": "minecraft:bucket",
           "weight": 10
         },

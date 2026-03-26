@@ -6,23 +6,17 @@ import com.dungeon_additions.da.init.ModRecipes;
 import com.dungeon_additions.da.proxy.CommonProxy;
 import com.dungeon_additions.da.util.DALogger;
 import com.dungeon_additions.da.util.ModReference;
-import com.dungeon_additions.da.util.commands.CommandLocateLich;
+import com.dungeon_additions.da.util.commands.CommandLocateMod;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.dungeon_additions.da.util.handlers.StructureHandler;
 import com.dungeon_additions.da.world.ModWorldGen;
 import com.dungeon_additions.da.world.ore_gen.BOMDOreGen;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.DimensionType;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.network.NetworkCheckHandler;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -79,6 +73,6 @@ public class Main {
     public void serverLoad(FMLServerStartingEvent event)
     {
         // register server commands
-        event.registerServerCommand(new CommandLocateLich());
+        event.registerServerCommand(new CommandLocateMod());
     }
 }

@@ -3,6 +3,7 @@ package com.dungeon_additions.da.world;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.util.DALogger;
 import com.dungeon_additions.da.world.blossom.WorldGenBlossomCave;
+import com.dungeon_additions.da.world.cults_domain.WorldGenCultsDomain;
 import com.dungeon_additions.da.world.forgotten_temple.WorldGenForgottenTemple;
 import com.dungeon_additions.da.world.frozen_castle.WorldGenFrozenCastle;
 import com.dungeon_additions.da.world.gaelon_sanctuary.WorldGenGaelonSanctuary;
@@ -11,6 +12,7 @@ import com.dungeon_additions.da.world.lich_tower.WorldGenLichTower;
 import com.dungeon_additions.da.world.mysterious_trader.WorldGenMysteriousTraderPost;
 import com.dungeon_additions.da.world.nether_arena.WorldGenNetherArena;
 import com.dungeon_additions.da.world.obsidilith_arena.WorldGenObsidilithArena;
+import com.dungeon_additions.da.world.outposts.WorldGenOutposts;
 import com.dungeon_additions.da.world.rot_hold.WorldGenRotHold;
 import com.google.common.collect.Lists;
 import net.minecraft.init.Biomes;
@@ -42,6 +44,8 @@ public class ModWorldGen implements IWorldGenerator {
     private static final WorldGenObsidilithArena obsidilithArena = new WorldGenObsidilithArena();
     private static final WorldGenGaelonSanctuary gaelon_sanctuary = new WorldGenGaelonSanctuary();
     private static final WorldGenMysteriousTraderPost trader_post = new WorldGenMysteriousTraderPost();
+    private static final WorldGenCultsDomain cults_domain = new WorldGenCultsDomain();
+    private static final WorldGenOutposts outposts = new WorldGenOutposts();
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
 
@@ -49,6 +53,15 @@ public class ModWorldGen implements IWorldGenerator {
         int z = chunkZ * 16;
         BlockPos pos = new BlockPos(x + 8, 0, z + 8);
 
+        //For now, we will only enable to the end since they only exist there
+        //Outposts
+        if(world.provider.getDimension() == 1 && WorldConfig.outposts_enabled) {
+            outposts.generate(world, random, pos);
+        }
+        //Cults Domain
+       // if(isAllowedDimensionTooSpawnInCultCastle(world.provider.getDimension()) && WorldConfig.cult_castle_enabled) {
+       //     cults_domain.generate(world, random, pos);
+       // }
         //nether arena
         if(world.provider.getDimension() == -1 && WorldConfig.burning_flame_arena_enabled) {
                 netherArena.generate(world, random, pos);
@@ -178,6 +191,15 @@ public class ModWorldGen implements IWorldGenerator {
 
     public static boolean isAllowedDimensionTooSpawnInTraderPost(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions_mysterious_trader_post) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInCultCastle(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_cult_castle) {
             if(i == dimensionIn)
                 return true;
         }

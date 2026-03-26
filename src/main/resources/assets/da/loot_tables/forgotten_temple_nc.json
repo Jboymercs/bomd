@@ -537,7 +537,7 @@
               }
             }
           ]
-        }
+        },
         {
           "type": "item",
           "name": "minecraft:golden_axe",
@@ -567,6 +567,16 @@
               }
             }
           ]
+        },
+        {
+          "type": "item",
+          "name": "da:dodge_trinket",
+          "weight": 10
+        },
+        {
+          "type": "item",
+          "name": "da:mace_trinket",
+          "weight": 8
         },
         {
           "type": "item",

@@ -97,7 +97,7 @@ public class EntityHighKingBoss extends EntitySkyBase {
             changeWeatherTimer--;
 
 
-            if(changeWeatherTimer < 0) {
+            if(changeWeatherTimer < 0 && MobConfig.king_weather_enabled) {
                 world.getWorldInfo().setThundering(true);
                 world.getWorldInfo().setRaining(true);
                 changeWeatherTimer = 1200;

@@ -4,6 +4,8 @@ import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
 import com.dungeon_additions.da.entity.tileEntity.tileEntityMobSpawner;
+import com.dungeon_additions.da.entity.void_dungeon.EntityEnderphrite;
+import com.dungeon_additions.da.entity.void_dungeon.EntityEnderphriteGauntlet;
 import com.dungeon_additions.da.entity.void_dungeon.EntityVoidiant;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModEntities;
@@ -54,6 +56,23 @@ public class ObsidilithArenaTemplate extends ModStructureTemplate {
             } else {
                 world.setBlockToAir(pos);
             }
+        } else if(function.startsWith("elite_mob")) {
+            if(generateEliteMobSpawn()) {
+                world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_END.getDefaultState(), 2);
+                TileEntity tileentity = world.getTileEntity(pos);
+                if (tileentity instanceof tileEntityMobSpawner) {
+                    ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
+                            new MobSpawnerLogic.MobSpawnData[]{
+                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityEnderphrite.class), 1),
+                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityEnderphriteGauntlet.class), 1)
+                            },
+                            new int[]{1, 1},
+                            1,
+                            30);
+                }
+            } else {
+                world.setBlockToAir(pos);
+            }
         }
 
         //chests
@@ -89,6 +108,14 @@ public class ObsidilithArenaTemplate extends ModStructureTemplate {
     public boolean generateMobSpawn() {
         int randomNumberGenerator = ModRand.range(0, 10);
         if (randomNumberGenerator >= WorldConfig.obsidilith_arena_mob_spawns) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean generateEliteMobSpawn() {
+        int randomNumberGenerator = ModRand.range(0, 10);
+        if (randomNumberGenerator >= WorldConfig.obsidilith_arena_mob_spawns - 1) {
             return false;
         }
         return true;

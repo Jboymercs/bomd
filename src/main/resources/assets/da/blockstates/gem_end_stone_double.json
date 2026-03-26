@@ -1,0 +1,6 @@
+{
+  "variants":
+  {
+    "variant=default": { "model": "da:gem_end_stone_double" }
+  }
+}

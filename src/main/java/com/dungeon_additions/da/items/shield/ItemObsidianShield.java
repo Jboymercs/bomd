@@ -46,7 +46,6 @@ import java.util.Random;
 public class ItemObsidianShield extends BOMDShieldItem implements IAnimatable {
 
     public AnimationFactory factory = new AnimationFactory(this);
-    public int hitCounter = 0;
     private String info_loc;
     public ItemObsidianShield(String name, String info_loc, CreativeTabs tabs) {
         super(name);
@@ -117,7 +116,7 @@ public class ItemObsidianShield extends BOMDShieldItem implements IAnimatable {
                                 this.initiatedAttack = false;
                                 targetOriginalPos = null;
                                 entityFound = null;
-                                this.hitCounter = 0;
+                                this.setHitCounter(stack, 0);
                             } else {
                                 waitTime--;
                             }
@@ -127,11 +126,12 @@ public class ItemObsidianShield extends BOMDShieldItem implements IAnimatable {
 
             }
         }
+        super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
     }
 
     @Override
     public boolean onApplyButtonPressed(EntityPlayer player, World world, ItemStack stack){
-        if (stack == player.getActiveItemStack() && hitCounter > 4) {
+        if (stack == player.getActiveItemStack() && this.getHitCounter(stack) > 4) {
             if(player.canBePushed()) {
                 player.motionX = 0;
                 player.motionY = 0;
@@ -292,7 +292,7 @@ public class ItemObsidianShield extends BOMDShieldItem implements IAnimatable {
 
     @Override
     public void onBlockingDamage(ItemStack shield, EntityPlayer player) {
-        hitCounter++;
+        this.setHitCounter(shield, this.getHitCounter(shield) + 1);
         super.onBlockingDamage(shield, player);
     }
 

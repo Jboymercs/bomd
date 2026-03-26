@@ -426,6 +426,16 @@
         },
         {
           "type": "item",
+          "name": "da:rally_trinket",
+          "weight": 13
+        },
+        {
+          "type": "item",
+          "name": "da:dodge_trinket",
+          "weight": 10
+        },
+        {
+          "type": "item",
           "name": "minecraft:iron_sword",
           "weight": 10,
           "functions": [

@@ -26,11 +26,10 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemNovikSword extends ToolSword implements IHasModel {
+public class ItemNovikSword extends ItemAbilityWeapon implements IHasModel {
 
     String info_loc;
 
-    private boolean isEnraged = false;
     private int currentTick;
 
     public ItemNovikSword(String name, ToolMaterial material, String info_loc) {
@@ -58,7 +57,7 @@ public class ItemNovikSword extends ToolSword implements IHasModel {
                 stack.damageItem(6, player);
                 player.getCooldownTracker().setCooldown(this, SwordCoolDown);
                 this.currentTick = player.ticksExisted + 160;
-                this.isEnraged = true;
+                this.setAbilityVal(stack, true);
             }
         }
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
@@ -70,7 +69,7 @@ public class ItemNovikSword extends ToolSword implements IHasModel {
         if (attacker.world.isRemote) return false;
         if(attacker instanceof EntityPlayer) {
             EntityPlayer player = ((EntityPlayer) attacker);
-            if(this.isEnraged) {
+            if(this.getAbilityVal(stack)) {
                 float realAttackDamage = (float) (this.getAttackDamage());
                 target.attackEntityFrom(ModUtils.causeAxeDamage(attacker).setDifficultyScaled(), (float) realAttackDamage);
                 player.heal(1F);
@@ -82,16 +81,17 @@ public class ItemNovikSword extends ToolSword implements IHasModel {
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
-        if(entityIn instanceof EntityPlayer && !worldIn.isRemote && this.isEnraged) {
+        if(entityIn instanceof EntityPlayer && !worldIn.isRemote && this.getAbilityVal(stack)) {
             EntityPlayer player = ((EntityPlayer) entityIn);
             if(player.ticksExisted > currentTick) {
                 this.currentTick = 0;
-                this.isEnraged = false;
+                this.setAbilityVal(stack, false);
             }
             if(player.ticksExisted % 20 == 0) {
                 Main.proxy.spawnParticle(15, player.posX, player.posY + 1.5, player.posZ, worldIn.rand.nextFloat()/6 - worldIn.rand.nextFloat()/6, 0.04, worldIn.rand.nextFloat()/6 - worldIn.rand.nextFloat()/6, 100);
             }
         }
+        super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
     }
 
     @Override

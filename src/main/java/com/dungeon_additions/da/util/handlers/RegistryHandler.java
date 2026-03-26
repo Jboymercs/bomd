@@ -72,6 +72,8 @@ public class RegistryHandler {
         ModelLoader.setCustomModelResourceLocation(ModItems.MAGE_STAFF, 0, new ModelResourceLocation(ModReference.MOD_ID + ":mage_staff", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.EVERATOR_SHIELD, 0, new ModelResourceLocation(ModReference.MOD_ID + ":everator_shield", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.COLOSSUS_MACE, 0, new ModelResourceLocation(ModReference.MOD_ID + ":colossus_mace", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.SORCERY_DAGGER, 0, new ModelResourceLocation(ModReference.MOD_ID + ":sorcery_dagger", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.BLOOD_METEOR, 0, new ModelResourceLocation(ModReference.MOD_ID + ":blood_meteor", "inventory"));
         ModItems.SPORE_BALL.setTileEntityItemStackRenderer(new RenderSpore());
         ModItems.MAGIC_FIREBALL.setTileEntityItemStackRenderer(new RenderMagicFireball());
         ModItems.CHAMPION_AXE.setTileEntityItemStackRenderer(new RenderChampionAxe());
@@ -104,6 +106,8 @@ public class RegistryHandler {
         ModItems.MAGE_STAFF.setTileEntityItemStackRenderer(new RenderMageStaff());
         ModItems.EVERATOR_SHIELD.setTileEntityItemStackRenderer(new RenderEveratorShield());
         ModItems.COLOSSUS_MACE.setTileEntityItemStackRenderer(new RenderColossusMace());
+        ModItems.SORCERY_DAGGER.setTileEntityItemStackRenderer(new RenderSorceryDagger());
+        ModItems.BLOOD_METEOR.setTileEntityItemStackRenderer(new RenderProjectileBloodMeteor());
         for (Item item : ModItems.ITEMS) {
             if (item instanceof IHasModel) {
                 ((IHasModel) item).registerModels();

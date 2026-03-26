@@ -252,6 +252,16 @@
         },
         {
           "type": "item",
+          "name": "da:dodge_trinket",
+          "weight": 14
+        },
+        {
+          "type": "item",
+          "name": "da:mace_trinket",
+          "weight": 10
+        },
+        {
+          "type": "item",
           "name": "minecraft:diamond_chestplate",
           "weight": 5,
           "functions": [

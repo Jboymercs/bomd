@@ -1,0 +1,40 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"summon": {
+			"animation_length": 2.0417,
+			"bones": {
+				"Ground": {
+					"scale": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.0417": {
+							"vector": [1.4, 1.4, 1.4]
+						},
+						"2.0": {
+							"vector": [1.4, 1.4, 1.4]
+						},
+						"2.0417": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"SpinCircle": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [0, -135, 0]
+						},
+						"2.0": {
+							"vector": [0, -135, 0]
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

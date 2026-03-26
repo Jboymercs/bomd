@@ -64,7 +64,7 @@ public class ItemBlossomDagger extends ToolSword{
             worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.BLOSSOM_PETAL_WAVE, SoundCategory.NEUTRAL, 1.0f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
             // Shoots projectiles in a small arc
             for (int i = 0; i < 5; i++) {
-                EntityDart projectile = new EntityDart(worldIn, player, 6 + ModUtils.addMageSetBonus(player, 0) + ModUtils.addAbilityBonusDamage(player.getHeldItemMainhand(), 1));
+                EntityDart projectile = new EntityDart(worldIn, player, 6 + ModUtils.addMageSetBonus(player, 0, 1.5F) + ModUtils.addAbilityBonusDamage(player.getHeldItemMainhand(), 1));
                 projectile.shoot(player, pitch, player.rotationYaw - 30 + (i * 15), 0.0F, speed, inaccuracy);
                 projectile.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
                 player.world.spawnEntity(projectile);

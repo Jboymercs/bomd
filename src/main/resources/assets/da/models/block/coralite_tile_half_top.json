@@ -1,0 +1,9 @@
+{
+  "parent": "block/upper_slab",
+  "textures":
+  {
+    "bottom": "da:blocks/coralite_tile",
+    "top": "da:blocks/coralite_tile",
+    "side": "da:blocks/coralite_tile"
+  }
+}

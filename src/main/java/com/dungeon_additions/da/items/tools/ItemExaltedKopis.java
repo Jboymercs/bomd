@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemExaltedKopis extends ToolSword{
+public class ItemExaltedKopis extends ItemAbilityWeapon{
 
     private String info_loc;
     private boolean isParrying = false;
@@ -32,7 +32,6 @@ public class ItemExaltedKopis extends ToolSword{
     private double setPlayerLife = 0;
     private boolean dealtDamage = false;
     private int parryCharge = 0;
-    private boolean isDashing = false;
     private int dashTime = 0;
 
     public ItemExaltedKopis(String name, ToolMaterial material, String info_loc) {
@@ -72,7 +71,7 @@ public class ItemExaltedKopis extends ToolSword{
                     player.velocityChanged = true;
                     player.setActiveHand(hand);
                     stack.damageItem(5, player);
-                    this.isDashing = true;
+                    this.setAbilityVal(stack, true);
                     this.parryCharge = 0;
                     player.getCooldownTracker().setCooldown(this, ModConfig.exalted_kopis_cooldown * 20);
                     player.world.playSound(player.posX + 0.5D, player.posY, player.posZ + 0.5D, SoundsHandler.DRAUGR_ELITE_STOMP, SoundCategory.BLOCKS,(float) 1.0F, 1.0F, false);
@@ -101,11 +100,11 @@ public class ItemExaltedKopis extends ToolSword{
         if(entityIn instanceof EntityPlayer && !worldIn.isRemote) {
             EntityPlayer player = ((EntityPlayer) entityIn);
 
-            if(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == this && worldIn.rand.nextInt(4) == 0 && this.parryCharge > 2 && !this.isDashing) {
+            if(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == this && worldIn.rand.nextInt(4) == 0 && this.parryCharge > 2 && !this.getAbilityVal(stack)) {
                 Main.proxy.spawnParticle(23, worldIn, player.posX + ModRand.range(-2, 2), player.posY + 0.25 + ModRand.getFloat(1F), player.posZ + ModRand.range(-2, 2), 0,0.05,0, 15128888);
             }
 
-            if(this.isDashing && player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == this) {
+            if(this.getAbilityVal(stack) && player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == this) {
                 //dash attack
                 List<EntityLivingBase> targets = worldIn.getEntitiesWithinAABB(EntityLivingBase.class, player.getEntityBoundingBox().grow(2), e -> e != player);
                 Main.proxy.spawnParticle(23, worldIn, player.posX, player.posY + 0.25, player.posZ, 0,0.05,0, 15128888);
@@ -114,7 +113,7 @@ public class ItemExaltedKopis extends ToolSword{
                 dashTime++;
 
                 if(player.motionX < 0.1 && player.motionZ < 0.1 && dashTime > 5 || dashTime > 35) {
-                    this.isDashing = false;
+                    this.setAbilityVal(stack, false);
                     player.motionX = 0;
                     player.motionZ = 0;
                     player.motionY = 0;
@@ -175,6 +174,7 @@ public class ItemExaltedKopis extends ToolSword{
                     }
             }
         }
+        super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
     }
 
     public void onEnemyRammed(EntityLivingBase user, EntityLivingBase enemy, Vec3d rammingDir) {

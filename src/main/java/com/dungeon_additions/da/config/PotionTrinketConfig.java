@@ -237,4 +237,94 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static int blood_stained_arrow_durability = 46;
 
+    @Config.Name("Victory Rush Durability")
+    @Config.Comment("Change Victory Rush item durability.")
+    @Config.RequiresMcRestart
+    public static int victory_rush_durability = 96;
+
+    @Config.Name("Lost Dagger of Roh Durability")
+    @Config.Comment("Change Last Dagger of Roh item durability.")
+    @Config.RequiresMcRestart
+    public static int dagger_trinket_durability = 84;
+
+    @Config.Name("Blink Bolt Durability")
+    @Config.Comment("Change Blink Bolt item durability.")
+    @Config.RequiresMcRestart
+    public static int teleport_trinket_durability = 246;
+
+    @Config.Name("Breath of the Wind Durability")
+    @Config.Comment("Change Breath of the Wind item durability.")
+    @Config.RequiresMcRestart
+    public static int dodge_trinket_durability = 96;
+
+    @Config.Name("Rotten Ring Durability")
+    @Config.Comment("Change Rotten Ring item durability.")
+    @Config.RequiresMcRestart
+    public static int rotten_ring_durability = 64;
+
+    @Config.Name("Rotten Ring Damage")
+    @Config.Comment("Change Rotten Ring item ability damage.")
+    @Config.RequiresMcRestart
+    public static float rotten_ring_damage = 9;
+
+    @Config.Name("Cosmic Prowess Durability")
+    @Config.Comment("Change Cosmic Prowess item durability.")
+    @Config.RequiresMcRestart
+    public static int blue_trinket_durability = 236;
+
+    @Config.Name("Cosmic Prowess Damage")
+    @Config.Comment("Change Cosmic Prowess item ability damage.")
+    @Config.RequiresMcRestart
+    public static float blue_trinket_damage = 6;
+
+    @Config.Name("Team Griefer Durability")
+    @Config.Comment("Change Team Griefer item durability.")
+    @Config.RequiresMcRestart
+    public static int flame_explosion_trinket_durability = 100;
+
+    @Config.Name("Team Griefer Damage")
+    @Config.Comment("Change Team Griefer item ability damage.")
+    @Config.RequiresMcRestart
+    public static float flame_explosion_trinket_damage = 7;
+
+    @Config.Name("Long Legs Durability")
+    @Config.Comment("Change Long Legs item durability.")
+    @Config.RequiresMcRestart
+    public static int endermen_trinket_durability = 736;
+
+    @Config.Name("Long Legs Damage")
+    @Config.Comment("Change how much speed is added by Long Legs trinket.")
+    @Config.RequiresMcRestart
+    public static double endermen_trinket_speed_amount = 0.07;
+
+    @Config.Name("Metal Tornado Durability")
+    @Config.Comment("Change Metal Tornado item durability.")
+    @Config.RequiresMcRestart
+    public static int mace_trinket_durability = 150;
+
+    @Config.Name("Metal Tornado Damage")
+    @Config.Comment("Change Metal Tornado item ability damage.")
+    @Config.RequiresMcRestart
+    public static float mace_trinket_damage = 8;
+
+    @Config.Name("Thorn Ring Durability")
+    @Config.Comment("Change Thorn Ring item durability.")
+    @Config.RequiresMcRestart
+    public static int thorn_ring_trinket_durability = 236;
+
+    @Config.Name("Thorn Ring Damage")
+    @Config.Comment("Change Thorn Ring item ability damage.")
+    @Config.RequiresMcRestart
+    public static float thorn_ring_trinket_damage = 6;
+
+    @Config.Name("Last Stand Durability")
+    @Config.Comment("Change Last Stand item durability.")
+    @Config.RequiresMcRestart
+    public static int last_stand_trinket_durability = 20;
+
+    @Config.Name("Trinkets become unbreakable Enable/Disable")
+    @Config.Comment("Change if all trinkets in the mod become unbreakable and do not take durability damage. default false.")
+    @Config.RequiresMcRestart
+    public static boolean trinkets_unbreakable = false;
+
 }

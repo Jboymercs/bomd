@@ -42,7 +42,7 @@ public class BlockGaelonCrystalBlock  extends BlockBase {
 
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        drops.add(new ItemStack(ModItems.GAELON_SHARD, 1));
+        drops.add(new ItemStack(ModItems.GAELON_SHARD, 1 + fortune));
     }
 
     @Override

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "R",
+    "V"
+  ],
+  "key": {
+    "V": {
+      "item": "da:coralite_tile_half",
+      "data": 0
+    },
+    "R": {
+      "item": "da:coralite_pillar",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "da:coralite_decoration_tile",
+    "count": 1
+  }
+}

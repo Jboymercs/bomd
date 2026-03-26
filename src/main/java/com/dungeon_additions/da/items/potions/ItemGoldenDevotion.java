@@ -85,7 +85,7 @@ public class ItemGoldenDevotion extends ItemPotion implements IHasModel {
         }
 
         if (!worldIn.isRemote) {
-           entityLiving.addPotionEffect(new PotionEffect(ModPotions.GOLDEN_DEVOTION, 2800, 0, false, true));
+           entityLiving.addPotionEffect(new PotionEffect(ModPotions.GOLDEN_DEVOTION, 7200, 0, false, true));
         }
 
         if (entityplayer != null) {

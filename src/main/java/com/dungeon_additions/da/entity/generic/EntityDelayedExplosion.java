@@ -59,6 +59,18 @@ public class EntityDelayedExplosion extends EntityAbstractBase implements IAnima
         this.setPurpleStyle(false);
     }
 
+    public EntityDelayedExplosion(World worldIn, EntityPlayer player, float damageIn, boolean isOrange, boolean isPurple) {
+        super(worldIn);
+        this.player = player;
+        this.damageIn = damageIn;
+        this.setSize(1f, 1F);
+        this.noClip = true;
+        this.setImmovable(true);
+        this.setNoAI(true);
+        this.setOrangeStyle(isOrange);
+        this.setPurpleStyle(isPurple);
+    }
+
     public EntityDelayedExplosion(World worldIn, EntityAbstractBase owner, float damageIn, boolean isOrange, boolean isPurple) {
         super(worldIn);
         this.owner = owner;
@@ -155,6 +167,12 @@ public class EntityDelayedExplosion extends EntityAbstractBase implements IAnima
                                 DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(player).build();
                                 ModUtils.handleAreaImpact(2.5f, (e) -> damageIn, this, offset, source, 0.9f, 0, false);
                                 this.initiatedAttack = true;
+
+                                if(this.isPurpleStyle()) {
+                                    base.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 100, 1, false, false));
+                                } else if (this.isOrangeStyle()) {
+                                    base.setFire(5);
+                                }
                             }
                         }
                     }

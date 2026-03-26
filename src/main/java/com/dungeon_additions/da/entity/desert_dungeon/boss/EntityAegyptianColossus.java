@@ -314,6 +314,12 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
                 this.doPhaseTransition();
             }
         }
+
+        if(this.getOtherBoss() == null && this.isEnraged() && !this.isFightMode() && !this.isHasPhaseTransitioned() && !this.isPhaseTransition() && world.isRemote) {
+            if(ModConfig.experimental_features && MobConfig.aegyptian_colossus_boss_music) {
+                this.playMusic(this);
+            }
+        }
     }
 
     @Override
@@ -668,7 +674,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
             this.heal((float) (this.getMaxHealth() * MobConfig.desert_bosses_second_phase_healing));
             this.bossInfo.setVisible(true);
             if(ModConfig.experimental_features && MobConfig.aegyptian_colossus_boss_music) {
-                this.playMusic(this);
+            //    this.playMusic(this);
             }
         }, 45);
 

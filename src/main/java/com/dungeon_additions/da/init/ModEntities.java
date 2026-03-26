@@ -7,6 +7,7 @@ import com.dungeon_additions.da.entity.EntityNetherAbberrant;
 import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.dark_dungeon.*;
+import com.dungeon_additions.da.entity.dark_dungeon.boss.*;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertOrb;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
@@ -35,6 +36,7 @@ import com.dungeon_additions.da.entity.gaelon_dungeon.*;
 import com.dungeon_additions.da.entity.gaelon_dungeon.apathyr.*;
 import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.EntityFriendlyCursedRevenant;
 import com.dungeon_additions.da.entity.generic.EntityDelayedExplosion;
+import com.dungeon_additions.da.entity.generic.EntityRallyFlag;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
@@ -73,7 +75,7 @@ import java.util.Map;
 public class ModEntities {
     private static final Map<Class<? extends Entity>, String> ID_MAP = new HashMap<>();
     private static int ENTITY_START_ID = 123;
-    private static int PROJECTILE_START_ID = 230;
+    private static int PROJECTILE_START_ID = 260;
 
     public static Vec3i void_blossom = new Vec3i(6433126, 8111156, 0);
     public static Vec3i mini_void_blossom = new Vec3i(0x9e02e0, 8111156, 0);
@@ -115,6 +117,8 @@ public class ModEntities {
     public static Vec3i cursed_sentinel = new Vec3i(0x2B241E,0x6eebeb,0);
     public static Vec3i apathyr = new Vec3i(0xBD8F04,0x6eebeb,0);
     public static Vec3i mysterious_trader = new Vec3i(0x57514E,0x75000D,0);
+    public static Vec3i enderphrites = new Vec3i(0x021a1a,0xD55693,0);
+    public static Vec3i enderphriton = new Vec3i(0x021a1a,0x7A56C0,0);
     public static void registerEntities() {
         //One day, you'll be back in game my son
        // registerEntityWithID("wreath_knight", EntityWreathKnight.class, ENTITY_START_ID++, 50, void_blossom);
@@ -146,6 +150,8 @@ public class ModEntities {
         registerEntityWithID("flame_knight", EntityFlameKnight.class, ENTITY_START_ID++, 70, kobf);
         //Obsidilith
         registerEntityWithID("voidiant", EntityVoidiant.class, ENTITY_START_ID++, 60, voidiant);
+        registerEntityWithID("enderphrite", EntityEnderphrite.class, ENTITY_START_ID++, 70, enderphrites);
+        registerEntityWithID("enderphrite_gauntlet", EntityEnderphriteGauntlet.class, ENTITY_START_ID++, 70, enderphriton);
         registerEntityWithID("obsidilith", EntityObsidilith.class, ENTITY_START_ID++, 70, obsidilith);
         registerEntityWithID("voidclysm", EntityVoidiclysm.class, ENTITY_START_ID++, 70, voidclysm);
         registerEntity("blue_wave", EntityBlueWave.class, ENTITY_START_ID++, 50);
@@ -168,6 +174,7 @@ public class ModEntities {
         registerEntityWithID("dark_assassin", EntityDarkAssassin.class, ENTITY_START_ID++, 70, dark_assassin);
         registerEntityWithID("dark_royal", EntityDarkRoyal.class, ENTITY_START_ID++, 70, dark_royal);
         registerEntityWithID("dark_sorcerer", EntityDarkSorcerer.class, ENTITY_START_ID++, 70, dark_sorcerer);
+        //registerEntityWithID("darkdrift_devil", EntityDarkdriftDevil.class, ENTITY_START_ID++, 90, dark_sorcerer);
         //Traders
         registerEntityWithID("mysterious_trader", EntityMysteriousTrader.class, ENTITY_START_ID++, 50, mysterious_trader);
 
@@ -250,6 +257,13 @@ public class ModEntities {
             registerEntity("thousand_cuts", ProjectileThousandCuts.class, PROJECTILE_START_ID++, 40);
             registerEntity("desert_projectile", ProjectileDesertOrb.class, PROJECTILE_START_ID++, 40);
             registerEntity("colossus_sigil", EntityColossusSigil.class, PROJECTILE_START_ID++, 50);
+            registerEntity("great_death", EntityGreatDeath.class, ENTITY_START_ID++, 40);
+            registerEntity("sorcery_dagger", ProjectileSorceryDagger.class, PROJECTILE_START_ID++, 35);
+            registerEntity("demon_sigil", EntityDemonSigil.class, ENTITY_START_ID++, 50);
+            registerEntity("sigil_projectile", ProjectileBloodSigil.class, ENTITY_START_ID++, 35);
+            registerEntity("blood_meteor", ProjectileBloodMeteor.class, PROJECTILE_START_ID++, 40);
+            registerEntity("demon_ritual", EntityDemonRitual.class, ENTITY_START_ID++, 50);
+            registerEntity("rally_flag", EntityRallyFlag.class, ENTITY_START_ID++, 40);
 
 
 

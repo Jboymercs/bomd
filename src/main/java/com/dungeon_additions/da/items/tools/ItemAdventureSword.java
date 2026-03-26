@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemAdventureSword extends ToolSword{
+public class ItemAdventureSword extends ItemAbilityWeapon{
 
     private String info_loc;
     private boolean isGroundSlam;
@@ -66,7 +66,8 @@ public class ItemAdventureSword extends ToolSword{
                 player.motionZ = moveVec.z;
                 player.velocityChanged = true;
                 worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.APATHYR_SLIGHT_DASH, SoundCategory.NEUTRAL, 1.0f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.4f));
-                this.isGroundSlam = true;
+                //this.isGroundSlam = true;
+                this.setAbilityVal(stack, true);
                 this.ticksSaved = player.ticksExisted;
             }
             stack.damageItem(5, player);
@@ -78,7 +79,7 @@ public class ItemAdventureSword extends ToolSword{
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if (entityIn instanceof EntityPlayer && !worldIn.isRemote) {
             EntityPlayer player = (EntityPlayer) entityIn;
-            if(this.isGroundSlam && ticksSaved + 10 < player.ticksExisted && player.getHeldItemMainhand().getItem() == this) {
+            if(this.getAbilityVal(stack) && ticksSaved + 10 < player.ticksExisted && player.getHeldItemMainhand().getItem() == this) {
                 if (player.onGround) {
                     List<EntityLivingBase> targets = worldIn.getEntitiesWithinAABB(EntityLivingBase.class, player.getEntityBoundingBox().grow(2.75, 0.1, 2.75), e -> e != player);
                     if (!targets.isEmpty()) {
@@ -90,7 +91,8 @@ public class ItemAdventureSword extends ToolSword{
                         }
                     }
                     //do some particles
-                    this.isGroundSlam = false;
+                   // this.isGroundSlam = false;
+                    this.setAbilityVal(stack, false);
                     ticksSaved = 1;
                     Main.proxy.spawnParticle( 18, worldIn, player.posX, player.posY + 0.1, player.posZ, 0, 0, 0);
                     player.world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.NEUTRAL, 0.7f, 0.3f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
@@ -99,6 +101,7 @@ public class ItemAdventureSword extends ToolSword{
                 }
             }
         }
+        super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
     }
 
     public void onEnemyHit(EntityLivingBase user, EntityLivingBase enemy, Vec3d rammingDir) {

@@ -10,7 +10,6 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -18,31 +17,27 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.EmptyChunk;
-import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeManager;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class CommandLocateLich implements ICommand {
+public class CommandLocateMod implements ICommand {
 
     private final List<String> aliases;
-    public CommandLocateLich() {
+    public CommandLocateMod() {
         aliases = new ArrayList<>();
-        aliases.add("locateBOMD");
+        aliases.add("locateDA");
     }
 
     @Override
     public String getName() {
-        return "locateBOMD";
+        return "locateDA";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "locateBOMD <mod location>";
+        return "locateDA <mod location>";
     }
 
     @Override
@@ -53,10 +48,13 @@ public class CommandLocateLich implements ICommand {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (args.length != 1) {
-            throw new WrongUsageException("locateBOMD <mod location>");
+            throw new WrongUsageException("locateDA <mod location>");
         } else {
             String s = args[0];
             if(s.equals("NightLichTower")) {
+                if(!WorldConfig.night_lich_tower_enabled) {
+                    throw new CommandException("da.structure_enabled.name", s);
+                }
                 BlockPos blockpos = findNearestPos(sender);
 
                 if (blockpos != null) {
@@ -64,7 +62,11 @@ public class CommandLocateLich implements ICommand {
                 } else {
                     throw new CommandException("commands.locate.failure", s);
                 }
+
             } else if (s.equals("BlossomCave")) {
+                if(!WorldConfig.void_cave_enabled) {
+                    throw new CommandException("da.structure_enabled.name", s);
+                }
                 BlockPos blockpos = findNearestPosCave(sender);
 
                 if (blockpos != null) {
@@ -72,7 +74,11 @@ public class CommandLocateLich implements ICommand {
                 } else {
                     throw new CommandException("commands.locate.failure", s);
                 }
+
             } else if (s.equals("FrozenCastle")) {
+                if(!WorldConfig.frozen_castle_enabled) {
+                    throw new CommandException("da.structure_enabled.name", s);
+                }
                 BlockPos blockpos = findNearestPosFrozenCastle(sender);
 
                 if (blockpos != null) {
@@ -80,7 +86,11 @@ public class CommandLocateLich implements ICommand {
                 } else {
                     throw new CommandException("commands.locate.failure", s);
                 }
+
             } else if (s.equals("HighCourtCity")) {
+                if(!WorldConfig.hcc_enabled) {
+                    throw new CommandException("da.structure_enabled.name", s);
+                }
                 BlockPos blockpos = findNearestPosHighCity(sender);
 
                 if (blockpos != null) {
@@ -88,7 +98,11 @@ public class CommandLocateLich implements ICommand {
                 } else {
                     throw new CommandException("commands.locate.failure", s);
                 }
+
             } else if (s.equals("BurningFlameArena")) {
+                if(!WorldConfig.burning_flame_arena_enabled) {
+                    throw new CommandException("da.structure_enabled.name", s);
+                }
                 BlockPos blockpos = findNearestPosBurningFlame(sender);
 
                 if (blockpos != null) {
@@ -96,7 +110,11 @@ public class CommandLocateLich implements ICommand {
                 } else {
                     throw new CommandException("commands.locate.failure", s);
                 }
+
             } else if (s.equals("ForgottenTemple")) {
+                if(!WorldConfig.temple_enabled) {
+                    throw new CommandException("da.structure_enabled.name", s);
+                }
                 BlockPos blockpos = findNearestPosForgottenTemple(sender);
 
                 if (blockpos != null) {
@@ -104,7 +122,11 @@ public class CommandLocateLich implements ICommand {
                 } else {
                     throw new CommandException("commands.locate.failure", s);
                 }
+
             } else if (s.equals("RottenHold")) {
+                if(!WorldConfig.rotten_hold_enabled) {
+                    throw new CommandException("da.structure_enabled.name", s);
+                }
                 BlockPos blockpos = findNearestPosRottenHold(sender);
 
                 if (blockpos != null) {
@@ -112,7 +134,11 @@ public class CommandLocateLich implements ICommand {
                 } else {
                     throw new CommandException("commands.locate.failure", s);
                 }
+
             }  else if (s.equals("ObsidilithArena")) {
+                if(!WorldConfig.obsidilith_arena_enabled) {
+                    throw new CommandException("da.structure_enabled.name", s);
+                }
                 BlockPos blockpos = findNearestPosObsdilithArena(sender);
 
                 if (blockpos != null) {
@@ -120,7 +146,11 @@ public class CommandLocateLich implements ICommand {
                 } else {
                     throw new CommandException("commands.locate.failure", s);
                 }
+
             }  else if (s.equals("GaelonSanctuary")) {
+                if(!WorldConfig.gaelon_sanctuary_enabled) {
+                    throw new CommandException("da.structure_enabled.name", s);
+                }
                 BlockPos blockpos = findNearestPosGaelonSanctuary(sender);
 
                 if (blockpos != null) {
@@ -128,7 +158,35 @@ public class CommandLocateLich implements ICommand {
                 } else {
                     throw new CommandException("commands.locate.failure", s);
                 }
+
+            }  else if (s.equals("CultCastle")) {
+                if(!WorldConfig.cult_castle_enabled) {
+                    throw new CommandException("da.structure_work_in_progress.name", s);
+                }
+                BlockPos blockpos = findNearestPosCultCastle(sender);
+
+                if (blockpos != null) {
+                    sender.sendMessage(new TextComponentTranslation("commands.locate.success", new Object[]{s, blockpos.getX(), blockpos.getZ()}));
+                } else {
+                    throw new CommandException("commands.locate.failure", s);
+                }
+
+            }   else if (s.equals("Outpost")) {
+                if(!WorldConfig.outposts_enabled) {
+                    throw new CommandException("da.structure_enabled.name", s);
+                }
+                BlockPos blockpos = findNearestPosOutpost(sender);
+
+                if (blockpos != null) {
+                    sender.sendMessage(new TextComponentTranslation("commands.locate.success", new Object[]{s, blockpos.getX(), blockpos.getZ()}));
+                } else {
+                    throw new CommandException("commands.locate.failure", s);
+                }
+
             }  else if (s.equals("TraderPost")) {
+                if(!WorldConfig.mysterious_trader_post_enabled) {
+                    throw new CommandException("da.structure_enabled.name", s);
+                }
                 BlockPos blockpos = findNearestPosTraderPost(sender);
 
                 if (blockpos != null) {
@@ -152,7 +210,7 @@ public class CommandLocateLich implements ICommand {
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
         return args.length == 1 ? getListOfStringsMatchingLastWord(args, "NightLichTower", "BlossomCave", "FrozenCastle", "HighCourtCity","BurningFlameArena","ForgottenTemple","RottenHold","ObsidilithArena","GaelonSanctuary",
-                "TraderPost") : Collections.emptyList();
+                "TraderPost","CultCastle","Outpost") : Collections.emptyList();
     }
 
     public static List<String> getListOfStringsMatchingLastWord(String[] args, String... possibilities) {
@@ -302,6 +360,45 @@ public class CommandLocateLich implements ICommand {
                 if (c) {
                     resultpos = new BlockPos((chunk.x + i) << 4, WorldConfig.gaelon_sanctuary_y_height, (chunk.z + j) << 4);
                     break;
+                }
+            }
+        }
+        return resultpos;
+    }
+
+    public static BlockPos findNearestPosCultCastle(ICommandSender sender) {
+        BlockPos resultpos = null;
+        BlockPos pos = sender.getPosition();
+        World world = sender.getEntityWorld();
+        Chunk chunk = world.getChunk(pos);
+        //probably laggy as hell but hey it works
+        for (int i = -ModConfig.cult_castle_search_distance; i < ModConfig.cult_castle_search_distance + 1; i++) {
+            for (int j = -ModConfig.cult_castle_search_distance; j < ModConfig.cult_castle_search_distance + 1; j++) {
+                boolean c = IsCultCastleAtPos(world, chunk.x + i, chunk.z + j);
+                if (c) {
+                    resultpos = new BlockPos((chunk.x + i) << 4, WorldConfig.cult_castle_y_height, (chunk.z + j) << 4);
+                    break;
+                }
+            }
+        }
+        return resultpos;
+    }
+
+    public static BlockPos findNearestPosOutpost(ICommandSender sender) {
+        BlockPos resultpos = null;
+        BlockPos pos = sender.getPosition();
+        World world = sender.getEntityWorld();
+        Chunk chunk = world.getChunk(pos);
+        //probably laggy as hell but hey it works
+        if(world.provider.getDimension() == 1) {
+            for (int i = -90; i < 90 + 1; i++) {
+                for (int j = -90; j < 90 + 1; j++) {
+
+                    boolean c = IsEndOutpostAtPos(world, chunk.x + i, chunk.z + j);
+                    if (c) {
+                        resultpos = new BlockPos((chunk.x + i) << 4, WorldConfig.cult_castle_y_height, (chunk.z + j) << 4);
+                        break;
+                    }
                 }
             }
         }
@@ -480,6 +577,68 @@ public class CommandLocateLich implements ICommand {
         if (i == k && j == l && isAllowedDimensionTooSpawnInGaelonSanctuary(world.provider.getDimension())) {
             BlockPos pos = new BlockPos((i << 4), WorldConfig.gaelon_sanctuary_y_height, (j << 4));
             return isAbleToSpawnHereGaelonSanctuary(pos, world);
+        } else {
+
+            return false;
+        }
+    }
+
+    protected static boolean IsCultCastleAtPos(World world, int chunkX, int chunkZ) {
+        int spacing = WorldConfig.cult_castle_spacing;
+        int separation = 16;
+        int i = chunkX;
+        int j = chunkZ;
+
+        if (chunkX < 0) {
+            chunkX -= spacing - 1;
+        }
+
+        if (chunkZ < 0) {
+            chunkZ -= spacing - 1;
+        }
+
+        int k = chunkX / spacing;
+        int l = chunkZ / spacing;
+        Random random = world.setRandomSeed(k, l, 67292621);
+        k = k * spacing;
+        l = l * spacing;
+        k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+        l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+
+        if (i == k && j == l && isAllowedDimensionTooSpawnInCultCastley(world.provider.getDimension())) {
+            BlockPos pos = new BlockPos((i << 4), WorldConfig.cult_castle_y_height, (j << 4));
+            return isAbleToSpawnHereCultCastle(pos, world);
+        } else {
+
+            return false;
+        }
+    }
+
+    protected static boolean IsEndOutpostAtPos(World world, int chunkX, int chunkZ) {
+        int spacing = WorldConfig.end_outposts_spacing;
+        int separation = 16;
+        int i = chunkX;
+        int j = chunkZ;
+
+        if (chunkX < 0) {
+            chunkX -= spacing - 1;
+        }
+
+        if (chunkZ < 0) {
+            chunkZ -= spacing - 1;
+        }
+
+        int k = chunkX / spacing;
+        int l = chunkZ / spacing;
+        Random random = world.setRandomSeed(k, l, 60304064);
+        k = k * spacing;
+        l = l * spacing;
+        k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+        l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+
+        if (i == k && j == l) {
+            BlockPos pos = new BlockPos((i << 4), WorldConfig.end_outposts_min_y, (j << 4));
+            return isAbleToSpawnHereEndOutposts(pos, world);
         } else {
 
             return false;
@@ -834,6 +993,26 @@ public class CommandLocateLich implements ICommand {
         return false;
     }
 
+    public static boolean isAbleToSpawnHereCultCastle(BlockPos pos, World world) {
+        for(BiomeDictionary.Type types : getSpawnBiomeTypesCultCastle()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isAbleToSpawnHereEndOutposts(BlockPos pos, World world) {
+        for(BiomeDictionary.Type types : getSpawnBiomeTypesEndOutposts()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean isAbleToSpawnHereTraderPost(BlockPos pos, World world) {
         for(BiomeDictionary.Type types : getSpawnBiomeTypesTraderPost()) {
             Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
@@ -937,6 +1116,48 @@ public class CommandLocateLich implements ICommand {
         }
 
         return gaelonSanctuaryBiomeTypes;
+    }
+
+    private static List<BiomeDictionary.Type> cultCastleBiomeTypes;
+
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypesCultCastle() {
+        if(cultCastleBiomeTypes == null) {
+            cultCastleBiomeTypes = Lists.newArrayList();
+
+            for(String str : WorldConfig.biome_types_blacklist_cult_castle) {
+                try {
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) cultCastleBiomeTypes.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
+                } catch (Exception e) {
+                    DALogger.logError(str + " is not a valid type name", e);
+                }
+            }
+        }
+
+        return cultCastleBiomeTypes;
+    }
+
+    private static List<BiomeDictionary.Type> endOutpostsBiomeTypes;
+
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypesEndOutposts() {
+        if(endOutpostsBiomeTypes == null) {
+            endOutpostsBiomeTypes = Lists.newArrayList();
+
+            for(String str : WorldConfig.end_outposts_whitelist) {
+                try {
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) endOutpostsBiomeTypes.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
+                } catch (Exception e) {
+                    DALogger.logError(str + " is not a valid type name", e);
+                }
+            }
+        }
+
+        return endOutpostsBiomeTypes;
     }
 
     private static List<BiomeDictionary.Type> traderPostBiomeTypes;
@@ -1057,6 +1278,15 @@ public class CommandLocateLich implements ICommand {
 
     public static boolean isAllowedDimensionTooSpawnInGaelonSanctuary(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions_gaelon_sanctuary) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInCultCastley(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_cult_castle) {
             if(i == dimensionIn)
                 return true;
         }

@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "axis=y":  { "model": "da:coralite_chain" },
+    "axis=z":   { "model": "da:coralite_chain", "x": 90 },
+    "axis=x":   { "model": "da:coralite_chain", "x": 90, "y": 90 },
+    "axis=none": { "model": "da:coralite_chain" }
+  }
+}

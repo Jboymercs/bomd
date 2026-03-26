@@ -1,0 +1,6 @@
+{
+  "variants":
+  {
+    "variant=default": { "model": "da:coralite_tile_double" }
+  }
+}

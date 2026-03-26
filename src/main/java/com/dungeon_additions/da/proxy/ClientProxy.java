@@ -14,6 +14,7 @@ import com.dungeon_additions.da.util.handlers.CameraPositionHandler;
 import com.dungeon_additions.da.util.handlers.RenderHandler;
 import com.dungeon_additions.da.util.particle.*;
 import com.dungeon_additions.da.util.particle.confetti.ParticleConfetti;
+import com.dungeon_additions.da.util.particle.confetti.ParticleDotLight;
 import com.dungeon_additions.da.util.particle.cuts.ParticleColossusSigil;
 import com.dungeon_additions.da.util.particle.cuts.ParticleLeftCut;
 import com.dungeon_additions.da.util.particle.cuts.ParticleParry;
@@ -73,6 +74,8 @@ public class ClientProxy extends CommonProxy{
     private final ModelBiped MODEL_MAGE_HAT = new ModelMageHat(0F);
     private final ModelBiped MODEL_WARLORD_HELMET = new ModelWarlordHelmet(0F);
     private final ModelBiped MODEL_COLOSSUS_CHESTPLATE =new ModelColossusChestplate(0F);
+    private final ModelBiped MODEL_ENDERPHRITE_HELMET = new ModelEnderphritesHelmet(0F);
+    private final ModelBiped MODEL_ENDERPHRITE_CHESTPLATE = new ModelEnderphriteChestplate(0F);
 
 
     public static final KeyBinding SHIELD_ABILITY = new KeyBinding("key." + ModReference.MOD_ID + ".shield_ability", KeyConflictContext.IN_GAME, Keyboard.KEY_G, "key.categories." + ModReference.MOD_ID);
@@ -177,6 +180,12 @@ public class ClientProxy extends CommonProxy{
         if(item == ModItems.COLOSSUS_CHESTPLATE) {
             return MODEL_COLOSSUS_CHESTPLATE;
         }
+        if(item == ModItems.ENDERPHRITE_HELMET) {
+            return MODEL_ENDERPHRITE_HELMET;
+        }
+        if(item == ModItems.ENDERPHRITE_CHESTPLATE) {
+            return MODEL_ENDERPHRITE_CHESTPLATE;
+        }
         return null;
     }
 
@@ -257,6 +266,12 @@ public class ClientProxy extends CommonProxy{
                 return new ParticleHuntersMark.Factory();
             case 28:
                 return new ParticleParry.Factory();
+            case 29:
+                return new ParticleHitbox.Factory();
+            case 30:
+                return new ParticleDotLight.Factory();
+            case 31:
+                return new ParticleDemonRitual.Factory();
         }
     }
 

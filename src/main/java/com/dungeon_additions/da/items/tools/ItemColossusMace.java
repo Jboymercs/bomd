@@ -69,7 +69,7 @@ public class ItemColossusMace extends ToolSword implements IAnimatable {
         if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
             //summon sigil
             if(player.isSneaking()) {
-                float damage = ModConfig.colossal_mace_ability_damage + ModUtils.addAbilityBonusDamage(player.getHeldItemMainhand(), 1) + ModUtils.addMageSetBonus(player, 1);
+                float damage = ModConfig.colossal_mace_ability_damage + ModUtils.addAbilityBonusDamage(player.getHeldItemMainhand(), 1) + ModUtils.addMageSetBonus(player, 0, 1.25F);
                 worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.DESERT_BOSS_SUMMON_HELPER, SoundCategory.NEUTRAL, 1f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
                 EntityColossusSigil sigil = new EntityColossusSigil(worldIn, player, damage);
                 sigil.setPosition(player.posX, player.posY + 2, player.posZ);

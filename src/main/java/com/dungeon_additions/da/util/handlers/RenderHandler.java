@@ -8,6 +8,7 @@ import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
 import com.dungeon_additions.da.entity.dark_dungeon.*;
+import com.dungeon_additions.da.entity.dark_dungeon.boss.*;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertOrb;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
@@ -36,6 +37,7 @@ import com.dungeon_additions.da.entity.gaelon_dungeon.*;
 import com.dungeon_additions.da.entity.gaelon_dungeon.apathyr.*;
 import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.EntityFriendlyCursedRevenant;
 import com.dungeon_additions.da.entity.generic.EntityDelayedExplosion;
+import com.dungeon_additions.da.entity.generic.EntityRallyFlag;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.*;
@@ -44,10 +46,7 @@ import com.dungeon_additions.da.entity.player.EntityWyrkLazer;
 import com.dungeon_additions.da.entity.projectiles.*;
 import com.dungeon_additions.da.entity.projectiles.puzzle.ProjectilePuzzleBall;
 import com.dungeon_additions.da.entity.render.*;
-import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkAssassin;
-import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkRoyal;
-import com.dungeon_additions.da.entity.render.dark_dungeon.RenderDarkSorcerer;
-import com.dungeon_additions.da.entity.render.dark_dungeon.RenderShadowHand;
+import com.dungeon_additions.da.entity.render.dark_dungeon.*;
 import com.dungeon_additions.da.entity.render.desert_dungeon.*;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderBareant;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderFlameOrb;
@@ -56,6 +55,7 @@ import com.dungeon_additions.da.entity.render.flame_dungeon.RenderVolatileSpirit
 import com.dungeon_additions.da.entity.render.frost_dungeon.*;
 import com.dungeon_additions.da.entity.render.gaelon_dungeon.*;
 import com.dungeon_additions.da.entity.render.generic.RenderDelayedExplosion;
+import com.dungeon_additions.da.entity.render.generic.RenderRallyFlag;
 import com.dungeon_additions.da.entity.render.lich.RenderLichSpawn;
 import com.dungeon_additions.da.entity.render.lich.RenderLichStaff;
 import com.dungeon_additions.da.entity.render.lich.RenderNightLich;
@@ -173,6 +173,9 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileThousandCuts.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(ProjectileDesertOrb.class, ModItems.DESERT_PROJECTILE);
         registerProjectileRenderer(EntityColossusSigil.class, ModItems.INVISISBLE_ITEM);
+        registerProjectileRenderer3DModel(ProjectileSorceryDagger.class, ModItems.SORCERY_DAGGER);
+        registerProjectileRenderer(ProjectileBloodSigil.class, ModItems.INVISISBLE_ITEM);
+        registerProjectileRenderer(ProjectileBloodMeteor.class, ModItems.BLOOD_METEOR);
     }
 
     //Handles Rendering
@@ -337,6 +340,20 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntitySummonedMace.class, RenderSummonedMace::new);
         //Friendly Scutter Beetle
         RenderingRegistry.registerEntityRenderingHandler(EntityFriendlyScutterBeetle.class, RenderFriendlyScutterBeetle::new);
+        //Darkdrift Devil
+       // RenderingRegistry.registerEntityRenderingHandler(EntityDarkdriftDevil.class, RenderDarkdriftDevil::new);
+        //Great Death
+        RenderingRegistry.registerEntityRenderingHandler(EntityGreatDeath.class, RenderGreatDeath::new);
+        //Demon Sigil
+        RenderingRegistry.registerEntityRenderingHandler(EntityDemonSigil.class, RenderDemonSigil::new);
+        //Demon Ritual
+        RenderingRegistry.registerEntityRenderingHandler(EntityDemonRitual.class, RenderDemonRitual::new);
+        //Enderphrite
+        RenderingRegistry.registerEntityRenderingHandler(EntityEnderphrite.class, RenderEnderphrite::new);
+        //Enderphrite Gauntlet
+        RenderingRegistry.registerEntityRenderingHandler(EntityEnderphriteGauntlet.class, RenderEnderphriteGauntlet::new);
+        //Rally Flag
+        RenderingRegistry.registerEntityRenderingHandler(EntityRallyFlag.class, RenderRallyFlag::new);
         //Puzzle Mirror
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPuzzleMirror.class, new RenderPuzzleMirror());
 

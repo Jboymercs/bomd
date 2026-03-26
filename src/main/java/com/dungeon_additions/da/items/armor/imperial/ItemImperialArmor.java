@@ -47,7 +47,7 @@ public class ItemImperialArmor extends ItemArmor implements IHasModel {
         setRegistryName(name);
         this.texture = textureName;
         ModItems.ITEMS.add(this);
-        this.movementSpeedModif = new AttributeModifier("imperialMovementDebuff_" + slotIn.getName(), -0.05, 1);
+        this.movementSpeedModif = new AttributeModifier("imperialMovementDebuff_" + slotIn.getName(), -0.04, 1);
         this.healthBoostModif = new AttributeModifier("imperialHealthBoost_" + slotIn.getName(), 2, 0);
     }
 

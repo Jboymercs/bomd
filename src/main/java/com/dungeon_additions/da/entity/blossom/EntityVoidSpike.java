@@ -88,10 +88,10 @@ public class EntityVoidSpike extends EntityAbstractBase implements IAnimatable {
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }
 
-    @Override
-    protected void initEntityAI() {
+ //   @Override
+   // protected void initEntityAI() {
 
-    }
+  //  }
 
     @Override
     public void onUpdate() {

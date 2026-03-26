@@ -369,6 +369,15 @@ public class SoundsHandler {
 
     public static SoundEvent AEGYPTIAN_FLUTE_PLAY;
 
+    public static SoundEvent GREAT_DEATH_SUMMON;
+    public static SoundEvent GREAT_DEATH_IMPACT;
+
+    public static SoundEvent ENDERPHRITE_HURT;
+    public static SoundEvent ENDERPHRITE_IDLE;
+    public static SoundEvent ENDERPHRITE_SCREAM;
+    public static SoundEvent ENDERPHRITE_DEATH;
+    public static SoundEvent ENDERPHRITE_SONIC_BOOM;
+
     //MUSIC
     public static SoundEvent HIGH_DRAGON_TRACK;
     public static SoundEvent HIGH_KING_TRACK;
@@ -382,6 +391,7 @@ public class SoundsHandler {
     public static SoundEvent APATHYR_TRACK;
     public static SoundEvent WARLORD_TRACK;
     public static SoundEvent COLOSSUS_TRACK;
+    public static SoundEvent DARKDRIFT_DEVIL_TRACK;
 
     public static void registerSounds() {
         //
@@ -702,6 +712,15 @@ public class SoundsHandler {
         DESERT_BOSS_TRANSITION = registerSound("warlord.transition", "entity");
         DESERT_BOSS_DOWNED_DEATH = registerSound("warlord.downed_death","entity");
         //
+        GREAT_DEATH_IMPACT = registerSound("great_death.impact", "entity");
+        GREAT_DEATH_SUMMON = registerSound("great_death.summon", "entity");
+        //
+        ENDERPHRITE_HURT = registerSound("enderphrite.hurt","entity");
+        ENDERPHRITE_DEATH = registerSound("enderphrite.death", "entity");
+        ENDERPHRITE_IDLE = registerSound("enderphrite.idle", "entity");
+        ENDERPHRITE_SCREAM = registerSound("enderphrite.scream", "entity");
+        ENDERPHRITE_SONIC_BOOM = registerSound("enderphrite.sonic_boom", "entity");
+        //
         CONFETTI_SOUND = registerSound("confetti.party", "entity");
         DEATHBLOW_SOUND = registerSound("confetti.deathblow", "entity");
         KEY_UNLOCK_SOUND = registerSound("confetti.key_unlock", "entity");
@@ -720,6 +739,7 @@ public class SoundsHandler {
         APATHYR_TRACK = registerSound("ambient.apathyr","music");
         WARLORD_TRACK = registerSound("ambient.warlord", "music");
         COLOSSUS_TRACK = registerSound("ambient.colossus", "music");
+        DARKDRIFT_DEVIL_TRACK = registerSound("ambient.darkdrift", "music");
     }
 
 

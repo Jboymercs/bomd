@@ -1,0 +1,9 @@
+{
+  "parent": "block/half_slab",
+  "textures":
+  {
+    "bottom": "da:blocks/coralite_brick",
+    "top": "da:blocks/coralite_brick",
+    "side": "da:blocks/coralite_brick"
+  }
+}

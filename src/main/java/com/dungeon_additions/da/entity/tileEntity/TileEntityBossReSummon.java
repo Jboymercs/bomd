@@ -28,7 +28,7 @@ public class TileEntityBossReSummon extends TileEntity implements ITickable {
 
     private int inactive_cooldown;
 
-    private String boss;
+    private String boss = "ancient_fallen";
 
 
     @Override

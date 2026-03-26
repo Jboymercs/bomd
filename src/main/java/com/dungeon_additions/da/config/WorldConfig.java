@@ -373,6 +373,63 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static int gaelon_sanctuary_size = 4;
 
+    @Config.Name("Cult Castle Enabled/Disabled")
+    @Config.Comment("Change if the Cult Castle should spawn at all. default: true")
+    @Config.RequiresMcRestart
+    public static boolean cult_castle_enabled = false;
+
+    @Config.Name("Cult Castle Allowed Dimensions")
+    @Config.Comment("Select what dimensions this structure is allowed to spawn in")
+    @Config.RequiresMcRestart
+    public static int[] list_of_dimensions_cult_castle = {-1};
+
+    @Config.Name("Cult Castle Base Y Height")
+    @Config.Comment("Change the base Y Height at which the Cult Castle generates at.")
+    @Config.RequiresMcRestart
+    public static int cult_castle_y_height = 29;
+
+    @Config.Name("Cult Castle Blacklisted Biome Types")
+    @Config.Comment("Add Biome types that DISALLOW the Cult Castle from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
+    @Config.RequiresMcRestart
+    public static String[] biome_types_blacklist_cult_castle = {"COLD","MOUNTAIN"
+    };
+
+    @Config.Name("Cult Castle Spacing")
+    @Config.Comment("Change the spacing between each Cult Castle, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
+    @Config.RequiresMcRestart
+    public static int cult_castle_spacing = 112;
+
+    @Config.Name("Outposts General Enabled/Disabled")
+    @Config.Comment("Change if any outposts should generate in the mod. This settings disables all of them.")
+    @Config.RequiresMcRestart
+    public static boolean outposts_enabled = true;
+
+    @Config.Name("End Outposts Enabled/Disabled")
+    @Config.Comment("Change if END outposts should generate.")
+    @Config.RequiresMcRestart
+    public static boolean end_outposts_enabled = true;
+
+    @Config.Name("End Outposts Spacing")
+    @Config.Comment("Change the spacing of END outposts")
+    @Config.RequiresMcRestart
+    public static int end_outposts_spacing = 85;
+
+    @Config.Name("End Outposts Max Y-Height")
+    @Config.Comment("End Outposts will first try to find ground and then will randomize for a floating outpost if failed. What is the max y-height one can generate at?")
+    @Config.RequiresMcRestart
+    public static int end_outposts_max_y = 165;
+
+    @Config.Name("End Outposts Min Y-Height")
+    @Config.Comment("Change the minimum y level required for End Outposts to spawn. If this fails a flying one will take it's place.")
+    @Config.RequiresMcRestart
+    public static int end_outposts_min_y = 52;
+
+    @Config.Name("End Outposts WhiteList Biome Types")
+    @Config.Comment("Add Biome types that ALLOW the End Outposts from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
+    @Config.RequiresMcRestart
+    public static String[] end_outposts_whitelist = {"END"
+    };
+
     @Config.Name("Mysterious Trader Post Blacklisted Biome Types")
     @Config.Comment("Add Biome types that DISALLOW the Mysterious Trader Post from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
     @Config.RequiresMcRestart
@@ -393,6 +450,16 @@ public class WorldConfig {
     @Config.Comment("Change the spacing between each Mysterious Trader Post, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
     @Config.RequiresMcRestart
     public static int mysterious_trader_post_spacing = 85;
+
+    @Config.Name("Mysterious Trader Min Y Level")
+    @Config.Comment("Change the minimum y level the Mysterious Trader Post can spawn at. default 50")
+    @Config.RequiresMcRestart
+    public static int mysterious_trader_min_y = 55;
+
+    @Config.Name("Mysterious Trader Max Y Level")
+    @Config.Comment("Change the maximum y level the Mysterious Trader Post can spawn at. default 130")
+    @Config.RequiresMcRestart
+    public static int mysterious_trader_max_y = 130;
 
     @Config.Name("Mysterious Trader Coins spawn in dungeon chests")
     @Config.Comment("Should Trader Coins spawn in dungeon chests throughout Dungeon Additions")

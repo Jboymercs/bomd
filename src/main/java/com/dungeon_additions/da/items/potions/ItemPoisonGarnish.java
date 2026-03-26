@@ -80,7 +80,7 @@ public class ItemPoisonGarnish extends ItemPotion implements IHasModel {
         }
 
         if (!worldIn.isRemote) {
-            entityLiving.addPotionEffect(new PotionEffect(ModPotions.POISON_GARNISH, 2800, 0, false, true));
+            entityLiving.addPotionEffect(new PotionEffect(ModPotions.POISON_GARNISH, 18000, 0, false, true));
         }
 
         if (entityplayer != null) {

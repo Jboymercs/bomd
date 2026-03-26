@@ -46,7 +46,7 @@ public class ItemMageHelmet extends ItemArmor implements IHasModel {
         setRegistryName(name);
         this.texture = textureName;
         ModItems.ITEMS.add(this);
-        this.knockbackResistance = new AttributeModifier("mage_helmet_buff", .01, 1);
+        this.knockbackResistance = new AttributeModifier("mage_helmet_buff", .02, 1);
     }
 
     @Override

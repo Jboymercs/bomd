@@ -250,7 +250,12 @@
         {
           "type": "item",
           "name": "da:copper_coin",
-          "weight": 8
+          "weight": 10
+        },
+        {
+          "type": "item",
+          "name": "da:rotten_trinket",
+          "weight": 3
         },
         {
           "type": "item",

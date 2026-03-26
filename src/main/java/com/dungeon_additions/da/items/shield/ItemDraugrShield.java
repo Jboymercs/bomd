@@ -37,8 +37,6 @@ public class ItemDraugrShield extends BOMDShieldItem implements IAnimatable {
     public AnimationFactory factory = new AnimationFactory(this);
     private String info_loc;
 
-    private int hitCounter = 0;
-
     private int dashTime = 0;
 
     private boolean isDashing = false;
@@ -76,9 +74,9 @@ public class ItemDraugrShield extends BOMDShieldItem implements IAnimatable {
 
     @Override
     public void onBlockingDamage(ItemStack shield, EntityPlayer player) {
-        hitCounter++;
-        if(hitCounter < 6 && !player.world.isRemote) {
-            player.world.playSound(player.posX + 0.5D, player.posY, player.posZ + 0.5D, SoundEvents.BLOCK_NOTE_CHIME, SoundCategory.BLOCKS,(float) 0.2 * hitCounter, 1.0F, false);
+            this.setHitCounter(shield, this.getHitCounter(shield) + 1);
+        if(this.getHitCounter(shield) < 6 && !player.world.isRemote) {
+            player.world.playSound(player.posX + 0.5D, player.posY, player.posZ + 0.5D, SoundEvents.BLOCK_NOTE_CHIME, SoundCategory.AMBIENT,(float) 0.2 * this.getHitCounter(shield), 1.0F, false);
         }
         super.onBlockingDamage(shield, player);
     }
@@ -119,20 +117,20 @@ public class ItemDraugrShield extends BOMDShieldItem implements IAnimatable {
 
             }
         }
-
+            super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
         }
 
 
     @Override
     public boolean onApplyButtonPressed(EntityPlayer player, World world, ItemStack stack){
-        if (stack == player.getActiveItemStack() && hitCounter > 4) {
+        if (stack == player.getActiveItemStack() && this.getHitCounter(stack) > 4) {
             Vec3d moveVec = player.getLookVec().scale(2.6F);
             if(player.canBePushed()) {
                 player.motionX = moveVec.x;
                 player.motionY = 0.1;
                 player.motionZ = moveVec.z;
                 player.velocityChanged = true;
-                hitCounter = 0;
+                this.setHitCounter(stack, 0);
                 this.isDashing = true;
                 world.playSound(player, new BlockPos(player.posX, player.posY, player.posZ), SoundsHandler.DRAUGR_ELITE_STOMP, SoundCategory.BLOCKS,(float) 1.0F, 1.0F);
                 return true;

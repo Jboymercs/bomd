@@ -100,6 +100,26 @@
       }
     ]
   },
+  "entity.great_death.impact": {
+    "category": "entity",
+    "subtitle": "great_death.impact",
+    "sounds": [
+      {
+        "name": "da:entity/great_death/impact",
+        "stream": false
+      }
+    ]
+  },
+  "entity.great_death.summon": {
+    "category": "entity",
+    "subtitle": "great_death.summon",
+    "sounds": [
+      {
+        "name": "da:entity/great_death/summon",
+        "stream": false
+      }
+    ]
+  },
   "entity.confetti.deathblow": {
     "category": "entity",
     "subtitle": "entity.deathblow",
@@ -3177,6 +3197,84 @@
       }
     ]
   },
+  "entity.enderphrite.idle": {
+    "category": "entity",
+    "subtitle": "entity.enderphrite.idle",
+    "sounds": [
+      {
+        "name": "da:entity/enderphrite/idle1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/enderphrite/idle2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/enderphrite/idle3",
+        "stream": false
+      },
+      {
+        "name": "da:entity/enderphrite/idle4",
+        "stream": false
+      }
+    ]
+  },
+  "entity.enderphrite.hurt": {
+    "category": "entity",
+    "subtitle": "entity.enderphrite.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/enderphrite/hurt1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/enderphrite/hurt2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/enderphrite/hurt3",
+        "stream": false
+      },
+      {
+        "name": "da:entity/enderphrite/hurt4",
+        "stream": false
+      }
+    ]
+  },
+  "entity.enderphrite.scream": {
+    "category": "entity",
+    "subtitle": "entity.enderphrite.scream",
+    "sounds": [
+      {
+        "name": "da:entity/enderphrite/scream1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/enderphrite/scream2",
+        "stream": false
+      }
+    ]
+  },
+  "entity.enderphrite.death": {
+    "category": "entity",
+    "subtitle": "entity.enderphrite.death",
+    "sounds": [
+      {
+        "name": "da:entity/enderphrite/death",
+        "stream": false
+      }
+    ]
+  },
+  "entity.enderphrite.sonic_boom": {
+    "category": "entity",
+    "subtitle": "entity.enderphrite.sonic_boom",
+    "sounds": [
+      {
+        "name": "da:entity/enderphrite/sonic_boom",
+        "stream": false
+      }
+    ]
+  },
   "block.moss.break": {
     "category": "block",
     "subtitle": "subtitles.block.generic.break",
@@ -3744,6 +3842,15 @@
     "sounds": [
       {
         "name": "da:music/high_dragon_track",
+        "stream": true
+      }
+    ]
+  },
+  "music.ambient.darkdrift": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "da:music/darkdrift",
         "stream": true
       }
     ]

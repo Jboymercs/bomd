@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "hanging=false": {"model": "da:coralite_lamp"},
+    "hanging=true": {"model": "da:coralite_lamp_hanging"}
+  }
+}
