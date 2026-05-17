@@ -1,8 +1,8 @@
 package com.dungeon_additions.da.items.tools;
 
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.dark_dungeon.ProjectileDarkMatter;
-import com.dungeon_additions.da.entity.frost_dungeon.ProjectileFrostBullet;
 import com.dungeon_additions.da.items.util.ISweepAttackOverride;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.ModUtils;
@@ -37,6 +37,8 @@ public class ItemDarkSicle extends ToolSword implements IAnimatable, ISweepAttac
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
         this.setMaxDamage(766);
+        this.falter_value = 0.23F;
+        this.weapon_type = EnumWeaponType.DAGGER;
     }
 
     @Override
@@ -74,7 +76,7 @@ public class ItemDarkSicle extends ToolSword implements IAnimatable, ISweepAttac
         return EnumRarity.UNCOMMON;
     }
 
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -3.0D;
     }
 
@@ -98,5 +100,6 @@ public class ItemDarkSicle extends ToolSword implements IAnimatable, ISweepAttac
     public void doSweepAttack(EntityPlayer player, @Nullable EntityLivingBase entity) {
         ModUtils.doSweepAttack(player, entity, (e) -> {
         }, 9, 3);
+        super.doSweepAttack(player, entity);
     }
 }

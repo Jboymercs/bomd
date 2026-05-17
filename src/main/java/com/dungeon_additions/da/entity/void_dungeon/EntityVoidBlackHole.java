@@ -216,7 +216,7 @@ public class EntityVoidBlackHole extends EntityEndBase implements IAnimatable, I
                         .directEntity(this)
                         .stoppedByArmorNotShields().build();
 
-                ModUtils.handleAreaImpact(9F, (e) -> damageFromPlayer, this, this.getPositionVector(), source);
+                ModUtils.handleAreaImpact(9F, (e) -> damageFromPlayer, this, this.getPositionVector(), source, 0, 0, false, 1F);
                 this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 3.0f, 1.0f + ModRand.getFloat(0.1f));
                 world.setEntityState(this, ModUtils.THIRD_PARTICLE_BYTE);
             } else {
@@ -225,7 +225,7 @@ public class EntityVoidBlackHole extends EntityEndBase implements IAnimatable, I
                         .directEntity(this)
                         .stoppedByArmorNotShields().build();
 
-                ModUtils.handleAreaImpact(9F, (e) -> this.getAttack(), this, this.getPositionVector(), source);
+                ModUtils.handleAreaImpact(9F, (e) -> this.getAttack(), this, this.getPositionVector(), source,0,0,false, 1.2F);
                 this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 3.0f, 1.0f + ModRand.getFloat(0.1f));
                 world.setEntityState(this, ModUtils.THIRD_PARTICLE_BYTE);
             }

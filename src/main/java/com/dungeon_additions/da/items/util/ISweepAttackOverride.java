@@ -8,4 +8,5 @@ import javax.annotation.Nullable;
 public interface ISweepAttackOverride {
 
     public void doSweepAttack(EntityPlayer player, @Nullable EntityLivingBase entity);
+
 }

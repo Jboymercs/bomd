@@ -160,9 +160,9 @@ public class CommandLocateMod implements ICommand {
                 }
 
             }  else if (s.equals("CultCastle")) {
-                if(!WorldConfig.cult_castle_enabled) {
-                    throw new CommandException("da.structure_work_in_progress.name", s);
-                }
+              //  if(!WorldConfig.cult_castle_enabled) {
+               //     throw new CommandException("da.structure_work_in_progress.name", s);
+              //  }
                 BlockPos blockpos = findNearestPosCultCastle(sender);
 
                 if (blockpos != null) {
@@ -183,7 +183,19 @@ public class CommandLocateMod implements ICommand {
                     throw new CommandException("commands.locate.failure", s);
                 }
 
-            }  else if (s.equals("TraderPost")) {
+            } else if (s.equals("DarkRuins")) {
+                if(!WorldConfig.dauntless_arena_enabled) {
+                    throw new CommandException("da.structure_enabled.name", s);
+                }
+
+                BlockPos blockpos = findNearestPosDauntlessArena(sender);
+
+                if (blockpos != null) {
+                    sender.sendMessage(new TextComponentTranslation("commands.locate.success", new Object[]{s, blockpos.getX(), blockpos.getZ()}));
+                } else {
+                    throw new CommandException("commands.locate.failure", s);
+                }
+            }else if (s.equals("TraderPost")) {
                 if(!WorldConfig.mysterious_trader_post_enabled) {
                     throw new CommandException("da.structure_enabled.name", s);
                 }
@@ -210,7 +222,7 @@ public class CommandLocateMod implements ICommand {
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
         return args.length == 1 ? getListOfStringsMatchingLastWord(args, "NightLichTower", "BlossomCave", "FrozenCastle", "HighCourtCity","BurningFlameArena","ForgottenTemple","RottenHold","ObsidilithArena","GaelonSanctuary",
-                "TraderPost","CultCastle","Outpost") : Collections.emptyList();
+                "TraderPost","CultCastle","Outpost","DarkRuins") : Collections.emptyList();
     }
 
     public static List<String> getListOfStringsMatchingLastWord(String[] args, String... possibilities) {
@@ -285,6 +297,24 @@ public class CommandLocateMod implements ICommand {
         for (int i = -ModConfig.frozen_castle_search_distance; i < ModConfig.frozen_castle_search_distance + 1; i++) {
             for (int j = -ModConfig.frozen_castle_search_distance; j < ModConfig.frozen_castle_search_distance + 1; j++) {
                 boolean c = IsFrozenCastleAtPos(world, chunk.x + i, chunk.z + j);
+                if (c) {
+                    resultpos = new BlockPos((chunk.x + i) << 4, 100, (chunk.z + j) << 4);
+                    break;
+                }
+            }
+        }
+        return resultpos;
+    }
+
+    public static BlockPos findNearestPosDauntlessArena(ICommandSender sender) {
+        BlockPos resultpos = null;
+        BlockPos pos = sender.getPosition();
+        World world = sender.getEntityWorld();
+        Chunk chunk = world.getChunk(pos);
+        //probably laggy as hell but hey it works
+        for (int i = -ModConfig.dark_ruins_search_distance; i < ModConfig.dark_ruins_search_distance + 1; i++) {
+            for (int j = -ModConfig.dark_ruins_search_distance; j < ModConfig.dark_ruins_search_distance + 1; j++) {
+                boolean c = IsDarkRuinsAtPos(world, chunk.x + i, chunk.z + j);
                 if (c) {
                     resultpos = new BlockPos((chunk.x + i) << 4, 100, (chunk.z + j) << 4);
                     break;
@@ -707,6 +737,37 @@ public class CommandLocateMod implements ICommand {
         }
     }
 
+    protected static boolean IsDarkRuinsAtPos(World world, int chunkX, int chunkZ) {
+        int spacing = WorldConfig.dauntless_spacing;
+        int separation = 16;
+        int i = chunkX;
+        int j = chunkZ;
+
+        if (chunkX < 0) {
+            chunkX -= spacing - 1;
+        }
+
+        if (chunkZ < 0) {
+            chunkZ -= spacing - 1;
+        }
+
+        int k = chunkX / spacing;
+        int l = chunkZ / spacing;
+        Random random = world.setRandomSeed(k, l, 80702343);
+        k = k * spacing;
+        l = l * spacing;
+        k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+        l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+
+        if (i == k && j == l && isAllowedDimensionTooSpawnInDarkRuins(world.provider.getDimension())) {
+            BlockPos pos = new BlockPos((i << 4), 0, (j << 4));
+            return isAbleToSpawnHereDarkRuins(pos, world);
+        } else {
+
+            return false;
+        }
+    }
+
     protected static boolean IsForgottenTempleAtPos(World world, int chunkX, int chunkZ) {
         int spacing = WorldConfig.temple_spacing;
         int separation = 16;
@@ -874,6 +935,37 @@ public class CommandLocateMod implements ICommand {
             }
         }
         return false;
+    }
+
+    public static boolean isAbleToSpawnHereDarkRuins(BlockPos pos, World world) {
+        for(BiomeDictionary.Type types : getSpawnBiomeTypesDarkRuins()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static List<BiomeDictionary.Type> dauntlessBiomeTypes;
+
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypesDarkRuins() {
+        if(dauntlessBiomeTypes == null) {
+            dauntlessBiomeTypes = Lists.newArrayList();
+
+            for(String str : WorldConfig.biome_types_whitelist_dauntless) {
+                try {
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) dauntlessBiomeTypes.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
+                } catch (Exception e) {
+                    DALogger.logError(str + " is not a valid type name", e);
+                }
+            }
+        }
+
+        return dauntlessBiomeTypes;
     }
 
     private static List<BiomeDictionary.Type> frozenCastleBiomeTypes;
@@ -1233,6 +1325,15 @@ public class CommandLocateMod implements ICommand {
 
     public static boolean isAllowedDimensionTooSpawnInFrozenCastle(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions_frozen_castle) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInDarkRuins(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_dauntless) {
             if(i == dimensionIn)
                 return true;
         }

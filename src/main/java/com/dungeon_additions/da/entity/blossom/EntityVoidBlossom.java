@@ -80,6 +80,8 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
         this.setImmovable(true);
         this.setNoGravity(true);
         this.iAmBossMob = true;
+        this.falter_immune = true;
+        this.hemorrhage_resistance = 0.94F;
     }
 
     public EntityVoidBlossom(World worldIn, int timesUsed, BlockPos pos) {
@@ -90,6 +92,8 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
         this.timesUsed = timesUsed;
         this.timesUsed++;
         this.doBossReSummonScaling();
+        this.falter_immune = true;
+        this.hemorrhage_resistance = 0.94F;
     }
 
     public void onSummonBoss(BlockPos offset) {

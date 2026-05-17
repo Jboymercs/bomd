@@ -1,8 +1,11 @@
 package com.dungeon_additions.da.items.tools;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
+import com.dungeon_additions.da.capabilities.CapabilityItemAnimations;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.packets.PacketParryAnimationItem;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -21,8 +24,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.util.List;
+import java.util.Map;
 
 public class ItemExaltedKopis extends ItemAbilityWeapon{
 
@@ -37,6 +42,7 @@ public class ItemExaltedKopis extends ItemAbilityWeapon{
     public ItemExaltedKopis(String name, ToolMaterial material, String info_loc) {
         super(name, material);
         this.info_loc = info_loc;
+        this.weapon_type = EnumWeaponType.PARRY_SWORD;
     }
 
     @Override
@@ -51,16 +57,16 @@ public class ItemExaltedKopis extends ItemAbilityWeapon{
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
         attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.WARLORD_SWING, SoundCategory.NEUTRAL, 0.6f, 0.5f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
-        return true;
+        return super.hitEntity(stack, target, attacker);
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this) && player.hurtTime == 0) {
+        if(!player.getCooldownTracker().hasCooldown(this) && player.hurtTime == 0) {
 
-            if(this.parryCharge > 2) {
+            if(this.parryCharge > 2 && !worldIn.isRemote) {
                 //do dash attack
                 Vec3d moveVec = player.getLookVec().scale(3.1F);
                 if(player.canBePushed()) {
@@ -77,15 +83,29 @@ public class ItemExaltedKopis extends ItemAbilityWeapon{
                     player.world.playSound(player.posX + 0.5D, player.posY, player.posZ + 0.5D, SoundsHandler.DRAUGR_ELITE_STOMP, SoundCategory.BLOCKS,(float) 1.0F, 1.0F, false);
                 }
             } else {
-                this.setPlayerLife = 0;
-                worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.NEUTRAL, 0.6f, 0.3f / (worldIn.rand.nextFloat() * 0.4F + 0.3f));
-                this.currentLife = player.ticksExisted;
-                this.dealtDamage = false;
-                this.isParrying = true;
-                player.hurtResistantTime = 0;
-                this.setPlayerLife = player.getHealth();
-                player.setActiveHand(hand);
-                player.getCooldownTracker().setCooldown(this, 60);
+                if(!worldIn.isRemote) {
+                    this.setPlayerLife = 0;
+                    worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.NEUTRAL, 0.6f, 0.3f / (worldIn.rand.nextFloat() * 0.4F + 0.3f));
+                    this.currentLife = player.ticksExisted;
+                    this.dealtDamage = false;
+                    this.isParrying = true;
+                    player.hurtResistantTime = 0;
+                    this.setPlayerLife = player.getHealth();
+                    player.setActiveHand(hand);
+                    player.getCooldownTracker().setCooldown(this, 60);
+                }
+
+                //Do Animation
+                if (player.hasCapability(CapabilityItemAnimations.ANIM_CAP, null))
+                {
+                    int animationDuration = 12;
+                    CapabilityItemAnimations.ICapabilityItemAnimations anim = player.getCapability(CapabilityItemAnimations.ANIM_CAP, null);
+
+                    anim.setParryStartTime(player.ticksExisted);
+                    anim.setParryEndTime(player.ticksExisted + animationDuration);
+
+                    Main.network.sendToAllTracking(new PacketParryAnimationItem(player.getEntityId(), animationDuration), new NetworkRegistry.TargetPoint(player.world.provider.getDimension(), player.posX, player.posY, player.posZ, 0.0D));
+                }
             }
         }
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
@@ -106,12 +126,11 @@ public class ItemExaltedKopis extends ItemAbilityWeapon{
 
             if(this.getAbilityVal(stack) && player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == this) {
                 //dash attack
-                List<EntityLivingBase> targets = worldIn.getEntitiesWithinAABB(EntityLivingBase.class, player.getEntityBoundingBox().grow(2), e -> e != player);
                 Main.proxy.spawnParticle(23, worldIn, player.posX, player.posY + 0.25, player.posZ, 0,0.05,0, 15128888);
                 Main.proxy.spawnParticle(23, worldIn, player.posX, player.posY + 1.5, player.posZ, 0,0.05,0, 15128888);
 
                 dashTime++;
-
+                List<EntityLivingBase> targets = worldIn.getEntitiesWithinAABB(EntityLivingBase.class, player.getEntityBoundingBox().grow(2), e -> e != player);
                 if(player.motionX < 0.1 && player.motionZ < 0.1 && dashTime > 5 || dashTime > 35) {
                     this.setAbilityVal(stack, false);
                     player.motionX = 0;
@@ -123,7 +142,7 @@ public class ItemExaltedKopis extends ItemAbilityWeapon{
 
                 for(EntityLivingBase target : targets) {
                     // Vec3d dir = target.getPositionVector().subtract(player.getPositionVector()).normalize();
-                    Vec3d moveDir = player.getPositionVector().add(player.getLookVec().add(0, 1.5, 0)).scale(1.5D);
+                    Vec3d moveDir = player.getPositionVector().add(player.getLookVec().add(0, 1.5, 0)).scale(2D);
 
                     if(target.canBeCollidedWith()) {
                         this.onEnemyRammed(player, target, moveDir);
@@ -144,6 +163,7 @@ public class ItemExaltedKopis extends ItemAbilityWeapon{
                             assert attacker != null;
                             if(attacker instanceof EntityLivingBase) {
                                 attacker.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1, false, false));
+                                ModUtils.addFalterTooEnemies(attacker, 0.4F, 8);
                             }
                             worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.IMPERIAL_SWORD_PARRY, SoundCategory.NEUTRAL, 1.0f, 0.8f / (worldIn.rand.nextFloat() * 0.4F + 0.3f));
                             this.isParrying = false;
@@ -196,6 +216,7 @@ public class ItemExaltedKopis extends ItemAbilityWeapon{
         }
 
         if(attacked) {
+            ModUtils.addFalterTooEnemies(enemy, 0.6F, 12);
             enemy.knockBack(user, 1.9F, -rammingDir.x, -rammingDir.z);
         }
     }
@@ -210,7 +231,7 @@ public class ItemExaltedKopis extends ItemAbilityWeapon{
 
 
     @Override
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -2.3000000953674316D;
     }
 

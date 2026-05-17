@@ -1,6 +1,9 @@
 package com.dungeon_additions.da;
 
 
+import com.dungeon_additions.da.capabilities.CapabilityItemAnimations;
+import com.dungeon_additions.da.capabilities.CapabilityPlayerFalter;
+import com.dungeon_additions.da.capabilities.CapabilityPlayerSwing;
 import com.dungeon_additions.da.init.ModEntities;
 import com.dungeon_additions.da.init.ModRecipes;
 import com.dungeon_additions.da.proxy.CommonProxy;
@@ -12,6 +15,7 @@ import com.dungeon_additions.da.util.handlers.StructureHandler;
 import com.dungeon_additions.da.world.ModWorldGen;
 import com.dungeon_additions.da.world.ore_gen.BOMDOreGen;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -60,6 +64,10 @@ public class Main {
         GameRegistry.registerWorldGenerator(new ModWorldGen(), 1);
         GameRegistry.registerWorldGenerator(new BOMDOreGen(), 1);
         proxy.registerKeyBindings();
+        //
+        CapabilityManager.INSTANCE.register(CapabilityPlayerFalter.IPlayerFalterCapability.class, new CapabilityPlayerFalter.Storage(), CapabilityPlayerFalter.DAPlayerFalterMethods::new);
+        CapabilityManager.INSTANCE.register(CapabilityItemAnimations.ICapabilityItemAnimations.class, new CapabilityItemAnimations.Storage(), CapabilityItemAnimations.AnimationMethods::new);
+        CapabilityManager.INSTANCE.register(CapabilityPlayerSwing.IPlayerSwingCapability.class, new CapabilityPlayerSwing.Storage(), CapabilityPlayerSwing.DAPlayerSwingMethods::new);
     }
 
     @Mod.EventHandler

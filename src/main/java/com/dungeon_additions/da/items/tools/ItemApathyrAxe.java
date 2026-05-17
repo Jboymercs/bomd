@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.items.tools;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyrSpear;
 import com.dungeon_additions.da.entity.player.ActionApathyrWave;
@@ -20,7 +21,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -35,6 +35,7 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemApathyrAxe extends ItemAbilityWeapon implements IAnimatable, IHasModel {
@@ -45,10 +46,11 @@ public class ItemApathyrAxe extends ItemAbilityWeapon implements IAnimatable, IH
     public ItemApathyrAxe(String name, Item.ToolMaterial material, String info_loc) {
         super(name, material);
         this.setMaxDamage(986);
-
+        this.falter_value = 0.4F;
         ModItems.ITEMS.add(this);
         setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
+        this.weapon_type = EnumWeaponType.HEAVY_AXE;
     }
 
     @Override
@@ -342,8 +344,8 @@ public class ItemApathyrAxe extends ItemAbilityWeapon implements IAnimatable, IH
         return factory;
     }
 
-    protected double getAttackSpeed() {
-        return -3D;
+    public double getAttackSpeed() {
+        return -3.1D;
     }
     public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
     { return false; }
@@ -354,6 +356,13 @@ public class ItemApathyrAxe extends ItemAbilityWeapon implements IAnimatable, IH
     public boolean canDisableShield(ItemStack stack, ItemStack shield, EntityLivingBase entity, EntityLivingBase attacker)
     {
         return true;
+    }
+
+    @Override
+    public void doSweepAttack(EntityPlayer player, @Nullable EntityLivingBase entity) {
+        ModUtils.doSweepAttack(player, entity, (e) -> {
+        }, 12, 3);
+        super.doSweepAttack(player, entity);
     }
 
 }

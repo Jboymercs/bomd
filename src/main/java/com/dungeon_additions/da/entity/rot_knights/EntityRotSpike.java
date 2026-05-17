@@ -79,7 +79,7 @@ public class EntityRotSpike extends EntityAbstractBase implements IAnimatable, I
                         Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
                         DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                         float damage = (float) (this.getAttack());
-                        ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+                        ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.3F);
                     }
                 }
 

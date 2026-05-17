@@ -136,12 +136,18 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
         super(worldIn, x, y, z);
         this.experienceValue = 10;
         this.setSize(0.6F, 1.95F);
+        this.hemorrhage_resistance = 0.5F;
+        this.falter_resistance = 0.8F;
+        this.animation_attack_speed = MobConfig.assassin_animation_speed;
     }
 
     public EntityDarkAssassin(World worldIn) {
         super(worldIn);
         this.experienceValue = 10;
         this.setSize(0.6F, 1.95F);
+        this.hemorrhage_resistance = 0.5F;
+        this.falter_resistance = 0.8F;
+        this.animation_attack_speed = MobConfig.assassin_animation_speed;
     }
 
     @Override
@@ -340,8 +346,8 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.firstStrike ? (float) (this.getAttack() * 2) : (float) (this.getAttack());
+            ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.2f, 0, false, MobEffects.BLINDNESS, 0, 200, firstStrike ? 1.65F : 0.7F);
             this.firstStrike = false;
-            ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.2f, 0, false, MobEffects.BLINDNESS, 0, 200);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.7f));
         }, 18);
 
@@ -375,8 +381,8 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.0, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.firstStrike ? (float) (this.getAttack() * 2) : (float) (this.getAttack());
+          ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.2f, 0, false, MobEffects.BLINDNESS, 0, 200, firstStrike ? 1.0F : 0.25F);
           this.firstStrike = false;
-          ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.2f, 0, false, MobEffects.BLINDNESS, 0, 200);
           this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.7f));
       }, 20);
 
@@ -407,8 +413,8 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.firstStrike ? (float) (this.getAttack() * 2) : (float) (this.getAttack());
+            ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.2f, 0, false, firstStrike ? 1F : 0.25F);
             this.firstStrike = false;
-            ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.2f, 0, false);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.7f));
         }, 18);
 
@@ -439,6 +445,7 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
     }
     private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
         if(this.isFightMode()) {
+                event.getController().setAnimationSpeed(this.animation_attack_speed);
             if(this.isDodge()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DODGE, false));
                 return PlayState.CONTINUE;

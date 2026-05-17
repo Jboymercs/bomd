@@ -84,6 +84,8 @@ public class EntityFriendWyrk extends EntityAbstractBase implements IAnimatable,
         this.setSize(0.8F, 1.95F);
         this.experienceValue = 2;
         this.isFriendlyCreature = true;
+        this.hemorrhage_resistance = 0.6F;
+        this.falter_resistance = 0.7F;
 
     }
 
@@ -92,12 +94,16 @@ public class EntityFriendWyrk extends EntityAbstractBase implements IAnimatable,
         this.setSize(0.8F, 1.95F);
         this.experienceValue = 2;
         this.isFriendlyCreature = true;
+        this.hemorrhage_resistance = 0.6F;
+        this.falter_resistance = 0.7F;
     }
 
     public EntityFriendWyrk(World world, EntityPlayer player) {
         super(world);
         this.setSize(0.8F, 1.95F);
         this.experienceValue = 2;
+        this.hemorrhage_resistance = 0.6F;
+        this.falter_resistance = 0.7F;
     }
 
     public void onSummonViaPlayer(BlockPos pos, EntityPlayer owner) {

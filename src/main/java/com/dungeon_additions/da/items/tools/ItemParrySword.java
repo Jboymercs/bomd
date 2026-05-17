@@ -1,15 +1,16 @@
 package com.dungeon_additions.da.items.tools;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
+import com.dungeon_additions.da.capabilities.CapabilityItemAnimations;
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.packets.PacketParryAnimationItem;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +19,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
@@ -26,11 +26,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-import javax.tools.Tool;
 import java.util.List;
 
 public class ItemParrySword extends ToolSword {
@@ -46,6 +45,7 @@ public class ItemParrySword extends ToolSword {
         super(name, material);
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
+        this.weapon_type = EnumWeaponType.PARRY_SWORD;
     }
 
     @Override
@@ -68,17 +68,30 @@ public class ItemParrySword extends ToolSword {
     {
         ItemStack stack = player.getHeldItem(hand);
         int SwordCoolDown = ModConfig.master_parry_sword_cooldown * 20;
-        if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this) && player.hurtTime == 0) {
-            this.setPlayerLife = 0;
-            worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.NEUTRAL, 0.6f, 0.3f / (worldIn.rand.nextFloat() * 0.4F + 0.3f));
-            this.currentLife = player.ticksExisted;
-            this.dealtDamage = false;
-            this.isParrying = true;
-            player.hurtResistantTime = 0;
-            this.setPlayerLife = player.getHealth();
-            player.setActiveHand(hand);
-            stack.damageItem(1, player);
-            player.getCooldownTracker().setCooldown(this, SwordCoolDown);
+        if(!player.getCooldownTracker().hasCooldown(this) && player.hurtTime == 0) {
+            if(!worldIn.isRemote) {
+                this.setPlayerLife = 0;
+                worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.NEUTRAL, 0.6f, 0.3f / (worldIn.rand.nextFloat() * 0.4F + 0.3f));
+                this.currentLife = player.ticksExisted;
+                this.dealtDamage = false;
+                this.isParrying = true;
+                player.hurtResistantTime = 0;
+                this.setPlayerLife = player.getHealth();
+                player.setActiveHand(hand);
+                stack.damageItem(1, player);
+                player.getCooldownTracker().setCooldown(this, SwordCoolDown);
+            }
+            //Do Animation
+            if (player.hasCapability(CapabilityItemAnimations.ANIM_CAP, null))
+            {
+                int animationDuration = 13;
+                CapabilityItemAnimations.ICapabilityItemAnimations anim = player.getCapability(CapabilityItemAnimations.ANIM_CAP, null);
+
+                anim.setParryStartTime(player.ticksExisted);
+                anim.setParryEndTime(player.ticksExisted + animationDuration);
+
+                Main.network.sendToAllTracking(new PacketParryAnimationItem(player.getEntityId(), animationDuration), new NetworkRegistry.TargetPoint(player.world.provider.getDimension(), player.posX, player.posY, player.posZ, 0.0D));
+            }
         }
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
@@ -148,7 +161,7 @@ public class ItemParrySword extends ToolSword {
     }
 
     @Override
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -2.5000000953674316D;
     }
 }

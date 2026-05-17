@@ -177,7 +177,7 @@ public class EntityUltraAttack extends EntityGaelonBase implements IAnimatable, 
                                 .directEntity(this).disablesShields()
                                 .build();
                         float damage = (float) (this.getAttack());
-                        ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, pos, source, 0.9F, 0, false);
+                        ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, pos, source, 0.9F, 0, false, 0.2F);
                         hitDelay = 5;
                     }
                 }

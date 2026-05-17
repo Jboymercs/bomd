@@ -1,21 +1,17 @@
 package com.dungeon_additions.da.items.tools;
 
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileThousandCuts;
-import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -31,6 +27,8 @@ public class ItemKopis extends ToolSword {
         this.setCreativeTab(CreativeTabs.COMBAT);
         this.info_loc = info_loc;
         this.setMaxDamage(1200);
+        this.falter_value = 0.08F;
+        this.weapon_type = EnumWeaponType.SWORD;
     }
 
     @Override
@@ -82,7 +80,7 @@ public class ItemKopis extends ToolSword {
 
 
     @Override
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -2.1000000953674316D;
     }
 }

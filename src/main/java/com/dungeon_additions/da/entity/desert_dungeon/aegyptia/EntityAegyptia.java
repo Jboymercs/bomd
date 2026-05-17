@@ -12,10 +12,7 @@ import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.player.EntityWyrkLazer;
 import com.dungeon_additions.da.entity.sky_dungeon.EntityTridentGargoyle;
 import com.dungeon_additions.da.init.ModItems;
-import com.dungeon_additions.da.util.ModColors;
-import com.dungeon_additions.da.util.ModRand;
-import com.dungeon_additions.da.util.ModReference;
-import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -158,6 +155,8 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
         this.setSkin(rand.nextInt(4));
         int randI = ModRand.range(1, 10);
         this.setMoveJaw(false);
+        this.falter_resistance = 1F;
+        this.hemorrhage_resistance = 0.25F;
         if(randI >= 8) {
             this.setHasKopis(true);
         } else {
@@ -197,6 +196,8 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
         this.setSkin(rand.nextInt(4));
         int randI = ModRand.range(1, 11);
         this.setMoveJaw(false);
+        this.falter_resistance = 1F;
+        this.hemorrhage_resistance = 0.25F;
         if(randI >= 8) {
             this.setHasKopis(true);
         } else {
@@ -483,7 +484,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.7f, 0, false);
+            ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.7f, 0, false, 0.7F);
             this.playSound(SoundsHandler.B_KNIGHT_STOMP, 0.7f, 1.1f / (rand.nextFloat() * 0.4f + 0.2f));
             world.setEntityState(this, ModUtils.PARTICLE_BYTE);
             world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
@@ -521,7 +522,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage =(float) (this.getAttack());
-          ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.7f, 0, false);
+          ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.7f, 0, false, 0.2F);
           this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.4f / (rand.nextFloat() * 0.4f + 0.2f));
           float inaccuracy = 0.0f;
           float speed = 0.6f;
@@ -563,7 +564,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
                   Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 0.5, 0)));
                   DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                   float damage =(float) (this.getAttack() * 0.75);
-                  ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+                  ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.9f, 0, false, 0.3F);
                   this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.4f / (rand.nextFloat() * 0.4f + 0.2f));
               }, i);
           }
@@ -594,7 +595,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.2F);
                 this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.4f / (rand.nextFloat() * 0.4f + 0.2f));
             }, 33);
 
@@ -602,7 +603,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.2F);
                 this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.4f / (rand.nextFloat() * 0.4f + 0.2f));
             }, 54);
 
@@ -623,7 +624,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.2F);
                 this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.4f / (rand.nextFloat() * 0.4f + 0.2f));
             }, 85);
 
@@ -643,7 +644,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.2F);
                 this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.4f / (rand.nextFloat() * 0.4f + 0.2f));
             }, 33);
 
@@ -652,7 +653,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.2F);
                 this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.4f / (rand.nextFloat() * 0.4f + 0.2f));
             }, 54);
 
@@ -717,6 +718,9 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
                     }
                 } else {
                     closestEntity.attackEntityFrom(ModUtils.causeStaffDamage(this).setDamageBypassesArmor(), (float) (this.getAttack() * 0.25));
+                    if(closestEntity instanceof EntityLivingBase) {
+                        ModUtils.addFalterTooEnemies(((EntityLivingBase) closestEntity), 0.5F, (int) (15));
+                    }
                 }
             }
 
@@ -744,7 +748,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage =(float) (this.getAttack());
-          ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+          ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.6F);
           this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.4f / (rand.nextFloat() * 0.4f + 0.2f));
       }, 35);
 
@@ -776,7 +780,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.25F);
                 this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.4f / (rand.nextFloat() * 0.4f + 0.2f));
             }, 25);
 
@@ -792,7 +796,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.25F);
                 this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.4f / (rand.nextFloat() * 0.4f + 0.2f));
             }, 75);
 
@@ -817,7 +821,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.25F);
                 this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.4f / (rand.nextFloat() * 0.4f + 0.2f));
             }, 25);
 

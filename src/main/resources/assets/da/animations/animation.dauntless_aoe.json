@@ -1,0 +1,27 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"idle": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"Box": {
+					"scale": {
+						"vector": [0.4, 0.9, 0.4]
+					}
+				}
+			}
+		},
+		"death": {
+			"loop": true,
+			"animation_length": 0.5,
+			"bones": {
+				"Box": {
+					"scale": {
+						"vector": [0, 0, 0]
+					}
+				}
+			}
+		}
+	}
+}

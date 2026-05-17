@@ -146,6 +146,8 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         this.iAmBossMob = true;
         this.experienceValue = 225;
         this.doBossReSummonScaling();
+        this.falter_resistance = 2.1F;
+        this.hemorrhage_resistance = 0.75F;
     }
 
     public EntityAegyptianColossus(World worldIn, float x, float y, float z) {
@@ -155,6 +157,8 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         this.bossInfo.setVisible(false);
         this.iAmBossMob = true;
         this.experienceValue = 225;
+        this.falter_resistance = 2.1F;
+        this.hemorrhage_resistance = 0.75F;
     }
 
     public EntityAegyptianColossus(World worldIn) {
@@ -164,6 +168,8 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         this.bossInfo.setVisible(false);
         this.iAmBossMob = true;
         this.experienceValue = 225;
+        this.falter_resistance = 2.1F;
+        this.hemorrhage_resistance = 0.75F;
     }
 
     private void startBossSetup() {
@@ -529,7 +535,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(3, 1.8, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage =(float) (this.getAttack());
-          ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+          ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false, 0.7F);
           //do barrier wave
           Main.proxy.spawnParticle(20,world, offset.x, this.posY + 0.5, offset.z, 0, 0, 0);
             new ActionColossusMaceSlam(9).performAction(this, target);
@@ -574,7 +580,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(3, 1.8, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false, 0.7F);
             //do barrier wave
             Main.proxy.spawnParticle(20,world, offset.x, this.posY + 0.5, offset.z, 0, 0, 0);
             new ActionColossusMaceSlam(15).performAction(this, target);
@@ -608,7 +614,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2, 1.8, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage =(float) (this.getAttack());
-          ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+          ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.9f, 0, false, 0.8F);
           this.setImmovable(true);
       }, 37);
 
@@ -634,7 +640,7 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2, 1.8, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+                ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.9f, 0, false, 0.8F);
             }, 35);
 
             addEvent(()-> {

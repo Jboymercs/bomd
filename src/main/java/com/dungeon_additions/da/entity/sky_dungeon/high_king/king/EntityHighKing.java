@@ -369,6 +369,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.setHasSpawn(true);
         this.setSpawnLocation(new BlockPos(x,y,z));
         this.doBossSummoning();
+        this.falter_resistance = 1.8F;
+        this.hemorrhage_resistance = 0.95F;
     }
 
     public EntityHighKing(World worldIn, int timesUsed, BlockPos pos) {
@@ -382,6 +384,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.setHasSpawn(true);
         this.setSpawnLocation(pos);
         this.doBossSummoning();
+        this.falter_resistance = 1.8F;
+        this.hemorrhage_resistance = 0.95F;
     }
 
 
@@ -409,6 +413,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     public EntityHighKing(World worldIn) {
         super(worldIn);
         this.setSize(0.8F, 2.45F);
+        this.falter_resistance = 1.8F;
+        this.hemorrhage_resistance = 0.95F;
     }
 
     private void performPhaseTransition() {
@@ -660,7 +666,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = (float) (this.getAttack());
-          ModUtils.handleAreaImpact(5f, (e) -> damage, this, offset, source, 0.7f, 0, false);
+          ModUtils.handleAreaImpact(5f, (e) -> damage, this, offset, source, 0.7f, 0, false, 0.6F);
           this.setNoGravity(true);
           this.setImmovable(false);
           this.HoverTimeIncrease = 3;
@@ -707,7 +713,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                     Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 0.5, 0)));
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                     float damage = (float) (this.getAttack() * 1.25);
-                    ModUtils.handleAreaImpact(2.4f, (e) -> damage, this, offset, source, 0.3f, 0, false);
+                    ModUtils.handleAreaImpact(2.4f, (e) -> damage, this, offset, source, 0.3f, 0, false, 0.7F);
                 }, i);
             }
 
@@ -771,7 +777,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                       Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 0.5, 0)));
                       DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                       float damage = (float) (this.getAttack() * 1.25);
-                      ModUtils.handleAreaImpact(2.4f, (e) -> damage, this, offset, source, 0.3f, 0, false);
+                      ModUtils.handleAreaImpact(2.4f, (e) -> damage, this, offset, source, 0.3f, 0, false, 0.7F);
                   }, i);
               }
 
@@ -873,7 +879,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                         Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 0.5, 0)));
                         DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                         float damage = (float) (this.getAttack() * 1.25);
-                        ModUtils.handleAreaImpact(2.4f, (e) -> damage, this, offset, source, 0.3f, 0, false);
+                        ModUtils.handleAreaImpact(2.4f, (e) -> damage, this, offset, source, 0.3f, 0, false, 0.7F);
                     }, i);
                 }
 
@@ -925,7 +931,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 0.5, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = (float) (this.getAttack());
-            ModUtils.handleAreaImpact(5f, (e) -> damage, this, offset, source, 0.7f, 0, false);
+            ModUtils.handleAreaImpact(5f, (e) -> damage, this, offset, source, 0.7f, 0, false, 0.5F);
             this.setImmovable(false);
         }, 115);
 
@@ -978,7 +984,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.75, 1.5, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = (float) (this.getAttack() * 1.25);
-            ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.3f, 0, false);
+            ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.3f, 0, false, 0.4F);
             // Summon a Lightning Ring
             this.playSound(SoundsHandler.HIGH_KING_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 45);
@@ -1042,7 +1048,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.75, 1.5, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = (float) (this.getAttack() * 1.25);
-            ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+            ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.4F);
             // Summon a Lightning Ring
             if(!MobConfig.disable_blood_attacks) {
                 new ActionBloodSpray().performAction(this, target);
@@ -1068,7 +1074,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.75, 1.5, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = (float) (this.getAttack());
-            ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+            ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.4F);
             // Summon a Lightning Ring
             if(!MobConfig.disable_blood_attacks) {
                 new ActionBloodSpray().performAction(this, target);
@@ -1205,7 +1211,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
               Vec3d offset = grabbedEntity.getPositionVector().add(0, 1, 0);
               DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
               float damage = (float) (this.getAttack() * 1.25);
-              ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+              ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.9f, 0, false, 1.0F);
               this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
               this.heal((float) healthFac);
               this.maintainGrabPose = false;
@@ -1447,7 +1453,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
               Vec3d offset = grabbedEntity.getPositionVector().add(0, 1, 0);
               DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
               float damage = (float) (this.getAttack() * 0.75);
-              ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+              ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.5F);
               this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
               this.heal((float) healthFac);
           }
@@ -1458,7 +1464,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                 Vec3d offset = grabbedEntity.getPositionVector().add(0, 1, 0);
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage = (float) (this.getAttack() * 0.75);
-                ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.5F);
                 this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
                 this.heal((float) healthFac);
             }
@@ -1470,7 +1476,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                 Vec3d offset = grabbedEntity.getPositionVector().add(0, 0.25, 0);
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage = (float) (this.getAttack() * 1.25);
-                ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 1.2f, 0, false);
+                ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 1.2f, 0, false, 0.3F);
                 this.playSound(SoundsHandler.HIGH_KING_SWING_IMPALE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
                 this.heal((float) healthFac);
             }
@@ -1510,7 +1516,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
            Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.0, 0)));
            DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
            float damage = (float) (this.getAttack() * 1.25);
-           ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+           ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.7F);
            // Summon a Lightning Ring
            this.playSound(SoundsHandler.HIGH_KING_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
        }, 37);
@@ -1553,7 +1559,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.getAttack();
-            ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+            ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.4F);
             // Summon a Lightning Ring
             if(world.rand.nextBoolean()) {
                 this.playSound(SoundsHandler.HIGH_KING_SWING_MAGIC, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
@@ -1580,7 +1586,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2.2, 1.4, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = (float) (this.getAttack() * 1.25);
-            ModUtils.handleAreaImpact(2.2f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+            ModUtils.handleAreaImpact(2.2f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.4F);
             this.playSound(SoundsHandler.HIGH_KING_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 75);
 
@@ -1765,7 +1771,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.5, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.getAttack();
-          ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+          ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.6F);
           // Summon a Lightning Ring
           if(world.rand.nextBoolean()) {
               this.playSound(SoundsHandler.HIGH_KING_SWING_MAGIC, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
@@ -1796,7 +1802,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.5, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.getAttack();
-          ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+          ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.6F);
           // Summon a Lightning Ring
           if(world.rand.nextBoolean()) {
               this.playSound(SoundsHandler.HIGH_KING_SWING_MAGIC, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
@@ -1940,7 +1946,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.7, 1.5, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = (float) (this.getAttack() * 1.3);
-            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.3F);
             // Summon a Lightning Ring
             new ActionKingLightningRing().performAction(this, target);
             this.playSound(SoundsHandler.HIGH_KING_SWING_MAGIC, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
@@ -1995,7 +2001,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2.2, 1.5, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.getAttack();
-          ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+          ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.3F);
           this.playSound(SoundsHandler.HIGH_KING_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           double healthFac = this.getHealth() / this.getMaxHealth();
           if(healthFac <= 0.5 && !MobConfig.disable_blood_attacks) {

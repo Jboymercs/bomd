@@ -160,6 +160,8 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
         this.setImmovable(false);
         this.setDefenseMode(false);
         this.experienceValue = 25;
+        this.falter_resistance = 1.0F;
+        this.hemorrhage_resistance = 0.2F;
     }
 
     public EntityIncendium(World worldIn) {
@@ -170,6 +172,8 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
         this.setImmovable(false);
         this.setDefenseMode(false);
         this.experienceValue = 25;
+        this.falter_resistance = 1.0F;
+        this.hemorrhage_resistance = 0.2F;
     }
 
     @Override
@@ -390,7 +394,7 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
                     Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.1, 0)));
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                     float damage = (float) (this.getAttack());
-                    ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                    ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.2F);
                     new ActionTileAOE(3).performAction(this, target);
                 }, i);
             }
@@ -435,7 +439,7 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
                     Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.1, 0)));
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                     float damage = (float) (this.getAttack());
-                    ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.6f, 5, false);
+                    ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.6f, 5, false, 0.7F);
                 }, i);
             }
             this.playSound(SoundsHandler.INCENDIUM_HEAVY_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
@@ -476,7 +480,7 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.2, 1.1, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage = (float) (this.getAttack());
-          ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+          ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.4F);
           this.playSound(SoundsHandler.INCENDIUM_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
       }, 24);
 
@@ -522,7 +526,7 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.2, 1.1, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = (float) (this.getAttack());
-            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.2f, 5, false);
+            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.2f, 5, false, 0.4F);
             this.playSound(SoundsHandler.INCENDIUM_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 18);
 
@@ -559,7 +563,7 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.2, 1.1, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = (float) (this.getAttack() * 1.25);
-          ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+          ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.3F);
           this.playSound(SoundsHandler.INCENDIUM_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
       }, 24);
 

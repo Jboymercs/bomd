@@ -1,10 +1,9 @@
 package com.dungeon_additions.da.items.tools;
 
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.player.ActionPlayerDoAOE;
 import com.dungeon_additions.da.entity.player.ActionPlayerGroundMissiles;
-import com.dungeon_additions.da.entity.player.ActionPlayerShootComet;
-import com.dungeon_additions.da.entity.player.ActionPlayerShootSpead;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -31,6 +30,8 @@ public class ItemWeaponSpear extends ToolSword{
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
         this.setMaxDamage(1200);
+        this.weapon_type = EnumWeaponType.SPEAR;
+        this.weaponReach += 1.25F;
     }
 
     @Override
@@ -67,7 +68,7 @@ public class ItemWeaponSpear extends ToolSword{
     }
 
     @Override
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -2.5000000953674316D;
     }
 }

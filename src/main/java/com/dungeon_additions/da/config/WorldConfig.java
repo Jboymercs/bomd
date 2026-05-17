@@ -376,7 +376,7 @@ public class WorldConfig {
     @Config.Name("Cult Castle Enabled/Disabled")
     @Config.Comment("Change if the Cult Castle should spawn at all. default: true")
     @Config.RequiresMcRestart
-    public static boolean cult_castle_enabled = false;
+    public static boolean cult_castle_enabled = true;
 
     @Config.Name("Cult Castle Allowed Dimensions")
     @Config.Comment("Select what dimensions this structure is allowed to spawn in")
@@ -429,6 +429,37 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static String[] end_outposts_whitelist = {"END"
     };
+
+    @Config.Name("Dauntless Arena Dimensions allowed in!")
+    @Config.Comment("Take note that any ocean type biomes this structure will NOT spawn in, but you can select which dimension you'd like the structure to spawn in")
+    @Config.RequiresMcRestart
+    public static int[] list_of_dimensions_dauntless = {0};
+
+    @Config.Name("Dauntless Arena Minimum Y")
+    @Config.Comment("Change the minimum y the surface part of this structure can spawn at")
+    @Config.RequiresMcRestart
+    public static int dauntless_min_y = 50;
+
+    @Config.Name("Dauntless Arena Maximum Y")
+    @Config.Comment("Change the maximum y the surface part of this structure can spawn at")
+    @Config.RequiresMcRestart
+    public static int dauntless_max_y = 75;
+
+    @Config.Name("Dauntless Arena Spacing")
+    @Config.Comment("Change the spacing between each Dauntless Arena tower, higher means further apart, lower means closer. This number will not add to spacing if not in the correct biome")
+    @Config.RequiresMcRestart
+    public static int dauntless_spacing = 120;
+
+    @Config.Name("Dauntless Arena Whitelist Biome Types")
+    @Config.Comment("Add Biome types that ALLOW the Dauntless Arena spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
+    @Config.RequiresMcRestart
+    public static String[] biome_types_whitelist_dauntless = {"PLAINS"
+    };
+
+    @Config.Name("Dauntless Arena Enabled/Disabled")
+    @Config.Comment("When set to false, the Dauntless Arena will be disabled from world generation.")
+    @Config.RequiresMcRestart
+    public static boolean dauntless_arena_enabled = true;
 
     @Config.Name("Mysterious Trader Post Blacklisted Biome Types")
     @Config.Comment("Add Biome types that DISALLOW the Mysterious Trader Post from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")

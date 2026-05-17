@@ -95,6 +95,8 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         this.iAmBossMobWyrkNerf = true;
         this.experienceValue = 200;
         onSummonBoss();
+        this.hemorrhage_resistance = 0.95F;
+        this.falter_resistance = 2.2F;
     }
 
     public EntityGreatWyrk(World worldIn, float x, float y, float z) {
@@ -106,6 +108,8 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         this.setSpawnLocation(offset);
         this.setSetSpawnLoc(true);
         onSummonBoss();
+        this.hemorrhage_resistance = 0.95F;
+        this.falter_resistance = 2.2F;
     }
 
     public EntityGreatWyrk(World worldIn, int timesused, BlockPos pos) {
@@ -119,6 +123,8 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         this.timesUsed++;
         this.doBossReSummonScaling();
         onSummonBoss();
+        this.hemorrhage_resistance = 0.95F;
+        this.falter_resistance = 2.2F;
     }
 
     public void onSummonBoss() {
@@ -184,7 +190,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
                         Vec3d offset = base.getPositionVector().add(ModUtils.getRelativeOffset(base, new Vec3d(0.3, 0.3, 0)));
                         DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                         float damage = (float) (this.getAttack());
-                        ModUtils.handleAreaImpact(0.7f, (e)-> damage, this, offset, source, 1.2f, 0, false);
+                        ModUtils.handleAreaImpact(0.7f, (e)-> damage, this, offset, source, 1.2f, 0, false, 1.3F);
                     }
                 }
             }
@@ -389,7 +395,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.75, 2.5, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = (float) (this.getAttack() * 0.75);
-          ModUtils.handleAreaImpact(3.0f, (e) -> damage, this, offset, source, 0.6f, 0, false, MobEffects.SLOWNESS, 0, 100);
+          ModUtils.handleAreaImpact(3.0f, (e) -> damage, this, offset, source, 0.6f, 0, false, MobEffects.SLOWNESS, 0, 100, 1.5F);
           new ActionProgressiveRing().performAction(this, target);
               Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.2, 0)));
               Main.proxy.spawnParticle(18,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
@@ -543,7 +549,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.75, 0, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = (float) (this.getAttack() * 0.75);
-          ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 1.5f, 0, false, MobEffects.WEAKNESS, 0, 200);
+          ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 1.5f, 0, false, MobEffects.WEAKNESS, 0, 200, 1.9F);
           Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 1.2, 0)));
           Main.proxy.spawnParticle(20,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
       }, 45);

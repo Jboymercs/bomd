@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.items.tools;
 
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.player.ActionPlayerShootBloodSpray;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.EntityBloodPile;
@@ -42,7 +43,9 @@ public class ItemBloodySwordSpear extends ToolSword implements IAnimatable {
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
         this.setMaxDamage(2031);
-      //  this.reachDistanceValue = 1.0F;
+        this.falter_value = 0.27F;
+        this.weapon_type = EnumWeaponType.SPEAR;
+        this.weaponReach += 1.25F;
     }
 
     @Override
@@ -54,7 +57,7 @@ public class ItemBloodySwordSpear extends ToolSword implements IAnimatable {
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
         attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.HIGH_KING_SWING, SoundCategory.NEUTRAL, 0.4f, 0.7f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
-        return true;
+        return super.hitEntity(stack, target, attacker);
     }
 
     @Override
@@ -167,7 +170,7 @@ public class ItemBloodySwordSpear extends ToolSword implements IAnimatable {
 
     }
 
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -3D;
     }
 

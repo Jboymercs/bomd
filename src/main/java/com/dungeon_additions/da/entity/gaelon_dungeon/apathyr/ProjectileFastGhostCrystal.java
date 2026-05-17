@@ -68,7 +68,7 @@ public class ProjectileFastGhostCrystal extends Projectile {
                     .directEntity(this)
                     .stoppedByArmorNotShields().disablesShields().build();
 
-            ModUtils.handleAreaImpact(4, (e) -> this.getDamage(), this, this.getPositionVector(), source2);
+            ModUtils.handleAreaImpact(4, (e) -> this.getDamage(), this, this.getPositionVector(), source2, 0.4F, 0, false, 0.4F);
             //this.entity.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f + ModRand.getFloat(0.1f));
             this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.25F, 1.0f + ModRand.getFloat(0.1f));
             this.playSound(SoundsHandler.VOIDCLYSM_IMPACT, 1.1F, 1.0f + ModRand.getFloat(0.1f));

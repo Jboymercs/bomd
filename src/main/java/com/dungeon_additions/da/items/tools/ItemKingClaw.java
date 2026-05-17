@@ -10,8 +10,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -38,6 +36,8 @@ public class ItemKingClaw extends ToolSword implements IAnimatable {
         this.setHarvestLevel("spade", 4);
         setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
+        this.falter_value = 0.05F;
+        this.weaponReach -= 1.25F;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class ItemKingClaw extends ToolSword implements IAnimatable {
     }
 
 
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -2.0D;
     }
 

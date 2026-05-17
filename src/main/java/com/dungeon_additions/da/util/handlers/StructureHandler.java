@@ -4,6 +4,8 @@ import com.dungeon_additions.da.world.blossom.BlossomTemplate;
 import com.dungeon_additions.da.world.blossom.WorldGenBlossomCave;
 import com.dungeon_additions.da.world.cults_domain.CultsDomainTemplate;
 import com.dungeon_additions.da.world.cults_domain.WorldGenCultsDomain;
+import com.dungeon_additions.da.world.dauntless.DauntlessArenaTemplate;
+import com.dungeon_additions.da.world.dauntless.WorldGenDauntlessArena;
 import com.dungeon_additions.da.world.forgotten_temple.ForgottenTempleTemplate;
 import com.dungeon_additions.da.world.forgotten_temple.WorldGenForgottenTemple;
 import com.dungeon_additions.da.world.frozen_castle.FrozenCastleTemplate;
@@ -61,6 +63,9 @@ public class StructureHandler {
         //Mysterious Trader Post
         MapGenStructureIO.registerStructure(WorldGenMysteriousTraderPost.Start.class, "MysteriousTraderPost");
         MapGenStructureIO.registerStructureComponent(MysteriousTraderPostTemplate.class, "MTP");
+        //Dauntlesses Arena
+        MapGenStructureIO.registerStructure(WorldGenDauntlessArena.Start.class, "DauntlessArena");
+        MapGenStructureIO.registerStructureComponent(DauntlessArenaTemplate.class, "DAP");
         //Outposts
         MapGenStructureIO.registerStructure(WorldGenOutposts.Start.class, "ModOutposts");
         MapGenStructureIO.registerStructureComponent(OutpostsTemplate.class, "MOP");

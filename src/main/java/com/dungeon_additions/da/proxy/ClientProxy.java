@@ -272,6 +272,16 @@ public class ClientProxy extends CommonProxy{
                 return new ParticleDotLight.Factory();
             case 31:
                 return new ParticleDemonRitual.Factory();
+            case 32:
+                return new ParticleDegradation.Factory();
+            case 33:
+                return new ParticleHemorrhage.Factory();
+            case 34:
+                return new ParticleFalter.Factory();
+            case 35:
+                return new ParticleDauntless.Factory();
+            case 36:
+                return new ParticleDauntlessSlice.Factory();
         }
     }
 

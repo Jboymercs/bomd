@@ -9,6 +9,9 @@ import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
 import com.dungeon_additions.da.entity.dark_dungeon.*;
 import com.dungeon_additions.da.entity.dark_dungeon.boss.*;
+import com.dungeon_additions.da.entity.dark_dungeon.dauntless.EntityDauntlessAOE;
+import com.dungeon_additions.da.entity.dark_dungeon.dauntless.EntityDauntlessSword;
+import com.dungeon_additions.da.entity.dark_dungeon.dauntless.ProjectileDauntlessSlice;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertOrb;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
@@ -122,10 +125,13 @@ public class RenderHandler {
         });
     }
 
-    private static <T extends Entity> void registerProjectileRenderer3DModel(Class<T> projectileClass, Item item) {
+    private static <T extends Entity> void registerProjectileRenderer3DModel(Class<T> projectileClass, Item item, boolean renderFull) {
         RenderingRegistry.registerEntityRenderingHandler(projectileClass, new IRenderFactory<T>() {
             @Override
             public Render<? super T> createRenderFor(RenderManager manager) {
+                if(renderFull) {
+                    return new RenderFull3DProjectile<>(manager, Minecraft.getMinecraft().getRenderItem(), item);
+                }
                 return new RenderHolyWaveProjectile<>(manager, Minecraft.getMinecraft().getRenderItem(), item);
             }
         });
@@ -154,16 +160,16 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileStormBreath.class, ModItems.STORM_TORNADO_PROJECTILE);
         registerProjectileRenderer(ProjectileStormWind.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(EntitySkyDungeonLocator.class, ModItems.SKY_LOCATOR_PROJECTILE);
-        registerProjectileRenderer3DModel(EntityKingHolyWave.class, ModItems.HOLY_WAVE_PROJ);
-        registerProjectileRenderer3DModel(ProjectileVoidClysmBolt.class, ModItems.VOIDCLYSM_BOLT);
+        registerProjectileRenderer3DModel(EntityKingHolyWave.class, ModItems.HOLY_WAVE_PROJ, false);
+        registerProjectileRenderer3DModel(ProjectileVoidClysmBolt.class, ModItems.VOIDCLYSM_BOLT, true);
         registerProjectileRenderer(ProjectileKingBlood.class, ModItems.BLOOD_BALL_PROJ);
         registerProjectileRenderer(ProjectileFlameSpit.class, ModItems.INVISISBLE_ITEM);
-        registerProjectileRenderer3DModel(ProjectileFlameBlade.class, ModItems.FLAME_BLADE_PROJ);
-        registerProjectileRenderer3DModel(ProjectileDesertStorm.class, ModItems.DESERT_STORM_PROJ);
-        registerProjectileRenderer3DModel(ProjectileYellowWave.class, ModItems.YELLOW_WAVE_PROJ);
-        registerProjectileRenderer3DModel(ProjectileCrystalWave.class, ModItems.CRYSTAL_WAVE_PROJ);
-        registerProjectileRenderer3DModel(ProjectileGhost.class, ModItems.GHOST_BOLT_PROJ);
-        registerProjectileRenderer3DModel(ProjectileFastGhostCrystal.class, ModItems.FAST_CRYSTAL_PROJ);
+        registerProjectileRenderer3DModel(ProjectileFlameBlade.class, ModItems.FLAME_BLADE_PROJ, false);
+        registerProjectileRenderer3DModel(ProjectileDesertStorm.class, ModItems.DESERT_STORM_PROJ, false);
+        registerProjectileRenderer3DModel(ProjectileYellowWave.class, ModItems.YELLOW_WAVE_PROJ, true);
+        registerProjectileRenderer3DModel(ProjectileCrystalWave.class, ModItems.CRYSTAL_WAVE_PROJ, false);
+        registerProjectileRenderer3DModel(ProjectileGhost.class, ModItems.GHOST_BOLT_PROJ, true);
+        registerProjectileRenderer3DModel(ProjectileFastGhostCrystal.class, ModItems.FAST_CRYSTAL_PROJ, false);
         registerProjectileRenderer(EntityObsidianLocator.class, ModItems.OBSIDIAN_LOCATOR);
         registerProjectileRenderer(ProjectileTrackingVoid.class, ModItems.VOID_PROJECTILE);
         registerProjectileRenderer(ProjectileDarkMatter.class, ModItems.DARK_MANA);
@@ -173,9 +179,10 @@ public class RenderHandler {
         registerProjectileRenderer(ProjectileThousandCuts.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(ProjectileDesertOrb.class, ModItems.DESERT_PROJECTILE);
         registerProjectileRenderer(EntityColossusSigil.class, ModItems.INVISISBLE_ITEM);
-        registerProjectileRenderer3DModel(ProjectileSorceryDagger.class, ModItems.SORCERY_DAGGER);
+        registerProjectileRenderer3DModel(ProjectileSorceryDagger.class, ModItems.SORCERY_DAGGER, true);
         registerProjectileRenderer(ProjectileBloodSigil.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(ProjectileBloodMeteor.class, ModItems.BLOOD_METEOR);
+        registerProjectileRenderer3DModel(ProjectileDauntlessSlice.class, ModItems.DAUNTLESS_SPEAR, true);
     }
 
     //Handles Rendering
@@ -341,7 +348,7 @@ public class RenderHandler {
         //Friendly Scutter Beetle
         RenderingRegistry.registerEntityRenderingHandler(EntityFriendlyScutterBeetle.class, RenderFriendlyScutterBeetle::new);
         //Darkdrift Devil
-       // RenderingRegistry.registerEntityRenderingHandler(EntityDarkdriftDevil.class, RenderDarkdriftDevil::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityDarkdriftDevil.class, RenderDarkdriftDevil::new);
         //Great Death
         RenderingRegistry.registerEntityRenderingHandler(EntityGreatDeath.class, RenderGreatDeath::new);
         //Demon Sigil
@@ -354,6 +361,12 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderphriteGauntlet.class, RenderEnderphriteGauntlet::new);
         //Rally Flag
         RenderingRegistry.registerEntityRenderingHandler(EntityRallyFlag.class, RenderRallyFlag::new);
+        //Dauntless
+        RenderingRegistry.registerEntityRenderingHandler(EntityDauntless.class, RenderDauntless::new);
+        //Dauntless AOE
+        RenderingRegistry.registerEntityRenderingHandler(EntityDauntlessAOE.class, RenderDauntlessAOE::new);
+        //Dauntless Sword
+        RenderingRegistry.registerEntityRenderingHandler(EntityDauntlessSword.class, RenderDauntlessSword::new);
         //Puzzle Mirror
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPuzzleMirror.class, new RenderPuzzleMirror());
 

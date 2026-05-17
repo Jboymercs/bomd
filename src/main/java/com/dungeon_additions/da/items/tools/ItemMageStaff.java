@@ -1,6 +1,5 @@
 package com.dungeon_additions.da.items.tools;
 
-import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.generic.EntityDelayedExplosion;
 import com.dungeon_additions.da.entity.night_lich.ProjectileMagicMissile;
@@ -18,7 +17,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -153,7 +151,7 @@ public class ItemMageStaff extends ToolSword implements IAnimatable {
     }
 
     @Override
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -3.0000000953674316D;
     }
 

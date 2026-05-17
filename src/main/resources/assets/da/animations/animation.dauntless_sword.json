@@ -1,0 +1,39 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"sword_idle": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"Main": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					},
+					"position": {
+						"vector": [5, 9, -3]
+					},
+					"scale": {
+						"vector": [1, 1, 1]
+					}
+				}
+			}
+		},
+		"sword_idle_large": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"Main": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					},
+					"position": {
+						"vector": [-1, 56, -8]
+					},
+					"scale": {
+						"vector": [2.5, 2.5, 2.5]
+					}
+				}
+			}
+		}
+	}
+}

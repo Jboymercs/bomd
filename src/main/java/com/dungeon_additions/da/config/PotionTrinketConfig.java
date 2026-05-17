@@ -32,6 +32,26 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static double hunters_mark_damage_increase = 0.1;
 
+    @Config.Name("Faltered Damage Additive Amount")
+    @Config.Comment("When applied to you or any entity, they will take x percentage of increased damage when applied when being Faltered")
+    @Config.RequiresMcRestart
+    public static double faltering_damage_increase = 0.3;
+
+    @Config.Name("Default Player Falter Resistance")
+    @Config.Comment("Change the default starting amount of Faltering resistance the player has.")
+    @Config.RequiresMcRestart
+    public static double player_default_falter_resistance = 0.5;
+
+    @Config.Name("Player Armor Falter Additive")
+    @Config.Comment("Per one armor point on the player, they will be added x amount of Falter Resistance.")
+    @Config.RequiresMcRestart
+    public static double armor_additive_falter_resistance = 0.04;
+
+    @Config.Name("Player Armor Toughness Falter Additive")
+    @Config.Comment("Per one armor toughness point on the player, they will be added x amount of Falter Resistance.")
+    @Config.RequiresMcRestart
+    public static double armor_additive_falter_resistance_t = 0.02;
+
     @Config.Name("Fiery Respite Attack Speed Boost Amount")
     @Config.Comment("Change the attack speed boost when using Fiery Respite")
     @Config.RequiresMcRestart
@@ -322,9 +342,24 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static int last_stand_trinket_durability = 20;
 
+    @Config.Name("Goat Tenacity Durability")
+    @Config.Comment("Change Goat Tenacity item durability.")
+    @Config.RequiresMcRestart
+    public static int goat_tenacity_durability = 42;
+
+    @Config.Name("Goat Tenacity Falter Resistance")
+    @Config.Comment("Change how much Goat's Tenacity adds to the players falter resistance")
+    @Config.RequiresMcRestart
+    public static double goat_tenacity_resistance =  0.6;
+
     @Config.Name("Trinkets become unbreakable Enable/Disable")
     @Config.Comment("Change if all trinkets in the mod become unbreakable and do not take durability damage. default false.")
     @Config.RequiresMcRestart
     public static boolean trinkets_unbreakable = false;
+
+    @Config.Name("Max Trinkets Allowed")
+    @Config.Comment("Change how many max any asortment of trinkets the player can carry from this mod. Change this if you plan on changing slots to make them more accessible. default : 4")
+    @Config.RequiresMcRestart
+    public static int max_trinkets_allowed = 4;
 
 }

@@ -182,7 +182,7 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
                                 Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.25D));
                                 DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                                 float damage = this.getAttack();
-                                ModUtils.handleAreaImpact(0.25f, (e) -> this.damageFromOwner, this, offset, source, 0.3f, 0, false);
+                                ModUtils.handleAreaImpact(0.25f, (e) -> this.damageFromOwner, this, offset, source, 0.3f, 0, false, 0.3F);
                                 if (!world.isRemote) {
                                     base.setFire(8);
                                 }
@@ -196,7 +196,7 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
                                 Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.25D));
                                 DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                                 float damage = this.getAttack();
-                                ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.3f, 0, false);
+                                ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.3f, 0, false, 0.4F);
                                 if (!world.isRemote) {
                                     base.setFire(8);
                                 }
@@ -217,7 +217,7 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
                             Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.25D));
                             DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                             float damage = this.getAttack();
-                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 1.3f, 0, false);
+                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 1.3f, 0, false, 0.2F);
                         }
                     }
                 }
@@ -254,7 +254,7 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
                             Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.25D));
                             DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                             float damage = damageFromOwner;
-                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.2F);
                             base.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 200, 2, false, false));
                             if (!world.isRemote) {
                                 double distSq = this.getDistanceSq(base.posX, base.getEntityBoundingBox().minY, base.posZ);
@@ -280,7 +280,7 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
                             Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.25D));
                             DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                             float damage = this.getAttack();
-                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.2F);
                             base.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 200, 2, false, false));
                             if (!world.isRemote) {
                                 double distSq = this.getDistanceSq(base.posX, base.getEntityBoundingBox().minY, base.posZ);

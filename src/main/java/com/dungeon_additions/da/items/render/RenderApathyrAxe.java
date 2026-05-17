@@ -10,4 +10,6 @@ public class RenderApathyrAxe extends GeoItemRenderer<ItemApathyrAxe> {
     public RenderApathyrAxe() {
         super(new ModelApathyrAxe());
     }
+
+
 }

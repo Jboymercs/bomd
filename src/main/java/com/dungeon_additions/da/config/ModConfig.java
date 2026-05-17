@@ -548,6 +548,11 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static int frozen_castle_search_distance = 185;
 
+    @Config.Name("Dark Ruins Search Radius")
+    @Config.Comment("Change how far the Locate command searches for a Dark Ruins. In chunks not blocks!")
+    @Config.RequiresMcRestart
+    public static int dark_ruins_search_distance = 165;
+
     @Config.Name("Forgotten Temple Search Radius")
     @Config.Comment("Change how far the Desolate Trinket and Locate command searches for a Forgotten Temple. In chunks not blocks!")
     @Config.RequiresMcRestart
@@ -789,4 +794,54 @@ public class ModConfig {
     @Config.Comment("When a boss is enraged, it will get a bonus of extra damage based on its base attack damage. 20% of 30 is 6, so its new attack damage will be 36")
     @Config.RequiresMcRestart
     public static double boss_rage_damage_percentage = 0.2;
+
+    @Config.Name("Faltering Enemies")
+    @Config.Comment("Should most mobs in the mod have a faltering effect. Basically weapons in the mod have stagger values that apply to mobs allowing players to stagger bosses")
+    @Config.RequiresMcRestart
+    public static boolean falter_mobs = true;
+
+    @Config.Name("Custom Swing Animations")
+    @Config.Comment("Should the mod's weapons have custom swing animations, disable this or add a black list if using a overhaul mod for swing animations")
+    @Config.RequiresMcRestart
+    public static boolean custom_swing_animations = true;
+
+    @Config.Name("Custom Hit Delay")
+    @Config.Comment("Should the mod's weapons have custom hit delays, they pair with the animations of the weapons in the mod to allow a more dedicated experience.")
+    @Config.RequiresMcRestart
+    public static boolean weapon_hit_delays = true;
+
+    @Config.Name("Faltering Damage by Players")
+    @Config.Comment("When disabled, faltering build up will not be applied to mobs when attacked by players.")
+    @Config.RequiresMcRestart
+    public static boolean players_cause_falter = true;
+
+    @Config.Name("Custom Spear Attacks")
+    @Config.Comment("When disabled, it will disable hit delays and animations for SPEAR type weapons only")
+    @Config.RequiresMcRestart
+    public static boolean enable_spear_weapons = true;
+
+    @Config.Name("Custom Dagger Attacks")
+    @Config.Comment("When disabled, it will disable hit delays and animations for DAGGER type weapons only")
+    @Config.RequiresMcRestart
+    public static boolean enable_dagger_weapons = true;
+
+    @Config.Name("Custom Sword Attacks")
+    @Config.Comment("When disabled, it will disable hit delays and animations for SWORD type weapons only")
+    @Config.RequiresMcRestart
+    public static boolean enable_sword_weapons = true;
+
+    @Config.Name("Custom Heavy Attacks")
+    @Config.Comment("When disabled, it will disable hit delays and animations for HEAVY type weapons only")
+    @Config.RequiresMcRestart
+    public static boolean enable_heavy_weapons = true;
+
+    @Config.Name("Custom Parry Sword Attacks")
+    @Config.Comment("When disabled, it will disable hit delays and animations for PARRY SWORD type weapons only")
+    @Config.RequiresMcRestart
+    public static boolean enable_parry_sword_weapons = true;
+
+    @Config.Name("Custom Combat System")
+    @Config.Comment("When disabled this will disable everything custom combat related to the mod. Animations, hit delays, and faltering.")
+    @Config.RequiresMcRestart
+    public static boolean combat_system_enabled = true;
 }

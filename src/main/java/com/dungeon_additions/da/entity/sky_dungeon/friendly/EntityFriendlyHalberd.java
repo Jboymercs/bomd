@@ -124,6 +124,8 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
         this.setSize(0.7F, 2.40F);
         this.isFriendlyTooPlayer = true;
         this.isFriendlyCreature = true;
+        this.falter_resistance = 1.7F;
+        this.hemorrhage_resistance = 0.5F;
     }
 
     public EntityFriendlyHalberd(World worldIn) {
@@ -131,6 +133,8 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
         this.setSize(0.7F, 2.40F);
         this.isFriendlyTooPlayer = true;
         this.isFriendlyCreature = true;
+        this.falter_resistance = 1.7F;
+        this.hemorrhage_resistance = 0.5F;
     }
 
     public void onSummonViaPlayer(BlockPos pos, EntityPlayer owner) {
@@ -310,7 +314,7 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.getAttack();
-            ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+            ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.5F);
             this.playSound(SoundsHandler.DRAUGR_ELITE_SWING, 1.0f, 1.3f / (rand.nextFloat() * 0.4F + 0.4f));
             this.lockLook = false;
         }, 20);
@@ -334,7 +338,7 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).disablesShields().directEntity(this).build();
             float damage = (float) (this.getAttack() * 1.25);
-            ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+            ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.5F);
             this.playSound(SoundsHandler.IMPERIAL_START_MAGIC, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
             new ActionHalberdSpecial().performAction(this, target);
         }, 60);
@@ -367,7 +371,7 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = this.getAttack();
-            ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+            ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.6F);
             this.playSound(SoundsHandler.DRAUGR_ELITE_SWING, 1.0f, 1.3f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 29);
 
@@ -390,7 +394,7 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.getAttack();
-            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.5F);
             this.playSound(SoundsHandler.DRAUGR_ELITE_SWING, 1.0f, 1.3f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 57);
 
@@ -496,7 +500,7 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 0.5, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = this.getAttack();
-            ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.8f, 0, false);
+            ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.8f, 0, false, 0.7F);
             this.playSound(SoundsHandler.DRAUGR_ELITE_SWING, 1.0f, 1.3f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 27);
 
@@ -531,7 +535,7 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.1, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.getAttack();
-            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.6F);
             this.playSound(SoundsHandler.DRAUGR_ELITE_SWING, 1.0f, 1.3f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 31);
 

@@ -224,6 +224,8 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
         this.setNoGravity(true);
         this.hitboxParts = new MultiPartEntityPart[]{model, torso, neckPart1, neckPart2, headPart, tailPart1, legPartLeft, legPartRight, tailPart2, tailPart3, tailPart4, tailPart5};
         this.experienceValue = MobConfig.high_dragon_experience_value;
+        this.falter_immune = true;
+        this.hemorrhage_resistance = 0.94F;
         BlockPos pos = new BlockPos(x,y,z);
         this.setSpawnLocation(pos.add(0, -25, 0));
         this.setHasSpawn(true);
@@ -236,6 +238,8 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
         this.moveHelper = new FlyingMoveHelper(this);
         this.navigator = new PathNavigateFlying(this, worldIn);
         this.setNoGravity(true);
+        this.falter_immune = true;
+        this.hemorrhage_resistance = 0.94F;
         this.hitboxParts = new MultiPartEntityPart[]{model, torso, neckPart1, neckPart2, headPart, tailPart1, legPartLeft, legPartRight, tailPart2, tailPart3, tailPart4, tailPart5};
         this.experienceValue = MobConfig.high_dragon_experience_value;
     }
@@ -253,6 +257,8 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
         this.experienceValue = MobConfig.high_dragon_experience_value;
         this.setSpawnLocation(pos.add(0, -25, 0));
         this.setHasSpawn(true);
+        this.falter_immune = true;
+        this.hemorrhage_resistance = 0.94F;
         this.playSound(SoundsHandler.HIGH_DRAKE_ROAR_AIR, 2.5f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f));
     }
 
@@ -668,7 +674,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 0.5, -1)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.getAttack();
-          ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+          ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.7F);
           //Do Stomp AOE RIGHT FOOT
           new ActionDragonStomp(this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0,0,-1.8)))).performAction(this, target);
           this.playSound(SoundsHandler.HIGH_DRAKE_IMPACT_GROUND, 1.3f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f));
@@ -793,7 +799,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 0.5, 1)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.getAttack();
-          ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+          ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.9F);
         //Do Stomp Attack LEFT FOOT
           new ActionDragonStomp(this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0,0,1.8)))).performAction(this, target);
           this.playSound(SoundsHandler.HIGH_DRAKE_IMPACT_GROUND, 1.3f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f));
@@ -829,7 +835,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(4, 1.2, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.getAttack();
-          ModUtils.handleAreaImpact(3.0f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+          ModUtils.handleAreaImpact(3.0f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.7F);
           this.setBiteBegin(false);
 
           int chanceTooFail = ModRand.range(1, 11);
@@ -872,7 +878,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage = this.getAttack();
-                ModUtils.handleAreaImpact(5.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+                ModUtils.handleAreaImpact(5.5f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.4F);
             }, i);
         }
       }, 35);
@@ -921,7 +927,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(3, 1.2, -0.4)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.getAttack();
-          ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+          ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.7F);
       }, 25);
 
         addEvent(()-> this.playSound(SoundsHandler.DRAKE_CAST_LIGHTNING, 1.5f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f)), 55);

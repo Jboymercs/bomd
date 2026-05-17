@@ -133,6 +133,8 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
         this.iAmBossMob = true;
         this.setInactive(true);
         this.setImmovable(true);
+        this.falter_resistance = 1.7F;
+        this.hemorrhage_resistance = 0.8F;
     }
 
     public EntityEverator(World worldIn) {
@@ -142,6 +144,8 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
         this.iAmBossMob = true;
         this.setImmovable(true);
         this.setInactive(true);
+        this.falter_resistance = 1.7F;
+        this.hemorrhage_resistance = 0.8F;
     }
 
 
@@ -324,7 +328,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
           if(this.isTributed) {
               fireFac = 4;
           }
-          ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.5f, fireFac, false);
+          ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.5f, fireFac, false, 0.6F);
           this.destroyBlocksInSwing(new Vec3d(1.6, 1.2, 0), 2.0);
           this.playSound(SoundsHandler.EVERATOR_SWING, 1.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           this.playSound(SoundsHandler.VOLACTILE_SHOOT_CANNON, 1.0f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
@@ -365,7 +369,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
           if(this.isTributed) {
               fireFac = 4;
           }
-          ModUtils.handleAreaImpact(4.5f, (e) -> damage, this, offset, source, 0.9f, fireFac, false);
+          ModUtils.handleAreaImpact(4.5f, (e) -> damage, this, offset, source, 0.9f, fireFac, false, 0.4F);
           this.playSound(SoundsHandler.EVERATOR_SWING, 1.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
       }, 40);
 
@@ -377,7 +381,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
             if(this.isTributed) {
                 fireFac = 4;
             }
-            ModUtils.handleAreaImpact(4.5f, (e) -> damage, this, offset, source, 0.9f, fireFac, false);
+            ModUtils.handleAreaImpact(4.5f, (e) -> damage, this, offset, source, 0.9f, fireFac, false, 0.4F);
             this.destroyBlocksInSwing(new Vec3d(0, 1.2, 0), 4.5);
             this.playSound(SoundsHandler.EVERATOR_SWING, 1.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 50);
@@ -504,7 +508,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
             if(this.isTributed) {
                 fireFac = 4;
             }
-            ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.5f, fireFac, false);
+            ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.5f, fireFac, false, 0.6F);
             this.destroyBlocksInSwing(new Vec3d(1.3, 1.2, 0), 2.0);
             this.playSound(SoundsHandler.EVERATOR_SWING, 1.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 31);
@@ -527,7 +531,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
             if(this.isTributed) {
                 fireFac = 4;
             }
-            ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.5f, fireFac, false);
+            ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.5f, fireFac, false, 0.6F);
             this.destroyBlocksInSwing(new Vec3d(1.3, 1.2, 0), 2.0);
             this.playSound(SoundsHandler.EVERATOR_SWING, 1.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 64);
@@ -550,7 +554,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
             if(this.isTributed) {
                 fireFac = 4;
             }
-            ModUtils.handleAreaImpact(3.0f, (e) -> damage, this, offset, source, 0.9f, fireFac, false);
+            ModUtils.handleAreaImpact(3.0f, (e) -> damage, this, offset, source, 0.9f, fireFac, false, 0.9F);
             this.destroyBlocksInSwing(new Vec3d(0.75, 1.2, 0), 3.0);
             this.playSound(SoundsHandler.EVERATOR_SWING, 1.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.setImmovable(true);
@@ -600,7 +604,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
               if(this.isTributed) {
                   fireFac = 4;
               }
-              ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.5f, fireFac, false);
+              ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.5f, fireFac, false, 0.5F);
               this.destroyBlocksInSwing(new Vec3d(1.3, 1.2, 0), 2.0);
               this.playSound(SoundsHandler.EVERATOR_SWING, 1.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           }, 31);
@@ -623,7 +627,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
               if(this.isTributed) {
                   fireFac = 4;
               }
-              ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.5f, fireFac, false);
+              ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.5f, fireFac, false, 0.4F);
               this.destroyBlocksInSwing(new Vec3d(1.3, 1.2, 0), 2.0);
               this.playSound(SoundsHandler.EVERATOR_SWING, 1.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           }, 64);
@@ -653,7 +657,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
               if(this.isTributed) {
                   fireFac = 4;
               }
-              ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.5f, fireFac, false);
+              ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.5f, fireFac, false, 0.4F);
               this.destroyBlocksInSwing(new Vec3d(1.3, 1.2, 0), 2.0);
               this.playSound(SoundsHandler.EVERATOR_SWING, 1.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           }, 31);

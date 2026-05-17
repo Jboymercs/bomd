@@ -87,6 +87,8 @@ public class EntityBareant extends EntityFlameBase implements IAnimatable, IAnim
         this.isImmuneToExplosions();
         this.setSize(0.9F, 0.9F);
         this.setNoGravity(true);
+        this.falter_resistance = 0.5F;
+        this.hemorrhage_resistance = 0.4F;
     }
 
     public EntityBareant(World worldIn) {
@@ -96,6 +98,8 @@ public class EntityBareant extends EntityFlameBase implements IAnimatable, IAnim
         this.isImmuneToExplosions();
         this.setSize(0.9F, 0.9F);
         this.setNoGravity(true);
+        this.falter_resistance = 0.5F;
+        this.hemorrhage_resistance = 0.4F;
     }
 
     @Override
@@ -192,7 +196,7 @@ public class EntityBareant extends EntityFlameBase implements IAnimatable, IAnim
               Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 0.5, 0)));
               DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).disablesShields().directEntity(this).build();
               float damage = this.getAttack();
-              ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.7f, 4, false);
+              ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.7f, 4, false, 1.3F);
           }, 8);
       }, 32);
 

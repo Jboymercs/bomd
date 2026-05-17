@@ -150,6 +150,8 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
         this.setSpawnLocation(offset);
         this.setSetSpawnLoc(true);
         this.onSummonBoss();
+        this.falter_resistance = 1.2F;
+        this.hemorrhage_resistance = 0.8F;
     }
 
     public EntityRotKnightBoss(World worldIn) {
@@ -158,6 +160,8 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
         this.setHideArmState(true);
         this.iAmBossMob = true;
         this.onSummonBoss();
+        this.falter_resistance = 1.2F;
+        this.hemorrhage_resistance = 0.8F;
     }
 
     public EntityRotKnightBoss(World world, int timesUsed, BlockPos pos) {
@@ -172,6 +176,8 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
         BlockPos offset = new BlockPos(pos.getX(), pos.getY(), pos.getZ());
         this.setSpawnLocation(offset);
         this.setSetSpawnLoc(true);
+        this.falter_resistance = 1.2F;
+        this.hemorrhage_resistance = 0.8F;
     }
 
     public void onSummonBoss() {
@@ -449,7 +455,7 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.0, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.getAttack();
-          ModUtils.handleAreaImpact(3.0f, (e) -> damage, this, offset, source, 0.8f, 0, false, MobEffects.POISON, 0, 200);
+          ModUtils.handleAreaImpact(3.0f, (e) -> damage, this, offset, source, 0.8f, 0, false, MobEffects.POISON, 0, 200, 0.6F);
           this.playSound(SoundsHandler.ROT_SELF_AOE, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
       }, 23);
@@ -531,7 +537,7 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
               Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.4, 0.5, 0)));
               DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
               float damage = this.getAttack();
-              ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+              ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.5F);
               this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           }, 43);
 
@@ -554,7 +560,7 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
               Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.4, 0.5, 0)));
               DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
               float damage = (float) (this.getAttack() * 1.3);
-              ModUtils.handleAreaImpact(1.2f, (e) -> damage, this, offset, source, 0.5f, 0, false);
+              ModUtils.handleAreaImpact(1.2f, (e) -> damage, this, offset, source, 0.5f, 0, false, 0.5F);
               this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           }, 64);
 
@@ -607,7 +613,7 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
               Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.4, 0.5, 0)));
               DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
               float damage = this.getAttack();
-              ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+              ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.5F);
               this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           }, 43);
 
@@ -648,7 +654,7 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage = (float) (this.getAttack() * 1.2);
-                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.6F);
                 this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
             }, 20);
 
@@ -710,7 +716,7 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage = (float) (this.getAttack() * 1.2);
-                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.6F);
                 this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
             }, 20);
 

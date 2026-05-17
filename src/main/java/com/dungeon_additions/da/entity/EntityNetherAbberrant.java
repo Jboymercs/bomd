@@ -82,6 +82,8 @@ public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatabl
         this.rangedMode = true;
         this.setImmovable(false);
         this.experienceValue = 12;
+        this.falter_resistance = 0.8F;
+        this.hemorrhage_resistance = 0.2F;
     }
 
     @Override
@@ -283,7 +285,7 @@ public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatabl
                     .directEntity(this)
                     .build();
             float damage = getAttack();
-            ModUtils.handleAreaImpact(0.8f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+            ModUtils.handleAreaImpact(0.8f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.2F);
             playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / getRNG().nextFloat() * 0.4f + 0.8f);
         }, 14);
 
@@ -393,7 +395,7 @@ public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatabl
                     float damage = (float) (this.getAttack() * 0.8);
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB)
                             .directEntity(this).build();
-                    ModUtils.handleAreaImpact(2.8f, (e) -> damage, this, pos, source, 0.3f, 0, false);
+                    ModUtils.handleAreaImpact(2.8f, (e) -> damage, this, pos, source, 0.3f, 0, false, 0.3F);
                     playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / getRNG().nextFloat() * 0.4f + 0.5f);
                 }, i);
             }
@@ -407,7 +409,7 @@ public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatabl
                     float damage = (float) (this.getAttack() * 0.8);
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB)
                             .directEntity(this).build();
-                    ModUtils.handleAreaImpact(2.8f, (e) -> damage, this, pos, source, 0.3f, 0, false);
+                    ModUtils.handleAreaImpact(2.8f, (e) -> damage, this, pos, source, 0.3f, 0, false, 0.3F);
                     playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / getRNG().nextFloat() * 0.4f + 0.5f);
                 }, i);
             }

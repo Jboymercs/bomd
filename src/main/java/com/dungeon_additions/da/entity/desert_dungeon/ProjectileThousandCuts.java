@@ -89,7 +89,7 @@ public class ProjectileThousandCuts extends Projectile {
                                 Vec3d offset = this.getPositionVector();
                                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MAGIC).directEntity(this).build();
                                 float damage =(float) (this.getDamage());
-                                ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.7f, 0, false);
+                                ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.7f, 0, false, 0.25F);
                             }
                         }
                     }
@@ -100,7 +100,7 @@ public class ProjectileThousandCuts extends Projectile {
                                 Vec3d offset = this.getPositionVector();
                                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                                 float damage =(float) (this.getDamage());
-                                ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.7f, 0, false);
+                                ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.7f, 0, false, 0.3F);
                             }
                         }
                     }

@@ -77,18 +77,24 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
         super(worldIn, x, y, z);
         this.setSize(0.8F, 1.95F);
         this.experienceValue = 12;
+        this.hemorrhage_resistance = 0.6F;
+        this.falter_resistance = 0.7F;
     }
 
     public EntityWyrk(World worldIn) {
         super(worldIn);
         this.setSize(0.8F, 1.95F);
         this.experienceValue = 12;
+        this.hemorrhage_resistance = 0.6F;
+        this.falter_resistance = 0.7F;
     }
 
     public EntityWyrk(World world, EntityPlayer player) {
         super(world);
         this.setSize(0.8F, 1.95F);
         this.experienceValue = 0;
+        this.hemorrhage_resistance = 0.6F;
+        this.falter_resistance = 0.7F;
     }
 
 

@@ -85,6 +85,7 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
         this.setSize(0.75F, 1.95F);
         selectAnimationTooPlay();
         this.setIdleMode(true);
+        this.hemorrhage_resistance = 0.5F;
     }
 
     public EntityRotKnightRapier(World worldIn) {
@@ -92,6 +93,7 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
         this.setSize(0.75F, 1.95F);
         selectAnimationTooPlay();
         this.setIdleMode(true);
+        this.hemorrhage_resistance = 0.5F;
     }
 
     protected int selection = ModRand.range(1, 5);
@@ -331,7 +333,7 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.4, 1.3, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = this.getAttack();
-            ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+            ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.5F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 77);
 
@@ -412,7 +414,7 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.9, 1.3, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.getAttack();
-            ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+            ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.2F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
             this.setImmovable(true);
         }, 19);

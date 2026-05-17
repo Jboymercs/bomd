@@ -64,7 +64,7 @@ public class ActionLazerTeleport implements IMultiAction {
                             .directEntity(this.entity)
                             .stoppedByArmorNotShields().disablesShields().build();
 
-                    ModUtils.handleAreaImpact(5, (e) -> this.entity.getAttack(), this.entity, this.entity.getPositionVector().add(ModUtils.yVec(1)), source);
+                    ModUtils.handleAreaImpact(5, (e) -> this.entity.getAttack(), this.entity, this.entity.getPositionVector().add(ModUtils.yVec(1)), source, 0, 0, false, 1.5F);
                     //this.entity.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f + ModRand.getFloat(0.1f));
                     this.entity.playSound(SoundsHandler.VOIDCLYSM_IMPACT, 1.0F, 1.0f + ModRand.getFloat(0.1f));
                     this.entity.world.setEntityState(this.entity, ModUtils.THIRD_PARTICLE_BYTE);

@@ -100,6 +100,8 @@ public class EntityCursedSentinel extends EntityGaelonBase implements IAnimatabl
         this.experienceValue = 45;
         this.setSize(1.2F, 2.8F);
         this.setInanimateState(true);
+        this.hemorrhage_resistance = 0.8F;
+        this.falter_resistance = 1.7F;
     }
 
     public EntityCursedSentinel(World worldIn) {
@@ -107,6 +109,8 @@ public class EntityCursedSentinel extends EntityGaelonBase implements IAnimatabl
         this.experienceValue = 45;
         this.setSize(1.2F, 2.8F);
         this.setInanimateState(true);
+        this.hemorrhage_resistance = 0.8F;
+        this.falter_resistance = 1.7F;
     }
 
     public EntityCursedSentinel(World world, boolean setImmediateChange) {
@@ -115,6 +119,8 @@ public class EntityCursedSentinel extends EntityGaelonBase implements IAnimatabl
         this.setSize(1.2F, 2.8F);
         this.setImmediateChange = setImmediateChange;
         this.setInanimateState(false);
+        this.hemorrhage_resistance = 0.8F;
+        this.falter_resistance = 1.7F;
     }
 
     @Override
@@ -357,7 +363,7 @@ public class EntityCursedSentinel extends EntityGaelonBase implements IAnimatabl
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 0.5f, 0, false, MobEffects.BLINDNESS, 0, 60);
+            ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 0.5f, 0, false, MobEffects.BLINDNESS, 0, 60, 0.9F);
             world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
             this.playSound(SoundsHandler.VOIDCLYSM_IMPACT, 0.8f, 0.2f / (rand.nextFloat() * 0.4f + 0.2f));
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 1.2, 0)));
@@ -400,7 +406,7 @@ public class EntityCursedSentinel extends EntityGaelonBase implements IAnimatabl
               Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
               DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
               float damage =(float) (this.getAttack());
-              ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.5f, 0, false);
+              ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.5f, 0, false, 0.5F);
           }, 26);
 
           addEvent(()-> {
@@ -425,7 +431,7 @@ public class EntityCursedSentinel extends EntityGaelonBase implements IAnimatabl
               Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
               DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
               float damage =(float) (this.getAttack());
-              ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.5f, 0, false);
+              ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.5f, 0, false, 0.5F);
           }, 59);
 
           addEvent(()-> {
@@ -456,7 +462,7 @@ public class EntityCursedSentinel extends EntityGaelonBase implements IAnimatabl
               Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
               DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
               float damage =(float) (this.getAttack());
-              ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.5f, 0, false);
+              ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.5f, 0, false, 0.5F);
           }, 26);
 
           addEvent(()-> {

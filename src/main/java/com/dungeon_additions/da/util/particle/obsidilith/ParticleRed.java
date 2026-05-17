@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ParticleRed extends ParticleSSBase {
 
     private static final ResourceLocation PIXEL_TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/particle/particle_red.png");
-
+    private int hangTime;
     public ParticleRed(TextureManager textureManager, World world, double x, double y, double z, double movementX, double movementY, double movementZ, int texSpotIn) {
         super(textureManager, world, x, y, z, movementX, movementY, movementZ, PIXEL_TEXTURE, 0);
         this.textureManager = textureManager;
@@ -42,6 +42,15 @@ public class ParticleRed extends ParticleSSBase {
         this.canCollide = false;
         this.particleScale = 2.0F;
         this.particleGravity = 0;
+    }
+
+    public void onUpdate()
+    {
+        super.onUpdate();
+        if(particleAge > 9) {
+            hangTime++;
+            this.setAlphaF(1.0F - ((float) hangTime / (float) this.particleMaxAge));
+        }
     }
 
     @Override

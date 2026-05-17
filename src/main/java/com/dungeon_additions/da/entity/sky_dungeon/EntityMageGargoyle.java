@@ -82,6 +82,8 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
         this.experienceValue = 12;
         this.setSize(0.7F, 1.95F);
         hasFallTpOverride = true;
+        this.falter_resistance = 0.8F;
+        this.hemorrhage_resistance = 0.4F;
     }
 
     public EntityMageGargoyle(World worldIn) {
@@ -89,6 +91,8 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
         this.experienceValue = 12;
         this.setSize(0.7F, 1.95F);
         hasFallTpOverride = true;
+        this.falter_resistance = 0.8F;
+        this.hemorrhage_resistance = 0.4F;
     }
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
@@ -255,7 +259,7 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.getAttack();
-            ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.35f, 0, false);
+            ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.35f, 0, false, 0.2F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.7f, 1.3f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 19);
 
@@ -290,7 +294,7 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.getAttack();
-            ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.35f, 0, false);
+            ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.35f, 0, false, 0.2F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.7f, 1.3f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 22);
 

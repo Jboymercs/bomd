@@ -1,7 +1,6 @@
 package com.dungeon_additions.da.items.tools;
 
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.entity.frost_dungeon.ProjectileFrostBullet;
 import com.dungeon_additions.da.entity.player.ActionSummonVoidSpikes;
 import com.dungeon_additions.da.entity.void_dungeon.ProjectileVoidClysmBolt;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
@@ -93,7 +92,7 @@ public class ItemVoidStaff extends ToolSword implements IAnimatable {
 
 
     @Override
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -2.7000000953674316D;
     }
 

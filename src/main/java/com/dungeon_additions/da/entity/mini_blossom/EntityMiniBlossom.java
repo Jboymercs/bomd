@@ -71,12 +71,16 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
         super(worldIn, x, y, z);
         this.setSize(1.5f, 3.0f);
         playSproutAnimation();
+        this.falter_resistance = 0.8F;
+        this.hemorrhage_resistance = 0.25F;
     }
 
     public EntityMiniBlossom(World worldIn) {
         super(worldIn);
         this.setSize(1.5f, 3.0f);
         playSproutAnimation();
+        this.falter_resistance = 0.8F;
+        this.hemorrhage_resistance = 0.25F;
     }
 
     public boolean isCurrentlyTravelling = false;
@@ -287,7 +291,7 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage = MobConfig.mini_blossom_attack_damage;
           //Weird Damage Handling
-          ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 1.4f, 0, false);
+          ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 1.4f, 0, false, 0.7F);
           Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2.5, 0.5, 0)));
           Main.proxy.spawnParticle(18,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
       }, 20);

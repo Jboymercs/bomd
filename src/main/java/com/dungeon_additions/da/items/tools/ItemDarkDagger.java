@@ -1,14 +1,12 @@
 package com.dungeon_additions.da.items.tools;
 
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -30,6 +28,9 @@ public class ItemDarkDagger extends ToolSword{
         this.setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
         this.setMaxDamage(520);
+        this.falter_value = 0.07F;
+        this.weapon_type = EnumWeaponType.DAGGER;
+        this.weaponReach -= 1.25F;
     }
 
     @Override
@@ -66,7 +67,7 @@ public class ItemDarkDagger extends ToolSword{
 
 
     @Override
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -2.1000000953674316D;
     }
 }

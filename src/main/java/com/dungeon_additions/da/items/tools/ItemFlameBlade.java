@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.items.tools;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.player.ActionShootFlameBlade;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
@@ -11,7 +12,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -35,6 +35,7 @@ public class ItemFlameBlade extends ToolSword implements IAnimatable, IHasModel 
         super(name, material);
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
+        this.weapon_type = EnumWeaponType.DAGGER;
     }
 
     @Override
@@ -66,7 +67,7 @@ public class ItemFlameBlade extends ToolSword implements IAnimatable, IHasModel 
     }
 
     @Override
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -2.3000000953674316D;
     }
 

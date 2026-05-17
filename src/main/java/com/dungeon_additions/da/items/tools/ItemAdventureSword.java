@@ -1,8 +1,8 @@
 package com.dungeon_additions.da.items.tools;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -10,13 +10,11 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -24,7 +22,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemAdventureSword extends ItemAbilityWeapon{
+public class ItemAdventureSword extends ItemAbilityWeapon {
 
     private String info_loc;
     private boolean isGroundSlam;
@@ -34,6 +32,8 @@ public class ItemAdventureSword extends ItemAbilityWeapon{
         super(name, material);
         this.info_loc = info_loc;
         this.setMaxDamage(736);
+        this.falter_value = 0.2F;
+        this.weapon_type = EnumWeaponType.SWORD;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ItemAdventureSword extends ItemAbilityWeapon{
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
         attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.NEUTRAL, 0.4f, 0.3f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
-        return true;
+        return super.hitEntity(stack, target, attacker);
     }
 
     @Override
@@ -113,6 +113,7 @@ public class ItemAdventureSword extends ItemAbilityWeapon{
         }
         enemy.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer)user), (float) attackDamage + ModUtils.addAbilityBonusDamage(user.getHeldItemMainhand(), 1.25F));
         enemy.knockBack(user, 1.5F, rammingDir.x, rammingDir.z);
+        ModUtils.addFalterTooEnemies(enemy, (float) (attackDamage * 0.1), 20);
     }
 
     @Override
@@ -122,7 +123,7 @@ public class ItemAdventureSword extends ItemAbilityWeapon{
     }
 
     @Override
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -2.7000000953674316D;
     }
 }

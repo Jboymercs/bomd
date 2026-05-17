@@ -1,0 +1,11 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "package": "com.dungeon_additions.da.mixin",
+  "refmap": "mixins.da.refmap.json",
+  "mixins": [],
+  "client": [
+    "MixinLayerHeldItem",
+    "MixinMinecraft",
+    "MixinModelBiped"
+  ]
+}

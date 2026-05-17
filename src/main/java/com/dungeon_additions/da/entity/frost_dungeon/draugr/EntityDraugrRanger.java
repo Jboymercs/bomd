@@ -92,6 +92,8 @@ public class EntityDraugrRanger extends EntityFrostBase implements IAttack, IAni
         this.equipBlock(RANGER_HAND.HAND, this.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND));
         this.experienceValue = 8;
         this.setSkin(rand.nextInt(5));
+        this.hemorrhage_resistance = 0.5F;
+        this.falter_resistance = 0.8F;
     }
 
     public  boolean draugrHasLoaded = false;
@@ -103,6 +105,8 @@ public class EntityDraugrRanger extends EntityFrostBase implements IAttack, IAni
         this.equipBlock(RANGER_HAND.HAND, this.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND));
         this.experienceValue = 8;
         this.setSkin(rand.nextInt(5));
+        this.hemorrhage_resistance = 0.5F;
+        this.falter_resistance = 0.8F;
     }
 
     @Override

@@ -182,6 +182,8 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         this.setSize(1.7F, 3.2F);
         this.iAmBossMob = true;
         this.experienceValue = 95;
+        this.falter_resistance = 1.7F;
+        this.hemorrhage_resistance = 0.9F;
     }
 
     public EntityVolatileSpirit(World worldIn) {
@@ -191,6 +193,8 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         this.setSize(1.7F, 3.2F);
         this.iAmBossMob = true;
         this.experienceValue = 95;
+        this.falter_resistance = 1.7F;
+        this.hemorrhage_resistance = 0.9F;
     }
 
     public void onSummonBoss(double x, double y, double z) {
@@ -447,7 +451,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.1, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = this.isInspired ? (float)(this.getAttack() * MobConfig.volactile_inspired_multiplier) : (float)(this.getAttack());
-            ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.4f, 4, false);
+            ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.4f, 4, false, 0.4F);
             this.playSound(SoundsHandler.INCENDIUM_HEAVY_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 25);
 
@@ -472,7 +476,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.1, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = this.isInspired ? (float)(this.getAttack() * MobConfig.volactile_inspired_multiplier) : (float)(this.getAttack());
-            ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.4f, 4, false);
+            ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.4f, 4, false, 0.6F);
             this.playSound(SoundsHandler.INCENDIUM_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 60);
 
@@ -485,7 +489,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 1.1, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = this.isInspired ? (float)(this.getAttack() * MobConfig.volactile_inspired_multiplier) : (float)(this.getAttack());
-            ModUtils.handleAreaImpact(1.7f, (e) -> damage, this, offset, source, 0.4f, 4, false);
+            ModUtils.handleAreaImpact(1.7f, (e) -> damage, this, offset, source, 0.4f, 4, false, 0.4F);
             this.playSound(SoundsHandler.INCENDIUM_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
             new ActionFlameSling(flame_sling_projectiles, false).performAction(this, target);
             this.lockLook = true;
@@ -540,7 +544,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.1, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.isInspired ? (float)(this.getAttack() * MobConfig.volactile_inspired_multiplier) : (float)(this.getAttack());
-          ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.8f, 0, false);
+          ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.8f, 0, false, 0.7F);
           this.playSound(SoundsHandler.VOLACTILE_SMASH, 1.0f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
           new ActionTileAOE((int) this.getDistance(target) + 4).performAction(this, target);
               Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
@@ -594,7 +598,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.1, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = this.isInspired ? (float)(this.getAttack() * MobConfig.volactile_inspired_multiplier) : (float)(this.getAttack());
-            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.8f, 0, false);
+            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.8f, 0, false, 0.7F);
             this.playSound(SoundsHandler.VOLACTILE_SMASH, 1.0f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
             new ActionTileAOE((int) this.getDistance(target) + 4).performAction(this, target);
                 Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
@@ -635,7 +639,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.1, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.isInspired ? (float)(this.getAttack() * MobConfig.volactile_inspired_multiplier) : (float)(this.getAttack());
-          ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.8f, 0, false);
+          ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.8f, 0, false, 0.2F);
           new ActionFlameWave(flame_sling_projectiles).performAction(this, target);
       }, 30);
 
@@ -754,7 +758,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
                   Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.1, 0)));
                   DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                   float damage = this.isInspired ? (float)(this.getAttack() * MobConfig.volactile_inspired_multiplier) : (float)(this.getAttack());
-                  ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.8f, 4, false);
+                  ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.8f, 4, false, 0.5F);
               }, i);
           }
           this.playSound(SoundsHandler.INCENDIUM_HEAVY_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
@@ -816,7 +820,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.1, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = this.isInspired ? (float)(this.getAttack() * MobConfig.volactile_inspired_multiplier) : (float)(this.getAttack());
-            ModUtils.handleAreaImpact(1.7f, (e) -> damage, this, offset, source, 0.4f, 4, false);
+            ModUtils.handleAreaImpact(1.7f, (e) -> damage, this, offset, source, 0.4f, 4, false, 0.4F);
             this.playSound(SoundsHandler.INCENDIUM_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
             this.fastDestroyBlocks = true;
         }, 30);
@@ -841,7 +845,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.7, 1.1, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = this.isInspired ? (float)(this.getAttack() * MobConfig.volactile_inspired_multiplier) : (float)(this.getAttack());
-            ModUtils.handleAreaImpact(1.7f, (e) -> damage, this, offset, source, 0.6f, 4, false);
+            ModUtils.handleAreaImpact(1.7f, (e) -> damage, this, offset, source, 0.6f, 4, false, 0.4F);
             this.playSound(SoundsHandler.INCENDIUM_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
             double healthFac = this.getHealth() / this.getMaxHealth();
             if(healthFac <= 0.5) {
@@ -878,7 +882,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.1, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.isInspired ? (float)(this.getAttack() * MobConfig.volactile_inspired_multiplier) : (float)(this.getAttack());
-          ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.2f, 4, false);
+          ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.2f, 4, false, 0.3F);
           this.playSound(SoundsHandler.INCENDIUM_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           this.setImmovable(true);
       }, 23);
@@ -929,7 +933,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.6, 1.1, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = this.isInspired ? (float)(this.getAttack() * MobConfig.volactile_inspired_multiplier) : (float)(this.getAttack());
-            ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.2f, 4, false);
+            ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.2f, 4, false, 0.3F);
             this.playSound(SoundsHandler.INCENDIUM_SWING, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
             this.setImmovable(true);
         }, 39);

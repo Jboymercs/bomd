@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.items.tools;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.player.ActionDoLightningAttack;
 import com.dungeon_additions.da.init.ModItems;
@@ -18,7 +19,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -34,21 +34,22 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import java.util.List;
 import java.util.UUID;
 
-public class ItemImperialHalberd extends ItemSword implements IAnimatable, IHasModel {
+public class ItemImperialHalberd extends ToolSword implements IAnimatable, IHasModel {
 
     public AnimationFactory factory = new AnimationFactory(this);
     public static final UUID MOVEMENT_SPEED_MODIFIER = UUID.fromString("0483aa4a-af8d-36a2-8693-22bec9caa265");
     private final AttributeModifier knockbackResistance;
     private String info_loc;
     public ItemImperialHalberd(String name, ToolMaterial material, String info_loc) {
-        super(material);
+        super(name, material);
         this.setMaxDamage(1624);
-        setTranslationKey(name);
-        setRegistryName(name);
         ModItems.ITEMS.add(this);
         setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
         this.knockbackResistance = new AttributeModifier("halberdKnockbackResistance", 0.1, 0);
+        this.falter_value = 0.15F;
+        this.weapon_type = EnumWeaponType.SPEAR;
+        this.weaponReach += 1.25F;
     }
 
     @Override
@@ -121,7 +122,7 @@ public class ItemImperialHalberd extends ItemSword implements IAnimatable, IHasM
         return super.getAttackDamage();
     }
 
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -2.7D;
     }
 

@@ -6,9 +6,10 @@
  * it, just make sure it is only being used when necessary for a 3rd party library which isn't a mod that can be easily
  * downloaded otherwise.
  */
-plugins {id 'net.minecraftforge.gradle' version '6.0.+'
+plugins {
+    id 'net.minecraftforge.gradle' version '6.0.+'
     id 'wtf.gofancy.fancygradle' version '1.1.+'
-    id 'org.spongepowered.mixin' version '0.7.+'
+    id 'org.spongepowered.mixin' version "${mixin_gradle_version}"
     //id 'com.github.johnrengelman.shadow' version '8.1.+'
 }
 
@@ -91,7 +92,7 @@ repositories {
     }
     //Geckolib
     maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
-
+    maven { name = 'SpongePowered'; url = uri('https://repo.spongepowered.org/maven') }
     /**
      * Jitpack is a maven that allows you to import dependencies directly from GitHub. It is used in the Shadow plugin
      * example for the cloning library. Feel free to remove it.
@@ -125,7 +126,7 @@ dependencies {
     //Minecraft
     minecraft("net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}")
 
-    //Mixin
+
 
 
     //Geckolib
@@ -135,7 +136,9 @@ dependencies {
     implementation fg.deobf('curse.maven:baubles-227083:2518667')
     //Deeper Depths
   //  implementation fg.deobf("curse.maven:deeper-depths-1101129:7512773")
-
+    //Mixins
+    implementation "org.spongepowered:mixin:${mixin_version}"
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 
     //Shaded `shade`
     //shade("io.github.kostaskougios:cloning:${project.cloning_version}")
@@ -152,37 +155,13 @@ dependencies {
 }
 
 
-/**
- * The shadowJar task is only needed when the Shadow plugin is in use. Also regarding the relocate task, some class
- * paths and packages need to be relocated if you are shading a dependency that is transitive or if another
- * mod is shading the same dependency. SLJ4 relocation is provided as an example, but it's usually good practice to
- * excluded Minecraft or Forge libraries from transitive dependencies so you dont
- */
-//shadowJar {
-//    relocate 'org.slf4j', "${shadow_group}.slf4j"
-//    configurations = [project.configurations.shadow]
-//    setArchiveClassifier('')
-//    mergeServiceFiles()
-//}
-
-
-/**
- * The reobf task is only needed when the Shadow plugin is in use.
- */
-//reobf {
-//    shadowJar {
-//        dependsOn createMcpToSrg
-//        mappings = createMcpToSrg.output
-//    }
-//}
-
 
 /**
  * The duplicatesStrategy here won't give you duplicate `mcmod.info` files when building, it's just needed for running
  * client/server tests.
  */
 processResources {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     inputs.property 'version', project.version
     inputs.property 'mcversion', minecraft_version
     from(sourceSets.main.resources.srcDirs) {
@@ -198,7 +177,10 @@ processResources {
 /**
  * Make sure to change the modid here and have it match the refmap name in your mixin file(s)
  */
-
+mixin {
+    add sourceSets.main, "mixins.${base_name}.refmap.json"
+    config "mixins.${base_name}.json"
+}
 
 
 /**
@@ -214,8 +196,12 @@ jar {
                 'Specification-Version': project.version,
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 'FMLAT': 'da_at.cfg',
-                'FMLCorePluginContainsFMLMod': false,
-                'ForceLoadAsMod': true
+                'FMLCorePlugin': "${mod_plugin_class}",
+                // ALWAYS COMMENT OUT IN WORKSPACE, ALWAYS UNCOMMENT FOR BUILDS
+               // 'FMLCorePluginContainsFMLMod': true,
+                'ForceLoadAsMod': true,
+                'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+                'MixinConfigs': "mixins.${base_name}.json"
         ])
     }
 }

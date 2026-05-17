@@ -148,7 +148,7 @@ public class EntitySummonedMace extends EntityDesertBase implements IAnimatable,
                         DamageSource source = ModDamageSource.builder().type(player != null ? ModDamageSource.MAGIC : ModDamageSource.PLAYER).directEntity(baseIn).disablesShields().build();
                         float damage =(float) (damageIn);
                         this.playSound(SoundsHandler.COLOSSUS_SWING, 0.7f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
-                        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 1.3f, 0, false);
+                        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 1.3f, 0, false, 0.4F);
                     }
 
                     if(ticksExisted == 30) {
@@ -156,7 +156,7 @@ public class EntitySummonedMace extends EntityDesertBase implements IAnimatable,
                         DamageSource source = ModDamageSource.builder().type(player != null ? ModDamageSource.MAGIC : ModDamageSource.PLAYER).directEntity(baseIn).disablesShields().build();
                         float damage =(float) (damageIn);
                         this.playSound(SoundsHandler.COLOSSUS_SWING, 0.7f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
-                        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 1.3f, 0, false);
+                        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 1.3f, 0, false, 0.4F);
                     }
 
                     if(ticksExisted == 32) {
@@ -164,7 +164,7 @@ public class EntitySummonedMace extends EntityDesertBase implements IAnimatable,
                         DamageSource source = ModDamageSource.builder().type(player != null ? ModDamageSource.MAGIC : ModDamageSource.PLAYER).directEntity(baseIn).disablesShields().build();
                         float damage =(float) (damageIn);
                         this.playSound(SoundsHandler.COLOSSUS_SWING, 0.7f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
-                        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 1.3f, 0, false);
+                        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 1.3f, 0, false, 0.4F);
                     }
 
                     if(ticksExisted == 34) {
@@ -172,7 +172,7 @@ public class EntitySummonedMace extends EntityDesertBase implements IAnimatable,
                         DamageSource source = ModDamageSource.builder().type(player != null ? ModDamageSource.MAGIC : ModDamageSource.PLAYER).directEntity(baseIn).disablesShields().build();
                         float damage =(float) (damageIn);
                         this.playSound(SoundsHandler.COLOSSUS_SWING, 0.7f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
-                        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 1.3f, 0, false);
+                        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 1.3f, 0, false, 0.4F);
                 }
 
                 if(ticksExisted > 49) {

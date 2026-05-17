@@ -95,6 +95,8 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
         this.experienceValue = 7;
         this.setHeadState = false;
         this.setScuttle(false);
+        this.falter_resistance = 0.4F;
+        this.hemorrhage_resistance = 0.1F;
     }
 
     public EntityScutterBeetle(World worldIn) {
@@ -103,6 +105,8 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
         this.experienceValue = 7;
         this.setHeadState =false;
         this.setScuttle(false);
+        this.falter_resistance = 0.4F;
+        this.hemorrhage_resistance = 0.1F;
     }
 
     @Override
@@ -173,7 +177,7 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
                             Vec3d offset = base.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 0.75, 0)));
                             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                             float damage =(float) (this.getAttack() * 1.5);
-                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 1.4f, 0, false);
+                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 1.4f, 0, false, 0.4F);
                             this.playSound(SoundsHandler.BEETLE_ATTACK, 1.0f, 0.6f / (rand.nextFloat() * 0.4f + 0.2f));
                             this.endScuttleAttack();
                         }

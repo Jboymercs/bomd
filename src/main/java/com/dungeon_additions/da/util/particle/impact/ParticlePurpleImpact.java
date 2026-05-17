@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ParticlePurpleImpact extends ParticleSSBase {
     private static final ResourceLocation PIXEL_TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/particle/purple_impact.png");
-
+    private int hangTime;
     protected ParticlePurpleImpact(TextureManager textureManager, World worldIn, double x, double y, double z, double movementX, double movementY, double movementZ)
     { this(textureManager, worldIn, x, y, z, movementX, movementY, movementZ, 1F, 1F, 1F); }
 
@@ -28,7 +28,7 @@ public class ParticlePurpleImpact extends ParticleSSBase {
         this.motionX = movementX;
         this.motionY = movementY;
         this.motionZ = movementZ;
-        this.particleMaxAge = (int)15;
+        this.particleMaxAge = (int)7;
         this.texSheetSeg = 2;
         this.renderYOffset = 0.01F;
         this.particleScale =  4;
@@ -38,8 +38,12 @@ public class ParticlePurpleImpact extends ParticleSSBase {
     {
         super.onUpdate();
         // this.texSpot = this.particleAge * 3 / (this.particleMaxAge);
-        this.particleScale+= 2.05;
+        this.particleScale+= 2.55F;
         this.texSpot = Math.min(this.particleAge * 5 / (this.particleMaxAge), 3);
+        if(particleAge > 3) {
+            hangTime++;
+            this.setAlphaF(1.0F - ((float) hangTime / (float) this.particleMaxAge));
+        }
     }
 
     public Vec3d[] particleVertexRendering(BufferBuilder buffer, Entity entity, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ, float particleSize)

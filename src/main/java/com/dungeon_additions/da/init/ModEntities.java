@@ -8,6 +8,9 @@ import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.dark_dungeon.*;
 import com.dungeon_additions.da.entity.dark_dungeon.boss.*;
+import com.dungeon_additions.da.entity.dark_dungeon.dauntless.EntityDauntlessAOE;
+import com.dungeon_additions.da.entity.dark_dungeon.dauntless.EntityDauntlessSword;
+import com.dungeon_additions.da.entity.dark_dungeon.dauntless.ProjectileDauntlessSlice;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertOrb;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
@@ -174,7 +177,8 @@ public class ModEntities {
         registerEntityWithID("dark_assassin", EntityDarkAssassin.class, ENTITY_START_ID++, 70, dark_assassin);
         registerEntityWithID("dark_royal", EntityDarkRoyal.class, ENTITY_START_ID++, 70, dark_royal);
         registerEntityWithID("dark_sorcerer", EntityDarkSorcerer.class, ENTITY_START_ID++, 70, dark_sorcerer);
-        //registerEntityWithID("darkdrift_devil", EntityDarkdriftDevil.class, ENTITY_START_ID++, 90, dark_sorcerer);
+        registerEntityWithID("dauntless", EntityDauntless.class, ENTITY_START_ID++, 90, dark_sorcerer);
+        registerEntityWithID("darkdrift_devil", EntityDarkdriftDevil.class, ENTITY_START_ID++, 90, dark_sorcerer);
         //Traders
         registerEntityWithID("mysterious_trader", EntityMysteriousTrader.class, ENTITY_START_ID++, 50, mysterious_trader);
 
@@ -264,6 +268,9 @@ public class ModEntities {
             registerEntity("blood_meteor", ProjectileBloodMeteor.class, PROJECTILE_START_ID++, 40);
             registerEntity("demon_ritual", EntityDemonRitual.class, ENTITY_START_ID++, 50);
             registerEntity("rally_flag", EntityRallyFlag.class, ENTITY_START_ID++, 40);
+            registerEntity("dauntless_aoe", EntityDauntlessAOE.class, ENTITY_START_ID++, 40);
+            registerEntity("dauntless_sword", EntityDauntlessSword.class, ENTITY_START_ID++, 40);
+            registerEntity("dauntless_slice", ProjectileDauntlessSlice.class, ENTITY_START_ID++, 40);
 
 
 

@@ -124,6 +124,7 @@ public class EntityRotKnight extends EntityAbstractBase implements IAnimatable, 
         this.setSize(0.75F, 1.95F);
         selectAnimationTooPlay();
         this.setIdleMode(true);
+        this.hemorrhage_resistance = 0.5F;
     }
 
     public EntityRotKnight(World worldIn) {
@@ -131,6 +132,7 @@ public class EntityRotKnight extends EntityAbstractBase implements IAnimatable, 
         this.setSize(0.75F, 1.95F);
         selectAnimationTooPlay();
         this.setIdleMode(true);
+        this.hemorrhage_resistance = 0.5F;
     }
 
     protected int selection = ModRand.range(1, 5);
@@ -298,7 +300,7 @@ public class EntityRotKnight extends EntityAbstractBase implements IAnimatable, 
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.0, 1.0, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage = this.getAttack();
-          ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.8f, 0, false);
+          ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.8f, 0, false, 0.9F);
           this.playSound(SoundEvents.ITEM_SHIELD_BLOCK, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
       }, 36);
 
@@ -391,7 +393,7 @@ public class EntityRotKnight extends EntityAbstractBase implements IAnimatable, 
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.6, 1.5, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = this.getAttack();
-            ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+            ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.5F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 46);
 
@@ -418,7 +420,7 @@ public class EntityRotKnight extends EntityAbstractBase implements IAnimatable, 
         Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.4, 1.5, 0)));
         DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
         float damage = this.getAttack();
-        ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+        ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.5F);
         this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
     }, 18);
 

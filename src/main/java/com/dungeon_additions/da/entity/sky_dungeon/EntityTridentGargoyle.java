@@ -106,6 +106,8 @@ public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable,
         this.navigator = new PathNavigateFlying(this, worldIn);
         this.setNoGravity(true);
         this.experienceValue = 15;
+        this.falter_resistance = 0.6F;
+        this.hemorrhage_resistance = 0.3F;
         if(rand.nextInt(3) == 0) {
             int potionID = ModRand.range(1, 4);
             if(potionID == 1) {
@@ -135,6 +137,8 @@ public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable,
         this.setSize(0.7F, 1.95F);
         this.setNoGravity(true);
         this.experienceValue = 15;
+        this.falter_resistance = 0.6F;
+        this.hemorrhage_resistance = 0.3F;
         this.moveHelper = new FlyingMoveHelper(this);
         this.navigator = new PathNavigateFlying(this, worldIn);
         if(rand.nextInt(3) == 0) {
@@ -356,7 +360,7 @@ public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable,
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 0.5, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).disablesShields().directEntity(this).build();
           float damage = this.getAttack();
-          ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.35f, 0, false);
+          ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.35f, 0, false, 0.3F);
           this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.7f, 1.3f / (rand.nextFloat() * 0.4F + 0.4f));
       }, 25);
 
@@ -378,7 +382,7 @@ public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable,
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 0.5, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.getAttack();
-            ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.35f, 0, false);
+            ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.35f, 0, false, 0.2F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.7f, 1.3f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 60);
 
@@ -436,7 +440,7 @@ public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable,
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 0.5, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.getAttack();
-            ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.35f, 0, false);
+            ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.35f, 0, false, 0.2F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.7f, 1.3f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 25);
 

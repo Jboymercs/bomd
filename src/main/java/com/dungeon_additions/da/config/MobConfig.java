@@ -638,7 +638,7 @@ public class MobConfig {
     @Config.Name("Ancient Wyrk Cooldown")
     @Config.Comment("Change the cooldown of the Ancient Wyrk, in seconds")
     @Config.RequiresMcRestart
-    public static int great_wyrk_cooldown = 5;
+    public static int great_wyrk_cooldown = 4;
 
     @Config.Name("Ancient Wyrk Damage Cap")
     @Config.Comment("Change the damage cap of how much damage can be done at one time to the Ancient Wyrk. Disable this feature entirely in general_config")
@@ -654,6 +654,12 @@ public class MobConfig {
     @Config.Comment("Change the attack damage of the Cult of Roh Assassin")
     @Config.RequiresMcRestart
     public static double assassin_attack_damage = 16;
+
+    @Config.Name("Cult of Roh Assassin Attack Animation Speed")
+    @Config.Comment("Change the animation attack speed of the Cult of Roh Assassin. Use with caution. 1 is normal speed.")
+    @Config.RangeInt(min = 1, max = 3)
+    @Config.RequiresMcRestart
+    public static double assassin_animation_speed = 1;
 
     @Config.Name("Cult of Roh Assassin Armor")
     @Config.Comment("Change the armor value of the Cult of Roh Assassin")

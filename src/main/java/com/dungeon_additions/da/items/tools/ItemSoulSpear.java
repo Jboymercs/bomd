@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.items.tools;
 
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.player.ActionPlayerShootComet;
 import com.dungeon_additions.da.entity.player.ActionPlayerShootSpead;
@@ -7,9 +8,7 @@ import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Enchantments;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -19,7 +18,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.List;
 
@@ -32,6 +30,8 @@ public class ItemSoulSpear extends ToolSword {
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
         this.setMaxDamage(1200);
+        this.weapon_type = EnumWeaponType.SPEAR;
+        this.weaponReach += 1.25F;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ItemSoulSpear extends ToolSword {
     }
 
     @Override
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -2.6000000953674316D;
     }
 

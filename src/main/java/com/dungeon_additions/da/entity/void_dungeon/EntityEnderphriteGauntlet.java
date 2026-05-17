@@ -105,12 +105,16 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
         super(worldIn, x, y, z);
         this.setSize(0.7F, 2.9F);
         this.experienceValue = 38;
+        this.falter_resistance = 1.6F;
+        this.hemorrhage_resistance = 0.3F;
     }
 
     public EntityEnderphriteGauntlet(World worldIn) {
         super(worldIn);
         this.setSize(0.7F, 2.9F);
         this.experienceValue = 38;
+        this.falter_resistance = 1.6F;
+        this.hemorrhage_resistance = 0.3F;
     }
 
     @Override
@@ -257,7 +261,7 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
                     Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.0, 0)));
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                     float damage = (this.getAttack());
-                    ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                    ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.8F);
                     this.playSound(SoundsHandler.ENDERPHRITE_SONIC_BOOM, 1.1f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
                     Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 0.1, 0)));
                     Main.proxy.spawnParticle(21,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
@@ -279,7 +283,7 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.0, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage = (this.getAttack());
-                ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.8F);
                 this.playSound(SoundsHandler.ENDERPHRITE_SONIC_BOOM, 1.1f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
                 Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 0.1, 0)));
                 Main.proxy.spawnParticle(21,world, relPos.x, relPos.y, relPos.z, 0, 0, 0);
@@ -329,7 +333,7 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.0, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = (this.getAttack());
-          ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+          ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.8F);
           this.playSound(SoundsHandler.ENDERPHRITE_SONIC_BOOM, 1.1f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.2, 0)));
           Main.proxy.spawnParticle(21,world, relPos.x, relPos.y, relPos.z, 0, 0, 0);
@@ -369,7 +373,7 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = (this.getAttack());
-            ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+            ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.2F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.6f / (rand.nextFloat() * 0.4f + 0.2f));
             this.lockLook = false;
         }, 20);
@@ -392,7 +396,7 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = (this.getAttack());
-            ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+            ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.2F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.6f / (rand.nextFloat() * 0.4f + 0.2f));
             this.lockLook = false;
         }, 43);

@@ -127,7 +127,7 @@ public class EntityApathyrGhost extends EntityGaelonBase implements IAnimatable,
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (damageIn);
-            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false, 0.5F);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 30);
 
@@ -135,7 +135,7 @@ public class EntityApathyrGhost extends EntityGaelonBase implements IAnimatable,
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (damageIn);
-            ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+            ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 0.9f, 0, false, 0.5F);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 35);
 
@@ -178,7 +178,7 @@ public class EntityApathyrGhost extends EntityGaelonBase implements IAnimatable,
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (damageIn);
-                ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.5F);
                 this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             }, 23);
 
@@ -202,7 +202,7 @@ public class EntityApathyrGhost extends EntityGaelonBase implements IAnimatable,
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (damageIn);
-                ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.5F);
                 this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             }, 54);
 
@@ -237,7 +237,7 @@ public class EntityApathyrGhost extends EntityGaelonBase implements IAnimatable,
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (damageIn);
-                ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.5F);
                 this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             }, 23);
 
@@ -276,7 +276,7 @@ public class EntityApathyrGhost extends EntityGaelonBase implements IAnimatable,
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (damageIn);
-            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.7F);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 30);
 

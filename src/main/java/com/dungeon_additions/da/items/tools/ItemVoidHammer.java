@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.items.tools;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.player.ActionPlayerShootBloodSpray;
 import com.dungeon_additions.da.entity.player.ActionVoidFlay;
@@ -40,20 +41,19 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemVoidHammer extends ItemSword implements IAnimatable, IHasModel, ISweepAttackOverride {
+public class ItemVoidHammer extends ToolSword implements IAnimatable, IHasModel, ISweepAttackOverride {
 
     public AnimationFactory factory = new AnimationFactory(this);
 
     private String info_loc;
 
     public ItemVoidHammer(String name, Item.ToolMaterial material, String info_loc) {
-        super(material);
+        super(name, material);
         this.setMaxDamage(986);
-        setTranslationKey(name);
-        setRegistryName(name);
-        ModItems.ITEMS.add(this);
         setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
+        this.weapon_type = EnumWeaponType.HEAVY_AXE;
+        this.falter_value = 0.35F;
     }
 
     @Override
@@ -155,9 +155,12 @@ public class ItemVoidHammer extends ItemSword implements IAnimatable, IHasModel,
         return factory;
     }
 
-    protected double getAttackSpeed() {
+    @Override
+    public double getAttackSpeed() {
         return -3.5D;
     }
+
+
     public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)
     { return false; }
 
@@ -172,6 +175,7 @@ public class ItemVoidHammer extends ItemSword implements IAnimatable, IHasModel,
     @Override
     public void doSweepAttack(EntityPlayer player, @Nullable EntityLivingBase entity) {
         ModUtils.doSweepAttack(player, entity, (e) -> {
-        }, 9, 3);
+        }, 12, 3);
+        super.doSweepAttack(player, entity);
     }
 }

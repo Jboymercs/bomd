@@ -100,6 +100,8 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
         this.setSize(0.6F, 2.1F);
         this.experienceValue = 15;
         this.setOrbMode(true);
+        this.hemorrhage_resistance = 0.25F;
+        this.falter_resistance = 1F;
     }
 
     public EntityReAnimate(World worldIn) {
@@ -107,6 +109,8 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
         this.setSize(0.6F, 2.1F);
         this.experienceValue = 15;
         this.setOrbMode(true);
+        this.hemorrhage_resistance = 0.25F;
+        this.falter_resistance = 1F;
     }
 
     public EntityReAnimate(World worldIn, boolean setImmediateChange) {
@@ -115,6 +119,8 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
         this.experienceValue = 15;
         this.setImmediateChange = setImmediateChange;
         this.setOrbMode(true);
+        this.hemorrhage_resistance = 0.25F;
+        this.falter_resistance = 1F;
     }
 
     @Override
@@ -293,7 +299,7 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack() * 1.5);
-            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false, 0.5F);
             this.playSound(SoundsHandler.REANIMATE_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 40);
 
@@ -358,7 +364,7 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage =(float) (this.getAttack());
-          ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.5f, 0, false);
+          ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.5f, 0, false, 0.3F);
           this.playSound(SoundsHandler.REANIMATE_SWING, 0.8f, 0.5f / (rand.nextFloat() * 0.4f + 0.2f));
       }, 20);
 
@@ -378,7 +384,7 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage =(float) (this.getAttack());
-          ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.3f, 0, false);
+          ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.3f, 0, false, 0.3F);
           this.playSound(SoundsHandler.REANIMATE_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
       }, 60);
 
@@ -410,7 +416,7 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.3f, 0, false);
+            ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.3f, 0, false, 0.3F);
             this.playSound(SoundsHandler.REANIMATE_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 20);
 

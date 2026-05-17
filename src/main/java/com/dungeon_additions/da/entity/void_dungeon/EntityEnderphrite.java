@@ -109,12 +109,16 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
         super(worldIn, x, y, z);
         this.setSize(0.7F, 2.9F);
         this.experienceValue = 38;
+        this.falter_resistance = 1.7F;
+        this.hemorrhage_resistance = 0.3F;
     }
 
     public EntityEnderphrite(World worldIn) {
         super(worldIn);
         this.setSize(0.7F, 2.9F);
         this.experienceValue = 38;
+        this.falter_resistance = 1.7F;
+        this.hemorrhage_resistance = 0.3F;
     }
 
     @Override
@@ -224,7 +228,7 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.0, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage = (this.getAttack());
-          ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+          ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.3F);
           this.playSound(SoundsHandler.APATHYR_CAST_MAGIC, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f));
           new ActionEnderphriteSplay().performAction(this, target);
       }, 34);
@@ -262,7 +266,7 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.4, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = (this.getAttack());
-            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.4f, 0, false, 1.0F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.2f / (rand.nextFloat() * 0.4f + 0.2f));
             ProjectileCrystalWave wave = new ProjectileCrystalWave(world, this, (float) this.getAttack(), null,false);
             wave.setPosition(offset.x, offset.y, offset.z);
@@ -305,7 +309,7 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.2, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = (this.getAttack());
-            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.6F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.2f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 25);
 
@@ -328,7 +332,7 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.2, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = (this.getAttack());
-            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.6F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.2f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 43);
 
@@ -378,7 +382,7 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
                     Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.4, 1.0, 0)));
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                     float damage = (this.getAttack());
-                    ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+                    ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.3F);
                 }, b);
             }
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.2f / (rand.nextFloat() * 0.4f + 0.2f));

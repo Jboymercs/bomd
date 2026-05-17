@@ -123,14 +123,14 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
             }
 
             if (ticksExisted == 20) {
-                List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(1.0, 14.0, 1.0), e -> !e.getIsInvulnerable() && (!(e instanceof EntitySkyBase)));
+                List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(1.0, 20.0, 1.0), e -> !e.getIsInvulnerable() && (!(e instanceof EntitySkyBase)));
                 if (!targets.isEmpty()) {
                     for (EntityLivingBase target : targets) {
                         if (!(target instanceof EntitySkyBase)) {
                             Vec3d offset = target.getPositionVector().add(ModUtils.yVec(1.0D));
                             DamageSource source = ModDamageSource.builder().type(ModDamageSource.PLAYER).directEntity(this).build();
                             float damage = this.getAttack();
-                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.3F);
                         }
                     }
                 }
@@ -155,7 +155,7 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
             }
 
             if (ticksExisted == 20) {
-                List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable() && (!(e instanceof EntityPlayer)));
+                List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(1.0, 20.0, 1.0), e -> !e.getIsInvulnerable() && (!(e instanceof EntityPlayer)));
                 if (!targets.isEmpty()) {
                     this.damageOverride = true;
                     for (EntityLivingBase target : targets) {
@@ -163,7 +163,7 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
                             Vec3d offset = target.getPositionVector().add(ModUtils.yVec(1.0D));
                             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MAGIC).directEntity(this).build();
                             float damage = (float) (damageIn);
-                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.3F);
                         }
                     }
                 }

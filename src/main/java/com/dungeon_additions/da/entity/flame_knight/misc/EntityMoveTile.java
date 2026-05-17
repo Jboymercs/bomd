@@ -3,6 +3,7 @@ package com.dungeon_additions.da.entity.flame_knight.misc;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntitySharedDesertBoss;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameBase;
+import com.dungeon_additions.da.util.ModUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -129,6 +130,7 @@ public class EntityMoveTile extends Entity implements IEntityAdditionalSpawnData
                     if (entity instanceof EntityLivingBase && entity != getOwner() && !(entity instanceof EntityFlameBase) && !(entity instanceof EntitySharedDesertBoss) || getOwner() instanceof EntityPlayer && entity != getOwner() && entity instanceof EntityLivingBase) { // needs null check on owner?
                         if(entity.attackEntityFrom(damageSource, (damage != 0) ? damage : MobConfig.aoe_block_damage)) {
                             float knockback = 1.5F;
+                            ModUtils.addFalterTooEnemies(entity, 0.25F, 8);
                             Vec3d dir = new Vec3d(this.posX - this.waveStartX, 0, this.posZ - this.waveStartZ);
                             dir = dir.normalize();
                             entity.motionX = dir.x * knockback;

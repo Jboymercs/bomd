@@ -235,6 +235,8 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
         this.setSize(1.1F, 3.45F);
         this.iAmBossMob = true;
         this.isImmuneToFire = true;
+        this.falter_resistance = 1.5F;
+        this.hemorrhage_resistance = 0.92F;
     }
 
     public EntityDarkdriftDevil(World worldIn) {
@@ -242,6 +244,8 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
         this.setSize(1.1F, 3.45F);
         this.iAmBossMob = true;
         this.isImmuneToFire = true;
+        this.falter_resistance = 1.5F;
+        this.hemorrhage_resistance = 0.92F;
     }
 
     @Override
@@ -1087,11 +1091,11 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
         //daggers
         addEvent(()-> {
             new ActionThrowDaggers(false, true).performAction(this, target);
-        }, 71);
+        }, 65);
         //daggers
         addEvent(()-> {
             new ActionThrowDaggers(false, false).performAction(this, target);
-        }, 103);
+        }, 93);
 
         addEvent(()-> {
             this.setThrowDaggers(false);
@@ -1104,20 +1108,20 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
                 //daggers
                 addEvent(()-> {
                     new ActionThrowDaggers(false, true).performAction(this, target);
-                }, 20);
+                }, 17);
                 //daggers
                 addEvent(()-> {
                     new ActionThrowDaggers(true, false).performAction(this, target);
-                }, 60);
+                }, 50);
 
                 addEvent(()-> {
                     this.setImmovable(false);
                     this.setThrowDaggerContinue(false);
                     this.setFightMode(false);
                     this.setFullBodyUsage(false);
-                }, 85);
+                }, 80);
             }
-        }, 115);
+        }, 105);
     };
 
     private void setDaggersTooDash(EntityLivingBase target){

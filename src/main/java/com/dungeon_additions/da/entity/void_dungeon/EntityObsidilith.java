@@ -155,6 +155,8 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         this.setSpawnLocation(new BlockPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5));
         this.setSetSpawnLoc(true);
         this.onSummonBoss();
+        this.falter_immune = true;
+        this.hemorrhage_resistance = 0.98F;
     }
 
     public EntityObsidilith(World worldIn) {
@@ -165,6 +167,8 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         this.iAmBossMob = true;
         this.isImmuneToFire = true;
         this.onSummonBoss();
+        this.falter_immune = true;
+        this.hemorrhage_resistance = 0.98F;
     }
 
     public EntityObsidilith(World worldIn, float x, float y, float z) {
@@ -177,6 +181,8 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         this.setSpawnLocation(new BlockPos(x, y, z));
         this.setSetSpawnLoc(true);
         this.onSummonBoss();
+        this.falter_immune = true;
+        this.hemorrhage_resistance = 0.98F;
     }
 
     public void onSummonBoss() {
@@ -555,7 +561,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
                 .directEntity(this)
                 .stoppedByArmorNotShields().disablesShields().build();
 
-        ModUtils.handleAreaImpact(5, (e) -> this.getAttack() * 1.5F, this, this.getPositionVector().add(ModUtils.yVec(1)), source);
+        ModUtils.handleAreaImpact(5, (e) -> this.getAttack() * 1.5F, this, this.getPositionVector().add(ModUtils.yVec(1)), source, 0, 0, false, 1.2F);
         this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f + ModRand.getFloat(0.1f));
         this.world.setEntityState(this, ModUtils.THIRD_PARTICLE_BYTE);
         Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));

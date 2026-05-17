@@ -20,6 +20,9 @@ public class ModPotions {
     public static PotionEffectMarked HUNTERS_MARK = (PotionEffectMarked) new PotionEffectMarked("hunters_mark",true, 0);
     public static PotionPoisonGarnish POISON_GARNISH = (PotionPoisonGarnish) new PotionPoisonGarnish("poison_garnish", false, 0);
     public static PotionEffectFieryRespite FIERY_RESPITE = (PotionEffectFieryRespite) new PotionEffectFieryRespite("fiery_respite", false, 0);
+    public static PotionEffectDegradation DEGRADATION = (PotionEffectDegradation) new PotionEffectDegradation("degradation", true, 0);
+    public static PotionEffectHemorrhage HEMORRHAGE = (PotionEffectHemorrhage) new PotionEffectHemorrhage("hemorrhage", true, 0);
+    public static PotionEffectFaltered FALTERED = (PotionEffectFaltered) new PotionEffectFaltered("faltered", true, 0);
 
 
     public static PotionType hunters_mark = new PotionType("potionHuntersMark", new PotionEffect[]{new PotionEffect(ModPotions.HUNTERS_MARK, 300)}).setRegistryName("hunters_marked");
@@ -31,7 +34,10 @@ public class ModPotions {
                 GOLDEN_VOW,
                 HUNTERS_MARK,
                 POISON_GARNISH,
-                FIERY_RESPITE
+                FIERY_RESPITE,
+                DEGRADATION,
+                HEMORRHAGE,
+                FALTERED
         );
     }
 

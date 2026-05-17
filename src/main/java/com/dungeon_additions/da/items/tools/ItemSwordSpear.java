@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.items.tools;
 
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.player.ActionShootLightRing;
 import com.dungeon_additions.da.entity.player.ActionSummonHolySpikes;
@@ -13,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -42,7 +42,9 @@ public class ItemSwordSpear extends ItemAbilityWeapon implements IAnimatable {
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
         this.setMaxDamage(2031);
+        this.weapon_type = EnumWeaponType.SPEAR;
        // this.reachDistanceValue = 1.0F;
+        this.weaponReach += 1.25F;
     }
 
     @Override
@@ -189,7 +191,7 @@ public class ItemSwordSpear extends ItemAbilityWeapon implements IAnimatable {
 
     }
 
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -3.1D;
     }
 

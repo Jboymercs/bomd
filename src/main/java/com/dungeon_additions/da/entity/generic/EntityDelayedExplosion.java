@@ -145,7 +145,7 @@ public class EntityDelayedExplosion extends EntityAbstractBase implements IAnima
                             if(base != this && base != owner && !(base instanceof EntityAbstractBase)) {
                                 Vec3d offset = this.getPositionVector().add(ModUtils.yVec(0.5D));
                                 DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(owner).build();
-                                ModUtils.handleAreaImpact(3.5f, (e) -> damageIn, this, offset, source, 0.6f, this.isOrangeStyle() ? 5 : 0, false);
+                                ModUtils.handleAreaImpact(3.5f, (e) -> damageIn, this, offset, source, 0.6f, this.isOrangeStyle() ? 5 : 0, false, 0.4F);
                                 this.initiatedAttack = true;
 
                                 if(this.isPurpleStyle()) {
@@ -165,7 +165,7 @@ public class EntityDelayedExplosion extends EntityAbstractBase implements IAnima
                             if(base != this && base != player) {
                                 Vec3d offset = this.getPositionVector().add(ModUtils.yVec(0.5D));
                                 DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(player).build();
-                                ModUtils.handleAreaImpact(2.5f, (e) -> damageIn, this, offset, source, 0.9f, 0, false);
+                                ModUtils.handleAreaImpact(2.5f, (e) -> damageIn, this, offset, source, 0.9f, 0, false, 0.2F);
                                 this.initiatedAttack = true;
 
                                 if(this.isPurpleStyle()) {

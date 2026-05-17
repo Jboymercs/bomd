@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.items.tools;
 
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityColossusSigil;
 import com.dungeon_additions.da.entity.player.ActionPlayerDesertSlam;
@@ -26,6 +27,7 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemColossusMace extends ToolSword implements IAnimatable {
@@ -37,8 +39,10 @@ public class ItemColossusMace extends ToolSword implements IAnimatable {
         super(name, material);
         this.setMaxDamage(1032);
         ModItems.ITEMS.add(this);
+        this.falter_value = 0.4F;
         setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
+        this.weapon_type = EnumWeaponType.HEAVY_AXE;
     }
 
 
@@ -49,7 +53,7 @@ public class ItemColossusMace extends ToolSword implements IAnimatable {
             if(!attacker.world.isRemote) {
                 target.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 60, 0, false, false));
             }
-            return true;
+            return super.hitEntity(stack, target, attacker);
     }
 
     @Override
@@ -109,12 +113,19 @@ public class ItemColossusMace extends ToolSword implements IAnimatable {
     }
 
     @Override
+    public void doSweepAttack(EntityPlayer player, @Nullable EntityLivingBase entity) {
+        ModUtils.doSweepAttack(player, entity, (e) -> {
+        }, 12, 3);
+        super.doSweepAttack(player, entity);
+    }
+
+    @Override
     public AnimationFactory getFactory() {
         return factory;
     }
 
     @Override
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -3.4000000953674316D;
     }
 }

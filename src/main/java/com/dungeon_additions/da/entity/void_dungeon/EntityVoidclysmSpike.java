@@ -130,7 +130,7 @@ public class EntityVoidclysmSpike extends EntityEndBase implements IAnimatable {
                         if(base != this && base != owner) {
                             Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
                             DamageSource source = ModDamageSource.builder().type(ModDamageSource.PLAYER).directEntity(owner).build();
-                            ModUtils.handleAreaImpact(0.5f, (e) -> damageIn, this, offset, source, 0.6f, 0, false);
+                            ModUtils.handleAreaImpact(0.5f, (e) -> damageIn, this, offset, source, 0.6f, 0, false, 0.5F);
                             if (!world.isRemote) {
                                 double distSq = this.getDistanceSq(base.posX, base.getEntityBoundingBox().minY, base.posZ);
                                 double distance = Math.sqrt(distSq);
@@ -149,7 +149,7 @@ public class EntityVoidclysmSpike extends EntityEndBase implements IAnimatable {
                             Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
                             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MAGIC).directEntity(this).build();
                             float damage = this.getAttack();
-                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.3F);
                             if (!world.isRemote) {
                                 double distSq = this.getDistanceSq(base.posX, base.getEntityBoundingBox().minY, base.posZ);
                                 double distance = Math.sqrt(distSq);

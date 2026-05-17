@@ -19,28 +19,37 @@ public class ItemAbilityWeapon extends ToolSword{
      * @param itemSlot
      * @param isSelected
      */
+
+    @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
     {
         if (!worldIn.isRemote)
         {
             if(stack.getItem() instanceof ItemAbilityWeapon) {
                 if(!stack.hasTagCompound()) {
-                    this.setNBTonWeapon(stack, false);
+                    this.setNBTonAbility(stack, false);
                 }
             }
         }
         super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
     }
 
-    public void setNBTonWeapon(ItemStack stack, boolean val)
+    public void setNBTonAbility(ItemStack stack, boolean val)
     {
         NBTTagCompound nbt;
+     //   if (stack.hasTagCompound() && stack.getTagCompound().hasKey("ability"))
+      //  { nbt = stack.getTagCompound(); }
+     //   else
+      //  { nbt = new NBTTagCompound(); }
+
+        //stack.setTagCompound(nbt);
+
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("ability"))
         { nbt = stack.getTagCompound(); }
         else
         { nbt = new NBTTagCompound(); }
-
         nbt.setBoolean("ability", val);
+        nbt.setInteger("weaponDelay", weaponDelay);
         stack.setTagCompound(nbt);
     }
 

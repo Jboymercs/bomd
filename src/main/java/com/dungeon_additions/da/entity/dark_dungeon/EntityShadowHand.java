@@ -150,7 +150,7 @@ public class EntityShadowHand extends EntityDarkBase implements IAnimatable, IAn
                         DamageSource source;
                         source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                         float damage = this.getAttack();
-                        ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, offset, source, 0.15f, 0, false);
+                        ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, offset, source, 0.15f, 0, false, 0.4F);
                         base.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 200, 0, false, false));
                         if(effect) {
                             base.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 200, 1, false, false));

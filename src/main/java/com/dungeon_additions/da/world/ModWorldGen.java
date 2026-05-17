@@ -4,6 +4,7 @@ import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.util.DALogger;
 import com.dungeon_additions.da.world.blossom.WorldGenBlossomCave;
 import com.dungeon_additions.da.world.cults_domain.WorldGenCultsDomain;
+import com.dungeon_additions.da.world.dauntless.WorldGenDauntlessArena;
 import com.dungeon_additions.da.world.forgotten_temple.WorldGenForgottenTemple;
 import com.dungeon_additions.da.world.frozen_castle.WorldGenFrozenCastle;
 import com.dungeon_additions.da.world.gaelon_sanctuary.WorldGenGaelonSanctuary;
@@ -45,6 +46,7 @@ public class ModWorldGen implements IWorldGenerator {
     private static final WorldGenGaelonSanctuary gaelon_sanctuary = new WorldGenGaelonSanctuary();
     private static final WorldGenMysteriousTraderPost trader_post = new WorldGenMysteriousTraderPost();
     private static final WorldGenCultsDomain cults_domain = new WorldGenCultsDomain();
+    private static final WorldGenDauntlessArena dauntless_arena = new WorldGenDauntlessArena();
     private static final WorldGenOutposts outposts = new WorldGenOutposts();
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
@@ -59,9 +61,9 @@ public class ModWorldGen implements IWorldGenerator {
             outposts.generate(world, random, pos);
         }
         //Cults Domain
-       // if(isAllowedDimensionTooSpawnInCultCastle(world.provider.getDimension()) && WorldConfig.cult_castle_enabled) {
-       //     cults_domain.generate(world, random, pos);
-       // }
+        if(isAllowedDimensionTooSpawnInCultCastle(world.provider.getDimension()) && WorldConfig.cult_castle_enabled) {
+            cults_domain.generate(world, random, pos);
+        }
         //nether arena
         if(world.provider.getDimension() == -1 && WorldConfig.burning_flame_arena_enabled) {
                 netherArena.generate(world, random, pos);
@@ -105,6 +107,10 @@ public class ModWorldGen implements IWorldGenerator {
         //Mysterious Trader Post
         if(isAllowedDimensionTooSpawnInTraderPost(world.provider.getDimension()) && WorldConfig.mysterious_trader_post_enabled && world.provider.getBiomeForCoords(pos) != Biomes.DEEP_OCEAN) {
             trader_post.generate(world, random, pos);
+        }
+        //Dauntless Arena
+        if(isAllowedDimensionTooSpawnInDauntless(world.provider.getDimension()) && WorldConfig.dauntless_arena_enabled) {
+            dauntless_arena.generate(world, random, pos);
         }
 
 
@@ -155,6 +161,15 @@ public class ModWorldGen implements IWorldGenerator {
 
     public static boolean isAllowedDimensionTooSpawnInNightLich(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions_lich_tower) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInDauntless(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_dauntless) {
             if(i == dimensionIn)
                 return true;
         }

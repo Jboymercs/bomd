@@ -121,12 +121,16 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
         super(worldIn, x, y, z);
         this.setSize(1.1F, 2F);
         this.experienceValue = 15;
+        this.falter_resistance = 1F;
+        this.hemorrhage_resistance = 0.25F;
     }
 
     public EntityVoidiant(World worldIn) {
         super(worldIn);
         this.setSize(1.1F, 2F);
         this.experienceValue = 15;
+        this.falter_resistance = 1F;
+        this.hemorrhage_resistance = 025F;
     }
 
     private boolean sentIdleFlag;
@@ -385,7 +389,7 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
         Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 0.5, 0)));
         DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
         float damage = this.getAttack();
-        ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.8f, 0, false);
+        ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.8f, 0, false, 0.5F);
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
             Main.proxy.spawnParticle(18,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
         this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.9f, 1.3f / (rand.nextFloat() * 0.4F + 0.4f));

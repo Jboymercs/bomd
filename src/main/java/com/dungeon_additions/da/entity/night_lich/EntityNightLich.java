@@ -113,6 +113,8 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.wantedDistance = 30;
         this.isImmuneToExplosions();
         this.experienceValue = MobConfig.lich_experience_value;
+        this.falter_resistance = 0.9F;
+        this.hemorrhage_resistance = 0.9F;
         if(!world.isRemote) {
             initLichAI();
         }
@@ -129,7 +131,8 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         if(!world.isRemote) {
             initLichAI();
         }
-
+        this.falter_resistance = 0.9F;
+        this.hemorrhage_resistance = 0.9F;
     }
 
     public EntityNightLich(World worldIn, int timesUsed, BlockPos pos) {
@@ -144,6 +147,8 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.timesUsed++;
         this.doBossReSummonScaling();
         this.experienceValue = MobConfig.lich_experience_value;
+        this.falter_resistance = 0.9F;
+        this.hemorrhage_resistance = 0.9F;
         if(!world.isRemote) {
             initLichAI();
         }
@@ -405,7 +410,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = (float) (this.getAttack() * MobConfig.night_lich_dash_multiplier);
-            ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.5f, 0, false);
+            ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.5f, 0, false, 1.2F);
         }, 118);
 
         addEvent(()-> {
@@ -588,7 +593,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                             float damage = this.getAttack();
                             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.25, 1.2, 0)));
                             Main.proxy.spawnParticle(18,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
-                            ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+                            ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.4f, 0, false, 1F);
                             addEvent(()-> {
                                 //AOE ACTION
                                 float distance = this.getDistance(target);
@@ -608,7 +613,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 1.5, 0)));
                             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                             float damage = this.getAttack();
-                            ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+                            ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.4f, 0, false, 1F);
                             addEvent(()-> {
                                 //AOE ACTION
                                 float distance = this.getDistance(target);
@@ -673,7 +678,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                     Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.0, 1.0, 0)));
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                     float damage = (float) (this.getAttack() * MobConfig.night_lich_dash_multiplier);
-                    ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                    ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.6f, 0, false, 1.2F);
                 }, b);
             }
         }, 95);
@@ -717,7 +722,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.0, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.getAttack();
-          ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+          ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.6F);
       }, 30);
 
       addEvent(()-> {
@@ -739,7 +744,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.0, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage = this.getAttack();
-          ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.8f, 0, false);
+          ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.8f, 0, false, 0.6F);
       }, 61);
 
       addEvent(()-> new ActionShootGroundProjectiles(ground_projectiles).performAction(this, target), 65);
@@ -777,7 +782,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.5, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage = this.getAttack();
-          ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+          ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.6F);
       },33);
 
       addEvent(()-> {
@@ -826,7 +831,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                     Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 1.5, 0)));
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                     float damage = this.getAttack();
-                    ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+                    ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.4f, 0, false, 1F);
                     Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 1.2, 0)));
                     Main.proxy.spawnParticle(18,world, relPos.x, this.posY, relPos.z, 0, 0, 0);
                     addEvent(()-> {
@@ -848,7 +853,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                     Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 1.5, 0)));
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                     float damage = this.getAttack();
-                    ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+                    ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.4f, 0, false, 1F);
                     addEvent(()-> {
                         //AOE ACTION
                         float distance = this.getDistance(target);
@@ -945,7 +950,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
                   Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.0, 1.5, 0)));
                   DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                   float damage = (float) (this.getAttack() * MobConfig.night_lich_dash_multiplier);
-                  ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                  ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.6f, 0, false, 1F);
               }, b);
           }
 

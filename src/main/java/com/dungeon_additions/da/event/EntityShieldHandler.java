@@ -436,6 +436,15 @@ public class EntityShieldHandler {
                 }
             }
 
+            //players apply more damage when the enemy is faltered.
+            if(event.getEntityLiving() != null) {
+                EntityLivingBase base = ((EntityLivingBase) event.getEntityLiving());
+                if(base.isPotionActive(ModPotions.FALTERED)) {
+                    totalDamage += (float) (totalDamage * PotionTrinketConfig.faltering_damage_increase);
+                    base.removePotionEffect(ModPotions.FALTERED);
+                }
+            }
+
         }
 
         //universal effects
@@ -444,6 +453,22 @@ public class EntityShieldHandler {
             if(base.isPotionActive(ModPotions.HUNTERS_MARK)) {
                 //  event.setAmount((float) (totalDamage + (originalDamage * PotionTrinketConfig.hunters_mark_damage_increase)));
                 totalDamage += (float) (totalDamage * PotionTrinketConfig.hunters_mark_damage_increase);
+            }
+        }
+
+        if(event.getSource() != null) {
+            if(event.getSource().getTrueSource() instanceof EntityLivingBase) {
+                EntityLivingBase targeted = (EntityLivingBase) event.getSource().getTrueSource();
+                if(targeted.isPotionActive(ModPotions.FALTERED)) {
+                  totalDamage = 0F;
+                } else if(targeted.isPotionActive(ModPotions.DEGRADATION)) {
+                    float damage_val = targeted.getHealth() / targeted.getMaxHealth() - 0.1F;
+                    if(damage_val > 0) {
+                        totalDamage = totalDamage * damage_val;
+                    } else {
+                        totalDamage = totalDamage * 0.1F;
+                    }
+                }
             }
         }
 

@@ -3,6 +3,7 @@ package com.dungeon_additions.da.entity;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.pathing.MobGroundNavigate;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.init.ModPotions;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.ServerScaleUtil;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -25,6 +26,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -56,6 +58,14 @@ public abstract class EntityAbstractBase extends EntityCreature {
     public boolean lockLook = false;
     protected int timesUsed = 0;
 
+    protected float hemorrhage_resistance = 0;
+    protected float falter_val = 0F;
+    protected float falter_resistance = 1;
+    protected boolean falter_immune = false;
+    protected float magic_resistance = 0;
+    protected float degradation_resistance = 0;
+    protected double animation_attack_speed = 1.00D;
+
     public boolean holdPosition = false;
 
     public EntityAbstractBase(World worldIn, float x, float y, float z) {
@@ -84,7 +94,7 @@ public abstract class EntityAbstractBase extends EntityCreature {
                 return false;
             }
         }
-
+        this.falter_val += 0.05F;
         return super.attackEntityFrom(source, amount);
     }
 
@@ -147,6 +157,24 @@ public abstract class EntityAbstractBase extends EntityCreature {
     public void onUpdate() {
         super.onUpdate();
 
+        //faltering mobs
+        if(!world.isRemote && falter_val > 0.01 && !this.falter_immune && ModConfig.falter_mobs) {
+            if(ticksExisted % 20 == 0) {
+                if(this.iAmBossMob && playersNearbyAmount > 1) {
+                    //we want bosses falter time to decrease significantly more with more players around to balance spam faltering
+                    falter_val -= (float) (0.07 + (0.03 * playersNearbyAmount));
+                } else {
+                    falter_val -= 0.07F;
+                }
+            }
+
+            if(falter_val > falter_resistance) {
+                if(this.getHealth() / this.getMaxHealth() > 0.01) {
+                    this.falterMob();
+                }
+            }
+        }
+
         //Locks look of entities
         if(this.lockLook) {
 
@@ -173,6 +201,14 @@ public abstract class EntityAbstractBase extends EntityCreature {
         } else {
             startedHolding = false;
         }
+    }
+
+    private void falterMob() {
+        this.falter_val = 0;
+        //sorts the time for the faltered effect on bosses
+        double time = this.isNonBoss() ? (20 * falter_resistance) + 4.5 : 20 * falter_resistance + 3.5;
+        this.addPotionEffect(new PotionEffect(ModPotions.FALTERED, (int) time, 0, false, false));
+        this.falter_resistance += 0.35F;
     }
 
     protected boolean hasStartedScaling = false;
@@ -344,6 +380,20 @@ public abstract class EntityAbstractBase extends EntityCreature {
 
     }
 
+    public float getHemorrhageResistance() {
+        return (float) (this.hemorrhage_resistance);
+    }
+
+    public float getFalterResistance() {
+        return (float) this.falter_resistance;
+    }
+
+    public void addFalterCounter(float amount) {
+        if(!this.falter_immune && ModConfig.falter_mobs) {
+            this.falter_val += amount;
+        }
+    }
+
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         // Make sure we save as immovable to avoid some weird states
@@ -390,7 +440,7 @@ public abstract class EntityAbstractBase extends EntityCreature {
      * @param ticksFromNow
      */
     public void addEvent(Runnable runnable, int ticksFromNow) {
-        events.add(new TimedEvent(runnable, this.ticksExisted + ticksFromNow));
+        events.add(new TimedEvent(runnable, this.ticksExisted + (int) (ticksFromNow * (1/this.animation_attack_speed))));
     }
 
     public static class TimedEvent implements Comparable<TimedEvent> {

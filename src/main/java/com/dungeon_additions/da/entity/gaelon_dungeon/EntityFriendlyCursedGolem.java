@@ -122,6 +122,8 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
         this.setInanimateState(true);
         this.setPlayerChecked(true);
         this.isFriendlyCreature = true;
+        this.hemorrhage_resistance = 0.8F;
+        this.falter_resistance = 1.7F;
     }
 
     public EntityFriendlyCursedGolem(World worldIn) {
@@ -131,6 +133,8 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
         this.setInanimateState(true);
         this.setPlayerChecked(true);
         this.isFriendlyCreature = true;
+        this.hemorrhage_resistance = 0.8F;
+        this.falter_resistance = 1.7F;
     }
 
     @Override
@@ -388,7 +392,7 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 0.5f, 0, false);
+            ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 0.5f, 0, false, 0.7F);
             world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
             this.playSound(SoundsHandler.VOIDCLYSM_IMPACT, 0.8f, 0.2f / (rand.nextFloat() * 0.4f + 0.2f));
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 1.2, 0)));
@@ -431,7 +435,7 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.5f, 0, false);
+                ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.5f, 0, false, 0.5F);
             }, 26);
 
             addEvent(()-> {
@@ -456,7 +460,7 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.5f, 0, false);
+                ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.5f, 0, false, 0.5F);
             }, 59);
 
             addEvent(()-> {
@@ -487,7 +491,7 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.5f, 0, false);
+                ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.5f, 0, false, 0.5F);
             }, 26);
 
             addEvent(()-> {

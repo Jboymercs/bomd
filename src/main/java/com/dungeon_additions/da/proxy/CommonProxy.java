@@ -31,8 +31,14 @@ public class CommonProxy{
         Main.network.registerMessage(MessageModParticles.MessageHandler.class, MessageModParticles.class, packetId++, Side.CLIENT);
         Main.network.registerMessage(MessageDirectionForRender.Handler.class, MessageDirectionForRender.class, packetId++, Side.CLIENT);
         Main.network.registerMessage(ParticleSSMesage.Handler.class, ParticleSSMesage.class, packetId++, Side.CLIENT);
+        Main.network.registerMessage(PacketSwingItem.Handler.class, PacketSwingItem.class, packetId++, Side.CLIENT);
+        Main.network.registerMessage(PacketPlayerSwingAll.Handler.class, PacketPlayerSwingAll.class, packetId++, Side.CLIENT);
+        Main.network.registerMessage(PacketParryAnimationItem.Handler.class, PacketParryAnimationItem.class, packetId++, Side.CLIENT);
         Main.network.registerMessage(MessageEmptySwing.Handler.class, MessageEmptySwing.class, packetId++, Side.SERVER);
         Main.network.registerMessage(PacketControlInput.class, PacketControlInput.Message.class, packetId++, Side.SERVER);
+        Main.network.registerMessage(PacketFalterCapability.Handler.class, PacketFalterCapability.class, packetId++, Side.SERVER);
+        Main.network.registerMessage(PacketPlayerSwingCapability.Handler.class, PacketPlayerSwingCapability.class, packetId++, Side.SERVER);
+        Main.network.registerMessage(PacketServerSwingItem.Handler.class, PacketServerSwingItem.class, packetId++, Side.SERVER);
         BaublesIntegration.init();
     }
 

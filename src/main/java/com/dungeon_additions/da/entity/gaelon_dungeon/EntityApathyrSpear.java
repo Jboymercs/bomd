@@ -117,7 +117,7 @@ public class EntityApathyrSpear extends EntityGaelonBase implements IAnimatable,
                         if(base != this && base != player) {
                             Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
                             DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.PLAYER).directEntity(player).build();
-                            ModUtils.handleAreaImpact(0.5f, (e) -> damageIn, this, offset, source, 0.2f, 0, false);
+                            ModUtils.handleAreaImpact(0.5f, (e) -> damageIn, this, offset, source, 0.2f, 0, false, 0.4F);
                         }
                     }
 
@@ -129,7 +129,7 @@ public class EntityApathyrSpear extends EntityGaelonBase implements IAnimatable,
                             Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
                             DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                             float damage = this.getAttack();
-                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.15F);
                         }
                     }
 

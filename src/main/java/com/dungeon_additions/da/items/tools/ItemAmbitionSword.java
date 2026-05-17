@@ -1,20 +1,14 @@
 package com.dungeon_additions.da.items.tools;
 
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.entity.blossom.EntityVoidSpike;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
-import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
-import com.google.common.collect.Multimap;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
@@ -38,6 +32,8 @@ public class ItemAmbitionSword extends ToolSword{
         super(name, material);
         this.info_loc = info_loc;
         this.setMaxDamage(1200);
+        this.falter_value = 0.2F;
+        this.weapon_type = EnumWeaponType.SWORD;
     }
 
     @Override
@@ -52,7 +48,7 @@ public class ItemAmbitionSword extends ToolSword{
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
         attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.B_KNIGHT_SWING, SoundCategory.NEUTRAL, 0.4f, 0.7f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
-        return true;
+        return super.hitEntity(stack, target, attacker);
     }
 
     @Override
@@ -179,7 +175,7 @@ public class ItemAmbitionSword extends ToolSword{
     }
 
     @Override
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -2.9000000953674316D;
     }
 }

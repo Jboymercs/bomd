@@ -4,11 +4,13 @@ package com.dungeon_additions.da.event;
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.PotionTrinketConfig;
+import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkSorcerer;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityShadowHand;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityColossusSigil;
+import com.dungeon_additions.da.entity.player.EntityWyrkLazer;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBolt;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
@@ -26,23 +28,25 @@ import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.dungeon_additions.da.util.player.PlayerMeleeAttack;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -52,6 +56,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Mod.EventBusSubscriber
@@ -67,6 +72,7 @@ public class EventWearFlameArmor {
     public static final UUID DIAMOND_SHIELD_TRINKET_MODIFIER = UUID.fromString("7843aa4a-af8d-36a2-1293-69bec9caa675");
     public static final UUID HEART_TRINKET_MODIFIER = UUID.fromString("8724aa4a-af8d-22a2-8693-12bec9caa544");
     public static final UUID SPEED_TRINKET_MODIFIER = UUID.fromString("8321aa4a-af3d-42a2-1983-42bec9caa503");
+    private static final NBTTagCompound falter_time = null;
 
     @SubscribeEvent
     public static void onEquipArmor(LivingEvent.LivingUpdateEvent event) {
@@ -74,6 +80,119 @@ public class EventWearFlameArmor {
 
         if(base.isPotionActive(ModPotions.HUNTERS_MARK) && base.ticksExisted % 5 == 0) {
             Main.proxy.spawnParticle(27, base.world, base.posX, base.posY + base.getEyeHeight() + 1.5, base.posZ, 0, 0, 0);
+        }
+
+        if(base.ticksExisted % 30 == 0 && base.isPotionActive(ModPotions.DEGRADATION)) {
+            Main.proxy.spawnParticle(32, base.world,base.posX + ModRand.getFloat(1.5F), base.posY + base.getEyeHeight(), base.posZ + ModRand.getFloat(1.5F), 0, -0.03, 0);
+        }
+
+        //faltered potion
+        if(base.isPotionActive(ModPotions.FALTERED)) {
+            if(Objects.requireNonNull(base.getActivePotionEffect(ModPotions.FALTERED)).getDuration() != 0) {
+
+                if(base.ticksExisted % 8 == 0 && !base.world.isRemote) {
+                    Main.proxy.spawnParticle(34, base.world,base.posX + ModRand.getFloat(1F), base.posY + 0.5 + ModRand.getFloat(1), base.posZ + ModRand.getFloat(1F), 0, 0.045, 0);
+                }
+
+                if(!base.getEntityData().hasKey("falter_time")) {
+                   base.getEntityData().setInteger("falter_time", Objects.requireNonNull(base.getActivePotionEffect(ModPotions.FALTERED)).getDuration());
+                } else {
+                    int i = base.getEntityData().getInteger("falter_time");
+                    int duration = Objects.requireNonNull(base.getActivePotionEffect(ModPotions.FALTERED)).getDuration();
+                    //logs the start of the effect
+                    if(i - 1 == duration) {
+                        Vec3d moveVec = base.getLookVec().scale(-((1.1 * 0.6) + 0.1D));
+                        base.getEntityWorld().playSound((EntityPlayer) null, base.posX, base.posY, base.posZ, SoundsHandler.IMPERIAL_SWORD_PARRY, SoundCategory.NEUTRAL, 0.5f, 1F);
+                        if(base.canBePushed() && !base.isBeingRidden()) {
+                            base.motionX = moveVec.x * 0.7;
+                            base.motionY = moveVec.y * 1.4;
+                            base.motionZ = moveVec.z * 0.7;
+                            base.velocityChanged = true;
+                        }
+                        ModUtils.circleCallback(2, 10, (pos)-> {
+                            pos = new Vec3d(pos.x, 0, pos.y);
+                            Vec3d posToo = base.getPositionVector().add(0, 1.4, 0);
+                            Vec3d vel = pos.normalize().scale(Math.abs(0.1)).add(ModUtils.yVec(0));
+                            Main.proxy.spawnParticle(34, base.getEntityWorld(), posToo.x, posToo.y, posToo.z, vel.x, 0.065, vel.z);
+                        });
+                    } else {
+                        //when the player hits the ground they will be unable to move
+                        if(base instanceof EntityPlayer) {
+                            base.rotationPitch = 55;
+                        }
+                        if(base.canBePushed() && base.onGround && !base.isBeingRidden()) {
+                            base.motionZ = 0;
+                            base.motionX = 0;
+                            base.motionY = 0;
+                            base.setPosition(base.posX, base.posY, base.posZ);
+                            base.velocityChanged = true;
+                        }
+                    }
+                }
+            }
+
+        } else if (base.getEntityData().hasKey("falter_time")) {
+            base.getEntityData().removeTag("falter_time");
+        }
+
+        //do damage from Blood Loss
+        if(base.isPotionActive(ModPotions.HEMORRHAGE)) {
+            if(base.ticksExisted % 15 == 0) {
+                Main.proxy.spawnParticle(33, base.world,base.posX + ModRand.getFloat((float) 1), base.posY + 1.5F + ModRand.getFloat(0.5F), base.posZ + ModRand.getFloat((float) 1), 0, 0, 0);
+            }
+            if(Objects.requireNonNull(base.getActivePotionEffect(ModPotions.HEMORRHAGE)).getDuration() == 1) {
+                base.getEntityWorld().playSound((EntityPlayer) null, base.posX, base.posY, base.posZ, SoundsHandler.HEMORRHAGE_IMPACT, SoundCategory.NEUTRAL, 0.5f, 1F);
+                if (!base.world.isRemote) {
+
+                    double level = Objects.requireNonNull(base.getActivePotionEffect(ModPotions.HEMORRHAGE)).getAmplifier();
+                    double damage = base.getMaxHealth() * (0.2 + (level >= 3 ? 0.3 : level * 0.1));
+                    ModUtils.circleCallback(3, (int) (18 + (level * 5)), (pos)-> {
+                        pos = new Vec3d(pos.x, 0, pos.y);
+                        Vec3d posToo = base.getPositionVector().add(0, 1.4, 0);
+                        Vec3d vel = pos.normalize().scale(Math.abs(ModRand.getFloat(0.25F) + 0.25)).add(ModUtils.yVec(0));
+                        Main.proxy.spawnParticle(33, base.getEntityWorld(), posToo.x, posToo.y, posToo.z, vel.x, 0, vel.z);
+                    });
+
+                    //do our mobs first
+                    if (base instanceof EntityAbstractBase) {
+                        EntityAbstractBase boss_base = ((EntityAbstractBase) base);
+                        if (boss_base.getHemorrhageResistance() != 1) {
+                            float resistantDamage = (float) damage * boss_base.getHemorrhageResistance();
+                            if(boss_base.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) {
+                                base.heal((float) damage * 0.25F);
+                            } else if (damage - resistantDamage >= 20) {
+                                base.attackEntityFrom(DamageSource.MAGIC.setDamageBypassesArmor().setMagicDamage(), (float) 20);
+                            } else {
+                                base.attackEntityFrom(DamageSource.MAGIC.setDamageBypassesArmor().setMagicDamage(), (float) damage - resistantDamage);
+                            }
+                        } else {
+                            if (boss_base.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) {
+                                boss_base.heal((float) damage * 0.1F);
+                            }
+                        }
+
+                        //outside mod bosses
+                    } else if (!base.isNonBoss()) {
+
+                        if (base.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) {
+                            base.heal((float) damage * 0.1F);
+                        } else if (damage >= 12) {
+                            base.attackEntityFrom(DamageSource.MAGIC.setDamageBypassesArmor().setMagicDamage(), (float) 12);
+                        } else {
+                            base.attackEntityFrom(DamageSource.MAGIC.setDamageBypassesArmor().setMagicDamage(), (float) damage);
+                        }
+                        //everything else
+                    } else {
+                        if (base.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) {
+                            base.heal((float) damage * 0.1F);
+                        } else if (damage >= 20) {
+                            base.attackEntityFrom(DamageSource.MAGIC.setDamageBypassesArmor().setMagicDamage(), 20);
+                        } else {
+                            base.attackEntityFrom(DamageSource.MAGIC.setDamageBypassesArmor().setMagicDamage(), (float) damage);
+                        }
+                    }
+                }
+            }
         }
 
         if(!base.world.isRemote) {
@@ -438,7 +557,7 @@ public class EventWearFlameArmor {
     public static void onAttackEntityEvent(AttackEntityEvent event) {
         // Overrides the melee attack of the player if the item used is the sweep attack
         // override interface
-        if (event.getEntityPlayer().getHeldItemMainhand().getItem() instanceof ISweepAttackOverride && event.getEntityPlayer().getHeldItemMainhand().getItem() == ModItems.DARK_SICLE) {
+        if (event.getEntityPlayer().getHeldItemMainhand().getItem() instanceof ISweepAttackOverride && event.getEntityPlayer().getHeldItemMainhand().getItem() instanceof ToolSword) {
             PlayerMeleeAttack.attackTargetEntityWithCurrentItem(event.getEntityPlayer(), event.getTarget());
             event.setCanceled(true);
         } else {
@@ -462,4 +581,5 @@ public class EventWearFlameArmor {
             Main.network.sendToServer(new MessageEmptySwing());
         }
     }
+
 }

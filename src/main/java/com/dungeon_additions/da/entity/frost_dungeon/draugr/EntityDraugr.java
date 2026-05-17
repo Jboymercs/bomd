@@ -108,6 +108,8 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
         } else {
             this.setHasShield(false);
         }
+        this.hemorrhage_resistance = 0.5F;
+        this.falter_resistance = 0.9F;
     }
 
     public EntityDraugr(World worldIn) {
@@ -121,6 +123,8 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
         } else {
             this.setHasShield(false);
         }
+        this.hemorrhage_resistance = 0.5F;
+        this.falter_resistance = 0.9F;
     }
 
 
@@ -241,7 +245,7 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.2, 1, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.getAttack();
-            ModUtils.handleAreaImpact(0.75f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+            ModUtils.handleAreaImpact(0.75f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.3F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 33);
 
@@ -265,7 +269,7 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.2, 1, 0)));
             DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.getAttack();
-            ModUtils.handleAreaImpact(0.75f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+            ModUtils.handleAreaImpact(0.75f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.5F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 33);
 
@@ -301,7 +305,7 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.2, 1, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.getAttack();
-            ModUtils.handleAreaImpact(0.75f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+            ModUtils.handleAreaImpact(0.75f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.2F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 32);
 

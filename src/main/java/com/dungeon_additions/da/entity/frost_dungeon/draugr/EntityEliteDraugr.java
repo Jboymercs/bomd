@@ -13,6 +13,7 @@ import com.dungeon_additions.da.entity.frost_dungeon.draugr.draugr_elite.*;
 import com.dungeon_additions.da.entity.night_lich.ProjectileMagicGround;
 import com.dungeon_additions.da.entity.night_lich.action.ActionLichTeleport;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
+import com.dungeon_additions.da.init.ModPotions;
 import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -116,6 +117,8 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
         this.setSize(1.75F, 3.95F);
         this.iAmBossMob = true;
         this.experienceValue = 65;
+        this.hemorrhage_resistance = 0.9F;
+        this.falter_resistance = 1.7F;
     }
 
     public EntityEliteDraugr(World worldIn) {
@@ -123,6 +126,8 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
         this.setSize(1.75F, 3.95F);
         this.iAmBossMob = true;
         this.experienceValue = 65;
+        this.hemorrhage_resistance = 0.9F;
+        this.falter_resistance = 1.7F;
     }
 
     private int longDistanceCooldown = 150;
@@ -287,7 +292,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
             if(!nearbyEntities.isEmpty()) {
                 for(EntityPlayer player : nearbyEntities) {
                     if(!player.isCreative() && !player.isSpectator()) {
-                        player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 300, 0));
+                        player.addPotionEffect(new PotionEffect(ModPotions.DEGRADATION, 300, 0));
                     }
                 }
             }
@@ -310,7 +315,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.3, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage = (float) (this.getAttack());
-                ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.4F);
                 this.playSound(SoundsHandler.DRAUGR_ELITE_SWING, 1.0f, 0.5f / (rand.nextFloat() * 0.4F + 0.4f));
             }
         }, 76);
@@ -337,7 +342,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.3, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage = (float) (this.getAttack());
-                ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.4F);
                 this.playSound(SoundsHandler.DRAUGR_ELITE_SWING, 1.0f, 0.5f / (rand.nextFloat() * 0.4F + 0.4f));
             }
         }, 97);
@@ -365,7 +370,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.3, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage = (float) (this.getAttack());
-                ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.9F);
                 this.playSound(SoundsHandler.DRAUGR_ELITE_SWING, 1.0f, 0.5f / (rand.nextFloat() * 0.4F + 0.4f));
                 new ActionSplitMagicWave(ground_projectiles, 0.55F).performAction(this, target);
             }
@@ -437,7 +442,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
                         Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.3, 0)));
                         DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                         float damage = (float) (this.getAttack());
-                        ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.6f, 0, false, MobEffects.SLOWNESS, 2, 100);
+                        ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.6f, 0, false, MobEffects.SLOWNESS, 2, 100, 0.3F);
                     }
                 }, b);
             }
@@ -511,7 +516,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.0, 1.3, 0)));
                 DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage = this.getAttack();
-                ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+                ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.3F);
                 this.playSound(SoundsHandler.DRAUGR_ELITE_SWING, 1.0f, 0.5f / (rand.nextFloat() * 0.4F + 0.4f));
             }
         }, 47);
@@ -580,7 +585,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
                   Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.3, 0)));
                   DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
                   float damage = this.getAttack();
-                  ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+                  ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.5F);
                   this.playSound(SoundsHandler.DRAUGR_ELITE_SWING, 1.0f, 0.5f / (rand.nextFloat() * 0.4F + 0.4f));
                   if (healthChange <= 0.5) {
                       new ActionQuickSling(ground_projectiles, 0.55F).performAction(this, target);
@@ -595,7 +600,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
                   Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.3, 0)));
                   DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
                   float damage = this.getAttack();
-                  ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+                  ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.5F);
                   this.playSound(SoundsHandler.DRAUGR_ELITE_SWING, 1.0f, 0.5f / (rand.nextFloat() * 0.4F + 0.4f));
                   if (healthChange <= 0.5) {
                       new ActionDraugrFullSling(ground_projectiles, 0.55F).performAction(this, target);
@@ -617,7 +622,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
                   Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.3, 0)));
                   DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
                   float damage = this.getAttack();
-                  ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+                  ModUtils.handleAreaImpact(2.0f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.5F);
                   this.playSound(SoundsHandler.DRAUGR_ELITE_SWING, 1.0f, 0.5f / (rand.nextFloat() * 0.4F + 0.4f));
                   if (healthChange <= 0.5) {
                       new ActionQuickSling(ground_projectiles, 0.55F).performAction(this, target);

@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.items.trinket;
 
 import baubles.api.BaubleType;
+import baubles.api.BaublesApi;
 import baubles.api.IBauble;
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
@@ -24,6 +25,7 @@ import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -40,28 +42,52 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.common.Optional;
 import org.lwjgl.Sys;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Vector;
 
-public class ItemTrinket extends ItemBase {
+
+@Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles")
+public class ItemTrinket extends ItemBase implements IBauble{
     private String info_loc;
 
-    private final baubleSlot baubleSlot;
+
+    private int slotId;
     public boolean hasKeyAbility = false;
 
-    public enum baubleSlot {
-        CHARM(1),
-        TRINKET(1),
-        AMULET(1);
-        baubleSlot(int max){
-
+    @Optional.Method(modid = "baubles")
+    public BaubleType getBaubleType(ItemStack itemstack) {
+        if (slotId == 1) {
+            return BaubleType.CHARM;
+        } else if (slotId == 2) {
+            return BaubleType.AMULET;
+        } else if (slotId == 3) {
+            return BaubleType.BELT;
+        } else if (slotId == 4) {
+            return BaubleType.TRINKET;
         }
+        return BaubleType.RING;
     }
 
-    public ItemTrinket(String name, String info_loc, int maxDamage, baubleSlot slot) {
+    @Optional.Method(modid = "baubles")
+    public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
+        int max = 0;
+        if(player instanceof EntityPlayer) {
+            EntityPlayer entityplayer = (EntityPlayer)player;
+            for (int i = 0; i < BaublesApi.getBaublesHandler(entityplayer).getSlots(); i++) {
+                ItemStack stack = BaublesApi.getBaublesHandler(entityplayer).getStackInSlot(i);
+                if(stack.getItem() instanceof ItemTrinket) {
+                    max = max + 1;
+                }
+            }
+        }
+        return max <= PotionTrinketConfig.max_trinkets_allowed;
+    }
+
+    public ItemTrinket(String name, String info_loc, int maxDamage, int slotID) {
         super(name);
         this.setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
@@ -71,27 +97,21 @@ public class ItemTrinket extends ItemBase {
         } else {
             this.setMaxDamage(maxDamage);
         }
-        baubleSlot = slot;
+        this.slotId = slotID;
     }
 
-    public ItemTrinket(String name, String info_loc, int maxDamage, baubleSlot slot, boolean hasKeyAbility) {
+    public ItemTrinket(String name, String info_loc, int maxDamage, int slotID, boolean hasKeyAbility) {
         super(name);
         this.setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
         this.maxStackSize = 1;
+        this.slotId = slotID;
         if(PotionTrinketConfig.trinkets_unbreakable) {
             this.setMaxDamage(-1);
         } else {
             this.setMaxDamage(maxDamage);
         }
-        baubleSlot = slot;
         this.hasKeyAbility = hasKeyAbility;
-    }
-
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt){
-        return BaublesIntegration.isEnabled() ? new BaublesIntegration.BaubleProvider(baubleSlot) : null;
     }
 
 
@@ -188,12 +208,14 @@ public class ItemTrinket extends ItemBase {
                 float damage = PotionTrinketConfig.rotten_ring_damage + ModUtils.addMageSetBonus(player, 0, 2F);
                 ModUtils.handleAreaImpact(3.0f, (e) -> damage, player, offset, source, 0.8f, 0, false, MobEffects.POISON, 0, 200);
                 world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.ROT_SELF_AOE, SoundCategory.NEUTRAL, 1.25f, 0.8f / (world.rand.nextFloat() * 0.4F + 0.4f));
-                ModUtils.circleCallback(3, 35, (pos)-> {
-                    pos = new Vec3d(pos.x, 0, pos.y);
-                    ParticleManager.spawnColoredSmoke(world, player.getPositionVector().add(0, 1, 0), ModColors.GREEN, pos.normalize().scale(0.25).add(ModUtils.yVec(0)));
-                });
                 stack.damageItem(1, player);
                 player.getCooldownTracker().setCooldown(stack.getItem(), 600);
+                ModUtils.circleCallback(3, 35, (pos)-> {
+                    pos = new Vec3d(pos.x, 0, pos.y);
+                    Vec3d posToo = player.getPositionVector().add(0, 1, 0);
+                    Vec3d vel = pos.normalize().scale(0.25F).add(ModUtils.yVec(0));
+                    Main.proxy.spawnParticle(30, world, posToo.x, posToo.y, posToo.z, vel.x, vel.y, vel.z,45824 );
+                });
                 //Blue Trinket
             } else if (type == 6 && !player.getCooldownTracker().hasCooldown(stack.getItem())) {
                 //spawn 3 Projectiles
@@ -214,10 +236,6 @@ public class ItemTrinket extends ItemBase {
                 explosion2.setPosition(setPos2.x, setPos2.y, setPos2.z);
                 world.spawnEntity(explosion2);
                 world.spawnEntity(explosion);
-                ModUtils.circleCallback(3, 20, (pos)-> {
-                    pos = new Vec3d(pos.x, 0, pos.y);
-                    ParticleManager.spawnColoredSmoke(world, player.getPositionVector().add(0, 1, 0), ModColors.FIREBALL_ORANGE, pos.normalize().add(0, 0.5, 0));
-                });
                 stack.damageItem(1, player);
                 player.getCooldownTracker().setCooldown(stack.getItem(), 900);
                 //Mace Trinket

@@ -120,6 +120,8 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
         this.setSize(0.7F, 2.40F);
         this.experienceValue = 40;
         hasFallTpOverride = true;
+        this.falter_resistance = 1.7F;
+        this.hemorrhage_resistance = 0.7F;
     }
 
     public EntityImperialSword(World worldIn) {
@@ -127,6 +129,8 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
         this.setSize(0.7F, 2.40F);
         this.experienceValue = 40;
         hasFallTpOverride = true;
+        this.falter_resistance = 1.7F;
+        this.hemorrhage_resistance = 0.7F;
     }
 
     @Override
@@ -320,7 +324,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.1, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = (float) (this.getAttack() * 1.25);
-          ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+          ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.7F);
           this.playSound(SoundsHandler.IMPERIAL_START_MAGIC, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
       }, 35);
 
@@ -349,7 +353,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.1, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage = this.getAttack();
-          ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+          ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.5F);
           this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
       }, 45);
 
@@ -385,7 +389,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
               Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.1, 0)));
               DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
               float damage = this.getAttack();
-              ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+              ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.5F);
               this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           }, 30);
 
@@ -408,7 +412,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
               Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.0, 1.1, 0)));
               DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
               float damage = this.getAttack();
-              ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+              ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.5F);
               this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           }, 62);
 
@@ -446,7 +450,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
               Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.1, 0)));
               DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
               float damage = this.getAttack();
-              ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+              ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.5F);
               this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           }, 30);
 
@@ -469,7 +473,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
               Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.0, 1.1, 0)));
               DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
               float damage = this.getAttack();
-              ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+              ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.5F);
               this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
           }, 62);
 
@@ -501,7 +505,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.1, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = 0F;
-            ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+            ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.1f, 0, false, 1.3F);
             this.playSound(SoundsHandler.IMPERIAL_COUNTER, 0.7f, 0.8f / (rand.nextFloat() * 0.4f + 0.8f));
         }, 5);
 
@@ -510,7 +514,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
             addEvent(()-> {
                 this.setImmovable(false);
                 double distance = this.getPositionVector().distanceTo(targetedPos);
-                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.12),0.2F);
+                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.22),0.2F);
             }, 2);
         }, 21);
 

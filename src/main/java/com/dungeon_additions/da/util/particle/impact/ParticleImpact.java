@@ -16,6 +16,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ParticleImpact extends ParticleSSBase {
+
+    private int hangTime;
     private static final ResourceLocation PIXEL_TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/particle/impact.png");
 
     protected ParticleImpact(TextureManager textureManager, World worldIn, double x, double y, double z, double movementX, double movementY, double movementZ)
@@ -28,7 +30,7 @@ public class ParticleImpact extends ParticleSSBase {
         this.motionX = movementX;
         this.motionY = movementY;
         this.motionZ = movementZ;
-        this.particleMaxAge = (int)15;
+        this.particleMaxAge = (int)7;
         this.texSheetSeg = 2;
         this.renderYOffset = 0.01F;
         this.particleScale =  4;
@@ -38,8 +40,12 @@ public class ParticleImpact extends ParticleSSBase {
     {
         super.onUpdate();
         // this.texSpot = this.particleAge * 3 / (this.particleMaxAge);
-        this.particleScale+= 2.05;
+        this.particleScale+= 2.55;
         this.texSpot = Math.min(this.particleAge * 5 / (this.particleMaxAge), 3);
+        if(particleAge > 3) {
+            hangTime++;
+            this.setAlphaF(1.0F - ((float) hangTime / (float) this.particleMaxAge));
+        }
     }
 
     public Vec3d[] particleVertexRendering(BufferBuilder buffer, Entity entity, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ, float particleSize)

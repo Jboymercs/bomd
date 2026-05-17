@@ -338,6 +338,7 @@ public class SoundsHandler {
     public static SoundEvent KEY_UNLOCK_SOUND;
     public static SoundEvent DELAYED_EXPLOSION_CAST;
     public static SoundEvent DELAYED_EXPLOSION_IMPACT;
+    public static SoundEvent HEMORRHAGE_IMPACT;
 
     //Aegyptian Warlord
     public static SoundEvent WARLORD_CUTS_SWING;
@@ -726,6 +727,7 @@ public class SoundsHandler {
         KEY_UNLOCK_SOUND = registerSound("confetti.key_unlock", "entity");
         DELAYED_EXPLOSION_CAST = registerSound("confetti.explosion_cast", "entity");
         DELAYED_EXPLOSION_IMPACT = registerSound("confetti.explosion_impact", "entity");
+        HEMORRHAGE_IMPACT = registerSound("confetti.hemorrhage", "entity");
         //MUSIC
         HIGH_DRAGON_TRACK = registerSound("ambient.high_dragon", "music");
         HIGH_KING_TRACK = registerSound("ambient.high_king", "music");

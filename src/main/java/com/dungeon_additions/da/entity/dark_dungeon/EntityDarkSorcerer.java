@@ -105,12 +105,16 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
         super(worldIn, x, y, z);
         this.experienceValue = 15;
         this.setSize(0.6F, 1.95F);
+        this.falter_resistance = 0.5F;
+        this.hemorrhage_resistance = 0.9F;
     }
 
     public EntityDarkSorcerer(World worldIn) {
         super(worldIn);
         this.experienceValue = 15;
         this.setSize(0.6F, 1.95F);
+        this.falter_resistance = 0.5F;
+        this.hemorrhage_resistance = 0.9F;
     }
 
     @Override
@@ -296,7 +300,7 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.3, 1.0, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage = (this.getAttack());
-          ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.3f, 0, false, MobEffects.BLINDNESS, 0, 100);
+          ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.3f, 0, false, MobEffects.BLINDNESS, 0, 100, 0.4F);
           this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
       }, 25);
 
@@ -345,7 +349,7 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.3, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = (this.getAttack());
-            ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.3f, 0, false);
+            ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.3f, 0, false, 0.3F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 18);
 
@@ -387,7 +391,7 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = (this.getAttack());
-            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.7f, 0, false);
+            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.7f, 0, false, 0.9F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 35);
 
@@ -476,7 +480,7 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
                   Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 1.3, 0)));
                   DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                   float damage = (this.getAttack());
-                  ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.7f, 0, false);
+                  ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.7f, 0, false, 0.4F);
               }, i);
           }
       }, 30);

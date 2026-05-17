@@ -263,6 +263,8 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         this.iAmBossMob = true;
         this.setIdleState(true);
         this.bossInfo.setVisible(false);
+        this.hemorrhage_resistance = 0.91F;
+        this.falter_resistance = 1.8F;
     }
 
     public EntityApathyr(World worldIn) {
@@ -272,6 +274,8 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         this.iAmBossMob = true;
         this.setIdleState(true);
         this.bossInfo.setVisible(false);
+        this.hemorrhage_resistance = 0.91F;
+        this.falter_resistance = 1.8F;
     }
 
     public EntityApathyr(World worldIn, int timesUsed, BlockPos pos) {
@@ -284,6 +288,8 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         this.experienceValue = 300;
         this.iAmBossMob = true;
         this.bossInfo.setVisible(false);
+        this.hemorrhage_resistance = 0.91F;
+        this.falter_resistance = 1.8F;
     }
 
     @Override
@@ -688,7 +694,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                                     this.timesUsed--;
                                     turnBossIntoSummonSpawner(this.getSpawnLocation());
                                     this.setDead();
-                                } else {
+                                } else if(!this.isFightMode()) {
                                     this.resetBoss();
                                 }
                             }
@@ -976,7 +982,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             this.setSecondary(false);
             this.setTertiary(false);
             double[] weights = {
-                    (upper_swing != prevAttack) ? distance * 0.02 : 0, //Upper Swing        //ACTIVE
+                     distance * 0.02, //Upper Swing        //ACTIVE
                     (jab_attack != prevAttack && !this.isSpawningWaves()) ? 1/distance : 0, //Jab or Thrust Attack
                     (push != prevAttack && !this.isSpawningWaves()) ? 1/distance : 0, // Push or Shove Attack
                     (swing != prevAttack && !this.isSpawningWaves()) ? 1/distance : 0, // Swing can swing twice
@@ -1270,7 +1276,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack() * 1.5);
-            ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 1.2f, 0, false, MobEffects.SLOWNESS, 0, 150);
+            ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 1.2f, 0, false, MobEffects.SLOWNESS, 0, 150, 0.7F);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 1.2, 0)));
@@ -1411,7 +1417,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2.5, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+            ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.3F);
             this.destroyBlocksInSwing(new Vec3d(2.5, 1.2, 0), 0.9);
             this.setImmovable(true);
             //do projectile attack
@@ -1472,7 +1478,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+            ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.8F);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.destroyBlocksInSwing(new Vec3d(1.5, 1.2, 0), 1.1);
         }, 30);
@@ -1533,7 +1539,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.0, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 1.3f, 0, false);
+            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 1.3f, 0, false, 0.3F);
                this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.8f, 0.4f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 26);
 
@@ -1600,7 +1606,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(2.25f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(2.25f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.7F);
                 this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
                 this.destroyBlocksInSwing(new Vec3d(1, 1.2, 0), 1.1);
                 double healthFac = this.getHealth()/this.getMaxHealth();
@@ -1629,7 +1635,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(2.25f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(2.25f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.7F);
                 this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
                 this.destroyBlocksInSwing(new Vec3d(1, 1.2, 0), 1.1);
                 double healthFac = this.getHealth()/this.getMaxHealth();
@@ -1691,7 +1697,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(2.25f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(2.25f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.7F);
                 this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
                 this.destroyBlocksInSwing(new Vec3d(1, 1.2, 0), 1.1);
                 double healthFac = this.getHealth()/this.getMaxHealth();
@@ -1816,7 +1822,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+            ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false, 0.6F);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 30);
 
@@ -1824,7 +1830,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+            ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 0.9f, 0, false, 0.6F);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 35);
 
@@ -1946,7 +1952,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack() * 1.5);
-            ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 1.2f, 0, false);
+            ModUtils.handleAreaImpact(2.75f, (e) -> damage, this, offset, source, 1.2f, 0, false, 0.7F);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 1.2, 0)));
@@ -2016,7 +2022,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+            ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.7F);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.destroyBlocksInSwing(new Vec3d(1.5, 1.2, 0), 1.1);
         }, 30);
@@ -2072,7 +2078,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.0, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 1.3f, 0, false);
+            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 1.3f, 0, false, 0.2F);
             //   this.playSound(SoundsHandler.REANIMATE_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 26);
 
@@ -2132,7 +2138,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.1f, 0, false);
+            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.1f, 0, false, 0.8F);
             this.setImmovable(true);
             //   this.playSound(SoundsHandler.REANIMATE_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 22);
@@ -2224,7 +2230,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 1.2, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage =(float) (this.getAttack());
-          ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+          ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false, 0.5F);
           this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
       }, 30);
 
@@ -2232,7 +2238,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+            ModUtils.handleAreaImpact(4f, (e) -> damage, this, offset, source, 0.9f, 0, false, 0.5F);
             this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 35);
 
@@ -2284,7 +2290,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage =(float) (this.getAttack());
-                ModUtils.handleAreaImpact(2.25f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                ModUtils.handleAreaImpact(2.25f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.6F);
                 this.playSound(SoundsHandler.APATHYR_SWING, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
                 this.destroyBlocksInSwing(new Vec3d(1, 1.2, 0), 1.1);
                 double healthFac = this.getHealth()/this.getMaxHealth();

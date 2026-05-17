@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ParticleParry extends ParticleSSBase {
     private static final ResourceLocation PIXEL_TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/particle/parry.png");
-
+    private int hangTime;
     public ParticleParry(TextureManager textureManager, World world, double x, double y, double z, double movementX, double movementY, double movementZ, int texSpotIn) {
         super(textureManager, world, x, y, z, movementX, movementY, movementZ, PIXEL_TEXTURE, 0);
         this.textureManager = textureManager;
@@ -46,6 +46,10 @@ public class ParticleParry extends ParticleSSBase {
     {
         super.onUpdate();
         this.texSpot = this.particleAge * 3 / (this.particleMaxAge);
+        if(particleAge > 3) {
+            hangTime++;
+            this.setAlphaF(1.0F - ((float) hangTime / (float) this.particleMaxAge));
+        }
     }
 
     @Override

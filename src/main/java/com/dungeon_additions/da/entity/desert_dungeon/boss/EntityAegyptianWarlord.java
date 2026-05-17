@@ -152,6 +152,8 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.iAmBossMob = true;
         this.experienceValue = 225;
         this.timesUsed++;
+        this.falter_resistance = 1.0F;
+        this.hemorrhage_resistance = 0.75F;
         this.doBossReSummonScaling();
     }
 
@@ -162,6 +164,8 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.bossInfo.setVisible(false);
         this.iAmBossMob = true;
         this.experienceValue = 225;
+        this.falter_resistance = 1.6F;
+        this.hemorrhage_resistance = 0.75F;
     }
 
     public EntityAegyptianWarlord(World worldIn) {
@@ -171,6 +175,8 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.bossInfo.setVisible(false);
         this.iAmBossMob = true;
         this.experienceValue = 225;
+        this.falter_resistance = 1.6F;
+        this.hemorrhage_resistance = 0.75F;
     }
 
 
@@ -486,7 +492,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
           float damage =(float) (this.getAttack() * 1.25);
-          ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+          ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.9F);
           this.playSound(SoundsHandler.WARLORD_TAIL_WHIP, 1.3f, 0.7f / (rand.nextFloat() * 0.5f + 0.2f));
           Main.proxy.spawnParticle(18,world, this.posX, this.posY + 0.5, this.posZ, 0, 0, 0);
           addEvent(() -> {
@@ -525,7 +531,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage =(float) (this.getAttack() * 1.25);
-          ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.7f, 0, false);
+          ModUtils.handleAreaImpact(2.5f, (e) -> damage, this, offset, source, 0.7f, 0, false, 0.4F);
           this.playSound(SoundsHandler.WARLORD_TAIL_WHIP, 1.3f, 0.7f / (rand.nextFloat() * 0.5f + 0.2f));
           //do cuts in a line like manner
           new ActionWarlordCutsLine().performAction(this, target);
@@ -562,7 +568,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
               Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
               DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
               float damage =(float) (this.getAttack() * 1.25);
-              ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+              ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.9f, 0, false, 0.4F);
               this.playSound(SoundsHandler.WARLORD_SWING, 1f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           }, 5);
       }, 15);
@@ -571,7 +577,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.2, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage =(float) (this.getAttack() * 1.25);
-          ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.9f, 0, false);
+          ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.9f, 0, false, 0.4F);
           this.playSound(SoundsHandler.COLOSSUS_HILT_SLAM, 1.3f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           this.setImmovable(true);
           //do wave action
@@ -621,7 +627,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.3, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage =(float) (this.getAttack() * 1.25);
-                ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false, MobEffects.SLOWNESS, 0, 100);
+                ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.9f, 0, false, MobEffects.SLOWNESS, 0, 100, 1.0F);
             }
             this.playSound(SoundsHandler.WARLORD_SWING, 1.4f, 0.7f / (rand.nextFloat() * 0.5f + 0.2f));
         }, 30);
@@ -679,7 +685,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.3, 1.2, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage =(float) (this.getAttack());
-          ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+          ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.4F);
           this.playSound(SoundsHandler.WARLORD_SWING_MAGIC, 1.3f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
           this.setImmovable(true);
       }, 40);
@@ -714,7 +720,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.3, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+            ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.3F);
             this.playSound(SoundsHandler.WARLORD_SWING, 1f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.setImmovable(true);
         }, 21);
@@ -737,7 +743,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.3, 1.2, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage =(float) (this.getAttack());
-            ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+            ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.3F);
             this.playSound(SoundsHandler.WARLORD_SWING, 1f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f));
             this.setImmovable(true);
         }, 35);
@@ -944,6 +950,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             if(source.getImmediateSource() instanceof EntityLivingBase) {
                 EntityLivingBase base = ((EntityLivingBase) source.getImmediateSource());
                 if(!(base instanceof EntityDesertBase)) {
+                    ModUtils.addFalterTooEnemies(base, 1.0F, 30);
                     this.doParryAttack(base);
                     return false;
                 }
@@ -981,7 +988,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             this.setImmovable(false);
             Vec3d targetedPos = target.getPositionVector();
             double distance = this.getPositionVector().distanceTo(targetedPos);
-            ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.2),0.1F);
+            ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.3),0.1F);
         }, 36);
         addEvent(()-> {
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.3, 1.2, 0)));

@@ -215,6 +215,8 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         this.setSpawnLocation(offset);
         this.setSetSpawnLoc(true);
         this.onSummonBoss();
+        this.falter_resistance = 1.1F;
+        this.hemorrhage_resistance = 0.93F;
     }
 
     public EntityVoidiclysm(World world, int timesUsed, BlockPos pos) {
@@ -236,6 +238,8 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         this.setSpawnLocation(pos);
         this.setSetSpawnLoc(true);
         this.onSummonBoss();
+        this.falter_resistance = 1.1F;
+        this.hemorrhage_resistance = 0.93F;
     }
 
     public EntityVoidiclysm(World worldIn) {
@@ -250,6 +254,8 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
             initVoidclysmAI();
         }
         this.onSummonBoss();
+        this.falter_resistance = 1.1F;
+        this.hemorrhage_resistance = 0.93F;
     }
 
     private void onSummonBoss() {
@@ -844,7 +850,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.0, 0)));
         DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
         float damage = (float) (0);
-        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.1f, 0, false, MobEffects.WEAKNESS, 0, 200);
+        ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.1f, 0, false, MobEffects.WEAKNESS, 0, 200, 1.9F);
         target.hurtResistantTime = 0;
         if(target.getMaxHealth() > 40) {
             target.setHealth((float) (target.getHealth() - 20));
@@ -1004,7 +1010,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.0, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage = (float) (this.getAttack());
-                ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.5f, 0, false);
+                ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.5f, 0, false, 0.6F);
             }, 30);
 
             addEvent(()-> {
@@ -1031,7 +1037,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.0, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage = (float) (this.getAttack());
-                ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.5f, 0, false);
+                ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.5f, 0, false, 0.6F);
             }, 60);
 
             addEvent(()-> {
@@ -1069,7 +1075,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.0, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
                 float damage = (float) (this.getAttack());
-                ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.5f, 0, false);
+                ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.5f, 0, false, 0.6F);
             }, 30);
 
             addEvent(()-> {

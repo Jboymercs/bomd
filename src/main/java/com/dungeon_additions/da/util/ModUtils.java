@@ -1,9 +1,11 @@
 package com.dungeon_additions.da.util;
 
+import baubles.api.BaublesApi;
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.blocks.lich.EnumLichSpawner;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.PotionTrinketConfig;
+import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityLichSpawner;
@@ -11,6 +13,7 @@ import com.dungeon_additions.da.event.EventScheduler;
 import com.dungeon_additions.da.event.Services;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.init.ModPotions;
 import com.dungeon_additions.da.integration.BaublesIntegration;
 import com.dungeon_additions.da.items.tools.ItemMageStaff;
 import com.dungeon_additions.da.items.trinket.ItemTrinket;
@@ -44,6 +47,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.client.gui.ForgeGuiFactory;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.lwjgl.Sys;
 
@@ -149,11 +153,6 @@ public class ModUtils {
         return angleBetweenYAxis - 90;
     }
 
-    public static double toPitchDragon(Vec3d vec) {
-        double angleBetweenYAxis = Math.toDegrees(unsignedAngle(vec, ModUtils.Y_AXIS.scale(-1)));
-        return angleBetweenYAxis - 30;
-    }
-
     public static double unsignedAngle(Vec3d a, Vec3d b) {
         double dot = a.dotProduct(b);
         double cos = dot / (a.length() * b.length());
@@ -164,24 +163,9 @@ public class ModUtils {
     public static ItemStack findTrinket(ItemStack stack, EntityPlayer player)
     {
         if(BaublesIntegration.isEnabled()) {
-            if (!BaublesIntegration.getEquippedArtifacts(player, ItemTrinket.baubleSlot.CHARM).isEmpty()) {
-                ItemStack stackBaubles = BaublesIntegration.getArtifactItemstack(player, ItemTrinket.baubleSlot.CHARM);
-                if (stackBaubles.getItem() == stack.getItem()) {
-                    return stackBaubles;
-                }
-            }
-
-            if(!BaublesIntegration.getEquippedArtifacts(player, ItemTrinket.baubleSlot.AMULET).isEmpty()) {
-                ItemStack stackBaubles3 = BaublesIntegration.getArtifactItemstack(player, ItemTrinket.baubleSlot.AMULET);
-                if (stackBaubles3.getItem() == stack.getItem()) {
-                    return stackBaubles3;
-                }
-            }
-            if (!BaublesIntegration.getEquippedArtifacts(player, ItemTrinket.baubleSlot.TRINKET).isEmpty()) {
-                ItemStack stackBaubles2 = BaublesIntegration.getArtifactItemstack(player, ItemTrinket.baubleSlot.TRINKET);
-                if (stackBaubles2.getItem() == stack.getItem()) {
-                    return stackBaubles2;
-                }
+            ItemStack stackToo = getActiveBauble(player, stack);
+            if(stackToo != null) {
+                return stackToo;
             }
         } else  {
             if (player.getHeldItem(EnumHand.OFF_HAND).getItem() == stack.getItem()) {
@@ -203,6 +187,46 @@ public class ModUtils {
         return ItemStack.EMPTY;
     }
 
+    @Optional.Method(modid = "baubles")
+    public static ItemStack getActiveBauble(EntityLivingBase player, ItemStack stackFrom){
+        ItemStack item = null;
+        if (player instanceof EntityPlayer) {
+            EntityPlayer entityplayer = (EntityPlayer) player;
+            for (int i = 0; i < BaublesApi.getBaublesHandler(entityplayer).getSlots(); i++) {
+                ItemStack stack = BaublesApi.getBaublesHandler(entityplayer).getStackInSlot(i);
+                if (stack.getItem() instanceof ItemTrinket && stack.getItem() == stackFrom.getItem()) {
+                    item = stack;
+                }
+            }
+        }
+        return item;
+    }
+
+    /**
+     * Adds falter to the counter
+     */
+    public static void addFalterTooEnemies(EntityLivingBase target, float amount, int chance) {
+        //our mobs have there own way of handling faltering
+        if(target instanceof EntityAbstractBase && ModConfig.players_cause_falter) {
+            ((EntityAbstractBase)target).addFalterCounter(amount);
+        } else  {
+            //add faltering to players specifically
+            if(target instanceof EntityPlayer) {
+                EntityPlayer player = ((EntityPlayer) target);
+                PlayerFalterUtils.setPlayerGreedProgress(player, PlayerFalterUtils.getPlayerFalterProgress(player) + amount);
+
+            }else if (ModConfig.players_cause_falter){
+                //adds chances for other mobs to be affected by faltering weapons
+                int bRand = ModRand.range(1, 100);
+                if (!target.isNonBoss() && chance / 2 >= bRand) {
+                    target.addPotionEffect(new PotionEffect(ModPotions.FALTERED, (int) (200 * amount), 0, false, false));
+                } else if (chance >= bRand) {
+                    target.addPotionEffect(new PotionEffect(ModPotions.FALTERED, (int) (200 * amount), 0, false, false));
+                }
+            }
+        }
+    }
+
     /**
      * Gets enchantments on weapon for bonus damage to abilities
      * @param stack
@@ -214,6 +238,20 @@ public class ModUtils {
         int damage_bonus_3 = EnchantmentHelper.getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS, stack);
 
         return (damage_bonus + ((float) damage_bonus_2 /2) + ((float) damage_bonus_3 /2)) * multiplier;
+    }
+
+
+    /**
+     * Adds offhand same type bonuses
+     */
+    public static float addOffhandDualBonuses(EntityPlayer player) {
+        ItemStack stack = player.getHeldItemMainhand();
+
+                if(player.getHeldItemOffhand().getItem() == stack.getItem()) {
+                    return 1.3F;
+                }
+
+        return 1F;
     }
 
     /**
@@ -642,6 +680,58 @@ public class ModUtils {
                     double entitySizeFactor = avgEntitySize == 0 ? 1 : Math.max(0.5, Math.min(1, 1 / avgEntitySize));
                     double entitySizeFactorSq = Math.pow(entitySizeFactor, 2);
 
+                    if(entity instanceof EntityLivingBase) {
+                        addFalterTooEnemies(((EntityLivingBase) entity), 0.1F, 5);
+                    }
+                    // Velocity depends on the entity's size and the damage dealt squared
+                    Vec3d velocity = getCenter(entity.getEntityBoundingBox()).subtract(pos).normalize().scale(damageFactorSq).scale(knockbackFactor).scale(entitySizeFactorSq);
+                    entity.addVelocity(velocity.x, velocity.y, velocity.z);
+                }
+            }
+        });
+    }
+
+    public static void handleAreaImpact(float radius, Function<Entity, Float> maxDamage, Entity source, Vec3d pos, DamageSource damageSource,
+                                        float knockbackFactor, int fireFactor, boolean damageDecay, float falterValue) {
+        if (source == null) {
+            return;
+        }
+
+        List<Entity> list = source.world.getEntitiesWithinAABBExcludingEntity(source, new AxisAlignedBB(pos.x, pos.y, pos.z, pos.x, pos.y, pos.z).grow(radius));
+
+        Predicate<Entity> isInstance = i -> i instanceof EntityLivingBase || i instanceof MultiPartEntityPart || i.canBeCollidedWith();
+        double radiusSq = Math.pow(radius, 2);
+        //Hitbox testing
+        // Main.proxy.spawnParticle(29, pos.x, pos.y, pos.z, 0, 0, 0, (int) radius);
+        list.stream().filter(isInstance).forEach((entity) -> {
+
+            // Get the hitbox size of the entity because otherwise explosions are less
+            // effective against larger mobs
+            double avgEntitySize = entity.getEntityBoundingBox().getAverageEdgeLength() * 0.75;
+
+            // Choose the closest distance from the center or the head to encourage
+            // headshots
+            double distance = Math.min(Math.min(getCenter(entity.getEntityBoundingBox()).distanceTo(pos),
+                            entity.getPositionVector().add(ModUtils.yVec(entity.getEyeHeight())).distanceTo(pos)),
+                    entity.getPositionVector().distanceTo(pos));
+
+            // Subtracting the average size makes it so that the full damage can be dealt
+            // with a direct hit
+            double adjustedDistance = Math.max(distance - avgEntitySize, 0);
+            double adjustedDistanceSq = Math.pow(adjustedDistance, 2);
+            double damageFactor = damageDecay ? Math.max(0, Math.min(1, (radiusSq - adjustedDistanceSq) / radiusSq)) : 1;
+            // Damage decays by the square to make missed impacts less powerful
+            double damageFactorSq = Math.pow(damageFactor, 2);
+            double damage = maxDamage.apply(entity) * damageFactorSq;
+            if (damage > 0 && adjustedDistanceSq < radiusSq) {
+                entity.setFire((int) (fireFactor * damageFactorSq));
+                if(entity.attackEntityFrom(damageSource, (float) damage)) {
+                    double entitySizeFactor = avgEntitySize == 0 ? 1 : Math.max(0.5, Math.min(1, 1 / avgEntitySize));
+                    double entitySizeFactorSq = Math.pow(entitySizeFactor, 2);
+
+                    if(entity instanceof EntityLivingBase) {
+                        addFalterTooEnemies(((EntityLivingBase) entity), falterValue, (int) (falterValue * 30));
+                    }
                     // Velocity depends on the entity's size and the damage dealt squared
                     Vec3d velocity = getCenter(entity.getEntityBoundingBox()).subtract(pos).normalize().scale(damageFactorSq).scale(knockbackFactor).scale(entitySizeFactorSq);
                     entity.addVelocity(velocity.x, velocity.y, velocity.z);
@@ -692,6 +782,59 @@ public class ModUtils {
                     //adds potion effect
                     if(entity instanceof EntityLivingBase) {
                         ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(effectIn, time, amflifier, false, true));
+                    }
+
+                    // Velocity depends on the entity's size and the damage dealt squared
+                    Vec3d velocity = getCenter(entity.getEntityBoundingBox()).subtract(pos).normalize().scale(damageFactorSq).scale(knockbackFactor).scale(entitySizeFactorSq);
+                    entity.addVelocity(velocity.x, velocity.y, velocity.z);
+                }
+            }
+        });
+    }
+
+    //Add a potion effect upon successful hit
+    public static void handleAreaImpact(float radius, Function<Entity, Float> maxDamage, Entity source, Vec3d pos, DamageSource damageSource,
+                                        float knockbackFactor, int fireFactor, boolean damageDecay, Potion effectIn, int amflifier, int time, float falterTime) {
+        if (source == null) {
+            return;
+        }
+
+        List<Entity> list = source.world.getEntitiesWithinAABBExcludingEntity(source, new AxisAlignedBB(pos.x, pos.y, pos.z, pos.x, pos.y, pos.z).grow(radius));
+
+        Predicate<Entity> isInstance = i -> i instanceof EntityLivingBase || i instanceof MultiPartEntityPart || i.canBeCollidedWith();
+        double radiusSq = Math.pow(radius, 2);
+
+        list.stream().filter(isInstance).forEach((entity) -> {
+
+            // Get the hitbox size of the entity because otherwise explosions are less
+            // effective against larger mobs
+            double avgEntitySize = entity.getEntityBoundingBox().getAverageEdgeLength() * 0.75;
+
+            // Choose the closest distance from the center or the head to encourage
+            // headshots
+            double distance = Math.min(Math.min(getCenter(entity.getEntityBoundingBox()).distanceTo(pos),
+                            entity.getPositionVector().add(ModUtils.yVec(entity.getEyeHeight())).distanceTo(pos)),
+                    entity.getPositionVector().distanceTo(pos));
+
+            // Subtracting the average size makes it so that the full damage can be dealt
+            // with a direct hit
+            double adjustedDistance = Math.max(distance - avgEntitySize, 0);
+            double adjustedDistanceSq = Math.pow(adjustedDistance, 2);
+            double damageFactor = damageDecay ? Math.max(0, Math.min(1, (radiusSq - adjustedDistanceSq) / radiusSq)) : 1;
+
+            // Damage decays by the square to make missed impacts less powerful
+            double damageFactorSq = Math.pow(damageFactor, 2);
+            double damage = maxDamage.apply(entity) * damageFactorSq;
+            if (damage > 0 && adjustedDistanceSq < radiusSq) {
+                entity.setFire((int) (fireFactor * damageFactorSq));
+                if(entity.attackEntityFrom(damageSource, (float) damage)) {
+                    double entitySizeFactor = avgEntitySize == 0 ? 1 : Math.max(0.5, Math.min(1, 1 / avgEntitySize));
+                    double entitySizeFactorSq = Math.pow(entitySizeFactor, 2);
+
+                    //adds potion effect
+                    if(entity instanceof EntityLivingBase) {
+                        ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(effectIn, time, amflifier, false, true));
+                        addFalterTooEnemies(((EntityLivingBase) entity), falterTime, (int) falterTime * 30);
                     }
 
                     // Velocity depends on the entity's size and the damage dealt squared

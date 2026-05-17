@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.items.tools;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
@@ -12,11 +13,9 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -36,6 +35,8 @@ public class ItemNovikSword extends ItemAbilityWeapon implements IHasModel {
         super(name, material);
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
+        this.falter_value = 0.12F;
+        this.weapon_type = EnumWeaponType.SWORD;
     }
 
     @Override
@@ -101,7 +102,7 @@ public class ItemNovikSword extends ItemAbilityWeapon implements IHasModel {
     }
 
     @Override
-    protected double getAttackSpeed() {
+    public double getAttackSpeed() {
         return -2.1000000953674316D;
     }
 

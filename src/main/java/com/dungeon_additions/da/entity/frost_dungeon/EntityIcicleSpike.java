@@ -103,7 +103,7 @@ public class EntityIcicleSpike extends EntityFrostBase implements IAnimatable, I
                             DamageSource source;
                             source = ModDamageSource.builder().disablesShields().type(ModDamageSource.PLAYER).directEntity(this).build();
                             float damage = this.getAttack();
-                            ModUtils.handleAreaImpact(0.25f, (e) -> damageIn, this, offset, source, 0.15f, 0, false);
+                            ModUtils.handleAreaImpact(0.25f, (e) -> damageIn, this, offset, source, 0.15f, 0, false, 0.8F);
                         }
                     }
 
@@ -116,7 +116,7 @@ public class EntityIcicleSpike extends EntityFrostBase implements IAnimatable, I
                         DamageSource source;
                         source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                         float damage = this.getAttack();
-                        ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, offset, source, 0.15f, 0, false);
+                        ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, offset, source, 0.15f, 0, false, 0.5F);
                     }
                 }
 
