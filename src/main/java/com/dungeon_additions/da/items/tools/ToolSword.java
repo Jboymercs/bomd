@@ -7,8 +7,10 @@ import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.util.ISweepAttackOverride;
 import com.dungeon_additions.da.util.IHasModel;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -16,11 +18,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -32,11 +37,12 @@ public class ToolSword extends ItemSword implements IHasModel, ISweepAttackOverr
 
     public int ticksExisted;
     protected float falter_value = 0.1F;
+    protected SoundEvent swingSound;
     protected EnumWeaponType weapon_type = EnumWeaponType.DAGGER;
 //    private final AttributeModifier reach_distance;
  //   protected float reachDistanceValue = 0;
     public float weaponReach = 4.5F;
-
+    public float swingRadius = 0.5F;
 
     //delay for weapons when they are fully charged and the player swings, changes based upon
     protected int weaponDelay = (int) ((20/(4 + this.getAttackSpeed())) * 0.3);
@@ -50,6 +56,7 @@ public class ToolSword extends ItemSword implements IHasModel, ISweepAttackOverr
         setRegistryName(name);
         setCreativeTab(CreativeTabs.COMBAT);
         ModItems.ITEMS.add(this);
+        this.swingSound = SoundsHandler.SWING_REGULAR;
     //    this.reach_distance = new AttributeModifier("Weapon modifier", this.reachDistanceValue, 1);
     }
 
@@ -103,7 +110,9 @@ public class ToolSword extends ItemSword implements IHasModel, ISweepAttackOverr
 
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-
+        if(ModConfig.players_cause_falter && falter_value != 0 && ModConfig.enable_falter_tooltips) {
+            tooltip.add(TextFormatting.GRAY + I18n.format((ModUtils.DF_0.format(falter_value * 10)) + "") + net.minecraft.util.text.translation.I18n.translateToLocal("description.dungeon_additions.falter_value"));
+        }
         information.accept(tooltip);
     }
 
@@ -128,6 +137,13 @@ public class ToolSword extends ItemSword implements IHasModel, ISweepAttackOverr
             }
         }
         super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
+    }
+
+    public SoundEvent getSwingSound() {
+        if(swingSound != null) {
+            return swingSound;
+        }
+        return null;
     }
 
     public void setNBTonWeapon(ItemStack stack, int weaponDelay)
@@ -182,7 +198,7 @@ public class ToolSword extends ItemSword implements IHasModel, ISweepAttackOverr
 
     @Override
     public void doSweepAttack(EntityPlayer player, @Nullable EntityLivingBase entity) {
-        if(entity != null) {
+        if(entity != null && ModConfig.players_cause_falter) {
             float falterOffHandBonus = ModUtils.addOffhandDualBonuses(player);
             float totalBonus = player.onGround ? falterOffHandBonus : (falterOffHandBonus + 0.25F);
             ModUtils.addFalterTooEnemies(entity, falter_value * totalBonus, (int) (((falter_value * totalBonus) * 20)));

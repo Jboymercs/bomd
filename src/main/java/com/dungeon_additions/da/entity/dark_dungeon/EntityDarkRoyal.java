@@ -523,7 +523,7 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.6, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage =(float) (this.getAttack() * 1.5);
-            ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.8f, 0, false, 1.2F);
+            ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.8f, 0, false, 0.6F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.6f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 36);
 
@@ -560,7 +560,7 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.6, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = (this.getAttack());
-            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.3f, 0, false, 0.6F);
+            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.3f, 0, false, 0.4F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.6f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 30);
 
@@ -655,7 +655,7 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.6, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = (this.getAttack());
-            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.7f, 0, false, 1.2F);
+            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.7f, 0, false, 0.6F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.7f, 1.3f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 30);
 
@@ -710,7 +710,7 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.4, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = (this.getAttack());
-            ModUtils.handleAreaImpact(3.2f, (e) -> damage, this, offset, source, 0.7f, 0, false, 0.7F);
+            ModUtils.handleAreaImpact(3.2f, (e) -> damage, this, offset, source, 0.7f, 0, false, 0.3F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.5f / (rand.nextFloat() * 0.4f + 0.2f));
         }, 36);
 

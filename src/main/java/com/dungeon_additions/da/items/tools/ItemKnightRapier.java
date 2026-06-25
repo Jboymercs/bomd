@@ -7,6 +7,7 @@ import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.packets.PacketParryAnimationItem;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.PlayerFalterUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -41,9 +42,10 @@ public class ItemKnightRapier extends ToolSword{
     public ItemKnightRapier(String name, ToolMaterial material, String info_loc) {
         super(name, material);
         this.info_loc = info_loc;
-        this.setMaxDamage(502);
+        this.setMaxDamage(702);
         this.falter_value = 0.09F;
         this.weapon_type = EnumWeaponType.PARRY_SWORD;
+        this.swingRadius = 0.75F;
     }
 
     @Override
@@ -52,6 +54,7 @@ public class ItemKnightRapier extends ToolSword{
         if(ModConfig.enable_scaling_tooltips) {
             tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
@@ -132,6 +135,9 @@ public class ItemKnightRapier extends ToolSword{
                             player.motionY = 0.14;
                             player.motionZ = moveVec.z;
                             player.velocityChanged = true;
+                            if(PlayerFalterUtils.getPlayerFalterProgress(player) > 0) {
+                                PlayerFalterUtils.setPlayerGreedProgress(player, PlayerFalterUtils.getPlayerFalterProgress(player) - 0.2F);
+                            }
                         }
                     }
                 } else {

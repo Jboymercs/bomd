@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RBR",
+    "X X"
+  ],
+  "key": {
+    "X": {
+      "item": "da:crypt_plate"
+    },
+    "R": {
+      "item": "da:nightfall_scrap"
+    },
+    "B": {
+      "item": "da:dark_mana"
+    }
+  },
+  "result": {
+    "item": "da:nightfall_helmet"
+  }
+}

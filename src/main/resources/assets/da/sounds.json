@@ -100,6 +100,46 @@
       }
     ]
   },
+  "entity.confetti.cast_generic": {
+    "category": "entity",
+    "subtitle": "cast_generic_spell",
+    "sounds": [
+      {
+        "name": "da:entity/confetti/cast_generic",
+        "stream": false
+      }
+    ]
+  },
+  "entity.confetti.swing_normal": {
+    "category": "entity",
+    "subtitle": "confetti.swing_regular",
+    "sounds": [
+      {
+        "name": "da:entity/confetti/swing_normal",
+        "stream": false
+      }
+    ]
+  },
+  "entity.confetti.swing_fast": {
+    "category": "entity",
+    "subtitle": "confetti.swing_fast",
+    "sounds": [
+      {
+        "name": "da:entity/confetti/swing_fast",
+        "stream": false
+      }
+    ]
+  },
+  "entity.confetti.swing_heavy": {
+    "category": "entity",
+    "subtitle": "swing_heavy",
+    "sounds": [
+      {
+        "name": "da:entity/confetti/swing_heavy",
+        "stream": false
+      }
+    ]
+  },
   "entity.confetti.hemorrhage": {
     "category": "entity",
     "subtitle": "hemorrhage.impact",
@@ -388,6 +428,208 @@
     "sounds": [
       {
         "name": "da:entity/night_lich/rage_prepare",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.hurt": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/hurt1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/dauntless/hurt2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/dauntless/hurt3",
+        "stream": false
+      },
+      {
+        "name": "da:entity/dauntless/hurt4",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.swing": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.swing",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/swing",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.cast_projectile": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.cast_projectile",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/cast_projectile",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.prepare_spell": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.prepare_spell",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/prepare_spell",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.shoot_crystal": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.shoot_cystal",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/shoot_crystal",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.throw_sword": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.throw_sword",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/throw_sword",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.aoe_explode": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.aoe_explode",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/aoe_explode",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.aoe_cast": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.aoe_cast",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/aoe_cast",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.aoe_less_explode": {
+    "category": "entity",
+    "subtitle": "entity.aoe_less_explode",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/aoe_less_explode",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.crystal_explode": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.crystal_explode",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/crystal_explode",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.lazer": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.lazer",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/lazer",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.yell": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.yell",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/yell",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.yell_short": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.yell_short",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/yell_short",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.self_aoe": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.self_aoe",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/self_aoe",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.punch": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.punch",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/punch",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.impact": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.impact",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/impact",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.vertical_lazer": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.vertical_lazer",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/vertical_lazer",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.use_sword": {
+    "category": "entity",
+    "subtitle": "entity.dauntless.use_sword",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/use_sword",
+        "stream": false
+      }
+    ]
+  },
+  "entity.dauntless.dark_void": {
+    "category": "entity",
+    "subtitle": "entity.void.dark_void",
+    "sounds": [
+      {
+        "name": "da:entity/dauntless/dark_void",
         "stream": false
       }
     ]
@@ -3861,6 +4103,15 @@
     "sounds": [
       {
         "name": "da:music/darkdrift",
+        "stream": true
+      }
+    ]
+  },
+  "music.ambient.dauntless": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "da:music/dauntless_track",
         "stream": true
       }
     ]

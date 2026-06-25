@@ -38,6 +38,7 @@ public abstract class EntityModThrowable  extends Entity implements IProjectile 
     private Block inTile;
     protected boolean inGround;
     protected int timeInGround;
+    protected boolean isThrowable = false;
     /**
      * Seems to be some sort of timer for animating an arrow.
      */
@@ -181,7 +182,17 @@ public abstract class EntityModThrowable  extends Entity implements IProjectile 
             --this.throwableShake;
         }
 
-        if (this.inGround && !isLocatorItem) {
+        if(this.isThrowable) {
+            int j = block.getMetaFromState(iblockstate);
+            if ((block != this.inTile) && !this.world.collidesWithAnyBlock(this.getEntityBoundingBox().grow(0.05))) {
+                this.inGround = false;
+                this.motionX *= (double)(this.rand.nextFloat() * 0.2F);
+                this.motionY *= (double)(this.rand.nextFloat() * 0.2F);
+                this.motionZ *= (double)(this.rand.nextFloat() * 0.2F);
+                this.ticksInGround = 0;
+                this.ticksInAir = 0;
+            }
+        }else if (this.inGround && !isLocatorItem) {
             if (this.world.getBlockState(new BlockPos(this.xTile, this.yTile, this.zTile)).getBlock() == this.inTile) {
                 ++this.ticksInGround;
 
@@ -192,12 +203,14 @@ public abstract class EntityModThrowable  extends Entity implements IProjectile 
                 return;
             }
 
-            this.inGround = false;
-            this.motionX *= this.rand.nextFloat() * 0.2F;
-            this.motionY *= this.rand.nextFloat() * 0.2F;
-            this.motionZ *= this.rand.nextFloat() * 0.2F;
-            this.ticksInGround = 0;
-            this.ticksInAir = 0;
+            if(!this.isThrowable) {
+                this.inGround = false;
+                this.motionX *= this.rand.nextFloat() * 0.2F;
+                this.motionY *= this.rand.nextFloat() * 0.2F;
+                this.motionZ *= this.rand.nextFloat() * 0.2F;
+                this.ticksInGround = 0;
+                this.ticksInAir = 0;
+            }
         } else {
             this.timeInGround = 0;
             ++this.ticksInAir;
@@ -207,7 +220,7 @@ public abstract class EntityModThrowable  extends Entity implements IProjectile 
             vec3d1 = new Vec3d(this.posX, this.posY, this.posZ);
             vec3d = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
-            if (raytraceresult != null && !isLocatorItem) {
+            if (raytraceresult != null && !isLocatorItem && !this.isThrowable) {
                 vec3d = new Vec3d(raytraceresult.hitVec.x, raytraceresult.hitVec.y, raytraceresult.hitVec.z);
             }
 
@@ -225,7 +238,7 @@ public abstract class EntityModThrowable  extends Entity implements IProjectile 
                 }
             }
 
-            if (raytraceresult != null && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
+            if (raytraceresult != null && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult) && !this.isThrowable) {
                     this.onHit(raytraceresult);
             }
 
@@ -280,7 +293,9 @@ public abstract class EntityModThrowable  extends Entity implements IProjectile 
             }
 
             this.setPosition(this.posX, this.posY, this.posZ);
-            this.doBlockCollisions();
+            if(!this.isThrowable) {
+                this.doBlockCollisions();
+            }
         }
     }
 

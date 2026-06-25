@@ -62,7 +62,7 @@ public class ModWorldGen implements IWorldGenerator {
         }
         //Cults Domain
         if(isAllowedDimensionTooSpawnInCultCastle(world.provider.getDimension()) && WorldConfig.cult_castle_enabled) {
-            cults_domain.generate(world, random, pos);
+            //cults_domain.generate(world, random, pos);
         }
         //nether arena
         if(world.provider.getDimension() == -1 && WorldConfig.burning_flame_arena_enabled) {

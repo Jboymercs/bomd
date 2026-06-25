@@ -5,12 +5,15 @@ import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDauntless;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -93,8 +96,16 @@ public class EntityDauntlessAOE extends EntityDarkBase implements IAnimatable, I
         this.rotationYawHead = 0;
         this.renderYawOffset = 0;
 
+        if(this.ticksExisted == 1 && world.rand.nextInt(8) == 0) {
+            world.playSound((EntityPlayer) null, this.posX, this.posY, this.posZ, SoundsHandler.DAUNTLESS_AOE_CAST, SoundCategory.NEUTRAL, 0.3f, 0.7f / (world.rand.nextFloat() * 0.4F + 0.2f));
+        }
+
         if(this.getTimeAlive() == 4) {
             Main.proxy.spawnParticle(35, world, this.posX, this.posY + 0.3F, this.posZ, 0,0,0);
+            if(world.rand.nextInt(4) == 0) {
+                this.playSound(SoundsHandler.DAUNTLESS_LESS_AOE_EXPLODE, 0.7f, 0.7f / (rand.nextFloat() * 0.4f + 0.6f));
+            }
+
         }
         if(this.getTimeAlive() > 0) {
             this.setTimeAlive(this.getTimeAlive() - 1);

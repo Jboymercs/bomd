@@ -47,6 +47,7 @@ public class PacketControlInput implements IMessageHandler<PacketControlInput.Me
                         ItemStack mace_trinket = ModUtils.findTrinket(new ItemStack(ModItems.MACE_TRINKET), player);
                         ItemStack rally_trinket = ModUtils.findTrinket(new ItemStack(ModItems.RALLY_TRINKET), player);
                         ItemStack petal_trinket = ModUtils.findTrinket(new ItemStack(ModItems.PETAL_TRINKET), player);
+                        ItemStack pistol_trinket = ModUtils.findTrinket(new ItemStack(ModItems.PISTOL_TRINKET), player);
                         if(!wind_trinket.isEmpty()) {
                             if(wind_trinket.getItem() instanceof ItemTrinket) {
                                 ((ItemTrinket)wind_trinket.getItem()).onApplyButtonPressed(player, player.world, wind_trinket, 1);
@@ -86,6 +87,10 @@ public class PacketControlInput implements IMessageHandler<PacketControlInput.Me
                         } else if (!petal_trinket.isEmpty()) {
                             if(petal_trinket.getItem() instanceof ItemTrinket) {
                                 ((ItemTrinket)petal_trinket.getItem()).onApplyButtonPressed(player, player.world, petal_trinket, 10);
+                            }
+                        } else if (!pistol_trinket.isEmpty()) {
+                            if(pistol_trinket.getItem() instanceof ItemTrinket) {
+                                ((ItemTrinket)pistol_trinket.getItem()).onApplyButtonPressed(player, player.world, petal_trinket, 11);
                             }
                         }
                             break;

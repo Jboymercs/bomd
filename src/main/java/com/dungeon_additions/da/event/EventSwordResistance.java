@@ -33,7 +33,7 @@ public class EventSwordResistance {
     public static void turnItemsFireproof(EntityJoinWorldEvent event) {
         World worldIn = event.getWorld();
 
-        if(event.getEntity().getClass() == EntityItem.class) {
+        if(event.getEntity().getClass() == EntityItem.class && ModConfig.enable_fire_proof_items) {
             EntityItem entityItem = (EntityItem)event.getEntity();
             ItemStack stack = entityItem.getItem();
 

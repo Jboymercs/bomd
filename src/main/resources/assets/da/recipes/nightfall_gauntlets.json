@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "C",
+    "B"
+  ],
+  "key": {
+    "X": {
+      "item": "da:abberrant_eye"
+    },
+    "C": {
+      "item": "da:nightfall_scrap"
+    },
+    "B": {
+      "item": "da:crypt_plate"
+    }
+  },
+  "result": {
+    "item": "da:nightfall_gauntlets"
+  }
+}

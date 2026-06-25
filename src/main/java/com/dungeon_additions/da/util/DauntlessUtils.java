@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.util;
 
+import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDauntless;
 import com.dungeon_additions.da.init.ModPotions;
 import net.minecraft.entity.Entity;
@@ -58,13 +59,13 @@ public class DauntlessUtils {
                     //adds potion effect
                     if(entity instanceof EntityLivingBase) {
                         ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(effectIn, time, amflifier, false, true));
-                        float falter_bonus = source.sword_charge_3 > 0 ? 1.5F : 1;
+                        float falter_bonus = source.sword_charge_3 > 0 ? (float) MobConfig.dauntless_falter_bonus : 1;
                         ModUtils.addFalterTooEnemies(((EntityLivingBase) entity), falterTime * falter_bonus, (int) falterTime * 30);
                         if(source.sword_charge_one > 0) {
-                            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(ModPotions.DEGRADATION, 100, 0, false, false));
+                            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(ModPotions.DEGRADATION, MobConfig.dauntless_sword_degradation * 20, 0, false, false));
                         }
                         if(source.sword_charge_two > 0) {
-                            source.heal((source.getMaxHealth()) * 0.02F);
+                            source.heal((float) ((source.getMaxHealth()) * MobConfig.dauntless_sword_heal_amount));
                         }
                     }
 
@@ -117,10 +118,10 @@ public class DauntlessUtils {
                     if(entity instanceof EntityLivingBase) {
                         ModUtils.addFalterTooEnemies(((EntityLivingBase) entity), 0.1F, 5);
                         if(source.sword_charge_one > 0) {
-                            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(ModPotions.DEGRADATION, 100, 0, false, false));
+                            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(ModPotions.DEGRADATION, MobConfig.dauntless_sword_degradation * 20, 0, false, false));
                         }
                         if(source.sword_charge_two > 0) {
-                            source.heal((source.getMaxHealth()) * 0.02F);
+                            source.heal((float) ((source.getMaxHealth()) * MobConfig.dauntless_sword_heal_amount));
                         }
                     }
                     // Velocity depends on the entity's size and the damage dealt squared
@@ -170,13 +171,13 @@ public class DauntlessUtils {
                     double entitySizeFactorSq = Math.pow(entitySizeFactor, 2);
                     source.setSwordCharge(source.getSwordCharge() + 1);
                     if(entity instanceof EntityLivingBase) {
-                        float falter_bonus = source.sword_charge_3 > 0 ? 1.5F : 1;
+                        float falter_bonus = source.sword_charge_3 > 0 ? (float) MobConfig.dauntless_falter_bonus : 1;
                         ModUtils.addFalterTooEnemies(((EntityLivingBase) entity), falterValue * falter_bonus, (int) (falterValue * 30));
                         if(source.sword_charge_one > 0) {
-                            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(ModPotions.DEGRADATION, 100, 0, false, false));
+                            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(ModPotions.DEGRADATION, MobConfig.dauntless_sword_degradation * 20, 0, false, false));
                         }
                         if(source.sword_charge_two > 0) {
-                            source.heal((source.getMaxHealth()) * 0.02F);
+                            source.heal((float) ((source.getMaxHealth()) * MobConfig.dauntless_sword_heal_amount));
                         }
                     }
                     // Velocity depends on the entity's size and the damage dealt squared

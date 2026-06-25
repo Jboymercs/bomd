@@ -24,7 +24,7 @@ public abstract class EntityBlossomDart extends EntityArrow implements IProjecti
     {
         super.onUpdate();
 
-        if (this.ticksInAir == 500)
+        if (this.ticksInAir == 1200)
         {
             this.setDead();
         }

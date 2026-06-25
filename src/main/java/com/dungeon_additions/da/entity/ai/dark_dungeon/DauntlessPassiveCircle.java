@@ -31,7 +31,7 @@ public class DauntlessPassiveCircle  <T extends EntityDauntless> extends EntityA
 
     @Override
     public void updateTask() {
-        if(entity.getAttackTarget() != null && !this.entity.lockLook && !this.entity.isGroundStrike()) {
+        if(entity.getAttackTarget() != null && !this.entity.lockLook && !this.entity.isGroundStrike() && !this.entity.isRageLoop()) {
 
             //ranged mode
             if (this.entity.isRangedMode() && !this.entity.standbyOnVel) {
@@ -67,7 +67,7 @@ public class DauntlessPassiveCircle  <T extends EntityDauntless> extends EntityA
             }
 
             //melee mode
-            if(!this.entity.isRangedMode()) {
+            if(!this.entity.isRangedMode() && !this.entity.isSummonProjectiles()) {
                 Vec3d target = entity.getAttackTarget().getPositionVector();
                     double distSq = this.entity.getDistanceSq(target.x, target.y, target.z);
                     double distanceFrom = distSq * distSq;
@@ -79,12 +79,12 @@ public class DauntlessPassiveCircle  <T extends EntityDauntless> extends EntityA
 
                         Vec3d currPos = this.entity.getPositionVector();
                         EntityLivingBase targetFrom = this.entity.getAttackTarget();
-                        int yToHoverToo = ModUtils.getSurfaceHeightLich(entity.world, new BlockPos(currPos.x, 0, currPos.z), (int) targetFrom.posY - 2, (int) targetFrom.posY + 2);
+                        int yToHoverToo = ModUtils.getSurfaceHeightLich(entity.world, new BlockPos(currPos.x, 0, currPos.z), (int) targetFrom.posY - 4, (int) targetFrom.posY + 2);
 
                         if (currPos.y > yToHoverToo + 1.5 && yToHoverToo != 0) {
                             this.entity.motionY -= 0.015;
-                        } else if(currPos.y < yToHoverToo + 1 && yToHoverToo != 0) {
-                            this.entity.motionY += 0.015;
+                        } else if(currPos.y < yToHoverToo + 1 && yToHoverToo != 0 || currPos.y < targetFrom.posY) {
+                            this.entity.motionY += 0.025;
                         } else {
                             this.entity.motionY = 0;
                         }

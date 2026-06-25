@@ -11,10 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
@@ -29,10 +26,11 @@ public class ItemBlossomDagger extends ToolSword{
         super(name, material);
         this.setCreativeTab(CreativeTabs.COMBAT);
         this.info_loc = info_loc;
-        this.setMaxDamage(720);
+        this.setMaxDamage(920);
         this.falter_value = 0.07F;
         this.weapon_type = EnumWeaponType.DAGGER;
         this.weaponReach -= 1.25F;
+        this.swingSound = SoundsHandler.SWING_FAST;
     }
 
     @Override
@@ -41,6 +39,7 @@ public class ItemBlossomDagger extends ToolSword{
         if(ModConfig.enable_scaling_tooltips) {
             tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override

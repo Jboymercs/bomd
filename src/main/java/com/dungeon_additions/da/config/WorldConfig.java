@@ -376,7 +376,7 @@ public class WorldConfig {
     @Config.Name("Cult Castle Enabled/Disabled")
     @Config.Comment("Change if the Cult Castle should spawn at all. default: true")
     @Config.RequiresMcRestart
-    public static boolean cult_castle_enabled = true;
+    public static boolean cult_castle_enabled = false;
 
     @Config.Name("Cult Castle Allowed Dimensions")
     @Config.Comment("Select what dimensions this structure is allowed to spawn in")

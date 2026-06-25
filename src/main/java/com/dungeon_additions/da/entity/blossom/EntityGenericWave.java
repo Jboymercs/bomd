@@ -66,7 +66,7 @@ public class EntityGenericWave extends EntityAbstractBase implements IAnimatable
                         Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
                         DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MOB).directEntity(this).build();
                         float damage = this.getAttack();
-                        ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.7F);
+                        ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.3F);
                         addPotionEffect(new PotionEffect(MobEffects.POISON, 9, 3));
                         if(base != null && !world.isRemote) {
                             double distSq = this.getDistanceSq(base.posX, base.getEntityBoundingBox().minY, base.posZ);

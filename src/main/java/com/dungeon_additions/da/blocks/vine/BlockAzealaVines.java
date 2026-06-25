@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.blocks.vine;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.IHasModel;
@@ -223,7 +224,16 @@ public class BlockAzealaVines extends BlockBush implements IGrowable, IHasModel,
     {
         int currentAge = worldIn.getBlockState(pos).getValue(AGE);
 
-        if(worldIn.isAirBlock(pos.down()))
+        boolean heightFromGround = false;
+
+        for(int y = pos.getY(); y >= pos.getY() - ModConfig.azaela_air_space; y--) {
+            BlockPos posToo = new BlockPos(pos.getX(), y, pos.getZ());
+            if(worldIn.getBlockState(posToo).getBlock() != this && !worldIn.isAirBlock(posToo)) {
+                heightFromGround = true;
+            }
+        }
+
+        if(worldIn.isAirBlock(pos.down()) && !heightFromGround)
         {
             /* First set this one's age to 0 */
             worldIn.setBlockState(pos, state.withProperty(AGE, 0));

@@ -36,6 +36,9 @@ public class ItemFlameBlade extends ToolSword implements IAnimatable, IHasModel 
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
         this.weapon_type = EnumWeaponType.DAGGER;
+        this.swingSound = SoundsHandler.B_KNIGHT_SWING;
+        this.swingRadius = 0.65F;
+        this.setMaxDamage(974);
     }
 
     @Override
@@ -44,6 +47,7 @@ public class ItemFlameBlade extends ToolSword implements IAnimatable, IHasModel 
         if(ModConfig.enable_scaling_tooltips) {
             tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override

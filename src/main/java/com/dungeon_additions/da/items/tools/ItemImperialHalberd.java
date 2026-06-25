@@ -42,7 +42,7 @@ public class ItemImperialHalberd extends ToolSword implements IAnimatable, IHasM
     private String info_loc;
     public ItemImperialHalberd(String name, ToolMaterial material, String info_loc) {
         super(name, material);
-        this.setMaxDamage(1624);
+        this.setMaxDamage(1824);
         ModItems.ITEMS.add(this);
         setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
@@ -50,6 +50,7 @@ public class ItemImperialHalberd extends ToolSword implements IAnimatable, IHasM
         this.falter_value = 0.15F;
         this.weapon_type = EnumWeaponType.SPEAR;
         this.weaponReach += 1.25F;
+
     }
 
     @Override
@@ -76,6 +77,7 @@ public class ItemImperialHalberd extends ToolSword implements IAnimatable, IHasM
         if(ModConfig.enable_scaling_tooltips) {
             tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override

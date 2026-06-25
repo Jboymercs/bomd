@@ -52,7 +52,7 @@ public class ItemObsidianHelmet extends ItemArmor implements IHasModel {
         this.texture = textureName;
         ModItems.ITEMS.add(this);
         this.knockbackResistance = new AttributeModifier("ObsidianKnockBackResistance", 0.1, 1);
-        this.attackSpeedModif = new AttributeModifier("ObsidianAttackSpeedModif", -0.5, 1);
+        this.attackSpeedModif = new AttributeModifier("ObsidianAttackSpeedModif", -0.05, 1);
     }
 
     @Override

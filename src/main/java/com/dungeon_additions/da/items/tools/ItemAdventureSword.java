@@ -31,9 +31,11 @@ public class ItemAdventureSword extends ItemAbilityWeapon {
     public ItemAdventureSword(String name, String info_loc, ToolMaterial material) {
         super(name, material);
         this.info_loc = info_loc;
-        this.setMaxDamage(736);
+        this.setMaxDamage(936);
         this.falter_value = 0.2F;
         this.weapon_type = EnumWeaponType.SWORD;
+        this.swingSound = SoundsHandler.SWING_HEAVY;
+        this.swingRadius = 1F;
     }
 
     @Override
@@ -42,6 +44,7 @@ public class ItemAdventureSword extends ItemAbilityWeapon {
         if(ModConfig.enable_scaling_tooltips) {
             tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override

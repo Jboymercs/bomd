@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " B ",
+    "BCB",
+    " B "
+  ],
+  "key": {
+    "C": {
+      "item": "da:nightfall_scrap"
+    },
+    "B": {
+      "item": "da:dark_mana"
+    }
+  },
+  "result": {
+    "item": "da:pistol_trinket"
+  }
+}

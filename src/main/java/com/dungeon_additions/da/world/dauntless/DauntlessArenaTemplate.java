@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.world.dauntless;
 
+import com.dungeon_additions.da.entity.dark_dungeon.dark_void.EntityDarkVoid;
 import com.dungeon_additions.da.world.ModStructureTemplate;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -28,7 +29,10 @@ public class DauntlessArenaTemplate extends ModStructureTemplate {
     protected void handleDataMarker(String function, BlockPos pos, World world, Random rand, StructureBoundingBox sbb) {
         //Dauntless Boss
         if(function.startsWith("dauntless")) {
-
+            EntityDarkVoid void_spawn = new EntityDarkVoid(world, 1, false, true);
+            void_spawn.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+            world.spawnEntity(void_spawn);
+            world.setBlockToAir(pos);
         }
     }
 

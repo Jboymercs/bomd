@@ -5,6 +5,7 @@ import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.animation.item.*;
 import com.dungeon_additions.da.capabilities.AnimationCapabilityHelper;
 import com.dungeon_additions.da.capabilities.CapabilityItemAnimations;
+import com.dungeon_additions.da.capabilities.CapabilityPlayerFalter;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.armor.ModIncendiumHelmet;
@@ -19,9 +20,11 @@ import com.dungeon_additions.da.proxy.ClientProxy;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.PlayerCustomSwingUtils;
+import com.dungeon_additions.da.util.PlayerFalterUtils;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -32,26 +35,59 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.MouseEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderSpecificHandEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.Sys;
 
 import javax.annotation.Nonnull;
+import java.io.FilterOutputStream;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = ModReference.MOD_ID)
 public class ClientEventHandler {
 
     private static final Minecraft mc = Minecraft.getMinecraft();
     public static boolean swingingCustom = false;
+    private static final ResourceLocation TEXTURE_FALTER_FRAME = new ResourceLocation(ModReference.MOD_ID, "textures/gui/falter_gui.png");
+    private static final ResourceLocation TEXTURE_FALTER_PROGRESS = new ResourceLocation(ModReference.MOD_ID, "textures/gui/falter_progress.png");
+
+    private static float currFalterProg = 0.0F;
+    private static float prevCurrFalterProg = 0.0F;
+    private static float currFalterResistance = 0.0F;
+    private static float prevCurrFalterResistance = 0.0F;
+
+    @SubscribeEvent
+    public static void onFalterUpdateTick(TickEvent.ClientTickEvent event)
+    {
+        if (event.phase != TickEvent.Phase.END) return;
+
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc.player == null) return;
+
+        prevCurrFalterProg = currFalterProg;
+        prevCurrFalterResistance = currFalterResistance;
+
+        if (mc.player.hasCapability(CapabilityPlayerFalter.PLAYER_FALTER_CAP, null))
+        {
+            //currSpaceHeld = mc.player.getCapability(CapabilitySpearMovement.MOUNTS_PLAYER_CAP, null).getSpaceHeldTime();
+            currFalterProg = mc.player.getCapability(CapabilityPlayerFalter.PLAYER_FALTER_CAP, null).getPlayerFalterProgress();
+            currFalterResistance = mc.player.getCapability(CapabilityPlayerFalter.PLAYER_FALTER_CAP, null).getPlayerFalterResistance();
+            System.out.println("Current Falter Resist" + currFalterResistance);
+        }
+    }
 
     @SubscribeEvent
     public static void onTickEvent(TickEvent.ClientTickEvent event){
@@ -78,6 +114,60 @@ public class ClientEventHandler {
             }
         }
     }
+
+
+    @SubscribeEvent
+    public static void onRenderOverlayPost(RenderGameOverlayEvent.Post event)
+    {
+        Minecraft mc = Minecraft.getMinecraft();
+
+        if (event.getType() == RenderGameOverlayEvent.ElementType.ALL)
+        {
+            if (mc.player != null && currFalterProg > 0)
+            {
+                renderFalterBar(mc); }
+        }
+    }
+
+
+
+    private static void renderFalterBar(Minecraft mc)
+    {
+            ScaledResolution res = new ScaledResolution(mc);
+            int width = res.getScaledWidth();
+            int height = res.getScaledHeight();
+            int barX = width - 76;
+            int barY = height - 146;
+
+            float partialTicks = Minecraft.getMinecraft().getRenderPartialTicks();
+          //  float spaceHeldTime = prevSpaceHeld + (currSpaceHeld - prevSpaceHeld) * partialTicks;
+
+            GlStateManager.enableTexture2D();
+            GlStateManager.color(1F, 1F, 1F, 1F);
+            mc.getTextureManager().bindTexture(TEXTURE_FALTER_FRAME);
+            //renders the frame
+            mc.ingameGUI.drawTexturedModalRect(barX, barY, 0, 0, 30, 132);
+
+            float currF = prevCurrFalterProg + (currFalterProg - prevCurrFalterProg) * partialTicks;
+            float currFR = prevCurrFalterResistance + (currFalterResistance - prevCurrFalterResistance) * partialTicks;
+          //    if(PlayerFalterUtils.getPlayerFalterProgress(player) > 0) {
+                  float percentage = currF / currFR;
+                  int filled = (int) (percentage * 100);
+                 // System.out.println("Player Falter Prog at" + PlayerFalterUtils.getPlayerFalterResistance(player));
+                  mc.ingameGUI.drawTexturedModalRect(barX + 12, barY + 26 + (100 - filled), 30, 0, 6, filled);
+            //  }
+
+        //    int filled = (int) (powerResult * 182);
+        //    if (filled > 0) {
+                //System.out.print("Power Result: " + powerResult);
+         //       mc.ingameGUI.drawTexturedModalRect(barX, barY, 0, 5, filled, 5);
+        //    }
+
+         //   if (ridden.getDashCooldown() > 0) {
+         //       mc.ingameGUI.drawTexturedModalRect(barX, barY, 0, 10, 182, 5);
+         //   }
+    }
+
 
     private static void performTrinketAbility() {
         IMessage msg = new PacketControlInput.Message(PacketControlInput.ControlType.TRINKET_KEY);
@@ -173,7 +263,15 @@ public class ClientEventHandler {
         {
             //Swords
             if(DAPlayerAnimationMethods.getWeaponType(player) == 1 && ModConfig.enable_sword_weapons) {
-                if (cooldownStrength > 0 && swingingCustom)
+                //specifically for geckolib models
+                if(player.getHeldItemMainhand().getItem() instanceof ItemNightfallSword && cooldownStrength > 0 && swingingCustom) {
+                    GlStateManager.pushMatrix();
+                    AnimationsBaseSword.preformSwordItemRotations1stPersonGeckolib(Minecraft.getMinecraft().player, partialTicks, cooldownStrength, arm);
+                    renderer.renderItemSide(player, stack, isRightArm ? ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, !isRightArm);
+                    GlStateManager.popMatrix();
+
+                    event.setCanceled(true);
+                } else if (cooldownStrength > 0 && swingingCustom)
                 {
                     GlStateManager.pushMatrix();
                     AnimationsBaseSword.preformSwordItemRotations1stPerson(Minecraft.getMinecraft().player, partialTicks, cooldownStrength, arm);
@@ -184,7 +282,14 @@ public class ClientEventHandler {
                 }
                 //Daggers
             } else if (DAPlayerAnimationMethods.getWeaponType(player) == 2 && ModConfig.enable_dagger_weapons) {
-                if (cooldownStrength > 0 && swingingCustom)
+                if(player.getHeldItemMainhand().getItem() instanceof ItemNightfallGauntlets && cooldownStrength > 0 && swingingCustom) {
+                    GlStateManager.pushMatrix();
+                    AnimationBaseDagger.preformDaggerItemRotations1stPersonFist(Minecraft.getMinecraft().player, partialTicks, cooldownStrength, arm);
+                    renderer.renderItemSide(player, stack, isRightArm ? ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, !isRightArm);
+                    GlStateManager.popMatrix();
+
+                    event.setCanceled(true);
+                } else if (cooldownStrength > 0 && swingingCustom)
                 {
                     GlStateManager.pushMatrix();
                     AnimationBaseDagger.preformDaggerItemRotations1stPerson(Minecraft.getMinecraft().player, partialTicks, cooldownStrength, arm);

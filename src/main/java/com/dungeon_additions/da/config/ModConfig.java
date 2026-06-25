@@ -12,7 +12,7 @@ public class ModConfig {
     @Config.Name("Experimental Features Enabled/Disabled")
     @Config.Comment("Change if experimental features are enabled. this mostly includes boss music. default: false")
     @Config.RequiresMcRestart
-    public static boolean experimental_features = false;
+    public static boolean experimental_features = true;
 
     @Config.Name("Boss Music Volume")
     @Config.Comment("Change the overall music volume of every track used for the bosses")
@@ -68,6 +68,16 @@ public class ModConfig {
     @Config.Comment("Change the damage factor")
     @Config.RequiresMcRestart
     public static float sword_of_ambition_damage = 9;
+
+    @Config.Name("Nightfall Sword Damage")
+    @Config.Comment("Change the damage factor of the Nightfall Sword")
+    @Config.RequiresMcRestart
+    public static float nightfall_sword_damage = 9;
+
+    @Config.Name("Nightfall Gauntlet Damage")
+    @Config.Comment("Change the damage factor of the Nightfall Gauntlet")
+    @Config.RequiresMcRestart
+    public static double nightfall_gauntlet_damage = 5.5;
 
     @Config.Name("Gaelon Ingot Repair Percentage")
     @Config.Comment("When using a Gaelon ingot to repair equipment, what is the percentage of durability it heals?")
@@ -502,6 +512,11 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static boolean enable_crafting_tooltips = true;
 
+    @Config.Name("Falter Buildup ToolTip")
+    @Config.Comment("Should weapons in UDA display there falter build up. This will auto disable if faltering from players is enabled")
+    @Config.RequiresMcRestart
+    public static boolean enable_falter_tooltips = true;
+
     @Config.Name("Enchantments Scale ToolTip")
     @Config.Comment("Should Items listed as Enchantments scale weapon abilities tool tip appear. False will disable the tool tip")
     @Config.RequiresMcRestart
@@ -772,7 +787,15 @@ public class ModConfig {
             "da:colossus_chestplate",
             "da:exalted_kopis",
             "da:colossus_mace",
-            "da:everator_shield"
+            "da:everator_shield",
+            "da:enderphrite_helmet",
+            "da:enderphrite_chestplate",
+            "da:enderphrite_leggings",
+            "da:enderphrite_boots",
+            "da:nightfall_helmet",
+            "da:nightfall_sword",
+            "da:nightfall_gauntlets",
+            "da:nightfall_chestplate"
     };
 
     @Config.Name("Bosses drop Trader Coins")
@@ -815,6 +838,11 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static boolean players_cause_falter = true;
 
+    @Config.Name("Faltering Damage by Mobs")
+    @Config.Comment("When disabled, falter build up will not be applied to players when attacked by mobs")
+    @Config.RequiresMcRestart
+    public static boolean mobs_cause_falter = true;
+
     @Config.Name("Custom Spear Attacks")
     @Config.Comment("When disabled, it will disable hit delays and animations for SPEAR type weapons only")
     @Config.RequiresMcRestart
@@ -844,4 +872,14 @@ public class ModConfig {
     @Config.Comment("When disabled this will disable everything custom combat related to the mod. Animations, hit delays, and faltering.")
     @Config.RequiresMcRestart
     public static boolean combat_system_enabled = true;
+
+    @Config.Name("Azaela Vines Height from Ground")
+    @Config.Comment("This function keeps Azaela Vines from covering caves head to toe. This function gives them a max limit that they can be from ground")
+    @Config.RequiresMcRestart
+    public static int azaela_air_space = 2;
+
+    @Config.Name("Allow Fireproof items")
+    @Config.Comment("Some items in this mod have fire proof function. You can disable it from this mods end to support other mods fire proof item system.")
+    @Config.RequiresMcRestart
+    public static boolean enable_fire_proof_items = true;
 }

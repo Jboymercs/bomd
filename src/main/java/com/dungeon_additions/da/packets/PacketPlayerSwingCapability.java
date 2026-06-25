@@ -47,8 +47,6 @@ public class PacketPlayerSwingCapability implements IMessage {
         @Override
         public IMessage onMessage(PacketPlayerSwingCapability message, MessageContext ctx)
         {
-            Minecraft.getMinecraft().addScheduledTask(() ->
-            {
                         EntityPlayerMP player = ctx.getServerHandler().player;
 
                         if(player.hasCapability(CapabilityPlayerSwing.PLAYER_SWING_CAP, null))
@@ -57,7 +55,6 @@ public class PacketPlayerSwingCapability implements IMessage {
                         //    player.getCapability(CapabilityPlayerSwing.PLAYER_SWING_CAP, null).setPlayerSwingProgress(message.playerSwingProg);
                            // Main.network.sendToAllTracking(new PacketPlayerSwingAll(player.getEntityId(), message.enableGreed), new NetworkRegistry.TargetPoint(player.world.provider.getDimension(), player.posX, player.posY, player.posZ, 0.0D));
                         }
-            });
             return null;
         }
     }

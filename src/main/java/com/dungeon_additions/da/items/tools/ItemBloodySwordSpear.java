@@ -42,21 +42,25 @@ public class ItemBloodySwordSpear extends ToolSword implements IAnimatable {
         super(name, material);
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
-        this.setMaxDamage(2031);
+        this.setMaxDamage(2231);
         this.falter_value = 0.27F;
         this.weapon_type = EnumWeaponType.SPEAR;
         this.weaponReach += 1.25F;
+        this.swingSound = SoundsHandler.HIGH_KING_SWING;
     }
 
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
-        attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.HIGH_KING_SWING, SoundCategory.NEUTRAL, 0.4f, 0.7f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
+        if(!ModConfig.combat_system_enabled && !ModConfig.weapon_hit_delays) {
+            attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.HIGH_KING_SWING, SoundCategory.NEUTRAL, 0.4f, 0.7f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
+        }
         return super.hitEntity(stack, target, attacker);
     }
 

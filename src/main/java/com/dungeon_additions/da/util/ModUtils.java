@@ -7,6 +7,7 @@ import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.PotionTrinketConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
+import com.dungeon_additions.da.entity.mini_blossom.EntityBlossomDart;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityLichSpawner;
 import com.dungeon_additions.da.event.EventScheduler;
@@ -52,6 +53,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.lwjgl.Sys;
 
 import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -116,6 +118,10 @@ public class ModUtils {
     public static String translateDesc(String key, Object... params) {
         return I18n.format(ModUtils.LANG_DESC + key, params);
     }
+
+    public static final DecimalFormat DF_0 = new DecimalFormat("0.0");
+
+
 
     public static @Nullable
     Entity createMobFromSpawnData(MobSpawnerLogic.MobSpawnData data, World world, double x, double y, double z) {
@@ -211,7 +217,7 @@ public class ModUtils {
             ((EntityAbstractBase)target).addFalterCounter(amount);
         } else  {
             //add faltering to players specifically
-            if(target instanceof EntityPlayer) {
+            if(target instanceof EntityPlayer && ModConfig.mobs_cause_falter) {
                 EntityPlayer player = ((EntityPlayer) target);
                 PlayerFalterUtils.setPlayerGreedProgress(player, PlayerFalterUtils.getPlayerFalterProgress(player) + amount);
 
@@ -305,6 +311,8 @@ public class ModUtils {
     public static float addMageSetBonus(EntityPlayer player, float bonusDamage) {
         if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.MAGE_HELMET || player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.ENDERPHRITE_HELMET) {
             bonusDamage += 0.5F;
+        } else if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.NIGHT_LICH_HELMET) {
+            bonusDamage += 1.0F;
         }
         if(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.MAGE_CHESTPLATE || player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.ENDERPHRITE_CHESTPLATE) {
             bonusDamage += 0.5F;
@@ -331,6 +339,8 @@ public class ModUtils {
         }
         if(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.ENDERPHRITE_CHESTPLATE) {
             bonusDamage += 0.25F;
+        } else if(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.NIGHTFALL_CHESTPLATE) {
+            bonusDamage += 0.5F;
         }
         if(player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.ENDERPHRITE_LEGGINGS) {
             bonusDamage += 0.25F;
@@ -621,6 +631,15 @@ public class ModUtils {
     }
 
     public static void throwProjectileNoSpawn(Vec3d target, Projectile projectile, float inaccuracy, float velocity) {
+        double d0 = target.y;
+        double d1 = target.x - projectile.posX;
+        double d2 = d0 - projectile.posY;
+        double d3 = target.z - projectile.posZ;
+        float f = projectile.hasNoGravity() ? 0 : MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
+        projectile.shoot(d1, d2 + f, d3, velocity, inaccuracy);
+    }
+
+    public static void throwProjectileNoSpawn(Vec3d target, EntityBlossomDart projectile, float inaccuracy, float velocity) {
         double d0 = target.y;
         double d1 = target.x - projectile.posX;
         double d2 = d0 - projectile.posY;

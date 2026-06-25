@@ -45,7 +45,9 @@ public class ItemMageStaff extends ToolSword implements IAnimatable {
     public ItemMageStaff(String name, String info_loc, ToolMaterial material) {
         super(name, material);
         this.info_loc = info_loc;
-        this.setMaxDamage(736);
+        this.setMaxDamage(936);
+        this.falter_value = 0;
+        this.swingRadius = 0.25F;
     }
 
     @Override
@@ -54,6 +56,7 @@ public class ItemMageStaff extends ToolSword implements IAnimatable {
         if(ModConfig.enable_scaling_tooltips) {
             tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override

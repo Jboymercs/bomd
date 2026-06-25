@@ -32,17 +32,19 @@ public class ItemKingClaw extends ToolSword implements IAnimatable {
 
     public ItemKingClaw(String name, ToolMaterial material, String info_loc) {
         super(name, material);
-        this.setMaxDamage(1213);
+        this.setMaxDamage(1413);
         this.setHarvestLevel("spade", 4);
         setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
-        this.falter_value = 0.05F;
+        this.falter_value = 0.08F;
         this.weaponReach -= 1.25F;
+        this.swingSound = SoundsHandler.SWING_FAST;
     }
 
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override

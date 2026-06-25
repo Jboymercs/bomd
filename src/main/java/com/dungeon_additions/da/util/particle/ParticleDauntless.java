@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ParticleDauntless extends ParticleSSBase{
     private static final ResourceLocation PIXEL_TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/particle/dauntless_orb.png");
     private int hangTime;
-    public ParticleDauntless(TextureManager textureManager, World world, double x, double y, double z, double movementX, double movementY, double movementZ, float red, float green, float blue)
+    public ParticleDauntless(TextureManager textureManager, World world, double x, double y, double z, double movementX, double movementY, double movementZ, float scale)
     {
         super(textureManager, world, x, y, z, movementX, movementY, movementZ, PIXEL_TEXTURE, 0);
         this.textureManager = textureManager;
@@ -24,7 +24,7 @@ public class ParticleDauntless extends ParticleSSBase{
         this.particleMaxAge = (int)(10);
         this.texSheetSeg = 2;
         this.renderYOffset = this.height / 2;
-        this.particleScale =  8.0F;
+        this.particleScale =  scale;
     }
 
     @Override
@@ -48,6 +48,6 @@ public class ParticleDauntless extends ParticleSSBase{
         @Override
         public Particle createParticle(int particleId, World world, double posX, double posY, double posZ, double speedX, double speedY, double speedZ, int... parameters)
         {
-            return new ParticleDauntless(Minecraft.getMinecraft().getTextureManager(), world, posX, posY, posZ, speedX, speedY, speedZ,  224, 224, 224); }
+            return new ParticleDauntless(Minecraft.getMinecraft().getTextureManager(), world, posX, posY, posZ, speedX, speedY, speedZ, 8); }
     }
 }

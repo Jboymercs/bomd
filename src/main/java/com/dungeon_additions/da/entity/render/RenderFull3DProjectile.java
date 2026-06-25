@@ -31,7 +31,7 @@ public class RenderFull3DProjectile <T extends Entity> extends Render<T> {
         GlStateManager.translate((float) x, (float) y, (float) z);
         GlStateManager.enableRescaleNormal();
         GlStateManager.rotate(entityYaw, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(entity.rotationPitch, 1.0F, 0, 0);
+        GlStateManager.rotate(-entity.rotationPitch, 1.0F, 0, 0);
         GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
         this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 

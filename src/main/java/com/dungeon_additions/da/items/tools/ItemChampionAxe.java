@@ -44,16 +44,19 @@ public class ItemChampionAxe extends ToolSword implements IAnimatable, IHasModel
 
     public ItemChampionAxe(String name, Item.ToolMaterial material, String info_loc) {
         super(name, material);
-        this.setMaxDamage(986);
+        this.setMaxDamage(1086);
         setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
         this.weapon_type = EnumWeaponType.HEAVY_AXE;
-        this.falter_value = 0.3F;
+        this.falter_value = 0.35F;
+        this.swingSound = SoundsHandler.DRAUGR_ELITE_SWING;
+        this.swingRadius = 1.25F;
     }
 
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
@@ -76,7 +79,9 @@ public class ItemChampionAxe extends ToolSword implements IAnimatable, IHasModel
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
-        attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.DRAUGR_ELITE_SWING, SoundCategory.NEUTRAL, 0.4f, 0.7f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
+        if(!ModConfig.weapon_hit_delays && !ModConfig.combat_system_enabled) {
+            attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.DRAUGR_ELITE_SWING, SoundCategory.NEUTRAL, 0.4f, 0.7f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
+        }
         if (attacker.world.isRemote) return false;
         int axeCoolDown = (int) 2 * 20;
         stack.damageItem(1, attacker);

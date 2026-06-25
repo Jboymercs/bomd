@@ -37,11 +37,15 @@ public class ItemNovikSword extends ItemAbilityWeapon implements IHasModel {
         this.setCreativeTab(DungeonAdditionsTab.ALL);
         this.falter_value = 0.12F;
         this.weapon_type = EnumWeaponType.SWORD;
+        this.swingSound = SoundsHandler.REANIMATE_SWING;
+        this.swingRadius = 0.75F;
+        this.setMaxDamage(974);
     }
 
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override

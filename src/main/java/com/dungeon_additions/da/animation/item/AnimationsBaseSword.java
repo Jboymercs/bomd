@@ -35,6 +35,28 @@ public class AnimationsBaseSword {
     }
 
     /**
+     * First Person Geckolib
+     * */
+    public static void preformSwordItemRotations1stPersonGeckolib(EntityPlayer player, float partialTicks, float swing, EnumHandSide hand)
+    {
+        float side = hand == EnumHandSide.LEFT ? -1F : 1F;
+
+
+        DAPlayerAnimationMethods.applyFirstPersonBaseTransform(hand == EnumHandSide.LEFT, 0);
+        float axeRotate1 = DAPlayerAnimationMethods.segmentAnimationTime(swing, 0.0F, 0.2F);
+        float axeRotate2 = DAPlayerAnimationMethods.segmentAnimationTime(swing, 0.25F, 0.5F);
+        float ending = DAPlayerAnimationMethods.segmentAnimationTime(swing, 0.55F, 0.89F);
+
+        /* Translation helps offset the rotation's adjustment of the model position. */
+        GlStateManager.translate((axeRotate2 * (-1.2F * side)) + (ending * (2F * side)), (axeRotate1 * 0.5F) + (axeRotate2 * -0.8F) + (ending * 0.2), (axeRotate2 * -0.9F) + (ending * 1.5F));
+
+        GlStateManager.rotate((axeRotate1) * 70.0F, 0.4F, 0.0F, -side);
+        GlStateManager.rotate((axeRotate2) * 130.0F, -1.0F, -0.1F, 0.1F);
+
+        if (swing >= 1) ClientEventHandler.swingingCustom = false;
+    }
+
+    /**
      * Third Person Player
      * */
     public static void preformSwordArmRotations3edPerson(Entity entityIn, ModelBiped model, float ageInTicks, float swing, float headYaw, float headPitch, EnumHandSide hand)

@@ -352,6 +352,16 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static double goat_tenacity_resistance =  0.6;
 
+    @Config.Name("Pocket Pistol Damage")
+    @Config.Comment("Change Pocket Pistol item ability damage.")
+    @Config.RequiresMcRestart
+    public static float pocket_pistol_damage = 13;
+
+    @Config.Name("Pocket Pistol Durability")
+    @Config.Comment("Change Pocket Pistol item durability.")
+    @Config.RequiresMcRestart
+    public static int pocket_pistol_durability = 128;
+
     @Config.Name("Trinkets become unbreakable Enable/Disable")
     @Config.Comment("Change if all trinkets in the mod become unbreakable and do not take durability damage. default false.")
     @Config.RequiresMcRestart

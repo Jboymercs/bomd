@@ -81,6 +81,7 @@ public class ItemFieryRespite extends ItemPotion implements IHasModel {
 
         if (!worldIn.isRemote) {
             entityLiving.addPotionEffect(new PotionEffect(ModPotions.FIERY_RESPITE, 12000, 0, false, true));
+
         }
 
         if (entityplayer != null) {

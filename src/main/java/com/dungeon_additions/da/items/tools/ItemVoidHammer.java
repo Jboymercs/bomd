@@ -49,11 +49,13 @@ public class ItemVoidHammer extends ToolSword implements IAnimatable, IHasModel,
 
     public ItemVoidHammer(String name, Item.ToolMaterial material, String info_loc) {
         super(name, material);
-        this.setMaxDamage(986);
+        this.setMaxDamage(1286);
         setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
         this.weapon_type = EnumWeaponType.HEAVY_AXE;
         this.falter_value = 0.35F;
+        this.swingSound = SoundsHandler.SWING_HEAVY;
+        this.swingRadius = 1.25F;
     }
 
     @Override
@@ -62,6 +64,7 @@ public class ItemVoidHammer extends ToolSword implements IAnimatable, IHasModel,
         if(ModConfig.enable_scaling_tooltips) {
             tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override

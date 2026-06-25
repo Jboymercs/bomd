@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XBX",
+    " C "
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:spider_eye"
+    },
+    "C": {
+      "item": "minecraft:glass_bottle"
+    },
+    "B": {
+      "item": "da:dark_mana"
+    }
+  },
+  "result": {
+    "item": "da:midnight_void"
+  }
+}

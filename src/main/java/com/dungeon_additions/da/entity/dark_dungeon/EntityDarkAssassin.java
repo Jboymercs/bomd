@@ -346,7 +346,7 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.firstStrike ? (float) (this.getAttack() * 2) : (float) (this.getAttack());
-            ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.2f, 0, false, MobEffects.BLINDNESS, 0, 200, firstStrike ? 1.65F : 0.7F);
+            ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.2f, 0, false, MobEffects.BLINDNESS, 0, 200, firstStrike ? 0.75F : 0.5F);
             this.firstStrike = false;
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.7f));
         }, 18);
@@ -381,7 +381,7 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.0, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.firstStrike ? (float) (this.getAttack() * 2) : (float) (this.getAttack());
-          ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.2f, 0, false, MobEffects.BLINDNESS, 0, 200, firstStrike ? 1.0F : 0.25F);
+          ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.2f, 0, false, MobEffects.BLINDNESS, 0, 200,  0.25F);
           this.firstStrike = false;
           this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.7f));
       }, 20);
@@ -413,7 +413,7 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = this.firstStrike ? (float) (this.getAttack() * 2) : (float) (this.getAttack());
-            ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.2f, 0, false, firstStrike ? 1F : 0.25F);
+            ModUtils.handleAreaImpact(1.0f, (e) -> damage, this, offset, source, 0.2f, 0, false,  0.25F);
             this.firstStrike = false;
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.7f));
         }, 18);

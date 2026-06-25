@@ -218,6 +218,8 @@ public class EntityShieldHandler {
                         magicDamageReduction += 0.05;
                     } else if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.WARLORD_HELMET) {
                         magicDamageReduction += 0.1;
+                    } else if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.NIGHTFALL_HELMET) {
+                        magicDamageReduction += 0.15;
                     }
                     if(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.MAGE_CHESTPLATE) {
                         magicDamageReduction += 0.1;
@@ -372,7 +374,8 @@ public class EntityShieldHandler {
             //Enderphrite Bonus Damage
             if(player.getHeldItemMainhand().getItem() == ModItems.SWORD_SPEAR || player.getHeldItemMainhand().getItem() == ModItems.BLOODY_SWORD_SPEAR ||
                     player.getHeldItemMainhand().getItem() == ModItems.CHAMPION_AXE || player.getHeldItemMainhand().getItem() == ModItems.VOID_HAMMER ||
-                    player.getHeldItemMainhand().getItem() == ModItems.APATHYR_AXE || player.getHeldItemMainhand().getItem() == ModItems.COLOSSUS_MACE) {
+                    player.getHeldItemMainhand().getItem() == ModItems.APATHYR_AXE || player.getHeldItemMainhand().getItem() == ModItems.COLOSSUS_MACE
+                    || player.getHeldItemMainhand().getItem() == ModItems.NIGHTFALL_SWORD) {
                 totalDamage += ModUtils.getEnderphriteBonusDamage(player);
             }
 

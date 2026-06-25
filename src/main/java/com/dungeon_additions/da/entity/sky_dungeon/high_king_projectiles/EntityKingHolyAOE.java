@@ -108,7 +108,7 @@ public class EntityKingHolyAOE extends EntitySkyBase implements IAnimatable, IAn
                                 Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
                                 DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.PLAYER).directEntity(ownerFrom).build();
                                 float damage = hasHelmet ? 24 : 15;
-                                ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+                                ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.5F);
                             }
                         }
 
@@ -122,7 +122,7 @@ public class EntityKingHolyAOE extends EntitySkyBase implements IAnimatable, IAn
                                 Vec3d offset = base.getPositionVector().add(ModUtils.yVec(1.0D));
                                 DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                                 float damage = this.getAttack();
-                                ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+                                ModUtils.handleAreaImpact(0.25f, (e) -> damage, this, offset, source, 0.2f, 0, false, 1.3F);
                             }
                         }
 

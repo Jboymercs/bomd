@@ -29,14 +29,17 @@ public class ItemSoulSpear extends ToolSword {
         super(name, material);
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
-        this.setMaxDamage(1200);
+        this.setMaxDamage(1400);
         this.weapon_type = EnumWeaponType.SPEAR;
         this.weaponReach += 1.25F;
+        this.swingSound = SoundsHandler.LICH_MAGIC_SWING;
+        this.falter_value = 0.09F;
     }
 
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.AQUA + ModUtils.translateDesc(info_loc));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override

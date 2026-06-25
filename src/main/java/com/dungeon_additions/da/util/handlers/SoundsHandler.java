@@ -339,6 +339,7 @@ public class SoundsHandler {
     public static SoundEvent DELAYED_EXPLOSION_CAST;
     public static SoundEvent DELAYED_EXPLOSION_IMPACT;
     public static SoundEvent HEMORRHAGE_IMPACT;
+    public static SoundEvent CAST_GENERIC_SPELL;
 
     //Aegyptian Warlord
     public static SoundEvent WARLORD_CUTS_SWING;
@@ -349,6 +350,10 @@ public class SoundsHandler {
     public static SoundEvent WARLORD_SWING_MAGIC;
     public static SoundEvent WARLORD_TAIL_WHIP;
     public static SoundEvent WARLORD_SUMMON_PORJECTILE;
+
+    public static SoundEvent SWING_REGULAR;
+    public static SoundEvent SWING_HEAVY;
+    public static SoundEvent SWING_FAST;
 
     //Shared
     public static SoundEvent DESERT_BOSS_DOWN;
@@ -379,6 +384,26 @@ public class SoundsHandler {
     public static SoundEvent ENDERPHRITE_DEATH;
     public static SoundEvent ENDERPHRITE_SONIC_BOOM;
 
+    public static SoundEvent DAUNTLESS_HURT;
+    public static SoundEvent DAUNTLESS_SWING;
+    public static SoundEvent DAUNTLESS_THROW_SWORD;
+    public static SoundEvent DAUNTLESS_CAST_PROJECTILE;
+    public static SoundEvent DAUNTLESS_PREPARE_SPELL;
+    public static SoundEvent DAUNTLESS_SHOOT_CRYSTAL;
+    public static SoundEvent DAUNTLESS_AOE_EXPLODE;
+    public static SoundEvent DAUNTLESS_AOE_CAST;
+    public static SoundEvent DAUNTLESS_LESS_AOE_EXPLODE;
+    public static SoundEvent DAUNTLESS_CRYSTAL_EXPLODE;
+    public static SoundEvent DAUNTLESS_DELAYED_LAZER;
+    public static SoundEvent DAUNTLESS_YELL_SHORT;
+    public static SoundEvent DAUNTLESS_YELL;
+    public static SoundEvent DAUNTLESS_SELF_AOE;
+    public static SoundEvent DAUNTLESS_PUNCH;
+    public static SoundEvent DAUNTLESS_IMPACT;
+    public static SoundEvent DAUNTLESS_LAZER_CONSTANT;
+    public static SoundEvent DAUNTLESS_USE_SWORD;
+    public static SoundEvent DAUNTLESS_DARK_VOID;
+
     //MUSIC
     public static SoundEvent HIGH_DRAGON_TRACK;
     public static SoundEvent HIGH_KING_TRACK;
@@ -393,6 +418,7 @@ public class SoundsHandler {
     public static SoundEvent WARLORD_TRACK;
     public static SoundEvent COLOSSUS_TRACK;
     public static SoundEvent DARKDRIFT_DEVIL_TRACK;
+    public static SoundEvent DAUNTLESS_TRACK;
 
     public static void registerSounds() {
         //
@@ -728,6 +754,30 @@ public class SoundsHandler {
         DELAYED_EXPLOSION_CAST = registerSound("confetti.explosion_cast", "entity");
         DELAYED_EXPLOSION_IMPACT = registerSound("confetti.explosion_impact", "entity");
         HEMORRHAGE_IMPACT = registerSound("confetti.hemorrhage", "entity");
+        CAST_GENERIC_SPELL = registerSound("confetti.cast_generic", "entity");
+        SWING_REGULAR = registerSound("confetti.swing_normal", "entity");
+        SWING_HEAVY = registerSound("confetti.swing_heavy", "entity");
+        SWING_FAST = registerSound("confetti.swing_fast", "entity");
+        //
+        DAUNTLESS_HURT = registerSound("dauntless.hurt", "entity");
+        DAUNTLESS_SWING = registerSound("dauntless.swing", "entity");
+        DAUNTLESS_CAST_PROJECTILE = registerSound("dauntless.cast_projectile", "entity");
+        DAUNTLESS_PREPARE_SPELL = registerSound("dauntless.prepare_spell", "entity");
+        DAUNTLESS_SHOOT_CRYSTAL = registerSound("dauntless.shoot_crystal", "entity");
+        DAUNTLESS_THROW_SWORD = registerSound("dauntless.throw_sword", "entity");
+        DAUNTLESS_AOE_EXPLODE = registerSound("dauntless.aoe_explode", "entity");
+        DAUNTLESS_AOE_CAST = registerSound("dauntless.aoe_cast", "entity");
+        DAUNTLESS_LESS_AOE_EXPLODE = registerSound("dauntless.aoe_less_explode", "entity");
+        DAUNTLESS_CRYSTAL_EXPLODE = registerSound("dauntless.crystal_explode", "entity");
+        DAUNTLESS_DELAYED_LAZER = registerSound("dauntless.lazer", "entity");
+        DAUNTLESS_YELL = registerSound("dauntless.yell", "entity");
+        DAUNTLESS_YELL_SHORT = registerSound("dauntless.yell_short", "entity");
+        DAUNTLESS_SELF_AOE = registerSound("dauntless.self_aoe", "entity");
+        DAUNTLESS_PUNCH = registerSound("dauntless.punch", "entity");
+        DAUNTLESS_IMPACT = registerSound("dauntless.impact", "entity");
+        DAUNTLESS_LAZER_CONSTANT = registerSound("dauntless.vertical_lazer", "entity");
+        DAUNTLESS_USE_SWORD = registerSound("dauntless.use_sword", "entity");
+        DAUNTLESS_DARK_VOID = registerSound("dauntless.dark_void", "entity");
         //MUSIC
         HIGH_DRAGON_TRACK = registerSound("ambient.high_dragon", "music");
         HIGH_KING_TRACK = registerSound("ambient.high_king", "music");
@@ -742,6 +792,7 @@ public class SoundsHandler {
         WARLORD_TRACK = registerSound("ambient.warlord", "music");
         COLOSSUS_TRACK = registerSound("ambient.colossus", "music");
         DARKDRIFT_DEVIL_TRACK = registerSound("ambient.darkdrift", "music");
+        DAUNTLESS_TRACK = registerSound("ambient.dauntless","music");
     }
 
 

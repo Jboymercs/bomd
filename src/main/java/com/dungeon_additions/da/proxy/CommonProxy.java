@@ -34,6 +34,7 @@ public class CommonProxy{
         Main.network.registerMessage(PacketSwingItem.Handler.class, PacketSwingItem.class, packetId++, Side.CLIENT);
         Main.network.registerMessage(PacketPlayerSwingAll.Handler.class, PacketPlayerSwingAll.class, packetId++, Side.CLIENT);
         Main.network.registerMessage(PacketParryAnimationItem.Handler.class, PacketParryAnimationItem.class, packetId++, Side.CLIENT);
+        Main.network.registerMessage(PacketFalterProgress.Handler.class, PacketFalterProgress.class, packetId++, Side.CLIENT);
         Main.network.registerMessage(MessageEmptySwing.Handler.class, MessageEmptySwing.class, packetId++, Side.SERVER);
         Main.network.registerMessage(PacketControlInput.class, PacketControlInput.Message.class, packetId++, Side.SERVER);
         Main.network.registerMessage(PacketFalterCapability.Handler.class, PacketFalterCapability.class, packetId++, Side.SERVER);

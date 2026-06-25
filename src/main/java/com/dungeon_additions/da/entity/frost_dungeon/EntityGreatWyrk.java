@@ -7,6 +7,7 @@ import com.dungeon_additions.da.entity.ai.EntityAIBlossom;
 import com.dungeon_additions.da.entity.ai.EntityGreatWyrkAttackAI;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
+import com.dungeon_additions.da.entity.dark_dungeon.dark_void.EntityDarkVoid;
 import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.*;
 import com.dungeon_additions.da.entity.night_lich.ProjectileMagicGround;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
@@ -657,6 +658,11 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
             if(!ModUtils.getAdvancementCompletionAsListBase(player, ModConfig.assassins_spawn_progress) && !initiateDeathText) {
                 assert player != null;
                 player.sendMessage(new TextComponentString(TextFormatting.RED + "You have now caught the attention of something lurking in the shadows..."));
+                if(!world.isRemote) {
+                    EntityDarkVoid spawn = new EntityDarkVoid(world, 1, false, false);
+                    spawn.setPosition(this.posX, this.posY + 3, this.posZ);
+                    world.spawnEntity(spawn);
+                }
                 initiateDeathText = true;
             }
         }

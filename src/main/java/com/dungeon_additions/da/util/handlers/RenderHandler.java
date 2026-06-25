@@ -9,9 +9,9 @@ import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
 import com.dungeon_additions.da.entity.dark_dungeon.*;
 import com.dungeon_additions.da.entity.dark_dungeon.boss.*;
-import com.dungeon_additions.da.entity.dark_dungeon.dauntless.EntityDauntlessAOE;
-import com.dungeon_additions.da.entity.dark_dungeon.dauntless.EntityDauntlessSword;
-import com.dungeon_additions.da.entity.dark_dungeon.dauntless.ProjectileDauntlessSlice;
+import com.dungeon_additions.da.entity.dark_dungeon.dark_void.EntityDarkVoid;
+import com.dungeon_additions.da.entity.dark_dungeon.dark_void.EntityDarkVoidSpawn;
+import com.dungeon_additions.da.entity.dark_dungeon.dauntless.*;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertOrb;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
@@ -39,6 +39,7 @@ import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
 import com.dungeon_additions.da.entity.gaelon_dungeon.*;
 import com.dungeon_additions.da.entity.gaelon_dungeon.apathyr.*;
 import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.EntityFriendlyCursedRevenant;
+import com.dungeon_additions.da.entity.generic.EntityBlastTile;
 import com.dungeon_additions.da.entity.generic.EntityDelayedExplosion;
 import com.dungeon_additions.da.entity.generic.EntityRallyFlag;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
@@ -57,6 +58,7 @@ import com.dungeon_additions.da.entity.render.flame_dungeon.RenderIncendium;
 import com.dungeon_additions.da.entity.render.flame_dungeon.RenderVolatileSpirit;
 import com.dungeon_additions.da.entity.render.frost_dungeon.*;
 import com.dungeon_additions.da.entity.render.gaelon_dungeon.*;
+import com.dungeon_additions.da.entity.render.generic.RenderBlastTile;
 import com.dungeon_additions.da.entity.render.generic.RenderDelayedExplosion;
 import com.dungeon_additions.da.entity.render.generic.RenderRallyFlag;
 import com.dungeon_additions.da.entity.render.lich.RenderLichSpawn;
@@ -178,11 +180,14 @@ public class RenderHandler {
         registerProjectileRenderer(EntityRottenHoldLocator.class, ModItems.ROTTEN_HOLD_LOCATOR);
         registerProjectileRenderer(ProjectileThousandCuts.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(ProjectileDesertOrb.class, ModItems.DESERT_PROJECTILE);
+        registerProjectileRenderer(EntityDarkRuinsLocator.class, ModItems.HEART_PROJECTILE);
         registerProjectileRenderer(EntityColossusSigil.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer3DModel(ProjectileSorceryDagger.class, ModItems.SORCERY_DAGGER, true);
         registerProjectileRenderer(ProjectileBloodSigil.class, ModItems.INVISISBLE_ITEM);
         registerProjectileRenderer(ProjectileBloodMeteor.class, ModItems.BLOOD_METEOR);
         registerProjectileRenderer3DModel(ProjectileDauntlessSlice.class, ModItems.DAUNTLESS_SPEAR, true);
+        registerProjectileRenderer3DModel(ProjectileDauntlessCrystal.class, ModItems.DAUNTLESS_CRYSTAL, true);
+        registerProjectileRenderer3DModel(ProjectileDauntlessFist.class, ModItems.DAUNTLESS_FIST, true);
     }
 
     //Handles Rendering
@@ -215,6 +220,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityFlameKnight.class, RenderFlameKnight::new);
         //AOE tile
         RenderingRegistry.registerEntityRenderingHandler(EntityMoveTile.class, RenderMoveTile::new);
+        //Blast Tile
+        RenderingRegistry.registerEntityRenderingHandler(EntityBlastTile.class, RenderBlastTile::new);
         //EntityPyre
         RenderingRegistry.registerEntityRenderingHandler(EntityPyre.class, RenderPyre::new);
         //Ancient Knight
@@ -249,6 +256,10 @@ public class RenderHandler {
         registerModEntityRenderer(EntityWyrkLazer.class, RenderWyrkLazer::new);
         //Desert Beam
         registerModEntityRenderer(EntityDesertBeam.class, RenderDesertBeam::new);
+        //Delayed Lazer
+        registerModEntityRenderer(EntityDelayedLazer.class, RenderDelayedLazer::new);
+        //Vertical Lazer
+        registerModEntityRenderer(ProjectileVerticalLazer.class, RenderDauntlessVLazer::new);
         //Voidiant Lazer
         registerModEntityRenderer(EntityVoidiantLazer.class, RenderVoidiantLazer::new);
         //Imperial Halberd
@@ -367,6 +378,10 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityDauntlessAOE.class, RenderDauntlessAOE::new);
         //Dauntless Sword
         RenderingRegistry.registerEntityRenderingHandler(EntityDauntlessSword.class, RenderDauntlessSword::new);
+        //Dark Orb
+        RenderingRegistry.registerEntityRenderingHandler(EntityDarkVoid.class, RenderDarkVoid::new);
+        //Dark Void Spawn
+        RenderingRegistry.registerEntityRenderingHandler(EntityDarkVoidSpawn.class, RenderDarkVoidSpawn::new);
         //Puzzle Mirror
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPuzzleMirror.class, new RenderPuzzleMirror());
 

@@ -27,15 +27,17 @@ public class ItemDarkDagger extends ToolSword{
         super(name, material);
         this.setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
-        this.setMaxDamage(520);
+        this.setMaxDamage(720);
         this.falter_value = 0.07F;
         this.weapon_type = EnumWeaponType.DAGGER;
         this.weaponReach -= 1.25F;
+        this.swingSound = SoundsHandler.SWING_FAST;
     }
 
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override

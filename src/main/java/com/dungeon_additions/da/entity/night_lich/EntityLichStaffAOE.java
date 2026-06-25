@@ -167,7 +167,7 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
                                 Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
                                 DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.PLAYER).directEntity(owner).build();
                                 float damage = damageFromOwner;
-                                ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.8f, 0, false, 0.4F);
+                                ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.8f, 0, false, 0.7F);
                             }
                         }
 
@@ -182,7 +182,7 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
                                 Vec3d offset = this.getPositionVector().add(ModUtils.yVec(1.0D));
                                 DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                                 float damage = this.getAttack();
-                                ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.8f, 0, false, 0.4F);
+                                ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.8f, 0, false, 0.7F);
                             }
                         }
 

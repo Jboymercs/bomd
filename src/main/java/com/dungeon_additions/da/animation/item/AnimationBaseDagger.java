@@ -35,6 +35,28 @@ public class AnimationBaseDagger {
     }
 
     /**
+     * First Person
+     * */
+    public static void preformDaggerItemRotations1stPersonFist(EntityPlayer player, float partialTicks, float swing, EnumHandSide hand)
+    {
+        float side = hand == EnumHandSide.LEFT ? 0.9F : -0.9F;
+
+        DAPlayerAnimationMethods.applyFirstPersonBaseTransform(hand == EnumHandSide.LEFT, 0);
+
+        float axeRotate1 = DAPlayerAnimationMethods.segmentAnimationTime(swing, 0.0F, 0.2F);
+        float axeRotate2 = DAPlayerAnimationMethods.segmentAnimationTime(swing, 0.4F, 0.55F);
+        float returnTooNuetral = DAPlayerAnimationMethods.segmentAnimationTime(swing, 0.55F, 0.8F);
+
+        /* Translation helps offset the rotation's adjustment of the model position. */
+        GlStateManager.translate((axeRotate2 * (0.5F * side)) + (returnTooNuetral * (-0.4F * side)), (axeRotate1 * 0.2F) + (axeRotate2 * -0.3F) + (returnTooNuetral * 0.0F), (axeRotate2 * -0.9F) + (returnTooNuetral * 1.2F));
+
+        GlStateManager.rotate((axeRotate1) * 60.0F, -0.1F, 0.0F, -side);
+        GlStateManager.rotate((axeRotate2) * 0.0F, 0F, 0F, 0F);
+
+        if (swing >= 1) ClientEventHandler.swingingCustom = false;
+    }
+
+    /**
      * Third Person Model
      * */
     public static void preformDaggerArmRotations3edPerson(Entity entityIn, ModelBiped model, float ageInTicks, float swing, float headYaw, float headPitch, EnumHandSide hand)

@@ -31,9 +31,11 @@ public class ItemAmbitionSword extends ToolSword{
     public ItemAmbitionSword(String name, String info_loc, ToolMaterial material) {
         super(name, material);
         this.info_loc = info_loc;
-        this.setMaxDamage(1200);
+        this.setMaxDamage(1400);
         this.falter_value = 0.2F;
         this.weapon_type = EnumWeaponType.SWORD;
+        this.swingSound = SoundsHandler.B_KNIGHT_SWING;
+        this.swingRadius = 1F;
     }
 
     @Override
@@ -42,12 +44,15 @@ public class ItemAmbitionSword extends ToolSword{
         if(ModConfig.enable_scaling_tooltips) {
             tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
-        attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.B_KNIGHT_SWING, SoundCategory.NEUTRAL, 0.4f, 0.7f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
+        if(!ModConfig.combat_system_enabled && !ModConfig.weapon_hit_delays) {
+            attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.B_KNIGHT_SWING, SoundCategory.NEUTRAL, 0.4f, 0.7f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
+        }
         return super.hitEntity(stack, target, attacker);
     }
 
@@ -56,9 +61,6 @@ public class ItemAmbitionSword extends ToolSword{
     {
         ItemStack stack = player.getHeldItem(hand);
         int SwordCoolDown = ModConfig.sword_of_ambition_cooldown * 20;
-        if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET) {
-
-        }
         float damage = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.INCENDIUM_HELMET ? (float) (9 * ModConfig.incendium_helmet_multipler) + ModUtils.addAbilityBonusDamage(player.getHeldItemMainhand(), 1): 9 + ModUtils.addAbilityBonusDamage(player.getHeldItemMainhand(), 1);
         if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
             worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.B_KNIGHT_STOMP, SoundCategory.NEUTRAL, 1.0f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.2f));
@@ -149,6 +151,12 @@ public class ItemAmbitionSword extends ToolSword{
 
 
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+    }
+
+
+    @Override
+    public int getWeaponDelay(ItemStack stack) {
+        return stack.hasTagCompound() && stack.getTagCompound().hasKey("weaponDelay") ? stack.getTagCompound().getInteger("weaponDelay") + 1 : 0;
     }
 
 

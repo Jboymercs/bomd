@@ -29,6 +29,7 @@ public class ItemKopis extends ToolSword {
         this.setMaxDamage(1200);
         this.falter_value = 0.08F;
         this.weapon_type = EnumWeaponType.SWORD;
+        this.swingRadius = 0.75F;
     }
 
     @Override
@@ -37,6 +38,7 @@ public class ItemKopis extends ToolSword {
         if(ModConfig.enable_scaling_tooltips) {
             tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
@@ -48,7 +50,9 @@ public class ItemKopis extends ToolSword {
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
-        attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.WARLORD_SWING, SoundCategory.NEUTRAL, 0.6f, 0.5f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
+        if(!ModConfig.weapon_hit_delays && !ModConfig.combat_system_enabled) {
+            attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.WARLORD_SWING, SoundCategory.NEUTRAL, 0.6f, 0.5f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
+        }
         if (attacker.world.isRemote) return false;
         int axeCoolDown = (int) (ModConfig.kopis_cooldown * 20);
         stack.damageItem(1, attacker);

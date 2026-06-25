@@ -43,35 +43,35 @@ public class ItemGlowBerry extends ItemFood implements IHasModel, IPlantable {
     {
         ItemStack itemstack = player.getHeldItem(hand);
 
+        // this.crops is not the server only on client
+        Block crop = ModBlocks.AZAELA_VINES;
+
         IBlockState iblockstate = worldIn.getBlockState(pos);
         Block block = iblockstate.getBlock();
-
         if (!block.isReplaceable(worldIn, pos)) pos = pos.offset(facing);
-
-        if (!itemstack.isEmpty() && player.canPlayerEdit(pos, facing, itemstack) && worldIn.mayPlace(this.crops, pos, false, facing, player))
+        if (!itemstack.isEmpty() && player.canPlayerEdit(pos, facing, itemstack) && worldIn.mayPlace(crop, pos, false, facing, player))
         {
+            if (!worldIn.isRemote) System.out.println("3");
             int i = this.getMetadata(itemstack.getMetadata());
-            IBlockState iblockstate1 = this.crops.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);
-
-            if (placeBlockAt(itemstack, player, worldIn, pos, facing, hitX, hitY, hitZ, iblockstate1))
+            IBlockState iblockstate1 = crop.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);
+            if (placeBlockAt(itemstack, player, worldIn, pos, facing, hitX, hitY, hitZ, iblockstate1, crop))
             {
                 worldIn.playSound(player, pos, SoundsHandler.MOSS_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
                 itemstack.shrink(1);
             }
-
             return EnumActionResult.SUCCESS;
         }
         return EnumActionResult.FAIL;
     }
 
-    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState)
+    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState, Block crop)
     {
         if (!world.setBlockState(pos, newState, 11)) return false;
 
         IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() == this.crops)
+        if (state.getBlock() == crop)
         {
-            this.crops.onBlockPlacedBy(world, pos, state, player, stack);
+            crop.onBlockPlacedBy(world, pos, state, player, stack);
 
             if (player instanceof EntityPlayerMP)
                 CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)player, pos, stack);

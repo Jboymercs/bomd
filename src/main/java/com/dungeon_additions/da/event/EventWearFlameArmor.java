@@ -536,7 +536,7 @@ public class EventWearFlameArmor {
         if(base instanceof EntityDarkAssassin) {
             EntityDarkAssassin assassin = ((EntityDarkAssassin) base);
             event.getWorld().playerEntities.forEach((p)-> {
-                if(!ModUtils.getAdvancementCompletionAsListBase(p, ModConfig.assassins_spawn_progress)) {
+                if(!ModUtils.getAdvancementCompletionAsListBase(p, ModConfig.assassins_spawn_progress) && !assassin.isSpawnOverride()) {
                     assassin.setDead();
                 }
             });
@@ -545,7 +545,7 @@ public class EventWearFlameArmor {
         if(base instanceof EntityDarkSorcerer) {
             EntityDarkSorcerer assassin = ((EntityDarkSorcerer) base);
             event.getWorld().playerEntities.forEach((p)-> {
-                if(!ModUtils.getAdvancementCompletionAsListBase(p, ModConfig.sorcerers_spawn_progress)) {
+                if(!ModUtils.getAdvancementCompletionAsListBase(p, ModConfig.sorcerers_spawn_progress) && !assassin.isSpawnOverride()) {
                     assassin.setDead();
                 }
             });

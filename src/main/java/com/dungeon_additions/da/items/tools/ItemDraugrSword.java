@@ -4,6 +4,8 @@ import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 
@@ -22,13 +25,16 @@ public class ItemDraugrSword extends ToolSword{
     public ItemDraugrSword(String name, ToolMaterial material, String info_loc) {
         super(name, material);
         this.info_loc = info_loc;
-        this.setMaxDamage(874);
+        this.setMaxDamage(1074);
         this.weapon_type = EnumWeaponType.SWORD;
+        this.swingSound = SoundsHandler.SWING_REGULAR;
+        this.swingRadius = 0.75F;
     }
 
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.GRAY + ModUtils.translateDesc(info_loc));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
 

@@ -11,6 +11,7 @@ public class ModColors {
     public static final Vec3d GREEN = new Vec3d(0.1, 0.9, 0.1);
     public static final Vec3d PINK = new Vec3d(1.0, 0.7, 0.7);
     public static final Vec3d LIGHT_PURPLE = new Vec3d(0.8, 0.1, 0.8);
+    public static final Vec3d LIGHTER_PURPLE = new Vec3d(0.68, 0.36, 0.92);
 
     public static final Vec3d GREY = new Vec3d(0.5, 0.5, 0.5);
 

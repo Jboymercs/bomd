@@ -51,52 +51,52 @@ public class MixinModelBiped implements IRotationStorage {
             {
                 float customSwing = AnimationCapabilityHelper.getPlayerCustomSwingAnimProgress((EntityPlayer)living, partialTicks);
                 if(swordHand != null) {
-                    if(AnimationCapabilityHelper.isPlayerCustomSwingAnimating((EntityPlayer) living)) {
+                    if (AnimationCapabilityHelper.isPlayerCustomSwingAnimating((EntityPlayer) living)) {
 
-                        if(DAPlayerAnimationMethods.getWeaponType(living) == 1 && ModConfig.enable_sword_weapons) {
+                        if (DAPlayerAnimationMethods.getWeaponType(living) == 1 && ModConfig.enable_sword_weapons) {
                             AnimationsBaseSword.preformSwordArmRotations3edPerson(living, model, ageInTicks, customSwing, netHeadYaw, headPitch, swordHand);
                             busyAnimating = true;
                         }
 
-                        if(DAPlayerAnimationMethods.getWeaponType(living) == 2 && ModConfig.enable_dagger_weapons) {
+                        if (DAPlayerAnimationMethods.getWeaponType(living) == 2 && ModConfig.enable_dagger_weapons) {
                             AnimationBaseDagger.preformDaggerArmRotations3edPerson(living, model, ageInTicks, customSwing, netHeadYaw, headPitch, swordHand);
                             busyAnimating = true;
                         }
 
-                        if(DAPlayerAnimationMethods.getWeaponType(living) == 3 && ModConfig.enable_parry_sword_weapons) {
+                        if (DAPlayerAnimationMethods.getWeaponType(living) == 3 && ModConfig.enable_parry_sword_weapons) {
                             AnimationsBaseSword.preformSwordArmRotations3edPerson(living, model, ageInTicks, customSwing, netHeadYaw, headPitch, swordHand);
                             busyAnimating = true;
                         }
 
-                        if(DAPlayerAnimationMethods.getWeaponType(living) == 4 && ModConfig.enable_spear_weapons) {
+                        if (DAPlayerAnimationMethods.getWeaponType(living) == 4 && ModConfig.enable_spear_weapons) {
                             AnimationBaseSpear.preformSpearArmRotations3edPerson(living, model, ageInTicks, customSwing, netHeadYaw, headPitch, swordHand);
                             busyAnimating = true;
                         }
 
-                        if(DAPlayerAnimationMethods.getWeaponType(living) == 5 && ModConfig.enable_heavy_weapons) {
+                        if (DAPlayerAnimationMethods.getWeaponType(living) == 5 && ModConfig.enable_heavy_weapons) {
                             AnimationBaseColossalWeapon.preformColossalArmRotations3edPerson(living, model, ageInTicks, customSwing, netHeadYaw, headPitch, swordHand);
                             busyAnimating = true;
                         }
                     }
 
-                    if(AnimationCapabilityHelper.isPlayerParryItemAnimation((EntityPlayer) living)) {
+                    if (AnimationCapabilityHelper.isPlayerParryItemAnimation((EntityPlayer) living)) {
                         float customTime = AnimationCapabilityHelper.getPlayerParryAnimProgress(((EntityPlayer) living), partialTicks);
                         AnimationsBaseSword.preformSwordParryArmRotations3edPerson(living, model, customTime, swordHand);
                     }
 
-                    if(DAPlayerAnimationMethods.getWeaponType(living) == 1 && !busyAnimating && ModConfig.enable_sword_weapons) {
+                    if (DAPlayerAnimationMethods.getWeaponType(living) == 1 && !busyAnimating && ModConfig.enable_sword_weapons) {
                         AnimationsBaseSword.preformSwordArmRotations3edPerson(living, model, ageInTicks, model.swingProgress, netHeadYaw, headPitch, swordHand);
                     }
 
-                    if(DAPlayerAnimationMethods.getWeaponType(living) == 2 && !busyAnimating && ModConfig.enable_dagger_weapons) {
+                    if (DAPlayerAnimationMethods.getWeaponType(living) == 2 && !busyAnimating && ModConfig.enable_dagger_weapons) {
                         AnimationBaseDagger.preformDaggerArmRotations3edPerson(living, model, ageInTicks, model.swingProgress, netHeadYaw, headPitch, swordHand);
                     }
 
-                    if(DAPlayerAnimationMethods.getWeaponType(living) == 4 && !busyAnimating && ModConfig.enable_spear_weapons) {
+                    if (DAPlayerAnimationMethods.getWeaponType(living) == 4 && !busyAnimating && ModConfig.enable_spear_weapons) {
                         AnimationBaseSpear.preformSpearArmRotations3edPerson(living, model, ageInTicks, model.swingProgress, netHeadYaw, headPitch, swordHand);
                     }
 
-                    if(DAPlayerAnimationMethods.getWeaponType(living) == 5 && !busyAnimating && ModConfig.enable_heavy_weapons) {
+                    if (DAPlayerAnimationMethods.getWeaponType(living) == 5 && !busyAnimating && ModConfig.enable_heavy_weapons) {
                         AnimationBaseColossalWeapon.preformColossalArmRotations3edPerson(living, model, ageInTicks, model.swingProgress, netHeadYaw, headPitch, swordHand);
                     }
 

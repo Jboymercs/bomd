@@ -36,9 +36,11 @@ public class ItemDarkSicle extends ToolSword implements IAnimatable, ISweepAttac
         super(name, material);
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
-        this.setMaxDamage(766);
+        this.setMaxDamage(966);
         this.falter_value = 0.23F;
         this.weapon_type = EnumWeaponType.DAGGER;
+        this.swingSound = SoundsHandler.SWING_REGULAR;
+        this.swingRadius = 1.1F;
     }
 
     @Override
@@ -47,6 +49,7 @@ public class ItemDarkSicle extends ToolSword implements IAnimatable, ISweepAttac
         if(ModConfig.enable_scaling_tooltips) {
             tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override

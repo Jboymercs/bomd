@@ -9,6 +9,7 @@ import com.dungeon_additions.da.packets.PacketParryAnimationItem;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.PlayerFalterUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -46,6 +47,10 @@ public class ItemParrySword extends ToolSword {
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
         this.weapon_type = EnumWeaponType.PARRY_SWORD;
+        this.swingSound = SoundsHandler.SWING_HEAVY;
+        this.falter_value = 0.2F;
+        this.swingRadius = 1F;
+        this.setMaxDamage(1174);
     }
 
     @Override
@@ -54,6 +59,7 @@ public class ItemParrySword extends ToolSword {
         if(ModConfig.enable_scaling_tooltips) {
             tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
@@ -130,6 +136,9 @@ public class ItemParrySword extends ToolSword {
                     player.stopActiveHand();
                     player.setHealth((float) this.setPlayerLife);
                     currentLife = 0;
+                    if(PlayerFalterUtils.getPlayerFalterProgress(player) > 0) {
+                        PlayerFalterUtils.setPlayerGreedProgress(player, PlayerFalterUtils.getPlayerFalterProgress(player) - 0.6F);
+                    }
                     ModUtils.performNTimes(6, (i) -> {
                         Vec3d playerLookVec = player.getLookVec();
                         Vec3d playerPos = new Vec3d(player.posX + playerLookVec.x * 0.7D,player.posY + playerLookVec.y + player.getEyeHeight(), player. posZ + playerLookVec.z * 0.7D);

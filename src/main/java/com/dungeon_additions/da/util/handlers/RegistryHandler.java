@@ -75,6 +75,10 @@ public class RegistryHandler {
         ModelLoader.setCustomModelResourceLocation(ModItems.SORCERY_DAGGER, 0, new ModelResourceLocation(ModReference.MOD_ID + ":sorcery_dagger", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.BLOOD_METEOR, 0, new ModelResourceLocation(ModReference.MOD_ID + ":blood_meteor", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.DAUNTLESS_SPEAR, 0, new ModelResourceLocation(ModReference.MOD_ID + ":dauntless_spear", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.DAUNTLESS_CRYSTAL, 0, new ModelResourceLocation(ModReference.MOD_ID + ":dauntless_crystal", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.DAUNTLESS_FIST, 0, new ModelResourceLocation(ModReference.MOD_ID + ":dauntless_fist", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.NIGHTFALL_SWORD, 0, new ModelResourceLocation(ModReference.MOD_ID + ":nightfall_sword", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.NIGHTFALL_GAUNTLETS, 0, new ModelResourceLocation(ModReference.MOD_ID + ":nightfall_gauntlets", "inventory"));
         ModItems.SPORE_BALL.setTileEntityItemStackRenderer(new RenderSpore());
         ModItems.MAGIC_FIREBALL.setTileEntityItemStackRenderer(new RenderMagicFireball());
         ModItems.CHAMPION_AXE.setTileEntityItemStackRenderer(new RenderChampionAxe());
@@ -110,6 +114,10 @@ public class RegistryHandler {
         ModItems.SORCERY_DAGGER.setTileEntityItemStackRenderer(new RenderSorceryDagger());
         ModItems.BLOOD_METEOR.setTileEntityItemStackRenderer(new RenderProjectileBloodMeteor());
         ModItems.DAUNTLESS_SPEAR.setTileEntityItemStackRenderer(new RenderDauntlessSpear());
+        ModItems.DAUNTLESS_CRYSTAL.setTileEntityItemStackRenderer(new RenderDauntlessCrystal());
+        ModItems.DAUNTLESS_FIST.setTileEntityItemStackRenderer(new RenderDauntlessFist());
+        ModItems.NIGHTFALL_SWORD.setTileEntityItemStackRenderer(new RenderNightFallSword());
+        ModItems.NIGHTFALL_GAUNTLETS.setTileEntityItemStackRenderer(new RenderNightfallGauntlets());
         for (Item item : ModItems.ITEMS) {
             if (item instanceof IHasModel) {
                 ((IHasModel) item).registerModels();

@@ -37,19 +37,23 @@ public class ItemColossusMace extends ToolSword implements IAnimatable {
 
     public ItemColossusMace(String name, Item.ToolMaterial material, String info_loc) {
         super(name, material);
-        this.setMaxDamage(1032);
+        this.setMaxDamage(1232);
         ModItems.ITEMS.add(this);
         this.falter_value = 0.4F;
         setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
         this.weapon_type = EnumWeaponType.HEAVY_AXE;
+        this.swingSound = SoundsHandler.COLOSSUS_SWING;
+        this.swingRadius = 1.35F;
     }
 
 
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
-        attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.COLOSSUS_SWING, SoundCategory.NEUTRAL, 0.6f, 0.7f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
+        if(!ModConfig.combat_system_enabled && !ModConfig.weapon_hit_delays) {
+            attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.COLOSSUS_SWING, SoundCategory.NEUTRAL, 0.6f, 0.7f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
+        }
             if(!attacker.world.isRemote) {
                 target.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 60, 0, false, false));
             }
@@ -62,6 +66,7 @@ public class ItemColossusMace extends ToolSword implements IAnimatable {
         if(ModConfig.enable_scaling_tooltips) {
             tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override

@@ -196,7 +196,7 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
                                 Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.25D));
                                 DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                                 float damage = this.getAttack();
-                                ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.3f, 0, false, 0.4F);
+                                ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.3f, 0, false, 0.6F);
                                 if (!world.isRemote) {
                                     base.setFire(8);
                                 }
@@ -217,7 +217,7 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
                             Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.25D));
                             DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                             float damage = this.getAttack();
-                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 1.3f, 0, false, 0.2F);
+                            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 1.3f, 0, false, 0.5F);
                         }
                     }
                 }
@@ -235,7 +235,7 @@ public class EntityBlueWave extends EntityEndBase implements IAnimatable {
                                 Vec3d offset = base.getPositionVector().add(ModUtils.yVec(0.25D));
                                 DamageSource source = ModDamageSource.builder().disablesShields().type(ModDamageSource.MAGIC).directEntity(this).build();
                                 float damage = this.getAttack();
-                                ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.6f, 0, false);
+                                ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0.6f, 0, false, 0.6F);
                             }
                         }
                     }

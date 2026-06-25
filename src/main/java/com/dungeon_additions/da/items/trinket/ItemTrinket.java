@@ -4,8 +4,10 @@ import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import baubles.api.IBauble;
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.capabilities.CapabilityItemAnimations;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.PotionTrinketConfig;
+import com.dungeon_additions.da.entity.dark_dungeon.dauntless.EntityDelayedLazer;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityColossusSigil;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntitySummonedMace;
 import com.dungeon_additions.da.entity.generic.EntityDelayedExplosion;
@@ -15,16 +17,19 @@ import com.dungeon_additions.da.entity.player.ActionPlayerPetalWave;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
 import com.dungeon_additions.da.integration.BaublesIntegration;
 import com.dungeon_additions.da.items.ItemBase;
+import com.dungeon_additions.da.packets.PacketParryAnimationItem;
 import com.dungeon_additions.da.proxy.ClientProxy;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.PlayerFalterUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,6 +39,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -43,6 +49,7 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.lwjgl.Sys;
 
 import javax.annotation.Nullable;
@@ -57,6 +64,10 @@ public class ItemTrinket extends ItemBase implements IBauble{
 
     private int slotId;
     public boolean hasKeyAbility = false;
+    private boolean isParrying = false;
+    private int currentLife = 0;
+    private double setPlayerLife = 0;
+    private boolean dealtDamage = false;
 
     @Optional.Method(modid = "baubles")
     public BaubleType getBaubleType(ItemStack itemstack) {
@@ -114,8 +125,6 @@ public class ItemTrinket extends ItemBase implements IBauble{
         this.hasKeyAbility = hasKeyAbility;
     }
 
-
-
     @Override
     public EnumRarity getRarity(ItemStack stack)
     {
@@ -141,6 +150,7 @@ public class ItemTrinket extends ItemBase implements IBauble{
                 EntitySkyTornado tornado = new EntitySkyTornado(player.world, true, player);
                 tornado.setPosition(player.posX, player.posY, player.posZ);
                 player.world.spawnEntity(tornado);
+                world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.CAST_GENERIC_SPELL, SoundCategory.NEUTRAL, 1f, 0.8f / (world.rand.nextFloat() * 0.4F + 0.4f));
                 stack.damageItem(1, player);
                 player.getCooldownTracker().setCooldown(stack.getItem(), 600);
                 return true;
@@ -148,6 +158,7 @@ public class ItemTrinket extends ItemBase implements IBauble{
             } else if (type == 2 && !player.getCooldownTracker().hasCooldown(stack.getItem())) {
                 EntityColossusSigil sigil = new EntityColossusSigil(player.world, player, PotionTrinketConfig.golden_ritual_damage + ModUtils.addMageSetBonus(player, 0), true);
                 sigil.setPosition(player.posX, player.posY + 2, player.posZ);
+                world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.CAST_GENERIC_SPELL, SoundCategory.NEUTRAL, 1f, 0.8f / (world.rand.nextFloat() * 0.4F + 0.4f));
                 player.world.spawnEntity(sigil);
                 stack.damageItem(1, player);
                 player.getCooldownTracker().setCooldown(stack.getItem(), 1200);
@@ -267,6 +278,18 @@ public class ItemTrinket extends ItemBase implements IBauble{
                 world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.BLOSSOM_PETAL_WAVE, SoundCategory.NEUTRAL, 1f, 0.8f / (world.rand.nextFloat() * 0.4F + 0.4f));
                 stack.damageItem(1, player);
                 player.getCooldownTracker().setCooldown(stack.getItem(), 300);
+                //lazer pistol
+            } else if (type == 11 && !player.getCooldownTracker().hasCooldown(stack.getItem())) {
+                world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.DAUNTLESS_CAST_PROJECTILE, SoundCategory.NEUTRAL, 0.8f, 0.6f / (world.rand.nextFloat() * 0.4F + 0.4f));
+                Vec3d lookVec = player.getLookVec();
+                float damage = PotionTrinketConfig.pocket_pistol_damage + ModUtils.addMageSetBonus(player, 0, 3F);
+                Vec3d relPos = new Vec3d(player.posX + lookVec.x * 1.4D,player.posY + lookVec.y + player.getEyeHeight(), player.posZ + lookVec.z * 1.4D);
+                Vec3d targetPos = new Vec3d(player.posX + lookVec.x * 16D,(player.posY + lookVec.y * 16D) + player.getEyeHeight(), player.posZ + lookVec.z * 16D);
+                //We want to ensure the offset is in place. so target will remain null
+                EntityDelayedLazer lazer = new EntityDelayedLazer(player.world, 15, targetPos, player, (float) (damage), null);
+                lazer.setPosition(relPos.x, relPos.y, relPos.z);
+                player.world.spawnEntity(lazer);
+                player.getCooldownTracker().setCooldown(stack.getItem(), 500);
             }
         }
         return false;

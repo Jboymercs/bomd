@@ -30,7 +30,7 @@ public class ProjectileCrystalWave extends Projectile {
     public ProjectileCrystalWave(World worldIn, EntityLivingBase throwerIn, float baseDamage, ItemStack stack) {
         super(worldIn, throwerIn, baseDamage);
         this.setNoGravity(true);
-        this.setSize(1.4F, 2);
+        this.setSize(1.2F, 1.25F);
     }
 
     private boolean byPass;
@@ -38,7 +38,7 @@ public class ProjectileCrystalWave extends Projectile {
     public ProjectileCrystalWave(World worldIn, EntityLivingBase throwerIn, float baseDamage, ItemStack stack, boolean bypass) {
         super(worldIn, throwerIn, baseDamage);
         this.setNoGravity(true);
-        this.setSize(1.4F, 2);
+        this.setSize(1.2F, 1.25F);
         this.byPass = bypass;
         this.noClip = true;
     }
@@ -47,20 +47,20 @@ public class ProjectileCrystalWave extends Projectile {
     public ProjectileCrystalWave(World worldIn, EntityLivingBase throwerIn, float baseDamage, ItemStack stack, EntityPlayer owner) {
         super(worldIn, throwerIn, baseDamage);
         this.setNoGravity(true);
-        this.setSize(1.4F, 2);
+        this.setSize(1.2F, 1.25F);
         this.player = owner;
     }
 
     public ProjectileCrystalWave(World worldIn) {
         super(worldIn);
         this.setNoGravity(true);
-        this.setSize(1.4F, 2);
+        this.setSize(1.2F, 1.25F);
     }
 
     public ProjectileCrystalWave(World worldIn, double x, double y, double z) {
         super(worldIn, x, y, z);
         this.setNoGravity(true);
-        this.setSize(1.4F, 2);
+        this.setSize(1.2F, 1.25F);
     }
 
     @Override

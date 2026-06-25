@@ -45,12 +45,14 @@ public class ItemApathyrAxe extends ItemAbilityWeapon implements IAnimatable, IH
 
     public ItemApathyrAxe(String name, Item.ToolMaterial material, String info_loc) {
         super(name, material);
-        this.setMaxDamage(986);
-        this.falter_value = 0.4F;
+        this.setMaxDamage(1086);
+        this.falter_value = 0.35F;
         ModItems.ITEMS.add(this);
         setCreativeTab(DungeonAdditionsTab.ALL);
         this.info_loc = info_loc;
         this.weapon_type = EnumWeaponType.HEAVY_AXE;
+        this.swingSound = SoundsHandler.APATHYR_SWING;
+        this.swingRadius = 1.25F;
     }
 
     @Override
@@ -59,6 +61,7 @@ public class ItemApathyrAxe extends ItemAbilityWeapon implements IAnimatable, IH
         if(ModConfig.enable_scaling_tooltips) {
             tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     private EntityLivingBase targetedEntity;

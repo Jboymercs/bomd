@@ -17,6 +17,8 @@ import com.dungeon_additions.da.items.armor.imperial.ItemImperialArmor;
 import com.dungeon_additions.da.items.armor.imperial.ItemImperialChestplate;
 import com.dungeon_additions.da.items.armor.mage.ItemMageArmor;
 import com.dungeon_additions.da.items.armor.mage.ItemMageHelmet;
+import com.dungeon_additions.da.items.armor.nightfall.ItemNightfallChestplate;
+import com.dungeon_additions.da.items.armor.nightfall.ItemNightfallHelmet;
 import com.dungeon_additions.da.items.armor.novik.ItemApathyrHelmet;
 import com.dungeon_additions.da.items.armor.novik.ItemNovikArmor;
 import com.dungeon_additions.da.items.armor.novik.ItemNovikChestplate;
@@ -28,10 +30,7 @@ import com.dungeon_additions.da.items.gun.ItemGolemCannon;
 import com.dungeon_additions.da.items.gun.ItemSealedTornado;
 import com.dungeon_additions.da.items.gun.ItemVoidiantCatalyst;
 import com.dungeon_additions.da.items.keys.*;
-import com.dungeon_additions.da.items.potions.ItemFieryRespite;
-import com.dungeon_additions.da.items.potions.ItemGoldenDevotion;
-import com.dungeon_additions.da.items.potions.ItemGoldenVow;
-import com.dungeon_additions.da.items.potions.ItemPoisonGarnish;
+import com.dungeon_additions.da.items.potions.*;
 import com.dungeon_additions.da.items.projectile.*;
 import com.dungeon_additions.da.items.shield.*;
 import com.dungeon_additions.da.items.tools.*;
@@ -74,7 +73,8 @@ public class ModItems {
 
     private static final Item.ToolMaterial DARK_SICLE_MATERIAL = EnumHelper.addToolMaterial("dark_sicle_material", 2, 766, 3.0F, (float) 6, 20);
     private static final Item.ToolMaterial FLAME_SWORD_MATERIAL = EnumHelper.addToolMaterial("flame_sword_material", 2, 988, 6.0F, ModConfig.sword_of_ambition_damage, 70);
-
+    private static final Item.ToolMaterial NIGHTFALL_SWORD_MATERIAL = EnumHelper.addToolMaterial("nightfall_sword_material", 3, 1280, 6.0F, ModConfig.nightfall_sword_damage, 40);
+    private static final Item.ToolMaterial NIGHTFALL_GAUNTLETS_MATERIAL = EnumHelper.addToolMaterial("nightfall_gauntlets_material", 2, 1100, 4.0F, (float) ModConfig.nightfall_gauntlet_damage, 30);
     private static final Item.ToolMaterial SOUL_SPEAR_MATERIAL = EnumHelper.addToolMaterial("soul_spear_material", 2, 1200, 5.0F, ModConfig.soul_spear_damage, 10);
 
     private static final Item.ToolMaterial SOUL_SPEAR_WEAPON_MATERIAL = EnumHelper.addToolMaterial("soul_spear_weapon_material", 2, 1200, 5.0F, ModConfig.soul_weapon_damage, 20);
@@ -86,6 +86,7 @@ public class ModItems {
 
     private static final ItemArmor.ArmorMaterial FLAME_ARMOR = EnumHelper.addArmorMaterial("flame", ModReference.MOD_ID + ":flame", 53 * ModConfig.armor_durability_scaling, new int[]{4, 7,9,4}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2F);
     private static final ItemArmor.ArmorMaterial ADVENTURE_ARMOR = EnumHelper.addArmorMaterial("adventure", ModReference.MOD_ID + ":adventure", 45 * ModConfig.armor_durability_scaling, new int[]{3, 6,8,3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2F);
+    private static final ItemArmor.ArmorMaterial NIGHTFALL_ARMOR = EnumHelper.addArmorMaterial("adventure", ModReference.MOD_ID + ":nightfall", 55 * ModConfig.armor_durability_scaling, new int[]{3, 6,8,3}, 40, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
     private static final ItemArmor.ArmorMaterial MAGE_ARMOR = EnumHelper.addArmorMaterial("mage", ModReference.MOD_ID + ":mage", 38 * ModConfig.armor_durability_scaling, new int[]{2, 5,7,2}, 25, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1F);
     private static final ItemArmor.ArmorMaterial DRAUGR_ARMOR = EnumHelper.addArmorMaterial("draugr", ModReference.MOD_ID + "draugr", 52 * ModConfig.armor_durability_scaling, new int[]{3, 6, 8,3}, 5, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2F);
     private static final ItemArmor.ArmorMaterial AEGYPTIAN_WARLORD = EnumHelper.addArmorMaterial("aegyptian_warlord", ModReference.MOD_ID + "aegyptian_warlord", 57 * ModConfig.armor_durability_scaling, new int[]{2, 6, 8,2}, 10, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2F);
@@ -147,6 +148,7 @@ public class ModItems {
     public static final Item ENDER_CRYSTAL = new ItemCraftingMaterial("ender_crystal", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item OBSIDIAN_HEART = new ItemCraftingMaterial("obsdian_heart", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item VOIDCLYSM_CRYSTAL = new ItemCraftingMaterial("voidclysm_crystal", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item NIGHTFALL_SCRAP = new ItemCraftingMaterial("nightfall_scrap", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item LIGHT_MANA = new ItemCraftingMaterial("light_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item LITIC_SHARD = new ItemCraftingMaterial("lightning_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item LITIC_INGOT = new ItemCraftingMaterial("lightning_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -174,6 +176,7 @@ public class ModItems {
     public static final Item FIERY_RESPITE = new ItemFieryRespite("fiery_respite", "fiery_respite_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item GOLDEN_DEVOTION = new ItemGoldenDevotion("golden_devotion", "golden_devotion_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item GOLDEN_VOW = new ItemGoldenVow("golden_vow", "golden_vow_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item MIDNIGHT_VOID = new ItemVoidBottle("midnight_void", "midnight_void_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     //Trinkets
     public static final Item FROZEN_CRYSTAL_TRINKET = new ItemTrinket("crystal_trinket", "crystal_trinket_desc", PotionTrinketConfig.frozen_crystal_durability, 0);
     public static final Item GLASS_CANNON_TRINKET = new ItemTrinket("glass_cannon_trinket", "glass_cannon_trinket_desc", PotionTrinketConfig.glass_cannon_durability, 1);
@@ -211,6 +214,7 @@ public class ModItems {
     public static final Item RALLY_TRINKET = new ItemTrinket("rally_trinket", "rally_trinket_desc", PotionTrinketConfig.last_stand_trinket_durability, 1, true);
     public static final Item PETAL_TRINKET = new ItemTrinket("petal_trinket", "petal_trinket_desc", PotionTrinketConfig.thorn_ring_trinket_durability, 1, true);
     public static final Item GOAT_TRINKET = new ItemTrinket("goat_trinket", "goat_trinket_desc", PotionTrinketConfig.goat_tenacity_durability, 2);
+    public static final Item PISTOL_TRINKET = new ItemTrinket("pistol_trinket", "pistol_trinket_desc", PotionTrinketConfig.pocket_pistol_durability, 1, true);
     //
     public static final Item WYRK_TOTEM = new ItemWyrkTotem("wyrk_totem", "wyrk_totem_desc", DungeonAdditionsTab.ALL);
     public static final Item NOVIK_AID = new ItemNovikAid("call_to_arms", "call_to_arms_desc", DungeonAdditionsTab.ALL);
@@ -222,6 +226,7 @@ public class ModItems {
     public static final Item DARK_LOCATOR = new ItemBase("dark_locator", DungeonAdditionsTab.ALL);
     public static final Item BURNING_FLAME_LOCATOR = new ItemBurningArenaLocator("flame_locator", "flame_locator_desc");
     public static final Item GAELON_LOCATOR = new ItemGaelonSanctuaryLocator("gaelon_locator", "gaelon_locator_desc");
+    public static final Item DARK_RUINS_LOCATOR = new ItemDarkRuinsLocator("dark_ruins_locator", "dark_ruins_desc");
     public static final Item OBSIDIAN_LOCATOR = new ItemObsidianLocator("obsidian_locator", "obsidian_locator_desc");
     public static final Item SOUL_STAR = new ItemSoulStar("soul_star_item", "soul_star_desc");
     public static final Item SKY_LOCATOR = new ItemSkyLocator("sky_locator", "sky_locator_desc");
@@ -259,6 +264,8 @@ public class ModItems {
     public static final Item NOVIK_SWORD = new ItemNovikSword("novik_sword", NOVIK_MATERIAL, "novik_sword_desc");
     public static final Item APATHYR_AXE = new ItemApathyrAxe("apathyr_axe", APATHYR_AXE_MATERIAL, "apathyr_axe_desc");
     public static final Item DARK_SICLE = new ItemDarkSicle("dark_sicle", DARK_SICLE_MATERIAL, "dark_sicle_desc");
+    public static final Item NIGHTFALL_SWORD = new ItemNightfallSword("nightfall_sword", "nightfall_sword_desc",NIGHTFALL_SWORD_MATERIAL).setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item NIGHTFALL_GAUNTLETS = new ItemNightfallGauntlets("nightfall_gauntlets", "nightfall_gauntlets_desc", NIGHTFALL_GAUNTLETS_MATERIAL).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item VOID_HAMMER = new ItemVoidHammer("void_hammer", VOID_HAMMER_MATERIAL, "void_hammer_desc");
     public static final Item SPEAR_OF_SOULS = new ItemSoulSpear("spear_staff", SOUL_SPEAR_MATERIAL, "soul_spear_desc");
     public static final Item SPEAR_OF_WARRIOR = new ItemWeaponSpear("spear_weapon", SOUL_SPEAR_WEAPON_MATERIAL, "soul_weapon_desc");
@@ -311,6 +318,8 @@ public class ModItems {
     public static final ItemArmor ENDERPHRITE_CHESTPLATE = new ItemEnderphriteChestplate("enderphrite_chestplate", ENDERPHRITE_SET,1, EntityEquipmentSlot.CHEST, "enderphrite", "enderphrite_armor_desc");
     public static final ItemArmor ENDERPHRITE_LEGGINGS = new ItemEnderphriteArmor("enderphrite_leggings", ENDERPHRITE_SET, 2, EntityEquipmentSlot.LEGS, "enderphrite", "enderphrite_armor_desc");
     public static final ItemArmor ENDERPHRITE_BOOTS = new ItemEnderphriteArmor("enderphrite_boots", ENDERPHRITE_SET, 1, EntityEquipmentSlot.FEET, "enderphrite", "enderphrite_armor_desc");
+    public static final ItemArmor NIGHTFALL_HELMET = new ItemNightfallHelmet("nightfall_helmet", NIGHTFALL_ARMOR, 1, EntityEquipmentSlot.HEAD, "nightfall_helmet_desc");
+    public static final ItemArmor NIGHTFALL_CHESTPLATE = new ItemNightfallChestplate("nightfall_chestplate", NIGHTFALL_ARMOR, 1, EntityEquipmentSlot.CHEST, "nightfall_chestplate_desc");
     public static final ItemArmor OBSIDIAN_HELMET = new ItemObsidianHelmet("obsidian_helm", OBSIDIAN_HELMET_MAT, 1, EntityEquipmentSlot.HEAD, "obsidian", "obsidian_armor_desc");
     public static final ItemArmor NIGHT_LICH_HELMET = new ModLichArmor("lich_helmet", LICH_HELMET, 1, EntityEquipmentSlot.HEAD,"night_lich", "night_lich_desc");
     public static final ItemArmor DARK_METAL_HELMET = new ModDarkMetalHelmet("dark_metal_helmet", DARK_METAL_SET, 1, EntityEquipmentSlot.HEAD, "dark_metal_helmet", "dark_metal_helmet_desc");
@@ -361,7 +370,9 @@ public class ModItems {
     public static final Item DESERT_PROJECTILE = new ItemBase("desert_projectile", null);
     public static final Item SORCERY_DAGGER = new ItemSorceryDagger("sorcery_dagger").setCreativeTab(null);
     public static final Item DAUNTLESS_SPEAR = new ItemDauntlessSpear("dauntless_spear").setCreativeTab(null);
-
+    public static final Item DAUNTLESS_CRYSTAL = new ItemDauntlessCrystal("dauntless_crystal").setCreativeTab(null);
+    public static final Item DAUNTLESS_FIST = new ItemDauntlessFist("dauntless_fist").setCreativeTab(null);
+    public static final Item HEART_PROJECTILE = new ItemBase("heart_projectile", null);
     public static final Item MOD_LOGO = new ItemBase("bomd_mod_logo", null);
 
 

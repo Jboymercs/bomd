@@ -113,7 +113,7 @@ public class ItemFlowerCrown extends ItemArmor implements IHasModel {
                     if (waitTime < 0) {
                         EntityLivingBase attacker = player.getAttackingEntity();
                         Vec3d predictedPosition = ModUtils.predictPlayerPosition(targetOriginalPos, attacker.getPositionVector(), 3);
-                        this.summonSpikesOnEnemy(player, ModConfig.void_blossom_crown_damage, attacker, worldIn, predictedPosition);
+                        this.summonSpikesOnEnemy(player, ModConfig.void_blossom_crown_damage + ModUtils.addMageSetBonus(player, 0, 1.5F), attacker, worldIn, predictedPosition);
                         //summon Void THorns on
                         targetOriginalPos = null;
                         this.waitTime = 4;

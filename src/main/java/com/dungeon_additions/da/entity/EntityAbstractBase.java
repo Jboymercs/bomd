@@ -98,6 +98,10 @@ public abstract class EntityAbstractBase extends EntityCreature {
         return super.attackEntityFrom(source, amount);
     }
 
+    public void setAnimationAttackSpeed(float val) {
+        this.animation_attack_speed = val;
+    }
+
 
 
     private PriorityQueue<TimedEvent> events = new PriorityQueue<TimedEvent>();
@@ -206,9 +210,10 @@ public abstract class EntityAbstractBase extends EntityCreature {
     private void falterMob() {
         this.falter_val = 0;
         //sorts the time for the faltered effect on bosses
-        double time = this.isNonBoss() ? (20 * falter_resistance) + 4.5 : 20 * falter_resistance + 3.5;
+        double time = this.isNonBoss() ? (falter_resistance + 4.5) * 20 : (falter_resistance + 3.5) * 20;
+        System.out.println("Falter time at");
         this.addPotionEffect(new PotionEffect(ModPotions.FALTERED, (int) time, 0, false, false));
-        this.falter_resistance += 0.35F;
+        this.falter_resistance += 0.25F;
     }
 
     protected boolean hasStartedScaling = false;
@@ -231,7 +236,7 @@ public abstract class EntityAbstractBase extends EntityCreature {
                 this.removePotionEffect(MobEffects.LEVITATION);
             }
 
-            if(!this.hasStartedScaling && target instanceof EntityPlayer && !this.world.isRemote) {
+            if(!this.hasStartedScaling && target instanceof EntityPlayer && !this.world.isRemote && ticksExisted == 2) {
                 ModUtils.destroyBlocksInAABB(this.getEntityBoundingBox().offset(0, 0.5, 0), world, this);
                 double changeAttackDamage = ServerScaleUtil.scaleAttackDamageInAccordanceWithPlayers(this, world);
                 double changeAttackDamageWyrk = ServerScaleUtil.scaleAttackDamageInAccordanceWithPlayersWyrk(this, world);

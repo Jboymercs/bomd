@@ -25,7 +25,7 @@ public class RottenHold {
     private World world;
     private TemplateManager manager;
 
-    private int SIZE = 5;
+    private int SIZE = 4;
     protected BlockPos posIdentified;
 
     private boolean generatedKeyRoom = false;
@@ -42,6 +42,9 @@ public class RottenHold {
 
     private static final List<Tuple<Rotation, BlockPos>> DUNGEON_CROSS = Lists.newArrayList(new Tuple(Rotation.NONE, new BlockPos(0, 0, 0)),
             new Tuple(Rotation.CLOCKWISE_90, new BlockPos(14, 0, 0)), new Tuple(Rotation.COUNTERCLOCKWISE_90, new BlockPos(0, 0, 14)));
+
+    private static final List<Tuple<Rotation, BlockPos>> BIG_CROSS = Lists.newArrayList(new Tuple(Rotation.NONE, new BlockPos(0, 0, 0)),
+            new Tuple(Rotation.CLOCKWISE_90, new BlockPos(20, 0, 0)), new Tuple(Rotation.COUNTERCLOCKWISE_90, new BlockPos(0, 0, 20)));
 
     private static final List<Tuple<Rotation, BlockPos>> DUNGEON_CROSS_4 = Lists.newArrayList(new Tuple(Rotation.NONE, new BlockPos(0, 3, 0)),
             new Tuple(Rotation.CLOCKWISE_90, new BlockPos(14, 3, 0)), new Tuple(Rotation.COUNTERCLOCKWISE_90, new BlockPos(0, 3, 14)));
@@ -158,28 +161,57 @@ public class RottenHold {
         RottenHoldTemplate crossPiece;
 
         if(identification <= 3) {
-            crossPiece = addAdjustedPiece(parent, pos, ModRand.choice(cross_types), rot);
+            int randInt = ModRand.range(1, 3);
+            if(randInt == 2) {
+                cross_types = new String[]{"tiles/big_cross_1", "tiles/big_cross_2"};
+                crossPiece = addAdjustedPiece(parent, pos, ModRand.choice(cross_types), rot);
 
-            //return false if collision or size is exceeded
-            if (crossPiece.getDistance() > SIZE || crossPiece.isCollidingExcParent(manager, parent, components)) {
-                return this.generateHelperStraight(parent, pos, rot);
-            }
-            components.add(crossPiece);
-            int failedHalls = 0;
-            List<StructureComponent> structures = new ArrayList<>(components);
-            for (Tuple<Rotation, BlockPos> tuple : DUNGEON_CROSS) {
+                //return false if collision or size is exceeded
+                if (crossPiece.getDistance() > SIZE || crossPiece.isCollidingExcParent(manager, parent, components)) {
+                    return this.generateHelperStraight(parent, pos, rot);
+                }
+                components.add(crossPiece);
+                int failedHalls = 0;
+                List<StructureComponent> structures = new ArrayList<>(components);
+                for (Tuple<Rotation, BlockPos> tuple : BIG_CROSS) {
                     if (!generateStraight(crossPiece, tuple.getSecond(), rot.add(tuple.getFirst()))) {
                         failedHalls++;
                     }
-            }
-            if (failedHalls > 3) {
-                components.clear();
-                components.addAll(structures);
-                if(SIZE > 2 && !generatedBossRoom) {
-                    return generateBossHelperStraight(parent, pos, rot);
-                } else {
-                    int randID = ModRand.range(1, 4);
-                    return generateHelperStraight(parent, pos, rot);
+                }
+                if (failedHalls > 3) {
+                    components.clear();
+                    components.addAll(structures);
+                    if (SIZE > 2 && !generatedBossRoom) {
+                        return generateBossHelperStraight(parent, pos, rot);
+                    } else {
+                        int randID = ModRand.range(1, 4);
+                        return generateHelperStraight(parent, pos, rot);
+                    }
+                }
+            } else {
+                crossPiece = addAdjustedPiece(parent, pos, ModRand.choice(cross_types), rot);
+
+                //return false if collision or size is exceeded
+                if (crossPiece.getDistance() > SIZE || crossPiece.isCollidingExcParent(manager, parent, components)) {
+                    return this.generateHelperStraight(parent, pos, rot);
+                }
+                components.add(crossPiece);
+                int failedHalls = 0;
+                List<StructureComponent> structures = new ArrayList<>(components);
+                for (Tuple<Rotation, BlockPos> tuple : DUNGEON_CROSS) {
+                    if (!generateStraight(crossPiece, tuple.getSecond(), rot.add(tuple.getFirst()))) {
+                        failedHalls++;
+                    }
+                }
+                if (failedHalls > 3) {
+                    components.clear();
+                    components.addAll(structures);
+                    if (SIZE > 2 && !generatedBossRoom) {
+                        return generateBossHelperStraight(parent, pos, rot);
+                    } else {
+                        int randID = ModRand.range(1, 4);
+                        return generateHelperStraight(parent, pos, rot);
+                    }
                 }
             }
 
@@ -248,7 +280,8 @@ public class RottenHold {
         return true;
     }
     private boolean generateStraight(RottenHoldTemplate parent, BlockPos pos, Rotation rot) {
-        String[] straight_types = {"tiles/straight_1","tiles/straight_2","tiles/straight_3", "tiles/straight_4", "tiles/straight_5"};
+        String[] straight_types = {"tiles/straight_1","tiles/straight_2","tiles/straight_3", "tiles/straight_4", "tiles/straight_5","tiles/grand_hall_1",
+        "tiles/grand_hall_2","tiles/grand_hall_3","tiles/grand_hall_4"};
         RottenHoldTemplate straightPiece = addAdjustedPiece(parent, pos, ModRand.choice(straight_types), rot);
 
         if(straightPiece.getDistance() > SIZE || straightPiece.isCollidingExcParent(manager, parent, components)) {
@@ -327,7 +360,7 @@ public class RottenHold {
         if(SIZE > 2 && !generatedBossRoom) {
             return this.generateBossHelperStraight(parent, pos, rot);
         }
-        if(SIZE > 4 && !generatedKeyRoom) {
+        if(SIZE > 3 && !generatedKeyRoom) {
             RottenHoldTemplate key_room = addAdjustedPieceWithoutDistance(parent, pos, "tiles/key_end", rot);
 
             if(key_room.isCollidingExcParent(manager, parent, components)) {

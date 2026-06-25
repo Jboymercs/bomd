@@ -8,9 +8,9 @@ import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.dark_dungeon.*;
 import com.dungeon_additions.da.entity.dark_dungeon.boss.*;
-import com.dungeon_additions.da.entity.dark_dungeon.dauntless.EntityDauntlessAOE;
-import com.dungeon_additions.da.entity.dark_dungeon.dauntless.EntityDauntlessSword;
-import com.dungeon_additions.da.entity.dark_dungeon.dauntless.ProjectileDauntlessSlice;
+import com.dungeon_additions.da.entity.dark_dungeon.dark_void.EntityDarkVoid;
+import com.dungeon_additions.da.entity.dark_dungeon.dark_void.EntityDarkVoidSpawn;
+import com.dungeon_additions.da.entity.dark_dungeon.dauntless.*;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertOrb;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
@@ -38,6 +38,7 @@ import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
 import com.dungeon_additions.da.entity.gaelon_dungeon.*;
 import com.dungeon_additions.da.entity.gaelon_dungeon.apathyr.*;
 import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.EntityFriendlyCursedRevenant;
+import com.dungeon_additions.da.entity.generic.EntityBlastTile;
 import com.dungeon_additions.da.entity.generic.EntityDelayedExplosion;
 import com.dungeon_additions.da.entity.generic.EntityRallyFlag;
 import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
@@ -91,6 +92,7 @@ public class ModEntities {
     public static Vec3i rot_knight_rapier = new Vec3i(0x63615e,0xc7a548,0);
     public static Vec3i rot_knight_boss = new Vec3i(0x63615e, 0x03ff18, 0);
     public static Vec3i night_lich = new Vec3i(0x021a1a,0x6eebeb,0);
+    public static Vec3i dauntless = new Vec3i(0x820040, 0x4F5E6B, 0);
 
     public static Vec3i wyrk_mob = new Vec3i(0x6eebeb,0x021a1a,0);
     public static Vec3i ancient_wyrk = new Vec3i(0x021a1a,0xedc12f,0);
@@ -177,7 +179,7 @@ public class ModEntities {
         registerEntityWithID("dark_assassin", EntityDarkAssassin.class, ENTITY_START_ID++, 70, dark_assassin);
         registerEntityWithID("dark_royal", EntityDarkRoyal.class, ENTITY_START_ID++, 70, dark_royal);
         registerEntityWithID("dark_sorcerer", EntityDarkSorcerer.class, ENTITY_START_ID++, 70, dark_sorcerer);
-        registerEntityWithID("dauntless", EntityDauntless.class, ENTITY_START_ID++, 90, dark_sorcerer);
+        registerEntityWithID("dauntless", EntityDauntless.class, ENTITY_START_ID++, 90, dauntless);
         registerEntityWithID("darkdrift_devil", EntityDarkdriftDevil.class, ENTITY_START_ID++, 90, dark_sorcerer);
         //Traders
         registerEntityWithID("mysterious_trader", EntityMysteriousTrader.class, ENTITY_START_ID++, 50, mysterious_trader);
@@ -271,6 +273,14 @@ public class ModEntities {
             registerEntity("dauntless_aoe", EntityDauntlessAOE.class, ENTITY_START_ID++, 40);
             registerEntity("dauntless_sword", EntityDauntlessSword.class, ENTITY_START_ID++, 40);
             registerEntity("dauntless_slice", ProjectileDauntlessSlice.class, ENTITY_START_ID++, 40);
+            registerEntity("dark_orb", EntityDarkVoid.class, ENTITY_START_ID++, 60);
+            registerEntity("dark_void_spawn", EntityDarkVoidSpawn.class, ENTITY_START_ID++, 40);
+            registerEntity("blast_tile", EntityBlastTile.class, ENTITY_START_ID++, 40);
+            registerEntity("dauntless_crystal", ProjectileDauntlessCrystal.class, PROJECTILE_START_ID++, 40);
+            registerEntity("delayed_lazer", EntityDelayedLazer.class, ENTITY_START_ID++, 50);
+            registerEntity("dauntless_fist", ProjectileDauntlessFist.class, PROJECTILE_START_ID++, 40);
+            registerEntity("dauntless_v_lazer", ProjectileVerticalLazer.class, PROJECTILE_START_ID++, 40);
+            registerEntity("dark_locator_proj", EntityDarkRuinsLocator.class, PROJECTILE_START_ID++, 30);
 
 
 

@@ -29,14 +29,17 @@ public class ItemWeaponSpear extends ToolSword{
         super(name, material);
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
-        this.setMaxDamage(1200);
+        this.setMaxDamage(1400);
         this.weapon_type = EnumWeaponType.SPEAR;
         this.weaponReach += 1.25F;
+        this.swingSound = SoundsHandler.LICH_MAGIC_SWING;
+        this.falter_value = 0.15F;
     }
 
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.RED + ModUtils.translateDesc(info_loc));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override

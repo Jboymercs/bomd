@@ -105,11 +105,7 @@ public class BlockGaelonCrystal extends BlockBase{
 
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        Random rand = new Random();
-        if(rand.nextInt(2) == 0) {
             drops.add(new ItemStack(ModItems.GAELON_SHARD, 1));
-        }
-
     }
 
     @Override

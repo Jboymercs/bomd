@@ -8,6 +8,7 @@ import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.packets.PacketParryAnimationItem;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.PlayerFalterUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -42,7 +43,10 @@ public class ItemExaltedKopis extends ItemAbilityWeapon{
     public ItemExaltedKopis(String name, ToolMaterial material, String info_loc) {
         super(name, material);
         this.info_loc = info_loc;
+        this.setMaxDamage(1274);
         this.weapon_type = EnumWeaponType.PARRY_SWORD;
+        this.swingSound = SoundsHandler.WARLORD_SWING;
+        this.swingRadius = 0.75F;
     }
 
     @Override
@@ -51,12 +55,15 @@ public class ItemExaltedKopis extends ItemAbilityWeapon{
         if(ModConfig.enable_scaling_tooltips) {
             tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
-        attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.WARLORD_SWING, SoundCategory.NEUTRAL, 0.6f, 0.5f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
+        if(!ModConfig.weapon_hit_delays && !ModConfig.combat_system_enabled) {
+            attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, SoundsHandler.WARLORD_SWING, SoundCategory.NEUTRAL, 0.6f, 0.5f / (attacker.world.rand.nextFloat() * 0.4F + 0.2f));
+        }
         return super.hitEntity(stack, target, attacker);
     }
 
@@ -184,6 +191,9 @@ public class ItemExaltedKopis extends ItemAbilityWeapon{
                                 player.motionY = 0.14;
                                 player.motionZ = moveVec.z;
                                 player.velocityChanged = true;
+                                if(PlayerFalterUtils.getPlayerFalterProgress(player) > 0) {
+                                    PlayerFalterUtils.setPlayerGreedProgress(player, PlayerFalterUtils.getPlayerFalterProgress(player) - 0.3F);
+                                }
                             }
                         }
                     } else {

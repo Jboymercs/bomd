@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.player;
 
 import com.dungeon_additions.da.config.ModConfig;
+import com.dungeon_additions.da.entity.dark_dungeon.dauntless.ProjectileDauntlessSlice;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.ProjectileKingBlood;
 import com.dungeon_additions.da.entity.void_dungeon.ProjectileVoidClysmBolt;
 import com.dungeon_additions.da.init.ModItems;
@@ -24,7 +25,7 @@ public class ActionVoidFlay implements IActionPlayer{
         blood.shoot(actor, actor.rotationPitch + pitch, actor.rotationYaw - 15, 0.0F, speed, inaccuracy);
         blood.rotationYaw = actor.rotationYaw - 15;
         blood.rotationPitch = actor.rotationPitch;
-        blood.setTravelRange(24f);
+        blood.setTravelRange(100f);
         actor.world.spawnEntity(blood);
 
         ProjectileVoidClysmBolt blood2 = new ProjectileVoidClysmBolt(actor.world, actor, damage + ModUtils.addMageSetBonus(actor, 0));

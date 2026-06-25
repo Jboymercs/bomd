@@ -17,6 +17,7 @@ public class CapabilityPlayerFalter {
     public static final ResourceLocation ID = new ResourceLocation(ModReference.MOD_ID, "daPlayerFalter");
 
     private static final String PLAYER_FALTER = "daPlayerFalterProgress";
+    private static final String PLAYER_FALTER_RESISTANCE = "daPlayerFalterResistance";
     private static final String PLAYER_FALTER_BOOL = "daPlayerFalterBoolean";
 
     public interface IPlayerFalterCapability
@@ -25,11 +26,14 @@ public class CapabilityPlayerFalter {
         void setFalterEnabled(boolean val);
         float getPlayerFalterProgress();
         void setPlayerFalterProgress(float val);
+        float getPlayerFalterResistance();
+        void setPlayerFalterResistance(float val);
     }
 
     public static class DAPlayerFalterMethods implements IPlayerFalterCapability {
 
         private float playerFalterCurrent;
+        private float playerFalterResistance;
         private boolean playerFalterEnabled;
 
         @Override
@@ -51,6 +55,16 @@ public class CapabilityPlayerFalter {
         public void setPlayerFalterProgress(float val) {
             playerFalterCurrent = val;
         }
+
+        @Override
+        public float getPlayerFalterResistance() {
+            return playerFalterResistance;
+        }
+
+        @Override
+        public void setPlayerFalterResistance(float val) {
+            playerFalterResistance = val;
+        }
     }
 
     public static class Storage implements Capability.IStorage<IPlayerFalterCapability>
@@ -60,6 +74,7 @@ public class CapabilityPlayerFalter {
         public NBTBase writeNBT(Capability<IPlayerFalterCapability> capability, IPlayerFalterCapability instance, EnumFacing side) {
             NBTTagCompound compound = new NBTTagCompound();
             compound.setFloat(PLAYER_FALTER, instance.getPlayerFalterProgress());
+            compound.setFloat(PLAYER_FALTER_RESISTANCE, instance.getPlayerFalterResistance());
             compound.setBoolean(PLAYER_FALTER, instance.isFalterEnabled());
             return compound;
         }
@@ -68,6 +83,7 @@ public class CapabilityPlayerFalter {
         public void readNBT(Capability<IPlayerFalterCapability> capability, IPlayerFalterCapability instance, EnumFacing side, NBTBase nbt) {
             NBTTagCompound compound = (NBTTagCompound) nbt;
             instance.setPlayerFalterProgress(compound.getFloat(PLAYER_FALTER));
+            instance.setPlayerFalterResistance(compound.getFloat(PLAYER_FALTER_RESISTANCE));
             instance.setFalterEnabled(compound.getBoolean(PLAYER_FALTER_BOOL));
         }
     }

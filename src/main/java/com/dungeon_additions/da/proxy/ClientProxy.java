@@ -19,6 +19,9 @@ import com.dungeon_additions.da.util.particle.cuts.ParticleColossusSigil;
 import com.dungeon_additions.da.util.particle.cuts.ParticleLeftCut;
 import com.dungeon_additions.da.util.particle.cuts.ParticleParry;
 import com.dungeon_additions.da.util.particle.cuts.ParticleRightCut;
+import com.dungeon_additions.da.util.particle.dauntless.ParticleDauntlessBleed;
+import com.dungeon_additions.da.util.particle.dauntless.ParticleDauntlessBuff;
+import com.dungeon_additions.da.util.particle.dauntless.ParticleDauntlessWeak;
 import com.dungeon_additions.da.util.particle.impact.*;
 import com.dungeon_additions.da.util.particle.obsidilith.*;
 import net.minecraft.advancements.Advancement;
@@ -76,6 +79,8 @@ public class ClientProxy extends CommonProxy{
     private final ModelBiped MODEL_COLOSSUS_CHESTPLATE =new ModelColossusChestplate(0F);
     private final ModelBiped MODEL_ENDERPHRITE_HELMET = new ModelEnderphritesHelmet(0F);
     private final ModelBiped MODEL_ENDERPHRITE_CHESTPLATE = new ModelEnderphriteChestplate(0F);
+    private final ModelBiped MODEL_NIGHTFALL_HELMET = new ModelNightfallHelmet(0F);
+    private final ModelBiped MODEL_NIGHTFALL_CHESTPLATE = new ModelNightfallChestplate(0F);
 
 
     public static final KeyBinding SHIELD_ABILITY = new KeyBinding("key." + ModReference.MOD_ID + ".shield_ability", KeyConflictContext.IN_GAME, Keyboard.KEY_G, "key.categories." + ModReference.MOD_ID);
@@ -186,6 +191,12 @@ public class ClientProxy extends CommonProxy{
         if(item == ModItems.ENDERPHRITE_CHESTPLATE) {
             return MODEL_ENDERPHRITE_CHESTPLATE;
         }
+        if(item == ModItems.NIGHTFALL_HELMET) {
+            return MODEL_NIGHTFALL_HELMET;
+        }
+        if(item == ModItems.NIGHTFALL_CHESTPLATE) {
+            return MODEL_NIGHTFALL_CHESTPLATE;
+        }
         return null;
     }
 
@@ -282,6 +293,16 @@ public class ClientProxy extends CommonProxy{
                 return new ParticleDauntless.Factory();
             case 36:
                 return new ParticleDauntlessSlice.Factory();
+            case 37:
+                return new ParticleSummonVoid.Factory();
+            case 38:
+                return new ParticleDauntlessBeam.Factory();
+            case 39:
+                return new ParticleDauntlessBuff.Factory();
+            case 40:
+                return new ParticleDauntlessBleed.Factory();
+            case 41:
+                return new ParticleDauntlessWeak.Factory();
         }
     }
 

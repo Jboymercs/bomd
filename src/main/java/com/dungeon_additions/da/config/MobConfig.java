@@ -41,6 +41,11 @@ public class MobConfig {
     @Config.RequiresMcRestart
     public static boolean darkdrift_devil_boss_music = true;
 
+    @Config.Name("Dauntless Boss Music")
+    @Config.Comment("When experimental features are enabled in mod_config, can boss music play for the Dauntless?")
+    @Config.RequiresMcRestart
+    public static boolean dauntless_boss_music = true;
+
     @Config.Name("Apathyr Boss Music")
     @Config.Comment("When experimental features are enabled in mod_config, can boss music play for the Apathyr?")
     @Config.RequiresMcRestart
@@ -528,6 +533,23 @@ public class MobConfig {
             "da:frost_draugr_ranger",
             "minecraft:cave_spider",
             "minecraft:blaze"
+    };
+
+    @Config.Name("Dark Void Mob Spawn List One")
+    @Config.Comment("Add or remove possible mob spawns that the Dark Void can summon. Must be ModID:entity_name")
+    @Config.RequiresMcRestart
+    public static String[] dark_void_tier_one = {
+            "da:dark_assassin",
+            "minecraft:spider"
+    };
+
+    @Config.Name("Dark Void Mob Spawn List Two")
+    @Config.Comment("Add or remove possible mob spawns that the Dark Void can summon. Must be ModID:entity_name")
+    @Config.RequiresMcRestart
+    public static String[] dark_void_tier_two = {
+            "da:dark_royal",
+            "da:dark_assassin",
+            "da:dark_sorcerer"
     };
 
     @Config.Name("Night Lich Enable Mob Gear")
@@ -1155,5 +1177,65 @@ public class MobConfig {
     @Config.Comment("When enabled, you can fight the Apathyr with others. When disabled, this boss can only be fought solo.")
     @Config.RequiresMcRestart
     public static boolean apathyr_disable_solo_mode = false;
+
+    @Config.Name("Dauntless Health")
+    @Config.Comment("Change the health of Dauntless.")
+    @Config.RequiresMcRestart
+    public static double dauntless_health = 350;
+
+    @Config.Name("Dauntless Spawned Naturally Health")
+    @Config.Comment("Change the health of Dauntless when she is summoned from the midnight void.")
+    @Config.RequiresMcRestart
+    public static double dauntless_health_naturally = 110;
+
+    @Config.Name("Dauntless Attack Damage")
+    @Config.Comment("Change the attack damage of Dauntless")
+    @Config.RequiresMcRestart
+    public static double dauntless_damage = 26;
+
+    @Config.Name("Dauntless Spawned Naturally Attack Damage")
+    @Config.Comment("Change the attack damage of Dauntless when she is summoned from the midnight void")
+    @Config.RequiresMcRestart
+    public static double dauntless_damage_naturally = 19;
+
+    @Config.Name("Dauntless Armor")
+    @Config.Comment("Change the armor of Dauntless")
+    @Config.RequiresMcRestart
+    public static double dauntless_armor = 20;
+
+    @Config.Name("Dauntless Sword Charge 2 Heal Amount")
+    @Config.Comment("When Dauntless uses her sword with two charges. How much does she heal percentage wise when landing a hit on a target.")
+    @Config.RequiresMcRestart
+    public static double dauntless_sword_heal_amount = 0.03;
+
+    @Config.Name("Dauntless Sword Charge 1 Degradation Amount")
+    @Config.Comment("When Dauntless uses her sword with one charge. How long is the Degradation potion effect applied to targets hit by her. In seconds")
+    @Config.RequiresMcRestart
+    public static int dauntless_sword_degradation = 12;
+
+    @Config.Name("Dauntless Sword Charge 3 Falter Bonus")
+    @Config.Comment("When Dauntless uses her sword with three charges. How much of a bonus does she get for falter damage when targets hit by her.")
+    @Config.RequiresMcRestart
+    public static double dauntless_falter_bonus = 1.5;
+
+    @Config.Name("Dauntless Rage Timer")
+    @Config.Comment("Change the rage timer of Dauntless when she throws her sword and enters with her fists. In seconds")
+    @Config.RequiresMcRestart
+    public static int dauntless_rage_timer = 30;
+
+    @Config.Name("Dauntless Sword Usage Timer")
+    @Config.Comment("When Dauntless uses her sword, how long do the effects of the various buffs apply to her for? In seconds")
+    @Config.RequiresMcRestart
+    public static int dauntless_ability_timer = 30;
+
+    @Config.Name("Dauntless Damage Cap")
+    @Config.Comment("Change the damage cap of how much damage can be done at one time to Dauntless. Disable this feature entirely in general_config")
+    @Config.RequiresMcRestart
+    public static float dauntless_damage_cap = 26;
+
+    @Config.Name("Dauntless Armor Toughness")
+    @Config.Comment("Change the armor tougness of Dauntless")
+    @Config.RequiresMcRestart
+    public static double dauntless_armor_toughness = 8;
 
 }

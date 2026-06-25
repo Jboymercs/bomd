@@ -35,6 +35,9 @@ public class ItemVoidStaff extends ToolSword implements IAnimatable {
         super(name, material);
         this.info_loc = info_loc;
         this.setCreativeTab(DungeonAdditionsTab.ALL);
+        this.falter_value = 0.05F;
+        this.swingRadius = 0.25F;
+        this.setMaxDamage(1074);
     }
 
     @Override
@@ -43,6 +46,7 @@ public class ItemVoidStaff extends ToolSword implements IAnimatable {
         if(ModConfig.enable_scaling_tooltips) {
             tooltip.add(TextFormatting.YELLOW + I18n.translateToLocal("description.dungeon_additions.scaled_weapon.name"));
         }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
