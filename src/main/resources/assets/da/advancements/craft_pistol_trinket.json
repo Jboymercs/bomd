@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:pistol_trinket"
+    },
+    "title": {
+      "translate": "advancements.da.craft_pistol_trinket.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_pistol_trinket.description"
+    }
+  },
+  "parent": "da:kill_dauntless",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:pistol_trinket"
+          }
+        ]
+      }
+    }
+  }
+}

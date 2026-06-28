@@ -180,7 +180,7 @@ public class ModEntities {
         registerEntityWithID("dark_royal", EntityDarkRoyal.class, ENTITY_START_ID++, 70, dark_royal);
         registerEntityWithID("dark_sorcerer", EntityDarkSorcerer.class, ENTITY_START_ID++, 70, dark_sorcerer);
         registerEntityWithID("dauntless", EntityDauntless.class, ENTITY_START_ID++, 90, dauntless);
-        registerEntityWithID("darkdrift_devil", EntityDarkdriftDevil.class, ENTITY_START_ID++, 90, dark_sorcerer);
+       // registerEntityWithID("darkdrift_devil", EntityDarkdriftDevil.class, ENTITY_START_ID++, 90, dark_sorcerer);
         //Traders
         registerEntityWithID("mysterious_trader", EntityMysteriousTrader.class, ENTITY_START_ID++, 50, mysterious_trader);
 

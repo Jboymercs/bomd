@@ -6,7 +6,7 @@ import net.minecraft.init.Biomes;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.config.Config;
 
-@Config(modid = ModReference.MOD_ID, name = "BOMD DA Backport/general_config")
+@Config(modid = ModReference.MOD_ID, name = "UnseensDungeonAdditions/general_config")
 public class ModConfig {
 
     @Config.Name("Experimental Features Enabled/Disabled")
@@ -610,6 +610,13 @@ public class ModConfig {
             "da:kill_kobf"
     };
 
+    @Config.Name("Advancements Blood Pendant")
+    @Config.Comment("When players get the Blood Pendant advancement, what advancements will decrease the chance of Dauntless from spawning out of a Dark Void")
+    @Config.RequiresMcRestart
+    public static String[] blood_pendant_progress = {
+            "da:craft_blood_pendant"
+    };
+
     @Config.Name("Cult of Roh Assassins Spawning Advancement Requirements")
     @Config.Comment("What advancements are required for Cult of Rah Assassins spawning around the player naturally at night time")
     @Config.RequiresMcRestart
@@ -872,6 +879,16 @@ public class ModConfig {
     @Config.Comment("When disabled this will disable everything custom combat related to the mod. Animations, hit delays, and faltering.")
     @Config.RequiresMcRestart
     public static boolean combat_system_enabled = true;
+
+    @Config.Name("Combat Indirect hits damage modifier")
+    @Config.Comment("When hitting a weapon and missing the target. Within close range damage will be dealt to mobs nearby at a reduced damage. Change the modifier for that attack damage")
+    @Config.RequiresMcRestart
+    public static double indirect_hit_modifier = 0.35;
+
+    @Config.Name("Combat Direct hits damage modifier")
+    @Config.Comment("When hitting a weapon and landing a hit. A radius around that area will damage other mobs within its radius. Change the damage modifier for landing a hit")
+    @Config.RequiresMcRestart
+    public static double direct_hit_modifier = 0.6;
 
     @Config.Name("Azaela Vines Height from Ground")
     @Config.Comment("This function keeps Azaela Vines from covering caves head to toe. This function gives them a max limit that they can be from ground")

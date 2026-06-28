@@ -75,18 +75,18 @@ public class EventDropSoulStar {
             ItemStack confettiStack = ModUtils.findTrinket(new ItemStack(ModItems.CONFETTI_TRINKET), player);
             ItemStack victoryStack = ModUtils.findTrinket(new ItemStack(ModItems.VICTORY_TRINKET), player);
             if(!victoryStack.isEmpty()) {
-                int randI = ModRand.range(1, 101);
 
-                if(randI < 40 && randI >= 35) {
+                if(ModRand.percentageOf(PotionTrinketConfig.victory_rush_chance)) {
                     if(!player.world.isRemote) {
                         ModUtils.performNTimes(9, (i) -> {
                             Main.proxy.spawnParticle(30,player.world, target.posX + ModRand.range(-1, 1) + ModRand.getFloat(1), target.posY + ModRand.range(0, 3) + ModRand.getFloat(1), target.posZ + ModRand.range(-1, 1) + ModRand.getFloat(1), 0, 0.06, 0, 24576);
                         });
-                        player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 200, 0));
+                        player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 400, 0));
                         victoryStack.damageItem(1, player);
                     }
                 }
             }
+
             if(!confettiStack.isEmpty()) {
                 int randI = ModRand.range(1, 101);
 
@@ -108,16 +108,14 @@ public class EventDropSoulStar {
                 }
             }
             if(!DeathStack.isEmpty()) {
-                int randI = ModRand.range(1, 101);
-                if(randI < 8) {
+                if(ModRand.percentageOf(PotionTrinketConfig.deaths_prosper_chance)) {
                     player.heal(PotionTrinketConfig.deaths_prosper_heal_amount);
                     DeathStack.damageItem(1, player);
                 }
             }
 
             if(!gambleStack.isEmpty()) {
-                int randI = ModRand.range(1, 101);
-                if(randI < 5) {
+                if(ModRand.percentageOf(PotionTrinketConfig.chip_fortunate_chance)) {
                     //prevents bosses from this effect being applied too.
                     if(target.isNonBoss()) {
                         event.getDrops().clear();

@@ -691,7 +691,7 @@ da.desc.novik_block_desc=By placing two on top of each other and a pumpkin above
 da.desc.sealed_spear_wave_desc=Right clicking will summon a massive spear wave around the caster.
 da.desc.golem_cannon_desc=Requires Gaelon Shards as ammo. Right clicking will shoot a powerful shard bullet.
 da.desc.trader_coin_desc=Used with a Mysterious Trader..
-da.desc.crystal_trinket_desc=10%% chance you take half of the damage from incoming attacks.
+da.desc.crystal_trinket_desc=15%% chance you take half of the damage from incoming attacks.
 da.desc.flame_trinket_desc=Increases damage of melee weapons, increases them more if on fire.
 da.desc.death_trinket_desc=7%% chance on enemy slain you gain health.
 da.desc.glass_cannon_trinket_desc=Strength is constantly given as long as you're at full health.
@@ -700,7 +700,7 @@ da.desc.shield_trinket_desc=Adds extra armor based on your current armor value.
 da.desc.diamond_shield_trinket_desc=Adds extra armor toughness based on your current value.
 da.desc.charm_trinket_desc=10%% Chance when hurt spears will be summoned around you.
 da.desc.creeper_trinket_desc=Explode on death. This does not destroy terrain or items.
-da.desc.weakness_trinket_desc=5%% Chance when attacked the enemy will gain weakness.
+da.desc.weakness_trinket_desc=10%% Chance when attacked the enemy will gain weakness.
 da.desc.poison_trinket_desc=10%% Chance when attacked the enemy will gain poison.
 da.desc.void_trinket_desc=When weakness is applied you will given resistance.
 da.desc.gamble_trinket_desc=3%% Chance on mob slain they will replace there drops with a Copper Coin.
@@ -709,7 +709,7 @@ da.desc.heart_trinket_desc=Adds more health based on your current value.
 da.desc.vampire_trinket_desc=5%% Chance on entity hit that you will gain a heart.
 da.desc.wind_trinket_desc=Summons a tornado at your feet launching you upwards.
 da.desc.void_hand_trinket_desc=3%% Chance per second of summoning void hands on entities near you when applied with negative potion effects.
-da.desc.dagger_trinket_desc=3%% Chance on hitting an enemy you will cause double damage.
+da.desc.dagger_trinket_desc=4%% Chance on hitting an enemy you will cause double damage.
 da.desc.victory_trinket_desc=5%% Chance on enemy slain you will be given Strength for a time.
 da.desc.blue_trinket_desc=Cast a delayed array of magic projectiles before you.
 da.desc.flame_explosion_trinket_desc=Cast two delayed flame explosions before you.
@@ -828,6 +828,9 @@ advancements.da.kill_aegyptian_colossus.description=Slay the Aegyptian Colossus
 #Kill Aegyptian Warlord
 advancements.da.kill_aegyptian_warlord.title=Paper cuts everywhere!
 advancements.da.kill_aegyptian_warlord.description=Slay the Aegyptian Warlord
+#Kill Dauntless
+advancements.da.kill_dauntless.title=Lady of Chaos
+advancements.da.kill_dauntless.description=Slay Dauntless, Sword of Night
 #Find Soul Star
 advancements.da.find_soul_star.title=The stars lead the way
 advancements.da.find_soul_star.description=Obtain a Soul Star
@@ -1083,3 +1086,24 @@ advancements.da.craft_warlord_helmet.description=Craft the Ancient Warlord Helme
 #Craft Golden Vow
 advancements.da.craft_golden_vow.title=Chosen by the Light
 advancements.da.craft_golden_vow.description=Craft a bottle of Golden Vow.
+#Craft Midnight Void
+advancements.da.craft_midnight_void.title=Ritual of night
+advancements.da.craft_midnight_void.description=Craft the Midnight Void bottle.
+#Craft Blood Pendant
+advancements.da.craft_blood_pendant.title=Audience with the night
+advancements.da.craft_blood_pendant.description=Get the Blood Pendant from a dark void event.
+#Craft Nightfall Chestplate
+advancements.da.craft_nightfall_chestplate.title=Dark rising
+advancements.da.craft_nightfall_chestplate.description=Craft the Nightfall Chestplate.
+#Craft Nightfall Helmet
+advancements.da.craft_nightfall_helmet.title=Smells odd?
+advancements.da.craft_nightfall_helmet.description=Craft the Nightfall Helmet.
+#Craft Nightfall Sword
+advancements.da.craft_nightfall_sword.title=Path to Bezerk.
+advancements.da.craft_nightfall_sword.description=Craft the Nightfall Sword.
+#Craft Nightfall Gauntlets
+advancements.da.craft_nightfall_gauntlets.title=It's clobbering time!
+advancements.da.craft_nightfall_gauntlets.description=Craft a Nightfall Gauntlet.
+#Craft Pocket Pistol
+advancements.da.craft_pistol_trinket.title=That's not pocket sand!
+advancements.da.craft_pistol_trinket.description=Craft the Pocket Pistol trinket.

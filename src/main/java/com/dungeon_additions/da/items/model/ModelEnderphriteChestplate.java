@@ -25,7 +25,7 @@ public class ModelEnderphriteChestplate extends ModelBiped {
 
 		body = new ModelRenderer(this);
 		body.setRotationPoint(0.0F, 12.0F, 0.0F);
-		body.cubeList.add(new ModelBox(body, 0, 0, -4.0F, -12.0F, -2.0F, 8, 12, 4, 0.45F, false));
+		body.cubeList.add(new ModelBox(body, 0, 0, -4.0F, -12.0F, -2.0F, 8, 12, 4, 0.6F, false));
 
 		LArm = new ModelRenderer(this);
 		LArm.setRotationPoint(-0.5F, 0.0F, 0.0F);

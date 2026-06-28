@@ -37,7 +37,9 @@ public class MixinLayerHeldItem {
     public void renderSMMMItemHeld(EntityLivingBase entity, ItemStack stack, ItemCameraTransforms.TransformType transforms, EnumHandSide hand, CallbackInfo callback)
     {
         if (entity == null || stack.isEmpty()) return;
-        if (!ModConfig.custom_swing_animations || !ModConfig.combat_system_enabled) return;
+        if (!ModConfig.custom_swing_animations) return;
+        if(!ModConfig.combat_system_enabled) return;
+        if(!(entity instanceof EntityPlayer)) return;
         if (!(livingEntityRenderer.getMainModel() instanceof ModelBiped)) return;
         Item itemType = stack.getItem();
         if (!(itemType instanceof ToolSword)) return;

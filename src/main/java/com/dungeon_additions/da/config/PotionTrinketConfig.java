@@ -3,7 +3,7 @@ package com.dungeon_additions.da.config;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraftforge.common.config.Config;
 
-@Config(modid = ModReference.MOD_ID, name = "BOMD DA Backport/potions_trinknets_config")
+@Config(modid = ModReference.MOD_ID, name = "UnseensDungeonAdditions/potions_trinknets_config")
 public class PotionTrinketConfig {
 
 
@@ -112,6 +112,12 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static int deaths_prosper_heal_amount = 4;
 
+    @Config.Name("Deaths Prosper Chance")
+    @Config.Comment("Change Deaths Prosper chance for happening.")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 99)
+    public static int deaths_prosper_chance = 7;
+
     @Config.Name("Mythic Shield Trinket Durability")
     @Config.Comment("Change Mythic Shield item durability.")
     @Config.RequiresMcRestart
@@ -152,6 +158,12 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static float magic_charm_spear_damage = 8;
 
+    @Config.Name("Magic Charm Chance")
+    @Config.Comment("Change Magic Charm chance for happening.")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 99)
+    public static int magic_charm_chance = 10;
+
     @Config.Name("Frozen Slam Trinket Durability")
     @Config.Comment("Change Frozen Slam item durability.")
     @Config.RequiresMcRestart
@@ -166,6 +178,12 @@ public class PotionTrinketConfig {
     @Config.Comment("Change Vampiric item durability.")
     @Config.RequiresMcRestart
     public static int vampiric_durability = 96;
+
+    @Config.Name("Vampire Trinket Chance")
+    @Config.Comment("Change Vampire Trinket chance for happening.")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 99)
+    public static int vampire_trinket_chance = 5;
 
     @Config.Name("Vigorous Journey Durability")
     @Config.Comment("Change Vigorous Journey item durability.")
@@ -182,10 +200,22 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static int chip_fortunate_durability = 46;
 
+    @Config.Name("Chip of Fortunate Chance")
+    @Config.Comment("Change Chip of Fortunate chance for happening.")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 99)
+    public static int chip_fortunate_chance = 3;
+
     @Config.Name("Poison Touch Durability")
     @Config.Comment("Change Poison Touch item durability.")
     @Config.RequiresMcRestart
     public static int poison_touch_durability = 96;
+
+    @Config.Name("Poison Touch Chance")
+    @Config.Comment("Change Poison Touch chance for happening.")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 99)
+    public static int poison_touch_chance = 10;
 
     @Config.Name("Void's Durability Item Durability")
     @Config.Comment("Change Void's Durability item durability.")
@@ -197,15 +227,32 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static int storm_calling_durability = 128;
 
+    @Config.Name("Storm Calling Cooldown")
+    @Config.Comment("Change Storm Calling item cooldown. In seconds.")
+    @Config.RequiresMcRestart
+    public static int storm_calling_cooldown = 20;
+
     @Config.Name("Spiral Vain Item Durability")
     @Config.Comment("Change Spiral Vain item durability.")
     @Config.RequiresMcRestart
     public static int spiral_vain_durability = 84;
 
+    @Config.Name("Spiral Vain Chance")
+    @Config.Comment("Change Spiral Vain chance for happening.")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 99)
+    public static int spiral_vain_chance = 10;
+
     @Config.Name("Cult Classic Item Durability")
     @Config.Comment("Change Cult Classic item durability.")
     @Config.RequiresMcRestart
     public static int cult_classic_durability = 84;
+
+    @Config.Name("Cult Classic Chance")
+    @Config.Comment("Change Cult Classic chance for happening.")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 99)
+    public static int cult_classic_chance = 3;
 
     @Config.Name("Party Starter Item Durability")
     @Config.Comment("Change Party Starter item durability.")
@@ -222,6 +269,12 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static int golden_mark_durability = 128;
 
+    @Config.Name("Golden Mark Chance")
+    @Config.Comment("Change Golden Mark chance for happening.")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 99)
+    public static int golden_mark_chance = 15;
+
     @Config.Name("Golden Ritual Item Durability")
     @Config.Comment("Change Golden Ritual item durability.")
     @Config.RequiresMcRestart
@@ -232,6 +285,11 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static float golden_ritual_damage = 5;
 
+    @Config.Name("Golden Ritual Cooldown")
+    @Config.Comment("Change Golden Ritual item cooldown. In seconds.")
+    @Config.RequiresMcRestart
+    public static int golden_ritual_cooldown = 60;
+
     @Config.Name("Frozen Crystal Item Durability")
     @Config.Comment("Change Frozen Crystal item durability.")
     @Config.RequiresMcRestart
@@ -241,6 +299,12 @@ public class PotionTrinketConfig {
     @Config.Comment("Change Frozen Crystal damage deduction amount as a percentage.")
     @Config.RequiresMcRestart
     public static double frozen_crystal_damage_deduction = 0.5;
+
+    @Config.Name("Frozen Crystal Chance")
+    @Config.Comment("Change Frozen Crystal chance for happening.")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 99)
+    public static int frozen_crystal_chance = 15;
 
     @Config.Name("Magic Reservoir Item Durability")
     @Config.Comment("Change Magic Reservoir item durability.")
@@ -257,25 +321,53 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static int blood_stained_arrow_durability = 46;
 
+    @Config.Name("Blood Stained Arrow Chance")
+    @Config.Comment("Change Blood Stained Arrow chance for happening.")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 99)
+    public static int arrow_trinket_chance = 15;
+
     @Config.Name("Victory Rush Durability")
     @Config.Comment("Change Victory Rush item durability.")
     @Config.RequiresMcRestart
     public static int victory_rush_durability = 96;
+
+    @Config.Name("Victory Rush Chance")
+    @Config.Comment("Change Victory Rush chance for happening.")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 99)
+    public static int victory_rush_chance = 5;
 
     @Config.Name("Lost Dagger of Roh Durability")
     @Config.Comment("Change Last Dagger of Roh item durability.")
     @Config.RequiresMcRestart
     public static int dagger_trinket_durability = 84;
 
+    @Config.Name("Lost Dagger of Roh Chance")
+    @Config.Comment("Change Lost Dagger of Roh chance for happening.")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 99)
+    public static int dagger_trinket_chance = 4;
+
     @Config.Name("Blink Bolt Durability")
     @Config.Comment("Change Blink Bolt item durability.")
     @Config.RequiresMcRestart
     public static int teleport_trinket_durability = 246;
 
+    @Config.Name("Blink Bolt Cooldown")
+    @Config.Comment("Change Blink Bolt item cooldown. In seconds.")
+    @Config.RequiresMcRestart
+    public static int blink_bolt_cooldown = 10;
+
     @Config.Name("Breath of the Wind Durability")
     @Config.Comment("Change Breath of the Wind item durability.")
     @Config.RequiresMcRestart
     public static int dodge_trinket_durability = 96;
+
+    @Config.Name("Breath of the Wind Cooldown")
+    @Config.Comment("Change Breath of the Wind item cooldown. In seconds.")
+    @Config.RequiresMcRestart
+    public static int dodge_trinket_cooldown = 7;
 
     @Config.Name("Rotten Ring Durability")
     @Config.Comment("Change Rotten Ring item durability.")
@@ -287,6 +379,11 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static float rotten_ring_damage = 9;
 
+    @Config.Name("Rotten Ring Cooldown")
+    @Config.Comment("Change Rotten Ring item cooldown. In seconds.")
+    @Config.RequiresMcRestart
+    public static int rotten_ring_cooldown = 30;
+
     @Config.Name("Cosmic Prowess Durability")
     @Config.Comment("Change Cosmic Prowess item durability.")
     @Config.RequiresMcRestart
@@ -297,6 +394,11 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static float blue_trinket_damage = 6;
 
+    @Config.Name("Cosmic Prowess Cooldown")
+    @Config.Comment("Change Cosmic Prowess item cooldown. In seconds.")
+    @Config.RequiresMcRestart
+    public static int cosmic_prowess_cooldown = 20;
+
     @Config.Name("Team Griefer Durability")
     @Config.Comment("Change Team Griefer item durability.")
     @Config.RequiresMcRestart
@@ -306,6 +408,11 @@ public class PotionTrinketConfig {
     @Config.Comment("Change Team Griefer item ability damage.")
     @Config.RequiresMcRestart
     public static float flame_explosion_trinket_damage = 7;
+
+    @Config.Name("Team Griefer Cooldown")
+    @Config.Comment("Change Team Grifer item cooldown. In seconds.")
+    @Config.RequiresMcRestart
+    public static int flame_explosion_cooldown = 40;
 
     @Config.Name("Long Legs Durability")
     @Config.Comment("Change Long Legs item durability.")
@@ -327,6 +434,11 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static float mace_trinket_damage = 8;
 
+    @Config.Name("Metal Tornado Cooldown")
+    @Config.Comment("Change Metal Tornado item cooldown. In seconds.")
+    @Config.RequiresMcRestart
+    public static int metal_tornado_cooldown = 25;
+
     @Config.Name("Thorn Ring Durability")
     @Config.Comment("Change Thorn Ring item durability.")
     @Config.RequiresMcRestart
@@ -337,10 +449,20 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static float thorn_ring_trinket_damage = 6;
 
+    @Config.Name("Thorn Ring Cooldown")
+    @Config.Comment("Change Thorn Ring item cooldown. In seconds.")
+    @Config.RequiresMcRestart
+    public static int thorn_ring_cooldown = 15;
+
     @Config.Name("Last Stand Durability")
     @Config.Comment("Change Last Stand item durability.")
     @Config.RequiresMcRestart
     public static int last_stand_trinket_durability = 20;
+
+    @Config.Name("Last Stand Cooldown")
+    @Config.Comment("Change Last Stand item cooldown. In seconds.")
+    @Config.RequiresMcRestart
+    public static int last_stand_cooldown = 300;
 
     @Config.Name("Goat Tenacity Durability")
     @Config.Comment("Change Goat Tenacity item durability.")
@@ -361,6 +483,11 @@ public class PotionTrinketConfig {
     @Config.Comment("Change Pocket Pistol item durability.")
     @Config.RequiresMcRestart
     public static int pocket_pistol_durability = 128;
+
+    @Config.Name("Pocket Pistol Cooldown")
+    @Config.Comment("Change Pocket Pistol item cooldown. In seconds.")
+    @Config.RequiresMcRestart
+    public static int pocket_pistol_cooldown = 20;
 
     @Config.Name("Trinkets become unbreakable Enable/Disable")
     @Config.Comment("Change if all trinkets in the mod become unbreakable and do not take durability damage. default false.")

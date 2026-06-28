@@ -85,7 +85,6 @@ public class ClientEventHandler {
             //currSpaceHeld = mc.player.getCapability(CapabilitySpearMovement.MOUNTS_PLAYER_CAP, null).getSpaceHeldTime();
             currFalterProg = mc.player.getCapability(CapabilityPlayerFalter.PLAYER_FALTER_CAP, null).getPlayerFalterProgress();
             currFalterResistance = mc.player.getCapability(CapabilityPlayerFalter.PLAYER_FALTER_CAP, null).getPlayerFalterResistance();
-            System.out.println("Current Falter Resist" + currFalterResistance);
         }
     }
 
@@ -196,12 +195,11 @@ public class ClientEventHandler {
         if (!(stack.getItem() instanceof ToolSword)) return;
 
         //cycle out any disabled weapon types
-        if(DAPlayerAnimationMethods.getWeaponType(player) == 1 && !ModConfig.enable_sword_weapons ||
-        DAPlayerAnimationMethods.getWeaponType(player) == 2 && !ModConfig.enable_dagger_weapons ||
-        DAPlayerAnimationMethods.getWeaponType(player) == 3 && !ModConfig.enable_parry_sword_weapons ||
-        DAPlayerAnimationMethods.getWeaponType(player) == 4 && !ModConfig.enable_spear_weapons ||
-        DAPlayerAnimationMethods.getWeaponType(player) == 5 && !ModConfig.enable_heavy_weapons) return;
-
+        if(DAPlayerAnimationMethods.getWeaponType(player) == 1 && !ModConfig.enable_sword_weapons) return;
+        if(DAPlayerAnimationMethods.getWeaponType(player) == 2 && !ModConfig.enable_dagger_weapons) return;
+        if(DAPlayerAnimationMethods.getWeaponType(player) == 3 && !ModConfig.enable_parry_sword_weapons) return;
+        if(DAPlayerAnimationMethods.getWeaponType(player) == 4 && !ModConfig.enable_spear_weapons) return;
+        if( DAPlayerAnimationMethods.getWeaponType(player) == 5 && !ModConfig.enable_heavy_weapons) return;
 
         //we will want a custom swing delay to tie in the players animations
         if(stack.getItem() instanceof ToolSword && ModConfig.weapon_hit_delays && ModConfig.combat_system_enabled) {
@@ -245,7 +243,8 @@ public class ClientEventHandler {
     @SubscribeEvent
     static void renderFirstPersonTrident(@Nonnull RenderSpecificHandEvent event)
     {
-        if (!ModConfig.custom_swing_animations || !ModConfig.combat_system_enabled) return;
+        if (!ModConfig.custom_swing_animations) return;
+        if(!ModConfig.combat_system_enabled) return;
 
         final ItemStack stack = event.getItemStack();
         final EntityPlayer player = Minecraft.getMinecraft().player;

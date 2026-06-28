@@ -29,7 +29,8 @@ public class MixinModelBiped implements IRotationStorage {
 
         if (entityIn instanceof EntityLivingBase)
         {
-            if (!ModConfig.custom_swing_animations || !ModConfig.combat_system_enabled) return;
+            if (!ModConfig.custom_swing_animations) return;
+            if(!ModConfig.combat_system_enabled) return;
 
             /* Endermen use different offsets compared to traditional bipeds. */
             if (!(entityIn instanceof EntityPlayer)) return;

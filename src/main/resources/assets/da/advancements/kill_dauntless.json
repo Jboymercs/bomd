@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:nightfall_scrap"
+    },
+    "title": {
+      "translate": "advancements.da.kill_dauntless.title"
+    },
+    "description": {
+      "translate": "advancements.da.kill_dauntless.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "da:craft_blood_pendant",
+  "criteria": {
+    "Lamentor": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "da:dauntless"
+        }
+      }
+    }
+  }
+}

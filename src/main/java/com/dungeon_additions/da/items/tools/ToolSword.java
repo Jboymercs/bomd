@@ -173,19 +173,21 @@ public class ToolSword extends ItemSword implements IHasModel, ISweepAttackOverr
     @Override
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
     {
-        //we want to ensure that whatever is disabled in the config will reflect everywhere
-        if(this.getWeaponAnimationType() == EnumWeaponType.SWORD && !ModConfig.enable_sword_weapons ||
-        this.getWeaponAnimationType() == EnumWeaponType.DAGGER && !ModConfig.enable_dagger_weapons ||
-        this.getWeaponAnimationType() == EnumWeaponType.PARRY_SWORD && !ModConfig.enable_parry_sword_weapons ||
-        this.getWeaponAnimationType() == EnumWeaponType.SPEAR && !ModConfig.enable_spear_weapons ||
-        this.getWeaponAnimationType() == EnumWeaponType.HEAVY_AXE && !ModConfig.enable_heavy_weapons || !ModConfig.combat_system_enabled) {
-            return false;
-        }
+        if(player != null) {
+            //we want to ensure that whatever is disabled in the config will reflect everywhere
+            if (this.getWeaponAnimationType() == EnumWeaponType.SWORD && !ModConfig.enable_sword_weapons ||
+                    this.getWeaponAnimationType() == EnumWeaponType.DAGGER && !ModConfig.enable_dagger_weapons ||
+                    this.getWeaponAnimationType() == EnumWeaponType.PARRY_SWORD && !ModConfig.enable_parry_sword_weapons ||
+                    this.getWeaponAnimationType() == EnumWeaponType.SPEAR && !ModConfig.enable_spear_weapons ||
+                    this.getWeaponAnimationType() == EnumWeaponType.HEAVY_AXE && !ModConfig.enable_heavy_weapons || !ModConfig.combat_system_enabled) {
+                return false;
+            }
             float atkCooldown = player.getCooledAttackStrength(0.5F);
             if (atkCooldown > 0.5) {
                 //cancel immediate damage due to delayed swing taking place
                 return true;
             }
+        }
         return false;
     }
 

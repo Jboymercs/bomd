@@ -3,7 +3,7 @@ package com.dungeon_additions.da.config;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraftforge.common.config.Config;
 
-@Config(modid = ModReference.MOD_ID, name = "BOMD DA Backport/world_config")
+@Config(modid = ModReference.MOD_ID, name = "UnseensDungeonAdditions/world_config")
 public class WorldConfig {
     @Config.Name("Void Blossom Cave Weight")
     @Config.Comment("Change the spacing between Void Blossom caves, lower means more frequent, higher means less")

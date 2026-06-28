@@ -3,7 +3,7 @@ package com.dungeon_additions.da.config;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraftforge.common.config.Config;
 
-@Config(modid = ModReference.MOD_ID, name = "BOMD DA Backport/compatibility_config")
+@Config(modid = ModReference.MOD_ID, name = "UnseensDungeonAdditions/compatibility_config")
 public class CompatConfig {
 
     @Config.Name("Aether Content Compatibility")

@@ -13,34 +13,6 @@
               "function": "set_count",
               "count": {
                 "min": 0,
-                "max": 1
-              }
-            }
-          ]
-        },
-        {
-          "type": "item",
-          "name": "minecraft:iron_nugget",
-          "weight": 3,
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "min": 1,
-                "max": 3
-              }
-            }
-          ]
-        },
-        {
-          "type": "item",
-          "name": "da:dark_mana",
-          "weight": 10,
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "min": 0,
                 "max": 2
               }
             }
@@ -54,14 +26,14 @@
       "entries": [
         {
           "type": "item",
-          "name": "da:crypt_plate",
+          "name": "da:dark_mana",
           "weight": 10,
           "functions": [
             {
               "function": "set_count",
               "count": {
                 "min": 0,
-                "max": 1
+                "max": 2
               }
             }
           ]

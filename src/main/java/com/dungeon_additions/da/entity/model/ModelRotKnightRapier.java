@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.model;
 
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.model.extended.GeoModelExtended;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
@@ -27,6 +28,18 @@ public class ModelRotKnightRapier extends GeoModelExtended<EntityRotKnightRapier
         IBone head = this.getAnimationProcessor().getBone("Head");
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
         head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(EntityRotKnightRapier animatable) {
+        if(animatable.getSkin() == 4) {
+            return new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/rapier_2.png");
+        } else if (animatable.getSkin() == 3) {
+            return new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/rapier_3.png");
+        } else if (animatable.getSkin() == 2) {
+            return new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/rapier_4.png");
+        }
+        return new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/rapier_1.png");
     }
 
     @Override

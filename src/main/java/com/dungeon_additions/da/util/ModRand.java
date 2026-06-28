@@ -41,6 +41,14 @@ public class ModRand {
         return min + rand.nextInt(max - min);
     }
 
+    public static boolean percentageOf(int range) {
+        int rangePercentage = range(1, 100);
+        if(rangePercentage <= range) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Returns a vector where each value is a random float between -0.5 and 0.5
      */

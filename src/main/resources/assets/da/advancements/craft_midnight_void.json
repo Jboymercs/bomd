@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:midnight_void"
+    },
+    "title": {
+      "translate": "advancements.da.craft_midnight_void.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_midnight_void.description"
+    }
+  },
+  "parent": "da:root",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:midnight_void"
+          }
+        ]
+      }
+    }
+  }
+}

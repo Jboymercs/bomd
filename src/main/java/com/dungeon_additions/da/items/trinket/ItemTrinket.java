@@ -152,7 +152,7 @@ public class ItemTrinket extends ItemBase implements IBauble{
                 player.world.spawnEntity(tornado);
                 world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.CAST_GENERIC_SPELL, SoundCategory.NEUTRAL, 1f, 0.8f / (world.rand.nextFloat() * 0.4F + 0.4f));
                 stack.damageItem(1, player);
-                player.getCooldownTracker().setCooldown(stack.getItem(), 600);
+                player.getCooldownTracker().setCooldown(stack.getItem(), 20 * PotionTrinketConfig.storm_calling_cooldown);
                 return true;
                 //Sigil Trinket
             } else if (type == 2 && !player.getCooldownTracker().hasCooldown(stack.getItem())) {
@@ -161,7 +161,7 @@ public class ItemTrinket extends ItemBase implements IBauble{
                 world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.CAST_GENERIC_SPELL, SoundCategory.NEUTRAL, 1f, 0.8f / (world.rand.nextFloat() * 0.4F + 0.4f));
                 player.world.spawnEntity(sigil);
                 stack.damageItem(1, player);
-                player.getCooldownTracker().setCooldown(stack.getItem(), 1200);
+                player.getCooldownTracker().setCooldown(stack.getItem(), 20 * PotionTrinketConfig.golden_ritual_cooldown);
                 return true;
                 //teleport trinket
             } else if (type == 3 && !player.getCooldownTracker().hasCooldown(stack.getItem())) {
@@ -180,7 +180,7 @@ public class ItemTrinket extends ItemBase implements IBauble{
                             player.setPosition(setPos.x, posAttempt.getY(), setPos.z);
                             stack.damageItem(1, player);
                             player.world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.NEUTRAL, 1f, 1f);
-                            player.getCooldownTracker().setCooldown(stack.getItem(), 600);
+                            player.getCooldownTracker().setCooldown(stack.getItem(), 20 * PotionTrinketConfig.blink_bolt_cooldown);
                             break;
                         }
                     }
@@ -196,7 +196,7 @@ public class ItemTrinket extends ItemBase implements IBauble{
                         player.motionZ = lookPos.z;
                         player.velocityChanged = true;
                         stack.damageItem(1, player);
-                        player.getCooldownTracker().setCooldown(stack.getItem(), 220);
+                        player.getCooldownTracker().setCooldown(stack.getItem(), 20 * PotionTrinketConfig.dodge_trinket_cooldown);
                         world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.APATHYR_SLIGHT_DASH, SoundCategory.NEUTRAL, 0.7f, 0.3f / (world.rand.nextFloat() * 0.4F + 0.4f));
                     }
                 } else {
@@ -207,7 +207,7 @@ public class ItemTrinket extends ItemBase implements IBauble{
                         player.motionZ = lookPos.z;
                         player.velocityChanged = true;
                         stack.damageItem(1, player);
-                        player.getCooldownTracker().setCooldown(stack.getItem(), 220);
+                        player.getCooldownTracker().setCooldown(stack.getItem(), 20 * PotionTrinketConfig.dodge_trinket_cooldown);
                         world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.APATHYR_SLIGHT_DASH, SoundCategory.NEUTRAL, 0.7f, 0.3f / (world.rand.nextFloat() * 0.4F + 0.4f));
                     }
 
@@ -220,7 +220,7 @@ public class ItemTrinket extends ItemBase implements IBauble{
                 ModUtils.handleAreaImpact(3.0f, (e) -> damage, player, offset, source, 0.8f, 0, false, MobEffects.POISON, 0, 200);
                 world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.ROT_SELF_AOE, SoundCategory.NEUTRAL, 1.25f, 0.8f / (world.rand.nextFloat() * 0.4F + 0.4f));
                 stack.damageItem(1, player);
-                player.getCooldownTracker().setCooldown(stack.getItem(), 600);
+                player.getCooldownTracker().setCooldown(stack.getItem(), 20 * PotionTrinketConfig.rotten_ring_cooldown);
                 ModUtils.circleCallback(3, 35, (pos)-> {
                     pos = new Vec3d(pos.x, 0, pos.y);
                     Vec3d posToo = player.getPositionVector().add(0, 1, 0);
@@ -235,7 +235,7 @@ public class ItemTrinket extends ItemBase implements IBauble{
                 this.spawnBlueProjectile(player, world, stack, new Vec3d(0,0,-1));
                 world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.COLOSSUS_HILT_SLAM, SoundCategory.NEUTRAL, 1f, 0.8f / (world.rand.nextFloat() * 0.4F + 0.4f));
                 stack.damageItem(1, player);
-                player.getCooldownTracker().setCooldown(stack.getItem(), 400);
+                player.getCooldownTracker().setCooldown(stack.getItem(), 20 * PotionTrinketConfig.cosmic_prowess_cooldown);
                 //flame explosion trinket
             } else if (type == 7 && !player.getCooldownTracker().hasCooldown(stack.getItem())) {
                 Vec3d playerLookVec = player.getLookVec();
@@ -248,7 +248,7 @@ public class ItemTrinket extends ItemBase implements IBauble{
                 world.spawnEntity(explosion2);
                 world.spawnEntity(explosion);
                 stack.damageItem(1, player);
-                player.getCooldownTracker().setCooldown(stack.getItem(), 900);
+                player.getCooldownTracker().setCooldown(stack.getItem(), 20 * PotionTrinketConfig.flame_explosion_cooldown);
                 //Mace Trinket
             } else if (type == 8 && !player.getCooldownTracker().hasCooldown(stack.getItem())) {
                 Vec3d playerLookVec = player.getLookVec();
@@ -257,7 +257,7 @@ public class ItemTrinket extends ItemBase implements IBauble{
                 mace.setPosition(setPos.x, setPos.y, setPos.z);
                 world.spawnEntity(mace);
                 stack.damageItem(1, player);
-                player.getCooldownTracker().setCooldown(stack.getItem(), 500);
+                player.getCooldownTracker().setCooldown(stack.getItem(), 20 * PotionTrinketConfig.metal_tornado_cooldown);
                 //rally trinket
             } else if (type == 9 && !player.getCooldownTracker().hasCooldown(stack.getItem())) {
                 Vec3d playerLookVec = player.getLookVec();
@@ -271,13 +271,13 @@ public class ItemTrinket extends ItemBase implements IBauble{
                 }
                 world.spawnEntity(flag);
                 stack.damageItem(1, player);
-                player.getCooldownTracker().setCooldown(stack.getItem(), 3600);
+                player.getCooldownTracker().setCooldown(stack.getItem(), 20 * PotionTrinketConfig.last_stand_cooldown);
                 //Petal Trinket
             }  else if (type == 10 && !player.getCooldownTracker().hasCooldown(stack.getItem())) {
                 new ActionPlayerPetalWave().performAction(player);
                 world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.BLOSSOM_PETAL_WAVE, SoundCategory.NEUTRAL, 1f, 0.8f / (world.rand.nextFloat() * 0.4F + 0.4f));
                 stack.damageItem(1, player);
-                player.getCooldownTracker().setCooldown(stack.getItem(), 300);
+                player.getCooldownTracker().setCooldown(stack.getItem(), 20 * PotionTrinketConfig.thorn_ring_cooldown);
                 //lazer pistol
             } else if (type == 11 && !player.getCooldownTracker().hasCooldown(stack.getItem())) {
                 world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.DAUNTLESS_CAST_PROJECTILE, SoundCategory.NEUTRAL, 0.8f, 0.6f / (world.rand.nextFloat() * 0.4F + 0.4f));
@@ -289,7 +289,7 @@ public class ItemTrinket extends ItemBase implements IBauble{
                 EntityDelayedLazer lazer = new EntityDelayedLazer(player.world, 15, targetPos, player, (float) (damage), null);
                 lazer.setPosition(relPos.x, relPos.y, relPos.z);
                 player.world.spawnEntity(lazer);
-                player.getCooldownTracker().setCooldown(stack.getItem(), 500);
+                player.getCooldownTracker().setCooldown(stack.getItem(), 20 * PotionTrinketConfig.pocket_pistol_cooldown);
             }
         }
         return false;

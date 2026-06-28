@@ -32,7 +32,7 @@ public class PlayerMeleeAttack {
      * Attacks for the player the targeted entity with the currently equipped item.
      * The equipped item has hitEntity called on it. Args: targetEntity
      */
-    public static void attackTargetEntityWithCurrentItem(EntityPlayer player, Entity targetEntity) {
+    public static void attackTargetEntityWithCurrentItemBase(EntityPlayer player, Entity targetEntity) {
         if (!onPlayerAttackTarget(player, targetEntity))
             return;
 

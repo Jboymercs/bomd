@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.items.potions;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.dark_dungeon.dark_void.EntityDarkVoid;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.init.ModPotions;
@@ -80,8 +81,16 @@ public class ItemVoidBottle extends ItemPotion implements IHasModel {
         if (!worldIn.isRemote) {
             entityLiving.addPotionEffect(new PotionEffect(ModPotions.DEGRADATION, 100, 0, false, true));
             boolean randomBoss = worldIn.rand.nextBoolean();
+            float additionalRand = ModRand.range(1, 7);
+            int wave = ModRand.range(2, 4);
+            if(entityplayer != null && ModUtils.getAdvancementCompletionAsList(entityplayer, ModConfig.blood_pendant_progress)) {
+                if(additionalRand <= 5) {
+                    randomBoss = false;
+                    wave = ModRand.range(2, 5);
+                }
+            }
             //based off a 50/50 chance the player fights the boss
-            EntityDarkVoid void_spawn = new EntityDarkVoid(worldIn, ModRand.range(2, 4), randomBoss, false);
+            EntityDarkVoid void_spawn = new EntityDarkVoid(worldIn, wave, randomBoss, false);
             void_spawn.setPosition(entityLiving.posX, entityLiving.posY + 4, entityLiving.posZ);
             worldIn.spawnEntity(void_spawn);
         }

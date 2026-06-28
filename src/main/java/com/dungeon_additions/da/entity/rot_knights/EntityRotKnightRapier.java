@@ -4,6 +4,7 @@ import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.EntityAIAttackRotKnightRapier;
 import com.dungeon_additions.da.entity.ai.IAttack;
+import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
@@ -11,7 +12,9 @@ import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -32,6 +35,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
@@ -60,31 +64,48 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
     private final String ANIM_SWING_ATTACK = "swing";
     private final String ANIM_PIERCE_COMBO = "pierce_extra";
     private final String ANIM_DRINK_POTION = "drink_potion";
+    private final String ANIM_BLOCK = "block";
 
     private static final DataParameter<Boolean> PIERCE = EntityDataManager.createKey(EntityRotKnightRapier.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SWING = EntityDataManager.createKey(EntityRotKnightRapier.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> PIERCE_COMBO = EntityDataManager.createKey(EntityRotKnightRapier.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DRINK_POTION = EntityDataManager.createKey(EntityRotKnightRapier.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> BLOCK_ACTION = EntityDataManager.createKey(EntityRotKnightRapier.class, DataSerializers.BOOLEAN);
     private static final DataParameter<ItemStack> ITEM_HAND = EntityDataManager.<ItemStack>createKey(EntityRotKnightRapier.class, DataSerializers.ITEM_STACK);
 
     private static final DataParameter<Boolean> IDLE_MODE = EntityDataManager.createKey(EntityRotKnightRapier.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityRotKnightRapier.class, DataSerializers.VARINT);
+
     private boolean isPierce() {return this.dataManager.get(PIERCE);}
     private boolean isSwing() {return this.dataManager.get(SWING);}
     private boolean isPierceCombo() {return this.dataManager.get(PIERCE_COMBO);}
     public boolean isDrinkPotion() {return this.dataManager.get(DRINK_POTION);}
     public boolean isIdleMode() {return this.dataManager.get(IDLE_MODE);}
+    public boolean isBlockAction() {return this.dataManager.get(BLOCK_ACTION);}
 
     private void setPierce(boolean value) {this.dataManager.set(PIERCE, Boolean.valueOf(value));}
+    private void setBlockAction(boolean value) {this.dataManager.set(BLOCK_ACTION, Boolean.valueOf(value));}
     private void setSwing(boolean value) {this.dataManager.set(SWING, Boolean.valueOf(value));}
     private void setPierceCombo(boolean value) {this.dataManager.set(PIERCE_COMBO, Boolean.valueOf(value));}
     public void setDrinkPotion(boolean value) {this.dataManager.set(DRINK_POTION, Boolean.valueOf(value));}
     public void setIdleMode(boolean value) {this.dataManager.set(IDLE_MODE, Boolean.valueOf(value));}
+    public void setSkin(int skinType)
+    {
+        this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
+    }
+
+    public int getSkin()
+    {
+        return this.dataManager.get(SKIN_TYPE).intValue();
+    }
+    private int blockTimer = 80;
 
     public EntityRotKnightRapier(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
         this.setSize(0.75F, 1.95F);
         selectAnimationTooPlay();
         this.setIdleMode(true);
+        this.setSkin(rand.nextInt(5));
         this.hemorrhage_resistance = 0.5F;
     }
 
@@ -93,6 +114,7 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
         this.setSize(0.75F, 1.95F);
         selectAnimationTooPlay();
         this.setIdleMode(true);
+        this.setSkin(rand.nextInt(5));
         this.hemorrhage_resistance = 0.5F;
     }
 
@@ -125,6 +147,7 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
         nbt.setBoolean("Pierce", this.isPierce());
         nbt.setBoolean("Swing", this.isSwing());
         nbt.setBoolean("Pierce_Combo", this.isPierceCombo());
+        nbt.setBoolean("Block_Action", this.isBlockAction());
         nbt.setBoolean("Drink_Potion", this.isDrinkPotion());
         nbt.setBoolean("Idle_State", this.isIdleMode());
         super.writeEntityToNBT(nbt);
@@ -135,6 +158,7 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
         this.setPierce(nbt.getBoolean("Pierce"));
         this.setSwing(nbt.getBoolean("Swing"));
         this.setPierceCombo(nbt.getBoolean("Pierce_Combo"));
+        this.setBlockAction(nbt.getBoolean("Block_Action"));
         this.setDrinkPotion(nbt.getBoolean("Drink_Potion"));
         this.setIdleMode(nbt.getBoolean("Idle_State"));
         super.readEntityFromNBT(nbt);
@@ -143,10 +167,12 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
     @Override
     public void entityInit() {
         super.entityInit();
+        this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
         this.dataManager.register(ITEM_HAND, ItemStack.EMPTY);
         this.dataManager.register(PIERCE, Boolean.valueOf(false));
         this.dataManager.register(PIERCE_COMBO, Boolean.valueOf(false));
         this.dataManager.register(DRINK_POTION, Boolean.valueOf(false));
+        this.dataManager.register(BLOCK_ACTION, Boolean.valueOf(false));
         this.dataManager.register(SWING, Boolean.valueOf(false));
         this.dataManager.register(IDLE_MODE, Boolean.valueOf(false));
     }
@@ -168,10 +194,17 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }
 
+    @Nullable
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
+        this.setSkin(rand.nextInt(5));
+        return super.onInitialSpawn(difficulty, entityLivingData);
+    }
+
 
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.blockTimer--;
 
         if(this.isIdleMode() && !hasEndedState && !world.isRemote) {
             this.rotationYaw = randomTurn;
@@ -186,9 +219,9 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
                 this.endIdleState();
             }
             if(this.isRandomGetAway) {
-                double d0 = (this.posX - target.posX) * 0.009;
+                double d0 = (this.posX - target.posX) * 0.012;
                 double d1 = (this.posY - target.posY) * 0.005;
-                double d2 = (this.posZ - target.posZ) * 0.009;
+                double d2 = (this.posZ - target.posZ) * 0.0012;
                 this.addVelocity(d0, d1, d2);
                 this.faceEntity(target, 35, 35);
                 this.getLookHelper().setLookPositionWithEntity(target, 35, 35);
@@ -251,16 +284,12 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
         addEvent(()-> this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 1.0f, 0.9f), 25);
         addEvent(()-> this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 1.0f, 0.9f), 30);
         addEvent(()-> this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 1.0f, 0.9f), 35);
-        addEvent(()-> this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 1.0f, 0.9f), 40);
-        addEvent(()-> this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 1.0f, 0.9f), 45);
-        addEvent(()-> this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 1.0f, 0.9f), 50);
-        addEvent(()-> this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 1.0f, 0.9f), 55);
       addEvent(()-> {
           //heal
         double healthTooHeal = this.getMaxHealth() * 0.25;
         this.heal((float) healthTooHeal);
           this.equipItemInHand(ROT_KNIGHT_HAND.HAND, new ItemStack(ModItems.INVISISBLE_ITEM));
-      }, 55);
+      }, 35);
 
 
       addEvent(()-> {
@@ -268,7 +297,7 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
         this.setFightMode(false);
         this.setDrinkPotion(false);
         this.hasDrankPotion = true;
-      }, 70);
+      }, 42);
     };
 
     private final Consumer<EntityLivingBase> pierce_combo = (target) -> {
@@ -408,7 +437,7 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
     private final Consumer<EntityLivingBase> basic_swing = (target) -> {
       this.setSwing(true);
       this.setFightMode(true);
-        addEvent(()-> this.lockLook = true, 9);
+        addEvent(()-> this.lockLook = true, 12);
 
         addEvent(()-> {
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.9, 1.3, 0)));
@@ -417,7 +446,7 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
             ModUtils.handleAreaImpact(1.25f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.2F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
             this.setImmovable(true);
-        }, 19);
+        }, 24);
 
         addEvent(()-> this.lockLook = false, 30);
 
@@ -425,7 +454,7 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
           this.setImmovable(false);
         this.setSwing(false);
         this.setFightMode(false);
-      }, 35);
+      }, 40);
     };
 
 
@@ -477,19 +506,24 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
         return PlayState.STOP;
     }
 
+    private boolean currentlyBlocking = false;
+
     private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
         if(this.isFightMode() && !this.isIdleMode()) {
             if(this.isPierce()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_PIERCE_ATTACK, false));
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PIERCE_ATTACK));
             }
             if(this.isSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_ATTACK, false));
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING_ATTACK));
             }
             if(this.isPierceCombo()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_PIERCE_COMBO, false));
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PIERCE_COMBO));
             }
             if(this.isDrinkPotion()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DRINK_POTION, false));
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_DRINK_POTION));
+            }
+            if(this.isBlockAction()) {
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_BLOCK));
             }
             return PlayState.CONTINUE;
         }
@@ -500,11 +534,62 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
 
+        if(this.currentlyBlocking) {
+            this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.7f, 1.1f + ModRand.getFloat(0.2f));
+            return false;
+        }
         if(source.getImmediateSource() == this || source.getImmediateSource() instanceof EntityRotKnight || this.isIdleMode()) {
             return false;
         }
 
-        return super.attackEntityFrom(source, amount);
+        if(amount > 0.0F && this.canBlockDamageSource(source) && !this.isFightMode()) {
+            this.damageShield(amount);
+
+            if (!source.isProjectile()) {
+                Entity entity = source.getImmediateSource();
+
+                if (entity instanceof EntityLivingBase) {
+                    this.blockUsingShield((EntityLivingBase) entity);
+                }
+            }
+            this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.7f, 1.1f + ModRand.getFloat(0.2f));
+
+            return false;
+        } else {
+            return super.attackEntityFrom(source, amount);
+        }
+    }
+
+    private boolean canBlockDamageSource(DamageSource damageSourceIn) {
+        if (!damageSourceIn.isUnblockable() && this.blockTimer < 0 && !this.isBlockAction()) {
+            Vec3d vec3d = damageSourceIn.getDamageLocation();
+            //Handler for other
+            if (vec3d != null) {
+                Vec3d vec3d1 = this.getLook(1.0F);
+                Vec3d vec3d2 = vec3d.subtractReverse(new Vec3d(this.posX, this.posY, this.posZ)).normalize();
+                vec3d2 = new Vec3d(vec3d2.x, 0.0D, vec3d2.z);
+                this.doBlockAction();
+                return vec3d2.dotProduct(vec3d1) < 0.5D;
+            }
+        }
+
+        return false;
+    }
+
+    private void doBlockAction() {
+        this.setBlockAction(true);
+        this.setFightMode(true);
+        this.blockTimer = 120;
+        this.isRandomGetAway = true;
+        this.currentlyBlocking = true;
+
+        addEvent(()-> this.currentlyBlocking = false, 23);
+
+        addEvent(()-> {
+            this.setBlockAction(false);
+            this.setFightMode(false);
+            this.isRandomGetAway = false;
+        }, 30);
     }
 
     private static final ResourceLocation LOOT_MOB = new ResourceLocation(ModReference.MOD_ID, "rot_knight");

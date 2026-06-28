@@ -256,7 +256,7 @@ public class EventPlayerFalter {
                     for (EntityLivingBase base : nearbyMonsters) {
                         RayTraceResult raytraceresult = world.rayTraceBlocks(player.getPositionEyes(1), base.getPositionEyes(1), false, true, false);
                         if (base.canEntityBeSeen(player) && base.canBeCollidedWith() && raytraceresult == null && base != player) {
-                            PlayerMeleeAttack.attackTargetEntityWithCurrentItemRadius(player, base, 0.35F);
+                            PlayerMeleeAttack.attackTargetEntityWithCurrentItemRadius(player, base, (float) ModConfig.indirect_hit_modifier);
                         }
                     }
             }
@@ -272,7 +272,7 @@ public class EventPlayerFalter {
             for (EntityLivingBase base : nearbyMonsters) {
                 RayTraceResult raytraceresult = world.rayTraceBlocks(player.getPositionEyes(1), base.getPositionEyes(1), false, true, false);
                 if (base.canEntityBeSeen(player) && base.canBeCollidedWith() && raytraceresult == null && base != player && !(base instanceof EntityPlayer) && base != target) {
-                    PlayerMeleeAttack.attackTargetEntityWithCurrentItemRadius(player, base, 0.6F);
+                    PlayerMeleeAttack.attackTargetEntityWithCurrentItemRadius(player, base, (float) ModConfig.direct_hit_modifier);
                 }
             }
         }

@@ -189,8 +189,7 @@ public class EntityShieldHandler {
 
             if(event.getSource().getImmediateSource() instanceof EntityArrow) {
                 ItemStack bloodStainedArrowTrinket = ModUtils.findTrinket(new ItemStack(ModItems.ARROW_TRINKET), player);
-                int randI = ModRand.range(1, 16);
-                if(!bloodStainedArrowTrinket.isEmpty() && randI == 11 && event.getEntityLiving() != null && player != null) {
+                if(!bloodStainedArrowTrinket.isEmpty() && ModRand.percentageOf(PotionTrinketConfig.arrow_trinket_chance) && event.getEntityLiving() != null && player != null) {
                     event.getEntityLiving().addPotionEffect(new PotionEffect(ModPotions.HUNTERS_MARK, 400, 0, false, false));
                     bloodStainedArrowTrinket.damageItem(1, player);
                 }
@@ -262,8 +261,7 @@ public class EntityShieldHandler {
 
                 //reduces damage by chance
                 if(!crystalFruitTrinket.isEmpty()) {
-                    int randI = ModRand.range(1, 11);
-                    if (randI == 3) {
+                    if (ModRand.percentageOf(PotionTrinketConfig.frozen_crystal_chance)) {
                       //  event.setAmount((float)(totalDamage - (originalDamage * 0.5)));
                         totalDamage -= (float) (originalDamage * PotionTrinketConfig.frozen_crystal_damage_deduction);
                         crystalFruitTrinket.damageItem(1, player);
@@ -272,8 +270,7 @@ public class EntityShieldHandler {
 
                 //golden mark trinket
                 if(!goldenMarkTrinket.isEmpty()) {
-                    int randI = ModRand.range(1, 16);
-                    if(randI == 7) {
+                    if(ModRand.percentageOf(PotionTrinketConfig.golden_mark_chance)) {
                         if(event.getSource().getImmediateSource() instanceof EntityLivingBase) {
                             EntityLivingBase base = ((EntityLivingBase) event.getSource().getImmediateSource());
                             if(base != null) {
@@ -285,8 +282,7 @@ public class EntityShieldHandler {
                 }
 
                 if(!magicCharmTrinket.isEmpty()) {
-                    int randI = ModRand.range(1, 11);
-                    if(randI == 5) {
+                    if(ModRand.percentageOf(PotionTrinketConfig.magic_charm_chance)) {
                         //summon friendly spears
                         new ActionPlayerSmallSpearWave().performAction(player);
                         magicCharmTrinket.damageItem(1, player);
@@ -294,8 +290,7 @@ public class EntityShieldHandler {
                 }
 
                 if(!weaknessTrinket.isEmpty()) {
-                    int randI = ModRand.range(1, 21);
-                    if(randI == 8) {
+                    if(ModRand.percentageOf(PotionTrinketConfig.spiral_vain_chance)) {
                         if(event.getSource().getImmediateSource() != null) {
                             if(event.getSource().getImmediateSource() instanceof EntityLivingBase) {
                                 EntityLivingBase entityIn = ((EntityLivingBase) event.getSource().getImmediateSource());
@@ -307,8 +302,7 @@ public class EntityShieldHandler {
                 }
 
                 if(!poisonTrinket.isEmpty()) {
-                    int randI = ModRand.range(1, 11);
-                    if(randI == 7) {
+                    if(ModRand.percentageOf(PotionTrinketConfig.poison_touch_chance)) {
                         if(event.getSource().getImmediateSource() != null) {
                             if(event.getSource().getImmediateSource() instanceof EntityLivingBase) {
                                 EntityLivingBase entityIn = ((EntityLivingBase) event.getSource().getImmediateSource());
@@ -349,8 +343,7 @@ public class EntityShieldHandler {
 
             //comes before any buffs
             if(!dagger_trinket.isEmpty()) {
-                int randI = ModRand.range(1, 101);
-                if(randI < 10 && randI >= 6) {
+                if(ModRand.percentageOf(PotionTrinketConfig.dagger_trinket_chance)) {
                     totalDamage += totalDamage;
                     dagger_trinket.damageItem(1, player);
                     if(event.getEntityLiving() != null) {
@@ -380,8 +373,7 @@ public class EntityShieldHandler {
             }
 
             if(!vampireTrinket.isEmpty()) {
-                int randI = ModRand.range(1, 101);
-                if(randI < 21 && randI > 14) {
+                if(ModRand.percentageOf(PotionTrinketConfig.vampire_trinket_chance)) {
                     player.heal(2);
                     vampireTrinket.damageItem(1, player);
                 }

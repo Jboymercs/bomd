@@ -3,7 +3,7 @@ package com.dungeon_additions.da.config;
 import com.dungeon_additions.da.util.ModReference;
 import net.minecraftforge.common.config.Config;
 
-@Config(modid = ModReference.MOD_ID, name = "BOMD DA Backport/mob_config")
+@Config(modid = ModReference.MOD_ID, name = "UnseensDungeonAdditions/mob_config")
 public class MobConfig {
 
     @Config.Name("Fallen Stormvier Boss Music")

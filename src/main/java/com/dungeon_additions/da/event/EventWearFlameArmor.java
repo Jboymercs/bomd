@@ -240,11 +240,10 @@ public class EventWearFlameArmor {
                     ItemStack void_hand_trinket = ModUtils.findTrinket(new ItemStack(ModItems.VOID_HAND_TRINKET), player);
 
                     if(!void_hand_trinket.isEmpty() && !player.getCooldownTracker().hasCooldown(void_hand_trinket.getItem())) {
-                        int randI = ModRand.range(1, 101);
                         if(player.isPotionActive(MobEffects.POISON) || player.isPotionActive(MobEffects.WEAKNESS) || player.isPotionActive(MobEffects.SLOWNESS) ||
                                 player.isPotionActive(MobEffects.WITHER) || player.isPotionActive(MobEffects.HUNGER)) {
 
-                        if(randI < 60 && randI > 55 && player.ticksExisted % 20 == 0) {
+                        if(ModRand.percentageOf(PotionTrinketConfig.cult_classic_chance) && player.ticksExisted % 20 == 0) {
                             List<EntityLivingBase> targets = player.world.getEntitiesWithinAABB(EntityLivingBase.class, player.getEntityBoundingBox().grow(8, 1.5, 8), e -> !e.getIsInvulnerable());
                             if (!targets.isEmpty()) {
                                 int maxHandSpawns = 0;
@@ -557,12 +556,13 @@ public class EventWearFlameArmor {
     public static void onAttackEntityEvent(AttackEntityEvent event) {
         // Overrides the melee attack of the player if the item used is the sweep attack
         // override interface
-        if (event.getEntityPlayer().getHeldItemMainhand().getItem() instanceof ISweepAttackOverride && event.getEntityPlayer().getHeldItemMainhand().getItem() instanceof ToolSword) {
-            PlayerMeleeAttack.attackTargetEntityWithCurrentItem(event.getEntityPlayer(), event.getTarget());
-            event.setCanceled(true);
-        } else {
-            event.setCanceled(false);
-        }
+            if (event.getEntityPlayer().getHeldItemMainhand().getItem() instanceof ISweepAttackOverride && event.getEntityPlayer().getHeldItemMainhand().getItem() instanceof ToolSword) {
+                PlayerMeleeAttack.attackTargetEntityWithCurrentItemBase(event.getEntityPlayer(), event.getTarget());
+                event.setCanceled(true);
+            } else {
+                event.setCanceled(false);
+            }
+
     }
 
     @SideOnly(Side.CLIENT)

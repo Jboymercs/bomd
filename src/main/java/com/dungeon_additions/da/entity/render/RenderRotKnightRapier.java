@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 
 public class RenderRotKnightRapier extends RenderRotExtended<EntityRotKnightRapier> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight_r.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/rapier_1.png");
     private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/entity/rotknight/geo.rot_knight_r.json");
 
     public RenderRotKnightRapier(RenderManager renderManager) {

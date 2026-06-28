@@ -914,7 +914,7 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
                 Entity sourceAt = damageSourceIn.getImmediateSource();
                 if(sourceAt != null && !damageSourceIn.isProjectile()) {
                     ItemStack stack =  ((EntityPlayer) sourceAt).inventory.getCurrentItem();
-                    if(stack.getItem() instanceof ItemAxe) {
+                    if(stack.getItem() instanceof ItemAxe || stack.getItem().canDisableShield(stack, null, this, ((EntityLivingBase) sourceAt))) {
                         this.setDisabledShield(true);
                         this.shieldDisableTime = 180;
                         this.playSound(SoundEvents.ITEM_SHIELD_BREAK, 1.0f, 0.8f + ModRand.getFloat(0.2f));

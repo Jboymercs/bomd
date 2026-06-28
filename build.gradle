@@ -198,7 +198,7 @@ jar {
                 'FMLAT': 'da_at.cfg',
                 'FMLCorePlugin': "${mod_plugin_class}",
                 // ALWAYS COMMENT OUT IN WORKSPACE, ALWAYS UNCOMMENT FOR BUILDS
-               // 'FMLCorePluginContainsFMLMod': true,
+                'FMLCorePluginContainsFMLMod': true,
                 'ForceLoadAsMod': true,
                 'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
                 'MixinConfigs': "mixins.${base_name}.json"
