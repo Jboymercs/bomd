@@ -13,6 +13,7 @@ import com.dungeon_additions.da.entity.desert_dungeon.boss.EntitySummonedMace;
 import com.dungeon_additions.da.entity.generic.EntityDelayedExplosion;
 import com.dungeon_additions.da.entity.generic.EntityRallyFlag;
 import com.dungeon_additions.da.entity.night_lich.ProjectileMagicMissile;
+import com.dungeon_additions.da.entity.player.ActionCastPoisonMist;
 import com.dungeon_additions.da.entity.player.ActionPlayerPetalWave;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
 import com.dungeon_additions.da.integration.BaublesIntegration;
@@ -290,6 +291,14 @@ public class ItemTrinket extends ItemBase implements IBauble{
                 lazer.setPosition(relPos.x, relPos.y, relPos.z);
                 player.world.spawnEntity(lazer);
                 player.getCooldownTracker().setCooldown(stack.getItem(), 20 * PotionTrinketConfig.pocket_pistol_cooldown);
+            } else if (type == 12 && !player.getCooldownTracker().hasCooldown(stack.getItem())) {
+                world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.VOLACTILE_SHOOT_CANNON, SoundCategory.NEUTRAL, 0.7f, 1.4f / (world.rand.nextFloat() * 0.4F + 0.4f));
+                new ActionCastPoisonMist().performAction(player);
+                player.getCooldownTracker().setCooldown(stack.getItem(), 20 * PotionTrinketConfig.pocket_poison_cooldown);
+            } else if (type == 13 && !player.getCooldownTracker().hasCooldown(stack.getItem())) {
+                world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.CAST_GENERIC_SPELL, SoundCategory.NEUTRAL, 0.7f, 1.4f / (world.rand.nextFloat() * 0.4F + 0.4f));
+                player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 20 * PotionTrinketConfig.endure_pain_amount, 0, false, true));
+                player.getCooldownTracker().setCooldown(stack.getItem(), 20 * PotionTrinketConfig.endure_pain_cooldown);
             }
         }
         return false;

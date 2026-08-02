@@ -6,6 +6,7 @@ import com.dungeon_additions.da.config.PotionTrinketConfig;
 import com.dungeon_additions.da.entity.EntityFireResistantItems;
 import com.dungeon_additions.da.entity.player.ActionPlayerFallSlam;
 import com.dungeon_additions.da.entity.player.ActionPlayerSmallSpearWave;
+import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.init.ModPotions;
 import com.dungeon_additions.da.util.ModRand;
@@ -53,6 +54,7 @@ public class EntityShieldHandler {
 
     @SubscribeEvent
     public static void onEntityDeath(LivingDeathEvent event) {
+
         if(event.getEntityLiving() instanceof EntityPlayer) {
             EntityPlayer player = ((EntityPlayer) event.getEntityLiving());
             ItemStack creepersWillTrinket = ModUtils.findTrinket(new ItemStack(ModItems.CREEPER_TRINKET), player);
@@ -236,6 +238,26 @@ public class EntityShieldHandler {
                     //reduces the damage if its magic based on how many pieces of the mages set the player is wearing
                   //  event.setAmount((float) (totalDamage - (originalDamage * magicDamageReduction)));
                     totalDamage -= (float) (originalDamage * magicDamageReduction);
+
+
+                    //Player takes more magic damage when wearing Fallen armor
+                    if(!player.world.isDaytime()) {
+                        double fallenMagicDamageIncrease = 0;
+                        if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.FALLEN_HELMET) {
+                            fallenMagicDamageIncrease += 0.1F;
+                        }
+                        if(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.FALLEN_CHESTPLATE) {
+                            fallenMagicDamageIncrease += 0.1F;
+                        }
+                        if(player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.FALLEN_LEGGINGS) {
+                            fallenMagicDamageIncrease += 0.1F;
+                        }
+                        if(player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.FALLEN_BOOTS) {
+                            fallenMagicDamageIncrease += 0.1F;
+                        }
+
+                        totalDamage += (float) (originalDamage * fallenMagicDamageIncrease);
+                    }
                 }
 
                 //golden devotion buff
@@ -243,6 +265,11 @@ public class EntityShieldHandler {
                     if(player.isPotionActive(ModPotions.GOLDEN_DEVOTION)) {
                      //   event.setAmount((float) (totalDamage - (originalDamage * PotionTrinketConfig.golden_devotion_reduction_amount)));
                         totalDamage -= (float) (originalDamage * PotionTrinketConfig.golden_devotion_reduction_amount);
+                    }
+                    ItemStack aspect_shield = ModUtils.findTrinket(new ItemStack(ModItems.ASPECT_SHIELD), player);
+                    if(!aspect_shield.isEmpty()) {
+                        totalDamage -= (float) (totalDamage * PotionTrinketConfig.aspect_shield_damage_reduction);
+                        aspect_shield.damageItem(1, player);
                     }
                 }
 
@@ -340,7 +367,7 @@ public class EntityShieldHandler {
             ItemStack flameTrinket = ModUtils.findTrinket(new ItemStack(ModItems.FLAMES_RAGE_TRINKET), player);
             ItemStack vampireTrinket = ModUtils.findTrinket(new ItemStack(ModItems.VAMPIRIC_TRINKET), player);
             ItemStack dagger_trinket = ModUtils.findTrinket(new ItemStack(ModItems.DAGGER_TRINKET), player);
-
+            ItemStack bloodSlashTrinket = ModUtils.findTrinket(new ItemStack(ModItems.BLOOD_SlASH), player);
             //comes before any buffs
             if(!dagger_trinket.isEmpty()) {
                 if(ModRand.percentageOf(PotionTrinketConfig.dagger_trinket_chance)) {
@@ -424,6 +451,32 @@ public class EntityShieldHandler {
                 }
             }
 
+            if(!bloodSlashTrinket.isEmpty()) {
+                if(ModRand.percentageOf(PotionTrinketConfig.crimson_malice_chance)) {
+                    if(event.getSource().getImmediateSource() != null) {
+                        if(event.getSource().getImmediateSource() instanceof EntityLivingBase) {
+                            EntityLivingBase entityIn = ((EntityLivingBase) event.getEntityLiving());
+                            entityIn.addPotionEffect(new PotionEffect(ModPotions.HEMORRHAGE, 100, 0, false, true));
+                            bloodSlashTrinket.damageItem(1, player);
+                        }
+                    }
+                }
+            }
+
+            //magic aspect
+            if(event.getSource() instanceof ModIndirectDamage && Objects.equals(((ModIndirectDamage) event.getSource()).damageType, ModDamageSource.MAGIC) || event.getSource() == DamageSource.MAGIC) {
+                ItemStack magic_aspect = ModUtils.findTrinket(new ItemStack(ModItems.ASPECT_MAGE), player);
+                if(!magic_aspect.isEmpty()) {
+                    totalDamage += (float) (totalDamage * PotionTrinketConfig.aspect_mage_damage_boost);
+                    magic_aspect.damageItem(1, player);
+                }
+            }
+
+            //Aspect of the Spear
+            if((!event.getSource().isProjectile() || !(event.getSource().getImmediateSource() instanceof Projectile)) && event.getEntityLiving() instanceof EntityLivingBase) {
+                totalDamage *= 1 + ModUtils.addSpearBonus(player, event.getEntityLiving());
+            }
+
             //Fiery Respite
             if(player.isPotionActive(ModPotions.FIERY_RESPITE)) {
                 if(event.getEntityLiving() != null) {
@@ -450,6 +503,7 @@ public class EntityShieldHandler {
                 totalDamage += (float) (totalDamage * PotionTrinketConfig.hunters_mark_damage_increase);
             }
         }
+
 
         if(event.getSource() != null) {
             if(event.getSource().getTrueSource() instanceof EntityLivingBase) {

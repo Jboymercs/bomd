@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "B",
+    "R",
+    "X"
+  ],
+  "key": {
+    "R": {
+      "item": "da:frost_shard"
+    },
+    "X": {
+      "item": "minecraft:glass_bottle"
+    },
+    "B": {
+      "item": "da:dark_mana"
+    }
+  },
+  "result": {
+    "item": "da:aspect_potion"
+  }
+}

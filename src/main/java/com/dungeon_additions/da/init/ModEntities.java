@@ -48,10 +48,7 @@ import com.dungeon_additions.da.entity.night_lich.EntityLichSpawn;
 import com.dungeon_additions.da.entity.player.EntityWyrkLazer;
 import com.dungeon_additions.da.entity.projectiles.*;
 import com.dungeon_additions.da.entity.projectiles.puzzle.ProjectilePuzzleBall;
-import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
-import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
-import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
-import com.dungeon_additions.da.entity.rot_knights.EntityRotSpike;
+import com.dungeon_additions.da.entity.rot_knights.*;
 import com.dungeon_additions.da.entity.sky_dungeon.*;
 import com.dungeon_additions.da.entity.sky_dungeon.friendly.EntityFriendlyHalberd;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake;
@@ -90,6 +87,7 @@ public class ModEntities {
     public static Vec3i volactile_spirit = new Vec3i(0x3b0009, 0xf3ec9b, 0);
     public static Vec3i kobf = new Vec3i(0xbf922a, 0xeb4034, 0);
     public static Vec3i rot_knight_rapier = new Vec3i(0x63615e,0xc7a548,0);
+    public static Vec3i chevalier = new Vec3i(0xffb206,0xc7a548,0);
     public static Vec3i rot_knight_boss = new Vec3i(0x63615e, 0x03ff18, 0);
     public static Vec3i night_lich = new Vec3i(0x021a1a,0x6eebeb,0);
     public static Vec3i dauntless = new Vec3i(0x820040, 0x4F5E6B, 0);
@@ -130,6 +128,7 @@ public class ModEntities {
         //Rotten Hold
         registerEntityWithID("ancient_fallen", EntityRotKnightBoss.class, ENTITY_START_ID++, 50, rot_knight_boss);
         registerEntityWithID("ancient_knight", EntityRotKnight.class, ENTITY_START_ID++, 70, rot_knights);
+        registerEntityWithID("chevalier", EntityChevalier.class, ENTITY_START_ID++, 60, chevalier);
         registerEntityWithID("ancient_knight_rapier", EntityRotKnightRapier.class, ENTITY_START_ID++, 50 ,rot_knight_rapier);
         //Void Blossom
         registerEntityWithID("mini_blossom", EntityMiniBlossom.class, ENTITY_START_ID++, 70, mini_void_blossom);
@@ -180,7 +179,7 @@ public class ModEntities {
         registerEntityWithID("dark_royal", EntityDarkRoyal.class, ENTITY_START_ID++, 70, dark_royal);
         registerEntityWithID("dark_sorcerer", EntityDarkSorcerer.class, ENTITY_START_ID++, 70, dark_sorcerer);
         registerEntityWithID("dauntless", EntityDauntless.class, ENTITY_START_ID++, 90, dauntless);
-       // registerEntityWithID("darkdrift_devil", EntityDarkdriftDevil.class, ENTITY_START_ID++, 90, dark_sorcerer);
+        registerEntityWithID("darkdrift_devil", EntityDarkdriftDevil.class, ENTITY_START_ID++, 90, dark_sorcerer);
         //Traders
         registerEntityWithID("mysterious_trader", EntityMysteriousTrader.class, ENTITY_START_ID++, 50, mysterious_trader);
 
@@ -281,6 +280,8 @@ public class ModEntities {
             registerEntity("dauntless_fist", ProjectileDauntlessFist.class, PROJECTILE_START_ID++, 40);
             registerEntity("dauntless_v_lazer", ProjectileVerticalLazer.class, PROJECTILE_START_ID++, 40);
             registerEntity("dark_locator_proj", EntityDarkRuinsLocator.class, PROJECTILE_START_ID++, 30);
+            registerEntity("storm_trident", ProjectileStormTrident.class, PROJECTILE_START_ID++, 40);
+            registerEntity("rot_poison_cloud", ProjectileDelayedPoisonCloud.class, PROJECTILE_START_ID++, 40);
 
 
 
@@ -298,6 +299,7 @@ public class ModEntities {
         registerTileEntity(TileEntityBossReSummon.class, "boss_resummon");
         registerTileEntity(TileEntityObsidilithRune.class, "obsidilith_rune");
         registerTileEntity(TileEntityEyePillar.class, "eye_pillar");
+        registerTileEntity(TileEntityAspectForge.class, "aspect_forge");
 
     }
 

@@ -73,7 +73,7 @@ public class ItemParrySword extends ToolSword {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        int SwordCoolDown = ModConfig.master_parry_sword_cooldown * 20;
+        int SwordCoolDown = (int) ((ModConfig.master_parry_sword_cooldown * 20) * ModUtils.addParryCooldownReduction(player));
         if(!player.getCooldownTracker().hasCooldown(this) && player.hurtTime == 0) {
             if(!worldIn.isRemote) {
                 this.setPlayerLife = 0;
@@ -147,7 +147,7 @@ public class ItemParrySword extends ToolSword {
                 }
             } else {
                 player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 240, 1, false, false));
-                player.getCooldownTracker().setCooldown(this, ModConfig.master_parry_sword_cooldown * 20);
+                player.getCooldownTracker().setCooldown(this, (int) ((ModConfig.master_parry_sword_cooldown * 20) * ModUtils.addParryCooldownReduction(player)));
                 this.isParrying = false;
                 player.stopActiveHand();
                 this.setPlayerLife = 0;

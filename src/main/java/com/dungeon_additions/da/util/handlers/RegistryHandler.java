@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.util.handlers;
 
 
+import com.dungeon_additions.da.blocks.aspect_forge.AspectForgeStateMapper;
 import com.dungeon_additions.da.blocks.boss.BossStateMapper;
 import com.dungeon_additions.da.blocks.lich.LichStateMapper;
 import com.dungeon_additions.da.entity.render.desert_dungeon.RenderDesertBeam;
@@ -79,6 +80,8 @@ public class RegistryHandler {
         ModelLoader.setCustomModelResourceLocation(ModItems.DAUNTLESS_FIST, 0, new ModelResourceLocation(ModReference.MOD_ID + ":dauntless_fist", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.NIGHTFALL_SWORD, 0, new ModelResourceLocation(ModReference.MOD_ID + ":nightfall_sword", "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModItems.NIGHTFALL_GAUNTLETS, 0, new ModelResourceLocation(ModReference.MOD_ID + ":nightfall_gauntlets", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.STORMVIER_TRIDENT, 0, new ModelResourceLocation(ModReference.MOD_ID + ":storm_trident", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(ModItems.ROT_TRIDENT, 0, new ModelResourceLocation(ModReference.MOD_ID + ":stormvier_trident", "inventory"));
         ModItems.SPORE_BALL.setTileEntityItemStackRenderer(new RenderSpore());
         ModItems.MAGIC_FIREBALL.setTileEntityItemStackRenderer(new RenderMagicFireball());
         ModItems.CHAMPION_AXE.setTileEntityItemStackRenderer(new RenderChampionAxe());
@@ -118,6 +121,8 @@ public class RegistryHandler {
         ModItems.DAUNTLESS_FIST.setTileEntityItemStackRenderer(new RenderDauntlessFist());
         ModItems.NIGHTFALL_SWORD.setTileEntityItemStackRenderer(new RenderNightFallSword());
         ModItems.NIGHTFALL_GAUNTLETS.setTileEntityItemStackRenderer(new RenderNightfallGauntlets());
+        ModItems.STORMVIER_TRIDENT.setTileEntityItemStackRenderer(new RenderTridentProjectile());
+        ModItems.ROT_TRIDENT.setTileEntityItemStackRenderer(new RenderStormvierTrident());
         for (Item item : ModItems.ITEMS) {
             if (item instanceof IHasModel) {
                 ((IHasModel) item).registerModels();
@@ -137,6 +142,7 @@ public class RegistryHandler {
         }
 
         ModelLoader.setCustomStateMapper(ModBlocks.BOSS_RESUMMON_BLOCK, new BossStateMapper());
+        ModelLoader.setCustomStateMapper(ModBlocks.ASPECT_FORGE, new AspectForgeStateMapper());
         ModelLoader.setCustomStateMapper(ModBlocks.LICH_SOUL_STAR_BLOCK, new LichStateMapper());
     }
 

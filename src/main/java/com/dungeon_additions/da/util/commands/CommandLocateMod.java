@@ -206,6 +206,17 @@ public class CommandLocateMod implements ICommand {
                 } else {
                     throw new CommandException("commands.locate.failure", s);
                 }
+            } else if (s.equals("AspectForge")) {
+                if(!WorldConfig.aspect_forge_enabled) {
+                    throw new CommandException("da.structure_enabled.name", s);
+                }
+                BlockPos blockpos = findNearestPosAspectForge(sender);
+
+                if (blockpos != null) {
+                    sender.sendMessage(new TextComponentTranslation("commands.locate.success", new Object[]{s, blockpos.getX(), blockpos.getZ()}));
+                } else {
+                    throw new CommandException("commands.locate.failure", s);
+                }
             }
         }
     }
@@ -222,7 +233,7 @@ public class CommandLocateMod implements ICommand {
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
         return args.length == 1 ? getListOfStringsMatchingLastWord(args, "NightLichTower", "BlossomCave", "FrozenCastle", "HighCourtCity","BurningFlameArena","ForgottenTemple","RottenHold","ObsidilithArena","GaelonSanctuary",
-                "TraderPost","CultCastle","Outpost","DarkRuins") : Collections.emptyList();
+                "TraderPost","CultCastle","Outpost","DarkRuins","AspectForge") : Collections.emptyList();
     }
 
     public static List<String> getListOfStringsMatchingLastWord(String[] args, String... possibilities) {
@@ -444,6 +455,24 @@ public class CommandLocateMod implements ICommand {
         for (int i = -ModConfig.trader_post_search_distance; i < ModConfig.trader_post_search_distance + 1; i++) {
             for (int j = -ModConfig.trader_post_search_distance; j < ModConfig.trader_post_search_distance + 1; j++) {
                 boolean c = IsTraderPostAtPos(world, chunk.x + i, chunk.z + j);
+                if (c) {
+                    resultpos = new BlockPos((chunk.x + i) << 4, 60, (chunk.z + j) << 4);
+                    break;
+                }
+            }
+        }
+        return resultpos;
+    }
+
+    public static BlockPos findNearestPosAspectForge(ICommandSender sender) {
+        BlockPos resultpos = null;
+        BlockPos pos = sender.getPosition();
+        World world = sender.getEntityWorld();
+        Chunk chunk = world.getChunk(pos);
+        //probably laggy as hell but hey it works
+        for (int i = -ModConfig.aspect_forge_search_distance; i < ModConfig.aspect_forge_search_distance + 1; i++) {
+            for (int j = -ModConfig.aspect_forge_search_distance; j < ModConfig.aspect_forge_search_distance + 1; j++) {
+                boolean c = IsAspectForgeAtPos(world, chunk.x + i, chunk.z + j);
                 if (c) {
                     resultpos = new BlockPos((chunk.x + i) << 4, 60, (chunk.z + j) << 4);
                     break;
@@ -700,6 +729,37 @@ public class CommandLocateMod implements ICommand {
         if (i == k && j == l && isAllowedDimensionTooSpawnInTraderPost(world.provider.getDimension())) {
             BlockPos pos = new BlockPos((i << 4), 60, (j << 4));
             return isAbleToSpawnHereTraderPost(pos, world);
+        } else {
+
+            return false;
+        }
+    }
+
+    protected static boolean IsAspectForgeAtPos(World world, int chunkX, int chunkZ) {
+        int spacing = WorldConfig.aspect_forge_spacing;
+        int separation = 16;
+        int i = chunkX;
+        int j = chunkZ;
+
+        if (chunkX < 0) {
+            chunkX -= spacing - 1;
+        }
+
+        if (chunkZ < 0) {
+            chunkZ -= spacing - 1;
+        }
+
+        int k = chunkX / spacing;
+        int l = chunkZ / spacing;
+        Random random = world.setRandomSeed(k, l, 40302111);
+        k = k * spacing;
+        l = l * spacing;
+        k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+        l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+
+        if (i == k && j == l && isAllowedDimensionTooSpawnInAspecForge(world.provider.getDimension())) {
+            BlockPos pos = new BlockPos((i << 4), 60, (j << 4));
+            return isAbleToSpawnHereAspectForge(pos, world);
         } else {
 
             return false;
@@ -1115,6 +1175,16 @@ public class CommandLocateMod implements ICommand {
         return false;
     }
 
+    public static boolean isAbleToSpawnHereAspectForge(BlockPos pos, World world) {
+        for(BiomeDictionary.Type types : getSpawnBiomeTypesAspectForge()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(BiomeDictionary.hasType(biomeCurrently, types) && !(BiomeDictionary.hasType(biomeCurrently, BiomeDictionary.Type.OCEAN))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     public static boolean isAbleToSpawnHereBurningFlameArena(BlockPos pos, World world) {
         for(BiomeDictionary.Type types : getSpawnBiomeTypesBurningFlameArena()) {
@@ -1273,6 +1343,27 @@ public class CommandLocateMod implements ICommand {
         return traderPostBiomeTypes;
     }
 
+    private static List<BiomeDictionary.Type> aspectForgeBiomeTypes;
+
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypesAspectForge() {
+        if(aspectForgeBiomeTypes == null) {
+            aspectForgeBiomeTypes = Lists.newArrayList();
+
+            for(String str : WorldConfig.biome_types_whitelist_aspect_forge) {
+                try {
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) aspectForgeBiomeTypes.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
+                } catch (Exception e) {
+                    DALogger.logError(str + " is not a valid type name", e);
+                }
+            }
+        }
+
+        return aspectForgeBiomeTypes;
+    }
+
     public static boolean isAbleToSpawnHereBlossom(BlockPos pos, World world) {
         for(BiomeDictionary.Type types : getSpawnBiomeTypesBlossom()) {
             Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
@@ -1397,6 +1488,15 @@ public class CommandLocateMod implements ICommand {
 
     public static boolean isAllowedDimensionTooSpawnInTraderPost(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions_mysterious_trader_post) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInAspecForge(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_aspect_forge) {
             if(i == dimensionIn)
                 return true;
         }

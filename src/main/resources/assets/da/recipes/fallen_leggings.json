@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VRV",
+    "V V",
+    "B B"
+  ],
+  "key": {
+    "R": {
+      "item": "da:fallen_insignia"
+    },
+    "V": {
+      "item": "da:knight_shard"
+    },
+    "B": {
+      "item": "da:knight_ingot"
+    }
+  },
+  "result": {
+    "item": "da:fallen_leggings"
+  }
+}

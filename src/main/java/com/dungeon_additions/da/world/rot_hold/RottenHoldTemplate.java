@@ -4,13 +4,16 @@ import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.entity.EntityNetherAbberrant;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
+import com.dungeon_additions.da.entity.rot_knights.EntityChevalier;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
+import com.dungeon_additions.da.entity.tileEntity.TileEntityAspectForge;
 import com.dungeon_additions.da.entity.tileEntity.tileEntityMobSpawner;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModEntities;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
+import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.world.ModStructureTemplate;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -70,6 +73,12 @@ public class RottenHoldTemplate extends ModStructureTemplate {
             } else {
                 world.setBlockToAir(pos);
             }
+        } else if (function.startsWith("elite")) {
+                EntityChevalier chevalier = new EntityChevalier(world);
+                chevalier.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+                chevalier.setDungeonSpawn(true);
+                world.spawnEntity(chevalier);
+                world.setBlockToAir(pos);
         }
 
         //flower
@@ -107,6 +116,18 @@ public class RottenHoldTemplate extends ModStructureTemplate {
             } else {
                 world.setBlockToAir(pos);
                 world.setBlockToAir(pos.down());
+            }
+        }
+
+        if(function.startsWith("aspect_forge")) {
+            if(ModRand.percentageOf(WorldConfig.aspect_forge_chance)) {
+                world.setBlockState(pos, ModBlocks.ASPECT_FORGE.getDefaultState());
+                if(world.getTileEntity(pos) instanceof TileEntityAspectForge) {
+                    TileEntityAspectForge forge = ((TileEntityAspectForge) world.getTileEntity(pos));
+                    forge.setState(ModUtils.getBlockType());
+                }
+            } else{
+                world.setBlockToAir(pos);
             }
         }
     }

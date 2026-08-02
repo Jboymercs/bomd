@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:stormvier_trident"
+    },
+    "title": {
+      "translate": "advancements.da.craft_stormvier_trident.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_stormvier_trident.description"
+    }
+  },
+  "parent": "da:kill_fallen_stormvier",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:stormvier_trident"
+          }
+        ]
+      }
+    }
+  }
+}

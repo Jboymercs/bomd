@@ -48,6 +48,8 @@ public class PacketControlInput implements IMessageHandler<PacketControlInput.Me
                         ItemStack rally_trinket = ModUtils.findTrinket(new ItemStack(ModItems.RALLY_TRINKET), player);
                         ItemStack petal_trinket = ModUtils.findTrinket(new ItemStack(ModItems.PETAL_TRINKET), player);
                         ItemStack pistol_trinket = ModUtils.findTrinket(new ItemStack(ModItems.PISTOL_TRINKET), player);
+                        ItemStack endure_trinket = ModUtils.findTrinket(new ItemStack(ModItems.ENDURE_TRINKET), player);
+                        ItemStack poison_mist_trinket = ModUtils.findTrinket(new ItemStack(ModItems.POISON_MIST_TRINKET), player);
                         if(!wind_trinket.isEmpty()) {
                             if(wind_trinket.getItem() instanceof ItemTrinket) {
                                 ((ItemTrinket)wind_trinket.getItem()).onApplyButtonPressed(player, player.world, wind_trinket, 1);
@@ -90,7 +92,15 @@ public class PacketControlInput implements IMessageHandler<PacketControlInput.Me
                             }
                         } else if (!pistol_trinket.isEmpty()) {
                             if(pistol_trinket.getItem() instanceof ItemTrinket) {
-                                ((ItemTrinket)pistol_trinket.getItem()).onApplyButtonPressed(player, player.world, petal_trinket, 11);
+                                ((ItemTrinket)pistol_trinket.getItem()).onApplyButtonPressed(player, player.world, pistol_trinket, 11);
+                            }
+                        } else if (!poison_mist_trinket.isEmpty()) {
+                            if(poison_mist_trinket.getItem() instanceof ItemTrinket) {
+                                ((ItemTrinket)poison_mist_trinket.getItem()).onApplyButtonPressed(player, player.world, poison_mist_trinket, 12);
+                            }
+                        } else if (!endure_trinket.isEmpty()) {
+                            if(endure_trinket.getItem() instanceof ItemTrinket) {
+                                ((ItemTrinket)endure_trinket.getItem()).onApplyButtonPressed(player, player.world, endure_trinket, 13);
                             }
                         }
                             break;

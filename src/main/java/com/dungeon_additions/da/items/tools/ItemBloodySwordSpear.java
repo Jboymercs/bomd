@@ -92,9 +92,9 @@ public class ItemBloodySwordSpear extends ToolSword implements IAnimatable {
         {
             EntityPlayer player = ((EntityPlayer) entityLiving);
             int i = this.getMaxItemUseDuration(stack) - timeLeft;
-            if(!world.isRemote && !player.getCooldownTracker().hasCooldown(this) && i >= 70) {
+            if(!world.isRemote && !player.getCooldownTracker().hasCooldown(this) && i >= 30) {
                 //initiate the Dash
-                Vec3d moveVec = player.getLookVec().scale(2.4F);
+                Vec3d moveVec = player.getLookVec().scale(2.9F);
                 if(player.canBePushed()) {
                     player.motionX = moveVec.x;
                     player.motionY = moveVec.y * 0.3;
@@ -120,7 +120,7 @@ public class ItemBloodySwordSpear extends ToolSword implements IAnimatable {
         if(entityIn instanceof EntityPlayer && !worldIn.isRemote) {
 
             if(isDashing) {
-                if (entityIn.motionX < 0.08 && entityIn.motionZ < 0.08 && dashSpawnBlood < 15 || dashSpawnBlood < 1) {
+                if (entityIn.motionX < 0.08 && entityIn.motionZ < 0.08 && dashSpawnBlood < 18 || dashSpawnBlood < 1) {
                     this.isDashing = false;
                     this.dashSpawnBlood = 0;
                 }

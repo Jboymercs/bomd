@@ -16,8 +16,15 @@ public class ModelRotKnight extends AnimatedGeoModel<EntityRotKnight> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EntityRotKnight object) {
-        return new ResourceLocation(ModReference.MOD_ID, "textures/entity/rotknight.png");
+    public ResourceLocation getTextureLocation(EntityRotKnight animatable) {
+        if(animatable.getSkin() == 4) {
+            return new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/shield_2.png");
+        } else if (animatable.getSkin() == 3) {
+            return new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/shield_3.png");
+        } else if (animatable.getSkin() == 2) {
+            return new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/shield_4.png");
+        }
+        return new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/shield_1.png");
     }
 
     @Override

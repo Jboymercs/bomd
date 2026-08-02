@@ -3,6 +3,7 @@ package com.dungeon_additions.da.mixin;
 import com.dungeon_additions.da.animation.item.*;
 import com.dungeon_additions.da.capabilities.AnimationCapabilityHelper;
 import com.dungeon_additions.da.config.ModConfig;
+import com.dungeon_additions.da.items.tools.ItemStormvierTrident;
 import com.dungeon_additions.da.items.tools.ToolSword;
 import com.dungeon_additions.da.util.interfaces.IRotationStorage;
 import net.minecraft.client.model.ModelBiped;
@@ -47,12 +48,16 @@ public class MixinModelBiped implements IRotationStorage {
             DAPlayerAnimationMethods.preformPlayerAnimReset(model);
 
             EnumHandSide swordHand = DAPlayerAnimationMethods.getHandSide(living, ToolSword.class);
-
+            EnumHandSide tridentHand = DAPlayerAnimationMethods.getHandSide(living, ItemStormvierTrident.class);
             if (living instanceof EntityPlayer)
             {
                 float customSwing = AnimationCapabilityHelper.getPlayerCustomSwingAnimProgress((EntityPlayer)living, partialTicks);
                 if(swordHand != null) {
-                    if (AnimationCapabilityHelper.isPlayerCustomSwingAnimating((EntityPlayer) living)) {
+                    //trident charging
+                    if(tridentHand != null && !AnimationCapabilityHelper.isPlayerCustomSwingAnimating((EntityPlayer) living)) {
+                        AnimationsMisc.preformItemCharging3personBody(living, model, ageInTicks, model.swingProgress, netHeadYaw, headPitch, tridentHand);
+                    }
+                    else if (AnimationCapabilityHelper.isPlayerCustomSwingAnimating((EntityPlayer) living)) {
 
                         if (DAPlayerAnimationMethods.getWeaponType(living) == 1 && ModConfig.enable_sword_weapons) {
                             AnimationsBaseSword.preformSwordArmRotations3edPerson(living, model, ageInTicks, customSwing, netHeadYaw, headPitch, swordHand);
@@ -70,8 +75,8 @@ public class MixinModelBiped implements IRotationStorage {
                         }
 
                         if (DAPlayerAnimationMethods.getWeaponType(living) == 4 && ModConfig.enable_spear_weapons) {
-                            AnimationBaseSpear.preformSpearArmRotations3edPerson(living, model, ageInTicks, customSwing, netHeadYaw, headPitch, swordHand);
-                            busyAnimating = true;
+                                AnimationBaseSpear.preformSpearArmRotations3edPerson(living, model, ageInTicks, customSwing, netHeadYaw, headPitch, swordHand);
+                                busyAnimating = true;
                         }
 
                         if (DAPlayerAnimationMethods.getWeaponType(living) == 5 && ModConfig.enable_heavy_weapons) {

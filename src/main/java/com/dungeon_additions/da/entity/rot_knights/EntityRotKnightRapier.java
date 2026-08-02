@@ -219,9 +219,9 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
                 this.endIdleState();
             }
             if(this.isRandomGetAway) {
-                double d0 = (this.posX - target.posX) * 0.012;
+                double d0 = (this.posX - target.posX) * 0.018;
                 double d1 = (this.posY - target.posY) * 0.005;
-                double d2 = (this.posZ - target.posZ) * 0.0012;
+                double d2 = (this.posZ - target.posZ) * 0.018;
                 this.addVelocity(d0, d1, d2);
                 this.faceEntity(target, 35, 35);
                 this.getLookHelper().setLookPositionWithEntity(target, 35, 35);
@@ -243,7 +243,7 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
     @Override
     public void initEntityAI() {
         super.initEntityAI();
-        this.tasks.addTask(4, new EntityAIAttackRotKnightRapier<>(this, 1.1, 20, 5, 0F));
+        this.tasks.addTask(4, new EntityAIAttackRotKnightRapier<>(this, 1.1, 20, 6, 0F));
         this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 1, true, false, null));
@@ -260,17 +260,17 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
         if(!this.isFightMode() && !isRandomGetAway && !this.isIdleMode()) {
             List<Consumer<EntityLivingBase>> attacks = new ArrayList<>(Arrays.asList(randomGetAway, basic_swing, pierce, pierce_combo, drink_potion));
             double[] weights = {
-                    (distance <= 6 && prevAttack != randomGetAway) ? 1/distance : 0,
+                    (distance <= 7 && prevAttack != randomGetAway) ? 1/distance : 0,
                     (distance <= 3 && prevAttack != basic_swing) ? 1/distance : 0,
-                    (distance <= 6 && prevAttack != pierce && prevAttack != pierce_combo) ? 1/distance : 0,
-                    (distance <= 6 && prevAttack != pierce_combo) ? 1/distance : 0,
-                    (healthF <= 0.8 && !hasDrankPotion) ? 1/distance : 0
+                    (distance <= 7 && prevAttack != pierce && prevAttack != pierce_combo) ? 1/distance : 0,
+                    (distance <= 7 && prevAttack != pierce_combo) ? 1/distance : 0,
+                    (healthF <= 0.8) ? 1/distance : 0
             };
 
             prevAttack = ModRand.choice(attacks, rand, weights).next();
             prevAttack.accept(target);
         }
-        return 30;
+        return 25;
     }
 
     private final Consumer<EntityLivingBase> drink_potion = (target) -> {
@@ -534,11 +534,8 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
 
-        if(this.currentlyBlocking) {
-            this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.7f, 1.1f + ModRand.getFloat(0.2f));
-            return false;
-        }
-        if(source.getImmediateSource() == this || source.getImmediateSource() instanceof EntityRotKnight || this.isIdleMode()) {
+
+        if(source.getImmediateSource() instanceof EntityRotKnight || source.getImmediateSource() instanceof EntityRotKnightRapier || this.isIdleMode()) {
             return false;
         }
 
@@ -555,13 +552,16 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
             this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.7f, 1.1f + ModRand.getFloat(0.2f));
 
             return false;
-        } else {
+        } else if (this.currentlyBlocking) {
+            this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.7f, 1.1f + ModRand.getFloat(0.2f));
+            return false;
+        }else {
             return super.attackEntityFrom(source, amount);
         }
     }
 
     private boolean canBlockDamageSource(DamageSource damageSourceIn) {
-        if (!damageSourceIn.isUnblockable() && this.blockTimer < 0 && !this.isBlockAction()) {
+        if (!damageSourceIn.isUnblockable() && this.blockTimer < 0 && !this.isBlockAction() && !this.isFightMode()) {
             Vec3d vec3d = damageSourceIn.getDamageLocation();
             //Handler for other
             if (vec3d != null) {
@@ -579,7 +579,7 @@ public class EntityRotKnightRapier extends EntityAbstractBase implements IAttack
     private void doBlockAction() {
         this.setBlockAction(true);
         this.setFightMode(true);
-        this.blockTimer = 120;
+        this.blockTimer = 60;
         this.isRandomGetAway = true;
         this.currentlyBlocking = true;
 

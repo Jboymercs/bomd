@@ -32,6 +32,11 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static double hunters_mark_damage_increase = 0.1;
 
+    @Config.Name("Clairvoyance Experience Multiplier")
+    @Config.Comment("When active, experience drops will multiply by X amount from slain mobs.")
+    @Config.RequiresMcRestart
+    public static double clairvoyance_multiplier = 1.4;
+
     @Config.Name("Faltered Damage Additive Amount")
     @Config.Comment("When applied to you or any entity, they will take x percentage of increased damage when applied when being Faltered")
     @Config.RequiresMcRestart
@@ -217,6 +222,17 @@ public class PotionTrinketConfig {
     @Config.RangeInt(min = 1, max = 99)
     public static int poison_touch_chance = 10;
 
+    @Config.Name("Crimson Malice Durability")
+    @Config.Comment("Change Crimson Malice item durability.")
+    @Config.RequiresMcRestart
+    public static int crimson_malice_durability = 264;
+
+    @Config.Name("Crimson Malice Chance")
+    @Config.Comment("Change Crimson Malice chance for happening.")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 99)
+    public static int crimson_malice_chance = 7;
+
     @Config.Name("Void's Durability Item Durability")
     @Config.Comment("Change Void's Durability item durability.")
     @Config.RequiresMcRestart
@@ -231,6 +247,21 @@ public class PotionTrinketConfig {
     @Config.Comment("Change Storm Calling item cooldown. In seconds.")
     @Config.RequiresMcRestart
     public static int storm_calling_cooldown = 20;
+
+    @Config.Name("Endure Pain Item Durability")
+    @Config.Comment("Change Endure Pain item durability.")
+    @Config.RequiresMcRestart
+    public static int endure_pain_durability = 64;
+
+    @Config.Name("Endure Pain Cooldown")
+    @Config.Comment("Change Endure Pain item cooldown. In seconds.")
+    @Config.RequiresMcRestart
+    public static int endure_pain_cooldown = 20;
+
+    @Config.Name("Endure Pain Amount")
+    @Config.Comment("Change Endure Pain Resistance Amount. In seconds.")
+    @Config.RequiresMcRestart
+    public static int endure_pain_amount = 4;
 
     @Config.Name("Spiral Vain Item Durability")
     @Config.Comment("Change Spiral Vain item durability.")
@@ -488,6 +519,111 @@ public class PotionTrinketConfig {
     @Config.Comment("Change Pocket Pistol item cooldown. In seconds.")
     @Config.RequiresMcRestart
     public static int pocket_pistol_cooldown = 20;
+
+    @Config.Name("Pocket Poison Damage")
+    @Config.Comment("Change Pocket Poison item ability damage.")
+    @Config.RequiresMcRestart
+    public static float pocket_poison_damage = 7;
+
+    @Config.Name("Pocket Poison Durability")
+    @Config.Comment("Change Pocket Poison item durability.")
+    @Config.RequiresMcRestart
+    public static int pocket_poison_durability = 150;
+
+    @Config.Name("Pocket Poison Cooldown")
+    @Config.Comment("Change Pocket Poison item cooldown. In seconds.")
+    @Config.RequiresMcRestart
+    public static int pocket_poison_cooldown = 13;
+
+    @Config.Name("Aspect of the Shield Durability")
+    @Config.Comment("Change Aspect of the Shield item durability.")
+    @Config.RequiresMcRestart
+    public static int aspect_shield_durability = 2000;
+
+    @Config.Name("Aspect of the Shield Damage boost")
+    @Config.Comment("Change Aspect of the Shields damage boost for shield abilities. This is a multiplier.")
+    @Config.RequiresMcRestart
+    public static double aspect_shield_damage_boost = 0.35;
+
+    @Config.Name("Aspect of the Shield Damage Reduction")
+    @Config.Comment("Change Aspect of the Shields damage reduction amount while equipped. This is a multiplier")
+    @Config.RequiresMcRestart
+    public static double aspect_shield_damage_reduction = 0.15;
+
+    @Config.Name("Aspect of the Bow Durability")
+    @Config.Comment("Change Aspect of the Bow item durability.")
+    @Config.RequiresMcRestart
+    public static int aspect_bow_durability = 2000;
+
+    @Config.Name("Aspect of the Shield Damage boost")
+    @Config.Comment("Change Aspect of the Bows speed modifier. This is a multiplier of base player speed.")
+    @Config.RequiresMcRestart
+    public static double aspect_bow_speed_boost = 0.05;
+
+    @Config.Name("Aspect of the Mage Durability")
+    @Config.Comment("Change Aspect of the Mage item durability.")
+    @Config.RequiresMcRestart
+    public static int aspect_mage_durability = 2000;
+
+    @Config.Name("Aspect of the Mage Damage Boost")
+    @Config.Comment("Change Aspect of the Mage's damage boost. This is a multiplier.")
+    @Config.RequiresMcRestart
+    public static double aspect_mage_damage_boost = 0.2;
+
+    @Config.Name("Aspect of the Colossal Durability")
+    @Config.Comment("Change Aspect of the Colossal item durability.")
+    @Config.RequiresMcRestart
+    public static int aspect_colossal_durability = 2000;
+
+    @Config.Name("Aspect of the Colossal Falter Boost")
+    @Config.Comment("Change Aspect of the Colossal's falter build up boost. This is a multiplier.")
+    @Config.RequiresMcRestart
+    public static double aspect_colossal_falter_boost = 0.2;
+
+    @Config.Name("Aspect of the Dagger Durability")
+    @Config.Comment("Change Aspect of the Dagger item durability.")
+    @Config.RequiresMcRestart
+    public static int aspect_dagger_durability = 2000;
+
+    @Config.Name("Aspect of the Duelist Durability")
+    @Config.Comment("Change Aspect of the Duelist item durability.")
+    @Config.RequiresMcRestart
+    public static int aspect_duelist_durability = 2000;
+
+    @Config.Name("Aspect of the Duelist Speed Duration")
+    @Config.Comment("Change Aspect of the Duelist's speed duration when landing a hit on a mob. In seconds")
+    @Config.RequiresMcRestart
+    public static int aspect_duelist_speed = 4;
+
+    @Config.Name("Aspect of the Dagger Damage Boost")
+    @Config.Comment("Change Aspect of the Dagger's damage for critical attacks boost. This is a multiplier.")
+    @Config.RequiresMcRestart
+    public static double aspect_dagger_critical_boost = 0.2;
+
+    @Config.Name("Aspect of the Sword Durability")
+    @Config.Comment("Change Aspect of the Sword item durability.")
+    @Config.RequiresMcRestart
+    public static int aspect_sword_durability = 2000;
+
+    @Config.Name("Aspect of the Sword Damage Bonus")
+    @Config.Comment("Change Aspect of the Sword non-critical bonus damage. This is a multiplier")
+    @Config.RequiresMcRestart
+    public static double aspect_sword_bonus_damage = 0.1;
+
+    @Config.Name("Aspect of the Sword Indirect Damage Bonus")
+    @Config.Comment("Change Aspect of the Sword indirect bonus damage. This is a multiplier")
+    @Config.RequiresMcRestart
+    public static double aspect_sword_indirect_damage = 0.3;
+
+    @Config.Name("Aspect of the Spear Durability")
+    @Config.Comment("Change Aspect of the Spear item durability.")
+    @Config.RequiresMcRestart
+    public static int aspect_spear_durability = 2000;
+
+    @Config.Name("Aspect of the Spear Damage Bonus")
+    @Config.Comment("Change Aspect of the Spear damage boost based on distance from target. This is a multiplier")
+    @Config.RequiresMcRestart
+    public static double aspect_spear_damage = 0.2;
 
     @Config.Name("Trinkets become unbreakable Enable/Disable")
     @Config.Comment("Change if all trinkets in the mod become unbreakable and do not take durability damage. default false.")

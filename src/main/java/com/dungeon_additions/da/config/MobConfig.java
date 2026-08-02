@@ -394,7 +394,7 @@ public class MobConfig {
     @Config.Name("Stormvier/Galvonizer Health")
     @Config.Comment("Change the Health of the Stormvier/Galvonizer")
     @Config.RequiresMcRestart
-    public static double rot_knights_health = 30;
+    public static double rot_knights_health = 35;
 
     @Config.Name("Stormvier/Galvonizer Armor")
     @Config.Comment("Change the Armor of the Stormvier/Galvonizer")
@@ -414,7 +414,7 @@ public class MobConfig {
     @Config.Name("Stormvier Fallen Attack Damage")
     @Config.Comment("Change the Attack Damage of the Stormvier Fallen")
     @Config.RequiresMcRestart
-    public static double fallen_attack_damage = 10;
+    public static double fallen_attack_damage = 13;
 
     @Config.Name("Stormvier Fallen Armor")
     @Config.Comment("Change the Armor value of the Stormvier Fallen")
@@ -430,6 +430,21 @@ public class MobConfig {
     @Config.Comment("Change the damage cap of how much damage can be done at one time to the Stormvier Fallen. Disable this feature entirely in general_config")
     @Config.RequiresMcRestart
     public static float fallen_damage_cap = 18;
+
+    @Config.Name("Chevalier Health")
+    @Config.Comment("Change the health of the Chevalier")
+    @Config.RequiresMcRestart
+    public static double chevalier_health = 75;
+
+    @Config.Name("Chevalier Attack Damage")
+    @Config.Comment("Change the Attack Damage of the Chevalier")
+    @Config.RequiresMcRestart
+    public static double chevalier_attack_damage = 14;
+
+    @Config.Name("Chevalier Armor")
+    @Config.Comment("Change the Armor of the Chevalier")
+    @Config.RequiresMcRestart
+    public static double chevalier_armor = 12;
 
     @Config.Name("Night Lich Active Mob Count")
     @Config.Comment("Change the active mob count the Night Lich can have, try to do it in multiples of 4")
@@ -815,12 +830,12 @@ public class MobConfig {
     @Config.Name("High King of the Sky Dragon Health")
     @Config.Comment("Change the health of the High King of the Sky Dragon")
     @Config.RequiresMcRestart
-    public static double high_dragon_health = 460;
+    public static double high_dragon_health = 480;
 
     @Config.Name("High King/Dragon Attack Damage")
     @Config.Comment("Change the attack damage of the High King/Dragon")
     @Config.RequiresMcRestart
-    public static double high_dragon_king_damage = 34;
+    public static double high_dragon_king_damage = 36;
 
     @Config.Name("High King of the Sky Dragon Armor")
     @Config.Comment("Change the armor value of the High King of the Sky Dragon")
@@ -885,7 +900,7 @@ public class MobConfig {
     @Config.Name("The High King Health")
     @Config.Comment("Change the health of the High King")
     @Config.RequiresMcRestart
-    public static double high_king_health = 475;
+    public static double high_king_health = 525;
 
     @Config.Name("The High King Armor")
     @Config.Comment("Change the armor value of the High King")

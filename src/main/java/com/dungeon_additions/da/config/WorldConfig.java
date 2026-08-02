@@ -10,6 +10,12 @@ public class WorldConfig {
     @Config.RequiresMcRestart
     public static int void_blossom_cave_weight = 130;
 
+    @Config.Name("Aspect Forge Chance")
+    @Config.Comment("Throughout most to all larger dungeons. There is a chance for a aspect forge to spawn in one of the rooms out of a 100. Change the chance.")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 0, max =  100)
+    public static int aspect_forge_chance = 50;
+
     @Config.Name("Void Blossom Arena Dimensions allowed in!")
     @Config.Comment("Take note that any ocean type biomes this structure will NOT spawn in, but you can select which dimension you'd like the structure to spawn in")
     @Config.RequiresMcRestart
@@ -232,7 +238,7 @@ public class WorldConfig {
     @Config.Name("High Court City Spacing")
     @Config.Comment("Change the spacing between each High Court City, higher means further apart, lower means closer. This number will not add to the spacing if not in the correct biome")
     @Config.RequiresMcRestart
-    public static int high_city_spacing = 240;
+    public static int high_city_spacing = 290;
 
     @Config.Name("High Court City Size")
     @Config.Comment("Change the size of the High Court City")
@@ -460,6 +466,37 @@ public class WorldConfig {
     @Config.Comment("When set to false, the Dauntless Arena will be disabled from world generation.")
     @Config.RequiresMcRestart
     public static boolean dauntless_arena_enabled = true;
+
+    @Config.Name("Aspect Forge Temple Whitelist Biome Types")
+    @Config.Comment("Add Biome types that DISALLOW the Aspect Forge Temple spawning in that biome, examples of tags are HOT, COLD, SPOOKY")
+    @Config.RequiresMcRestart
+    public static String[] biome_types_whitelist_aspect_forge = {"OCEAN"
+    };
+
+    @Config.Name("Aspect Forge Temple Enabled/Disabled")
+    @Config.Comment("When set to false, the Aspect Forge Temple will be disabled from world generation.")
+    @Config.RequiresMcRestart
+    public static boolean aspect_forge_enabled = true;
+
+    @Config.Name("Aspect Forge Temple Minimum Y")
+    @Config.Comment("Change the minimum y the surface part of this structure can spawn at")
+    @Config.RequiresMcRestart
+    public static int aspect_forge_min_y = 50;
+
+    @Config.Name("Aspect Forge Temple Maximum Y")
+    @Config.Comment("Change the maximum y the surface part of this structure can spawn at")
+    @Config.RequiresMcRestart
+    public static int aspect_forge_max_y = 110;
+
+    @Config.Name("Aspect Forge Spacing")
+    @Config.Comment("Change the spacing between each Aspect Forge Temple. In chunks")
+    @Config.RequiresMcRestart
+    public static int aspect_forge_spacing = 275;
+
+    @Config.Name("Aspect Forge Temple Post Allowed Dimensions")
+    @Config.Comment("Select what dimensions this structure is allowed to spawn in")
+    @Config.RequiresMcRestart
+    public static int[] list_of_dimensions_aspect_forge = {0};
 
     @Config.Name("Mysterious Trader Post Blacklisted Biome Types")
     @Config.Comment("Add Biome types that DISALLOW the Mysterious Trader Post from spawning in that biome, examples of tags are HOT, COLD, SPOOKY")

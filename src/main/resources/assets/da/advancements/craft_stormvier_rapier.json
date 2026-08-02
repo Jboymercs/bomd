@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:knight_rapier"
+    },
+    "title": {
+      "translate": "advancements.da.craft_stormvier_rapier.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_stormvier_rapier.description"
+    }
+  },
+  "parent": "da:kill_fallen_stormvier",
+  "criteria": {
+    "guidebook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:knight_rapier"
+          }
+        ]
+      }
+    }
+  }
+}

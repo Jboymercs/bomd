@@ -188,6 +188,11 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static double rapier_damage = 5.5;
 
+    @Config.Name("Stormvier Trident Damage")
+    @Config.Comment("Change the damage factor of the Stormvier Trident")
+    @Config.RequiresMcRestart
+    public static double trident_damage = 6.5;
+
     @Config.Name("Frostborn Sword Damage")
     @Config.Comment("Change the damage factor of the Frostborn Sword")
     @Config.RequiresMcRestart
@@ -517,6 +522,16 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static boolean enable_falter_tooltips = true;
 
+    @Config.Name("Weapon Reach ToolTip")
+    @Config.Comment("Should weapons in UDA display there weapon reach. This will auto disable if combat system is disabled.")
+    @Config.RequiresMcRestart
+    public static boolean enable_weapon_reach = true;
+
+    @Config.Name("Weapon Type ToolTip")
+    @Config.Comment("Should weapons in UDA display there weapon type. This is information for the player to see specific buffs that apply")
+    @Config.RequiresMcRestart
+    public static boolean enable_weapon_type = true;
+
     @Config.Name("Enchantments Scale ToolTip")
     @Config.Comment("Should Items listed as Enchantments scale weapon abilities tool tip appear. False will disable the tool tip")
     @Config.RequiresMcRestart
@@ -581,7 +596,7 @@ public class ModConfig {
     @Config.Name("High Court City Search Radius")
     @Config.Comment("Change how far the Orb of Light and command searches for the High Court City. In chunks not blocks!")
     @Config.RequiresMcRestart
-    public static int high_court_city_search_distance = 245;
+    public static int high_court_city_search_distance = 285;
 
     @Config.Name("Obsidilith Arena Search Radius")
     @Config.Comment("Change how far the Call of the Void and command searches for the Obsidilith Arena. In chunks not blocks!")
@@ -602,6 +617,11 @@ public class ModConfig {
     @Config.Comment("Change how far the command searches for the Mysterious Trader post. In chunks not blocks!")
     @Config.RequiresMcRestart
     public static int trader_post_search_distance = 125;
+
+    @Config.Name("Aspect Forge Temple Search Radius")
+    @Config.Comment("Change how far the command searches for the Aspect Forge Temple. In chunks not blocks!")
+    @Config.RequiresMcRestart
+    public static int aspect_forge_search_distance = 175;
 
     @Config.Name("Soul Star Drops Advancement Requirements")
     @Config.Comment("What advancements are required for players to use and unlock Soul Stars dropping from Mobs")

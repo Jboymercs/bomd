@@ -44,6 +44,9 @@ public class SoundsHandler {
     public static SoundEvent ROT_KNIGHT_ARM_BREAK;
     public static SoundEvent ROT_KNIGHT_DEATH;
     public static SoundEvent ROT_KNIGHT_CAST;
+    public static SoundEvent ROT_TRIDENT_THROW;
+    public static SoundEvent ROT_TRIDENT_PIERCE;
+    public static SoundEvent ROT_TRIDENT_IMPACT;
 
     public static SoundEvent MOSS_BREAK;
     public static SoundEvent MOSS_STEP;
@@ -71,6 +74,10 @@ public class SoundsHandler {
     //METAL BLOCKS
     public static SoundEvent STORMVIER_BLOCK_STEP;
     public static SoundEvent STORMVIER_BLOCK_BREAK;
+
+    //Aspect Forge
+    public static SoundEvent ASPECT_FORGE_USE;
+    public static SoundEvent ASPECT_FORCE_IDLE;
 
     //Soul Star Block
     public static SoundEvent SOUL_STAR_ACTIVATE;
@@ -456,6 +463,9 @@ public class SoundsHandler {
         STORMVIER_BLOCK_BREAK = registerSound("stormvier.break","block");
         STORMVIER_BLOCK_STEP = registerSound("stormvier.step","block");
         //
+        ASPECT_FORCE_IDLE = registerSound("forge.forge_idle", "block");
+        ASPECT_FORGE_USE = registerSound("forge.forge_use", "block");
+        //
         VOID_SPIKE_SHOOT = registerSound("spike.shoot", "entity");
         APPEARING_WAVE = registerSound("spike.wave", "entity");
         BLOSSOM_BURROW = registerSound("spike.burrow", "entity");
@@ -486,6 +496,9 @@ public class SoundsHandler {
         ROT_KNIGHT_ARM_BREAK = registerSound("rot_knight.break_arm", "entity");
         ROT_KNIGHT_DEATH = registerSound("rot_knight.death", "entity");
         ROT_KNIGHT_CAST = registerSound("rot_knight.cast", "entity");
+        ROT_TRIDENT_IMPACT = registerSound("storm_trident.impact", "entity");
+        ROT_TRIDENT_PIERCE = registerSound("storm_trident.pierce", "entity");
+        ROT_TRIDENT_THROW = registerSound("storm_trident.throw", "entity");
         //
         LICH_MINION_RUNE = registerSound("night_lich.minion_rune", "entity");
         LICH_PREPARE_FIREBALL = registerSound("night_lich.prepare_fireball", "entity");

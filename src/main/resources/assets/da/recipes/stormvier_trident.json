@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " XB",
+    " RX",
+    "B  "
+  ],
+  "key": {
+    "B": {
+      "item": "da:knight_ingot"
+    },
+    "R": {
+      "item": "da:fallen_insignia"
+    },
+    "X": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "da:stormvier_trident"
+  }
+}

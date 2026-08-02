@@ -24,7 +24,7 @@ public class ItemCraftingMaterial extends ItemBase {
     @Override
     public EnumRarity getRarity(ItemStack stack)
     {
-        return EnumRarity.RARE;
+        return EnumRarity.UNCOMMON;
     }
 
     @Override

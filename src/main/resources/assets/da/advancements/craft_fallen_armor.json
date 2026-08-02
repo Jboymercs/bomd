@@ -1,0 +1,56 @@
+{
+  "display": {
+    "icon": {
+      "item": "da:fallen_chestplate"
+    },
+    "title": {
+      "translate": "advancements.da.craft_fallen_armor.title"
+    },
+    "description": {
+      "translate": "advancements.da.craft_fallen_armor.description"
+    }
+  },
+  "parent": "da:kill_fallen_stormvier",
+  "criteria": {
+    "fallenHelmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:fallen_helmet"
+          }
+        ]
+      }
+    },
+    "fallenChestplate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:fallen_chestplate"
+          }
+        ]
+      }
+    },
+    "fallenLeggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:fallen_leggings"
+          }
+        ]
+      }
+    },
+    "fallenBoots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "da:fallen_boots"
+          }
+        ]
+      }
+    }
+  }
+}

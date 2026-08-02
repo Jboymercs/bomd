@@ -111,7 +111,7 @@ public class EntityColossusSigil extends Projectile {
                     }
                 } else if (!nearbyCreatures.isEmpty()) {
                     for(EntityMob base : nearbyCreatures) {
-                        if(this.canEntityBeSeen(base) && !firedOrb) {
+                        if(this.canEntityBeSeen(base) && !firedOrb && shootingEntity != null) {
                             ProjectileDesertOrb orb = new ProjectileDesertOrb(world, this.shootingEntity, this.getDamage());
                             orb.setPosition(this.posX, this.posY + 0.5, this.posZ);
                             world.spawnEntity(orb);

@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.init;
 
 import com.dungeon_additions.da.blocks.*;
+import com.dungeon_additions.da.blocks.aspect_forge.BlockAspectForge;
 import com.dungeon_additions.da.blocks.base.BlockPillarBase;
 import com.dungeon_additions.da.blocks.base.BlockStairBase;
 import com.dungeon_additions.da.blocks.base.BlockWallBase;
@@ -89,6 +90,7 @@ public class ModBlocks {
     public static final Block SKY_KEY_BLOCK = new BlockLightningKeyBlock("sky_key_block", MobConfig.dragon_starts_first ? ((worldv, posr) -> new EntityHighKingDrake(worldv, posr.getX(), posr.getY() + 25, posr.getZ())) : ((worldv, posr) -> new EntityHighKing(worldv, posr.getX(), posr.getY(), posr.getZ()))).setCreativeTab(DungeonAdditionsTab.BLOCKS);
 
     public static final Block BOSS_RESUMMON_BLOCK = new BlockBossReSummon("boss_resummon", Material.ROCK, ModItems.LIGHTNING_KEY).setLightLevel(0.9F).setCreativeTab(DungeonAdditionsTab.BLOCKS);
+    public static final Block ASPECT_FORGE = new BlockAspectForge("aspect_forge", Material.ROCK, ModItems.ASPECT_TEMPLATE).setCreativeTab(DungeonAdditionsTab.BLOCKS);
 
     //Metal Blocks
     public static final Block STORMVIER_BLOCK = new BlockBase("stormvier_block", Material.ROCK, GLOOM_STONE_HARDNESS, GLOOM_STONE_RESITANCE, BOMDSoundTypes.METAL_BLOCK).setCreativeTab(DungeonAdditionsTab.BLOCKS);

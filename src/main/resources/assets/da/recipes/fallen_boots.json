@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "V V",
+    "B B"
+  ],
+  "key": {
+    "V": {
+      "item": "da:knight_shard"
+    },
+    "B": {
+      "item": "da:knight_ingot"
+    }
+  },
+  "result": {
+    "item": "da:fallen_boots"
+  }
+}

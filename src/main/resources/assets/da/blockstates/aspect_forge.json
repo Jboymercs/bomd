@@ -1,0 +1,35 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": {
+      "model": "da:aspect_forge/aspect_forge"
+    },
+    "state=base": {
+      "model": "da:aspect_forge/aspect_forge"
+    },
+    "state=aspect_sword": {
+      "model": "da:aspect_forge/aspect_sword"
+    },
+    "state=aspect_colossal": {
+      "model": "da:aspect_forge/aspect_colossal"
+    },
+    "state=aspect_spear": {
+      "model": "da:aspect_forge/aspect_spear"
+    },
+    "state=aspect_dagger": {
+      "model": "da:aspect_forge/aspect_dagger"
+    },
+    "state=aspect_shield": {
+      "model": "da:aspect_forge/aspect_shield"
+    },
+    "state=aspect_bow": {
+      "model": "da:aspect_forge/aspect_bow"
+    },
+    "state=aspect_duelist": {
+      "model": "da:aspect_forge/aspect_duelist"
+    },
+    "state=aspect_mage": {
+      "model": "da:aspect_forge/aspect_mage"
+    }
+  }
+}

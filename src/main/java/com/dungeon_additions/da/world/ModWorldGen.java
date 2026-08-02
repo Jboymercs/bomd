@@ -2,6 +2,7 @@ package com.dungeon_additions.da.world;
 
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.util.DALogger;
+import com.dungeon_additions.da.world.aspect_forge.WorldGenAspectForge;
 import com.dungeon_additions.da.world.blossom.WorldGenBlossomCave;
 import com.dungeon_additions.da.world.cults_domain.WorldGenCultsDomain;
 import com.dungeon_additions.da.world.dauntless.WorldGenDauntlessArena;
@@ -48,6 +49,8 @@ public class ModWorldGen implements IWorldGenerator {
     private static final WorldGenCultsDomain cults_domain = new WorldGenCultsDomain();
     private static final WorldGenDauntlessArena dauntless_arena = new WorldGenDauntlessArena();
     private static final WorldGenOutposts outposts = new WorldGenOutposts();
+    private static final WorldGenAspectForge aspect_forge = new WorldGenAspectForge();
+
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
 
@@ -107,6 +110,10 @@ public class ModWorldGen implements IWorldGenerator {
         //Mysterious Trader Post
         if(isAllowedDimensionTooSpawnInTraderPost(world.provider.getDimension()) && WorldConfig.mysterious_trader_post_enabled && world.provider.getBiomeForCoords(pos) != Biomes.DEEP_OCEAN) {
             trader_post.generate(world, random, pos);
+        }
+        //Aspect Forge
+        if(isAllowedDimensionTooSpawnInAspectForge(world.provider.getDimension()) && WorldConfig.aspect_forge_enabled && world.provider.getBiomeForCoords(pos) != Biomes.DEEP_OCEAN) {
+            aspect_forge.generate(world, random, pos);
         }
         //Dauntless Arena
         if(isAllowedDimensionTooSpawnInDauntless(world.provider.getDimension()) && WorldConfig.dauntless_arena_enabled) {
@@ -206,6 +213,15 @@ public class ModWorldGen implements IWorldGenerator {
 
     public static boolean isAllowedDimensionTooSpawnInTraderPost(int dimensionIn) {
         for(int i : WorldConfig.list_of_dimensions_mysterious_trader_post) {
+            if(i == dimensionIn)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isAllowedDimensionTooSpawnInAspectForge(int dimensionIn) {
+        for(int i : WorldConfig.list_of_dimensions_aspect_forge) {
             if(i == dimensionIn)
                 return true;
         }

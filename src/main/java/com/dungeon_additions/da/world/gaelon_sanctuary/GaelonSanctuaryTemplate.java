@@ -8,11 +8,13 @@ import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
 import com.dungeon_additions.da.entity.gaelon_dungeon.EntityCursedSentinel;
 import com.dungeon_additions.da.entity.gaelon_dungeon.EntityReAnimate;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
+import com.dungeon_additions.da.entity.tileEntity.TileEntityAspectForge;
 import com.dungeon_additions.da.entity.tileEntity.tileEntityMobSpawner;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModEntities;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
+import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.world.ModStructureTemplate;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -91,6 +93,18 @@ public class GaelonSanctuaryTemplate extends ModStructureTemplate {
             } else {
                 world.setBlockToAir(pos);
                 world.setBlockToAir(pos.down());
+            }
+        }
+
+        if(function.startsWith("aspect_forge")) {
+            if(ModRand.percentageOf(WorldConfig.aspect_forge_chance)) {
+                world.setBlockState(pos, ModBlocks.ASPECT_FORGE.getDefaultState());
+                if(world.getTileEntity(pos) instanceof TileEntityAspectForge) {
+                    TileEntityAspectForge forge = ((TileEntityAspectForge) world.getTileEntity(pos));
+                    forge.setState(ModUtils.getBlockType());
+                }
+            } else{
+                world.setBlockToAir(pos);
             }
         }
     }

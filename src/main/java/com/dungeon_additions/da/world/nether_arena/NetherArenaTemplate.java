@@ -8,12 +8,14 @@ import com.dungeon_additions.da.entity.flame_knight.EntityFlameOrb;
 import com.dungeon_additions.da.entity.flame_knight.EntityIncendium;
 import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
+import com.dungeon_additions.da.entity.tileEntity.TileEntityAspectForge;
 import com.dungeon_additions.da.entity.tileEntity.tileEntityMobSpawner;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModEntities;
 import com.dungeon_additions.da.integration.ModIntegration;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
+import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.world.ModStructureTemplate;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -154,6 +156,28 @@ public class NetherArenaTemplate extends ModStructureTemplate {
             } else {
                 world.setBlockToAir(pos);
                 world.setBlockToAir(pos.down());
+            }
+        }
+
+        if(function.startsWith("aspect_forge")) {
+            if(ModRand.percentageOf(WorldConfig.aspect_forge_chance)) {
+                world.setBlockState(pos, ModBlocks.ASPECT_FORGE.getDefaultState());
+                if(world.getTileEntity(pos) instanceof TileEntityAspectForge) {
+                    TileEntityAspectForge forge = ((TileEntityAspectForge) world.getTileEntity(pos));
+                    forge.setState(ModUtils.getBlockType());
+                }
+            } else{
+                world.setBlockToAir(pos);
+            }
+        } else if(function.startsWith("low_aspect_forge")) {
+            if(ModRand.percentageOf(WorldConfig.aspect_forge_chance/2)) {
+                world.setBlockState(pos, ModBlocks.ASPECT_FORGE.getDefaultState());
+                if(world.getTileEntity(pos) instanceof TileEntityAspectForge) {
+                    TileEntityAspectForge forge = ((TileEntityAspectForge) world.getTileEntity(pos));
+                    forge.setState(ModUtils.getBlockType());
+                }
+            } else{
+                world.setBlockToAir(pos);
             }
         }
     }

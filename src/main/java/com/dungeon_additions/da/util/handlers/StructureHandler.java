@@ -1,5 +1,7 @@
 package com.dungeon_additions.da.util.handlers;
 
+import com.dungeon_additions.da.world.aspect_forge.AspectForgeTemplate;
+import com.dungeon_additions.da.world.aspect_forge.WorldGenAspectForge;
 import com.dungeon_additions.da.world.blossom.BlossomTemplate;
 import com.dungeon_additions.da.world.blossom.WorldGenBlossomCave;
 import com.dungeon_additions.da.world.cults_domain.CultsDomainTemplate;
@@ -69,5 +71,8 @@ public class StructureHandler {
         //Outposts
         MapGenStructureIO.registerStructure(WorldGenOutposts.Start.class, "ModOutposts");
         MapGenStructureIO.registerStructureComponent(OutpostsTemplate.class, "MOP");
+        //Aspect Forge
+        MapGenStructureIO.registerStructure(WorldGenAspectForge.Start.class, "AspectForgeTemple");
+        MapGenStructureIO.registerStructureComponent(AspectForgeTemplate.class, "AFP");
     }
 }

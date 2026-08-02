@@ -9,11 +9,13 @@ import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
+import com.dungeon_additions.da.entity.tileEntity.TileEntityAspectForge;
 import com.dungeon_additions.da.entity.tileEntity.tileEntityMobSpawner;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModEntities;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
+import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.world.ModStructureTemplate;
 import com.dungeon_additions.da.world.forgotten_temple.parts.WorldGenTempleTop;
 import com.dungeon_additions.da.world.nether_arena.WorldGenCenterPiece;
@@ -166,6 +168,18 @@ public class ForgottenTempleTemplate extends ModStructureTemplate {
             } else {
                 world.setBlockToAir(pos);
                 world.setBlockToAir(pos.down());
+            }
+        }
+
+        if(function.startsWith("aspect_forge")) {
+            if(ModRand.percentageOf(WorldConfig.aspect_forge_chance/2)) {
+                world.setBlockState(pos, ModBlocks.ASPECT_FORGE.getDefaultState());
+                if(world.getTileEntity(pos) instanceof TileEntityAspectForge) {
+                    TileEntityAspectForge forge = ((TileEntityAspectForge) world.getTileEntity(pos));
+                    forge.setState(ModUtils.getBlockType());
+                }
+            } else{
+                world.setBlockToAir(pos);
             }
         }
     }

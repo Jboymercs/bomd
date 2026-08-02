@@ -81,6 +81,8 @@ public class ClientProxy extends CommonProxy{
     private final ModelBiped MODEL_ENDERPHRITE_CHESTPLATE = new ModelEnderphriteChestplate(0F);
     private final ModelBiped MODEL_NIGHTFALL_HELMET = new ModelNightfallHelmet(0F);
     private final ModelBiped MODEL_NIGHTFALL_CHESTPLATE = new ModelNightfallChestplate(0F);
+    private final ModelBiped MODEL_FALLEN_HELMET = new ModelStormvierHelmet(0F);
+    private final ModelBiped MODEL_FALLEN_CHESTPLATE = new ModelFallenChestplate(0F);
 
 
     public static final KeyBinding SHIELD_ABILITY = new KeyBinding("key." + ModReference.MOD_ID + ".shield_ability", KeyConflictContext.IN_GAME, Keyboard.KEY_G, "key.categories." + ModReference.MOD_ID);
@@ -197,6 +199,12 @@ public class ClientProxy extends CommonProxy{
         if(item == ModItems.NIGHTFALL_CHESTPLATE) {
             return MODEL_NIGHTFALL_CHESTPLATE;
         }
+        if(item == ModItems.FALLEN_HELMET) {
+            return MODEL_FALLEN_HELMET;
+        }
+        if(item == ModItems.FALLEN_CHESTPLATE) {
+            return MODEL_FALLEN_CHESTPLATE;
+        }
         return null;
     }
 
@@ -303,6 +311,10 @@ public class ClientProxy extends CommonProxy{
                 return new ParticleDauntlessBleed.Factory();
             case 41:
                 return new ParticleDauntlessWeak.Factory();
+            case 42:
+                return new ParticleGravitySpark.Factory();
+            case 43:
+                return new ParticleDotSwirl.Factory();
         }
     }
 

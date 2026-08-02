@@ -271,7 +271,7 @@ public class RottenHold {
             if(SIZE > 2 && !generatedBossRoom) {
                 return generateBossHelperStraight(parent, pos, rot);
             } else {
-                int randID = ModRand.range(1, 4);
+                int randID = ModRand.range(1, 7);
                 return this.generateEndDungeonPiece(parent, pos, rot, randID);
             }
         }
@@ -312,7 +312,7 @@ public class RottenHold {
             if(SIZE > 2 && !generatedBossRoom) {
                return generateMiniBossRoom(parent, pos, rot);
             } else {
-                int randID = ModRand.range(1, 4);
+                int randID = ModRand.range(1, 7);
              return this.generateEndDungeonPiece(parent, pos, rot, randID);
             }
         }
@@ -321,7 +321,7 @@ public class RottenHold {
     }
 
     private boolean generateMiniBossRoom(RottenHoldTemplate parent, BlockPos pos, Rotation rot) {
-        RottenHoldTemplate boss_room = addAdjustedPieceWithoutDistance(parent, BlockPos.ORIGIN.add(0, -6, 0), "tiles/boss_room", rot);
+        RottenHoldTemplate boss_room = addAdjustedPieceWithoutDistance(parent, pos, "tiles/boss_room", rot);
 
         if(boss_room.isCollidingExcParent(manager, parent, components) || generatedBossRoom) {
             return this.generateMediumEnd(parent, pos, rot);
@@ -352,7 +352,7 @@ public class RottenHold {
         }
 
         components.add(piece);
-        int randI = ModRand.range(1, 5);
+        int randI = ModRand.range(1, 7);
         generateEndDungeonPiece(piece, BlockPos.ORIGIN, rot, randI);
         return true;
     }
@@ -380,6 +380,12 @@ public class RottenHold {
                 chamberRoom = addAdjustedPieceWithoutDistance(parent, pos.add(0, -4, 0), "tiles/chamber_2", rot);
             } else if (identifier == 3) {
                 chamberRoom = addAdjustedPieceWithoutDistance(parent, pos.add(0, -4, 0), "tiles/chamber_3", rot);
+            }else if (identifier == 4) {
+                chamberRoom = addAdjustedPieceWithoutDistance(parent, pos, "tiles/big_end_1", rot);
+            }else if (identifier == 5) {
+                chamberRoom = addAdjustedPieceWithoutDistance(parent, pos, "tiles/big_end_2", rot);
+            }else if (identifier == 6) {
+                chamberRoom = addAdjustedPieceWithoutDistance(parent, pos.add(0, -7, 0), "tiles/big_end_3", rot);
             } else {
                 chamberRoom = addAdjustedPieceWithoutDistance(parent, pos.add(0, -10, 0), "tiles/chamber_4", rot);
             }

@@ -1,0 +1,15 @@
+{
+  "pools": [
+    {
+      "name" : "da:chevalier_dungeon",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:endure_trinket",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

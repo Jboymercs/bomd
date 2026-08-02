@@ -23,6 +23,7 @@ public class ModPotions {
     public static PotionEffectDegradation DEGRADATION = (PotionEffectDegradation) new PotionEffectDegradation("degradation", true, 0);
     public static PotionEffectHemorrhage HEMORRHAGE = (PotionEffectHemorrhage) new PotionEffectHemorrhage("hemorrhage", true, 0);
     public static PotionEffectFaltered FALTERED = (PotionEffectFaltered) new PotionEffectFaltered("faltered", true, 0);
+    public static PotionEffectClairvoyance CLAIRVOYANCE = (PotionEffectClairvoyance) new PotionEffectClairvoyance("clairvoyance", false, 0);
 
 
     public static PotionType hunters_mark = new PotionType("potionHuntersMark", new PotionEffect[]{new PotionEffect(ModPotions.HUNTERS_MARK, 300)}).setRegistryName("hunters_marked");
@@ -37,7 +38,8 @@ public class ModPotions {
                 FIERY_RESPITE,
                 DEGRADATION,
                 HEMORRHAGE,
-                FALTERED
+                FALTERED,
+                CLAIRVOYANCE
         );
     }
 

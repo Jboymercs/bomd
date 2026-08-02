@@ -71,7 +71,7 @@ public class ItemKnightRapier extends ToolSword{
                 player.hurtResistantTime = 0;
                 this.setPlayerLife = player.getHealth();
                 player.setActiveHand(hand);
-                player.getCooldownTracker().setCooldown(this, 200);
+                player.getCooldownTracker().setCooldown(this, (int) (200 * ModUtils.addParryCooldownReduction(player)));
             }
             //Do Animation
             if (player.hasCapability(CapabilityItemAnimations.ANIM_CAP, null))
@@ -122,7 +122,7 @@ public class ItemKnightRapier extends ToolSword{
                         }
                         player.setHealth((float) this.setPlayerLife);
                         currentLife = 0;
-                        player.getCooldownTracker().setCooldown(this, 25);
+                        player.getCooldownTracker().setCooldown(this, (int) (60 * ModUtils.addParryCooldownReduction(player)));
                         ModUtils.performNTimes(6, (i) -> {
                             Vec3d playerLookVec = player.getLookVec();
                             Vec3d playerPos = new Vec3d(player.posX + playerLookVec.x * 0.7D,player.posY + playerLookVec.y + player.getEyeHeight(), player. posZ + playerLookVec.z * 0.7D);

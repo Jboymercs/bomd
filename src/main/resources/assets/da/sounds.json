@@ -829,6 +829,60 @@
       }
     ]
   },
+  "entity.storm_trident.throw": {
+    "category": "entity",
+    "subtitle": "entity.storm_trident.throw",
+    "sounds": [
+      {
+        "name": "da:entity/storm_trident/throw1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/storm_trident/throw2",
+        "stream": false
+      }
+    ]
+  },
+  "entity.storm_trident.pierce": {
+    "category": "entity",
+    "subtitle": "entity.storm_trident.pierce",
+    "sounds": [
+      {
+        "name": "da:entity/storm_trident/pierce1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/storm_trident/pierce2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/storm_trident/pierce3",
+        "stream": false
+      }
+    ]
+  },
+  "entity.storm_trident.impact": {
+    "category": "entity",
+    "subtitle": "entity.storm_trident.impact",
+    "sounds": [
+      {
+        "name": "da:entity/storm_trident/impact1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/storm_trident/impact2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/storm_trident/impact3",
+        "stream": false
+      },
+      {
+        "name": "da:entity/storm_trident/impact4",
+        "stream": false
+      }
+    ]
+  },
   "entity.rot_spike.shoot": {
     "category": "entity",
     "subtitle": "entity.rot_spike.shoot",
@@ -4085,6 +4139,26 @@
     "sounds": [
       {
         "name": "da:block/mirror/pling",
+        "stream": false
+      }
+    ]
+  },
+  "block.forge.forge_use": {
+    "category": "block",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:block/aspect_forge/forge_use",
+        "stream": false
+      }
+    ]
+  },
+  "block.forge.forge_idle": {
+    "category": "block",
+    "subtitle": "",
+    "sounds": [
+      {
+        "name": "da:block/aspect_forge/forge_idle",
         "stream": false
       }
     ]

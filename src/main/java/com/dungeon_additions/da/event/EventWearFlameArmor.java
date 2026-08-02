@@ -34,10 +34,12 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -72,6 +74,7 @@ public class EventWearFlameArmor {
     public static final UUID DIAMOND_SHIELD_TRINKET_MODIFIER = UUID.fromString("7843aa4a-af8d-36a2-1293-69bec9caa675");
     public static final UUID HEART_TRINKET_MODIFIER = UUID.fromString("8724aa4a-af8d-22a2-8693-12bec9caa544");
     public static final UUID SPEED_TRINKET_MODIFIER = UUID.fromString("8321aa4a-af3d-42a2-1983-42bec9caa503");
+    public static final UUID BOW_ASPECT_MODIFIER = UUID.fromString("2751aa4a-af2d-09a2-2894-42bec9caa129");
     private static final NBTTagCompound falter_time = null;
 
     @SubscribeEvent
@@ -238,6 +241,22 @@ public class EventWearFlameArmor {
                     ItemStack endermenTrinket = ModUtils.findTrinket(new ItemStack(ModItems.ENDERMEN_TRINKET), player);
                     ItemStack voidTrinket = ModUtils.findTrinket(new ItemStack(ModItems.VOID_TRINKET), player);
                     ItemStack void_hand_trinket = ModUtils.findTrinket(new ItemStack(ModItems.VOID_HAND_TRINKET), player);
+                    ItemStack aspect_bow = ModUtils.findTrinket(new ItemStack(ModItems.ASPECT_BOW), player);
+
+                IAttributeInstance aspectForSpeed = base.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+
+                    if(!aspect_bow.isEmpty() && player.getActiveItemStack().getItem() instanceof ItemBow && !player.world.isRemote) {
+                        if (aspectForSpeed.getModifier(BOW_ASPECT_MODIFIER) == null) {
+                            aspectForSpeed.applyModifier(new AttributeModifier(BOW_ASPECT_MODIFIER, "bow_aspect_modifier", 0.22, 0).setSaved(false));
+                        }
+
+                        if(player.hurtTime == 1) {
+                            aspect_bow.damageItem(1, player);
+                        }
+
+                    } else if(aspectForSpeed.getModifier(BOW_ASPECT_MODIFIER) != null) {
+                        aspectForSpeed.removeModifier(BOW_ASPECT_MODIFIER);
+                    }
 
                     if(!void_hand_trinket.isEmpty() && !player.getCooldownTracker().hasCooldown(void_hand_trinket.getItem())) {
                         if(player.isPotionActive(MobEffects.POISON) || player.isPotionActive(MobEffects.WEAKNESS) || player.isPotionActive(MobEffects.SLOWNESS) ||

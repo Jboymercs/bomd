@@ -3,6 +3,7 @@ package com.dungeon_additions.da.items.tools;
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
+import com.dungeon_additions.da.config.PotionTrinketConfig;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.util.ISweepAttackOverride;
 import com.dungeon_additions.da.util.IHasModel;
@@ -18,12 +19,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -110,8 +113,31 @@ public class ToolSword extends ItemSword implements IHasModel, ISweepAttackOverr
 
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        if(ModConfig.enable_weapon_type) {
+            if(this.weapon_type == EnumWeaponType.SWORD || this.weapon_type == EnumWeaponType.PARRY_SWORD) {
+                tooltip.add(TextFormatting.GRAY + I18n.format(net.minecraft.util.text.translation.I18n.translateToLocal("description.dungeon_additions.sword_type")));
+            }
+            if(this.weapon_type == EnumWeaponType.SPEAR) {
+                tooltip.add(TextFormatting.GRAY + I18n.format(net.minecraft.util.text.translation.I18n.translateToLocal("description.dungeon_additions.spear_type")));
+            }
+            if(this.weapon_type == EnumWeaponType.DAGGER) {
+                tooltip.add(TextFormatting.GRAY + I18n.format(net.minecraft.util.text.translation.I18n.translateToLocal("description.dungeon_additions.dagger_type")));
+            }
+            if(this.weapon_type == EnumWeaponType.HEAVY_AXE) {
+                tooltip.add(TextFormatting.GRAY + I18n.format(net.minecraft.util.text.translation.I18n.translateToLocal("description.dungeon_additions.colossal_type")));
+            }
+        }
         if(ModConfig.players_cause_falter && falter_value != 0 && ModConfig.enable_falter_tooltips) {
             tooltip.add(TextFormatting.GRAY + I18n.format((ModUtils.DF_0.format(falter_value * 10)) + "") + net.minecraft.util.text.translation.I18n.translateToLocal("description.dungeon_additions.falter_value"));
+        }
+        if(ModConfig.enable_weapon_reach) {
+            if(weaponReach != 4.5) {
+                if(weaponReach > 4.5) {
+                    tooltip.add(TextFormatting.BLUE + I18n.format(("+" + ModUtils.DF_0.format(weaponReach - 4.5)) + "") + net.minecraft.util.text.translation.I18n.translateToLocal("description.dungeon_additions.reach"));
+                } else {
+                    tooltip.add(TextFormatting.RED + I18n.format((ModUtils.DF_0.format(weaponReach - 4.5)) + "") + net.minecraft.util.text.translation.I18n.translateToLocal("description.dungeon_additions.reach"));
+                }
+            }
         }
         information.accept(tooltip);
     }
@@ -130,7 +156,7 @@ public class ToolSword extends ItemSword implements IHasModel, ISweepAttackOverr
         if (!worldIn.isRemote)
         {
             if(stack.getItem() instanceof ToolSword) {
-                if(!stack.hasTagCompound()) {
+                if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("weaponDelay")) {
                     this.setNBTonWeapon(stack, this.weaponDelay);
                     System.out.println("Setting NBT");
                 }
@@ -149,11 +175,11 @@ public class ToolSword extends ItemSword implements IHasModel, ISweepAttackOverr
     public void setNBTonWeapon(ItemStack stack, int weaponDelay)
     {
         NBTTagCompound nbt;
-        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("weaponDelay"))
+        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("weaponDelay") && stack.getTagCompound().hasKey("ability"))
         { nbt = stack.getTagCompound(); }
         else
         { nbt = new NBTTagCompound(); }
-
+        nbt.setBoolean("ability", false);
         nbt.setInteger("weaponDelay", weaponDelay);
         stack.setTagCompound(nbt);
     }
@@ -201,8 +227,15 @@ public class ToolSword extends ItemSword implements IHasModel, ISweepAttackOverr
     @Override
     public void doSweepAttack(EntityPlayer player, @Nullable EntityLivingBase entity) {
         if(entity != null && ModConfig.players_cause_falter) {
-            float falterOffHandBonus = ModUtils.addOffhandDualBonuses(player);
+            float falterOffHandBonus = ModUtils.addOffhandDualBonuses(player) + ModUtils.addColossalFalterBonus(player);
             float totalBonus = player.onGround ? falterOffHandBonus : (falterOffHandBonus + 0.25F);
+            if(falterOffHandBonus > 1) {
+                ItemStack duelist_aspect = ModUtils.findTrinket(new ItemStack(ModItems.ASPECT_DUELIST), player);
+                if(!duelist_aspect.isEmpty()) {
+                    player.addPotionEffect(new PotionEffect(MobEffects.SPEED, PotionTrinketConfig.aspect_duelist_speed * 20, 0, false, true));
+                    duelist_aspect.damageItem(1, player);
+                }
+            }
             ModUtils.addFalterTooEnemies(entity, falter_value * totalBonus, (int) (((falter_value * totalBonus) * 20)));
         }
     }

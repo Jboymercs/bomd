@@ -319,9 +319,17 @@ public class ClientEventHandler {
                 }
                 //Spears
             } else if (DAPlayerAnimationMethods.getWeaponType(player) == 4 && ModConfig.enable_spear_weapons) {
-                if (cooldownStrength > 0 && swingingCustom)
+
+                //charging animation for trident
+                if(stack.getItem() instanceof ItemStormvierTrident && player.getActiveItemStack() == stack) {
+                    GlStateManager.pushMatrix();
+                    AnimationsMisc.preformItemChargingFirstPerson(player, cooldownStrength, partialTicks, arm);
+                    renderer.renderItemInFirstPerson(Minecraft.getMinecraft().player, partialTicks, event.getInterpolatedPitch(), event.getHand(), 0, stack, 0);
+                    GlStateManager.popMatrix();
+                    event.setCanceled(true);
+                } else if (cooldownStrength > 0 && swingingCustom)
                 {
-                    if(stack.getItem() instanceof ItemBloodySwordSpear || stack.getItem() instanceof ItemSwordSpear || stack.getItem() instanceof ItemImperialHalberd) {
+                    if(stack.getItem() instanceof ItemBloodySwordSpear || stack.getItem() instanceof ItemSwordSpear || stack.getItem() instanceof ItemImperialHalberd || stack.getItem() instanceof ItemStormvierTrident) {
                         GlStateManager.pushMatrix();
                         AnimationBaseSpear.preformBigSpearItemRotations1stPerson(Minecraft.getMinecraft().player, partialTicks, cooldownStrength, arm);
                         renderer.renderItemSide(player, stack, isRightArm ? ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, !isRightArm);

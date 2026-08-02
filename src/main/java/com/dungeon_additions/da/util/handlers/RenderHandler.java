@@ -69,10 +69,7 @@ import com.dungeon_additions.da.entity.render.sky_dungeon.boss.RenderHighKing;
 import com.dungeon_additions.da.entity.render.sky_dungeon.boss.RenderHighKingDrake;
 import com.dungeon_additions.da.entity.render.trader.RenderMysteriousTrader;
 import com.dungeon_additions.da.entity.render.void_dungeon.*;
-import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
-import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightBoss;
-import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
-import com.dungeon_additions.da.entity.rot_knights.EntityRotSpike;
+import com.dungeon_additions.da.entity.rot_knights.*;
 import com.dungeon_additions.da.entity.sky_dungeon.*;
 import com.dungeon_additions.da.entity.sky_dungeon.friendly.EntityFriendlyHalberd;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.EntityHighKingDrake;
@@ -188,6 +185,8 @@ public class RenderHandler {
         registerProjectileRenderer3DModel(ProjectileDauntlessSlice.class, ModItems.DAUNTLESS_SPEAR, true);
         registerProjectileRenderer3DModel(ProjectileDauntlessCrystal.class, ModItems.DAUNTLESS_CRYSTAL, true);
         registerProjectileRenderer3DModel(ProjectileDauntlessFist.class, ModItems.DAUNTLESS_FIST, true);
+        registerProjectileRenderer3DModel(ProjectileStormTrident.class, ModItems.STORMVIER_TRIDENT, true);
+        registerProjectileRenderer(ProjectileDelayedPoisonCloud.class, ModItems.POISON_CLOUD_PROJECTILE);
     }
 
     //Handles Rendering
@@ -382,6 +381,8 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityDarkVoid.class, RenderDarkVoid::new);
         //Dark Void Spawn
         RenderingRegistry.registerEntityRenderingHandler(EntityDarkVoidSpawn.class, RenderDarkVoidSpawn::new);
+        //Chevalier
+        RenderingRegistry.registerEntityRenderingHandler(EntityChevalier.class, RenderChevalier::new);
         //Puzzle Mirror
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPuzzleMirror.class, new RenderPuzzleMirror());
 

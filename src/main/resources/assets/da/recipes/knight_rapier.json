@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  B",
+    "VB ",
+    "RV "
+  ],
+  "key": {
+    "V": {
+      "item": "da:knight_shard"
+    },
+    "R": {
+      "item": "da:fallen_insignia"
+    },
+    "B": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "da:knight_rapier"
+  }
+}

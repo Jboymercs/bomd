@@ -38,7 +38,7 @@ public class PlayerMeleeAttack {
 
         if (targetEntity.canBeAttackedWithItem()) {
             if (!targetEntity.hitByEntity(player)) {
-                float damage = (float) player.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+                float damage = (float) player.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() + ModUtils.addFallenArmorDamage(player);
                 float bonusDamage;
 
                 if (targetEntity instanceof EntityLivingBase) {
@@ -70,10 +70,12 @@ public class PlayerMeleeAttack {
                     critical = critical && !player.isSprinting();
 
                     net.minecraftforge.event.entity.player.CriticalHitEvent hitResult = net.minecraftforge.common.ForgeHooks.getCriticalHit(player, targetEntity, critical,
-                            critical ? 1.5F : 1.0F);
+                            critical ? 1.5F + ModUtils.addCriticalDamageBonuses(player) : 1.0F);
                     critical = hitResult != null;
                     if (critical) {
                         damage *= hitResult.getDamageModifier();
+                    } else {
+                        damage *= 1 + ModUtils.addSwordBonus(player);
                     }
 
                     damage = damage + bonusDamage;
@@ -225,7 +227,7 @@ public class PlayerMeleeAttack {
 
         if (targetEntity.canBeAttackedWithItem()) {
             if (!targetEntity.hitByEntity(player)) {
-                float damage = (float) player.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+                float damage = (float) player.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() + ModUtils.addFallenArmorDamage(player);
                 float bonusDamage;
 
                 if (targetEntity instanceof EntityLivingBase) {
@@ -257,10 +259,12 @@ public class PlayerMeleeAttack {
                     critical = critical && !player.isSprinting();
 
                     net.minecraftforge.event.entity.player.CriticalHitEvent hitResult = net.minecraftforge.common.ForgeHooks.getCriticalHit(player, targetEntity, critical,
-                            critical ? 1.5F : 1.0F);
+                            critical ? 1.5F + ModUtils.addCriticalDamageBonuses(player): 1.0F);
                     critical = hitResult != null;
                     if (critical) {
                         damage *= hitResult.getDamageModifier();
+                    }  else {
+                        damage *= 1 + ModUtils.addSwordBonus(player);
                     }
 
                     damage = damage + bonusDamage;

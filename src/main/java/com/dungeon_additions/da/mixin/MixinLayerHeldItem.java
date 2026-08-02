@@ -4,6 +4,7 @@ import com.dungeon_additions.da.animation.item.*;
 import com.dungeon_additions.da.capabilities.AnimationCapabilityHelper;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.items.tools.ItemFlameBlade;
+import com.dungeon_additions.da.items.tools.ItemStormvierTrident;
 import com.dungeon_additions.da.items.tools.ToolSword;
 import com.dungeon_additions.da.util.interfaces.IRotationStorage;
 import net.minecraft.client.Minecraft;
@@ -72,6 +73,11 @@ public class MixinLayerHeldItem {
       //  if (itemType instanceof ItemSaxophone) AnimationsSaxophone.preformSaxophoneItemRotations3edPerson(entity, hand, partialTicks, stack);
         if(itemType instanceof ToolSword && entity instanceof EntityPlayer) {
 
+            //Trident Charging animations
+                if(itemType instanceof ItemStormvierTrident && entity.getActiveItemStack() == stack) {
+                    AnimationsMisc.preformItemCharging3personItem(entity, hand, partialTicks, model.swingProgress, model);
+                }
+
                 if(AnimationCapabilityHelper.isPlayerCustomSwingAnimating(((EntityPlayer) entity)) && !(itemType instanceof ItemFlameBlade)) {
                     //Dagger
                     if(DAPlayerAnimationMethods.getWeaponType(entity) == 2 && ModConfig.enable_dagger_weapons) {
@@ -83,8 +89,8 @@ public class MixinLayerHeldItem {
 
                     //Spear
                     if(DAPlayerAnimationMethods.getWeaponType(entity) == 4 && ModConfig.enable_spear_weapons) {
-                        float swing = AnimationCapabilityHelper.getPlayerCustomSwingAnimProgress((EntityPlayer)entity, partialTicks);
-                        AnimationBaseSpear.preformSpearItemRotations3edPerson(entity, hand, partialTicks, swing, model);
+                            float swing = AnimationCapabilityHelper.getPlayerCustomSwingAnimProgress((EntityPlayer) entity, partialTicks);
+                            AnimationBaseSpear.preformSpearItemRotations3edPerson(entity, hand, partialTicks, swing, model);
                     }
                 }
 

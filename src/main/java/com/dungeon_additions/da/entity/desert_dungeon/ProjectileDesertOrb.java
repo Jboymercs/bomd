@@ -20,6 +20,9 @@ public class ProjectileDesertOrb extends Projectile {
 
     public ProjectileDesertOrb(World worldIn, EntityLivingBase throwerIn, float damage) {
         super(worldIn, throwerIn, damage);
+        if(throwerIn == null) {
+            this.setDead();
+        }
         this.setNoGravity(true);
     }
 
@@ -47,6 +50,14 @@ public class ProjectileDesertOrb extends Projectile {
         Main.proxy.spawnParticle(23, world, this.posX, this.posY, this.posZ, 0, 0.02, 0, 15128888);
         if(!hasNoGravity) {
             Main.proxy.spawnParticle(23, world, this.posX, this.posY, this.posZ, 0, -0.02, 0, 8454153);
+        }
+    }
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        if(shootingEntity == null) {
+            this.setDead();
         }
     }
 

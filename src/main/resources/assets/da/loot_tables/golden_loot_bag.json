@@ -137,6 +137,11 @@
           "type": "item",
           "name": "da:arrow_trinket",
           "weight": 11
+        },
+        {
+          "type": "item",
+          "name": "da:blood_trinket",
+          "weight": 11
         }
       ]
     }

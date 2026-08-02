@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "da:knight_key"
+      "item": "da:fallen_helmet"
     },
     "title": {
       "translate": "advancements.da.kill_fallen_stormvier.title"

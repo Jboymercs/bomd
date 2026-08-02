@@ -11,6 +11,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -93,25 +94,25 @@ public class ItemSwordSpear extends ItemAbilityWeapon implements IAnimatable {
         if (entityLiving instanceof EntityPlayer)
         {
             EntityPlayer player = ((EntityPlayer) entityLiving);
-            int i = this.getMaxItemUseDuration(stack) - timeLeft;
+            if(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == this) {
+                int i = this.getMaxItemUseDuration(stack) - timeLeft;
 
-            if(i >= 60) {
-                this.setTooAir = true;
-                Vec3d moveVec = player.getLookVec().scale(1.3F);
-                if(player.canBePushed()) {
-                    player.motionX = moveVec.x;
-                    player.motionY = moveVec.y * 0.3;
-                    player.getCooldownTracker().setCooldown(this, ModConfig.divine_sword_spear_cooldown_2 * 20);
-                    player.motionZ = moveVec.z;
-                    player.velocityChanged = true;
-                    player.fallDistance = 0;
+                if (i >= 30) {
+                    this.setTooAir = true;
+                    Vec3d moveVec = player.getLookVec().scale(1.3F);
+                    if (player.canBePushed()) {
+                        player.motionX = moveVec.x;
+                        player.motionY = moveVec.y * 0.3;
+                        player.getCooldownTracker().setCooldown(this, ModConfig.divine_sword_spear_cooldown_2 * 20);
+                        player.motionZ = moveVec.z;
+                        player.velocityChanged = true;
+                        player.fallDistance = 0;
+                    }
+                } else {
+                    player.getCooldownTracker().setCooldown(this, 5 * 20);
                 }
-            } else {
-                player.getCooldownTracker().setCooldown(this, 10 * 20);
+                this.setAbilityVal(stack, false);
             }
-
-
-            this.setAbilityVal(stack, false);
         }
     }
 
@@ -123,9 +124,10 @@ public class ItemSwordSpear extends ItemAbilityWeapon implements IAnimatable {
         if(entityIn instanceof EntityPlayer && !worldIn.isRemote) {
 
             if(this.getAbilityVal(stack)) {
+                if(((EntityPlayer)entityIn).getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == this) {
                 int y = getSurfaceHeight(worldIn, new BlockPos(entityIn.posX, 0, entityIn.posZ), (int) entityIn.posY - 20, (int) entityIn.posY + 1);
                 if(entityIn.canBePushed()) {
-                    if(hoverTime > 1) {
+                    if (hoverTime > 1) {
                         if (entityIn.posY >= y + 4) {
                             entityIn.motionY = 0;
                             entityIn.fallDistance = 0;
@@ -141,6 +143,10 @@ public class ItemSwordSpear extends ItemAbilityWeapon implements IAnimatable {
                         hoverTime = 100;
                     }
                     hoverTime--;
+                }
+                } else {
+                    this.setAbilityVal(stack, false);
+                    hoverTime = 100;
                 }
             }
 

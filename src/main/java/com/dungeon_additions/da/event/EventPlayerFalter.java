@@ -256,7 +256,12 @@ public class EventPlayerFalter {
                     for (EntityLivingBase base : nearbyMonsters) {
                         RayTraceResult raytraceresult = world.rayTraceBlocks(player.getPositionEyes(1), base.getPositionEyes(1), false, true, false);
                         if (base.canEntityBeSeen(player) && base.canBeCollidedWith() && raytraceresult == null && base != player) {
-                            PlayerMeleeAttack.attackTargetEntityWithCurrentItemRadius(player, base, (float) ModConfig.indirect_hit_modifier);
+                            float otherBonuses = 0F;
+                            ItemStack aspect_sword = ModUtils.findTrinket(new ItemStack(ModItems.ASPECT_SWORD), player);
+                            if(!aspect_sword.isEmpty()) {
+                                otherBonuses += (float) PotionTrinketConfig.aspect_sword_indirect_damage;
+                            }
+                            PlayerMeleeAttack.attackTargetEntityWithCurrentItemRadius(player, base, (float) ModConfig.indirect_hit_modifier + otherBonuses);
                         }
                     }
             }

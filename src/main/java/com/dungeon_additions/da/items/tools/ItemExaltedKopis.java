@@ -99,7 +99,7 @@ public class ItemExaltedKopis extends ItemAbilityWeapon{
                     player.hurtResistantTime = 0;
                     this.setPlayerLife = player.getHealth();
                     player.setActiveHand(hand);
-                    player.getCooldownTracker().setCooldown(this, 60);
+                    player.getCooldownTracker().setCooldown(this, (int) (80 * ModUtils.addParryCooldownReduction(player)));
                 }
 
                 //Do Animation
@@ -178,7 +178,7 @@ public class ItemExaltedKopis extends ItemAbilityWeapon{
                             this.parryCharge++;
                             player.setHealth((float) this.setPlayerLife);
                             currentLife = 0;
-                            player.getCooldownTracker().setCooldown(this, 20);
+                            player.getCooldownTracker().setCooldown(this, (int) (20 * ModUtils.addParryCooldownReduction(player)));
                             ModUtils.performNTimes(6, (i) -> {
                                 Vec3d playerLookVec = player.getLookVec();
                                 Vec3d playerPos = new Vec3d(player.posX + playerLookVec.x * 0.7D,player.posY + playerLookVec.y + player.getEyeHeight(), player. posZ + playerLookVec.z * 0.7D);

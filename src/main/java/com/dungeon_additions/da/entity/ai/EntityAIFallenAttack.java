@@ -79,7 +79,7 @@ public class EntityAIFallenAttack <T extends EntityRotKnightBoss & IAttack> exte
     }
 
     public void move(EntityLivingBase target, double distSq, boolean canSee) {
-        if(!entity.lockLook) {
+        if(!entity.lockLook && !entity.currentlyJumping) {
             if (distSq <= 2 && canSee) {
                 this.entity.getNavigator().clearPath();
                 ++this.strafingTime;

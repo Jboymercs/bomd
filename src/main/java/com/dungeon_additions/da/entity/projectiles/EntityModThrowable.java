@@ -64,8 +64,10 @@ public abstract class EntityModThrowable  extends Entity implements IProjectile 
     }
 
     public EntityModThrowable(World worldIn, EntityLivingBase shooter) {
-        this(worldIn, shooter.posX, shooter.posY + shooter.getEyeHeight() - 0.10000000149011612D, shooter.posZ);
-        this.shootingEntity = shooter;
+            this(worldIn, shooter != null ? shooter.posX : 0, shooter != null ? shooter.posY + shooter.getEyeHeight() - 0.10000000149011612D : 0, shooter != null ? shooter.posZ : 0);
+            if(shooter != null) {
+                this.shootingEntity = shooter;
+            }
     }
 
     /**

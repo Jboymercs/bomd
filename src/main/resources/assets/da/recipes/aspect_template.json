@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XRX",
+    "XBX"
+  ],
+  "key": {
+    "R": {
+      "item": "da:frost_shard"
+    },
+    "X": {
+      "item": "minecraft:gold_nugget"
+    },
+    "B": [
+      {
+        "item": "da:knight_ingot"
+      },
+      {
+        "item": "da:adventure_metal"
+      },
+      {
+        "item": "da:draugr_ingot"
+      },
+      {
+        "item": "da:aegyptia_metal_ingot"
+      },
+      {
+        "item": "da:lightning_ingot"
+      }
+    ]
+  },
+  "result": {
+    "item": "da:aspect_template"
+  }
+}

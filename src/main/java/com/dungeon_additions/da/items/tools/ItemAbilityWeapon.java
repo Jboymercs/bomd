@@ -26,9 +26,9 @@ public class ItemAbilityWeapon extends ToolSword{
         if (!worldIn.isRemote)
         {
             if(stack.getItem() instanceof ItemAbilityWeapon) {
-                if(!stack.hasTagCompound()) {
-                    this.setNBTonAbility(stack, false);
-                }
+              //  if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("ability")) {
+             //       this.setNBTonAbility(stack, false);
+             //   }
             }
         }
         super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
@@ -37,19 +37,13 @@ public class ItemAbilityWeapon extends ToolSword{
     public void setNBTonAbility(ItemStack stack, boolean val)
     {
         NBTTagCompound nbt;
-     //   if (stack.hasTagCompound() && stack.getTagCompound().hasKey("ability"))
-      //  { nbt = stack.getTagCompound(); }
-     //   else
-      //  { nbt = new NBTTagCompound(); }
-
-        //stack.setTagCompound(nbt);
 
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("ability"))
         { nbt = stack.getTagCompound(); }
         else
         { nbt = new NBTTagCompound(); }
-        nbt.setBoolean("ability", val);
-        nbt.setInteger("weaponDelay", weaponDelay);
+       // nbt.setBoolean("ability", val);
+       // nbt.setInteger("weaponDelay", weaponDelay);
         stack.setTagCompound(nbt);
     }
 

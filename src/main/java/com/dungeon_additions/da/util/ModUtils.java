@@ -2,6 +2,8 @@ package com.dungeon_additions.da.util;
 
 import baubles.api.BaublesApi;
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.item.EnumWeaponType;
+import com.dungeon_additions.da.blocks.aspect_forge.BlockEnumAspectForge;
 import com.dungeon_additions.da.blocks.lich.EnumLichSpawner;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.PotionTrinketConfig;
@@ -17,6 +19,7 @@ import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.init.ModPotions;
 import com.dungeon_additions.da.integration.BaublesIntegration;
 import com.dungeon_additions.da.items.tools.ItemMageStaff;
+import com.dungeon_additions.da.items.tools.ToolSword;
 import com.dungeon_additions.da.items.trinket.ItemTrinket;
 import com.dungeon_additions.da.packets.EnumModParticles;
 import com.dungeon_additions.da.packets.MessageModParticles;
@@ -252,12 +255,69 @@ public class ModUtils {
      */
     public static float addOffhandDualBonuses(EntityPlayer player) {
         ItemStack stack = player.getHeldItemMainhand();
+        float amount = 1F;
+        if(player.getHeldItemOffhand().getItem() == stack.getItem()) {
+           amount += 0.3F;
+        }
 
-                if(player.getHeldItemOffhand().getItem() == stack.getItem()) {
-                    return 1.3F;
-                }
+        return amount;
+    }
 
-        return 1F;
+    public static float addSwordBonus(EntityPlayer player) {
+        ItemStack aspect_sword = ModUtils.findTrinket(new ItemStack(ModItems.ASPECT_SWORD), player);
+        float amount = 0F;
+
+        if(!aspect_sword.isEmpty()) {
+            amount += (float) PotionTrinketConfig.aspect_sword_bonus_damage;
+            aspect_sword.damageItem(1, player);
+        }
+
+        return amount;
+    }
+
+    public static float addSpearBonus(EntityPlayer player, EntityLivingBase target) {
+        ItemStack aspect_spear = ModUtils.findTrinket(new ItemStack(ModItems.ASPECT_SPEAR), player);
+        float distance = player.getDistance(target);
+        float multiplier = 0;
+        if(distance > 3 && !aspect_spear.isEmpty()) {
+            //this will get us our base value per block of additive damage
+            multiplier = (float) (PotionTrinketConfig.aspect_spear_damage/6) * distance;
+            aspect_spear.damageItem(1, player);
+        }
+        return multiplier;
+    }
+
+    public static float addColossalFalterBonus(EntityPlayer player) {
+        ItemStack aspect_colossal = ModUtils.findTrinket(new ItemStack(ModItems.ASPECT_COLOSSAL), player);
+        float amount = 0F;
+
+        if(!aspect_colossal.isEmpty()) {
+            amount += (float) PotionTrinketConfig.aspect_colossal_falter_boost;
+            aspect_colossal.damageItem(1, player);
+        }
+
+        return amount;
+    }
+
+
+    public static float addCriticalDamageBonuses(EntityPlayer player) {
+        ItemStack aspect_dagger = ModUtils.findTrinket(new ItemStack(ModItems.ASPECT_DAGGER), player);
+        float amount = 0F;
+
+        if(!aspect_dagger.isEmpty()) {
+            amount += (float) PotionTrinketConfig.aspect_dagger_critical_boost;
+            aspect_dagger.damageItem(1, player);
+        }
+
+        return amount;
+    }
+
+    public static float addParryCooldownReduction(EntityPlayer player) {
+        float reduction = 1;
+        if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.FALLEN_HELMET) {
+            reduction -= 0.4F;
+        }
+        return reduction;
     }
 
     /**
@@ -306,6 +366,30 @@ public class ModUtils {
         }
 
         return null;
+    }
+
+    public static boolean collisionNearby(AxisAlignedBB box, World world, Entity entity) {
+        int i = MathHelper.floor(box.minX);
+        int j = MathHelper.floor(box.minY);
+        int k = MathHelper.floor(box.minZ);
+        int l = MathHelper.floor(box.maxX);
+        int i1 = MathHelper.floor(box.maxY);
+        int j1 = MathHelper.floor(box.maxZ);
+
+        for (int x = i; x <= l; ++x) {
+            for (int y = j; y <= i1; ++y) {
+                for (int z = k; z <= j1; ++z) {
+                    BlockPos blockpos = new BlockPos(x, y, z);
+                    IBlockState iblockstate = world.getBlockState(blockpos);
+                    Block block = iblockstate.getBlock();
+
+                    if (!block.isAir(iblockstate, world, blockpos) && iblockstate.getMaterial() != Material.FIRE && iblockstate.getMaterial() != Material.PLANTS) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public static float addMageSetBonus(EntityPlayer player, float bonusDamage) {
@@ -386,6 +470,34 @@ public class ModUtils {
         }
         if(player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.DARK_METAL_BOOTS) {
             baseModifier += (float) ModConfig.dark_armor_multiplier;
+        }
+        ItemStack shield_boost =  findTrinket(new ItemStack(ModItems.ASPECT_SHIELD), player);
+        if(!shield_boost.isEmpty()) {
+            baseModifier += (float) PotionTrinketConfig.aspect_shield_damage_boost;
+        }
+        return baseModifier;
+    }
+
+    public static float addFallenArmorDamage(EntityPlayer player) {
+        float baseModifier = 0;
+        if(player.getHeldItemMainhand().getItem() instanceof ToolSword && player.world.isDaytime()) {
+            ToolSword sword_hand = ((ToolSword)player.getHeldItemMainhand().getItem());
+            if(sword_hand.getWeaponAnimationType() == EnumWeaponType.SPEAR || sword_hand.getWeaponAnimationType() == EnumWeaponType.SWORD ||
+            sword_hand.getWeaponAnimationType() == EnumWeaponType.PARRY_SWORD) {
+                if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.FALLEN_HELMET) {
+                    baseModifier += (float) 0.25;
+                }
+                if(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ModItems.FALLEN_CHESTPLATE) {
+                    baseModifier += (float) 0.25;
+                }
+                if(player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ModItems.FALLEN_LEGGINGS) {
+                    baseModifier += (float) 0.25;
+                }
+                if(player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.FALLEN_BOOTS) {
+                    baseModifier += (float) 0.25;
+                }
+            }
+
         }
         return baseModifier;
     }
@@ -541,6 +653,27 @@ public class ModUtils {
         }
         System.out.println("Failed to find a location for the boss to spawn at");
         return null;
+    }
+
+    public static BlockEnumAspectForge getBlockType() {
+        int randI = ModRand.range(1, 8);
+
+        if(randI == 1) {
+            return BlockEnumAspectForge.SWORD;
+        } else if (randI == 2) {
+            return BlockEnumAspectForge.SPEAR;
+        } else if (randI == 3) {
+            return BlockEnumAspectForge.DAGGER;
+        } else if (randI == 4) {
+            return BlockEnumAspectForge.COLOSSAL;
+        } else if (randI == 5) {
+            return BlockEnumAspectForge.SHIELD;
+        } else if (randI == 6) {
+            return BlockEnumAspectForge.DUELIST;
+        } else if (randI == 7) {
+            return BlockEnumAspectForge.MAGE;
+        }
+            return BlockEnumAspectForge.BOW;
     }
 
 

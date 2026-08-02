@@ -13,6 +13,9 @@ import com.dungeon_additions.da.items.armor.dark.ModDarkMetalHelmet;
 import com.dungeon_additions.da.items.armor.enderphrite.ItemEnderphriteArmor;
 import com.dungeon_additions.da.items.armor.enderphrite.ItemEnderphriteChestplate;
 import com.dungeon_additions.da.items.armor.enderphrite.ItemEnderphriteHelmet;
+import com.dungeon_additions.da.items.armor.fallen.ItemFallenArmor;
+import com.dungeon_additions.da.items.armor.fallen.ItemFallenChestplate;
+import com.dungeon_additions.da.items.armor.fallen.ItemFallenHelmet;
 import com.dungeon_additions.da.items.armor.imperial.ItemImperialArmor;
 import com.dungeon_additions.da.items.armor.imperial.ItemImperialChestplate;
 import com.dungeon_additions.da.items.armor.mage.ItemMageArmor;
@@ -79,6 +82,7 @@ public class ModItems {
 
     private static final Item.ToolMaterial SOUL_SPEAR_WEAPON_MATERIAL = EnumHelper.addToolMaterial("soul_spear_weapon_material", 2, 1200, 5.0F, ModConfig.soul_weapon_damage, 20);
     private static final Item.ToolMaterial KNIGHT_RAPIER_MATERIAL = EnumHelper.addToolMaterial("knight_rapier_material", 2, 502, 5.0F, (float) ModConfig.rapier_damage, 10);
+    private static final Item.ToolMaterial KNIGHT_TRIDENT_MATERIAL = EnumHelper.addToolMaterial("knight_trident_material", 2, 1100, 3.0F, (float) ModConfig.trident_damage, 10);
     private static final Item.ToolMaterial KOPIS_MATERIAL = EnumHelper.addToolMaterial("kopis_material", 1, 900, 5.0F, (float) ModConfig.aegyptian_kopis_damage, 20);
     private static final Item.ToolMaterial EXALTED_KOPIS_MATERIAL = EnumHelper.addToolMaterial("exalted_kopis_material", 1, 1400, 5.0F, (float) ModConfig.exalted_kopis_damage, 15);
     private static final Item.ToolMaterial COLOSSUS_MACE_MAT = EnumHelper.addToolMaterial("colossus_mace_material", 1, 1032, 5.0F, (float) ModConfig.colossal_mace_damage, 15);
@@ -86,6 +90,7 @@ public class ModItems {
 
     private static final ItemArmor.ArmorMaterial FLAME_ARMOR = EnumHelper.addArmorMaterial("flame", ModReference.MOD_ID + ":flame", 53 * ModConfig.armor_durability_scaling, new int[]{4, 7,9,4}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2F);
     private static final ItemArmor.ArmorMaterial ADVENTURE_ARMOR = EnumHelper.addArmorMaterial("adventure", ModReference.MOD_ID + ":adventure", 45 * ModConfig.armor_durability_scaling, new int[]{3, 6,8,3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2F);
+    private static final ItemArmor.ArmorMaterial FALLEN_ARMOR = EnumHelper.addArmorMaterial("fallen", ModReference.MOD_ID + ":fallen", 45 * ModConfig.armor_durability_scaling, new int[]{3, 6,8,3}, 5, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 1.5F);
     private static final ItemArmor.ArmorMaterial NIGHTFALL_ARMOR = EnumHelper.addArmorMaterial("adventure", ModReference.MOD_ID + ":nightfall", 55 * ModConfig.armor_durability_scaling, new int[]{3, 6,8,3}, 40, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.5F);
     private static final ItemArmor.ArmorMaterial MAGE_ARMOR = EnumHelper.addArmorMaterial("mage", ModReference.MOD_ID + ":mage", 38 * ModConfig.armor_durability_scaling, new int[]{2, 5,7,2}, 25, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1F);
     private static final ItemArmor.ArmorMaterial DRAUGR_ARMOR = EnumHelper.addArmorMaterial("draugr", ModReference.MOD_ID + "draugr", 52 * ModConfig.armor_durability_scaling, new int[]{3, 6, 8,3}, 5, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2F);
@@ -115,6 +120,7 @@ public class ModItems {
     public static final Item GOLDEN_COIN = new ItemCraftingMaterial("golden_coin","trader_coin_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ROT_KNIGHT_FRAGMENT = new ItemCraftingMaterial("knight_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ROT_KNIGHT_INGOT = new ItemCraftingMaterial("knight_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item FALLEN_INSIGNIA = new ItemCraftingMaterial("fallen_insignia", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item VOID_THORNS = new ItemCraftingMaterial("void_thorns", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ADVENTURE_METAL = new ItemCraftingMaterial("adventure_metal", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item MAGIC_LEATHER = new ItemCraftingMaterial("magic_leather","crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -155,6 +161,7 @@ public class ModItems {
     public static final Item DIVINE_SCROLL = new ItemCraftingMaterial("divine_scroll", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item DIVINE_METAL = new ItemCraftingMaterial("divine_metal", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item DRAGON_SCALES = new ItemCraftingMaterial("dragon_scale", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item ASPECT_TEMPLATE = new ItemUniqueMaterial("aspect_template", "aspect_template_desc").setCreativeTab(DungeonAdditionsTab.ALL);
 
     //Food
     public static final Item DUNGEON_BREAD = new ItemDungeonBread("dungeon_bread", 5, 0.1F, false).setCreativeTab(DungeonAdditionsTab.ALL);
@@ -173,6 +180,7 @@ public class ModItems {
     public static final Item SEALED_SPEAR_WAVE_BOTTLE = new ItemSealedSpearWave("sealed_spear_wave", "sealed_spear_wave_desc", DungeonAdditionsTab.ALL);
     public static final Item SEALED_FLAME_BOTTLE = new ItemSealedFlame("sealed_flame", "sealed_flame_desc", DungeonAdditionsTab.ALL);
     public static final Item POSON_GARNISH = new ItemPoisonGarnish("poison_garnish", "poison_garnish_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item POTION_CLAIRVOYANCE = new ItemClairvoyance("aspect_potion", "aspect_potion_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FIERY_RESPITE = new ItemFieryRespite("fiery_respite", "fiery_respite_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item GOLDEN_DEVOTION = new ItemGoldenDevotion("golden_devotion", "golden_devotion_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item GOLDEN_VOW = new ItemGoldenVow("golden_vow", "golden_vow_desc").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -215,6 +223,17 @@ public class ModItems {
     public static final Item PETAL_TRINKET = new ItemTrinket("petal_trinket", "petal_trinket_desc", PotionTrinketConfig.thorn_ring_trinket_durability, 1, true);
     public static final Item GOAT_TRINKET = new ItemTrinket("goat_trinket", "goat_trinket_desc", PotionTrinketConfig.goat_tenacity_durability, 2);
     public static final Item PISTOL_TRINKET = new ItemTrinket("pistol_trinket", "pistol_trinket_desc", PotionTrinketConfig.pocket_pistol_durability, 1, true);
+    public static final Item POISON_MIST_TRINKET = new ItemTrinket("poison_mist_trinket", "poison_mist_trinket_desc", PotionTrinketConfig.pocket_poison_durability, 1, true);
+    public static final Item BLOOD_SlASH = new ItemTrinket("blood_trinket", "blood_trinket_desc", PotionTrinketConfig.crimson_malice_durability, 0);
+    public static final Item ENDURE_TRINKET = new ItemTrinket("endure_trinket", "endure_trinket_desc", PotionTrinketConfig.endure_pain_durability, 1, true);
+    public static final Item ASPECT_SWORD = new ItemTrinket("aspect_sword", "aspect_sword_desc", PotionTrinketConfig.aspect_sword_durability, 3);
+    public static final Item ASPECT_SHIELD = new ItemTrinket("aspect_shield", "aspect_shield_desc", PotionTrinketConfig.aspect_shield_durability, 3);
+    public static final Item ASPECT_SPEAR = new ItemTrinket("aspect_spear", "aspect_spear_desc", PotionTrinketConfig.aspect_spear_durability, 3);
+    public static final Item ASPECT_MAGE = new ItemTrinket("aspect_mage", "aspect_mage_desc", PotionTrinketConfig.aspect_mage_durability, 3);
+    public static final Item ASPECT_COLOSSAL = new ItemTrinket("aspect_colossal", "aspect_colossal_desc", PotionTrinketConfig.aspect_colossal_durability, 3);
+    public static final Item ASPECT_DAGGER = new ItemTrinket("aspect_dagger", "aspect_dagger_desc", PotionTrinketConfig.aspect_dagger_durability, 3);
+    public static final Item ASPECT_DUELIST = new ItemTrinket("aspect_duelist", "aspect_duelist_desc", PotionTrinketConfig.aspect_duelist_durability, 3);
+    public static final Item ASPECT_BOW = new ItemTrinket("aspect_bow", "aspect_bow_desc", PotionTrinketConfig.aspect_bow_durability, 3);
     //
     public static final Item WYRK_TOTEM = new ItemWyrkTotem("wyrk_totem", "wyrk_totem_desc", DungeonAdditionsTab.ALL);
     public static final Item NOVIK_AID = new ItemNovikAid("call_to_arms", "call_to_arms_desc", DungeonAdditionsTab.ALL);
@@ -253,6 +272,7 @@ public class ModItems {
     public static final Item VOID_DAGGER = new ItemBlossomDagger("void_dagger", "dagger_desc", DAGGER_MATERIAL).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item DARK_DAGGER = new ItemDarkDagger("dark_dagger", "dark_dagger_desc", DARK_DAGGER_MATERIAL).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ROT_KNIGHT_RAPIER = new ItemKnightRapier("knight_rapier", KNIGHT_RAPIER_MATERIAL, "rapier_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item ROT_TRIDENT = new ItemStormvierTrident("stormvier_trident", KNIGHT_TRIDENT_MATERIAL, "stormvier_trident_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ADVENTURE_SWORD = new ItemAdventureSword("adventure_sword", "adventure_sword_desc",ADVENTURE_SWORD_MAT).setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_SWORD = new ItemDraugrSword("frost_sword", DRAUGR_SWORD, "draugr_sword_desc").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item CHAMPION_AXE = new ItemChampionAxe("champion_axe", CHAMPION_AXE_MATERIAL, "champion_axe_desc");
@@ -286,6 +306,10 @@ public class ModItems {
     public static final Item SKY_ARROW = new ItemGoldenArrow("sky_arrow", "sky_arrow_desc", DungeonAdditionsTab.ALL);
 
     //Armor
+    public static final ItemArmor FALLEN_HELMET = new ItemFallenHelmet("fallen_helmet", FALLEN_ARMOR, 1, EntityEquipmentSlot.HEAD, "fallen_helmet", "fallen_helmet_desc");
+    public static final ItemArmor FALLEN_CHESTPLATE = new ItemFallenChestplate("fallen_chestplate", FALLEN_ARMOR, 1,EntityEquipmentSlot.CHEST, "fallen_chestplate", "fallen_armor_desc");
+    public static final ItemArmor FALLEN_LEGGINGS = new ItemFallenArmor("fallen_leggings", FALLEN_ARMOR, 2, EntityEquipmentSlot.LEGS, "fallen", "fallen_armor_desc");
+    public static final ItemArmor FALLEN_BOOTS = new ItemFallenArmor("fallen_boots", FALLEN_ARMOR, 1, EntityEquipmentSlot.FEET, "fallen", "fallen_armor_desc");
     public static final ItemArmor ADVENTUIC_HELMET = new ItemAdventuicHelmet("adventure_helmet", ADVENTURE_ARMOR, 1, EntityEquipmentSlot.HEAD, "adventure_helmet", "adventure_set_desc");
     public static final ItemArmor ADVENTUIC_CHESTPLATE = new ItemAdventuicArmorBase("adventure_chestplate", ADVENTURE_ARMOR, 1, EntityEquipmentSlot.CHEST, "adventure", "adventure_set_desc");
     public static final ItemArmor ADVENTUIC_LEGGINGS = new ItemAdventuicArmorBase("adventure_leggings", ADVENTURE_ARMOR, 2, EntityEquipmentSlot.LEGS, "adventure", "adventure_set_desc");
@@ -360,6 +384,7 @@ public class ModItems {
     public static final Item VOID_PROJECTILE = new ItemBase("void_projectile", null);
 
     public static final Item FAKE_HEALING_POTION = new ItemBase("fake_healing_potion", null);
+    public static final Item STORMVIER_TRIDENT = new ItemTridentProjectile("storm_trident");
     public static final Item MAGIC_PROJECTILE = new ItemBase("magic_projectile", null);
     public static final Item SKY_LOCATOR_PROJECTILE = new ItemBase("sky_locator_proj", null);
     public static final Item MAGIC_TRACK_PROJECTILE = new ItemBase("missile_projectile", null);
@@ -373,6 +398,7 @@ public class ModItems {
     public static final Item DAUNTLESS_CRYSTAL = new ItemDauntlessCrystal("dauntless_crystal").setCreativeTab(null);
     public static final Item DAUNTLESS_FIST = new ItemDauntlessFist("dauntless_fist").setCreativeTab(null);
     public static final Item HEART_PROJECTILE = new ItemBase("heart_projectile", null);
+    public static final Item POISON_CLOUD_PROJECTILE = new ItemBase("poison_cloud", null);
     public static final Item MOD_LOGO = new ItemBase("bomd_mod_logo", null);
 
 
