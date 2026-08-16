@@ -237,6 +237,11 @@ public class ToolSword extends ItemSword implements IHasModel, ISweepAttackOverr
                 }
             }
             ModUtils.addFalterTooEnemies(entity, falter_value * totalBonus, (int) (((falter_value * totalBonus) * 20)));
+
+            if(!ModConfig.combat_system_enabled) {
+                ModUtils.doSweepAttack(player, entity, (e) -> {
+                });
+            }
         }
     }
 }

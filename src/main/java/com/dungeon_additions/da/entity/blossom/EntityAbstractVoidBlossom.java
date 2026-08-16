@@ -90,7 +90,7 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
         this.setSize(5.0f, 10.0f);
         this.experienceValue = 1000;
         this.hitboxParts = new MultiPartEntityPart[]{model, baseStem, flowerTopStem, flowerMiddle, flowerLeft, flowerRight};
-
+        this.iAmBossMob = true;
     }
 
 
@@ -265,13 +265,13 @@ public abstract class EntityAbstractVoidBlossom extends EntityAbstractBase imple
                 }
 
                 //Creates a Target tracking to ensure if it can despawn or not
-                if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled) {
+                if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled && this.getSpawnLocation() != null) {
                     int nearbyPlayers = ServerScaleUtil.getPlayersForReset(this, world);
-                    if (nearbyPlayers == 0) {
+                    if (nearbyPlayers == 0 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                         if (targetTrackingTimer > 0) {
                             targetTrackingTimer--;
                         }
-                        if (targetTrackingTimer < 1) {
+                        if (targetTrackingTimer < 1 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                             if(this.timesUsed != 0) {
                                 this.timesUsed--;
                                 turnBossIntoSummonSpawner(this.getSpawnLocation());

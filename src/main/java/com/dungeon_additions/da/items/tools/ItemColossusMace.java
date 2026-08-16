@@ -131,6 +131,6 @@ public class ItemColossusMace extends ToolSword implements IAnimatable {
 
     @Override
     public double getAttackSpeed() {
-        return -3.4000000953674316D;
+        return -3.3000000953674316D;
     }
 }

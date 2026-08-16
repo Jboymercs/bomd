@@ -15,6 +15,7 @@ import com.dungeon_additions.da.util.handlers.RenderHandler;
 import com.dungeon_additions.da.util.particle.*;
 import com.dungeon_additions.da.util.particle.confetti.ParticleConfetti;
 import com.dungeon_additions.da.util.particle.confetti.ParticleDotLight;
+import com.dungeon_additions.da.util.particle.confetti.ParticleParryImpact;
 import com.dungeon_additions.da.util.particle.cuts.ParticleColossusSigil;
 import com.dungeon_additions.da.util.particle.cuts.ParticleLeftCut;
 import com.dungeon_additions.da.util.particle.cuts.ParticleParry;
@@ -315,6 +316,8 @@ public class ClientProxy extends CommonProxy{
                 return new ParticleGravitySpark.Factory();
             case 43:
                 return new ParticleDotSwirl.Factory();
+            case 44:
+                return new ParticleParryImpact.Factory();
         }
     }
 

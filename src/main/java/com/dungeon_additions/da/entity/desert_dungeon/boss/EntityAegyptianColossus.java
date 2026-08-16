@@ -289,6 +289,15 @@ public class EntityAegyptianColossus extends EntitySharedDesertBoss implements I
         if(this.getOtherBoss() == null && this.bossInfo != null) {
             double healthFac = this.getHealth() / this.getMaxHealth();
             this.bossInfo.setPercent((float) healthFac);
+
+            if(!this.bossInfo.getPlayers().isEmpty() && ModConfig.boss_player_lives_enabled) {
+                for(EntityPlayerMP player : this.bossInfo.getPlayers()) {
+                    if(!player.isEntityAlive()) {
+                        this.bossInfo.removePlayer(player);
+                        this.setBossPlayerLives(this.getBossPlayerLives() - 1);
+                    }
+                }
+            }
         }
 
         if(!world.isRemote) {

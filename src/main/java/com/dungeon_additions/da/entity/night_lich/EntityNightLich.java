@@ -289,6 +289,17 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             AxisAlignedBB box = getEntityBoundingBox().grow(1.25, 0.1, 1.25).offset(0, 0.1, 0);
             ModUtils.destroyBlocksInAABB(box, world, this);
         }
+
+        if(!world.isRemote) {
+            if(!this.bossInfo.getPlayers().isEmpty() && ModConfig.boss_player_lives_enabled) {
+                for(EntityPlayerMP player : this.bossInfo.getPlayers()) {
+                    if(!player.isEntityAlive()) {
+                        this.bossInfo.removePlayer(player);
+                        this.setBossPlayerLives(this.getBossPlayerLives() - 1);
+                    }
+                }
+            }
+        }
     }
 
     @Override

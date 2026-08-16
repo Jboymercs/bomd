@@ -49,7 +49,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityChevalier extends EntityAbstractBase implements IAttack, IAnimatable, IAnimationTickable {
+public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatable, IAnimationTickable {
     public boolean isRandomGetAway = false;
     private int swirlTime = 100;
     private float randomTurn = ModRand.range(1, 360);
@@ -137,8 +137,8 @@ public class EntityChevalier extends EntityAbstractBase implements IAttack, IAni
     public EntityChevalier(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
         this.setSize(0.75F, 2.15F);
-        this.hemorrhage_resistance = 0.75F;
-        this.falter_resistance = 0.8F;
+        this.hemorrhage_resistance = 0.6F;
+        this.falter_resistance = 1.2F;
         this.setIdlePos(true);
         this.setImmovable(true);
     }
@@ -146,8 +146,8 @@ public class EntityChevalier extends EntityAbstractBase implements IAttack, IAni
     public EntityChevalier(World worldIn) {
         super(worldIn);
         this.setSize(0.75F, 2.15F);
-        this.hemorrhage_resistance = 0.75F;
-        this.falter_resistance = 0.8F;
+        this.hemorrhage_resistance = 0.6F;
+        this.falter_resistance = 1.2F;
         this.setIdlePos(true);
         this.setImmovable(true);
     }
@@ -888,7 +888,7 @@ public class EntityChevalier extends EntityAbstractBase implements IAttack, IAni
                 Vec3d offset = targetPos.add(0, 0.25, 0);
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage = 1F;
-                ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.2f, 0, false, 1F);
+                ModUtils.handleAreaImpact(1f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.7F);
             }
         }, 5);
 

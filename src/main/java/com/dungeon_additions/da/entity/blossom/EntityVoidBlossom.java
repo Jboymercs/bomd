@@ -175,6 +175,17 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
             this.playMusic(this);
         }
 
+        if(!world.isRemote) {
+            if(!this.bossInfo.getPlayers().isEmpty() && ModConfig.boss_player_lives_enabled) {
+                for(EntityPlayerMP player : this.bossInfo.getPlayers()) {
+                    if(!player.isEntityAlive()) {
+                        this.bossInfo.removePlayer(player);
+                        this.setBossPlayerLives(this.getBossPlayerLives() - 1);
+                    }
+                }
+            }
+        }
+
         this.motionY = 0;
         this.motionX = 0;
         this.motionZ = 0;

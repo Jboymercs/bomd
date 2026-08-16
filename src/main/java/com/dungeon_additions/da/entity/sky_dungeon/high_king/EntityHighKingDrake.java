@@ -470,15 +470,24 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
                 }
             }
 
+            if(!this.bossInfo.getPlayers().isEmpty() && ModConfig.boss_player_lives_enabled) {
+                for(EntityPlayerMP player : this.bossInfo.getPlayers()) {
+                    if(!player.isEntityAlive()) {
+                        this.bossInfo.removePlayer(player);
+                        this.setBossPlayerLives(this.getBossPlayerLives() - 1);
+                    }
+                }
+            }
+
 
             //Boss Reset Timer
-            if(target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled) {
+            if(target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled && this.getSpawnLocation() != null) {
                 int nearbyPlayers = ServerScaleUtil.getPlayersForReset(this, world);
-                if (nearbyPlayers == 0) {
+                if (nearbyPlayers == 0 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                     if (targetTrackingTimer > 0) {
                         targetTrackingTimer--;
                     }
-                    if (targetTrackingTimer < 1) {
+                    if (targetTrackingTimer < 1 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                         if(this.timesUsed != 0) {
                             this.timesUsed--;
                             turnBossIntoSummonSpawner(this.getSpawnLocation());
@@ -1353,6 +1362,9 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
                     king = new EntityHighKing(world, this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
                 }
                 this.spawnedBoss = true;
+                if(ModConfig.boss_player_lives_enabled) {
+                    king.setBossPlayerLives(this.getBossPlayerLives());
+                }
                 this.world.spawnEntity(king);
             } else if(!spawnedBoss) {
                 //Spawn a chest with the loot table for this boss

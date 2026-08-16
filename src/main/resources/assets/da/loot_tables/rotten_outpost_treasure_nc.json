@@ -1,0 +1,289 @@
+{
+  "pools": [
+    {
+      "name": "da:rotten_outpost_treasure_nc",
+      "rolls": {
+        "min": 1,
+        "max": 2
+      },
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:string",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 6
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:iron_ingot",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 10
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:slime_ball",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 5
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:paper",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 8
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:gunpowder",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 9
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:stick",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 4,
+                "max": 13
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "da:dungeon_bread",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 3,
+                "max": 7
+              }
+            }
+          ]
+        }
+      ],
+      "weight": 10
+    },
+    {
+      "name": "da:rotten_outpost_treasure_nc",
+      "rolls": {
+        "min": 2,
+        "max": 3
+      },
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:book",
+          "weight": 15,
+          "functions": [
+            {
+              "function": "enchant_with_levels",
+              "treasure": true,
+              "levels": {
+                "min": 20,
+                "max": 30
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:bow",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "enchant_with_levels",
+              "treasure": true,
+              "levels": {
+                "min": 20,
+                "max": 30
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "da:great_heal_trinket",
+          "weight": 9
+        },
+        {
+          "type": "item",
+          "name": "da:stun_trinket",
+          "weight": 9
+        },
+        {
+          "type": "item",
+          "name": "da:blood_trinket",
+          "weight": 4
+        },
+        {
+          "type": "item",
+          "name": "da:knight_shard",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
+        }
+      ],
+      "weight": 10
+    },
+    {
+      "name": "da:rotten_outpost_treasure_nc",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:diamond_chestplate",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "enchant_with_levels",
+              "treasure": true,
+              "levels": {
+                "min": 10,
+                "max": 25
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:diamond_helmet",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "enchant_with_levels",
+              "treasure": true,
+              "levels": {
+                "min": 10,
+                "max": 25
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:diamond_pickaxe",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "enchant_with_levels",
+              "treasure": true,
+              "levels": {
+                "min": 10,
+                "max": 25
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:diamond_axe",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "enchant_with_levels",
+              "treasure": true,
+              "levels": {
+                "min": 10,
+                "max": 25
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:coal",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 10
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:diamond",
+          "weight": 6,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:carrot",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 3,
+                "max": 15
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

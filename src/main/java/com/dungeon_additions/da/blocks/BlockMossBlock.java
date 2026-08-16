@@ -1,5 +1,7 @@
 package com.dungeon_additions.da.blocks;
 
+import com.dungeon_additions.da.world.WorldGenMossGrowth;
+import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -7,9 +9,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.EnumPlantType;
 
-public class BlockMossBlock extends BlockBase
+import java.util.Random;
+
+public class BlockMossBlock extends BlockBase implements IGrowable
 {
     public BlockMossBlock(String name, Material material, float hardness, float resistance, SoundType soundType)
     { super(name, material, hardness, resistance, soundType); }
@@ -28,5 +34,23 @@ public class BlockMossBlock extends BlockBase
             { if (world.getBlockState(pos.offset(facing)).getMaterial() == Material.WATER) return true; }
         }
         return super.canSustainPlant(state, world, pos, direction, plantable);
+    }
+
+
+    @Override
+    public boolean canGrow(World world, BlockPos blockPos, IBlockState iBlockState, boolean b) {
+        return world.isAirBlock(blockPos.up());
+    }
+
+    @Override
+    public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, IBlockState iBlockState) {
+        return world.isAirBlock(blockPos.up());
+    }
+
+    @Override
+    public void grow(World world, Random random, BlockPos blockPos, IBlockState iBlockState) {
+        WorldGenerator moss_growth = new WorldGenMossGrowth(6, 0.6F);
+
+        moss_growth.generate(world, random, blockPos);
     }
 }

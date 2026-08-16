@@ -578,14 +578,23 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
                     }
                 }
 
+                if(!this.bossInfo.getPlayers().isEmpty() && ModConfig.boss_player_lives_enabled) {
+                    for(EntityPlayerMP player : this.bossInfo.getPlayers()) {
+                        if(!player.isEntityAlive()) {
+                            this.bossInfo.removePlayer(player);
+                            this.setBossPlayerLives(this.getBossPlayerLives() - 1);
+                        }
+                    }
+                }
+
                 //Creates a Target tracking to ensure if it can despawn or not
-                if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled) {
+                if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled && (this.getSpawnLocation() != null || this.isSpawnedNaturally())) {
                     int nearbyPlayers = ServerScaleUtil.getPlayersForReset(this, world);
-                    if (nearbyPlayers == 0) {
+                    if (nearbyPlayers == 0 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                         if (targetTrackingTimer > 0) {
                             targetTrackingTimer--;
                         }
-                        if (targetTrackingTimer < 1) {
+                        if (targetTrackingTimer < 1 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                             if(this.isSpawnedNaturally()) {
                                 //removes Dauntless if left inactive
                               this.setDead();

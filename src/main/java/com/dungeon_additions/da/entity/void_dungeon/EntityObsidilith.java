@@ -367,14 +367,23 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
                         }
                     }
 
+                    if(!this.bossInfo.getPlayers().isEmpty() && ModConfig.boss_player_lives_enabled) {
+                        for(EntityPlayerMP player : this.bossInfo.getPlayers()) {
+                            if(!player.isEntityAlive()) {
+                                this.bossInfo.removePlayer(player);
+                                this.setBossPlayerLives(this.getBossPlayerLives() - 1);
+                            }
+                        }
+                    }
+
                     //Creates a Target tracking to ensure if it can despawn or not
-                    if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled) {
+                    if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled && this.getSpawnLocation() != null) {
                         int nearbyPlayers = ServerScaleUtil.getPlayersForReset(this, world);
-                        if (nearbyPlayers == 0) {
+                        if (nearbyPlayers == 0 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                             if (targetTrackingTimer > 0) {
                                 targetTrackingTimer--;
                             }
-                            if (targetTrackingTimer < 1) {
+                            if (targetTrackingTimer < 1 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                                 if(this.timesUsed != 0) {
                                     this.timesUsed--;
                                     turnBossIntoSummonSpawner(this.getSpawnLocation());
@@ -1039,6 +1048,9 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
                             voidiclysm = new EntityVoidiclysm(world, this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
                         }
                         spawnedBoss = true;
+                        if(ModConfig.boss_player_lives_enabled) {
+                            voidiclysm.setBossPlayerLives(this.getBossPlayerLives());
+                        }
                         world.spawnEntity(voidiclysm);
                     }
                 } else if (ModConfig.boss_resummon_enabled && this.timesUsed <= ModConfig.boss_resummon_max_uses && !spawnedBoss){

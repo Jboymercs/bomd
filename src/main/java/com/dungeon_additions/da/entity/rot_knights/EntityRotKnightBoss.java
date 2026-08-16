@@ -70,7 +70,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatable, IAttack, IAnimationTickable, IEntitySound {
+public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, IAttack, IAnimationTickable, IEntitySound {
     private Consumer<EntityLivingBase> prevAttack;
     public boolean isRandomGetAway = false;
     public boolean currentlyJumping = false;
@@ -342,12 +342,6 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
             this.playMusic(this);
         }
 
-        if(ticksExisted % 5 == 0) {
-            if(this.isPotionActive(MobEffects.POISON)) {
-                this.removePotionEffect(MobEffects.POISON);
-            }
-        }
-
         EntityLivingBase target = this.getAttackTarget();
         double healthCurrent = this.getHealth() / this.getMaxHealth();
         if(target != null) {
@@ -411,6 +405,17 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
         }
 
         if(!world.isRemote) {
+
+                if(!this.bossInfo.getPlayers().isEmpty() && ModConfig.boss_player_lives_enabled) {
+                    for(EntityPlayerMP player : this.bossInfo.getPlayers()) {
+                        if(!player.isEntityAlive()) {
+                            this.bossInfo.removePlayer(player);
+                            this.setBossPlayerLives(this.getBossPlayerLives() - 1);
+                        }
+                    }
+                }
+
+
             if (this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
                 if (target != null) {
                     if (target instanceof EntityPlayer) {
@@ -419,13 +424,13 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
                 }
 
                 //Creates a Target tracking to ensure if it can despawn or not
-                if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled) {
+                if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled && this.getSpawnLocation() != null) {
                     int nearbyPlayers = ServerScaleUtil.getPlayersForReset(this, world);
-                    if (nearbyPlayers == 0) {
+                    if (nearbyPlayers == 0 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                         if (targetTrackingTimer > 0) {
                             targetTrackingTimer--;
                         }
-                        if (targetTrackingTimer < 1) {
+                        if (targetTrackingTimer < 1 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                             if(this.timesUsed != 0) {
                                 this.timesUsed--;
                                 turnBossIntoSummonSpawner(this.getSpawnLocation());
@@ -1338,6 +1343,13 @@ public class EntityRotKnightBoss extends EntityAbstractBase implements IAnimatab
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
+        for(int i = 1; i <= 80; i += 2) {
+            addEvent(()-> {
+                if(!this.isImmovable()) {
+                    this.setImmovable(true);
+                }
+            }, i);
+        }
         this.lockLook = true;
 
         addEvent(()-> {

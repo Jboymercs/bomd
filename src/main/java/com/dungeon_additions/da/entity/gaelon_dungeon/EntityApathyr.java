@@ -595,6 +595,17 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 this.startCooldown = false;
             }
 
+            if(!world.isRemote) {
+                if (!this.bossInfo.getPlayers().isEmpty() && ModConfig.boss_player_lives_enabled) {
+                    for (EntityPlayerMP player : this.bossInfo.getPlayers()) {
+                        if (!player.isEntityAlive()) {
+                            this.bossInfo.removePlayer(player);
+                            this.setBossPlayerLives(this.getBossPlayerLives() - 1);
+                        }
+                    }
+                }
+            }
+
             //Teleports boss if too far from its arena
             if (this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
                 Vec3d SpawnLoc = new Vec3d(this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
@@ -683,13 +694,13 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                     }
 
                     //Creates a Target tracking to ensure if it can despawn or not
-                    if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled) {
+                    if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled && this.getSpawnLocation() != null && !this.isIdleAwake() && !this.isIdleState()) {
                         int nearbyPlayers = ServerScaleUtil.getPlayersForReset(this, world);
-                        if (nearbyPlayers == 0) {
+                        if (nearbyPlayers == 0 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                             if (targetTrackingTimer > 0) {
                                 targetTrackingTimer--;
                             }
-                            if (targetTrackingTimer < 1) {
+                            if (targetTrackingTimer < 1 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                                 if (this.timesUsed != 0) {
                                     this.timesUsed--;
                                     turnBossIntoSummonSpawner(this.getSpawnLocation());
@@ -969,6 +980,9 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             this.setImmovable(false);
             this.lockLook = false;
             this.bossInfo.setVisible(true);
+            playersNearbyAmount = ServerScaleUtil.getPlayers(this, world);
+            //Sets the lives for players around the boss
+            this.setBossPlayerLives(playersNearbyAmount + 1);
             this.setPlayedMusic(true);
         }, 220);
     }

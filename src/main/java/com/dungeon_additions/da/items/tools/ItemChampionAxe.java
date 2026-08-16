@@ -134,7 +134,7 @@ public class ItemChampionAxe extends ToolSword implements IAnimatable, IHasModel
 
     @Override
     public double getAttackSpeed() {
-        return -3.4D;
+        return -3.3D;
     }
 
     public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player)

@@ -50,6 +50,7 @@ public class PacketControlInput implements IMessageHandler<PacketControlInput.Me
                         ItemStack pistol_trinket = ModUtils.findTrinket(new ItemStack(ModItems.PISTOL_TRINKET), player);
                         ItemStack endure_trinket = ModUtils.findTrinket(new ItemStack(ModItems.ENDURE_TRINKET), player);
                         ItemStack poison_mist_trinket = ModUtils.findTrinket(new ItemStack(ModItems.POISON_MIST_TRINKET), player);
+                        ItemStack great_heal_trinket = ModUtils.findTrinket(new ItemStack(ModItems.GREAT_HEAL_TRINKET), player);
                         if(!wind_trinket.isEmpty()) {
                             if(wind_trinket.getItem() instanceof ItemTrinket) {
                                 ((ItemTrinket)wind_trinket.getItem()).onApplyButtonPressed(player, player.world, wind_trinket, 1);
@@ -101,6 +102,10 @@ public class PacketControlInput implements IMessageHandler<PacketControlInput.Me
                         } else if (!endure_trinket.isEmpty()) {
                             if(endure_trinket.getItem() instanceof ItemTrinket) {
                                 ((ItemTrinket)endure_trinket.getItem()).onApplyButtonPressed(player, player.world, endure_trinket, 13);
+                            }
+                        } else if (!great_heal_trinket.isEmpty()) {
+                            if(great_heal_trinket.getItem() instanceof ItemTrinket) {
+                                ((ItemTrinket)great_heal_trinket.getItem()).onApplyButtonPressed(player, player.world, great_heal_trinket, 14);
                             }
                         }
                             break;

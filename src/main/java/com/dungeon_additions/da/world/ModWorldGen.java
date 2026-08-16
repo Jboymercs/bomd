@@ -60,7 +60,7 @@ public class ModWorldGen implements IWorldGenerator {
 
         //For now, we will only enable to the end since they only exist there
         //Outposts
-        if(world.provider.getDimension() == 1 && WorldConfig.outposts_enabled) {
+        if(world.provider.getDimension() != -1 && WorldConfig.outposts_enabled) {
             outposts.generate(world, random, pos);
         }
         //Cults Domain

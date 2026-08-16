@@ -46,7 +46,7 @@ public class ItemFallenArmor extends ItemArmor implements IHasModel {
         setRegistryName(name);
         this.texture = textureName;
         ModItems.ITEMS.add(this);
-        this.knockbackResistance = new AttributeModifier("fallen_bonus" + slotIn.getName(), 0.05, 0);
+        this.knockbackResistance = new AttributeModifier("fallen_bonus" + slotIn.getName(), 0.03, 0);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ItemFallenArmor extends ItemArmor implements IHasModel {
 
         if (equipmentSlot == this.armorType) {
             multimap.put(SharedMonsterAttributes.ARMOR.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", this.damageReduceAmount * ModConfig.armor_scaling, 0));
-            multimap.put(SharedMonsterAttributes.KNOCKBACK_RESISTANCE.getName(), this.knockbackResistance);
+            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), this.knockbackResistance);
             // Override armor toughness to make is adjustable in game
             //Come back to Re-use when needed IF needed
             multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor toughness", 1.5F * ModConfig.armor_toughness_scaling, 0));

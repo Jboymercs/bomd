@@ -4,6 +4,8 @@ import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.capabilities.CapabilityItemAnimations;
 import com.dungeon_additions.da.config.ModConfig;
+import com.dungeon_additions.da.config.PotionTrinketConfig;
+import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.packets.PacketParryAnimationItem;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
@@ -122,12 +124,19 @@ public class ItemKnightRapier extends ToolSword{
                         }
                         player.setHealth((float) this.setPlayerLife);
                         currentLife = 0;
+                        Vec3d playerLookVec = player.getLookVec();
+                        Vec3d playerPos = new Vec3d(player.posX + playerLookVec.x * 0.7D,player.posY + playerLookVec.y + player.getEyeHeight(), player. posZ + playerLookVec.z * 0.7D);
                         player.getCooldownTracker().setCooldown(this, (int) (60 * ModUtils.addParryCooldownReduction(player)));
                         ModUtils.performNTimes(6, (i) -> {
-                            Vec3d playerLookVec = player.getLookVec();
-                            Vec3d playerPos = new Vec3d(player.posX + playerLookVec.x * 0.7D,player.posY + playerLookVec.y + player.getEyeHeight(), player. posZ + playerLookVec.z * 0.7D);
                             Main.proxy.spawnParticle(28, worldIn, playerPos.x + ModRand.getFloat(0.5F), playerPos.y + ModRand.getFloat(0.5F), playerPos.z + ModRand.getFloat(0.5F), 0,0,0);
                         });
+
+                        ItemStack stun_trinket = ModUtils.findTrinket(new ItemStack(ModItems.STUN_TRINKET), player);
+                        if(!stun_trinket.isEmpty() && ModRand.percentageOf(PotionTrinketConfig.frontline_step_chance)) {
+                            ModUtils.performParrySonicBoom(worldIn, player, playerPos);
+                            stun_trinket.damageItem(1, player);
+                            worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.APATHYR_CAST_HEAVY, SoundCategory.NEUTRAL, 1.0f, 0.8f / (worldIn.rand.nextFloat() * 0.4F + 0.3f));
+                        }
 
                         if(player.canBePushed()) {
                             Vec3d moveVec = player.getLookVec().scale(-((2.0 * 0.2) + 0.1D));

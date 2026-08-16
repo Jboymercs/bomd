@@ -53,7 +53,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityRotKnight extends EntityAbstractBase implements IAnimatable, IAttack {
+public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAttack {
 
     private final String ANIM_IDLE = "idle";
     private final String ANIM_IDLE_SHIELD = "idle_shield";

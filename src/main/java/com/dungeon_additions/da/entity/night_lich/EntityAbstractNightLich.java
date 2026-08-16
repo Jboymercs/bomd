@@ -145,13 +145,13 @@ public class EntityAbstractNightLich extends EntityAbstractBase implements IPitc
 
 
                 //Creates a Target tracking to ensure if it can despawn or not
-                if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled) {
+                if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                     int nearbyPlayers = ServerScaleUtil.getPlayersForReset(this, world);
-                    if (nearbyPlayers == 0) {
+                    if (nearbyPlayers == 0 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                         if (targetTrackingTimer > 0) {
                             targetTrackingTimer--;
                         }
-                        if (targetTrackingTimer < 1) {
+                        if (targetTrackingTimer < 1 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                             if(this.timesUsed != 0) {
                                 this.timesUsed--;
                                 BlockPos pos = this.getPosition();

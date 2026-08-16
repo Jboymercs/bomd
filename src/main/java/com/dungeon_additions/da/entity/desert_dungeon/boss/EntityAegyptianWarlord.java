@@ -332,8 +332,22 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
                         double healthFac = combinedCurrentHealth / combinedMaxHealth;
                         this.bossInfo.setPercent((float) healthFac);
                     }
+                }
+            }
 
-
+            //Warlord will handle boss lives tracking first
+            if(!world.isRemote) {
+                assert this.bossInfo != null;
+                if(!this.bossInfo.getPlayers().isEmpty() && ModConfig.boss_player_lives_enabled) {
+                    for(EntityPlayerMP player : this.bossInfo.getPlayers()) {
+                        if(!player.isEntityAlive()) {
+                            this.bossInfo.removePlayer(player);
+                            this.setBossPlayerLives(this.getBossPlayerLives() - 1);
+                            if(this.getOtherBoss() != null && this.getOtherBoss() instanceof EntityAegyptianColossus) {
+                                ((EntityAegyptianColossus)this.getOtherBoss()).setBossPlayerLives(this.getBossPlayerLives() - 1);
+                            }
+                        }
+                    }
                 }
             }
 

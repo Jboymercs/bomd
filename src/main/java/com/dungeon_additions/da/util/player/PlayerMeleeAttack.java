@@ -126,7 +126,7 @@ public class PlayerMeleeAttack {
 
                         // Do the overridden sweep attack
                         Item item = player.getHeldItemMainhand().getItem();
-                        if (item instanceof ISweepAttackOverride && targetEntity instanceof EntityLivingBase && cooldownCharged) {
+                        if (item instanceof ISweepAttackOverride && sweepAttack && targetEntity instanceof EntityLivingBase) {
                             ((ISweepAttackOverride) item).doSweepAttack(player, (EntityLivingBase) targetEntity);
                         }
 

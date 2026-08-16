@@ -504,14 +504,23 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
             EntityLivingBase target = this.getAttackTarget();
 
+            if(!this.bossInfo.getPlayers().isEmpty() && ModConfig.boss_player_lives_enabled) {
+                for(EntityPlayerMP player : this.bossInfo.getPlayers()) {
+                    if(!player.isEntityAlive()) {
+                        this.bossInfo.removePlayer(player);
+                        this.setBossPlayerLives(this.getBossPlayerLives() - 1);
+                    }
+                }
+            }
+
             //Boss Reset Timer
-            if(target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled) {
+            if(target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled && this.getSpawnLocation() != null) {
                 int nearbyPlayers = ServerScaleUtil.getPlayersForReset(this, world);
-                if (nearbyPlayers == 0) {
+                if (nearbyPlayers == 0 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                     if (targetTrackingTimer > 0) {
                         targetTrackingTimer--;
                     }
-                    if (targetTrackingTimer < 1) {
+                    if (targetTrackingTimer < 1 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                         if(this.timesUsed != 0) {
                             this.timesUsed--;
                             turnBossIntoSummonSpawner(this.getSpawnLocation());

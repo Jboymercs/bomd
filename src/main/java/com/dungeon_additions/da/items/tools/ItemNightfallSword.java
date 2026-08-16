@@ -104,7 +104,7 @@ public class ItemNightfallSword extends ToolSword implements IAnimatable {
         if (!worldIn.isRemote)
         {
             if(stack.getItem() instanceof ItemNightfallSword) {
-                if(!stack.hasTagCompound()) {
+                if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("ability_sword")) {
                     this.setNBTonAbility(stack, 0);
                 }
             }

@@ -34,6 +34,26 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static boolean boss_cap_damage_enabled = true;
 
+    @Config.Name("Boss Player Lives Enable/Disable")
+    @Config.Comment("When enabled, players will have limited lives to defeat the boss. With one life for singleplayer and one for each other player nearby.")
+    @Config.RequiresMcRestart
+    public static boolean boss_player_lives_enabled = true;
+
+    @Config.Name("Boss Player Lives Icon Enable/Disable")
+    @Config.Comment("When disabled, Boss player lives icon are disabled.")
+    @Config.RequiresMcRestart
+    public static boolean boss_player_lives_icon= true;
+
+    @Config.Name("Boss Player Lives Multiplier")
+    @Config.Comment("Sets a multiplier for player lives during boss encounters. Think of it like per player the lives will be times by x.")
+    @Config.RequiresMcRestart
+    public static int boss_player_lives_multiplier= 1;
+
+    @Config.Name("Boss Player Lives Additive")
+    @Config.Comment("Instead of a multipler for player lives for boss encounters. This will create a default additive for the first player. For singleplayer mostly.")
+    @Config.RequiresMcRestart
+    public static int boss_player_lives_additive= 1;
+
     @Config.Name("Armor Scaling")
     @Config.Comment("Scale the armor values of all of the armor items in the mod")
     @Config.RequiresMcRestart

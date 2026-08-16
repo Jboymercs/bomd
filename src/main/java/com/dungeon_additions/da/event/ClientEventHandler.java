@@ -7,6 +7,7 @@ import com.dungeon_additions.da.capabilities.AnimationCapabilityHelper;
 import com.dungeon_additions.da.capabilities.CapabilityItemAnimations;
 import com.dungeon_additions.da.capabilities.CapabilityPlayerFalter;
 import com.dungeon_additions.da.config.ModConfig;
+import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.armor.ModIncendiumHelmet;
 import com.dungeon_additions.da.items.shield.BOMDShieldItem;
@@ -24,13 +25,19 @@ import com.dungeon_additions.da.util.PlayerFalterUtils;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -43,6 +50,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderSpecificHandEvent;
+import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -55,6 +64,7 @@ import org.lwjgl.Sys;
 
 import javax.annotation.Nonnull;
 import java.io.FilterOutputStream;
+import java.util.List;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = ModReference.MOD_ID)
 public class ClientEventHandler {
@@ -62,7 +72,7 @@ public class ClientEventHandler {
     private static final Minecraft mc = Minecraft.getMinecraft();
     public static boolean swingingCustom = false;
     private static final ResourceLocation TEXTURE_FALTER_FRAME = new ResourceLocation(ModReference.MOD_ID, "textures/gui/falter_gui.png");
-    private static final ResourceLocation TEXTURE_FALTER_PROGRESS = new ResourceLocation(ModReference.MOD_ID, "textures/gui/falter_progress.png");
+    private static final ResourceLocation TEXTURE_BOSS_LIVES = new ResourceLocation(ModReference.MOD_ID, "textures/gui/boss_lives.png");
 
     private static float currFalterProg = 0.0F;
     private static float prevCurrFalterProg = 0.0F;
@@ -126,9 +136,49 @@ public class ClientEventHandler {
             {
                 renderFalterBar(mc); }
         }
+
+        if(event.getType() == RenderGameOverlayEvent.ElementType.BOSSINFO && mc.player != null && ModConfig.boss_player_lives_enabled && ModConfig.boss_player_lives_icon) {
+            List<EntityAbstractBase> nearbyBoss = mc.player.world.getEntitiesWithinAABB(EntityAbstractBase.class, mc.player.getEntityBoundingBox().grow(40D), e -> !e.isNonBoss());
+            if(!nearbyBoss.isEmpty()) {
+                for(EntityAbstractBase base : nearbyBoss) {
+                        renderBossLivesIcon(mc, base.getBossPlayerLives());
+                }
+            }
+        }
     }
 
+    private static void renderBossLivesIcon(Minecraft mc, int value) {
+        if(value != 0) {
+            ScaledResolution res = new ScaledResolution(mc);
+            int width = res.getScaledWidth();
+            int height = res.getScaledHeight();
+            int barX = (int) (width / 2); //* 1.343
+            int barY = (int) (height * 0.07);
+            GlStateManager.enableTexture2D();
+            GlStateManager.color(1F, 1F, 1F, 1F);
 
+            mc.getTextureManager().bindTexture(TEXTURE_BOSS_LIVES);
+            if(value > 9) {
+                drawModalRectWithCustomSizedTexture(barX - 14, barY, 0, 0, 28, 12, 28, 120);
+            } else {
+                drawModalRectWithCustomSizedTexture(barX - 14, barY, 0, 12 * value, 28, 12, 28, 120);
+            }
+        }
+
+    }
+
+    public static void drawModalRectWithCustomSizedTexture(int x, int y, float u, float v, int width, int height, float textureWidth, float textureHeight) {
+        float f = 1F / textureWidth;
+        float f1 = 1F / textureHeight;
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+        bufferbuilder.pos((double)x, (double)(y + height), (double)0.0F).tex((double)(u * f), (double)((v + (float)height) * f1)).endVertex();
+        bufferbuilder.pos((double)(x + width), (double)(y + height), (double)0.0F).tex((double)((u + (float)width) * f), (double)((v + (float)height) * f1)).endVertex();
+        bufferbuilder.pos((double)(x + width), (double)y, (double)0.0F).tex((double)((u + (float)width) * f), (double)(v * f1)).endVertex();
+        bufferbuilder.pos((double)x, (double)y, (double)0.0F).tex((double)(u * f), (double)(v * f1)).endVertex();
+        tessellator.draw();
+    }
 
     private static void renderFalterBar(Minecraft mc)
     {
@@ -202,7 +252,7 @@ public class ClientEventHandler {
         if( DAPlayerAnimationMethods.getWeaponType(player) == 5 && !ModConfig.enable_heavy_weapons) return;
 
         //we will want a custom swing delay to tie in the players animations
-        if(stack.getItem() instanceof ToolSword && ModConfig.weapon_hit_delays && ModConfig.combat_system_enabled) {
+        if(stack.getItem() instanceof ToolSword && player.swingingHand == EnumHand.MAIN_HAND && ModConfig.weapon_hit_delays && ModConfig.combat_system_enabled) {
             ToolSword weapon = ((ToolSword) stack.getItem());
             //if the weapon has a delay greater than 0
             float cooldownStrength = player.getCooledAttackStrength(0.5F);
@@ -219,12 +269,13 @@ public class ClientEventHandler {
 
         double attackSpeed = 4.0D;
         Multimap<String, AttributeModifier> modifiers = stack.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
-
         if (modifiers.containsKey(SharedMonsterAttributes.ATTACK_SPEED.getName()))
         {
             for (AttributeModifier mod : modifiers.get(SharedMonsterAttributes.ATTACK_SPEED.getName()))
             { attackSpeed += mod.getAmount(); }
         }
+
+       // attackSpeed += (long) player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getModifiers().size();
 
         int duration = (int)(20.0D / attackSpeed);
 

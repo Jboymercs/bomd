@@ -17,7 +17,9 @@ import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.PlayerCustomSwingUtils;
 import com.dungeon_additions.da.util.PlayerFalterUtils;
 import com.dungeon_additions.da.util.player.PlayerMeleeAttack;
+import com.google.common.collect.Multimap;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -33,6 +35,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.lwjgl.Sys;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -133,7 +136,28 @@ public class EventPlayerFalter {
 
         }else if(!PlayerCustomSwingUtils.getPlayerSwingCancelled(player)) {
             ToolSword weapon = ((ToolSword) player.getHeldItemMainhand().getItem());
-            int ticksAhead = player.ticksExisted + weapon.getWeaponDelay(player.getHeldItemMainhand());
+
+            float attack_speed_multi = 0;
+            Multimap<String, AttributeModifier> modifiers = player.getHeldItemMainhand().getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
+            if (modifiers.containsKey(SharedMonsterAttributes.ATTACK_SPEED.getName()))
+            {
+                for (AttributeModifier mod : modifiers.get(SharedMonsterAttributes.ATTACK_SPEED.getName()))
+                {
+                    attack_speed_multi += (float) (((player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getAttributeValue())) - (4 + mod.getAmount()));
+                }
+            }
+                    if(attack_speed_multi > 0) {
+                        attack_speed_multi = (float) (1.5 * attack_speed_multi);
+                    } else if (attack_speed_multi < 0) {
+                        if(weapon.getWeaponAnimationType() == EnumWeaponType.HEAVY_AXE) {
+                            attack_speed_multi = 20 * attack_speed_multi;
+                        } else {
+                            attack_speed_multi = 8 * attack_speed_multi;
+                        }
+                    } else {
+                        attack_speed_multi = 0;
+                    }
+            int ticksAhead = (int) (player.ticksExisted + ((weapon.getWeaponDelay(player.getHeldItemMainhand())) - (attack_speed_multi)));
             //sets the time for the attack and cancels this statement
             PlayerCustomSwingUtils.setPlayerSwingProgress(player, ticksAhead);
             PlayerCustomSwingUtils.setPlayerSwingCancelled(player, true);
@@ -143,13 +167,13 @@ public class EventPlayerFalter {
             //when the time is met
             if(weapon.getSwingSound() != null) {
                 //heavy weapons swing a bit slower needing a slight delay
-                if(weapon.getWeaponAnimationType() == EnumWeaponType.HEAVY_AXE && (int) (PlayerCustomSwingUtils.getPlayerSwingProgress(player) - (weapon.getWeaponDelay(player.getHeldItemMainhand()) * 0.1)) == player.ticksExisted) {
+                if(weapon.getWeaponAnimationType() == EnumWeaponType.HEAVY_AXE && (int) Math.round((PlayerCustomSwingUtils.getPlayerSwingProgress(player) - (weapon.getWeaponDelay(player.getHeldItemMainhand()) * 0.15))) == player.ticksExisted) {
                     player.world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, weapon.getSwingSound(), SoundCategory.NEUTRAL, 0.6f, 0.7f / (player.world.rand.nextFloat() * 0.4F + 0.4f));
-                } else if ((int) (PlayerCustomSwingUtils.getPlayerSwingProgress(player) - (weapon.getWeaponDelay(player.getHeldItemMainhand()) * 0.5)) == player.ticksExisted && weapon.getWeaponAnimationType() != EnumWeaponType.HEAVY_AXE) {
+                } else if ((int) Math.round((PlayerCustomSwingUtils.getPlayerSwingProgress(player) - weapon.getWeaponDelay(player.getHeldItemMainhand()) * 0.5)) == player.ticksExisted && weapon.getWeaponAnimationType() != EnumWeaponType.HEAVY_AXE) {
                     player.world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, weapon.getSwingSound(), SoundCategory.NEUTRAL, 0.6f, 0.7f / (player.world.rand.nextFloat() * 0.4F + 0.4f));
                 }
             }
-            if (PlayerCustomSwingUtils.getPlayerSwingProgress(player) < player.ticksExisted) {
+            if (PlayerCustomSwingUtils.getPlayerSwingProgress(player) <= player.ticksExisted) {
                 //when the time is reached, a line will be drawn at the players look
                 Entity closestEntity = doesPlayerSeeEntity(player.world, player, weapon.weaponReach, weapon.swingRadius);
                 //targetedHit
@@ -170,6 +194,7 @@ public class EventPlayerFalter {
             }
         }
 
+        //Motion Pausing
         if(!PlayerCustomSwingUtils.getPlayerSwingCancelled(player) || PlayerCustomSwingUtils.getPlayerSwingProgress(player) != 0) {
             if ((DAPlayerAnimationMethods.getWeaponType(player) == 5 || player.getHeldItemMainhand().getItem() instanceof ItemSwordSpear ||
                     player.getHeldItemMainhand().getItem() instanceof ItemBloodySwordSpear || player.getHeldItemMainhand().getItem() instanceof ItemImperialHalberd ||

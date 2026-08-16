@@ -33,6 +33,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
@@ -299,6 +300,24 @@ public class ItemTrinket extends ItemBase implements IBauble{
                 world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.CAST_GENERIC_SPELL, SoundCategory.NEUTRAL, 0.7f, 1.4f / (world.rand.nextFloat() * 0.4F + 0.4f));
                 player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 20 * PotionTrinketConfig.endure_pain_amount, 0, false, true));
                 player.getCooldownTracker().setCooldown(stack.getItem(), 20 * PotionTrinketConfig.endure_pain_cooldown);
+                //Great Heal Trinket
+            } else if (type == 14 && !player.getCooldownTracker().hasCooldown(stack.getItem())) {
+                world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.CAST_GENERIC_SPELL, SoundCategory.NEUTRAL, 0.7f, 1.4f / (world.rand.nextFloat() * 0.4F + 0.4f));
+                ModUtils.circleCallback(5, 35, (pos)-> {
+                    pos = new Vec3d(pos.x, 0, pos.y);
+                    Vec3d posToo = player.getPositionVector().add(0, 1, 0);
+                    Vec3d vel = pos.normalize().scale(0.15F).add(ModUtils.yVec(0));
+                    Main.proxy.spawnParticle(30, world, posToo.x, posToo.y, posToo.z, vel.x, vel.y + 0.25, vel.z,16187155 );
+                });
+                List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, player.getEntityBoundingBox().grow(4.5D), e -> !e.getIsInvulnerable());
+                if(!nearbyPlayers.isEmpty()) {
+                    for(EntityPlayer players : nearbyPlayers) {
+                        if(!players.isCreative() && !players.isSpectator()) {
+                            players.heal(PotionTrinketConfig.great_heal_heal_amount + ModUtils.addMageSetBonus(player, 0, 2F));
+                        }
+                    }
+                }
+                player.getCooldownTracker().setCooldown(stack.getItem(), 20 * 45);
             }
         }
         return false;

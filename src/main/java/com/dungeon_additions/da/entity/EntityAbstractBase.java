@@ -45,11 +45,18 @@ public abstract class EntityAbstractBase extends EntityCreature {
     protected int targetTrackingTimer = ModConfig.boss_reset_timer * 20;
     private static final DataParameter<Boolean> FIGHT_MODE = EntityDataManager.createKey(EntityAbstractBase.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> FULL_BODY_USAGE = EntityDataManager.createKey(EntityAbstractBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> BOSS_PLAYER_LIVES = EntityDataManager.createKey(EntityAbstractBase.class, DataSerializers.VARINT);
     public void setFightMode(boolean value) {this.dataManager.set(FIGHT_MODE, Boolean.valueOf(value));}
     public boolean isFightMode() {return this.dataManager.get(FIGHT_MODE);}
     public void setFullBodyUsage(boolean value) {this.dataManager.set(FULL_BODY_USAGE, Boolean.valueOf(value));}
     public boolean isFullBodyUsage() {return this.dataManager.get(FULL_BODY_USAGE);}
     protected float sizeScaling = 1.0F;
+
+    public void setBossPlayerLives(int skinType)
+    {
+        this.dataManager.set(BOSS_PLAYER_LIVES, Integer.valueOf(skinType));
+    }
+    public int getBossPlayerLives() {return this.dataManager.get(BOSS_PLAYER_LIVES);}
 
     protected int playersNearbyAmount = 0;
     public boolean iAmBossMob = false;
@@ -252,6 +259,8 @@ public abstract class EntityAbstractBase extends EntityCreature {
                 this.setHealth(this.getMaxHealth());
                 //This is a static int that will affect cooldowns or other areas of the boss for multiplayer play and make it equally as challenging
                 playersNearbyAmount = ServerScaleUtil.getPlayers(this, world);
+                //Sets the lives for players around the boss
+                this.setBossPlayerLives((playersNearbyAmount + ModConfig.boss_player_lives_additive) * ModConfig.boss_player_lives_multiplier);
                 hasStartedScaling = true;
             }
 
@@ -352,10 +361,11 @@ public abstract class EntityAbstractBase extends EntityCreature {
 
     @Override
     protected void entityInit() {
-        super.entityInit();
+        this.dataManager.register(BOSS_PLAYER_LIVES, 1);
         this.dataManager.register(IMMOVABLE, Boolean.valueOf(false));
         this.dataManager.register(FIGHT_MODE, Boolean.valueOf(false));
         this.dataManager.register(FULL_BODY_USAGE, Boolean.valueOf(false));
+        super.entityInit();
     }
 
     public void clearEvents() {
@@ -406,6 +416,9 @@ public abstract class EntityAbstractBase extends EntityCreature {
         nbt.setBoolean("Fight_Mode", this.isFightMode());
         nbt.setBoolean("Full_Body", this.isFullBodyUsage());
         nbt.setInteger("Times_Used", this.timesUsed);
+        if(!this.isNonBoss()) {
+            nbt.setInteger("Boss_Player_Lives", this.getBossPlayerLives());
+        }
         super.writeEntityToNBT(nbt);
     }
 
@@ -416,6 +429,9 @@ public abstract class EntityAbstractBase extends EntityCreature {
         this.timesUsed = nbt.getInteger("Times_Used");
         if (nbt.hasKey("isImmovable")) {
             this.setImmovable(nbt.getBoolean("isImmovable"));
+        }
+        if(!this.isNonBoss()) {
+            this.setBossPlayerLives(nbt.getInteger("Boss_Player_Lives"));
         }
         super.readEntityFromNBT(nbt);
     }

@@ -457,6 +457,19 @@ public class ModUtils {
         return bonusDamage * multiplier;
     }
 
+    public static void performParrySonicBoom(World world, EntityPlayer player, Vec3d originPos) {
+        List<EntityLivingBase> nearbyLivingBase = world.getEntitiesWithinAABB(EntityLivingBase.class, player.getEntityBoundingBox().grow(3D), e -> !e.getIsInvulnerable());
+        if(!nearbyLivingBase.isEmpty()) {
+            for(EntityLivingBase base : nearbyLivingBase) {
+                if(base != player) {
+                    Vec3d moveDir = player.getPositionVector().add(player.getLookVec().add(0, 1.5, 0)).scale(1.5D);
+                    base.knockBack(player, 1.4F, moveDir.x, moveDir.z);
+                }
+            }
+        }
+        Main.proxy.spawnParticle(44,world, originPos.x, originPos.y, originPos.z , 0, 0, 0);
+    }
+
 
     public static float addDarkArmorBonusMultiplier(EntityPlayer player, float baseModifier) {
         if(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.DARK_METAL_HELMET) {

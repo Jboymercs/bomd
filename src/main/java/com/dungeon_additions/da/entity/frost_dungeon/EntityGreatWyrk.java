@@ -163,6 +163,18 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features && MobConfig.ancient_wyrk_boss_music) {
             this.playMusic(this);
         }
+
+        if(!world.isRemote) {
+            if(!this.bossInfo.getPlayers().isEmpty() && ModConfig.boss_player_lives_enabled) {
+                for(EntityPlayerMP player : this.bossInfo.getPlayers()) {
+                    if(!player.isEntityAlive()) {
+                        this.bossInfo.removePlayer(player);
+                        this.setBossPlayerLives(this.getBossPlayerLives() - 1);
+                    }
+                }
+            }
+        }
+
         EntityLivingBase target = this.getAttackTarget();
         shakeTime--;
         if(!world.isRemote && target != null) {

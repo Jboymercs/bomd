@@ -442,6 +442,17 @@ public class CommandLocateMod implements ICommand {
                     }
                 }
             }
+        } else if (world.provider.getDimension() == 0) {
+            for (int i = -100; i < 100 + 1; i++) {
+                for (int j = -100; j < 100 + 1; j++) {
+
+                    boolean c = IsOverworldOutpostAtPos(world, chunk.x + i, chunk.z + j);
+                    if (c) {
+                        resultpos = new BlockPos((chunk.x + i) << 4, WorldConfig.cult_castle_y_height, (chunk.z + j) << 4);
+                        break;
+                    }
+                }
+            }
         }
         return resultpos;
     }
@@ -698,6 +709,37 @@ public class CommandLocateMod implements ICommand {
         if (i == k && j == l) {
             BlockPos pos = new BlockPos((i << 4), WorldConfig.end_outposts_min_y, (j << 4));
             return isAbleToSpawnHereEndOutposts(pos, world);
+        } else {
+
+            return false;
+        }
+    }
+
+    protected static boolean IsOverworldOutpostAtPos(World world, int chunkX, int chunkZ) {
+        int spacing = 100;
+        int separation = 16;
+        int i = chunkX;
+        int j = chunkZ;
+
+        if (chunkX < 0) {
+            chunkX -= spacing - 1;
+        }
+
+        if (chunkZ < 0) {
+            chunkZ -= spacing - 1;
+        }
+
+        int k = chunkX / spacing;
+        int l = chunkZ / spacing;
+        Random random = world.setRandomSeed(k, l, 60304064);
+        k = k * spacing;
+        l = l * spacing;
+        k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+        l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+
+        if (i == k && j == l) {
+            BlockPos pos = new BlockPos((i << 4), WorldConfig.end_outposts_min_y, (j << 4));
+            return isAbleToSpawnHereOverworldOutposts(pos, world);
         } else {
 
             return false;
@@ -1165,6 +1207,16 @@ public class CommandLocateMod implements ICommand {
         return false;
     }
 
+    public static boolean isAbleToSpawnHereOverworldOutposts(BlockPos pos, World world) {
+        for(BiomeDictionary.Type types : getSpawnBiomeTypesOverworld()) {
+            Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
+            if(BiomeDictionary.hasType(biomeCurrently, types)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean isAbleToSpawnHereTraderPost(BlockPos pos, World world) {
         for(BiomeDictionary.Type types : getSpawnBiomeTypesTraderPost()) {
             Biome biomeCurrently = world.provider.getBiomeForCoords(pos);
@@ -1320,6 +1372,27 @@ public class CommandLocateMod implements ICommand {
         }
 
         return endOutpostsBiomeTypes;
+    }
+
+    private static List<BiomeDictionary.Type> overworldOutpostsBiomeTypes;
+
+    public static List<BiomeDictionary.Type> getSpawnBiomeTypesOverworld() {
+        if(overworldOutpostsBiomeTypes == null) {
+            overworldOutpostsBiomeTypes = Lists.newArrayList();
+
+            for(String str : WorldConfig.overworld_outposts_whitelist) {
+                try {
+                    BiomeDictionary.Type type = BiomeDictionary.Type.getType(str);
+
+                    if (type != null) overworldOutpostsBiomeTypes.add(type);
+                    else DALogger.logError("Biome Type" + str + " is not correct", new NullPointerException());
+                } catch (Exception e) {
+                    DALogger.logError(str + " is not a valid type name", e);
+                }
+            }
+        }
+
+        return overworldOutpostsBiomeTypes;
     }
 
     private static List<BiomeDictionary.Type> traderPostBiomeTypes;

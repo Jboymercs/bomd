@@ -555,7 +555,7 @@ public class PotionTrinketConfig {
     @Config.RequiresMcRestart
     public static int aspect_bow_durability = 2000;
 
-    @Config.Name("Aspect of the Shield Damage boost")
+    @Config.Name("Aspect of the Bow Speed boost")
     @Config.Comment("Change Aspect of the Bows speed modifier. This is a multiplier of base player speed.")
     @Config.RequiresMcRestart
     public static double aspect_bow_speed_boost = 0.05;
@@ -584,6 +584,27 @@ public class PotionTrinketConfig {
     @Config.Comment("Change Aspect of the Dagger item durability.")
     @Config.RequiresMcRestart
     public static int aspect_dagger_durability = 2000;
+
+    @Config.Name("Stormvier Communion Durability")
+    @Config.Comment("Change Stormvier Communion item durability.")
+    @Config.RequiresMcRestart
+    public static int great_heal_durability = 84;
+
+    @Config.Name("Stormvier Communion Heal Amount")
+    @Config.Comment("Change Stormvier Communion heal amount.")
+    @Config.RequiresMcRestart
+    public static int great_heal_heal_amount = 4;
+
+    @Config.Name("Frontline Step Durability")
+    @Config.Comment("Change Frontline Step item durability.")
+    @Config.RequiresMcRestart
+    public static int frontline_step_durability = 264;
+
+    @Config.Name("Frontline Step Chance")
+    @Config.Comment("Change Frontline Step chance for happening.")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 1, max = 99)
+    public static int frontline_step_chance = 25;
 
     @Config.Name("Aspect of the Duelist Durability")
     @Config.Comment("Change Aspect of the Duelist item durability.")

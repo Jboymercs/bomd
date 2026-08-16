@@ -160,7 +160,7 @@ public class ItemVoidHammer extends ToolSword implements IAnimatable, IHasModel,
 
     @Override
     public double getAttackSpeed() {
-        return -3.5D;
+        return -3.3D;
     }
 
 
@@ -177,8 +177,10 @@ public class ItemVoidHammer extends ToolSword implements IAnimatable, IHasModel,
 
     @Override
     public void doSweepAttack(EntityPlayer player, @Nullable EntityLivingBase entity) {
-        ModUtils.doSweepAttack(player, entity, (e) -> {
-        }, 12, 3);
+        if(!ModConfig.combat_system_enabled) {
+            ModUtils.doSweepAttack(player, entity, (e) -> {
+            }, 12, 3);
+        }
         super.doSweepAttack(player, entity);
     }
 }

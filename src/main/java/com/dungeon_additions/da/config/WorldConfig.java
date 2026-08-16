@@ -436,6 +436,27 @@ public class WorldConfig {
     public static String[] end_outposts_whitelist = {"END"
     };
 
+    @Config.Name("Overworld Outposts Enabled/Disabled")
+    @Config.Comment("Change if OVERWORLD outposts should generate.")
+    @Config.RequiresMcRestart
+    public static boolean overworld_outposts_enabled = true;
+
+    @Config.Name("Overworld Outposts WhiteList Biome Types")
+    @Config.Comment("Add Biome types that ALLOW the Overworld Outposts from spawning in that biome, examples of tags are HOT, COLD, SPOOKY. Only includes Rotten Hold Outposts")
+    @Config.RequiresMcRestart
+    public static String[] overworld_outposts_whitelist = {"FOREST"
+    };
+
+    @Config.Name("Overworld Outposts Minimum Y")
+    @Config.Comment("Change the minimum y the surface part of this structure can spawn at")
+    @Config.RequiresMcRestart
+    public static int overworld_outposts_min_y = 50;
+
+    @Config.Name("Overworld Outposts Maximum Y")
+    @Config.Comment("Change the maximum y the surface part of this structure can spawn at")
+    @Config.RequiresMcRestart
+    public static int overworld_outposts_max_y = 85;
+
     @Config.Name("Dauntless Arena Dimensions allowed in!")
     @Config.Comment("Take note that any ocean type biomes this structure will NOT spawn in, but you can select which dimension you'd like the structure to spawn in")
     @Config.RequiresMcRestart

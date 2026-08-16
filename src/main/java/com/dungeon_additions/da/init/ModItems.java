@@ -226,6 +226,8 @@ public class ModItems {
     public static final Item POISON_MIST_TRINKET = new ItemTrinket("poison_mist_trinket", "poison_mist_trinket_desc", PotionTrinketConfig.pocket_poison_durability, 1, true);
     public static final Item BLOOD_SlASH = new ItemTrinket("blood_trinket", "blood_trinket_desc", PotionTrinketConfig.crimson_malice_durability, 0);
     public static final Item ENDURE_TRINKET = new ItemTrinket("endure_trinket", "endure_trinket_desc", PotionTrinketConfig.endure_pain_durability, 1, true);
+    public static final Item STUN_TRINKET = new ItemTrinket("stun_trinket", "stun_trinket_desc", PotionTrinketConfig.frontline_step_durability, 0);
+    public static final Item GREAT_HEAL_TRINKET = new ItemTrinket("great_heal_trinket", "great_heal_trinket_desc", PotionTrinketConfig.great_heal_durability, 1, true);
     public static final Item ASPECT_SWORD = new ItemTrinket("aspect_sword", "aspect_sword_desc", PotionTrinketConfig.aspect_sword_durability, 3);
     public static final Item ASPECT_SHIELD = new ItemTrinket("aspect_shield", "aspect_shield_desc", PotionTrinketConfig.aspect_shield_durability, 3);
     public static final Item ASPECT_SPEAR = new ItemTrinket("aspect_spear", "aspect_spear_desc", PotionTrinketConfig.aspect_spear_durability, 3);

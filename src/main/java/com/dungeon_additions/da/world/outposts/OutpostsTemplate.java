@@ -3,6 +3,9 @@ package com.dungeon_additions.da.world.outposts;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.WorldConfig;
 import com.dungeon_additions.da.entity.logic.MobSpawnerLogic;
+import com.dungeon_additions.da.entity.rot_knights.EntityChevalier;
+import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
+import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
 import com.dungeon_additions.da.entity.tileEntity.tileEntityMobSpawner;
 import com.dungeon_additions.da.entity.void_dungeon.EntityEnderphrite;
 import com.dungeon_additions.da.entity.void_dungeon.EntityEnderphriteGauntlet;
@@ -29,6 +32,9 @@ public class OutpostsTemplate extends ModStructureTemplate {
     private static final ResourceLocation END_LOOT = new ResourceLocation(ModReference.MOD_ID, "end_outpost");
     private static final ResourceLocation END_LOOT_TREASURE = new ResourceLocation(ModReference.MOD_ID, "end_outpost_treasure");
     private static final ResourceLocation END_LOOT_TREASURE_NC = new ResourceLocation(ModReference.MOD_ID, "end_outpost_treasure_nc");
+    private static final ResourceLocation ROTTEN_LOOT = new ResourceLocation(ModReference.MOD_ID, "rotten_outpost");
+    private static final ResourceLocation ROTTEN_LOOT_TREASURE = new ResourceLocation(ModReference.MOD_ID, "rotten_outpost_treasure");
+    private static final ResourceLocation ROTTEN_LOOT_TREASURE_NC = new ResourceLocation(ModReference.MOD_ID, "rotten_outpost_treasure_nc");
 
     public OutpostsTemplate(TemplateManager manager, String type, BlockPos pos, Rotation rot, int distance, boolean overWriteIn) {
         super(manager, type, pos,distance, rot, overWriteIn);
@@ -105,6 +111,73 @@ public class OutpostsTemplate extends ModStructureTemplate {
                 world.setBlockToAir(pos.down());
             }
         }
+
+
+        //Rotten Hold Outposts
+        if(function.startsWith("r_mob")) {
+            if(generateMobSpawnOverworld()) {
+                world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_MOSS.getDefaultState(), 2);
+                TileEntity tileentity = world.getTileEntity(pos);
+                if (tileentity instanceof tileEntityMobSpawner) {
+                    ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
+                            new MobSpawnerLogic.MobSpawnData[]{
+                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityRotKnight.class), 1),
+                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityRotKnightRapier.class), 1)
+                            },
+                            new int[]{1, 1},
+                            ModRand.range(1,2),
+                            20);
+                }
+            } else {
+                world.setBlockToAir(pos);
+            }
+        } else if(function.startsWith("r_elite_mob")) {
+            if(generateEliteMobSpawnOverworld()) {
+                world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_MOSS.getDefaultState(), 2);
+                TileEntity tileentity = world.getTileEntity(pos);
+                if (tileentity instanceof tileEntityMobSpawner) {
+                    ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
+                            new MobSpawnerLogic.MobSpawnData[]{
+                                    new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityChevalier.class), 1),
+                            },
+                            new int[]{1},
+                            1,
+                            20);
+                }
+            } else {
+                world.setBlockToAir(pos);
+            }
+        }  else if (function.startsWith("r_chest")) {
+            BlockPos blockPos = pos.down();
+            if(generateChestSpawnOverworld() && sbb.isVecInside(blockPos)) {
+                TileEntity tileEntity = world.getTileEntity(blockPos);
+                world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+                if (tileEntity instanceof TileEntityChest) {
+                    TileEntityChest chest = (TileEntityChest) tileEntity;
+                    chest.setLootTable(ROTTEN_LOOT, rand.nextLong());
+                }
+            } else {
+                world.setBlockToAir(pos);
+                world.setBlockToAir(pos.down());
+            }
+        }  else if (function.startsWith("r_treasure")) {
+            BlockPos blockPos = pos.down();
+            if(sbb.isVecInside(blockPos)) {
+                TileEntity tileEntity = world.getTileEntity(blockPos);
+                world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+                if (tileEntity instanceof TileEntityChest) {
+                    TileEntityChest chest = (TileEntityChest) tileEntity;
+                    if(WorldConfig.coins_spawn_in_chests) {
+                        chest.setLootTable(ROTTEN_LOOT_TREASURE, rand.nextLong());
+                    } else {
+                        chest.setLootTable(ROTTEN_LOOT_TREASURE_NC, rand.nextLong());
+                    }
+                }
+            } else {
+                world.setBlockToAir(pos);
+                world.setBlockToAir(pos.down());
+            }
+        }
     }
 
 
@@ -127,6 +200,30 @@ public class OutpostsTemplate extends ModStructureTemplate {
     public boolean generateChestSpawnEnd() {
         int randomNumberGenerator = ModRand.range(0, 10);
         if (randomNumberGenerator >= 6) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean generateChestSpawnOverworld() {
+        int randomNumberGenerator = ModRand.range(0, 10);
+        if (randomNumberGenerator >= 5) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean generateMobSpawnOverworld() {
+        int randomNumberGenerator = ModRand.range(0, 10);
+        if (randomNumberGenerator >= 7) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean generateEliteMobSpawnOverworld() {
+        int randomNumberGenerator = ModRand.range(0, 10);
+        if (randomNumberGenerator >= 8) {
             return false;
         }
         return true;
