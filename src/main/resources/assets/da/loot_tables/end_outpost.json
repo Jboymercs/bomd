@@ -556,6 +556,11 @@
           "data": 0
         },
         {
+          "type": "loot_table",
+          "name": "da:rare_loot_items",
+          "weight": 1
+        },
+        {
           "type": "item",
           "name": "da:soul_key",
           "weight": 1

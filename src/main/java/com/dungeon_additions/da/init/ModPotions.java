@@ -24,6 +24,8 @@ public class ModPotions {
     public static PotionEffectHemorrhage HEMORRHAGE = (PotionEffectHemorrhage) new PotionEffectHemorrhage("hemorrhage", true, 0);
     public static PotionEffectFaltered FALTERED = (PotionEffectFaltered) new PotionEffectFaltered("faltered", true, 0);
     public static PotionEffectClairvoyance CLAIRVOYANCE = (PotionEffectClairvoyance) new PotionEffectClairvoyance("clairvoyance", false, 0);
+    public static PotionDarkdrift DARKDRIFT = (PotionDarkdrift) new PotionDarkdrift("darkdrift", true, 0);
+    public static PotionMagicAura MAGIC_AURA = (PotionMagicAura) new PotionMagicAura("magic_aura", false, 0);
 
 
     public static PotionType hunters_mark = new PotionType("potionHuntersMark", new PotionEffect[]{new PotionEffect(ModPotions.HUNTERS_MARK, 300)}).setRegistryName("hunters_marked");
@@ -39,7 +41,9 @@ public class ModPotions {
                 DEGRADATION,
                 HEMORRHAGE,
                 FALTERED,
-                CLAIRVOYANCE
+                CLAIRVOYANCE,
+                DARKDRIFT,
+                MAGIC_AURA
         );
     }
 

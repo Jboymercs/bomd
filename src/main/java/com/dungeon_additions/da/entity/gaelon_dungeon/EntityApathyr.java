@@ -2623,7 +2623,10 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
 
     @Override
     protected ResourceLocation getLootTable() {
-        return LOOT_MOB;
+        if(this.getSpawnLocation() == null || !ModConfig.bosses_drop_treasure_bags) {
+            return LOOT_MOB;
+        }
+        return null;
     }
 
     @Override
@@ -2690,6 +2693,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             if(this.getSpawnLocation() != null && !world.isRemote) {
                 this.turnBossIntoSummonSpawner(this.getSpawnLocation());
                 this.createCoinSpawns(this.getPositionVector(), ModRand.range(4, 6), ModRand.range(3,5), 2);
+                this.createTreasureBag(this.getPositionVector(), "apathyr");
             }
             this.setDead();
             this.setDropItemsWhenDead(true);

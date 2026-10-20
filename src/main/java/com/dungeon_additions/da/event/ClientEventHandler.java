@@ -6,6 +6,7 @@ import com.dungeon_additions.da.animation.item.*;
 import com.dungeon_additions.da.capabilities.AnimationCapabilityHelper;
 import com.dungeon_additions.da.capabilities.CapabilityItemAnimations;
 import com.dungeon_additions.da.capabilities.CapabilityPlayerFalter;
+import com.dungeon_additions.da.capabilities.CapabilityRohsCorruption;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.init.ModItems;
@@ -23,6 +24,7 @@ import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.PlayerCustomSwingUtils;
 import com.dungeon_additions.da.util.PlayerFalterUtils;
 import com.google.common.collect.Multimap;
+import com.sun.org.apache.xpath.internal.objects.XNull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
@@ -73,11 +75,14 @@ public class ClientEventHandler {
     public static boolean swingingCustom = false;
     private static final ResourceLocation TEXTURE_FALTER_FRAME = new ResourceLocation(ModReference.MOD_ID, "textures/gui/falter_gui.png");
     private static final ResourceLocation TEXTURE_BOSS_LIVES = new ResourceLocation(ModReference.MOD_ID, "textures/gui/boss_lives.png");
+    private static final ResourceLocation ROHS_CORRUPTION = new ResourceLocation(ModReference.MOD_ID, "textures/gui/rohs_progress.png");
 
     private static float currFalterProg = 0.0F;
     private static float prevCurrFalterProg = 0.0F;
     private static float currFalterResistance = 0.0F;
     private static float prevCurrFalterResistance = 0.0F;
+    private static int currRohCorruption = 0;
+    private static int prevRohCorruption = 0;
 
     @SubscribeEvent
     public static void onFalterUpdateTick(TickEvent.ClientTickEvent event)
@@ -89,12 +94,16 @@ public class ClientEventHandler {
 
         prevCurrFalterProg = currFalterProg;
         prevCurrFalterResistance = currFalterResistance;
+        prevRohCorruption = currRohCorruption;
 
         if (mc.player.hasCapability(CapabilityPlayerFalter.PLAYER_FALTER_CAP, null))
         {
-            //currSpaceHeld = mc.player.getCapability(CapabilitySpearMovement.MOUNTS_PLAYER_CAP, null).getSpaceHeldTime();
             currFalterProg = mc.player.getCapability(CapabilityPlayerFalter.PLAYER_FALTER_CAP, null).getPlayerFalterProgress();
             currFalterResistance = mc.player.getCapability(CapabilityPlayerFalter.PLAYER_FALTER_CAP, null).getPlayerFalterResistance();
+        }
+
+        if(mc.player.hasCapability(CapabilityRohsCorruption.PLAYER_ROH_CORRUPTION_CAP, null)) {
+            currRohCorruption = mc.player.getCapability(CapabilityRohsCorruption.PLAYER_ROH_CORRUPTION_CAP, null).getRohsCorruption();
         }
     }
 
@@ -134,7 +143,11 @@ public class ClientEventHandler {
         {
             if (mc.player != null && currFalterProg > 0)
             {
-                renderFalterBar(mc); }
+                renderFalterBar(mc);
+            }
+            if(mc.player != null && currRohCorruption > 0) {
+                renderCorruptionBar(mc);
+            }
         }
 
         if(event.getType() == RenderGameOverlayEvent.ElementType.BOSSINFO && mc.player != null && ModConfig.boss_player_lives_enabled && ModConfig.boss_player_lives_icon) {
@@ -215,6 +228,28 @@ public class ClientEventHandler {
          //   if (ridden.getDashCooldown() > 0) {
          //       mc.ingameGUI.drawTexturedModalRect(barX, barY, 0, 10, 182, 5);
          //   }
+    }
+
+
+    private static void renderCorruptionBar(Minecraft mc)
+    {
+        ScaledResolution res = new ScaledResolution(mc);
+        int width = res.getScaledWidth();
+        int height = res.getScaledHeight();
+        int barX = width/2 - 32;
+        int barY = height/2 + 15;
+
+        float partialTicks = Minecraft.getMinecraft().getRenderPartialTicks();
+
+        GlStateManager.enableTexture2D();
+        GlStateManager.color(1F, 1F, 1F, 1F);
+        mc.getTextureManager().bindTexture(ROHS_CORRUPTION);
+        //renders the frame
+        mc.ingameGUI.drawTexturedModalRect(barX, barY, 0, 0, 64, 27);
+
+        float currF = prevRohCorruption + (currRohCorruption - prevRohCorruption) * partialTicks;
+        // System.out.println("Player Falter Prog at" + PlayerFalterUtils.getPlayerFalterResistance(player));
+        mc.ingameGUI.drawTexturedModalRect(barX + 2, barY + 2, 2, 27, (int) currF, 5);
     }
 
 

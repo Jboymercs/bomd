@@ -20,6 +20,7 @@ import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
 import com.dungeon_additions.da.entity.util.IEntitySound;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModItems;
+import com.dungeon_additions.da.init.ModPotions;
 import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
@@ -43,6 +44,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.Path;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.*;
@@ -953,11 +955,16 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
         this.potionCooldown = MobConfig.burning_knight_heal_cooldown * 20;
         this.hasNotDrankPotion = true;
         this.potionDrankAmount++;
+        boolean randB = ModRand.range(1, 4) == 1;
         addEvent(()-> this.playSound(SoundsHandler.B_KNIGHT_MOVEMENT_ARMOR, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
         addEvent(()-> this.playSound(SoundsHandler.B_KNIGHT_MOVEMENT_ARMOR, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 20);
         addEvent(()-> this.playSound(SoundsHandler.B_KNIGHT_MOVEMENT_ARMOR, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 55);
 
-        addEvent(()-> this.equipBlock(KNIGHT_HAND.HAND, new ItemStack(ModItems.FAKE_HEALING_POTION)), 8);
+        if(randB) {
+            addEvent(()-> this.equipBlock(KNIGHT_HAND.HAND, new ItemStack(ModItems.FIERY_RESPITE)), 8);
+        } else {
+            addEvent(()-> this.equipBlock(KNIGHT_HAND.HAND, new ItemStack(ModItems.FAKE_HEALING_POTION)), 8);
+        }
 
         addEvent(()-> this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 1.0f, 0.9f), 30);
         addEvent(()-> this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 1.0f, 0.9f), 33);
@@ -966,7 +973,11 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
         addEvent(()-> this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 1.0f, 0.9f), 40);
         addEvent(()-> this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 1.0f, 0.9f), 43);
         addEvent(()-> {
-            this.heal((float) getHealthTooHealAmount);
+            if(!randB) {
+                this.heal((float) getHealthTooHealAmount);
+            } else {
+                this.addPotionEffect(new PotionEffect(ModPotions.FIERY_RESPITE, 1200, 0, false, true));
+            }
             this.equipBlock(KNIGHT_HAND.HAND, new ItemStack(ModItems.INVISISBLE_ITEM));
             }, 45);
 
@@ -2117,6 +2128,7 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
         if(this.getSpawnLocation() != null && !world.isRemote) {
             this.turnBossIntoSummonSpawner(this.getSpawnLocation());
             this.createCoinSpawns(this.getPositionVector(), 0, 2, 2);
+            this.createTreasureBag(this.getPositionVector(), "flame_knight");
         }
         this.setDead();
         this.setDropItemsWhenDead(true);
@@ -2285,7 +2297,10 @@ public class EntityFlameKnight extends EntityFlameBase implements IAnimatable, I
 
     @Override
     protected ResourceLocation getLootTable() {
-        return LOOT_BOSS;
+        if(this.getSpawnLocation() == null || !ModConfig.bosses_drop_treasure_bags) {
+            return LOOT_BOSS;
+        }
+        return null;
     }
 
     @Override

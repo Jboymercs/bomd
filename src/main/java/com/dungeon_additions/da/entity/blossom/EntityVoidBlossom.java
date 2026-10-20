@@ -464,7 +464,10 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
 
     @Override
     protected ResourceLocation getLootTable() {
-        return LOOT_BOSS;
+        if(this.getSpawnLocation() == null || !ModConfig.bosses_drop_treasure_bags) {
+            return LOOT_BOSS;
+        }
+        return null;
     }
 
     @Override
@@ -500,6 +503,7 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
             if(this.getSpawnLocation() != null && !world.isRemote) {
                 this.turnBossIntoSummonSpawner(this.getSpawnLocation());
                 this.createCoinSpawns(this.getPositionVector(), ModRand.range(5, 8), 0, 0);
+                this.createTreasureBag(this.getPositionVector(), "void_blossom");
             }
             this.setDead();
             }, 71);

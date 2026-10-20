@@ -23,6 +23,7 @@ import com.dungeon_additions.da.util.particle.cuts.ParticleRightCut;
 import com.dungeon_additions.da.util.particle.dauntless.ParticleDauntlessBleed;
 import com.dungeon_additions.da.util.particle.dauntless.ParticleDauntlessBuff;
 import com.dungeon_additions.da.util.particle.dauntless.ParticleDauntlessWeak;
+import com.dungeon_additions.da.util.particle.dauntless.ParticleRohsEye;
 import com.dungeon_additions.da.util.particle.impact.*;
 import com.dungeon_additions.da.util.particle.obsidilith.*;
 import net.minecraft.advancements.Advancement;
@@ -318,6 +319,18 @@ public class ClientProxy extends CommonProxy{
                 return new ParticleDotSwirl.Factory();
             case 44:
                 return new ParticleParryImpact.Factory();
+            case 45:
+                return new ParticleFieryRespite.Factory();
+            case 46:
+                return new ParticleRohsEye.Factory();
+            case 47:
+                return new ParticleMagicAura.Factory();
+            case 48:
+                return new ParticleImpactLine.Factory();
+            case 49:
+                return new ParticleSpark.Factory();
+            case 50:
+                return new ParticleDust.Factory();
         }
     }
 

@@ -14,9 +14,9 @@ import org.lwjgl.opengl.GL11;
 
 public class PotionBase extends Potion {
     private final ResourceLocation TEXTURE = new ResourceLocation("da:textures/potion/potions.png");
-    private static final float TEXTURE_SIZE = 64;
+    private static final float TEXTURE_SIZE = 82;
     public static final int ICON_SIZE = 18;
-    public static final int ROW_SIZE = 3;
+    public static final int ROW_SIZE = 4;
 
 
     protected PotionBase(String name, boolean isBadEffectIn, int liquidColorIn) {

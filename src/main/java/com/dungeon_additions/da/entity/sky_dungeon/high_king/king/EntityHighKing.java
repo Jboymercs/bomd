@@ -2411,6 +2411,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             if(this.getSpawnLocation() != null && !world.isRemote) {
                 this.turnBossIntoSummonSpawner(this.getSpawnLocation());
                 this.createCoinSpawns(this.getPositionVector(), 0, ModRand.range(5, 8), 4);
+                this.createTreasureBag(this.getPositionVector(), "high_king");
             }
             this.setDead();
             this.setDropItemsWhenDead(true);
@@ -2438,7 +2439,10 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
     @Override
     protected ResourceLocation getLootTable() {
-        return LOOT_BOSS;
+        if(this.getSpawnLocation() == null || !ModConfig.bosses_drop_treasure_bags) {
+            return LOOT_BOSS;
+        }
+        return null;
     }
 
 

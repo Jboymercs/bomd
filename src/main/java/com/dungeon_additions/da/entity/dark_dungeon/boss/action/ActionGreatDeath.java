@@ -30,7 +30,7 @@ public class ActionGreatDeath implements IAction {
         Vec3d plotPointX12 = center.add(18, 0, -18);
 
         for(int i = 0; i <= 36; i += 6) {
-                EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world);
+                EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world, actor.getAttack() * 0.5F);
                 Vec3d relPos5 = plotPointX.add(-i, 0, 0);
                 int yVar5 = getSurfaceHeight(actor.world, new BlockPos(relPos5.x, relPos5.y, relPos5.z), (int) actor.posY - 3, (int) actor.posY + 4);
                 bolt5.setPosition(relPos5.x, relPos5.y, relPos5.z);
@@ -38,7 +38,7 @@ public class ActionGreatDeath implements IAction {
         }
 
         for(int i = 0; i <= 36; i += 6) {
-            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world);
+            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world , actor.getAttack() * 0.5F);
             Vec3d relPos5 = plotPointX2.add(-i, 0, 0);
             int yVar5 = getSurfaceHeight(actor.world, new BlockPos(relPos5.x, relPos5.y, relPos5.z), (int) actor.posY - 3, (int) actor.posY + 4);
             bolt5.setPosition(relPos5.x, relPos5.y, relPos5.z);
@@ -46,7 +46,7 @@ public class ActionGreatDeath implements IAction {
         }
 
         for(int i = 0; i <= 36; i += 6) {
-            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world);
+            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world , actor.getAttack() * 0.5F);
             Vec3d relPos5 = plotPointX3.add(-i, 0, 0);
             int yVar5 = getSurfaceHeight(actor.world, new BlockPos(relPos5.x, relPos5.y, relPos5.z), (int) actor.posY - 3, (int) actor.posY + 4);
             bolt5.setPosition(relPos5.x, relPos5.y, relPos5.z);
@@ -54,7 +54,7 @@ public class ActionGreatDeath implements IAction {
         }
 
         for(int i = 0; i <= 36; i += 6) {
-            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world);
+            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world, actor.getAttack() * 0.5F);
             Vec3d relPos5 = plotPointX4.add(-i, 0, 0);
             int yVar5 = getSurfaceHeight(actor.world, new BlockPos(relPos5.x, relPos5.y, relPos5.z), (int) actor.posY - 3, (int) actor.posY + 4);
             bolt5.setPosition(relPos5.x, relPos5.y, relPos5.z);
@@ -62,7 +62,7 @@ public class ActionGreatDeath implements IAction {
         }
 
         for(int i = 0; i <= 36; i += 6) {
-            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world);
+            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world, actor.getAttack() * 0.5F);
             Vec3d relPos5 = plotPointX5.add(-i, 0, 0);
             int yVar5 = getSurfaceHeight(actor.world, new BlockPos(relPos5.x, relPos5.y, relPos5.z), (int) actor.posY - 3, (int) actor.posY + 4);
             bolt5.setPosition(relPos5.x, relPos5.y, relPos5.z);
@@ -70,7 +70,7 @@ public class ActionGreatDeath implements IAction {
         }
 
         for(int i = 0; i <= 36; i += 6) {
-            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world);
+            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world, actor.getAttack() * 0.5F);
             Vec3d relPos5 = plotPointX6.add(-i, 0, 0);
             int yVar5 = getSurfaceHeight(actor.world, new BlockPos(relPos5.x, relPos5.y, relPos5.z), (int) actor.posY - 3, (int) actor.posY + 4);
             bolt5.setPosition(relPos5.x, relPos5.y, relPos5.z);
@@ -79,7 +79,7 @@ public class ActionGreatDeath implements IAction {
 
         //center
         for(int i = 0; i <= 36; i += 6) {
-            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world);
+            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world, actor.getAttack() * 0.5F);
             Vec3d relPos5 = plotPointCenter.add(-i, 0, 0);
             int yVar5 = getSurfaceHeight(actor.world, new BlockPos(relPos5.x, relPos5.y, relPos5.z), (int) actor.posY - 3, (int) actor.posY + 4);
             bolt5.setPosition(relPos5.x, relPos5.y, relPos5.z);
@@ -87,7 +87,7 @@ public class ActionGreatDeath implements IAction {
         }
 
         for(int i = 0; i <= 36; i += 6) {
-            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world);
+            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world, actor.getAttack() * 0.5F);
             Vec3d relPos5 = plotPointX7.add(-i, 0, 0);
             int yVar5 = getSurfaceHeight(actor.world, new BlockPos(relPos5.x, relPos5.y, relPos5.z), (int) actor.posY - 3, (int) actor.posY + 4);
             bolt5.setPosition(relPos5.x, relPos5.y, relPos5.z);
@@ -95,7 +95,7 @@ public class ActionGreatDeath implements IAction {
         }
 
         for(int i = 0; i <= 36; i += 6) {
-            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world);
+            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world, actor.getAttack() * 0.5F);
             Vec3d relPos5 = plotPointX8.add(-i, 0, 0);
             int yVar5 = getSurfaceHeight(actor.world, new BlockPos(relPos5.x, relPos5.y, relPos5.z), (int) actor.posY - 3, (int) actor.posY + 4);
             bolt5.setPosition(relPos5.x, relPos5.y, relPos5.z);
@@ -103,7 +103,7 @@ public class ActionGreatDeath implements IAction {
         }
 
         for(int i = 0; i <= 36; i += 6) {
-            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world);
+            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world, actor.getAttack() * 0.5F);
             Vec3d relPos5 = plotPointX9.add(-i, 0, 0);
             int yVar5 = getSurfaceHeight(actor.world, new BlockPos(relPos5.x, relPos5.y, relPos5.z), (int) actor.posY - 3, (int) actor.posY + 4);
             bolt5.setPosition(relPos5.x, relPos5.y, relPos5.z);
@@ -111,7 +111,7 @@ public class ActionGreatDeath implements IAction {
         }
 
         for(int i = 0; i <= 36; i += 6) {
-            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world);
+            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world, actor.getAttack() * 0.5F);
             Vec3d relPos5 = plotPointX10.add(-i, 0, 0);
             int yVar5 = getSurfaceHeight(actor.world, new BlockPos(relPos5.x, relPos5.y, relPos5.z), (int) actor.posY - 3, (int) actor.posY + 4);
             bolt5.setPosition(relPos5.x, relPos5.y, relPos5.z);
@@ -119,7 +119,7 @@ public class ActionGreatDeath implements IAction {
         }
 
         for(int i = 0; i <= 36; i += 6) {
-            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world);
+            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world, actor.getAttack() * 0.5F);
             Vec3d relPos5 = plotPointX11.add(-i, 0, 0);
             int yVar5 = getSurfaceHeight(actor.world, new BlockPos(relPos5.x, relPos5.y, relPos5.z), (int) actor.posY - 3, (int) actor.posY + 4);
             bolt5.setPosition(relPos5.x, relPos5.y, relPos5.z);
@@ -127,7 +127,7 @@ public class ActionGreatDeath implements IAction {
         }
 
         for(int i = 0; i <= 36; i += 6) {
-            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world);
+            EntityGreatDeath bolt5 = new EntityGreatDeath(actor.world, actor.getAttack() * 0.5F);
             Vec3d relPos5 = plotPointX12.add(-i, 0, 0);
             int yVar5 = getSurfaceHeight(actor.world, new BlockPos(relPos5.x, relPos5.y, relPos5.z), (int) actor.posY - 3, (int) actor.posY + 4);
             bolt5.setPosition(relPos5.x, relPos5.y, relPos5.z);

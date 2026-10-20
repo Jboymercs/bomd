@@ -180,6 +180,11 @@
           ]
         },
         {
+          "type": "loot_table",
+          "name": "da:rare_loot_items",
+          "weight": 1
+        },
+        {
           "type": "item",
           "name": "minecraft:redstone",
           "weight": 10,

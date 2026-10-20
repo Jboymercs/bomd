@@ -4,6 +4,7 @@ import com.dungeon_additions.da.animation.example.EntityExample;
 import com.dungeon_additions.da.animation.example.ModelExample;
 import com.dungeon_additions.da.blocks.desert_dungeon.RenderPuzzleMirror;
 import com.dungeon_additions.da.entity.EntityNetherAbberrant;
+import com.dungeon_additions.da.entity.EntityTestModel;
 import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
@@ -187,6 +188,7 @@ public class RenderHandler {
         registerProjectileRenderer3DModel(ProjectileDauntlessFist.class, ModItems.DAUNTLESS_FIST, true);
         registerProjectileRenderer3DModel(ProjectileStormTrident.class, ModItems.STORMVIER_TRIDENT, true);
         registerProjectileRenderer(ProjectileDelayedPoisonCloud.class, ModItems.POISON_CLOUD_PROJECTILE);
+        registerProjectileRenderer(ProjectileRedLightningGround.class, ModItems.INVISISBLE_ITEM);
     }
 
     //Handles Rendering
@@ -383,6 +385,18 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityDarkVoidSpawn.class, RenderDarkVoidSpawn::new);
         //Chevalier
         RenderingRegistry.registerEntityRenderingHandler(EntityChevalier.class, RenderChevalier::new);
+        //Test Model
+        RenderingRegistry.registerEntityRenderingHandler(EntityTestModel.class, RenderTestModel::new);
+        //Spear Incarnate
+        RenderingRegistry.registerEntityRenderingHandler(EntitySpearIncarnate.class, RenderSpearIncarnate::new);
+        //Rohs Eye
+        RenderingRegistry.registerEntityRenderingHandler(EntityRohsEye.class, RenderRohsEye::new);
+        //Brine Creep
+        RenderingRegistry.registerEntityRenderingHandler(EntityBrineCreep.class, RenderBrineCreep::new);
+        //Everchosen
+        RenderingRegistry.registerEntityRenderingHandler(EntityEverchosen.class, RenderEverchosenSword::new);
+        //
+        RenderingRegistry.registerEntityRenderingHandler(EntityEverchosenHammer.class, RenderEverChosenHammer::new);
         //Puzzle Mirror
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPuzzleMirror.class, new RenderPuzzleMirror());
 

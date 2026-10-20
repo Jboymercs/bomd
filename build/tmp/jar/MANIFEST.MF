@@ -1,7 +1,9 @@
 Manifest-Version: 1.0
-FMLCorePluginContainsFMLMod: false
+MixinConfigs: mixins.da.json
 FMLAT: da_at.cfg
-Implementation-Timestamp: 2024-11-08T18:11:23-0600
+Implementation-Timestamp: 2026-10-17T21:38:58-0500
+TweakClass: org.spongepowered.asm.launch.MixinTweaker
 ForceLoadAsMod: true
-Specification-Version: 1.12.2-0.0.6
+Specification-Version: 1.12.2-0.1.7.6
+FMLCorePlugin: com.dungeon_additions.da.asm.DAPlugin
 

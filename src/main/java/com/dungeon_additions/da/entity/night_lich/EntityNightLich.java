@@ -1375,6 +1375,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             world.setBlockState(posModified.down(), Blocks.STONEBRICK.getDefaultState());
             turnBossIntoSummonSpawner(posModified);
             this.createCoinSpawns(this.getPositionVector(), ModRand.range(15, 28), 0, 0);
+            this.createTreasureBag(this.getPositionVector(), "night_lich");
         }
         super.onDeath(cause);
     }
@@ -1383,7 +1384,10 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
     @Override
     protected ResourceLocation getLootTable() {
-        return LOOT_BOSS;
+        if(!ModConfig.bosses_drop_treasure_bags) {
+            return LOOT_BOSS;
+        }
+        return null;
     }
 
 

@@ -89,6 +89,19 @@ public class EventWearFlameArmor {
             Main.proxy.spawnParticle(32, base.world,base.posX + ModRand.getFloat(1.5F), base.posY + base.getEyeHeight(), base.posZ + ModRand.getFloat(1.5F), 0, -0.03, 0);
         }
 
+        if(base.ticksExisted % 30 == 0 && base.isPotionActive(ModPotions.FIERY_RESPITE)) {
+           // Main.proxy.spawnParticle(45, base.world,base.posX + ModRand.getFloat(1.5F), base.posY + base.getEyeHeight(), base.posZ + ModRand.getFloat(1.5F), 0, -0.03, 0);
+            Main.proxy.spawnParticle(49, base.world,base.posX + ModRand.getFloat(1.5F), base.posY + base.getEyeHeight(), base.posZ + ModRand.getFloat(1.5F), 0, -0.03, 0, 16728891);
+        }
+
+        if(base.ticksExisted % 20 == 0 && base.isPotionActive(ModPotions.MAGIC_AURA) && !base.world.isRemote) {
+            Main.proxy.spawnParticle(47, base.world,base.posX + ModRand.getFloat(1F), base.posY + base.getEyeHeight(), base.posZ + ModRand.getFloat(1F), 0, -0.03, 0);
+        }
+
+        if(base.ticksExisted % 45 == 0 && base.isPotionActive(ModPotions.DARKDRIFT) && !base.world.isRemote) {
+            Main.proxy.spawnParticle(46, base.world,base.posX + ModRand.getFloat(1.5F), base.posY + base.getEyeHeight() - 0.5F, base.posZ + ModRand.getFloat(1.5F), 0, 0.02, 0);
+        }
+
         //faltered potion
         if(base.isPotionActive(ModPotions.FALTERED)) {
             if(Objects.requireNonNull(base.getActivePotionEffect(ModPotions.FALTERED)).getDuration() != 0) {
@@ -111,6 +124,7 @@ public class EventWearFlameArmor {
                             base.motionY = moveVec.y * 1.4;
                             base.motionZ = moveVec.z * 0.7;
                             base.velocityChanged = true;
+                            base.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, duration, 1));
                         }
                         ModUtils.circleCallback(2, 10, (pos)-> {
                             pos = new Vec3d(pos.x, 0, pos.y);
@@ -120,9 +134,6 @@ public class EventWearFlameArmor {
                         });
                     } else {
                         //when the player hits the ground they will be unable to move
-                        if(base instanceof EntityPlayer) {
-                            base.rotationPitch = 55;
-                        }
                         if(base.canBePushed() && base.onGround && !base.isBeingRidden()) {
                             base.motionZ = 0;
                             base.motionX = 0;
@@ -211,6 +222,12 @@ public class EventWearFlameArmor {
 
             //Night Lich Helmet
             if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.NIGHT_LICH_HELMET) {
+                if(base.ticksExisted % 40 == 0 && base.isPotionActive(MobEffects.SLOWNESS)) {
+                    base.removePotionEffect(MobEffects.SLOWNESS);
+                }
+            }
+            //Void Crown
+            if(base.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.VOID_FLOWER_CROWN) {
                 if(base.ticksExisted % 40 == 0 && base.isPotionActive(MobEffects.POISON)) {
                     base.removePotionEffect(MobEffects.POISON);
                 }
@@ -551,7 +568,7 @@ public class EventWearFlameArmor {
     {
         //removes assassin spawns that occur when the players don't meet advancement requirements
         EntityLivingBase base = event.getEntityLiving();
-        if(base instanceof EntityDarkAssassin) {
+        if(base instanceof EntityDarkAssassin && event.getWorld().provider.getDimension() != -1) {
             EntityDarkAssassin assassin = ((EntityDarkAssassin) base);
             event.getWorld().playerEntities.forEach((p)-> {
                 if(!ModUtils.getAdvancementCompletionAsListBase(p, ModConfig.assassins_spawn_progress) && !assassin.isSpawnOverride()) {
@@ -560,7 +577,7 @@ public class EventWearFlameArmor {
             });
         }
 
-        if(base instanceof EntityDarkSorcerer) {
+        if(base instanceof EntityDarkSorcerer && event.getWorld().provider.getDimension() != -1) {
             EntityDarkSorcerer assassin = ((EntityDarkSorcerer) base);
             event.getWorld().playerEntities.forEach((p)-> {
                 if(!ModUtils.getAdvancementCompletionAsListBase(p, ModConfig.sorcerers_spawn_progress) && !assassin.isSpawnOverride()) {

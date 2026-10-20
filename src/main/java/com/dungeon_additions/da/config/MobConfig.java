@@ -777,6 +777,31 @@ public class MobConfig {
     @Config.RangeInt(min = 1, max = 10)
     public static int crypt_guard_potion_chance = 8;
 
+    @Config.Name("Roh Darkdrift Devil Health")
+    @Config.Comment("Change the health of the Roh Darkdrift Devil")
+    @Config.RequiresMcRestart
+    public static double roh_health = 650;
+
+    @Config.Name("Roh Darkdrift Devil Attack Damage")
+    @Config.Comment("Change the attack damage of the Roh Darkdrift Devil")
+    @Config.RequiresMcRestart
+    public static double roh_attack_damage = 35;
+
+    @Config.Name("Roh Darkdrift Devil Armor")
+    @Config.Comment("Change the armor value of the Roh Darkdrift Devil")
+    @Config.RequiresMcRestart
+    public static double roh_armor = 14;
+
+    @Config.Name("Roh Darkdrift Devil Armor Toughness")
+    @Config.Comment("Change the armor toughness value of the Roh Darkdrift Devil")
+    @Config.RequiresMcRestart
+    public static double roh_armor_toughness = 6;
+
+    @Config.Name("Roh Darkdrift Devil Attack Cooldown")
+    @Config.Comment("Change the attack cooldown of Roh Darkdrift Devil. In ticks. 20 ticks equals one second.")
+    @Config.RequiresMcRestart
+    public static int roh_attack_cooldown = 4;
+
     @Config.Name("High Court Knights Health")
     @Config.Comment("Change the health of the High Court Knights")
     @Config.RequiresMcRestart

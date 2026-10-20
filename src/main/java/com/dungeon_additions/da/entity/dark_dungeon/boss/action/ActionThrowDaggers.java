@@ -19,7 +19,7 @@ public class ActionThrowDaggers implements IAction {
     @Override
     public void performAction(EntityAbstractBase actor, EntityLivingBase target) {
         float inaccuracy = 0.0f;
-        float speed = 1.4f;
+        float speed = 1.65f;
         Vec3d relPos = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(2, 1.25, 0)));
 
         ProjectileSorceryDagger projectile = new ProjectileSorceryDagger(actor.world, actor, actor.getAttack() * 0.75F);
@@ -74,7 +74,7 @@ public class ActionThrowDaggers implements IAction {
 
     private void addDaggers(EntityAbstractBase actor) {
         float inaccuracy = 0.0f;
-        float speed = 1.4f;
+        float speed = 1.65f;
 
         Vec3d relPos = actor.getPositionVector().add(ModUtils.getRelativeOffset(actor, new Vec3d(2, 1.25, 0)));
 

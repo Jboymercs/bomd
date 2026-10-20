@@ -5,9 +5,12 @@ import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
+import com.dungeon_additions.da.util.PlayerRohCorruptionUtils;
+import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -49,15 +52,24 @@ public class EntityDemonRitual extends EntityDarkBase implements IAnimationTicka
         super.onUpdate();
 
         if(!world.isRemote) {
-            if(this.ticksExisted % 30 == 0) {
+            if(this.ticksExisted % 30 == 0 || this.ticksExisted == 1) {
                 world.setEntityState(this, ModUtils.PARTICLE_BYTE);
+                if(this.ticksExisted == 1) {
+                    this.playSound(SoundsHandler.CAST_GENERIC_SPELL, 0.5f, 0.3f / (rand.nextFloat() * 0.4F + 0.4f));
+                }
             }
             List<EntityLivingBase> collision_box = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox(), e -> !e.getIsInvulnerable());
             if(!collision_box.isEmpty()) {
                 for(EntityLivingBase base : collision_box) {
                     if(!(base instanceof EntityDarkBase)) {
-                        this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.4F, 1.4f + ModRand.getFloat(0.1f));
+                        this.playSound(SoundsHandler.ROH_SIGIL_BREAK, 0.4F, 1.4f + ModRand.getFloat(0.1f));
                         this.setDead();
+                        if(base instanceof EntityPlayer) {
+                            EntityPlayer player = ((EntityPlayer) base);
+                            if(PlayerRohCorruptionUtils.getRohsCorruption(player) > 0) {
+                                PlayerRohCorruptionUtils.setRohsCorruption(player, PlayerRohCorruptionUtils.getRohsCorruption(player) - 30);
+                            }
+                        }
                     }
                 }
             }
@@ -83,7 +95,13 @@ public class EntityDemonRitual extends EntityDarkBase implements IAnimationTicka
 
     @Override
     public final boolean attackEntityFrom(DamageSource source, float amount) {
-        this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.4F, 1.4f + ModRand.getFloat(0.1f));
+        this.playSound(SoundsHandler.ROH_SIGIL_BREAK, 0.4F, 1.4f + ModRand.getFloat(0.1f));
+        if(source.getTrueSource() instanceof EntityPlayer) {
+            EntityPlayer player = ((EntityPlayer) source.getTrueSource());
+            if(PlayerRohCorruptionUtils.getRohsCorruption(player) > 0) {
+                PlayerRohCorruptionUtils.setRohsCorruption(player, PlayerRohCorruptionUtils.getRohsCorruption(player) - 15);
+            }
+        }
         return super.attackEntityFrom(source, amount);
     }
 

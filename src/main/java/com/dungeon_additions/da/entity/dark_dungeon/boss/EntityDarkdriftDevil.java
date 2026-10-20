@@ -1,24 +1,26 @@
 package com.dungeon_additions.da.entity.dark_dungeon.boss;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.blocks.boss.BlockEnumBossSummonState;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.dark_dungeon.EntityAIDarkDriftDevilAttack;
-import com.dungeon_additions.da.entity.blossom.EntityAbstractVoidBlossom;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
+import com.dungeon_additions.da.entity.dark_dungeon.EntityRohsEye;
 import com.dungeon_additions.da.entity.dark_dungeon.boss.action.*;
-import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
+import com.dungeon_additions.da.entity.dark_dungeon.boss.util.RohUtils;
+import com.dungeon_additions.da.entity.dark_dungeon.dauntless.ActionDauntlessImpact;
 import com.dungeon_additions.da.entity.generic.EntityDelayedExplosion;
-import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
+import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.action.ActionHolySpikeAOE;
+import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
 import com.dungeon_additions.da.entity.util.IEntitySound;
-import com.dungeon_additions.da.entity.void_dungeon.EntityObsidilith;
-import com.dungeon_additions.da.util.ModRand;
-import com.dungeon_additions.da.util.ModUtils;
-import com.dungeon_additions.da.util.ServerScaleUtil;
+import com.dungeon_additions.da.init.ModBlocks;
+import com.dungeon_additions.da.init.ModPotions;
+import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
-import com.sun.jna.platform.win32.WinDef;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -26,9 +28,9 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,7 +38,10 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -57,6 +62,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable, IAnimationTickable, IAttack, IEntitySound {
@@ -66,6 +72,11 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
     private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.NOTCHED_10));
     private EntityLivingBase grabbedEntity;
     private boolean grabDetection = false;
+    private boolean castingDespair = false;
+    private int despair_cooldown = 30 * 20;
+    private int jump_amount = 0;
+    private int cooldown_wait_time = 0;
+    private boolean isStartingJumpStrike = false;
 
     private final String ANIM_IDLE_LOWER = "idle_lower";
     private final String ANIM_IDLE_UPPER = "idle_upper";
@@ -77,6 +88,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
     private final String ANIM_ENTER_MEDITATION = "enter_meditation";
     private final String ANIM_MEDITATION_LOOP = "meditation_loop";
     private final String ANIM_EXIT_MEDITATION = "exit_meditation";
+    private final String ANIM_DEATH = "death";
 
     //attacks one anim
     private final String ANIM_TELEPORT_ATTACK = "teleport";
@@ -86,6 +98,9 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
     private final String ANIM_CAST_SIGIL_ROUND = "cast_multi_sigil";
     private final String ANIM_DESPAIR = "despair";
     private final String ANIM_SPEAR_INCARNATE = "spear_incarnate";
+    private final String ANIM_VERTICAL_SLASH = "vertical_slash";
+    private final String ANIM_HORIZONTAL_SLASH = "horizontal_slash";
+    private final String ANIM_JUMP_SLAM = "jump_slam";
 
     //combos
     private final String ANIM_LONG_SWING = "long_swing";
@@ -105,6 +120,10 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
     private final String ANIM_MELEE_SWING_FINISH = "melee_swing_finish";
     private final String ANIM_MELEE_SWING_DASH = "melee_swing_dash";
     private final String ANIM_MELEE_SWING_FINISH_TWO = "melee_swing_finish_2";
+
+    private final String ANIM_BEGIN_JUMPSTRIKE = "jump_strike";
+    private final String ANIM_LOOP_JUMPSTRIKE = "jump_strike_hold";
+    private final String ANIM_END_JUMPSTRIKE = "jump_strike_end";
 
     private final String ANIM_GRAB = "grab";
     private final String ANIM_GRAB_CONTINUE = "grab_continue";
@@ -141,7 +160,13 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
     private static final DataParameter<Boolean> SWING_MELEE_FINISH_TWO = EntityDataManager.createKey(EntityDarkdriftDevil.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SWING_MELEE_DASH = EntityDataManager.createKey(EntityDarkdriftDevil.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> GREAT_DEATH = EntityDataManager.createKey(EntityDarkdriftDevil.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> DEATH_STATE = EntityDataManager.createKey(EntityDarkdriftDevil.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DEMON_BUFF = EntityDataManager.createKey(EntityDarkdriftDevil.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> BEGIN_JUMP_STRIKE = EntityDataManager.createKey(EntityDarkdriftDevil.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> LOOP_JUMP_STRIKE = EntityDataManager.createKey(EntityDarkdriftDevil.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> END_JUMP_STRIKE = EntityDataManager.createKey(EntityDarkdriftDevil.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> VERTICAL_SLASH = EntityDataManager.createKey(EntityDarkdriftDevil.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> HORIZONTAL_SLASH = EntityDataManager.createKey(EntityDarkdriftDevil.class, DataSerializers.BOOLEAN);
     public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntityDarkdriftDevil.class, DataSerializers.BLOCK_POS);
     public static DataParameter<Boolean> SET_SPAWN_LOC = EntityDataManager.createKey(EntityDarkdriftDevil.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntityDarkdriftDevil.class, DataSerializers.BOOLEAN);
@@ -149,6 +174,18 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
 
     private void setTeleportAttack(boolean value) {this.dataManager.set(TELEPORT_ATTACK, Boolean.valueOf(value));}
     private boolean isTeleportAttack() {return this.dataManager.get(TELEPORT_ATTACK);}
+    public void setDeathState(boolean value) {this.dataManager.set(DEATH_STATE, Boolean.valueOf(value));}
+    public boolean isDeathState() {return this.dataManager.get(DEATH_STATE);}
+    private void setVerticalSlash(boolean value) {this.dataManager.set(VERTICAL_SLASH, Boolean.valueOf(value));}
+    private boolean isVerticalSlash() {return this.dataManager.get(VERTICAL_SLASH);}
+    private void setHorizontalSlash(boolean value) {this.dataManager.set(HORIZONTAL_SLASH, Boolean.valueOf(value));}
+    private boolean isHorizontalSlash() {return this.dataManager.get(HORIZONTAL_SLASH);}
+    private void setBeginJumpStrike(boolean value) {this.dataManager.set(BEGIN_JUMP_STRIKE, Boolean.valueOf(value));}
+    private boolean isBeginJumpStrike() {return this.dataManager.get(BEGIN_JUMP_STRIKE);}
+    private void setLoopJumpStrike(boolean value) {this.dataManager.set(LOOP_JUMP_STRIKE, Boolean.valueOf(value));}
+    private boolean isLoopJumpStrike() {return this.dataManager.get(LOOP_JUMP_STRIKE);}
+    private void setEndJumpStrike(boolean value) {this.dataManager.set(END_JUMP_STRIKE, Boolean.valueOf(value));}
+    private boolean isEndJumpStrike() {return this.dataManager.get(END_JUMP_STRIKE);}
     private void setSummonMeteor(boolean value) {this.dataManager.set(SUMMON_METEOR, Boolean.valueOf(value));}
     private boolean isSummonMeteor() {return this.dataManager.get(SUMMON_METEOR);}
     private void setGrabAttack(boolean value) {this.dataManager.set(GRAB_ATTACK, Boolean.valueOf(value));}
@@ -180,7 +217,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
     private void setCastRoundSigil(boolean value) {this.dataManager.set(CAST_ROUND_SIGIL, Boolean.valueOf(value));}
     private boolean isCastRoundSigil() {return this.dataManager.get(CAST_ROUND_SIGIL);}
     private void setCastDespair(boolean value) {this.dataManager.set(CAST_DESPAIR, Boolean.valueOf(value));}
-    private boolean isCastDespair() {return this.dataManager.get(CAST_DESPAIR);}
+    public boolean isCastDespair() {return this.dataManager.get(CAST_DESPAIR);}
     private void setEvade(boolean value) {this.dataManager.set(EVADE, Boolean.valueOf(value));}
     private boolean isEvade() {return this.dataManager.get(EVADE);}
     private void setSpearUltimate(boolean value) {this.dataManager.set(SPEAR_ULTIMATE, Boolean.valueOf(value));}
@@ -248,6 +285,70 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
         this.hemorrhage_resistance = 0.92F;
     }
 
+    public EntityDarkdriftDevil(World world, int timesUsed, BlockPos pos) {
+        super(world);
+        this.setSize(1.1F, 3.45F);
+        this.timesUsed = timesUsed;
+        this.iAmBossMob = true;
+        this.isImmuneToFire = true;
+        this.falter_resistance = 1.5F;
+        this.hemorrhage_resistance = 0.92F;
+        this.timesUsed++;
+        this.doBossReSummonScaling();
+        this.onSummon(pos);
+    }
+
+    public void onSummon(EntityLivingBase actor) {
+        this.setPosition(actor.posX, actor.posY - 0.75, actor.posZ);
+        BlockPos pos = new BlockPos(actor.posX, actor.posY - 1, actor.posZ);
+        this.setSpawnLocation(pos);
+        this.setSetSpawnLoc(true);
+        world.spawnEntity(this);
+        this.lockLook = true;
+        actor.setDead();
+        world.setBlockToAir(pos.add(0, 2, 0));
+        world.setBlockToAir(pos.add(0, 3, 0));
+        this.setEndMeditation(true);
+        this.setFullBodyUsage(true);
+        this.setImmovable(true);
+        ModUtils.performNTimes(15, (b) -> {
+            // Main.proxy.spawnParticle(30, finalPos.x + ModRand.getFloat(1.5F), finalPos.y + ModRand.getFloat(1.4F) + 2, finalPos.z + ModRand.getFloat(1.5F), 0, -0.06, 0, 7340032);
+            Main.proxy.spawnParticle(48, actor.world, this.posX + ModRand.getFloat(1.5F), this.posY + ModRand.getFloat(1.4F) + 1.4F , this.posZ + ModRand.getFloat(1.5F), 0, 0.06, 0, 11607828);
+        });
+        this.playSound(SoundsHandler.ROH_SUMMON, 1.5F, 1f + ModRand.getFloat(0.1f));
+        addEvent(()-> {
+            this.lockLook = false;
+        }, 20);
+        addEvent(()-> {
+            this.setEndMeditation(false);
+            this.setFullBodyUsage(false);
+            this.setImmovable(false);
+        }, 25);
+    }
+
+    public void onSummon(BlockPos pos) {
+        this.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+        this.setSpawnLocation(pos.add(0.5, 0, 0.5));
+        this.setSetSpawnLoc(true);
+        world.spawnEntity(this);
+        this.lockLook = true;
+        this.setEndMeditation(true);
+        this.setFullBodyUsage(true);
+        this.setImmovable(true);
+        ModUtils.performNTimes(15, (b) -> {
+            Main.proxy.spawnParticle(48, world, this.posX + ModRand.getFloat(1.5F), this.posY + ModRand.getFloat(1.4F) + 1.4F , this.posZ + ModRand.getFloat(1.5F), 0, 0.06, 0, 11607828);
+        });
+        this.playSound(SoundsHandler.ROH_SUMMON, 1.5F, 1f + ModRand.getFloat(0.1f));
+        addEvent(()-> {
+            this.lockLook = false;
+        }, 20);
+        addEvent(()-> {
+            this.setEndMeditation(false);
+            this.setFullBodyUsage(false);
+            this.setImmovable(false);
+        }, 25);
+    }
+
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("Teleport_Attack", this.isTeleportAttack());
@@ -276,9 +377,15 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
         nbt.setBoolean("Swing_Continue", this.isSwingMeleeContinue());
         nbt.setBoolean("Swing_Finish", this.isSwingMeleeFinish());
         nbt.setBoolean("Swing_Dash", this.isSwingMeleeDash());
+        nbt.setBoolean("Begin_Jumpstrike", this.isBeginJumpStrike());
+        nbt.setBoolean("Loop_Jumpstrike", this.isLoopJumpStrike());
+        nbt.setBoolean("End_Jumpstrike", this.isEndJumpStrike());
         nbt.setBoolean("Swing_Finish_Two", this.isSwingMeleeFinishTwo());
         nbt.setBoolean("Long_Swing_Finish", this.isLongSwingFinish());
+        nbt.setBoolean("Horizontal_Slash", this.isHorizontalSlash());
+        nbt.setBoolean("Vertical_Slash", this.isVerticalSlash());
         nbt.setBoolean("Great_Death", this.isGreatDeath());
+        nbt.setBoolean("Death_State", this.isDeathState());
         nbt.setBoolean("Demon_Buff", this.isDemonBuff());
         nbt.setBoolean("Had_Target", this.isHadPreviousTarget());
         nbt.setInteger("Spawn_Loc_X", this.getSpawnLocation().getX());
@@ -300,6 +407,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
         this.setLongSwingContinue(nbt.getBoolean("Long_Swing_Continue"));
         this.setCastSigil(nbt.getBoolean("Cast_Sigil"));
         this.setStomp(nbt.getBoolean("Stomp"));
+        this.setDeathState(nbt.getBoolean("Death_State"));
         this.setStompContinue(nbt.getBoolean("Stomp_Continue"));
         this.setStompFinish(nbt.getBoolean("Stomp_Finish"));
         this.setThrowDaggers(nbt.getBoolean("Throw_Daggers"));
@@ -309,12 +417,17 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
         this.setCastRoundSigil(nbt.getBoolean("Cast_Round_Sigil"));
         this.setCastDespair(nbt.getBoolean("Cast_Despair"));
         this.setEvade(nbt.getBoolean("Evade"));
+        this.setBeginJumpStrike(nbt.getBoolean("Begin_Jumpstrike"));
+        this.setLoopJumpStrike(nbt.getBoolean("Loop_Jumpstrike"));
+        this.setEndJumpStrike(nbt.getBoolean("End_Jumpstrike"));
         this.setSpearUltimate(nbt.getBoolean("Spear_Ultimate"));
         this.setEnterMeditation(nbt.getBoolean("Enter_Meditation"));
         this.setMeditationLoop(nbt.getBoolean("Meditation_Loop"));
         this.setEndMeditation(nbt.getBoolean("End_Meditation"));
         this.setSwingMelee(nbt.getBoolean("Swing_Melee"));
         this.setDemonBuff(nbt.getBoolean("Demon_Buff"));
+        this.setHorizontalSlash(nbt.getBoolean("Horizontal_Slash"));
+        this.setVerticalSlash(nbt.getBoolean("Vertical_Slash"));
         this.setSwingMeleeDash(nbt.getBoolean("Swing_Dash"));
         this.setSwingMeleeContinue(nbt.getBoolean("Swing_Continue"));
         this.setSwingMeleeFinish(nbt.getBoolean("Swing_Finish"));
@@ -359,8 +472,14 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
         this.dataManager.register(SWING_MELEE_CONTINUE, Boolean.valueOf(false));
         this.dataManager.register(SWING_MELEE, Boolean.valueOf(false));
         this.dataManager.register(SWING_MELEE_DASH, Boolean.valueOf(false));
+        this.dataManager.register(BEGIN_JUMP_STRIKE, Boolean.valueOf(false));
+        this.dataManager.register(LOOP_JUMP_STRIKE, Boolean.valueOf(false));
+        this.dataManager.register(END_JUMP_STRIKE, Boolean.valueOf(false));
         this.dataManager.register(SWING_MELEE_FINISH, Boolean.valueOf(false));
         this.dataManager.register(LONG_SWING_FINISH,  Boolean.valueOf(false));
+        this.dataManager.register(HORIZONTAL_SLASH, Boolean.valueOf(false));
+        this.dataManager.register(VERTICAL_SLASH, Boolean.valueOf(false));
+        this.dataManager.register(DEATH_STATE, Boolean.valueOf(false));
         this.dataManager.register(GREAT_DEATH, Boolean.valueOf(false));
         this.dataManager.register(SET_SPAWN_LOC, Boolean.valueOf(false));
         this.dataManager.register(DEMON_BUFF, Boolean.valueOf(false));
@@ -375,11 +494,11 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(45D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(29);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(MobConfig.roh_attack_damage);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.31D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(525);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(14);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(6);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MobConfig.roh_health);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(MobConfig.roh_armor);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(MobConfig.roh_armor_toughness);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1D);
     }
 
@@ -415,7 +534,10 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
         }
 
         if(!world.isRemote) {
-
+            this.despair_cooldown--;
+            if(cooldown_wait_time >= 0) {
+                cooldown_wait_time--;
+            }
             //demon buff
             if(this.isDemonBuff()) {
                 if(demon_buff_time <= 0) {
@@ -424,9 +546,50 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
                     this.demon_buff_damage = 0;
                 } else {
                     demon_buff_time--;
-                    demon_buff_damage = 5;
+                    demon_buff_damage = 7;
                 }
             }
+
+            //Despair Attack
+            if(this.castingDespair) {
+                //Causes corruption
+                List<EntityPlayer> nearby_players = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(40), e -> !e.getIsInvulnerable());
+                if(!nearby_players.isEmpty()) {
+                    for(EntityPlayer player : nearby_players) {
+                        if(player.isEntityAlive()) {
+                            PlayerRohCorruptionUtils.setRohsCorruption(player, PlayerRohCorruptionUtils.getRohsCorruption(player) + 1);
+                        }
+                    }
+                }
+
+                if(ticksExisted % 10 == 0) {
+                    //total that can be active
+                    int sigilAmount = 4 + (playersNearbyAmount * 2);
+                    int currentCount = 0;
+                    //How many can be spawned per second
+                    int waveAmount = 1 + playersNearbyAmount;
+                    List<EntityDemonRitual> nearby_sigils = this.world.getEntitiesWithinAABB(EntityDemonRitual.class, this.getEntityBoundingBox().grow(40), e -> !e.getIsInvulnerable());
+                    if (!nearby_sigils.isEmpty()) {
+                        for (EntityDemonRitual sigil : nearby_sigils) {
+                            if (sigil.isEntityAlive()) {
+                                currentCount++;
+                            }
+                        }
+                    }
+                    if (currentCount < sigilAmount) {
+                        for (int i = 0; i <= waveAmount; i++) {
+                            EntityDemonRitual ritual = new EntityDemonRitual(world);
+                            if(this.getSpawnLocation() != null) {
+                                ritual.setPosition(this.getSpawnLocation().getX() + ((ModRand.range(1, 11)) * ModRand.randSign()), this.getSpawnLocation().getY() + 1.5, this.getSpawnLocation().getZ() + ((ModRand.range(1, 11)) * ModRand.randSign()));
+                            } else {
+                                ritual.setPosition(this.posX + ((ModRand.range(1, 11)) * ModRand.randSign()), this.posY - 3, this.posZ + ((ModRand.range(1, 11)) * ModRand.randSign()));
+                            }
+                            world.spawnEntity(ritual);
+                        }
+                    }
+                }
+            }
+
             //meditation stuff
             if(!this.isDemonBuff() && !this.isEnterMeditation() && !this.isMeditationLoop() && !this.isEndMeditation()) {
                 if(currentHealth <= this.getStatLine()) {
@@ -453,6 +616,9 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
                     this.exitMeditationMode();
                 } else {
                     meditation_time--;
+                    if(ticksExisted % 25 == 0) {
+                        this.playSound(SoundsHandler.ROH_CHANT, 1.25f, 1.0F);
+                    }
                 }
 
                 //summon sigils
@@ -477,6 +643,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
                     }
                 }
             }
+
             if(HoverTimeIncrease > 0) {
                 this.motionY = 0.25;
                 HoverTimeIncrease--;
@@ -485,13 +652,6 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
             if (this.didAirAttack && this.onGround) {
                 this.didAirAttack = false;
                 this.lockLook = false;
-            }
-
-            if (this.ticksExisted == 5) {
-                if (this.getSpawnLocation() != null && !this.isSetSpawnLoc()) {
-                        this.setSpawnLocation(this.getPosition());
-                        this.setSetSpawnLoc(true);
-                }
             }
 
             if (this.getSpawnLocation() != null && this.isSetSpawnLoc()) {
@@ -516,20 +676,30 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
                     }
                 }
 
+                //Boss Lives System
+                if(!this.bossInfo.getPlayers().isEmpty() && ModConfig.boss_player_lives_enabled) {
+                    for(EntityPlayerMP player : this.bossInfo.getPlayers()) {
+                        if(!player.isEntityAlive()) {
+                            this.bossInfo.removePlayer(player);
+                            this.setBossPlayerLives(this.getBossPlayerLives() - 1);
+                        }
+                    }
+                }
+
                 //Creates a Target tracking to ensure if it can despawn or not
-                if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled) {
+                if (target == null && this.isHadPreviousTarget() && ModConfig.boss_reset_enabled || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled && this.getSpawnLocation() != null) {
                     int nearbyPlayers = ServerScaleUtil.getPlayersForReset(this, world);
-                    if (nearbyPlayers == 0) {
+                    if (nearbyPlayers == 0 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                         if (targetTrackingTimer > 0) {
                             targetTrackingTimer--;
                         }
-                        if (targetTrackingTimer < 1) {
+                        if (targetTrackingTimer < 1 || this.getBossPlayerLives() <= 0 && ModConfig.boss_player_lives_enabled) {
                             if (this.timesUsed != 0) {
                                 this.timesUsed--;
-                                // turnBossIntoSummonSpawner(this.getSpawnLocation());
+                                 turnBossIntoSummonSpawner(this.getSpawnLocation());
                                 this.setDead();
                             } else {
-                                // this.resetBossTask();
+                                 this.resetBossTask();
                             }
                         }
                     }
@@ -562,11 +732,62 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
             }
         }
     }
+    private static final ResourceLocation LOO_RESET = new ResourceLocation(ModReference.MOD_ID, "burning_arena_reset");
+
+    private void resetBossTask() {
+        this.setImmovable(true);
+        this.setHadPreviousTarget(false);
+        BlockPos pos = this.getSpawnLocation();
+        EntityRohsEye pyre_reset = new EntityRohsEye(world);
+        pyre_reset.setPosition(pos.getX() + 0.5D, pos.getY() + 1, pos.getZ() + 0.5D);
+        world.spawnEntity(pyre_reset);
+        world.setBlockState(pos.add(0, 3, 0), Blocks.CHEST.getDefaultState());
+        TileEntity te = world.getTileEntity(pos.add(0, 3, 0));
+        if(te instanceof TileEntityChest) {
+            TileEntityChest chest = (TileEntityChest) te;
+            chest.setLootTable(LOO_RESET, rand.nextLong());
+        }
+        this.experienceValue = 0;
+        this.setDropItemsWhenDead(false);
+        this.setDead();
+    }
+
+    protected void turnBossIntoSummonSpawner(BlockPos pos) {
+        if(ModConfig.boss_resummon_enabled) {
+            if (this.timesUsed <= ModConfig.boss_resummon_max_uses && !world.isRemote) {
+                world.setBlockState(pos, ModBlocks.BOSS_RESUMMON_BLOCK.getDefaultState());
+                TileEntity te = world.getTileEntity(pos);
+                if (te instanceof TileEntityBossReSummon) {
+                    TileEntityBossReSummon boss_spawner = ((TileEntityBossReSummon) te);
+                    boss_spawner.setState(BlockEnumBossSummonState.INACTIVE, this.timesUsed, "roh");
+                }
+            }
+        }
+    }
+
+    private void endDespairAttack() {
+        //Remove all sigils
+        List<EntityDemonRitual> nearby_sigils = this.world.getEntitiesWithinAABB(EntityDemonRitual.class, this.getEntityBoundingBox().grow(40), e -> !e.getIsInvulnerable());
+        if(!nearby_sigils.isEmpty()) {
+            for(EntityDemonRitual sigil : nearby_sigils) {
+                sigil.setDead();
+            }
+        }
+        //Removes corruption from players
+        List<EntityPlayer> nearby_players = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(40), e -> !e.getIsInvulnerable());
+        if(!nearby_players.isEmpty()) {
+            for(EntityPlayer player : nearby_players) {
+                PlayerRohCorruptionUtils.setRohsCorruption(player, 0);
+            }
+        }
+
+    }
 
     private void enterMeditationMode() {
         this.setEnterMeditation(true);
         this.setImmovable(true);
         this.setFullBodyUsage(true);
+        addEvent(()-> this.playSound(SoundsHandler.ROH_BEGIN, 2.25f, 1.0F), 5);
         addEvent(() -> {
             this.setImmovable(false);
             if(this.getSpawnLocation() != null) {
@@ -616,48 +837,283 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
     public void handleStatusUpdate(byte id) {
         super.handleStatusUpdate(id);
 
+        if(id == ModUtils.PARTICLE_BYTE) {
+            ModUtils.circleCallback(2, (int) (10), (pos)-> {
+                pos = new Vec3d(pos.x, 0, pos.y);
+                Vec3d posToo = this.getPositionVector().add(0, 0.75, 0);
+                Vec3d vel = pos.normalize().scale(Math.abs(ModRand.getFloat(0.25F) + 0.25)).add(ModUtils.yVec(0));
+                Main.proxy.spawnParticle(45, world, posToo.x, posToo.y, posToo.z, vel.x, -0.06, vel.z);
+            });
+
+            ModUtils.circleCallback(2, (int) (13), (pos)-> {
+                pos = new Vec3d(pos.x, 0, pos.y);
+                Vec3d posToo = this.getPositionVector().add(0, 1.5, 0);
+                Vec3d vel = pos.normalize().scale(Math.abs(ModRand.getFloat(0.25F) + 0.25)).add(ModUtils.yVec(0));
+                Main.proxy.spawnParticle(45, world, posToo.x, posToo.y, posToo.z, vel.x, -0.06, vel.z);
+            });
+
+            ModUtils.circleCallback(2, (int) (5), (pos)-> {
+                pos = new Vec3d(pos.x, 0, pos.y);
+                Vec3d posToo = this.getPositionVector().add(0, 1.9, 0);
+                Vec3d vel = pos.normalize().scale(Math.abs(ModRand.getFloat(0.25F) + 0.25)).add(ModUtils.yVec(0));
+                Main.proxy.spawnParticle(45, world, posToo.x, posToo.y, posToo.z, vel.x, -0.06, vel.z);
+            });
+        }
+
+        if(id == ModUtils.SECOND_PARTICLE_BYTE) {
+            Main.proxy.spawnParticle(30, this.posX + ModRand.getFloat(1.5F), this.posY + ModRand.getFloat(1.75F) + 1.75, this.posZ + ModRand.getFloat(1.5F), 0, -0.03, 0, 16777030);
+        }
+
+        if(id == ModUtils.THIRD_PARTICLE_BYTE) {
+            if(this.getSpawnLocation() != null) {
+                ModUtils.performNTimes(3, (b) -> {
+                    Main.proxy.spawnParticle(48, world, this.getSpawnLocation().getX() + ModRand.getFloat(16F), this.getSpawnLocation().getY() + ModRand.getFloat(2F) + 3F , this.getSpawnLocation().getZ() + ModRand.getFloat(16F), 0, 0.03, 0, 11607828);
+                });
+            } else {
+                ModUtils.performNTimes(3, (b) -> {
+                    Main.proxy.spawnParticle(48, world, this.posX + ModRand.getFloat(16F), this.posY + ModRand.getFloat(5F) + 1.4F , this.posZ + ModRand.getFloat(16F), 0, 0.03, 0, 11607828);
+                });
+            }
+        }
+
+    }
+
+    @Override
+    public void onEntityUpdate() {
+        super.onEntityUpdate();
+
+        if(this.isStartingJumpStrike && world.rand.nextInt(2) == 0) {
+            world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
+        }
+
+        if(this.castingDespair) {
+            world.setEntityState(this, ModUtils.THIRD_PARTICLE_BYTE);
+        }
     }
 
     @Override
     public int startAttack(EntityLivingBase target, float distanceSq, boolean strafingBackwards) {
-        if(!this.isFightMode() && !this.isFullBodyUsage() && !this.didAirAttack && !this.isMeditationLoop() && !this.isEndMeditation() && !this.isEnterMeditation() && !this.awaiting_meditation) {
+        if(!this.isFightMode() && !this.isFullBodyUsage() && !this.didAirAttack && !this.isMeditationLoop() && !this.isEndMeditation() && !this.isEnterMeditation() && !this.awaiting_meditation && cooldown_wait_time < 1) {
             double distance = Math.sqrt(distanceSq);
             double healthFac = this.getHealth() / this.getMaxHealth();
-            List<Consumer<EntityLivingBase>> attacksMelee = new ArrayList<>(Arrays.asList(teleport_attack, long_swing, stomp, throw_daggers, melee_attack, great_death, cast_sigil, cast_round_sigil, summon_meteors, grab_attack));
+            List<Consumer<EntityLivingBase>> attacksMelee = new ArrayList<>(Arrays.asList(teleport_attack, long_swing, stomp, throw_daggers, melee_attack, great_death, cast_sigil, cast_round_sigil, summon_meteors, grab_attack, begin_jump_strike, spear_incarnate, despair_attack, jump_slam, horizontal_slash, vertical_slash));
             double[] weights = {
                     (prevAttack != teleport_attack && distance > 5) ? distance * 0.02 : 0, //Teleport Attack
                     (prevAttack != long_swing && distance < 15) ? distance * 0.02 : 0, //Long Swing
                     (prevAttack != stomp && distance <= 18 && healthFac <= 0.75) ? 1/distance : 0, //Stomp Attack % 75
-                    (prevAttack != throw_daggers && distance > 10) ? distance * 0.02 : 0, //Throw Daggers
+                    (prevAttack != throw_daggers && distance > 7) ? distance * 0.02 : 0, //Throw Daggers
                     (prevAttack != melee_attack && distance < 7) ? 1/distance : 0, //Melee Attack
                     (prevAttack != great_death && distance <=18) ? distance * 0.02 : 0, //Great Death
                     (prevAttack != cast_sigil) ? 1/distance : 0, //Cast Sigil
                     (prevAttack != cast_round_sigil && distance > 3 && distance <= 16 && healthFac <= 0.75) ? distance * 0.02 : 0, //Cast Round Sigil % 75
                     (prevAttack != summon_meteors && healthFac <= 0.75) ? distance * 0.02 : 0, //Summon Meteors % 75
-                    (prevAttack != grab_attack && distance > 6 && healthFac <= 0.5) ? 1/distance : 0 //Grab Attack % 50
+                    (prevAttack != grab_attack && distance > 6 && healthFac <= 0.5) ? 1/distance : 0, //Grab Attack % 50
+                    (prevAttack != begin_jump_strike && healthFac <= 0.75) ? distance * 0.02 : 0, //Jumpstrike
+                    (prevAttack != spear_incarnate && healthFac <= 0.75) ? distance * 0.02 + 0.01 : 0, //Spear Incarnate
+                    (prevAttack != despair_attack && despair_cooldown < 0 && healthFac <= 0.5) ? distance * 0.03 : 0, //Despair Attack
+                    (prevAttack != jump_slam && distance <= 13 && healthFac <= 0.75) ? distance * 0.02 : 0, //Jump Slam, can repeat 3 times
+                    (prevAttack != horizontal_slash && distance < 12 && healthFac <= 0.5) ? distance * 0.02 : 0, // Horizontal Slash
+                    (prevAttack != vertical_slash && distance < 20 && healthFac <= 0.5) ? distance * 0.02 : 0 // Vertical Slash
             };
             prevAttack = ModRand.choice(attacksMelee, rand, weights).next();
+            jump_amount = 0;
             prevAttack.accept(target);
         }
-        return 1;
+        return MobConfig.roh_attack_cooldown;
     }
+
+    private final Consumer<EntityLivingBase> vertical_slash = (target) -> {
+      this.setImmovable(true);
+      this.setFightMode(true);
+      this.setFullBodyUsage(true);
+      this.setVerticalSlash(true);
+        addEvent(()-> this.playSound(SoundsHandler.ROH_CHARGE_SWORD, 1.0f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.ROH_SUMMON_SWORD, 0.75f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 7);
+        addEvent(()-> this.playSound(SoundsHandler.ROH_SWING_SWORD_HEAVY, 2.0f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f)), 27);
+      addEvent(()-> this.lockLook = true, 22);
+
+      addEvent(()-> {
+          //Do Vertical Slash
+            new ActionVerticalSlash((float) ((this.getAttack() * 1.3F) + demon_buff_damage), 26, 2F).performAction(this, target);
+      }, 31);
+
+      addEvent(()-> this.lockLook =false, 45);
+
+      addEvent(()-> {
+          this.setImmovable(false);
+          this.setFullBodyUsage(false);
+          this.setFightMode(false);
+          this.setVerticalSlash(false);
+      }, 55);
+
+    };
+
+    private final Consumer<EntityLivingBase> horizontal_slash = (target) -> {
+        this.setImmovable(true);
+        this.setFightMode(true);
+        this.setFullBodyUsage(true);
+        this.setHorizontalSlash(true);
+        addEvent(()-> this.playSound(SoundsHandler.ROH_CHARGE_SWORD, 1.0f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f)), 5);
+        addEvent(()-> this.playSound(SoundsHandler.ROH_SUMMON_SWORD, 0.75f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 10);
+        addEvent(()-> this.playSound(SoundsHandler.ROH_SWING_SWORD_HEAVY, 2.0f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f)), 34);
+        addEvent(()-> this.lockLook = true, 25);
+
+        addEvent(()-> {
+        //Do Ground Sweep
+        new ActionHorizontalSlash((float) ((this.getAttack()) + demon_buff_damage), (int) this.getDistance(target) + 7).performAction(this, target);
+            Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 0.25, 0)));
+            DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+            float damage = ((this.getAttack() * 1.25F) + demon_buff_damage);
+            ModUtils.handleAreaImpact(3.5f, (e) -> damage, this, offset, source, 0.7f, 0, false, ModPotions.HEMORRHAGE, 2, 200, 1.1F);
+        }, 37);
+
+        addEvent(()-> {
+            this.lockLook = false;
+        }, 55);
+
+        addEvent(()-> {
+            this.setImmovable(false);
+            this.setFightMode(false);
+            this.setFullBodyUsage(false);
+            this.setHorizontalSlash(false);
+        }, 65);
+    };
+
+    private final Consumer<EntityLivingBase> jump_slam = (target) -> {
+      this.setFullBodyUsage(true);
+      this.setFightMode(true);
+      this.setJumpSlam(true);
+      this.setImmovable(true);
+      jump_amount++;
+          addEvent(()-> {
+              this.setImmovable(false);
+              this.motionY = 0;
+              this.lockLook = true;
+              double distance = this.getPositionVector().distanceTo(target.getPositionVector());
+              ModUtils.leapTowardsAdjusted(this, target.getPositionVector(), (float) (distance * 0.21),0F);
+              this.playSound(SoundsHandler.ROH_JUMP_SLAM, 1.5f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f));
+              world.setEntityState(this, ModUtils.PARTICLE_BYTE);
+              this.motionY += 0.55F;
+          }, 15);
+
+      addEvent(()-> this.setImmovable(true), 30);
+      addEvent(()-> {
+          Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 0.25, 0)));
+          DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
+          float damage = (this.getAttack() * 1.25F + demon_buff_damage);
+          ModUtils.handleAreaImpact(3f, (e) -> damage, this, offset, source, 0.9f, 0, false, MobEffects.SLOWNESS, 0, 200, 0.9F);
+          new ActionDauntlessImpact(2).performAction(this, target);
+          new ActionJumpSlamAOE().performAction(this, target);
+      }, 34);
+
+      addEvent(()-> this.lockLook = false, 45);
+
+      addEvent(()-> {
+          this.setJumpSlam(false);
+          this.setImmovable(false);
+          //Do another jump slam if the target is far and on a random
+          if(this.getDistance(target) > 3 && ModRand.percentageOf(80 - (jump_amount * 10))) {
+              this.continueJumpSlam(target);
+          } else {
+              this.setFightMode(false);
+              this.setFullBodyUsage(false);
+          }
+      }, 55);
+    };
+
+    private void continueJumpSlam(EntityLivingBase target) {
+        jump_slam.accept(target);
+    }
+
+    private final Consumer<EntityLivingBase> begin_jump_strike = (target) -> {
+      this.setBeginJumpStrike(true);
+      this.setFightMode(true);
+      this.setFullBodyUsage(true);
+      this.HoverTimeIncrease = 2;
+      this.isStartingJumpStrike = true;
+      this.setNoGravity(true);
+        addEvent(()-> this.playSound(SoundsHandler.ROH_SUMMON_WEAPON, 0.75f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 10);
+      addEvent(()-> {
+            this.motionY = 0;
+            this.setBeginJumpStrike(false);
+            this.setNoGravity(false);
+            this.setImmovable(true);
+            this.setLoopJumpStrike(true);
+            int randTimeInAir = ModRand.range(20, 55);
+
+            //Ends the loop after the randTime
+            addEvent(()-> {
+                this.setLoopJumpStrike(false);
+                this.doJumpStrikeAttack(target);
+                this.isStartingJumpStrike = false;
+            }, randTimeInAir);
+      }, 20);
+    };
+
+    private void doJumpStrikeAttack(EntityLivingBase target) {
+        end_jumpstrike.accept(target);
+    }
+
+    private final Consumer<EntityLivingBase> end_jumpstrike = (target) -> {
+      this.setEndJumpStrike(true);
+
+      addEvent(()-> {
+          Vec3d targetedPos = target.getPositionVector();
+          addEvent(()-> {
+              //teleport boss to the ground on player
+              this.setImmovable(false);
+              int y_value = ModUtils.getSurfaceHeightGeneral(world, new BlockPos(targetedPos.x, 0, targetedPos.z), (int) targetedPos.y - 20, (int) targetedPos.y + 2);
+              if(y_value != this.posY) {
+                  this.setPosition(targetedPos.x, y_value + 1, targetedPos.z);
+              } else {
+                  //destroy blocks just incase
+                  this.setPosition(targetedPos.x, target.posY, targetedPos.z);
+              }
+              this.playSound(SoundsHandler.VOIDCLYSM_IMPACT, 1.0f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f));
+              ModUtils.destroyBlocksInSwing(this, new Vec3d(this.posX, this.posY, this.posZ), 1.0F);
+              this.setImmovable(true);
+              this.motionX = 0;
+              this.motionZ = 0;
+              this.lockLook = true;
+          }, 4);
+      }, 0);
+
+      addEvent(()-> new ActionDauntlessImpact(4).performAction(this, target), 8);
+      addEvent(()-> new ActionHolySpikeAOE(13).performAction(this, target), 16);
+        addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_SPEAR_IMPACT, 1.5f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 18);
+
+      addEvent(()-> {
+          this.lockLook = false;
+      }, 25);
+
+      addEvent(()-> {
+          this.setImmovable(false);
+          this.setEndJumpStrike(false);
+          this.setFightMode(false);
+          this.setFullBodyUsage(false);
+          cooldown_wait_time = 13;
+      }, 35);
+    };
 
     private final Consumer<EntityLivingBase> despair_attack = (target) -> {
         this.setCastDespair(true);
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
-
+        this.playSound(SoundsHandler.BLOOD_FLY_BEGIN, 1.0f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f));
         addEvent(()-> {
             this.setImmovable(false);
             this.setNoGravity(true);
             this.HoverTimeIncrease = 3;
         }, 10);
 
+        addEvent(()-> this.playSound(SoundsHandler.ROH_DESPAIR, 2f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 25);
+
         addEvent(()-> {
             this.motionY = 0;
             this.setImmovable(true);
             this.setNoGravity(false);
+            this.castingDespair = true;
         }, 35);
 
         addEvent(() -> {
@@ -667,17 +1123,23 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
 
         addEvent(()-> {
             //end casting & remove tokens
+            this.castingDespair = false;
             this.lockLook = false;
+            this.endDespairAttack();
+            this.playSound(SoundsHandler.ROH_END_DESPAIR, 1.0F, 1.0F);
         }, 340);
 
         addEvent(()-> {
             this.setImmovable(false);
             this.didAirAttack = true;
         }, 365);
+
         addEvent(()-> {
             this.setCastDespair(false);
             this.setFightMode(false);
             this.setFullBodyUsage(false);
+            this.despair_cooldown = 30 * 20;
+            this.cooldown_wait_time = 20;
         }, 370);
     };
 
@@ -686,17 +1148,23 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
       this.setFightMode(true);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
+        this.playSound(SoundsHandler.ROH_CHARGE_SWORD, 1.0f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
+        addEvent(()-> this.playSound(SoundsHandler.ROH_SUMMON_WEAPON, 0.75f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 3);
       addEvent(()-> this.lockLook = true, 20);
+      addEvent(() -> {
+          this.playSound(SoundsHandler.HIGH_KING_SWING_MAGIC, 1.75f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f));
+      }, 16);
       addEvent(()-> {
           //do spear incarnate Attack
-      }, 35);
+            new ActionSpearIncarnate().performAction(this, target);
+      }, 22);
         addEvent(()-> this.lockLook = false, 50);
       addEvent(()-> {
         this.setSpearUltimate(false);
         this.setFightMode(false);
         this.setFullBodyUsage(false);
         this.setImmovable(false);
-      }, 60);
+      }, 45);
     };
 
       private final Consumer<EntityLivingBase> grab_attack = (target) -> {
@@ -765,12 +1233,12 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
 
       private final Consumer<EntityLivingBase> grab_continue = (target) -> {
         this.setGrabContinue(true);
-
+          addEvent(()-> this.playSound(SoundsHandler.ROH_SUMMON_WEAPON, 0.75f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 5);
         addEvent(()-> {
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = (this.getAttack() * 1.5F + demon_buff_damage);
-            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0f, 0, false);
+            ModUtils.handleAreaImpact(0.5f, (e) -> damage, this, offset, source, 0f, 0, false, ModPotions.HEMORRHAGE, 2, 200, 1.1F);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
             this.heal((float) (0.05 * this.getMaxHealth()));
         }, 25);
@@ -807,9 +1275,9 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
       }, 17);
 
       addEvent(()-> new ActionSummonMeteors().performAction(this, target), 30);
+      addEvent(()-> this.playSound(SoundsHandler.ROH_CAST_GENERIC, 1.8f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f)), 30);
 
-
-      addEvent(()-> {
+        addEvent(()-> {
           this.setImmovable(false);
           this.didAirAttack = true;
           this.lockLook = true;
@@ -827,24 +1295,38 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setImmovable(true);
-
-        addEvent(()-> this.lockLook = true, 14);
+        addEvent(()-> this.playSound(SoundsHandler.ROH_CAST_MULTI, 1.4f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f)), 1);
+        addEvent(()-> this.lockLook = true, 13);
 
         addEvent(()-> {
-            EntityDemonSigil sigil = new EntityDemonSigil(world, this.rotationYaw, true, this.getAttack() * 0.75F);
-            Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 0.75, 0)));
-            sigil.setPosition(relPos.x, relPos.y, relPos.z);
-            world.spawnEntity(sigil);
-        }, 23);
+            if(this.getHealth()/this.getMaxHealth() < 0.5 && rand.nextInt(2) == 0) {
+                addEvent(()-> {
+                    EntityDemonSigil sigil = new EntityDemonSigil(world, this.rotationYaw, true, true, this.getAttack() * 0.75F);
+                    Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 0.75, -1.5)));
+                    sigil.setPosition(relPos.x, relPos.y, relPos.z);
+                    world.spawnEntity(sigil);
+                }, 1);
+                EntityDemonSigil sigil = new EntityDemonSigil(world, this.rotationYaw, true, false, this.getAttack() * 0.75F);
+                Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 0.75, 1.5)));
+                sigil.setPosition(relPos.x, relPos.y, relPos.z);
+                world.spawnEntity(sigil);
+            } else {
+                EntityDemonSigil sigil = new EntityDemonSigil(world, this.rotationYaw, true, false, this.getAttack() * 0.75F);
+                Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 0.75, 0)));
+                sigil.setPosition(relPos.x, relPos.y, relPos.z);
+                world.spawnEntity(sigil);
+            }
+        }, 17);
 
-        addEvent(()-> this.lockLook = false, 35);
+        addEvent(()-> this.lockLook = false, 25);
 
       addEvent(()-> {
           this.setCastRoundSigil(false);
           this.setFullBodyUsage(false);
           this.setFightMode(false);
           this.setImmovable(false);
-      },45);
+          this.cooldown_wait_time = 20;
+      },35);
     };
 
     private final Consumer<EntityLivingBase> cast_sigil = (target) -> {
@@ -852,18 +1334,18 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setImmovable(true);
-
-      addEvent(()-> this.lockLook = true, 14);
+        addEvent(()-> this.playSound(SoundsHandler.ROH_CAST_GENERIC, 1.4f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f)), 1);
+        addEvent(()-> this.lockLook = true, 14);
 
       addEvent(()-> {
-        EntityDemonSigil sigil = new EntityDemonSigil(world, this.rotationYaw, false, this.getAttack() * 0.75F);
+        EntityDemonSigil sigil = new EntityDemonSigil(world, this.rotationYaw, false, false, this.getAttack() * 0.75F);
         Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 0.75, 0)));
         sigil.setPosition(relPos.x, relPos.y, relPos.z);
         world.spawnEntity(sigil);
         if(this.getHealth() / this.getMaxHealth() <= 0.75) {
             addEvent(() -> {
-                EntityDemonSigil sigil2 = new EntityDemonSigil(world, this.rotationYaw, false, this.getAttack() * 0.75F);
-                EntityDemonSigil sigil3 = new EntityDemonSigil(world, this.rotationYaw, false, this.getAttack() * 0.75F);
+                EntityDemonSigil sigil2 = new EntityDemonSigil(world, this.rotationYaw, false, false, this.getAttack() * 0.75F);
+                EntityDemonSigil sigil3 = new EntityDemonSigil(world, this.rotationYaw, false, false, this.getAttack() * 0.75F);
                 Vec3d relPos2 = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 0.75, 5)));
                 Vec3d relPos3 = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.5, 0.75, -5)));
                 sigil2.setPosition(relPos2.x, relPos2.y, relPos2.z);
@@ -872,7 +1354,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
                 world.spawnEntity(sigil3);
             }, 5);
         }
-      }, 17);
+      }, 12);
 
       addEvent(()-> this.lockLook = false, 20);
       addEvent(()-> {
@@ -880,7 +1362,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
         this.setFullBodyUsage(false);
         this.setFightMode(false);
         this.setImmovable(false);
-      }, 30);
+      }, 25);
     };
 
     private final Consumer<EntityLivingBase> great_death = (target) -> {
@@ -889,8 +1371,11 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
       this.setFightMode(true);
       this.setImmovable(true);
       this.lockLook = true;
-
-      addEvent(()-> {
+      AtomicBoolean didSecondCircle = new AtomicBoolean(false);
+      addEvent(()-> this.playSound(SoundsHandler.ROH_CHARGE_SWORD, 1.0f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f)), 10);
+        addEvent(()-> this.playSound(SoundsHandler.ROH_SUMMON_SWORD, 0.75f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 13);
+        addEvent(()-> this.playSound(SoundsHandler.ROH_SWING_SWORD_HEAVY, 2.25f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f)), 45);
+        addEvent(()-> {
           double currentHealth = this.getHealth() / this.getMaxHealth();
           if(currentHealth <= 0.5 && rand.nextInt(3) == 0) {
               new ActionGreatDeathLine().performAction(this, target);
@@ -899,6 +1384,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
               if(currentHealth <= 0.75) {
                   addEvent(()-> {
                       new ActionGreatDeathTwo().performAction(this, target);
+                      didSecondCircle.set(true);
                   }, 40);
               }
           }
@@ -912,6 +1398,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
         this.setFullBodyUsage(false);
         this.setFightMode(false);
         this.setImmovable(false);
+        this.cooldown_wait_time = didSecondCircle.get() ? 30 : 20;
       }, 90);
     };
 
@@ -920,7 +1407,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
         this.setFullBodyUsage(true);
         this.setFightMode(true);
         this.setImmovable(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.ROH_SUMMON_SWORD, 0.75f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 5);
         addEvent(()-> {
             this.lockLook = true;
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -930,20 +1417,20 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
                 double distance = this.getPositionVector().distanceTo(targetedPos);
                 ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.23),0.1F);
             }, 4);
-        }, 17);
+        }, 12);
 
         addEvent(()-> {
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = (this.getAttack() + demon_buff_damage);
-            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
-            this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
-        }, 27);
+            RohUtils.handleAreaImpactDarkdrift(1.5f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.6F, 3, 600);
+            this.playSound(SoundsHandler.ROH_SWING_SWORD, 1.2f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
+        }, 22);
 
         addEvent(()-> {
             this.setImmovable(true);
             this.lockLook = false;
-        }, 38);
+        }, 33);
 
         addEvent(()-> {
             this.setSwingMelee(false);
@@ -960,7 +1447,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
                     this.setImmovable(false);
                 }, 15);
             }
-        }, 40);
+        }, 35);
     };
 
     private void setMeleeSwingTooTwo(EntityLivingBase target) {
@@ -977,22 +1464,22 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
             addEvent(()-> {
                 this.setImmovable(false);
                 double distance = this.getPositionVector().distanceTo(targetedPos);
-                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.23),0.1F);
+                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.27),0.1F);
             }, 4);
-        }, 14);
+        }, 9);
 
         addEvent(()-> {
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
             float damage = (this.getAttack() + demon_buff_damage);
-            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
-            this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
-        }, 23);
+            RohUtils.handleAreaImpactDarkdrift(1.5f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.6F, 3, 600);
+            this.playSound(SoundsHandler.ROH_SWING_SWORD, 1.2f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
+        }, 17);
 
         addEvent(()-> {
             this.setImmovable(true);
             this.lockLook = false;
-        }, 32);
+        }, 27);
 
         addEvent(()-> {
             this.lockLook = true;
@@ -1001,17 +1488,19 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
             addEvent(()-> {
                 this.setImmovable(false);
                 double distance = this.getPositionVector().distanceTo(targetedPos);
-                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.23),0.1F);
+                ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.27),0.1F);
             }, 4);
-        }, 47);
+        }, 37);
+
+        addEvent(()-> this.playSound(SoundsHandler.ROH_SWING_SWORD, 1.2f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f)), 44);
 
         addEvent(()-> {
             Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(2, 1.0, 0)));
             DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
             float damage = (this.getAttack() + demon_buff_damage);
-            ModUtils.handleAreaImpact(1.5f, (e) -> damage, this, offset, source, 0.2f, 0, false);
+            RohUtils.handleAreaImpactDarkdrift(1.5f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.9F, 3, 600);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
-        }, 56);
+        }, 46);
 
         addEvent(()-> {
             this.setSwingMeleeContinue(false);
@@ -1031,7 +1520,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
                     this.setImmovable(false);
                 }, 15);
             }
-        }, 65);
+        }, 55);
     };
 
     private void setSwingTooDash(EntityLivingBase target) {
@@ -1040,7 +1529,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
 
     private final Consumer<EntityLivingBase> melee_swing_dash = (target) -> {
       this.setSwingMeleeDash(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.ROH_SUMMON_WEAPON, 0.75f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 18);
         addEvent(()-> {
             this.lockLook = true;
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -1051,6 +1540,10 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
                 ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.35),0.1F);
             }, 4);
         }, 27);
+
+        addEvent(()-> {
+            this.playSound(SoundsHandler.HIGH_KING_SWING, 1.2f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
+        }, 30);
 
         addEvent(()-> {
             for(int i = 0; i <= 20; i+= 3) {
@@ -1084,18 +1577,25 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
       this.setFullBodyUsage(true);
       this.setImmovable(true);
 
+      addEvent(()-> this.playSound(SoundsHandler.ROH_SUMMON_WEAPON, 0.75f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 10);
+        addEvent(()-> this.playSound(SoundsHandler.ROH_SUMMON_WEAPON, 0.75f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 37);
+        addEvent(()-> this.playSound(SoundsHandler.ROH_SUMMON_WEAPON, 0.75f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 64);
+
       //daggers
       addEvent(()-> {
           new ActionThrowDaggers(false, false).performAction(this, target);
-      }, 37);
+          this.playSound(SoundsHandler.ROH_THROW_DAGGERS, 1.2f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
+      }, 27);
         //daggers
         addEvent(()-> {
             new ActionThrowDaggers(false, true).performAction(this, target);
-        }, 65);
+            this.playSound(SoundsHandler.ROH_THROW_DAGGERS, 1.2f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
+        }, 50);
         //daggers
         addEvent(()-> {
             new ActionThrowDaggers(false, false).performAction(this, target);
-        }, 93);
+            this.playSound(SoundsHandler.ROH_THROW_DAGGERS, 1.2f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
+        }, 78);
 
         addEvent(()-> {
             this.setThrowDaggers(false);
@@ -1105,23 +1605,28 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
             } else {
                 this.setThrowDaggerContinue(true);
 
+                addEvent(()-> this.playSound(SoundsHandler.ROH_SUMMON_WEAPON, 0.75f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 3);
+                addEvent(()-> this.playSound(SoundsHandler.ROH_SUMMON_WEAPON, 0.75f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 25);
+
                 //daggers
                 addEvent(()-> {
                     new ActionThrowDaggers(false, true).performAction(this, target);
-                }, 17);
+                    this.playSound(SoundsHandler.ROH_THROW_DAGGERS, 1.2f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
+                }, 14);
                 //daggers
                 addEvent(()-> {
                     new ActionThrowDaggers(true, false).performAction(this, target);
-                }, 50);
+                    this.playSound(SoundsHandler.ROH_THROW_DAGGERS, 1.2f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
+                }, 40);
 
                 addEvent(()-> {
                     this.setImmovable(false);
                     this.setThrowDaggerContinue(false);
                     this.setFightMode(false);
                     this.setFullBodyUsage(false);
-                }, 80);
+                }, 70);
             }
-        }, 105);
+        }, 90);
     };
 
     private void setDaggersTooDash(EntityLivingBase target){
@@ -1140,8 +1645,10 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
               double distance = this.getPositionVector().distanceTo(targetedPos);
               ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.3),0.1F);
           }, 4);
-      }, 39);
+      }, 27);
 
+      addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_SWING, 1.2f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f)), 30);
+       addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_SWING_MAGIC, 1.3f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f)), 60);
       //do hits while dashing
         addEvent(()-> {
             for(int i = 0; i <= 18; i+= 3) {
@@ -1153,19 +1660,19 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
                     // this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
                 }, i);
             }
-        }, 44);
+        }, 32);
 
       addEvent(()-> {
           this.setImmovable(true);
-      }, 60);
+      }, 50);
 
       addEvent(()-> {
           Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.2, 1.0, 0)));
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = (this.getAttack());
-          ModUtils.handleAreaImpact(2.25f, (e) -> damage, this, offset, source, 0.8f, 0, false);
+          ModUtils.handleAreaImpact(2.25f, (e) -> damage, this, offset, source, 0.8f, 0, false, 0.9F);
            this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
-      }, 78);
+      }, 63);
 
       addEvent(()-> {
           this.lockLook = false;
@@ -1176,14 +1683,14 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
               spike.setPosition(pos.x, y + 2, pos.z);
               world.spawnEntity(spike);
           });
-      }, 85);
+      }, 68);
 
       addEvent(()-> {
           this.setImmovable(false);
           this.setThrowDaggersDash(false);
           this.setFightMode(false);
           this.setFullBodyUsage(false);
-      }, 105);
+      }, 90);
     };
 
     private final Consumer<EntityLivingBase> stomp = (target) -> {
@@ -1196,11 +1703,12 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
       addEvent(()-> {
           //stomp attack
           new ActionDemonStomp().performAction(this, target);
-      }, 35);
+          this.playSound(SoundsHandler.B_KNIGHT_STOMP, 1.5f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
+      }, 25);
 
       addEvent(()-> {
           this.lockLook = false;
-      }, 55);
+      }, 45);
 
       addEvent(()-> {
         this.setStomp(false);
@@ -1217,7 +1725,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
                 this.setImmovable(false);
             }, 10);
         }
-      }, 60);
+      }, 50);
     };
 
     private void setStompTooContinue(EntityLivingBase target) {
@@ -1229,7 +1737,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
       this.lockLook = true;
 
         addEvent(()-> {
-            for(int i = 0; i <= 18; i+= 3) {
+            for(int i = 0; i <= 15; i+= 3) {
                 addEvent(()-> {
                     Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1.0, 0)));
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
@@ -1238,18 +1746,18 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
                     // this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
                 }, i);
             }
-        }, 25);
+        }, 20);
 
         addEvent(()-> {
             this.lockLook = false;
-        }, 65);
+        }, 60);
 
       addEvent(()-> {
         this.setStompContinue(false);
         this.setFullBodyUsage(false);
         this.setFightMode(false);
         this.setImmovable(false);
-      },    75);
+      },    70);
     };
 
     private final Consumer<EntityLivingBase> long_swing = (target) -> {
@@ -1269,6 +1777,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
           }, 5);
       }, 20);
 
+      addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_SWING_MAGIC, 1.3f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f)), 30);
       //do hits
       addEvent(()-> {
         for(int i = 0; i <= 23; i+= 3) {
@@ -1276,7 +1785,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 1.0, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                 float damage = (this.getAttack() + demon_buff_damage);
-                ModUtils.handleAreaImpact(1.6f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+                ModUtils.handleAreaImpact(1.75f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.4F);
                // this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
             }, i);
         }
@@ -1322,8 +1831,11 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
                 double distance = this.getPositionVector().distanceTo(targetedPos);
                 ModUtils.leapTowards(this, targetedPos, (float) (distance * 0.33),0.1F);
             }, 4);
-        }, 21);
+        }, 14);
 
+        addEvent(()-> {
+            this.playSound(SoundsHandler.HIGH_KING_SWING_MAGIC, 1.3f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
+        }, 24);
         //do hits
         addEvent(()-> {
             for(int i = 0; i <= 23; i+= 3) {
@@ -1331,22 +1843,22 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
                     Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.5, 1.0, 0)));
                     DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
                     float damage = (this.getAttack() + demon_buff_damage);
-                    ModUtils.handleAreaImpact(1.6f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+                    ModUtils.handleAreaImpact(1.7f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.4F);
                     // this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 0.9f / (rand.nextFloat() * 0.4f + 0.2f));
                 }, i);
             }
-        }, 25);
+        }, 18);
 
-        addEvent(()-> this.setImmovable(true), 45);
+        addEvent(()-> this.setImmovable(true), 35);
 
-        addEvent(()-> this.lockLook = false, 60);
+        addEvent(()-> this.lockLook = false, 50);
 
       addEvent(()-> {
           this.setLongSwingContinue(false);
           this.setFightMode(false);
           this.setFullBodyUsage(false);
           this.setImmovable(false);
-      }, 70);
+      }, 60);
     };
     //Teleport Attack
     private final Consumer<EntityLivingBase> teleport_attack = (target) -> {
@@ -1354,7 +1866,7 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
         this.setFullBodyUsage(true);
         this.setTeleportAttack(true);
         this.setImmovable(true);
-
+        addEvent(()-> this.playSound(SoundsHandler.ROH_SUMMON_SWORD, 0.75f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f)), 44);
         addEvent(()-> {
             this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.25F, 1.0F);
             this.setImmovable(false);
@@ -1373,7 +1885,12 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
             this.setPosition(target.posX + 1, target.posY + 2, target.posZ);
             this.lockLook = true;
             this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.5F, 1.0F);
+            this.playSound(SoundsHandler.ROH_CHARGE_SWORD, 1.2f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 40);
+
+        addEvent(()-> {
+            this.playSound(SoundsHandler.ROH_SWORD_ABILITY, 1.4f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
+        }, 50);
 
         //do attack
         addEvent(()-> {
@@ -1420,109 +1937,107 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
             event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MEDITATION_LOOP, true));
             return PlayState.CONTINUE;
         }
-
+        if(this.isDeathState() && this.isFightMode()) {
+            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_DEATH));
+            return PlayState.CONTINUE;
+        }
         event.getController().markNeedsReload();
         return PlayState.STOP;
     }
 
     private <E extends IAnimatable>PlayState predicateFight(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
+        if(this.isFightMode() && !this.isDeathState()) {
             if(this.isLongSwing()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_LONG_SWING));
-                return PlayState.CONTINUE;
             }
             if(this.isLongSwingContinue()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_LONG_SWING_CONTINUE));
-                return PlayState.CONTINUE;
             }
             if(this.isLongSwingFinish()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_LONG_SWING_FINISH));
-                return PlayState.CONTINUE;
             }
             if(this.isTeleportAttack()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_TELEPORT_ATTACK));
-                return PlayState.CONTINUE;
             }
             if(this.isCastSigil()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_CAST_SIGIL));
-                return PlayState.CONTINUE;
             }
             if(this.isCastRoundSigil()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_CAST_SIGIL_ROUND));
-                return PlayState.CONTINUE;
             }
             if(this.isSummonMeteor()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SUMMON_METEORS));
-                return PlayState.CONTINUE;
             }
             if(this.isStomp()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_STOMP));
-                return PlayState.CONTINUE;
             }
             if(this.isStompContinue()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_STOMP_CONTINUE));
-                return PlayState.CONTINUE;
             }
             if(this.isStompFinish()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_STOMP_FINISH));
-                return PlayState.CONTINUE;
             }
             if(this.isThrowDaggers()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_THROW_DAGGERS));
-                return PlayState.CONTINUE;
             }
             if(this.isThrowDaggersDash()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_THROW_DAGGERS_DASH));
-                return PlayState.CONTINUE;
             }
             if(this.isThrowDaggersContinue()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_THROW_DAGGERS_CONTINUE));
-                return PlayState.CONTINUE;
             }
             if(this.isSwingMelee()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_MELEE_SWING));
-                return PlayState.CONTINUE;
             }
             if(this.isSwingMeleeFinish()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_MELEE_SWING_FINISH));
-                return PlayState.CONTINUE;
             }
             if(this.isSwingMeleeContinue()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_MELEE_SWING_CONTINUE));
-                return PlayState.CONTINUE;
             }
             if(this.isSwingMeleeFinishTwo()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_MELEE_SWING_FINISH_TWO));
-                return PlayState.CONTINUE;
             }
             if(this.isSwingMeleeDash()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_MELEE_SWING_DASH));
-                return PlayState.CONTINUE;
             }
             if(this.isCastDespair()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_DESPAIR));
-                return PlayState.CONTINUE;
             }
             if(this.isSpearUltimate()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SPEAR_INCARNATE));
-                return PlayState.CONTINUE;
             }
             if(this.isGrabAttack()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_GRAB));
-                return PlayState.CONTINUE;
             }
             if(this.isGrabContinue()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_GRAB_CONTINUE));
-                return PlayState.CONTINUE;
             }
             if(this.isGrabFinish()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_GRAB_FINISH));
-                return PlayState.CONTINUE;
             }
             if(this.isGreatDeath()) {
                 event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_GREAT_DEATH));
-                return PlayState.CONTINUE;
             }
+            if(this.isBeginJumpStrike()) {
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_BEGIN_JUMPSTRIKE));
+            }
+            if(this.isLoopJumpStrike()) {
+                event.getController().setAnimation(new AnimationBuilder().loop(ANIM_LOOP_JUMPSTRIKE));
+            }
+            if(this.isEndJumpStrike()) {
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_END_JUMPSTRIKE));
+            }
+            if(this.isJumpSlam()) {
+                event.getController().setAnimation(new AnimationBuilder().loop(ANIM_JUMP_SLAM));
+            }
+            if(this.isVerticalSlash()) {
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_VERTICAL_SLASH));
+            }
+            if(this.isHorizontalSlash()) {
+                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_HORIZONTAL_SLASH));
+            }
+            return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
         return PlayState.STOP;
@@ -1578,8 +2093,11 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
     }
 
     private <E extends IAnimatable> PlayState predicateEyes(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_EYES, true));
-        return PlayState.CONTINUE;
+        if(!this.isCastDespair()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_EYES, true));
+            return PlayState.CONTINUE;
+        }
+        return PlayState.STOP;
     }
 
     @Override
@@ -1598,6 +2116,24 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
     public void removeTrackingPlayer(@Nonnull EntityPlayerMP player) {
         super.removeTrackingPlayer(player);
         this.bossInfo.removePlayer(player);
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        if(rand.nextInt(10) == 0) {
+            playInsultSound();
+        }
+        return SoundsHandler.ROH_HURT;
+    }
+
+    private void playInsultSound() {
+        this.playSound(SoundsHandler.ROH_INSULT, 1.25F, 1.0F);
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(SoundsHandler.ROH_STEP, 0.5F, 0.7f + ModRand.getFloat(0.3F));
     }
 
     @Override
@@ -1642,5 +2178,40 @@ public class EntityDarkdriftDevil extends EntityDarkBase implements IAnimatable,
             return super.attackEntityFrom(source, MobConfig.high_king_damage_cap);
         }
         return super.attackEntityFrom(source, amount);
+    }
+
+    @Override
+    public void onDeath(DamageSource cause) {
+        this.setHealth(0.00001F);
+        if(!this.isDeathState()) {
+            this.clearEvents();
+        }
+        this.setDeathState(true);
+        this.setFullBodyUsage(true);
+        if(this.getSpawnLocation() != null) {
+            this.setPosition(this.getSpawnLocation().getX(), this.getSpawnLocation().getY(), this.getSpawnLocation().getZ());
+        }
+        this.playSound(SoundsHandler.IMPERIAL_SWORD_PARRY, 1.25F, 1.0F);
+        this.setImmovable(true);
+        this.setFightMode(true);
+
+        addEvent(()-> {
+            this.playSound(SoundsHandler.ROH_DEATH_VL, 1.5F, 1.0F);
+        }, 15);
+
+        addEvent(() -> {
+            this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1F, 1.0F);
+        }, 70);
+        addEvent(()-> {
+            if(this.getSpawnLocation() != null && !world.isRemote) {
+                this.turnBossIntoSummonSpawner(this.getSpawnLocation());
+                this.createCoinSpawns(this.getPositionVector(), ModRand.range(8, 12), ModRand.range(1, 4), 2);
+                this.createTreasureBag(this.getPositionVector(), "roh");
+            }
+            this.setDead();
+            this.setDropItemsWhenDead(true);
+            this.setDeathState(false);
+        }, 79);
+        super.onDeath(cause);
     }
 }

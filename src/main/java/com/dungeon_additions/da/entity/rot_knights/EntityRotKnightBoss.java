@@ -1155,7 +1155,10 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
 
     @Override
     protected ResourceLocation getLootTable() {
-        return LOOT_MOB;
+        if(this.getSpawnLocation() == null || !ModConfig.bosses_drop_treasure_bags) {
+            return LOOT_MOB;
+        }
+        return null;
     }
 
     @Override
@@ -1359,6 +1362,7 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
             if(this.getSpawnLocation() != null && !world.isRemote) {
                 this.turnBossIntoSummonSpawner(this.getSpawnLocation());
                 this.createCoinSpawns(this.getPositionVector(), ModRand.range(2, 6), 0, 0);
+                this.createTreasureBag(this.getPositionVector(), "rot_knight_boss");
             }
             this.setDead();
             this.setDropItemsWhenDead(true);

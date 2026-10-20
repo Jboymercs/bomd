@@ -34,6 +34,9 @@
     "state=aegyptian": {
       "model": "da:boss/boss_active_9"
     },
+    "state=roh": {
+      "model": "da:boss/boss_active_11"
+    },
     "state=dauntless": {
       "model": "da:boss/boss_active_10"
     }

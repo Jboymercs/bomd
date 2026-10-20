@@ -3,6 +3,7 @@ package com.dungeon_additions.da.entity.dark_dungeon.boss;
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
+import com.dungeon_additions.da.entity.dark_dungeon.boss.util.RohUtils;
 import com.dungeon_additions.da.packets.MessageDirectionForRender;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
@@ -32,7 +33,7 @@ public class EntityGreatDeath extends EntityDarkBase implements IAnimationTickab
     private void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
     public boolean isShaking() {return this.dataManager.get(SHAKING);}
     private final AnimationFactory factory = new AnimationFactory(this);
-
+    private float damage = 10;
 
     public EntityGreatDeath(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -52,6 +53,17 @@ public class EntityGreatDeath extends EntityDarkBase implements IAnimationTickab
         this.isImmuneToFire = true;
         this.setNoAI(true);
         this.setSize(1.5F, 0.3F);
+    }
+
+    public EntityGreatDeath(World worldIn, float damage) {
+        super(worldIn);
+        this.setNoGravity(true);
+        this.setImmovable(true);
+        this.noClip = true;
+        this.isImmuneToFire = true;
+        this.setNoAI(true);
+        this.setSize(1.5F, 0.3F);
+        this.damage = damage;
     }
 
     @Override
@@ -109,8 +121,7 @@ public class EntityGreatDeath extends EntityDarkBase implements IAnimationTickab
                 if(this.ticksExisted == 20 || this.ticksExisted == 30 || this.ticksExisted == 40) {
                     Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 1, 0)));
                         DamageSource source = ModDamageSource.builder().type(ModDamageSource.MAGIC).directEntity(this).build();
-                        float damage = 10;
-                        ModUtils.handleAreaImpact(1.4f, (e) -> damage, this, offset, source, 0.4f, 0, false);
+                        RohUtils.handleAreaImpactDarkdrift(1.4f, (e) -> damage, this, offset, source, 0.4f, 0, false,0.6F, 1, 600);
                 }
             }
         }

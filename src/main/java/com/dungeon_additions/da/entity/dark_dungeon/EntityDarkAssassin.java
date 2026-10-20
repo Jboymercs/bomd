@@ -138,6 +138,7 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
         this.setSize(0.6F, 1.95F);
         this.hemorrhage_resistance = 0.5F;
         this.falter_resistance = 0.8F;
+        this.isImmuneToFire = true;
         this.animation_attack_speed = MobConfig.assassin_animation_speed;
     }
 
@@ -147,6 +148,7 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
         this.setSize(0.6F, 1.95F);
         this.hemorrhage_resistance = 0.5F;
         this.falter_resistance = 0.8F;
+        this.isImmuneToFire = true;
         this.animation_attack_speed = MobConfig.assassin_animation_speed;
     }
 

@@ -15,6 +15,7 @@ public enum BlockEnumBossSummonState implements IStringSerializable {
     OBSIDILITH("obsidian", true),
     APATHYR("apathyr", true),
     AEGYPTIAN("aegyptian", true),
+    ROH("roh", true),
     DAUNTLESS("dauntless", true);
 
 

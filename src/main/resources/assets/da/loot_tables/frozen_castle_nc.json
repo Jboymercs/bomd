@@ -545,6 +545,11 @@
           ]
         },
         {
+          "type": "loot_table",
+          "name": "da:rare_loot_items",
+          "weight": 2
+        },
+        {
           "type": "item",
           "name": "minecraft:diamond_axe",
           "weight": 1,

@@ -2075,9 +2075,10 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     protected ResourceLocation getLootTable() {
         if(this.isSpawnedNaturally()) {
             return LOOT_MOB_NATURAL;
-        } else {
+        } else if (!ModConfig.bosses_drop_treasure_bags || this.getSpawnLocation() == null){
             return LOOT_MOB;
         }
+        return null;
     }
 
 
@@ -2112,6 +2113,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
         if(this.getSpawnLocation() != null && !world.isRemote && !this.isSpawnedNaturally()) {
             this.turnBossIntoSummonSpawner(this.getSpawnLocation().add(0, -6, 0));
             this.createCoinSpawns(this.getPositionVector(), ModRand.range(3, 6), ModRand.range(2, 4), 1);
+            this.createTreasureBag(this.getPositionVector(), "dauntless");
         }
         super.onDeath(cause);
     }

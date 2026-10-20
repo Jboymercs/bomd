@@ -3,6 +3,7 @@ package com.dungeon_additions.da.event;
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.EntityFireResistantItems;
+import com.dungeon_additions.da.entity.EntityTreasureBagItem;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.util.ISweepAttackOverride;
 import com.dungeon_additions.da.util.ModReference;
@@ -33,15 +34,25 @@ public class EventSwordResistance {
     public static void turnItemsFireproof(EntityJoinWorldEvent event) {
         World worldIn = event.getWorld();
 
-        if(event.getEntity().getClass() == EntityItem.class && ModConfig.enable_fire_proof_items) {
-            EntityItem entityItem = (EntityItem)event.getEntity();
+        if(event.getEntity().getClass() == EntityItem.class) {
+            EntityItem entityItem = (EntityItem) event.getEntity();
             ItemStack stack = entityItem.getItem();
 
-            if(stack.getItem() == ModItems.SWORN_OF_AMBITION || stack.getItem() == ModItems.ENFLAMED_MEAT || stack.getItem() == ModItems.FLAME_OF_AMBITION || stack.getItem() == ModItems.FLAME_BOOTS ||
-            stack.getItem() == ModItems.FLAME_METAL_SCRAP || stack.getItem() == ModItems.FLAME_LEGGINGS || stack.getItem() == ModItems.FLAME_HELMET || stack.getItem() == ModItems.FLAME_CHESTPLATE ||
-            stack.getItem() == ModItems.INCENDIUM_CORE || stack.getItem() == ModItems.VOLATILE_PEARL || stack.getItem() == ModItems.GOLDEN_COIN) {
-                if(!stack.isEmpty()) {
-                    EntityFireResistantItems fireproofItem = new EntityFireResistantItems(worldIn, entityItem, stack);
+            if (ModConfig.enable_fire_proof_items){
+                if (stack.getItem() == ModItems.SWORN_OF_AMBITION || stack.getItem() == ModItems.ENFLAMED_MEAT || stack.getItem() == ModItems.FLAME_OF_AMBITION || stack.getItem() == ModItems.FLAME_BOOTS ||
+                        stack.getItem() == ModItems.FLAME_METAL_SCRAP || stack.getItem() == ModItems.FLAME_LEGGINGS || stack.getItem() == ModItems.FLAME_HELMET || stack.getItem() == ModItems.FLAME_CHESTPLATE ||
+                        stack.getItem() == ModItems.INCENDIUM_CORE || stack.getItem() == ModItems.VOLATILE_PEARL || stack.getItem() == ModItems.GOLDEN_COIN) {
+                    if (!stack.isEmpty()) {
+                        EntityFireResistantItems fireproofItem = new EntityFireResistantItems(worldIn, entityItem, stack);
+                        worldIn.spawnEntity(fireproofItem);
+                        entityItem.setDead();
+                    }
+                }
+            }
+
+            if(stack.getItem() == ModItems.TREASURE_BAG) {
+                if (!stack.isEmpty()) {
+                    EntityTreasureBagItem fireproofItem = new EntityTreasureBagItem(worldIn, entityItem, stack);
                     worldIn.spawnEntity(fireproofItem);
                     entityItem.setDead();
                 }

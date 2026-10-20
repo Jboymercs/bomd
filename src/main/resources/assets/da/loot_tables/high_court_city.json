@@ -676,6 +676,11 @@
           ]
         },
         {
+          "type": "loot_table",
+          "name": "da:rare_loot_items",
+          "weight": 4
+        },
+        {
           "type": "item",
           "name": "minecraft:bucket",
           "weight": 20

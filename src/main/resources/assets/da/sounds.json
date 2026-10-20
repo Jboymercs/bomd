@@ -140,6 +140,78 @@
       }
     ]
   },
+  "entity.treasure_bag.open": {
+    "category": "entity",
+    "subtitle": "treasure_bag.open",
+    "sounds": [
+      {
+        "name": "da:entity/treasure_bag/open1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/treasure_bag/open2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/treasure_bag/open3",
+        "stream": false
+      },
+      {
+        "name": "da:entity/treasure_bag/open4",
+        "stream": false
+      }
+    ]
+  },
+  "entity.horn.horn_devotion": {
+    "category": "entity",
+    "subtitle": "horn.devotion",
+    "sounds": [
+      {
+        "name": "da:entity/horn/horn_devotion",
+        "stream": false
+      }
+    ]
+  },
+  "entity.horn.horn_poison": {
+    "category": "entity",
+    "subtitle": "horn.poison",
+    "sounds": [
+      {
+        "name": "da:entity/horn/horn_poison",
+        "stream": false
+      }
+    ]
+  },
+  "entity.horn.horn_golden": {
+    "category": "entity",
+    "subtitle": "horn.golden",
+    "sounds": [
+      {
+        "name": "da:entity/horn/horn_golden",
+        "stream": false
+      }
+    ]
+  },
+  "entity.horn.horn_regular": {
+    "category": "entity",
+    "subtitle": "horn.regular",
+    "sounds": [
+      {
+        "name": "da:entity/horn/horn_regular",
+        "stream": false
+      }
+    ]
+  },
+  "entity.horn.horn_magic": {
+    "category": "entity",
+    "subtitle": "horn.magic",
+    "sounds": [
+      {
+        "name": "da:entity/horn/horn_magic",
+        "stream": false
+      }
+    ]
+  },
   "entity.confetti.hemorrhage": {
     "category": "entity",
     "subtitle": "hemorrhage.impact",
@@ -166,6 +238,332 @@
     "sounds": [
       {
         "name": "da:entity/great_death/summon",
+        "stream": false
+      }
+    ]
+  },
+  "entity.brine_creep.hurt": {
+    "category": "entity",
+    "subtitle": "brine_creep.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/brine_creep/hurt1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/brine_creep/hurt2",
+        "stream": false
+      }
+    ]
+  },
+  "entity.brine_creep.idle": {
+    "category": "entity",
+    "subtitle": "brine_creep.idle",
+    "sounds": [
+      {
+        "name": "da:entity/brine_creep/idle1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/brine_creep/idle2",
+        "stream": false
+      }
+    ]
+  },
+  "entity.brine_creep.charge": {
+    "category": "entity",
+    "subtitle": "brine_creep.charge",
+    "sounds": [
+      {
+        "name": "da:entity/brine_creep/charge",
+        "stream": false
+      }
+    ]
+  },
+  "entity.brine_creep.shoot_laser": {
+    "category": "entity",
+    "subtitle": "brine_creep.shoot_laser",
+    "sounds": [
+      {
+        "name": "da:entity/brine_creep/shoot_laser",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.hurt": {
+    "category": "entity",
+    "subtitle": "roh.hurt",
+    "sounds": [
+      {
+        "name": "da:entity/roh/hurt1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/roh/hurt2",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.swing_sword": {
+    "category": "entity",
+    "subtitle": "roh.swing_sword",
+    "sounds": [
+      {
+        "name": "da:entity/roh/sword_swing1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/roh/sword_swing2",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.sword_heavy": {
+    "category": "entity",
+    "subtitle": "roh.sword_heavy",
+    "sounds": [
+      {
+        "name": "da:entity/roh/sword_heavy",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.summon": {
+    "category": "entity",
+    "subtitle": "roh.summon",
+    "sounds": [
+      {
+        "name": "da:entity/roh/summon",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.sigil_break": {
+    "category": "entity",
+    "subtitle": "roh.sigil_break",
+    "sounds": [
+      {
+        "name": "da:entity/roh/sigil_break",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.end_despair": {
+    "category": "entity",
+    "subtitle": "roh.end_despair",
+    "sounds": [
+      {
+        "name": "da:entity/roh/end_despair",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.death": {
+    "category": "entity",
+    "subtitle": "roh.death",
+    "sounds": [
+      {
+        "name": "da:entity/roh/death",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.despair": {
+    "category": "entity",
+    "subtitle": "roh.despair",
+    "sounds": [
+      {
+        "name": "da:entity/roh/despair",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.sword_charge": {
+    "category": "entity",
+    "subtitle": "roh.sword_charge",
+    "sounds": [
+      {
+        "name": "da:entity/roh/sword_charge",
+        "stream": true
+      }
+    ]
+  },
+  "entity.roh.cast_generic": {
+    "category": "entity",
+    "subtitle": "roh.cast_generic",
+    "sounds": [
+      {
+        "name": "da:entity/roh/cast_generic",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.cast_multi": {
+    "category": "entity",
+    "subtitle": "roh.cast_multi",
+    "sounds": [
+      {
+        "name": "da:entity/roh/cast_multi",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.jump_slam": {
+    "category": "entity",
+    "subtitle": "roh.jump_slam",
+    "sounds": [
+      {
+        "name": "da:entity/roh/cast_magic",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.summon_sword": {
+    "category": "entity",
+    "subtitle": "roh.summon_sword",
+    "sounds": [
+      {
+        "name": "da:entity/roh/summon_sword",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.sigil_shoot": {
+    "category": "entity",
+    "subtitle": "roh.sigil_shoot",
+    "sounds": [
+      {
+        "name": "da:entity/roh/sigil_shoot",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.sword_ability": {
+    "category": "entity",
+    "subtitle": "roh.sword_ability",
+    "sounds": [
+      {
+        "name": "da:entity/roh/sword_ability",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.throw_daggers": {
+    "category": "entity",
+    "subtitle": "roh.throw_daggers",
+    "sounds": [
+      {
+        "name": "da:entity/roh/throw_daggers",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.insult": {
+    "category": "entity",
+    "subtitle": "roh.insult",
+    "sounds": [
+      {
+        "name": "da:entity/roh/talk1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/roh/talk2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/roh/talk3",
+        "stream": false
+      },
+      {
+        "name": "da:entity/roh/talk4",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.begin": {
+    "category": "entity",
+    "subtitle": "roh.begin",
+    "sounds": [
+      {
+        "name": "da:entity/roh/begin1",
+        "stream": true
+      },
+      {
+        "name": "da:entity/roh/begin2",
+        "stream": true
+      },
+      {
+        "name": "da:entity/roh/begin3",
+        "stream": true
+      }
+    ]
+  },
+  "entity.roh.chant": {
+    "category": "entity",
+    "subtitle": "roh.chant",
+    "sounds": [
+      {
+        "name": "da:entity/roh/chant1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/roh/chant2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/roh/chant3",
+        "stream": false
+      },
+      {
+        "name": "da:entity/roh/chant4",
+        "stream": false
+      },
+      {
+        "name": "da:entity/roh/chant5",
+        "stream": false
+      },
+      {
+        "name": "da:entity/roh/chant6",
+        "stream": false
+      },
+      {
+        "name": "da:entity/roh/chant7",
+        "stream": false
+      },
+      {
+        "name": "da:entity/roh/chant8",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.summon_weapon": {
+    "category": "entity",
+    "subtitle": "roh.summon_weapon",
+    "sounds": [
+      {
+        "name": "da:entity/roh/summon_weapon",
+        "stream": false
+      }
+    ]
+  },
+  "entity.roh.step": {
+    "category": "entity",
+    "subtitle": "roh.step",
+    "sounds": [
+      {
+        "name": "da:entity/roh/step1",
+        "stream": false
+      },
+      {
+        "name": "da:entity/roh/step2",
+        "stream": false
+      },
+      {
+        "name": "da:entity/roh/step3",
+        "stream": false
+      },
+      {
+        "name": "da:entity/roh/step4",
         "stream": false
       }
     ]

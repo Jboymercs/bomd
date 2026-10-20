@@ -52,6 +52,7 @@ public class EntityShadowHand extends EntityDarkBase implements IAnimatable, IAn
         this.setSize(1.0F, 1.5F);
         this.noClip = true;
         this.setImmovable(true);
+        this.isImmuneToFire = true;
         this.setNoAI(true);
     }
 
@@ -60,6 +61,7 @@ public class EntityShadowHand extends EntityDarkBase implements IAnimatable, IAn
         this.setSize(1.0F, 1.5F);
         this.noClip = true;
         this.setImmovable(true);
+        this.isImmuneToFire = true;
         this.setNoAI(true);
     }
 

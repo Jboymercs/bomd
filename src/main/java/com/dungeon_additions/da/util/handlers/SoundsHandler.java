@@ -384,12 +384,45 @@ public class SoundsHandler {
 
     public static SoundEvent GREAT_DEATH_SUMMON;
     public static SoundEvent GREAT_DEATH_IMPACT;
+    public static SoundEvent ROH_HURT;
+    public static SoundEvent ROH_STEP;
+    public static SoundEvent ROH_SWING_SWORD;
+    public static SoundEvent ROH_CHARGE_SWORD;
+    public static SoundEvent ROH_SWING_SWORD_HEAVY;
+    public static SoundEvent ROH_CAST_GENERIC;
+    public static SoundEvent ROH_CAST_MULTI;
+    public static SoundEvent ROH_SIGIL_SHOOT;
+    public static SoundEvent ROH_SWORD_ABILITY;
+    public static SoundEvent ROH_SUMMON_WEAPON;
+    public static SoundEvent ROH_THROW_DAGGERS;
+    public static SoundEvent ROH_INSULT;
+    public static SoundEvent ROH_BEGIN;
+    public static SoundEvent ROH_CHANT;
+    public static SoundEvent ROH_SUMMON_SWORD;
+    public static SoundEvent ROH_JUMP_SLAM;
+    public static SoundEvent ROH_DESPAIR;
+    public static SoundEvent ROH_SUMMON;
+    public static SoundEvent ROH_SIGIL_BREAK;
+    public static SoundEvent ROH_END_DESPAIR;
+    public static SoundEvent ROH_DEATH_VL;
+
+    public static SoundEvent BRINE_CREEP_HURT;
+    public static SoundEvent BRINE_CREEP_IDLE;
+    public static SoundEvent BRINE_CREEP_SHOOT_LASER;
+    public static SoundEvent BRINE_CREEP_CHARGE;
 
     public static SoundEvent ENDERPHRITE_HURT;
     public static SoundEvent ENDERPHRITE_IDLE;
     public static SoundEvent ENDERPHRITE_SCREAM;
     public static SoundEvent ENDERPHRITE_DEATH;
     public static SoundEvent ENDERPHRITE_SONIC_BOOM;
+
+    public static SoundEvent OPEN_TREASURE_BAG;
+    public static SoundEvent HORN_MAGIC;
+    public static SoundEvent HORN_DEVOTION;
+    public static SoundEvent HORN_GOLDEN;
+    public static SoundEvent HORN_REGULAR;
+    public static SoundEvent HORN_POISON;
 
     public static SoundEvent DAUNTLESS_HURT;
     public static SoundEvent DAUNTLESS_SWING;
@@ -754,12 +787,45 @@ public class SoundsHandler {
         //
         GREAT_DEATH_IMPACT = registerSound("great_death.impact", "entity");
         GREAT_DEATH_SUMMON = registerSound("great_death.summon", "entity");
+        ROH_HURT = registerSound("roh.hurt", "entity");
+        ROH_STEP = registerSound("roh.step", "entity");
+        ROH_SWING_SWORD = registerSound("roh.swing_sword", "entity");
+        ROH_CHARGE_SWORD = registerSound("roh.sword_charge", "entity");
+        ROH_SWING_SWORD_HEAVY = registerSound("roh.sword_heavy", "entity");
+        ROH_CAST_GENERIC = registerSound("roh.cast_generic", "entity");
+        ROH_CAST_MULTI = registerSound("roh.cast_multi", "entity");
+        ROH_SIGIL_SHOOT = registerSound("roh.sigil_shoot", "entity");
+        ROH_SWORD_ABILITY = registerSound("roh.sword_ability", "entity");
+        ROH_SUMMON_WEAPON = registerSound("roh.summon_weapon", "entity");
+        ROH_THROW_DAGGERS = registerSound("roh.throw_daggers", "entity");
+        ROH_INSULT = registerSound("roh.insult", "entity");
+        ROH_BEGIN = registerSound("roh.begin", "entity");
+        ROH_CHANT = registerSound("roh.chant", "entity");
+        ROH_SUMMON_SWORD = registerSound("roh.summon_sword", "entity");
+        ROH_JUMP_SLAM = registerSound("roh.jump_slam", "entity");
+        ROH_DESPAIR = registerSound("roh.despair", "entity");
+        ROH_SUMMON = registerSound("roh.summon", "entity");
+        ROH_SIGIL_BREAK = registerSound("roh.sigil_break", "entity");
+        ROH_END_DESPAIR = registerSound("roh.end_despair", "entity");
+        ROH_DEATH_VL = registerSound("roh.death", "entity");
+        //
+        BRINE_CREEP_CHARGE = registerSound("brine_creep.charge", "entity");
+        BRINE_CREEP_HURT = registerSound("brine_creep.hurt", "entity");
+        BRINE_CREEP_IDLE = registerSound("brine_creep.idle", "entity");
+        BRINE_CREEP_SHOOT_LASER = registerSound("brine_creep.shoot_laser", "entity");
         //
         ENDERPHRITE_HURT = registerSound("enderphrite.hurt","entity");
         ENDERPHRITE_DEATH = registerSound("enderphrite.death", "entity");
         ENDERPHRITE_IDLE = registerSound("enderphrite.idle", "entity");
         ENDERPHRITE_SCREAM = registerSound("enderphrite.scream", "entity");
         ENDERPHRITE_SONIC_BOOM = registerSound("enderphrite.sonic_boom", "entity");
+        //
+        OPEN_TREASURE_BAG = registerSound("treasure_bag.open", "entity");
+        HORN_DEVOTION = registerSound("horn.horn_devotion", "entity");
+        HORN_GOLDEN = registerSound("horn.horn_golden", "entity");
+        HORN_MAGIC = registerSound("horn.horn_magic", "entity");
+        HORN_REGULAR = registerSound("horn.horn_regular", "entity");
+        HORN_POISON = registerSound("horn.horn_poison", "entity");
         //
         CONFETTI_SOUND = registerSound("confetti.party", "entity");
         DEATHBLOW_SOUND = registerSound("confetti.deathblow", "entity");

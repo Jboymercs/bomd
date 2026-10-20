@@ -1,9 +1,7 @@
 package com.dungeon_additions.da.world.cults_domain;
 
 import com.dungeon_additions.da.config.WorldConfig;
-import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
-import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkRoyal;
-import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkSorcerer;
+import com.dungeon_additions.da.entity.dark_dungeon.*;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugrRanger;
@@ -24,6 +22,7 @@ import java.util.Random;
 
 public class CultsDomainTemplate extends ModStructureTemplate {
 
+    private boolean enableMobs = false;
     public CultsDomainTemplate() {
 
     }
@@ -33,7 +32,6 @@ public class CultsDomainTemplate extends ModStructureTemplate {
 
     @Override
     protected void handleDataMarker(String function, BlockPos pos, World world, Random rand, StructureBoundingBox sbb) {
-
         //mobs
         if(function.startsWith("mob")) {
             //both shield and other variant
@@ -71,6 +69,55 @@ public class CultsDomainTemplate extends ModStructureTemplate {
                 }
             } else {
                 world.setBlockToAir(pos);
+            }
+        }   else if(function.startsWith("boss")) {
+            //boss spawner
+            EntityRohsEye eye = new EntityRohsEye(world);
+            eye.setPosition(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
+            world.spawnEntity(eye);
+            world.setBlockToAir(pos);
+        } else if (function.startsWith("flying")) {
+                if (ModRand.percentageOf(50)) {
+                    EntityBrineCreep creep = new EntityBrineCreep(world);
+                    creep.setPosition(pos.getX(), pos.getY() + 1, pos.getZ());
+                    world.spawnEntity(creep);
+                    world.setBlockToAir(pos);
+                } else {
+                    world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_DARK.getDefaultState(), 2);
+                    TileEntity tileentity = world.getTileEntity(pos);
+                    if (tileentity instanceof tileEntityMobSpawner) {
+                        ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
+                                new MobSpawnerLogic.MobSpawnData[]{
+                                        new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityBrineCreep.class), 1)
+                                },
+                                new int[]{1},
+                                1,
+                                36);
+                    }
+                }
+        } else if (function.startsWith("shield_elite")) {
+            world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_DARK.getDefaultState(), 2);
+            TileEntity tileentity = world.getTileEntity(pos);
+            if (tileentity instanceof tileEntityMobSpawner) {
+                ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
+                        new MobSpawnerLogic.MobSpawnData[]{
+                                new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityEverchosen.class), 1)
+                        },
+                        new int[]{1},
+                        1,
+                        14);
+            }
+        } else if (function.startsWith("hammer_elite")) {
+            world.setBlockState(pos, ModBlocks.DISAPPEARING_SPAWNER_DARK.getDefaultState(), 2);
+            TileEntity tileentity = world.getTileEntity(pos);
+            if (tileentity instanceof tileEntityMobSpawner) {
+                ((tileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setData(
+                        new MobSpawnerLogic.MobSpawnData[]{
+                                new MobSpawnerLogic.MobSpawnData(ModEntities.getID(EntityEverchosenHammer.class), 1)
+                        },
+                        new int[]{1},
+                        1,
+                        14);
             }
         }
 

@@ -6,6 +6,7 @@ import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.capabilities.CapabilityItemAnimations;
 import com.dungeon_additions.da.capabilities.CapabilityPlayerFalter;
 import com.dungeon_additions.da.capabilities.CapabilityPlayerSwing;
+import com.dungeon_additions.da.capabilities.CapabilityRohsCorruption;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.PotionTrinketConfig;
 import com.dungeon_additions.da.init.ModItems;
@@ -13,9 +14,11 @@ import com.dungeon_additions.da.init.ModPotions;
 import com.dungeon_additions.da.items.tools.*;
 import com.dungeon_additions.da.packets.PacketFalterCapability;
 import com.dungeon_additions.da.packets.PacketFalterProgress;
+import com.dungeon_additions.da.packets.PacketRohsCorruption;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.PlayerCustomSwingUtils;
 import com.dungeon_additions.da.util.PlayerFalterUtils;
+import com.dungeon_additions.da.util.PlayerRohCorruptionUtils;
 import com.dungeon_additions.da.util.player.PlayerMeleeAttack;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.*;
@@ -49,7 +52,9 @@ public class EventPlayerFalter {
         if (event.getObject() instanceof EntityPlayer)
         { event.addCapability(CapabilityPlayerFalter.ID, new CapabilityPlayerFalter.Provider(new CapabilityPlayerFalter.DAPlayerFalterMethods(), CapabilityPlayerFalter.PLAYER_FALTER_CAP, null));
           event.addCapability(CapabilityItemAnimations.ID, new CapabilityItemAnimations.Provider(new CapabilityItemAnimations.AnimationMethods(), CapabilityItemAnimations.ANIM_CAP, null));
-            event.addCapability(CapabilityPlayerSwing.ID, new CapabilityPlayerSwing.Provider(new CapabilityPlayerSwing.DAPlayerSwingMethods(), CapabilityPlayerSwing.PLAYER_SWING_CAP, null));}
+            event.addCapability(CapabilityPlayerSwing.ID, new CapabilityPlayerSwing.Provider(new CapabilityPlayerSwing.DAPlayerSwingMethods(), CapabilityPlayerSwing.PLAYER_SWING_CAP, null));
+            event.addCapability(CapabilityRohsCorruption.ID, new CapabilityRohsCorruption.Provider(new CapabilityRohsCorruption.DARohsCorruptionMethods(), CapabilityRohsCorruption.PLAYER_ROH_CORRUPTION_CAP, null));
+        }
     }
 
     @SubscribeEvent
@@ -57,9 +62,11 @@ public class EventPlayerFalter {
     {
         CapabilityPlayerFalter.IPlayerFalterCapability capFog = PlayerFalterUtils.getCapability(event.player);
         CapabilityPlayerSwing.IPlayerSwingCapability swingProg = PlayerCustomSwingUtils.getCapability(event.player);
+        CapabilityRohsCorruption.IRohsCorruptionCapability rohCorruption = PlayerRohCorruptionUtils.getCapability(event.player);
         if (capFog == null) return;
-
         Main.network.sendTo(new PacketFalterCapability(event.player.getEntityId(), true), (EntityPlayerMP) event.player);
+        if (rohCorruption == null) return;
+        Main.network.sendTo(new PacketRohsCorruption(event.player.getEntityId(), true), (EntityPlayerMP) event.player);
     }
 
     @SubscribeEvent
@@ -76,6 +83,7 @@ public class EventPlayerFalter {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event)
     {
         if (event.phase != TickEvent.Phase.END || !ModConfig.mobs_cause_falter && !ModConfig.players_cause_falter) return;
+        if(event.player.getHealth() == 0) return;
 
         EntityPlayer player = event.player;
         if(!player.world.isRemote) {
@@ -96,7 +104,7 @@ public class EventPlayerFalter {
             //staggers the player
             if(PlayerFalterUtils.getPlayerFalterProgress(player) > PlayerFalterUtils.getPlayerFalterResistance(player)) {
                 //we want the time to scale with the players current falter. So if a enemy causes a lot of stun damage, it will stun you greatly.
-                int time = (int) ((PlayerFalterUtils.getPlayerFalterProgress(player) * 20) + 50);
+                int time = (int) ((PlayerFalterUtils.getPlayerFalterProgress(player) * 40));
                 player.addPotionEffect(new PotionEffect(ModPotions.FALTERED, time, 0, false, false));
                 if(!stack.isEmpty()) {
                     stack.damageItem(1, player);

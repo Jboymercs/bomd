@@ -190,6 +190,7 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
         super(worldIn, x, y, z);
         this.setSize(0.7F, 2.2F);
         this.experienceValue = 12;
+        this.isImmuneToFire = true;
         int randI = ModRand.range(1, 10);
         this.setSkin(rand.nextInt(5));
         if(randI >= MobConfig.crypt_guard_shield_chance) {
@@ -230,6 +231,7 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
         super(worldIn);
         this.setSize(0.7F, 2.2F);
         this.experienceValue = 12;
+        this.isImmuneToFire = true;
         int randI = ModRand.range(1, 10);
         this.setSkin(rand.nextInt(5));
         if(randI >= MobConfig.crypt_guard_shield_chance) {

@@ -2,9 +2,7 @@ package com.dungeon_additions.da.init;
 
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.entity.EntityFireResistantItems;
-import com.dungeon_additions.da.entity.EntityNetherAbberrant;
-import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
+import com.dungeon_additions.da.entity.*;
 import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.dark_dungeon.*;
 import com.dungeon_additions.da.entity.dark_dungeon.boss.*;
@@ -112,6 +110,10 @@ public class ModEntities {
     public static Vec3i everator = new Vec3i(0xEDEDCE,0xEBD463,0);
 
     public static Vec3i dark_royal = new Vec3i(0x233547,0xb42507,0);
+    public static Vec3i everchosen_executioner = new Vec3i(0xFF001E, 0x0E1329, 0);
+    public static Vec3i everchosen_swordmaster = new Vec3i(0xFF001E,0x4E139A,0);
+    public static Vec3i roh = new Vec3i(0xFF001E, 0xFFED18, 0);
+    public static Vec3i brine_maw = new Vec3i(0x00196E, 0xFFF9A1,0);
     public static Vec3i scutter_beetle = new Vec3i(0x0e588a, 0xf2c31e, 0);
     public static Vec3i obsidilith = new Vec3i(0x161117, 0x5B016B, 0);
     public static Vec3i voidclysm = new Vec3i(0x161117, 0xDE28D9, 0);
@@ -179,7 +181,11 @@ public class ModEntities {
         registerEntityWithID("dark_royal", EntityDarkRoyal.class, ENTITY_START_ID++, 70, dark_royal);
         registerEntityWithID("dark_sorcerer", EntityDarkSorcerer.class, ENTITY_START_ID++, 70, dark_sorcerer);
         registerEntityWithID("dauntless", EntityDauntless.class, ENTITY_START_ID++, 90, dauntless);
-        registerEntityWithID("darkdrift_devil", EntityDarkdriftDevil.class, ENTITY_START_ID++, 90, dark_sorcerer);
+        registerEntityWithID("brine_creep", EntityBrineCreep.class, ENTITY_START_ID++, 80, brine_maw);
+        registerEntityWithID("everchosen_sword", EntityEverchosen.class, ENTITY_START_ID++, 80, everchosen_swordmaster);
+        registerEntityWithID("everchosen_hammer", EntityEverchosenHammer.class, ENTITY_START_ID++, 80, everchosen_executioner);
+        registerEntityWithID("darkdrift_devil", EntityDarkdriftDevil.class, ENTITY_START_ID++, 90, roh);
+        registerEntityWithID("test_model", EntityTestModel.class, ENTITY_START_ID++, 90, dark_sorcerer);
         //Traders
         registerEntityWithID("mysterious_trader", EntityMysteriousTrader.class, ENTITY_START_ID++, 50, mysterious_trader);
 
@@ -197,6 +203,7 @@ public class ModEntities {
             registerEntity("flame_projectile", ProjectileTrackingFlame.class, PROJECTILE_START_ID++, 30);
             registerEntity("nether_pyre", EntityPyre.class, ENTITY_START_ID++, 30);
             registerEntity("fire_resist_item", EntityFireResistantItems.class, ENTITY_START_ID++, 30);
+            registerEntity("treasure_bag_item", EntityTreasureBagItem.class, ENTITY_START_ID++, 30);
             registerEntity("rot_spike", EntityRotSpike.class, ENTITY_START_ID++, 30);
             registerEntity("soul_star", EntitySoulStar.class, PROJECTILE_START_ID++, 30);
             registerEntity("lily_locator", EntityLily.class, PROJECTILE_START_ID++, 30);
@@ -282,6 +289,9 @@ public class ModEntities {
             registerEntity("dark_locator_proj", EntityDarkRuinsLocator.class, PROJECTILE_START_ID++, 30);
             registerEntity("storm_trident", ProjectileStormTrident.class, PROJECTILE_START_ID++, 40);
             registerEntity("rot_poison_cloud", ProjectileDelayedPoisonCloud.class, PROJECTILE_START_ID++, 40);
+            registerEntity("spear_incarnate", EntitySpearIncarnate.class, ENTITY_START_ID++, 40);
+            registerEntity("rohs_eye", EntityRohsEye.class, ENTITY_START_ID++, 40);
+            registerEntity("red_lightning_ground", ProjectileRedLightningGround.class, ENTITY_START_ID++, 40);
 
 
 

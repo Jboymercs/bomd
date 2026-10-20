@@ -104,6 +104,7 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
     public EntityDarkSorcerer(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
         this.experienceValue = 15;
+        this.isImmuneToFire = true;
         this.setSize(0.6F, 1.95F);
         this.falter_resistance = 0.5F;
         this.hemorrhage_resistance = 0.9F;
@@ -112,6 +113,7 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
     public EntityDarkSorcerer(World worldIn) {
         super(worldIn);
         this.experienceValue = 15;
+        this.isImmuneToFire = true;
         this.setSize(0.6F, 1.95F);
         this.falter_resistance = 0.5F;
         this.hemorrhage_resistance = 0.9F;

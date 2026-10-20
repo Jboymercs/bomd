@@ -161,7 +161,7 @@ public class CommandLocateMod implements ICommand {
 
             }  else if (s.equals("CultCastle")) {
                 if(!WorldConfig.cult_castle_enabled) {
-                    throw new CommandException("da.structure_work_in_progress.name", s);
+                    throw new CommandException("da.structure_enabled.name", s);
                 }
                 BlockPos blockpos = findNearestPosCultCastle(sender);
 

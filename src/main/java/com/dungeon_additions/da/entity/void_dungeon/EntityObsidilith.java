@@ -417,21 +417,32 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
     private void placeLootOnDeath(BlockPos blockpos) {
         if(!world.isRemote && !MobConfig.obsidilith_two_part_boss) {
             if (this.getSpawnLocation() != null) {
-                world.setBlockState(this.getSpawnLocation().add(4, 0, 0), Blocks.PINK_SHULKER_BOX.getDefaultState());
-                TileEntity te = world.getTileEntity(this.getSpawnLocation().add(4, 0, 0));
-                if (te instanceof TileEntityShulkerBox) {
-                    TileEntityShulkerBox chest = (TileEntityShulkerBox) te;
-                    chest.setLootTable(LOOT_MOB, rand.nextLong());
+                if(!ModConfig.bosses_drop_treasure_bags) {
+                    world.setBlockState(this.getSpawnLocation().add(4, 0, 0), Blocks.PINK_SHULKER_BOX.getDefaultState());
+                    TileEntity te = world.getTileEntity(this.getSpawnLocation().add(4, 0, 0));
+                    if (te instanceof TileEntityShulkerBox) {
+                        TileEntityShulkerBox chest = (TileEntityShulkerBox) te;
+                        chest.setLootTable(LOOT_MOB, rand.nextLong());
+                    }
                 }
                 this.createCoinSpawns(new Vec3d(this.getSpawnLocation().getX() + 4, this.getSpawnLocation().getY() + 1, this.getSpawnLocation().getZ()), 0, ModRand.range(3, 7), 0);
             } else {
-                world.setBlockState(blockpos, Blocks.PINK_SHULKER_BOX.getDefaultState());
-                TileEntity te = world.getTileEntity(blockpos);
-                if (te instanceof TileEntityShulkerBox) {
-                    TileEntityShulkerBox chest = (TileEntityShulkerBox) te;
-                    chest.setLootTable(LOOT_MOB, rand.nextLong());
+                if(!ModConfig.bosses_drop_treasure_bags) {
+                    world.setBlockState(blockpos, Blocks.PINK_SHULKER_BOX.getDefaultState());
+                    TileEntity te = world.getTileEntity(blockpos);
+                    if (te instanceof TileEntityShulkerBox) {
+                        TileEntityShulkerBox chest = (TileEntityShulkerBox) te;
+                        chest.setLootTable(LOOT_MOB, rand.nextLong());
+                    }
                 }
                 this.createCoinSpawns(this.getPositionVector(), 0, ModRand.range(3, 7), 0);
+            }
+            if(ModConfig.bosses_drop_treasure_bags) {
+                if(this.getSpawnLocation() != null) {
+                    this.createTreasureBag(new Vec3d(this.getSpawnLocation().getX(), this.getSpawnLocation().getY() + 1, this.getSpawnLocation().getZ()), "obsidilith");
+                } else {
+                    this.createTreasureBag(this.getPositionVector(), "obsidilith");
+                }
             }
         }
     }

@@ -1,5 +1,7 @@
 package com.dungeon_additions.da.entity.sky_dungeon.high_king.king.action;
 
+import com.dungeon_additions.da.entity.EntityAbstractBase;
+import com.dungeon_additions.da.entity.ai.IAction;
 import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.EntityKingHolyAOE;
@@ -10,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class ActionHolySpikeAOE implements IActionKing{
+public class ActionHolySpikeAOE implements IAction {
 
     private final int lengthOfAOE;
 
@@ -18,7 +20,7 @@ public class ActionHolySpikeAOE implements IActionKing{
         this.lengthOfAOE = lengthOfAOE;
     }
     @Override
-    public void performAction(EntityHighKing actor, EntityLivingBase target) {
+    public void performAction(EntityAbstractBase actor, EntityLivingBase target) {
         Vec3d savedPos = actor.getPositionVector();
         //Now we need to make this in a loop relative
         if(lengthOfAOE >= 14) {

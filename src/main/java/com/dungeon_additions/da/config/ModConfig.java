@@ -22,7 +22,7 @@ public class ModConfig {
     @Config.Name("Boss Scaling Health")
     @Config.Comment("Change the scaling added per player of health added to bosses, not counting one player")
     @Config.RequiresMcRestart
-    public static double boss_health_scaling = 0.4;
+    public static double boss_health_scaling = 0.65;
 
     @Config.Name("Boss Scaling Attack Damage")
     @Config.Comment("Change the scaling added per player of attack damage to bosses, not counting one player")
@@ -842,13 +842,23 @@ public class ModConfig {
             "da:nightfall_helmet",
             "da:nightfall_sword",
             "da:nightfall_gauntlets",
-            "da:nightfall_chestplate"
+            "da:nightfall_chestplate",
+            "da:fallen_helmet",
+            "da:fallen_chestplate",
+            "da:fallen_leggings",
+            "da:fallen_boots",
+            "da:stormvier_trident"
     };
 
     @Config.Name("Bosses drop Trader Coins")
     @Config.Comment("Change if bosses should drop the three tiers of Trader Coins in the mod. If set too false, they will not.")
     @Config.RequiresMcRestart
     public static boolean bosses_drop_trader_coins = true;
+
+    @Config.Name("Bosses drop Treasure Bags")
+    @Config.Comment("Change if bosses should drop treasure bags upon death that scale the amount per player around")
+    @Config.RequiresMcRestart
+    public static boolean bosses_drop_treasure_bags = true;
 
     @Config.Name("Boss Enraged State Enable/Disable")
     @Config.Comment("When enabled, when a boss is below a set health, there attack damage will increase. Set to false to disable entirely")

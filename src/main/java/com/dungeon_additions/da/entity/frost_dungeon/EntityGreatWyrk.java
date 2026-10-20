@@ -681,6 +681,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         if(this.getSpawnLocation() != null && !world.isRemote) {
             this.turnBossIntoSummonSpawner(this.getSpawnLocation());
             this.createCoinSpawns(this.getPositionVector(), ModRand.range(4, 8), 1, 0);
+            this.createTreasureBag(this.getPositionVector(), "great_wyrk");
         }
         super.onDeath(cause);
     }
@@ -713,7 +714,10 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
 
     @Override
     protected ResourceLocation getLootTable() {
-        return LOOT_MOB;
+        if(this.getSpawnLocation() == null || !ModConfig.bosses_drop_treasure_bags) {
+            return LOOT_MOB;
+        }
+        return null;
     }
 
     @Override

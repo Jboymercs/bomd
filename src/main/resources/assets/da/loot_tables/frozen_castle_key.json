@@ -354,6 +354,11 @@
           ]
         },
         {
+          "type": "loot_table",
+          "name": "da:rare_loot_items",
+          "weight": 6
+        },
+        {
           "type": "item",
           "name": "da:frost_sword",
           "weight": 2,

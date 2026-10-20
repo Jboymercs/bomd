@@ -1,0 +1,50 @@
+{
+  "pools": [
+    {
+      "name" : "da:rare_loot_items",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "da:rally_horn",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "da:poison_horn",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "da:magic_horn",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "da:respite_horn",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "da:golden_horn",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "da:devoted_horn",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "da:aspect_template",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "da:aspect_potion",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

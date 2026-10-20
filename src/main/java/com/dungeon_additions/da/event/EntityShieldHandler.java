@@ -4,6 +4,7 @@ import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.config.PotionTrinketConfig;
 import com.dungeon_additions.da.entity.EntityFireResistantItems;
+import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
 import com.dungeon_additions.da.entity.player.ActionPlayerFallSlam;
 import com.dungeon_additions.da.entity.player.ActionPlayerSmallSpearWave;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
@@ -183,6 +184,8 @@ public class EntityShieldHandler {
             return;
         }
 
+        if(event.getSource().getTrueSource() instanceof EntityPlayer && ((EntityPlayer)event.getSource().getTrueSource()).getHealth() == 0) return;
+
         final float originalDamage = event.getAmount();
         float totalDamage = event.getAmount();
 
@@ -204,10 +207,6 @@ public class EntityShieldHandler {
 
             EntityPlayer player = ((EntityPlayer) event.getEntityLiving());
             if(player != null) {
-
-                if(event.getSource() instanceof ModIndirectDamage) {
-
-                }
 
                 //reduces damage based on source
                 //mage set
@@ -234,6 +233,9 @@ public class EntityShieldHandler {
                         magicDamageReduction += 0.1;
                     } else if (player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.WYRK_BOOTS) {
                         magicDamageReduction += 0.05;
+                    }
+                    if(player.isPotionActive(ModPotions.MAGIC_AURA)) {
+                        magicDamageReduction += 0.25;
                     }
                     //reduces the damage if its magic based on how many pieces of the mages set the player is wearing
                   //  event.setAmount((float) (totalDamage - (originalDamage * magicDamageReduction)));
@@ -477,13 +479,6 @@ public class EntityShieldHandler {
                 totalDamage *= 1 + ModUtils.addSpearBonus(player, event.getEntityLiving());
             }
 
-            //Fiery Respite
-            if(player.isPotionActive(ModPotions.FIERY_RESPITE)) {
-                if(event.getEntityLiving() != null) {
-                    event.getEntityLiving().setFire(PotionTrinketConfig.fiery_respite_fire_time);
-                }
-            }
-
             //players apply more damage when the enemy is faltered.
             if(event.getEntityLiving() != null) {
                 EntityLivingBase base = ((EntityLivingBase) event.getEntityLiving());
@@ -502,6 +497,16 @@ public class EntityShieldHandler {
                 //  event.setAmount((float) (totalDamage + (originalDamage * PotionTrinketConfig.hunters_mark_damage_increase)));
                 totalDamage += (float) (totalDamage * PotionTrinketConfig.hunters_mark_damage_increase);
             }
+
+            //Fiery Respite
+            if(event.getSource().getTrueSource() instanceof EntityLivingBase && ((EntityLivingBase) event.getSource().getTrueSource()).isPotionActive(ModPotions.FIERY_RESPITE)) {
+                if(event.getEntityLiving() != null) {
+                    event.getEntityLiving().setFire(PotionTrinketConfig.fiery_respite_fire_time);
+                    if(event.getSource().getTrueSource() instanceof EntityFlameKnight) {
+                        totalDamage += 4;
+                    }
+                }
+            }
         }
 
 
@@ -509,7 +514,8 @@ public class EntityShieldHandler {
             if(event.getSource().getTrueSource() instanceof EntityLivingBase) {
                 EntityLivingBase targeted = (EntityLivingBase) event.getSource().getTrueSource();
                 if(targeted.isPotionActive(ModPotions.FALTERED)) {
-                  totalDamage = 0F;
+                  event.setAmount(0);
+                  return;
                 } else if(targeted.isPotionActive(ModPotions.DEGRADATION)) {
                     float damage_val = targeted.getHealth() / targeted.getMaxHealth() - 0.1F;
                     if(damage_val > 0) {

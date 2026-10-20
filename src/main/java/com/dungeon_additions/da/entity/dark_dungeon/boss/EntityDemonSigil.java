@@ -44,11 +44,13 @@ public class EntityDemonSigil extends EntityDarkBase  implements IAnimationTicka
     protected static final byte stopLazerByte = 39;
 
     private float yawValue;
+    private boolean isOpposing;
 
-    public EntityDemonSigil(World world, float yawVal, boolean isRotating, float damageIn) {
+    public EntityDemonSigil(World world, float yawVal, boolean isRotating, boolean isOpposing, float damageIn) {
         super(world);
         this.yawValue = yawVal;
         this.setRotatingSigil(isRotating);
+        this.isOpposing = isOpposing;
         this.rotationYaw = yawVal;
         this.rotationYawHead = yawVal;
         this.damageIn = damageIn;
@@ -101,8 +103,13 @@ public class EntityDemonSigil extends EntityDarkBase  implements IAnimationTicka
                 }
 
                     if(this.ticksExisted >= 10 && this.ticksExisted <= 190) {
-                        this.rotationYaw += 1.5F;
-                        this.rotationYawHead += 1.5F;
+                        if(this.isOpposing) {
+                            this.rotationYaw -= 1.5F;
+                            this.rotationYawHead -= 1.5F;
+                        } else {
+                            this.rotationYaw += 1.5F;
+                            this.rotationYawHead += 1.5F;
+                        }
                     }
 
                     if(this.ticksExisted == 199) {
@@ -117,8 +124,8 @@ public class EntityDemonSigil extends EntityDarkBase  implements IAnimationTicka
                     this.rotationYaw = 0;
                 }
 
-                if(this.ticksExisted % 10 == 0 && this.ticksExisted <= 130 && this.ticksExisted >= 15) {
-                    this.playSound(SoundsHandler.COLOSSUS_HILT_SLAM, 0.75f, 0.6f / (rand.nextFloat() * 0.4f + 0.2f));
+                if(this.ticksExisted % 10 == 0 && this.ticksExisted <= 130 && this.ticksExisted >= 8 || this.ticksExisted == 4) {
+                    this.playSound(SoundsHandler.ROH_SIGIL_SHOOT, 0.75f, 0.6f / (rand.nextFloat() * 0.4f + 0.2f));
                     ProjectileBloodSigil sigil = new ProjectileBloodSigil(world, this, damageIn);
                     Vec3d relPos = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0.75, 0.5, 0)));
                     sigil.setPosition(relPos.x, relPos.y, relPos.z);

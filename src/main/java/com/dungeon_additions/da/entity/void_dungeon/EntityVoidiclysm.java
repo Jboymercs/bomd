@@ -1468,21 +1468,32 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
     private void placeLootOnDeath(BlockPos blockpos) {
         if(!world.isRemote) {
             if (this.getSpawnLocation() != null) {
-                world.setBlockState(this.getSpawnLocation().add(4, 0, 0), Blocks.BLACK_SHULKER_BOX.getDefaultState());
-                TileEntity te = world.getTileEntity(this.getSpawnLocation().add(4, 0, 0));
-                if (te instanceof TileEntityShulkerBox) {
-                    TileEntityShulkerBox chest = (TileEntityShulkerBox) te;
-                    chest.setLootTable(LOOT_MOB, rand.nextLong());
+                if(!ModConfig.bosses_drop_treasure_bags) {
+                    world.setBlockState(this.getSpawnLocation().add(4, 0, 0), Blocks.BLACK_SHULKER_BOX.getDefaultState());
+                    TileEntity te = world.getTileEntity(this.getSpawnLocation().add(4, 0, 0));
+                    if (te instanceof TileEntityShulkerBox) {
+                        TileEntityShulkerBox chest = (TileEntityShulkerBox) te;
+                        chest.setLootTable(LOOT_MOB, rand.nextLong());
+                    }
                 }
-                this.createCoinSpawns(new Vec3d(this.getSpawnLocation().getX() + 4, this.getSpawnLocation().getY() + 1, this.getSpawnLocation().getZ()), 0, ModRand.range(4, 6), 2);
+                this.createCoinSpawns(new Vec3d(this.getSpawnLocation().getX(), this.getSpawnLocation().getY() + 1, this.getSpawnLocation().getZ()), 0, ModRand.range(4, 6), 2);
             } else {
-                world.setBlockState(blockpos, Blocks.BLACK_SHULKER_BOX.getDefaultState());
-                TileEntity te = world.getTileEntity(blockpos);
-                if (te instanceof TileEntityShulkerBox) {
-                    TileEntityShulkerBox chest = (TileEntityShulkerBox) te;
-                    chest.setLootTable(LOOT_MOB, rand.nextLong());
+                if(!ModConfig.bosses_drop_treasure_bags) {
+                    world.setBlockState(blockpos, Blocks.BLACK_SHULKER_BOX.getDefaultState());
+                    TileEntity te = world.getTileEntity(blockpos);
+                    if (te instanceof TileEntityShulkerBox) {
+                        TileEntityShulkerBox chest = (TileEntityShulkerBox) te;
+                        chest.setLootTable(LOOT_MOB, rand.nextLong());
+                    }
                 }
                 this.createCoinSpawns(this.getPositionVector(), 0, ModRand.range(4, 6), 2);
+            }
+            if(ModConfig.bosses_drop_treasure_bags) {
+                if(this.getSpawnLocation() != null) {
+                    this.createTreasureBag(new Vec3d(this.getSpawnLocation().getX(), this.getSpawnLocation().getY() + 1, this.getSpawnLocation().getZ()), "voidclysm");
+                } else {
+                    this.createTreasureBag(this.getPositionVector(), "voidclysm");
+                }
             }
         }
     }

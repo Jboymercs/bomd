@@ -722,6 +722,11 @@
           ]
         },
         {
+          "type": "loot_table",
+          "name": "da:rare_loot_items",
+          "weight": 4
+        },
+        {
           "type": "item",
           "name": "da:gaelon_ingot",
           "weight": 5,

@@ -4,6 +4,7 @@ import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.pathing.MobGroundNavigate;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.init.ModPotions;
+import com.dungeon_additions.da.items.ItemTreasureBag;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.ServerScaleUtil;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -20,6 +21,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -356,6 +358,18 @@ public abstract class EntityAbstractBase extends EntityCreature {
                 EntityItem itemToThrow = new EntityItem(world, pos.x, pos.y + 0.25, pos.z, new ItemStack(ModItems.GOLDEN_COIN, goldenAmount + playersNearbyAmount + timesUsed));
                 world.spawnEntity(itemToThrow);
             }
+        }
+    }
+
+    protected void createTreasureBag(Vec3d pos, String loot_table_name) {
+        if(!world.isRemote && ModConfig.bosses_drop_treasure_bags) {
+                ItemStack stack = new ItemStack(ModItems.TREASURE_BAG, 1 + playersNearbyAmount);
+                if(stack.getItem() instanceof ItemTreasureBag) {
+                    ItemTreasureBag item = ((ItemTreasureBag) stack.getItem());
+                    item.setTreasureLootTable(stack, loot_table_name);
+                }
+                EntityItem itemToThrow = new EntityItem(world, pos.x, pos.y + 0.25, pos.z, stack);
+                world.spawnEntity(itemToThrow);
         }
     }
 

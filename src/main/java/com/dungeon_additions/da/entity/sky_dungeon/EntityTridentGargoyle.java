@@ -189,34 +189,6 @@ public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable,
                 this.renewSound = true;
             }
 
-         //   EntityLivingBase target = this.getAttackTarget();
-        //    if(target != null && checkNearbyTargets < 0) {
-
-            //    int currentNearbyMobCount = 0;
-            //    List<EntitySkyBase> nearbyEntities = this.world.getEntitiesWithinAABB(EntitySkyBase.class, target.getEntityBoundingBox().grow(6, 3, 6), e -> !e.getIsInvulnerable());
-
-             //   if(!nearbyEntities.isEmpty()) {
-             //       for(EntitySkyBase base : nearbyEntities) {
-              //          if(base.getEntitySenses().canSee(target)) {
-             //               if(base instanceof EntityTridentGargoyle) {
-            //                    currentNearbyMobCount++;
-           ////                 }
-            //            }
-              //      }
-            //    }
-
-                //prevent overwhelming the player
-            //    if(ServerScaleUtil.getPlayers(this, world) > 0) {
-              //      if(currentNearbyMobCount > 3) {
-               ////         this.overrideInstincts = true;
-                //        System.out.println("Overidding Instincts");
-               //     } else {
-                //        this.overrideInstincts = false;
-                //    }
-               // }
-               // checkNearbyTargets = 40;
-         //   }
-
             if(this.ticksExisted % 40 == 0 && this.isPotionActive(MobEffects.WEAKNESS) ||
                     this.ticksExisted % 40 == 0 && this.isPotionActive(MobEffects.SLOWNESS)) {
                 this.removePotionEffect(MobEffects.WEAKNESS);

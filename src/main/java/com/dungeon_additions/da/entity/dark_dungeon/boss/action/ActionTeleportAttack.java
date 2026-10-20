@@ -16,7 +16,7 @@ public class ActionTeleportAttack implements IAction {
         ModUtils.circleCallback(3, 7, (pos)-> {
             pos = new Vec3d(pos.x, 0, pos.y).add(actor.getPositionVector());
             int y = getSurfaceHeight(actor.world, new BlockPos(pos.x, 0, pos.z), (int) actor.posY - 5, (int) actor.posY + 4);
-            EntityGreatDeath spike = new EntityGreatDeath(actor.world);
+            EntityGreatDeath spike = new EntityGreatDeath(actor.world, actor.getAttack() * 0.5F);
             spike.setPosition(pos.x, y + 1, pos.z);
             actor.world.spawnEntity(spike);
         });
@@ -31,7 +31,7 @@ public class ActionTeleportAttack implements IAction {
                 ModUtils.circleCallback(10, 20, (pos)-> {
                     pos = new Vec3d(pos.x, 0, pos.y).add(actor.getPositionVector());
                     int y = getSurfaceHeight(actor.world, new BlockPos(pos.x, 0, pos.z), (int) actor.posY - 5, (int) actor.posY + 4);
-                    EntityGreatDeath spike = new EntityGreatDeath(actor.world);
+                    EntityGreatDeath spike = new EntityGreatDeath(actor.world, actor.getAttack() * 0.5F);
                     spike.setPosition(pos.x, y + 1, pos.z);
                     actor.world.spawnEntity(spike);
                 });
@@ -46,7 +46,7 @@ public class ActionTeleportAttack implements IAction {
 
         while(currentY >= min)
         {
-            if(!world.isAirBlock(pos.add(0, currentY, 0)) && !world.isRemote && world.getBlockState(pos.add(0, currentY, 0)).isFullBlock()) {
+            if(!world.isAirBlock(pos.add(0, currentY, 0)) && !world.isRemote) {
                 return currentY;
             }
 

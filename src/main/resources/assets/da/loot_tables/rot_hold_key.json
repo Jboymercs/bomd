@@ -465,6 +465,11 @@
           ]
         },
         {
+          "type": "loot_table",
+          "name": "da:rare_loot_items",
+          "weight": 6
+        },
+        {
           "type": "item",
           "name": "minecraft:book",
           "weight": 9,

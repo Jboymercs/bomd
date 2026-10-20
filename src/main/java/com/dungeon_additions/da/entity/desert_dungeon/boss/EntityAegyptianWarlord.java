@@ -1028,7 +1028,10 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
 
     @Override
     protected ResourceLocation getLootTable() {
-        return LOOT_MOB;
+        if(this.getSpawnLocation() == null || !ModConfig.bosses_drop_treasure_bags) {
+            return LOOT_MOB;
+        }
+        return null;
     }
 
     @Override
@@ -1067,6 +1070,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             if(this.getSpawnLocation() != null && this.getOtherBoss() == null && !world.isRemote) {
                 this.turnBossIntoSummonSpawner(this.getSpawnLocation());
                 this.createCoinSpawns(this.getPositionVector(), 0, ModRand.range(3, 5), 0);
+                this.createTreasureBag(this.getPositionVector(), "aegyptian_warlord");
             }
 
             if(this.getOtherBoss() == null) {

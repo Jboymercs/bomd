@@ -1,0 +1,150 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 256,
+				"texture_height": 256,
+				"visible_bounds_width": 7,
+				"visible_bounds_height": 3.5,
+				"visible_bounds_offset": [0, 1.25, 0]
+			},
+			"bones": [
+				{
+					"name": "Ground",
+					"pivot": [0, 12, 0]
+				},
+				{
+					"name": "Body",
+					"parent": "Ground",
+					"pivot": [0, 12, 0],
+					"cubes": [
+						{"origin": [-11, 1, 0], "size": [22, 22, 12], "uv": [0, 63]},
+						{"origin": [-10, 2, 12], "size": [20, 20, 10], "uv": [68, 63]}
+					]
+				},
+				{
+					"name": "Top",
+					"parent": "Body",
+					"pivot": [0, 13, 0],
+					"cubes": [
+						{"origin": [-12, 7, -12], "size": [24, 17, 14], "inflate": 0.2, "uv": [0, 32]}
+					]
+				},
+				{
+					"name": "Bottom",
+					"parent": "Body",
+					"pivot": [0, 11, 0],
+					"cubes": [
+						{"origin": [-12, 0, -12], "size": [24, 17, 15], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "Eye",
+					"parent": "Body",
+					"pivot": [0, 12, 0],
+					"cubes": [
+						{"origin": [-6, 6, -3], "size": [12, 12, 12], "uv": [76, 32]}
+					]
+				},
+				{
+					"name": "TendrilTop",
+					"parent": "Body",
+					"pivot": [0, 22, 12],
+					"cubes": [
+						{"origin": [-3, 19, 11], "size": [6, 6, 12], "uv": [44, 116]}
+					]
+				},
+				{
+					"name": "TendrilTM",
+					"parent": "TendrilTop",
+					"pivot": [0, 22, 25],
+					"cubes": [
+						{"origin": [-2, 20, 22], "size": [4, 4, 17], "uv": [78, 0]}
+					]
+				},
+				{
+					"name": "TendrilTE",
+					"parent": "TendrilTM",
+					"pivot": [0, 23, 39],
+					"cubes": [
+						{"origin": [-1, 22, 39], "size": [2, 2, 8], "uv": [78, 21]}
+					]
+				},
+				{
+					"name": "TendrilBottom",
+					"parent": "Body",
+					"pivot": [0, 2, 12],
+					"cubes": [
+						{"origin": [-3, -1, 11], "size": [6, 6, 12], "uv": [82, 114]}
+					]
+				},
+				{
+					"name": "TendrilBM",
+					"parent": "TendrilBottom",
+					"pivot": [0, 2, 23],
+					"cubes": [
+						{"origin": [-2, 0, 22], "size": [4, 4, 17], "uv": [68, 93]}
+					]
+				},
+				{
+					"name": "TendrilBE",
+					"parent": "TendrilBM",
+					"pivot": [0, 1, 39],
+					"cubes": [
+						{"origin": [-1, 0, 39], "size": [2, 2, 8], "uv": [42, 97]}
+					]
+				},
+				{
+					"name": "TendrilLeft",
+					"parent": "Body",
+					"pivot": [-10, 12, 12],
+					"cubes": [
+						{"origin": [-13, 9, 11], "size": [6, 6, 12], "uv": [0, 118]}
+					]
+				},
+				{
+					"name": "TendrilLM",
+					"parent": "TendrilLeft",
+					"pivot": [-10, 12, 23],
+					"cubes": [
+						{"origin": [-12, 10, 22], "size": [4, 4, 17], "uv": [0, 97]}
+					]
+				},
+				{
+					"name": "TendrilLE",
+					"parent": "TendrilLM",
+					"pivot": [-11, 12, 39],
+					"cubes": [
+						{"origin": [-12, 11, 39], "size": [2, 2, 8], "uv": [98, 21]}
+					]
+				},
+				{
+					"name": "TendrilRight",
+					"parent": "Body",
+					"pivot": [10, 12, 12],
+					"cubes": [
+						{"origin": [7, 9, 11], "size": [6, 6, 12], "uv": [118, 114]}
+					]
+				},
+				{
+					"name": "TenrdilRM",
+					"parent": "TendrilRight",
+					"pivot": [10, 12, 23],
+					"cubes": [
+						{"origin": [8, 10, 22], "size": [4, 4, 17], "uv": [110, 93]}
+					]
+				},
+				{
+					"name": "TendrilRE",
+					"parent": "TenrdilRM",
+					"pivot": [11, 12, 39],
+					"cubes": [
+						{"origin": [10, 11, 39], "size": [2, 2, 8], "uv": [118, 21]}
+					]
+				}
+			]
+		}
+	]
+}

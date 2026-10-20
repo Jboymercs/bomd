@@ -127,6 +127,7 @@ public class ModItems {
     public static final Item DARK_MANA = new ItemCraftingMaterial("dark_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item DARK_CORE = new ItemCraftingMaterial("dark_core", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item CRYPT_PLATE = new ItemCraftingMaterial("crypt_plate", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item ROH_CORE = new ItemCraftingMaterial("roh_core", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item RED_ANICIENT_MANA = new ItemCraftingMaterial("red_ancient_mana", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_SHARD = new ItemCraftingMaterial("frost_shard", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item FROST_INGOT = new ItemCraftingMaterial("frost_ingot", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
@@ -162,6 +163,7 @@ public class ModItems {
     public static final Item DIVINE_METAL = new ItemCraftingMaterial("divine_metal", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item DRAGON_SCALES = new ItemCraftingMaterial("dragon_scale", "crafting_material").setCreativeTab(DungeonAdditionsTab.ALL);
     public static final Item ASPECT_TEMPLATE = new ItemUniqueMaterial("aspect_template", "aspect_template_desc").setCreativeTab(DungeonAdditionsTab.ALL);
+    public static final Item TREASURE_BAG = new ItemTreasureBag("treasure_bag", DungeonAdditionsTab.ALL);
 
     //Food
     public static final Item DUNGEON_BREAD = new ItemDungeonBread("dungeon_bread", 5, 0.1F, false).setCreativeTab(DungeonAdditionsTab.ALL);
@@ -205,7 +207,7 @@ public class ModItems {
     public static final Item WEAKNESS_TRINKET = new ItemTrinket("weakness_trinket", "weakness_trinket_desc", PotionTrinketConfig.spiral_vain_durability, 0);
     public static final Item VOID_HAND_TRINKET = new ItemTrinket("void_hand_trinket", "void_hand_trinket_desc", PotionTrinketConfig.cult_classic_durability, 0);
     public static final Item CONFETTI_TRINKET = new ItemTrinket("confetti_trinket", "confetti_trinket_desc", PotionTrinketConfig.party_starter_durability, 0);
-    public static final Item STALWART_SUMMONER = new ItemTrinket("stalwart_summoner", "stalwart_summoner_desc", PotionTrinketConfig.stalwart_summoner_durability, 1);
+    public static final Item STALWART_SUMMONER = new ItemTrinket("stalwart_summoner", "stalwart_summoner_desc", PotionTrinketConfig.stalwart_summoner_durability, 0);
     public static final Item GOLDEN_MARK_TRINKET = new ItemTrinket("golden_mark_trinket", "golden_mark_trinket_desc", PotionTrinketConfig.golden_mark_durability, 0);
     public static final Item SIGIL_TRINKET = new ItemTrinket("sigil_trinket", "sigil_trinket_desc", PotionTrinketConfig.golden_ritual_durability, 1, true);
     public static final Item MAGIC_BOOST_TRINKET = new ItemTrinket("magic_boost_trinket", "magic_boost_trinket_desc", PotionTrinketConfig.magic_reservoir_durability, 2);
@@ -236,6 +238,12 @@ public class ModItems {
     public static final Item ASPECT_DAGGER = new ItemTrinket("aspect_dagger", "aspect_dagger_desc", PotionTrinketConfig.aspect_dagger_durability, 3);
     public static final Item ASPECT_DUELIST = new ItemTrinket("aspect_duelist", "aspect_duelist_desc", PotionTrinketConfig.aspect_duelist_durability, 3);
     public static final Item ASPECT_BOW = new ItemTrinket("aspect_bow", "aspect_bow_desc", PotionTrinketConfig.aspect_bow_durability, 3);
+    public static final Item DEVOTION_HORN = new ItemCustomHorn("devoted_horn", DungeonAdditionsTab.ALL, "devoted_horn_desc", 60, ModPotions.GOLDEN_DEVOTION, 1800);
+    public static final Item GOLDEN_HORN = new ItemCustomHorn("golden_horn", DungeonAdditionsTab.ALL, "golden_horn_desc", 60, ModPotions.GOLDEN_VOW, 1800);
+    public static final Item RESPITE_HORN = new ItemCustomHorn("respite_horn", DungeonAdditionsTab.ALL, "respite_horn_desc", 40, ModPotions.FIERY_RESPITE, 1800);
+    public static final Item RALLY_HORN = new ItemCustomHorn("rally_horn", DungeonAdditionsTab.ALL, "rally_horn_desc", 40, MobEffects.STRENGTH, 600);
+    public static final Item MAGIC_HORN = new ItemCustomHorn("magic_horn", DungeonAdditionsTab.ALL, "magic_horn_desc", 80, ModPotions.MAGIC_AURA, 1800);
+    public static final Item POISON_HORN = new ItemCustomHorn("poison_horn", DungeonAdditionsTab.ALL, "poison_horn_desc", 80, ModPotions.POISON_GARNISH, 1200);
     //
     public static final Item WYRK_TOTEM = new ItemWyrkTotem("wyrk_totem", "wyrk_totem_desc", DungeonAdditionsTab.ALL);
     public static final Item NOVIK_AID = new ItemNovikAid("call_to_arms", "call_to_arms_desc", DungeonAdditionsTab.ALL);

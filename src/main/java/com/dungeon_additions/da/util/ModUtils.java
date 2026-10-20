@@ -168,6 +168,11 @@ public class ModUtils {
         return Math.acos(cos);
     }
 
+    public static void destroyBlocksInSwing(EntityLivingBase owner, Vec3d offset, double size) {
+        AxisAlignedBB box = owner.getEntityBoundingBox().grow(size, 0.1, size).offset(ModUtils.getRelativeOffset(owner, new Vec3d(offset.x, 0.1, offset.z)));
+        ModUtils.destroyBlocksInAABB(box, owner.world, owner);
+    }
+
 
     public static ItemStack findTrinket(ItemStack stack, EntityPlayer player)
     {
@@ -357,7 +362,6 @@ public class ModUtils {
 
 
                     if(iblockstate == block && world.getBlockState(blockpos.up()) != ModBlocks.SPORE_BLOSSOM.getDefaultState()) {
-                        System.out.println("Found BlockPos for Changing");
 
                         return blockpos;
                     }
@@ -406,6 +410,10 @@ public class ModUtils {
         }
         if(player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.MAGE_BOOTS || player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ModItems.ENDERPHRITE_BOOTS) {
             bonusDamage += 0.5F;
+        }
+
+        if(player.isPotionActive(ModPotions.MAGIC_AURA)) {
+            bonusDamage += 2.5F;
         }
 
        ItemStack magic_boost =  findTrinket(new ItemStack(ModItems.MAGIC_BOOST_TRINKET), player);
@@ -530,8 +538,6 @@ public class ModUtils {
 
 
                     if(iblockstate == block && world.getBlockState(blockpos.up()) != ModBlocks.OBSIDILITH_RUNE.getDefaultState() && world.getBlockState(blockpos.add(0, 2, 0)) != ModBlocks.OBSIDILITH_RUNE.getDefaultState()) {
-                        System.out.println("Found BlockPos for Changing");
-
                         return blockpos;
                     }
                 }
@@ -556,8 +562,6 @@ public class ModUtils {
 
 
                     if(iblockstate == block && world.getBlockState(blockpos.up()) != ModBlocks.SPORE_BLOSSOM.getDefaultState()) {
-                        System.out.println("Found BlockPos for Changing");
-
                         return blockpos;
                     }
                 }
@@ -714,7 +718,6 @@ public class ModUtils {
 
 
                     if(iblockstate == block) {
-                        System.out.println("Found BlockPos for Changing");
 
                         return blockpos;
                     }
@@ -1134,6 +1137,23 @@ public class ModUtils {
         }
     }
 
+    public static void leapTowardsAdjusted(EntityLivingBase entity, Vec3d target, float horzVel, float yVel) {
+        Vec3d dir = target.subtract(entity.getPositionVector()).normalize();
+        Vec3d leap = new Vec3d(dir.x, 0, dir.z).normalize().scale(horzVel).add(ModUtils.yVec(yVel));
+        entity.motionX += leap.x;
+        entity.motionZ += leap.z;
+
+        // Normalize to make sure the velocity doesn't go beyond what we expect
+        double horzMag = Math.sqrt(Math.pow(entity.motionX, 2) + Math.pow(entity.motionZ, 2));
+        double scale = horzVel / horzMag;
+        if (scale < 1) {
+            entity.motionX *= scale;
+            entity.motionZ *= scale;
+        }
+    }
+
+
+
     public static void setEntityVelocity(Entity entity, Vec3d vec) {
         entity.motionX = vec.x;
         entity.motionY = vec.y;
@@ -1292,8 +1312,8 @@ public class ModUtils {
         Vec3d predictB = oldPosition.subtract(targetCurrentPosition);
         double pX = oldPosition.x - targetCurrentPosition.x;
         double pZ = oldPosition.z - targetCurrentPosition.z;
-        System.out.println("X Factor at" + pX * -predictAheadTime);
-        System.out.println("Z Factor at" + pZ * -predictAheadTime);
+      //  System.out.println("X Factor at" + pX * -predictAheadTime);
+      //  System.out.println("Z Factor at" + pZ * -predictAheadTime);
        // predictB.scale(predictAheadTime * 8);
         return targetCurrentPosition.add(new Vec3d(pX * -predictAheadTime, 0, pZ * -predictAheadTime));
     }

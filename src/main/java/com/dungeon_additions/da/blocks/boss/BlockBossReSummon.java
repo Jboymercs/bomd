@@ -6,6 +6,7 @@ import com.dungeon_additions.da.blocks.base.IBlockUpdater;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.blossom.EntityVoidBlossom;
+import com.dungeon_additions.da.entity.dark_dungeon.boss.EntityDarkdriftDevil;
 import com.dungeon_additions.da.entity.dark_dungeon.dark_void.EntityDarkVoid;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianWarlord;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
@@ -137,6 +138,11 @@ public class BlockBossReSummon extends BlockBase implements ITileEntityProvider,
                         world.setBlockToAir(pos);
                         world.spawnEntity(void_spawn);
                         player.getHeldItem(hand).shrink(1);
+                    } else if (boss_spawner.getState() == BlockEnumBossSummonState.ROH) {
+                        EntityDarkdriftDevil roh = new EntityDarkdriftDevil(world, timesUsed, pos);
+                        world.spawnEntity(roh);
+                        world.setBlockToAir(pos);
+                        player.getHeldItem(hand).shrink(1);
                     } else if (boss_spawner.getState() == BlockEnumBossSummonState.NIGHT_LICH) {
                         if(MobConfig.lich_enable_daylight && world.getWorldTime() < MobConfig.lich_summon_time) {
                             player.sendStatusMessage(new TextComponentTranslation("da.lich_wrong_time", new Object[0]), true);
@@ -226,6 +232,10 @@ public class BlockBossReSummon extends BlockBase implements ITileEntityProvider,
             }  else if (spawner.getState() == BlockEnumBossSummonState.DAUNTLESS) {
                 Vec3d particlePos = new Vec3d(pos.getX() -0.1 + ModRand.getFloat(1.1F), pos.getY() + 0.9 + ModRand.getFloat(1F), pos.getZ() -0.1 + ModRand.getFloat(1.1F));
                 ParticleManager.spawnDust(worldIn, particlePos, ModColors.LIGHTER_PURPLE, new Vec3d(0, 0.05, 0), ModRand.range(10, 15));
+                //Obsidilith
+            }  else if (spawner.getState() == BlockEnumBossSummonState.ROH) {
+                Vec3d particlePos = new Vec3d(pos.getX() -0.1 + ModRand.getFloat(1.1F), pos.getY() + 0.9 + ModRand.getFloat(1F), pos.getZ() -0.1 + ModRand.getFloat(1.1F));
+                ParticleManager.spawnDust(worldIn, particlePos, ModColors.RED, new Vec3d(0, 0.05, 0), ModRand.range(10, 15));
                 //Obsidilith
             }
         }

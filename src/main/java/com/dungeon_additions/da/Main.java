@@ -4,6 +4,7 @@ package com.dungeon_additions.da;
 import com.dungeon_additions.da.capabilities.CapabilityItemAnimations;
 import com.dungeon_additions.da.capabilities.CapabilityPlayerFalter;
 import com.dungeon_additions.da.capabilities.CapabilityPlayerSwing;
+import com.dungeon_additions.da.capabilities.CapabilityRohsCorruption;
 import com.dungeon_additions.da.init.ModEntities;
 import com.dungeon_additions.da.init.ModRecipes;
 import com.dungeon_additions.da.proxy.CommonProxy;
@@ -66,6 +67,7 @@ public class Main {
         proxy.registerKeyBindings();
         //
         CapabilityManager.INSTANCE.register(CapabilityPlayerFalter.IPlayerFalterCapability.class, new CapabilityPlayerFalter.Storage(), CapabilityPlayerFalter.DAPlayerFalterMethods::new);
+        CapabilityManager.INSTANCE.register(CapabilityRohsCorruption.IRohsCorruptionCapability.class, new CapabilityRohsCorruption.Storage(), CapabilityRohsCorruption.DARohsCorruptionMethods::new);
         CapabilityManager.INSTANCE.register(CapabilityItemAnimations.ICapabilityItemAnimations.class, new CapabilityItemAnimations.Storage(), CapabilityItemAnimations.AnimationMethods::new);
         CapabilityManager.INSTANCE.register(CapabilityPlayerSwing.IPlayerSwingCapability.class, new CapabilityPlayerSwing.Storage(), CapabilityPlayerSwing.DAPlayerSwingMethods::new);
     }
