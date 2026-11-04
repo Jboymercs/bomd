@@ -1,68 +1,35 @@
 package com.dungeon_additions.da.entity.render.sky_dungeon.boss;
 
-import com.dungeon_additions.da.entity.model.sky_dungeon.boss.ModelHighKing;
-import com.dungeon_additions.da.entity.render.layer.GeoSpecificGlow;
-import com.dungeon_additions.da.entity.render.util.RenderGeoExtended;
+import com.dungeon_additions.da.animation.AzLib.animators.HighKingAnimator;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing;
 import com.dungeon_additions.da.util.ModReference;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import mod.azure.azurelib.render.entity.AzEntityRenderer;
+import mod.azure.azurelib.render.entity.AzEntityRendererConfig;
+import mod.azure.azurelib.render.layer.AzAutoGlowingLayer;
+import mod.azure.azurelib.render.vertex.RenderType;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-import javax.annotation.Nullable;
-
-public class RenderHighKing extends RenderGeoExtended<EntityHighKing> {
+public class RenderHighKing extends AzEntityRenderer<EntityHighKing> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/high_king.png");
+    private static final ResourceLocation TEXTURE_BLODDY = new ResourceLocation(ModReference.MOD_ID, "textures/entity/high_king_bloody.png");
     private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/entity/high_king/geo.high_king.json");
 
     public RenderHighKing(RenderManager renderManager) {
-        super(renderManager, new ModelHighKing(MODEL_RESLOC, TEXTURE, "high_king"));
-        this.addLayer(new GeoSpecificGlow<>(this, this.TEXTURE_GETTER, this.MODEL_ID_GETTER));
-    }
+        super(AzEntityRendererConfig.<EntityHighKing>builder($ -> MODEL_RESLOC, entity ->
+                                entity.isBloodied() ? TEXTURE_BLODDY : TEXTURE)
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE))
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE_BLODDY))
+                        .setRenderEntry(contextPipeline -> {
 
-    @Nullable
-    @Override
-    protected ItemStack getHeldItemForBone(String boneName, EntityHighKing currentEntity) {
-        return null;
-    }
+                            contextPipeline.animatable().updateAnimations();
+                            return contextPipeline;
+                        })
 
-    @Override
-    protected ItemCameraTransforms.TransformType getCameraTransformForItemAtBone(ItemStack boneItem, String boneName) {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    protected IBlockState getHeldBlockForBone(String boneName, EntityHighKing currentEntity) {
-        return null;
-    }
-
-    @Override
-    protected void preRenderItem(ItemStack item, String boneName, EntityHighKing currentEntity) {
-
-    }
-
-    @Override
-    protected void preRenderBlock(IBlockState block, String boneName, EntityHighKing currentEntity) {
-
-    }
-
-    @Override
-    protected void postRenderItem(ItemStack item, String boneName, EntityHighKing currentEntity) {
-
-    }
-
-    @Override
-    protected void postRenderBlock(IBlockState block, String boneName, EntityHighKing currentEntity) {
-
-    }
-
-    @Nullable
-    @Override
-    protected ResourceLocation getTextureForBone(String boneName, EntityHighKing currentEntity) {
-        return null;
+                        .setAnimatorProvider(() -> new HighKingAnimator("high_king"))
+                        .addRenderLayer(new AzAutoGlowingLayer<>())
+                        .setShadowRadius(0.35F)
+                        .build()
+                , renderManager);
     }
 }

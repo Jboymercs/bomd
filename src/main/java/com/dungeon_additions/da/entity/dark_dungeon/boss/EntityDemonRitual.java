@@ -1,7 +1,7 @@
 package com.dungeon_additions.da.entity.dark_dungeon.boss;
 
 import com.dungeon_additions.da.Main;
-import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
@@ -9,21 +9,15 @@ import com.dungeon_additions.da.util.PlayerRohCorruptionUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class EntityDemonRitual extends EntityDarkBase implements IAnimationTickable, IAnimatable {
+public class EntityDemonRitual extends EntityDarkBase  {
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
 
     public EntityDemonRitual(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -103,25 +97,5 @@ public class EntityDemonRitual extends EntityDarkBase implements IAnimationTicka
             }
         }
         return super.attackEntityFrom(source, amount);
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

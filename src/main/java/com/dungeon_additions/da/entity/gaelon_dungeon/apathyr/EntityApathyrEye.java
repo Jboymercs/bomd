@@ -1,24 +1,16 @@
 package com.dungeon_additions.da.entity.gaelon_dungeon.apathyr;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
 import com.dungeon_additions.da.entity.gaelon_dungeon.EntityGaelonBase;
 import com.dungeon_additions.da.init.ModBlocks;
-import com.dungeon_additions.da.util.ModUtils;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntityApathyrEye extends EntityGaelonBase implements IAnimatable, IAnimationTickable {
+public class EntityApathyrEye extends EntityGaelonBase {
 
     private EntityApathyr parent;
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     private final String ANIM_IDLE = "idle";
 
     public EntityApathyrEye(World worldIn, float x, float y, float z) {
@@ -81,30 +73,8 @@ public class EntityApathyrEye extends EntityGaelonBase implements IAnimatable, I
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1D);
     }
 
-
-
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller_idle", 0, this::predicateIDLE));
-    }
-
-    private <E extends IAnimatable> PlayState predicateIDLE(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
+    public void updateAnimations() {
+        animator.setStateAnim(ANIM_IDLE, true);
     }
 }

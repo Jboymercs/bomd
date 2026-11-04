@@ -1,13 +1,12 @@
 package com.dungeon_additions.da.entity.generic;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
-import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,20 +17,11 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import scala.tools.nsc.backend.icode.Primitives;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class EntityRallyFlag extends EntityAbstractBase implements IAnimatable, IAnimationTickable, IScreenShake {
-    private AnimationFactory factory = new AnimationFactory(this);
+public class EntityRallyFlag extends EntityAbstractBase implements IScreenShake {
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     private final String ANIM_SUMMON = "summon";
     private final String ANIM_DISAPPEAR = "disappear";
     private final String ANIM_IDLE = "idle";
@@ -73,6 +63,7 @@ public class EntityRallyFlag extends EntityAbstractBase implements IAnimatable, 
         this.setImmovable(true);
         this.setNoAI(true);
         this.setSummonState(true);
+        animator.setStateAnim(ANIM_SUMMON);
         this.setShaking(true);
         this.shakeTime = 20;
         addEvent(()-> {
@@ -88,6 +79,7 @@ public class EntityRallyFlag extends EntityAbstractBase implements IAnimatable, 
         this.setImmovable(true);
         this.setNoAI(true);
         this.setSummonState(true);
+        animator.setStateAnim(ANIM_SUMMON);
         this.setShaking(true);
         this.shakeTime = 20;
         addEvent(()-> {
@@ -148,7 +140,7 @@ public class EntityRallyFlag extends EntityAbstractBase implements IAnimatable, 
             }
 
             //buff players
-            if(ticksExisted >= 20 && tickTimer() <= 620) {
+            if(ticksExisted >= 20 && ticksExisted <= 620) {
                 List<EntityPlayer> targets = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(5), e -> !e.getIsInvulnerable());
 
                 if(!targets.isEmpty()) {
@@ -176,6 +168,7 @@ public class EntityRallyFlag extends EntityAbstractBase implements IAnimatable, 
 
     private void removeFlag() {
         this.setDisappear(true);
+        animator.setStateAnim(ANIM_DISAPPEAR);
 
         addEvent(()-> {
             this.setDisappear(false);
@@ -195,46 +188,11 @@ public class EntityRallyFlag extends EntityAbstractBase implements IAnimatable, 
         }
     }
 
-
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "spike_controller", 0, this::predicateIdle));
-        animationData.addAnimationController(new AnimationController(this, "state_controller", 0, this::predicateStates));
-    }
-
-    private <E extends IAnimatable>PlayState predicateStates(AnimationEvent<E> event) {
-        if(this.isSummonState()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SUMMON));
-            return PlayState.CONTINUE;
-        }
-        if(this.isDisappear()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_DISAPPEAR));
-            return PlayState.CONTINUE;
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(!this.isDisappear() && !this.isSummonState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_IDLE, true);
         }
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override

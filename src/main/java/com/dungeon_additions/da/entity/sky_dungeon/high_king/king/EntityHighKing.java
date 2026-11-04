@@ -1,12 +1,12 @@
 package com.dungeon_additions.da.entity.sky_dungeon.high_king.king;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.generic.EntityDelayedExplosion;
-import com.dungeon_additions.da.entity.night_lich.action.ActionLichTeleport;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
 import com.dungeon_additions.da.entity.sky_dungeon.city_knights.ActionHalberdSpecial;
@@ -19,6 +19,7 @@ import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -36,7 +37,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -47,24 +47,15 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, IAnimationTickable, IAttack, IScreenShake, IEntitySound {
+public class EntityHighKing extends EntityHighKingBoss implements IAttack, IScreenShake, IEntitySound {
 
     private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.YELLOW, BossInfo.Overlay.NOTCHED_6));
 
@@ -140,48 +131,21 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     private static final DataParameter<Boolean> SUMMON_BOSS = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> PHASE_TRANSITION = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DEATH_BOSS = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> FAST_AOE = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HOLY_WAVE = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> BLOCK_ACTION = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> BLOCK_WITH_RANGED = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DODGE = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> STRAFE_DODGE = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HEAVY_SWING = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HEAVY_SWING_CONTINUE = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HEAVY_SWING_FINISH = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DOUBLE_SWING = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DOUBLE_SWING_FINISH = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DOUBLE_SWING_JUMP = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SPEAR_THRUST = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SPEAR_THRUST_CONTINUE = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SPEAR_THRUST_FINISH = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> AIR_CIRCLE_ATTACK = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> AIR_CIRCLE_RANGED = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> AIR_CIRCLE_CONTINUE = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> STOMP = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> STOMP_CONTINUE = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> STOMP_FINISH = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BLOODY_FLY = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> STRAFE_THRUST = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> STRAFE_THRUST_CONTINUE = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> STRAFE_THRUST_FINISH = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BLOODY_GRAB = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BLOODY_GRAB_END = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> BLOODY_GRAB_CONTINUE = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> BLOODIED = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> ULTRA_ATTACK = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> ULTRA_CONTINUE = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> ULTRA_FINISH = EntityDataManager.createKey(EntityHighKing.class, DataSerializers.BOOLEAN);
     public boolean isSummonBoss() {return this.dataManager.get(SUMMON_BOSS);}
     private void setSummonBoss(boolean value) {this.dataManager.set(SUMMON_BOSS, Boolean.valueOf(value));}
     public boolean isPhaseTransition() {return this.dataManager.get(PHASE_TRANSITION);}
     private void setPhaseTransition(boolean value) {this.dataManager.set(PHASE_TRANSITION, Boolean.valueOf(value));}
     public boolean isDeathBoss() {return this.dataManager.get(DEATH_BOSS);}
     private void setDeathBoss(boolean value) {this.dataManager.set(DEATH_BOSS, Boolean.valueOf(value));}
-    private boolean isFastAoe() {return this.dataManager.get(FAST_AOE);}
-    private void setFastAoe(boolean value) {this.dataManager.set(FAST_AOE, Boolean.valueOf(value));}
-    private boolean isHolyWave() {return this.dataManager.get(HOLY_WAVE);}
-    private void setHolyWave(boolean value) {this.dataManager.set(HOLY_WAVE, Boolean.valueOf(value));}
     private boolean isBlockAction() {return this.dataManager.get(BLOCK_ACTION);}
     private void setBlockAction(boolean value) {this.dataManager.set(BLOCK_ACTION, Boolean.valueOf(value));}
     private boolean isBlockWithRanged() {return this.dataManager.get(BLOCK_WITH_RANGED);}
@@ -190,135 +154,47 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     private void setDodge(boolean value) {this.dataManager.set(DODGE, Boolean.valueOf(value));}
     public boolean isStrafeDodge() {return this.dataManager.get(STRAFE_DODGE);}
     private void setStrafeDodge(boolean value) {this.dataManager.set(STRAFE_DODGE, Boolean.valueOf(value));}
-    private boolean isHeavySwing() {return this.dataManager.get(HEAVY_SWING);}
-    private void setHeavySwing(boolean value) {this.dataManager.set(HEAVY_SWING, Boolean.valueOf(value));}
-    private boolean isheavySwingContinue() {return this.dataManager.get(HEAVY_SWING_CONTINUE);}
-    private void setHeavySwingContinue(boolean value) {this.dataManager.set(HEAVY_SWING_CONTINUE, Boolean.valueOf(value));}
-    private boolean isHeavySwingFinish() {return this.dataManager.get(HEAVY_SWING_FINISH);}
-    private void setHeavySwingFinish(boolean value) {this.dataManager.set(HEAVY_SWING_FINISH, Boolean.valueOf(value));}
-    private boolean isDoubleSwing() {return this.dataManager.get(DOUBLE_SWING);}
-    private void setDoubleSwing(boolean value) {this.dataManager.set(DOUBLE_SWING, Boolean.valueOf(value));}
-    private boolean isDoubleSwingFinish() {return this.dataManager.get(DOUBLE_SWING_FINISH);}
-    private void setDoubleSwingFinish(boolean value) {this.dataManager.set(DOUBLE_SWING_FINISH, Boolean.valueOf(value));}
-    public boolean isDoubleSwingJump() {return this.dataManager.get(DOUBLE_SWING_JUMP);}
-    private void setDoubleSwingJump(boolean value) {this.dataManager.set(DOUBLE_SWING_JUMP, Boolean.valueOf(value));}
-    private boolean isSpearThrust() {return this.dataManager.get(SPEAR_THRUST);}
-    private void setSpearThrust(boolean value) {this.dataManager.set(SPEAR_THRUST, Boolean.valueOf(value));}
     private boolean isSpearThrustContinue() {return this.dataManager.get(SPEAR_THRUST_CONTINUE);}
     private void setSpearThrustContinue(boolean value) {this.dataManager.set(SPEAR_THRUST_CONTINUE, Boolean.valueOf(value));}
-    private boolean isSpearThrustFinish() {return this.dataManager.get(SPEAR_THRUST_FINISH);}
-    private void setSpearThrustFinish(boolean value) {this.dataManager.set(SPEAR_THRUST_FINISH, Boolean.valueOf(value));}
-    private boolean isAirCircleAttack() {return this.dataManager.get(AIR_CIRCLE_ATTACK);}
-    private void setAirCircleAttack(boolean value) {this.dataManager.set(AIR_CIRCLE_ATTACK, Boolean.valueOf(value));}
-    private boolean isAirCircleRanged() {return this.dataManager.get(AIR_CIRCLE_RANGED);}
-    private void setAirCircleRanged(boolean value) {this.dataManager.set(AIR_CIRCLE_RANGED, Boolean.valueOf(value));}
-    private boolean isAirCircleContinue() {return this.dataManager.get(AIR_CIRCLE_CONTINUE);}
-    private void setAirCircleContinue(boolean value) {this.dataManager.set(AIR_CIRCLE_CONTINUE, Boolean.valueOf(value));}
-    private boolean isStomp() {return this.dataManager.get(STOMP);}
-    private void setStomp(boolean value) {this.dataManager.set(STOMP, Boolean.valueOf(value));}
-    private boolean isStompContinue() {return this.dataManager.get(STOMP_CONTINUE);}
-    private void setStompContinue(boolean value) {this.dataManager.set(STOMP_CONTINUE, Boolean.valueOf(value));}
-    private boolean isStompFinish() {return this.dataManager.get(STOMP_FINISH);}
-    private void setStompFinish(boolean value) {this.dataManager.set(STOMP_FINISH, Boolean.valueOf(value));}
-    private boolean isBloodyFly() {return this.dataManager.get(BLOODY_FLY);}
-    private void setBloodyFly(boolean value) {this.dataManager.set(BLOODY_FLY, Boolean.valueOf(value));}
     public boolean isStrafeThrust() {return this.dataManager.get(STRAFE_THRUST);}
     private void setStrafeThrust(boolean value) {this.dataManager.set(STRAFE_THRUST, Boolean.valueOf(value));}
     public boolean isStrafeThrustContinue() {return this.dataManager.get(STRAFE_THRUST_CONTINUE);}
     private void setStrafeThrustContinue(boolean value) {this.dataManager.set(STRAFE_THRUST_CONTINUE, Boolean.valueOf(value));}
-    private boolean isStrafeThrustFinish() {return this.dataManager.get(STRAFE_THRUST_FINISH);}
-    private void setStrafeThrustFinish(boolean value) {this.dataManager.set(STRAFE_THRUST_FINISH, Boolean.valueOf(value));}
-    private boolean isBloodyGrab() {return this.dataManager.get(BLOODY_GRAB);}
-    private void setBloodyGrab(boolean value) {this.dataManager.set(BLOODY_GRAB, Boolean.valueOf(value));}
-    private boolean isBloodyGrabEnd() {return this.dataManager.get(BLOODY_GRAB_END);}
-    private void setBloodyGrabEnd(boolean value) {this.dataManager.set(BLOODY_GRAB_END, Boolean.valueOf(value));}
     private boolean isBloodyGrabContinue() {return this.dataManager.get(BLOODY_GRAB_CONTINUE);}
     private void setBloodyGrabContinue(boolean value) {this.dataManager.set(BLOODY_GRAB_CONTINUE, Boolean.valueOf(value));}
     public boolean isBloodied() {return this.dataManager.get(BLOODIED);}
     private void setBloodied(boolean value) {this.dataManager.set(BLOODIED, Boolean.valueOf(value));}
-    public boolean isUltraAttack() {return this.dataManager.get(ULTRA_ATTACK);}
-    private void setUltraAttack(boolean value) {this.dataManager.set(ULTRA_ATTACK, Boolean.valueOf(value));}
-    public boolean isUltraFinish() {return this.dataManager.get(ULTRA_FINISH);}
-    private void setUltraFinish(boolean value) {this.dataManager.set(ULTRA_FINISH, Boolean.valueOf(value));}
-    public boolean isUltraContinue() {return this.dataManager.get(ULTRA_CONTINUE);}
-    private void setUltraContinue(boolean value) {this.dataManager.set(ULTRA_CONTINUE, Boolean.valueOf(value));}
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("Bloodied", this.isBloodied());
-        nbt.setBoolean("Bloody_Grab", this.isBloodyGrab());
-        nbt.setBoolean("Bloody_Grab_Finish", this.isBloodyGrabEnd());
         nbt.setBoolean("Bloody_Grab_Continue", this.isBloodyGrabContinue());
-        nbt.setBoolean("Bloody_Fly", this.isBloodyFly());
         nbt.setBoolean("Strafe_Thrust", this.isStrafeThrust());
         nbt.setBoolean("Strafe_Thrust_Continue", this.isStrafeThrustContinue());
-        nbt.setBoolean("Strafe_Thrust_Finish", this.isStrafeThrustFinish());
-        nbt.setBoolean("Air_Circle_Attack", this.isAirCircleAttack());
-        nbt.setBoolean("Air_Circle_Ranged", this.isAirCircleRanged());
-        nbt.setBoolean("Air_Circle_Continue", this.isAirCircleContinue());
-        nbt.setBoolean("Stomp", this.isStomp());
-        nbt.setBoolean("Stomp_Continue", this.isStompContinue());
-        nbt.setBoolean("Stomp_Finish", this.isStompFinish());
-        nbt.setBoolean("Double_Swing", this.isDoubleSwing());
-        nbt.setBoolean("Double_Swing_Finish", this.isDoubleSwingFinish());
-        nbt.setBoolean("Double_Swing_Jump", this.isDoubleSwingJump());
-        nbt.setBoolean("Spear_Thrust", this.isSpearThrust());
         nbt.setBoolean("Spear_Thrust_Continue", this.isSpearThrustContinue());
-        nbt.setBoolean("Spear_Thrust_Finish", this.isSpearThrustFinish());
         nbt.setBoolean("Block_Action", this.isBlockAction());
         nbt.setBoolean("Block_Ranged", this.isBlockWithRanged());
         nbt.setBoolean("Dodge", this.isDodge());
         nbt.setBoolean("Strafe_Dodge", this.isStrafeDodge());
-        nbt.setBoolean("Heavy_Swing", this.isHeavySwing());
-        nbt.setBoolean("Heavy_Swing_Continue", this.isheavySwingContinue());
-        nbt.setBoolean("Heavy_Swing_Finish", this.isHeavySwingFinish());
         nbt.setBoolean("Summon", this.isSummonBoss());
         nbt.setBoolean("Phase_Transition", this.isPhaseTransition());
         nbt.setBoolean("Death_Boss", this.isDeathBoss());
-        nbt.setBoolean("Fast_aoe", this.isFastAoe());
-        nbt.setBoolean("Holy_Wave", this.isHolyWave());
-        nbt.setBoolean("Ultra_Attack", this.isUltraAttack());
-        nbt.setBoolean("Ultra_Finish", this.isUltraFinish());
-        nbt.setBoolean("Ultra_Continue", this.isUltraContinue());
         super.writeEntityToNBT(nbt);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.setBloodied(nbt.getBoolean("Bloodied"));
-        this.setBloodyGrab(nbt.getBoolean("Bloody_Grab"));
         this.setBloodyGrabContinue(nbt.getBoolean("Bloody_Grab_Continue"));
-        this.setBloodyGrabEnd(nbt.getBoolean("Bloody_Grab_End"));
-        this.setBloodyFly(nbt.getBoolean("Bloody_Fly"));
         this.setStrafeThrust(nbt.getBoolean("Strafe_Thrust"));
         this.setStrafeThrustContinue(nbt.getBoolean("Strafe_Thrust_Continue"));
-        this.setStrafeThrustFinish(nbt.getBoolean("Strafe_Thrust_Finish"));
-        this.setAirCircleAttack(nbt.getBoolean("Air_Circle_Attack"));
-        this.setAirCircleRanged(nbt.getBoolean("Air_Circle_Ranged"));
-        this.setAirCircleContinue(nbt.getBoolean("Air_Circle_Continue"));
-        this.setStomp(nbt.getBoolean("Stomp"));
-        this.setStompContinue(nbt.getBoolean("Stomp_Continue"));
-        this.setStompFinish(nbt.getBoolean("Stomp_Finish"));
-        this.setDoubleSwing(nbt.getBoolean("Double_Swing"));
-        this.setDoubleSwingFinish(nbt.getBoolean("Double_Swing_Finish"));
-        this.setDoubleSwingJump(nbt.getBoolean("Double_Swing_Jump"));
-        this.setSpearThrust(nbt.getBoolean("Spear_Thrust"));
         this.setSpearThrustContinue(nbt.getBoolean("Spear_Thrust_Continue"));
-        this.setSpearThrustFinish(nbt.getBoolean("Spear_Thrust_Finish"));
         this.setBlockAction(nbt.getBoolean("Block_Action"));
         this.setBlockWithRanged(nbt.getBoolean("Block_Ranged"));
         this.setDodge(nbt.getBoolean("Dodge"));
         this.setStrafeDodge(nbt.getBoolean("Strafe_Dodge"));
-        this.setHeavySwing(nbt.getBoolean("Heavy_Swing"));
-        this.setHeavySwingContinue(nbt.getBoolean("Heavy_Swing_Continue"));
-        this.setHeavySwingFinish(nbt.getBoolean("Heavy_Swing_Finish"));
         this.setSummonBoss(nbt.getBoolean("Summon"));
         this.setPhaseTransition(nbt.getBoolean("Phase_Transition"));
         this.setDeathBoss(nbt.getBoolean("Death_Boss"));
-        this.setFastAoe(nbt.getBoolean("Fast_aoe"));
-        this.setHolyWave(nbt.getBoolean("Holy_Wave"));
-        this.setUltraAttack(nbt.getBoolean("Ultra_Attack"));
-        this.setUltraContinue(nbt.getBoolean("Ultra_Continue"));
-        this.setUltraFinish(nbt.getBoolean("Ultra_Finish"));
         super.readEntityFromNBT(nbt);
     }
 
@@ -326,42 +202,20 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     public void entityInit() {
         super.entityInit();
         this.dataManager.register(BLOODIED, Boolean.valueOf(false));
-        this.dataManager.register(BLOODY_GRAB, Boolean.valueOf(false));
         this.dataManager.register(BLOODY_GRAB_CONTINUE, Boolean.valueOf(false));
-        this.dataManager.register(BLOODY_GRAB_END, Boolean.valueOf(false));
-        this.dataManager.register(BLOODY_FLY, Boolean.valueOf(false));
         this.dataManager.register(STRAFE_THRUST, Boolean.valueOf(false));
         this.dataManager.register(STRAFE_THRUST_CONTINUE, Boolean.valueOf(false));
-        this.dataManager.register(STRAFE_THRUST_FINISH, Boolean.valueOf(false));
-        this.dataManager.register(AIR_CIRCLE_ATTACK, Boolean.valueOf(false));
-        this.dataManager.register(AIR_CIRCLE_RANGED, Boolean.valueOf(false));
-        this.dataManager.register(AIR_CIRCLE_CONTINUE, Boolean.valueOf(false));
-        this.dataManager.register(STOMP, Boolean.valueOf(false));
-        this.dataManager.register(STOMP_CONTINUE, Boolean.valueOf(false));
-        this.dataManager.register(STOMP_FINISH, Boolean.valueOf(false));
-        this.dataManager.register(DOUBLE_SWING, Boolean.valueOf(false));
-        this.dataManager.register(DOUBLE_SWING_FINISH, Boolean.valueOf(false));
-        this.dataManager.register(DOUBLE_SWING_JUMP, Boolean.valueOf(false));
-        this.dataManager.register(SPEAR_THRUST, Boolean.valueOf(false));
         this.dataManager.register(SPEAR_THRUST_CONTINUE, Boolean.valueOf(false));
-        this.dataManager.register(SPEAR_THRUST_FINISH, Boolean.valueOf(false));
         this.dataManager.register(BLOCK_ACTION, Boolean.valueOf(false));
         this.dataManager.register(BLOCK_WITH_RANGED, Boolean.valueOf(false));
         this.dataManager.register(DODGE, Boolean.valueOf(false));
         this.dataManager.register(STRAFE_DODGE, Boolean.valueOf(false));
-        this.dataManager.register(HEAVY_SWING, Boolean.valueOf(false));
-        this.dataManager.register(HEAVY_SWING_CONTINUE, Boolean.valueOf(false));
-        this.dataManager.register(HEAVY_SWING_FINISH, Boolean.valueOf(false));
         this.dataManager.register(SUMMON_BOSS, Boolean.valueOf(false));
         this.dataManager.register(PHASE_TRANSITION, Boolean.valueOf(false));
         this.dataManager.register(DEATH_BOSS, Boolean.valueOf(false));
-        this.dataManager.register(FAST_AOE, Boolean.valueOf(false));
-        this.dataManager.register(HOLY_WAVE, Boolean.valueOf(false));
-        this.dataManager.register(ULTRA_CONTINUE, Boolean.valueOf(false));
-        this.dataManager.register(ULTRA_ATTACK, Boolean.valueOf(false));
-        this.dataManager.register(ULTRA_FINISH, Boolean.valueOf(false));
     }
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
 
     public EntityHighKing(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -371,6 +225,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.doBossSummoning();
         this.falter_resistance = 1.8F;
         this.hemorrhage_resistance = 0.95F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityHighKing(World worldIn, int timesUsed, BlockPos pos) {
@@ -386,6 +241,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.doBossSummoning();
         this.falter_resistance = 1.8F;
         this.hemorrhage_resistance = 0.95F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
 
@@ -393,6 +249,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.setSummonBoss(true);
         this.setFightMode(true);
         this.setFullBodyUsage(true);
+        animator.performAttack(ANIM_SUMMON);
         this.setImmovable(true);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 120);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 160);
@@ -415,6 +272,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.setSize(0.8F, 2.45F);
         this.falter_resistance = 1.8F;
         this.hemorrhage_resistance = 0.95F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     private void performPhaseTransition() {
@@ -422,6 +280,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
+        animator.performAttack(ANIM_PHASE_TRANSITION);
         this.lockLook = true;
         this.phaseTransition = true;
 
@@ -478,6 +337,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
         if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features && MobConfig.high_king_boss_music) {
             this.playMusic(this);
@@ -657,7 +517,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     }
 
     private final Consumer<EntityLivingBase> cast_ultra_attack = (target) -> {
-      this.setUltraAttack(true);
+      animator.performAttack(ANIM_CAST_ULTRA_ATTACK);
       this.setImmovable(true);
       this.setFullBodyUsage(true);
       this.setFightMode(true);
@@ -813,13 +673,12 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
       }, 220);
 
       addEvent(()-> {
-            this.setUltraAttack(false);
             boolean randB = rand.nextBoolean();
 
             if(randB || this.getHealth() / this.getMaxHealth() <= 0.4) {
                 this.setUltraAttackTooContinue(target);
             } else {
-                this.setUltraFinish(true);
+                animator.performAttack(ANIM_ULTRA_FINISH);
 
                 addEvent(()-> {
                     this.setImmovable(false);
@@ -836,7 +695,6 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                 }, 20);
 
                 addEvent(()-> {
-                    this.setUltraFinish(false);
                     this.setFullBodyUsage(false);
                     this.setFightMode(false);
                 }, 30);
@@ -849,7 +707,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     }
 
     private final Consumer<EntityLivingBase> ultra_attack_continue = (target) -> {
-      this.setUltraContinue(true);
+     animator.performAttack(ANIM_ULTRA_CONTINUE);
       this.setImmovable(false);
         this.lockLook = false;
         Vec3d playerPos = target.getPositionVector();
@@ -950,7 +808,6 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         }, 140);
 
         addEvent(()-> {
-            this.setUltraContinue(false);
             this.setFightMode(false);
             this.setFullBodyUsage(false);
             this.setImmovable(false);
@@ -958,6 +815,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     };
 
     private final Consumer<EntityLivingBase> strafe_thrust_attack = (target) -> {
+      animator.performAttack(ANIM_STRAFE_THRUST);
       this.setStrafeThrust(true);
       this.setImmovable(true);
       this.setFightMode(true);
@@ -1003,18 +861,17 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         }, 50);
 
         addEvent(()-> {
-        this.setStrafeThrust(false);
         int randI = ModRand.range(1, 11);
+        this.setStrafeThrust(false);
         if(this.isMeleeViable && randI >= 4) {
             setThrustTooContinue(target);
         } else {
-            this.setStrafeThrustFinish(true);
+           animator.performAttack(ANIM_STRAFE_THRUST_FINISH);
             addEvent(()-> {
                 this.lockLook = false;
             }, 10);
             addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
             addEvent(()-> {
-                this.setStrafeThrustFinish(false);
                 this.setFullBodyUsage(false);
                 this.setFightMode(false);
                 this.setImmovable(false);
@@ -1028,8 +885,9 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     }
 
     private final Consumer<EntityLivingBase> strafe_thrust_continue = (target) -> {
-        this.setStrafeThrustContinue(true);
+        animator.performAttack(ANIM_STRAFE_THRUST_CONTINUE);
         this.setImmovable(false);
+        this.setStrafeThrustContinue(true);
         this.HoverTimeIncrease = 1;
         this.setNoGravity(true);
         this.lockLook = false;
@@ -1143,15 +1001,15 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         }, 100);
 
         addEvent(()-> {
-            this.setStrafeThrustContinue(false);
             this.setFightMode(false);
+            this.setStrafeThrustContinue(false);
             this.setFullBodyUsage(false);
             this.setImmovable(false);
         }, 110);
     };
     private final Consumer<EntityLivingBase> bloody_grab_attack = (target) -> {
         this.setFullBodyUsage(true);
-        this.setBloodyGrab(true);
+        animator.performAttack(ANIM_BLOODY_GRAB);
         this.setFightMode(true);
         this.setImmovable(true);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
@@ -1184,17 +1042,15 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         addEvent(()-> {
             this.grabDetection = false;
             this.setImmovable(true);
-            this.setBloodyGrab(false);
 
             if(grabbedEntity != null) {
                 this.setGrabTooContinue(target);
             } else {
-                this.setBloodyGrabEnd(true);
+                animator.performAttack(ANIM_BLOODY_GRAB_END);
                 addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
                 addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 25);
                 addEvent(()-> this.lockLook = false, 20);
                 addEvent(()-> {
-                this.setBloodyGrabEnd(false);
                 this.setImmovable(false);
                 this.setFightMode(false);
                 this.setFullBodyUsage(false);
@@ -1208,6 +1064,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     }
 
     private final Consumer<EntityLivingBase> bloody_grab_continue = (target) -> {
+      animator.performAttack(ANIM_BLOODY_GRAB_CONTINUE);
       this.setBloodyGrabContinue(true);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 75);
@@ -1232,15 +1089,15 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
       addEvent(()-> {
         this.setImmovable(false);
-        this.setBloodyGrabContinue(false);
         this.setFullBodyUsage(false);
         this.setFightMode(false);
+        this.setBloodyGrabContinue(false);
       }, 95);
     };
     private final Consumer<EntityLivingBase> bloody_fly_attack = (target) -> {
       this.setFullBodyUsage(true);
       this.setFightMode(true);
-      this.setBloodyFly(true);
+      animator.performAttack(ANIM_BLOODY_FLY);
       this.HoverTimeIncrease = 9;
       this.setNoGravity(true);
       this.setUpBloodyAttack = false;
@@ -1297,13 +1154,12 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
       addEvent(()-> {
         this.setFullBodyUsage(false);
         this.setFightMode(false);
-        this.setBloodyFly(false);
         this.setImmovable(false);
       }, 140);
     };
 
     private final Consumer<EntityLivingBase> holy_wave = (target) -> {
-      this.setHolyWave(true);
+      animator.performAttack(ANIM_HOLY_WAVE);
       this.setFightMode(true);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_CAST_CLAW, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 18);
@@ -1313,12 +1169,11 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
           new ActionHolyWave((int) this.getDistance(target)).performAction(this, target);
       }, 20);
       addEvent(()-> {
-        this.setHolyWave(false);
         this.setFightMode(false);
       }, 40);
     };
     private final Consumer<EntityLivingBase> stomp_attack = (target) -> {
-      this.setStomp(true);
+      animator.performAttack(ANIM_STOMP_ATTACK);
       this.setImmovable(true);
       this.setFullBodyUsage(true);
       this.setFightMode(true);
@@ -1341,17 +1196,15 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
       }, 40);
 
       addEvent(()-> {
-        this.setStomp(false);
         int randI = ModRand.range(1, 11);
         if(randI >= 6) {
             this.setStompTooContinue(target);
         } else {
-            this.setStompFinish(true);
+            animator.performAttack(ANIM_STOMP_FINISH);
             addEvent(()-> {
             this.lockLook = false;
             }, 5);
             addEvent(()-> {
-                this.setStompFinish(false);
                 addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
                 this.setFightMode(false);
                 this.setImmovable(false);
@@ -1367,7 +1220,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     }
 
     private final Consumer<EntityLivingBase> stomp_continue = (target) -> {
-        this.setStompContinue(true);
+        animator.performAttack(ANIM_STOMP_CONTINUE);
         this.lockLook = false;
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 13);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 55);
@@ -1390,7 +1243,6 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         addEvent(()-> this.lockLook = false, 55);
 
         addEvent(()-> {
-            this.setStompContinue(false);
             this.setFightMode(false);
             this.setFullBodyUsage(false);
             this.setImmovable(false);
@@ -1399,7 +1251,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     };
 
     private final Consumer<EntityLivingBase> spear_thrust_attack = (target) -> {
-        this.setSpearThrust(true);
+        animator.performAttack(ANIM_SPEAR_THRUST);
         this.setFullBodyUsage(true);
         this.setFightMode(true);
         this.setImmovable(true);
@@ -1428,16 +1280,14 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
         addEvent(()-> {
             this.spearThrustGrabDetection = false;
-            this.setSpearThrust(false);
             this.setImmovable(true);
             if(grabbedEntity != null) {
                 setThrustTooFinisher(target);
             } else {
-                this.setSpearThrustFinish(true);
+                animator.performAttack(ANIM_SPEAR_THRUST_FINISH);
                 addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 8);
                 this.lockLook = false;
                 addEvent(()-> {
-                    this.setSpearThrustFinish(false);
                     this.setImmovable(false);
                     this.setFullBodyUsage(false);
                     this.setFightMode(false);
@@ -1451,6 +1301,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     }
 
     private final Consumer<EntityLivingBase> spear_thrust_finisher = (target) -> {
+      animator.performAttack(ANIM_SPEAR_THRUST_CONTINUE);
       this.setSpearThrustContinue(true);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 110);
@@ -1503,7 +1354,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     };
 
     private final Consumer<EntityLivingBase> circle_air_attack = (target) -> {
-       this.setAirCircleAttack(true);
+       animator.performAttack(ANIM_CIRCLE_AIR_ATTACK);
        this.setFullBodyUsage(true);
        this.setFightMode(true);
        this.setNoGravity(true);
@@ -1533,7 +1384,6 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
        addEvent(()-> this.setImmovable(true), 45);
 
        addEvent(()-> {
-        this.setAirCircleAttack(false);
         int randI = ModRand.range(1, 11);
         if(randI >= 7 || !this.isMeleeViable) {
             setAirCircleTooRanged(target);
@@ -1549,7 +1399,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     }
 
     private final Consumer<EntityLivingBase> air_circle_melee = (target) -> {
-        this.setAirCircleContinue(true);
+        animator.performAttack(ANIM_CIRCLE_AIR_CONTINUE);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 50);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 60);
@@ -1607,17 +1457,15 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         addEvent(()-> this.lockLook = false, 90);
 
         addEvent(()-> {
-            this.setAirCircleContinue(false);
             int randI = ModRand.range(1, 11);
             if(randI <= 3 ||this.isMeleeViable && randI <= 7) {
                 this.setAttackTooJumpAOE(target);
             } else {
-                this.setDoubleSwingFinish(true);
+                animator.performAttack(ANIM_DOUBLE_SWING_FINISH);
                 addEvent(()-> {
                     this.setImmovable(false);
                     this.setFightMode(false);
                     this.setFullBodyUsage(false);
-                    this.setDoubleSwingFinish(false);
                 }, 15);
             }
         }, 110);
@@ -1628,7 +1476,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     }
 
     private final Consumer<EntityLivingBase> air_circle_ranged = (target) -> {
-      this.setAirCircleRanged(true);
+      animator.performAttack(ANIM_CIRCLE_AIR_RANGED);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_CLAW_DRAW, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_CAST_CLAW, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 29);
@@ -1649,7 +1497,6 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
       }, 35);
 
       addEvent(()-> {
-        this.setAirCircleRanged(false);
         this.setImmovable(false);
         this.setFullBodyUsage(false);
         this.setFightMode(false);
@@ -1661,6 +1508,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         this.setFullBodyUsage(true);
         this.setImmovable(true);
         if(randI >= 6) {
+            animator.performAttack(ANIM_STRAFE_DODGE);
             this.setStrafeDodge(true);
             addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 3);
             addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 20);
@@ -1681,12 +1529,13 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
             addEvent(()-> {
             this.setFightMode(false);
-            this.setFullBodyUsage(false);
             this.setStrafeDodge(false);
+            this.setFullBodyUsage(false);
             this.setImmovable(false);
             }, 40);
         } else {
             //regular Dodge
+            animator.performAttack(ANIM_DODGE);
             this.setDodge(true);
             addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 2);
             addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
@@ -1703,8 +1552,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             addEvent(()-> {
             this.currentlyInIFrame = false;
             this.setFightMode(false);
-            this.setFullBodyUsage(false);
             this.setDodge(false);
+            this.setFullBodyUsage(false);
             }, 30);
         }
     };
@@ -1723,7 +1572,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
 
     private final Consumer<EntityLivingBase> cast_claw_attack = (target) -> {
-      this.setKingCast(true);
+      animator.performAttack(ANIM_CAST_CLAW);
       this.setFightMode(true);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 7);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_CLAW_DRAW, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 14);
@@ -1735,12 +1584,11 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
       }, 25);
 
       addEvent(()-> {
-        this.setKingCast(false);
         this.setFightMode(false);
       }, 50);
     };
     private final Consumer<EntityLivingBase> cast_lightning_attack = (target) -> {
-      this.setKingCastLightning(true);
+      animator.performAttack(ANIM_CAST_LIGHTNING);
       this.setFightMode(true);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 45);
@@ -1750,13 +1598,12 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
       }, 35);
 
       addEvent(()-> {
-        this.setKingCastLightning(false);
         this.setFightMode(false);
       }, 50);
     };
 
     private final Consumer<EntityLivingBase> double_swing = (target) -> {
-      this.setDoubleSwing(true);
+      animator.performAttack(ANIM_DOUBLE_SWING);
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setImmovable(true);
@@ -1827,17 +1674,15 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
       addEvent(()-> {
           this.setImmovable(true);
-        this.setDoubleSwing(false);
 
         int randI = ModRand.range(1, 10);
         if(randI <= 3 || this.isMeleeViable && randI <= 7) {
             //Continue with a jump attack
             setAttackTooJumpAOE(target);
         } else {
-            this.setDoubleSwingFinish(true);
+            animator.performAttack(ANIM_DOUBLE_SWING_FINISH);
             addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
             addEvent(()-> {
-                this.setDoubleSwingFinish(false);
                 this.setImmovable(false);
                 this.setFightMode(false);
                 this.setFullBodyUsage(false);
@@ -1852,7 +1697,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     }
 
     private final Consumer<EntityLivingBase> double_swing_continue = (target) -> {
-        this.setDoubleSwingJump(true);
+        animator.performAttack(ANIM_DOUBLE_SWING_JUMP);
         this.setNoGravity(true);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 75);
@@ -1888,14 +1733,13 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         addEvent(()-> this.lockLook = false, 75);
 
         addEvent(()-> {
-            this.setDoubleSwingJump(false);
             this.setFullBodyUsage(false);
             this.setFightMode(false);
             this.setImmovable(false);
         }, 85);
     };
     private final Consumer<EntityLivingBase> fast_aoe_attack = (target) -> {
-      this.setFastAoe(true);
+      animator.performAttack(ANIM_FAST_AOE);
       this.setFightMode(true);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
@@ -1926,14 +1770,13 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
       addEvent(()-> {
           this.aoeCooldown = MobConfig.high_king_aoe_cooldown * 20;
           this.setImmovable(false);
-          this.setFastAoe(false);
           this.setFightMode(false);
           this.setFullBodyUsage(false);
       },70);
     };
 
     private final Consumer<EntityLivingBase> heavy_swing_begin = (target) -> {
-        this.setHeavySwing(true);
+        animator.performAttack(ANIM_HEAVY_SWING);
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
@@ -1967,19 +1810,17 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
         }, 35);
 
         addEvent(() -> {
-            this.setHeavySwing(false);
             int randI = ModRand.range(1, 10);
             if(randI <= 3 || this.isMeleeViable) {
                 //Continue with a Pierce
                 this.setHeavySwingTooContinue(target);
             } else {
                 //End the Current Attack
-                this.setHeavySwingFinish(true);
+                animator.performAttack(ANIM_HEAVY_SWING_FINISH);
                 addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
                 addEvent(()-> this.setImmovable(false), 15);
 
                 addEvent(()-> {
-                    this.setHeavySwingFinish(false);
                     this.setFightMode(false);
                     this.setFullBodyUsage(false);
                 }, 20);
@@ -1992,7 +1833,8 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
     }
 
     private final Consumer<EntityLivingBase> heavy_swing_continue = (target) -> {
-      this.setHeavySwingContinue(true);
+
+        animator.performAttack(ANIM_HEAVY_SWING_CONTINUE);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 45);
       addEvent(()-> {
@@ -2022,202 +1864,23 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
       addEvent(()-> this.lockLook = false, 50);
 
       addEvent(()-> {
-        this.setHeavySwingContinue(false);
         this.setFightMode(false);
         this.setFullBodyUsage(false);
         this.setImmovable(false);
       }, 60);
     };
 
-
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "state_controller", 0, this::predicateStates));
-        data.addAnimationController(new AnimationController(this, "main_attack_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "followup_attack_controller", 0, this::predicateAttacksFollowUp));
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "walk_controller", 0, this::predicateWalk));
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(!this.isFightMode() && !this.isBlockAction() && !this.isBlockWithRanged() && !this.isDeathBoss()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateWalk(AnimationEvent<E> event) {
-
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage() && !this.isDeathBoss()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_LOWER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateStates(AnimationEvent<E> event) {
-        if(this.isSummonBoss()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON, false));
-            return PlayState.CONTINUE;
-        }
-        if(this.isPhaseTransition()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_PHASE_TRANSITION, false));
-            return PlayState.CONTINUE;
-        }
-        if(this.isDeathBoss()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DEATH, false));
-            return PlayState.CONTINUE;
-        }
-        if(this.isBlockAction() && !this.isDeathBoss()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BLOCK, false));
-            return PlayState.CONTINUE;
-        }
-        if(this.isBlockWithRanged() && !this.isDeathBoss()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BLOCK_RANGED, false));
-            return PlayState.CONTINUE;
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode() && !this.isDeathBoss()) {
-            if(this.isDodge()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DODGE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStrafeDodge()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STRAFE_DODGE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isHeavySwing()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_HEAVY_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isKingCastLightning()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_CAST_LIGHTNING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isKingCast()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_CAST_CLAW, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isHolyWave()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_HOLY_WAVE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isFastAoe()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_FAST_AOE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isDoubleSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DOUBLE_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSpearThrust()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SPEAR_THRUST, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isAirCircleAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_CIRCLE_AIR_ATTACK, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStomp()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STOMP_ATTACK, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isBloodyFly()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BLOODY_FLY, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStrafeThrust()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STRAFE_THRUST, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isBloodyGrab()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BLOODY_GRAB, false));
-                return PlayState.CONTINUE;
+    public void updateAnimations() {
+        if(!this.isFullBodyUsage() && !this.isDeathBoss()) {
+                if(!this.isFightMode() && !this.isBlockAction() && !this.isBlockWithRanged()) {
+                    animator.setCustomUpperIdle(ANIM_IDLE);
+                }
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            if(isMovingOnGround) {
+                animator.setCustomLowerWalk(ANIM_WALK_LOWER);
             }
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacksFollowUp(AnimationEvent<E> event) {
-        if(this.isFightMode() && !this.isDeathBoss()) {
-            if(this.isheavySwingContinue()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_HEAVY_SWING_CONTINUE));
-                return PlayState.CONTINUE;
-            }
-            if(this.isHeavySwingFinish()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_HEAVY_SWING_FINISH, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isDoubleSwingJump()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DOUBLE_SWING_JUMP, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isDoubleSwingFinish()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DOUBLE_SWING_FINISH, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSpearThrustContinue()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SPEAR_THRUST_CONTINUE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSpearThrustFinish()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SPEAR_THRUST_FINISH, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isAirCircleRanged()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_CIRCLE_AIR_RANGED, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isAirCircleContinue()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_CIRCLE_AIR_CONTINUE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStompContinue()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STOMP_CONTINUE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStompFinish()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STOMP_FINISH, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStrafeThrustContinue()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STRAFE_THRUST_CONTINUE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStrafeThrustFinish()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STRAFE_THRUST_FINISH, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isBloodyGrabContinue()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BLOODY_GRAB_CONTINUE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isBloodyGrabEnd()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BLOODY_GRAB_END, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isUltraAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_CAST_ULTRA_ATTACK));
-                return PlayState.CONTINUE;
-            }
-            if(this.isUltraContinue()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_ULTRA_CONTINUE));
-                return PlayState.CONTINUE;
-            }
-            if(this.isUltraFinish()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_ULTRA_FINISH));
-                return PlayState.CONTINUE;
-            }
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
     }
 
     @Override
@@ -2249,21 +1912,6 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
                 ParticleManager.spawnDust(world, this.getPositionVector().add(ModUtils.yVec(3)), ModColors.YELLOW, pos.normalize().scale(0.1), ModRand.range(10, 15));
             });
         }
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override
@@ -2327,6 +1975,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
     private void doBlockAction() {
         this.setBlockAction(true);
+        animator.setStateAnim(ANIM_BLOCK);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 22);
         addEvent(()-> {
@@ -2337,6 +1986,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
 
     private void doBlockActionWithAttack(EntityLivingBase target) {
         this.setBlockWithRanged(true);
+        animator.setStateAnim(ANIM_BLOCK_RANGED);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 22);
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_CLAW_DRAW, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 32);
@@ -2387,6 +2037,7 @@ public class EntityHighKing extends EntityHighKingBoss implements IAnimatable, I
             this.clearEvents();
         }
         this.setDeathBoss(true);
+        animator.setStateAnim(ANIM_DEATH);
         this.setImmovable(true);
         this.lockLook = true;
         addEvent(()-> this.playSound(SoundsHandler.HIGH_KING_ARMOR_MOVEMENT, 0.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 5);

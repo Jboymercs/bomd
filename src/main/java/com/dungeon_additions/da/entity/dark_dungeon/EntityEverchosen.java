@@ -1,17 +1,18 @@
 package com.dungeon_additions.da.entity.dark_dungeon;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.dark_dungeon.EntityAIAttackBasic;
 import com.dungeon_additions.da.entity.dark_dungeon.boss.action.ActionHorizontalSlash;
 import com.dungeon_additions.da.entity.dark_dungeon.boss.action.ActionVerticalSlash;
 import com.dungeon_additions.da.entity.dark_dungeon.minion_action.ActionCastRedProjectiles;
 import com.dungeon_additions.da.entity.dark_dungeon.minion_action.ActionWaveLightningGround;
-import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -30,14 +31,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,8 +38,9 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAnimationTickable, IAttack {
-    private final AnimationFactory factory = new AnimationFactory(this);
+public class EntityEverchosen extends EntityDarkBase implements IAttack {
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
     private Consumer<EntityLivingBase> prevAttacks;
     private boolean hasShieldLowered = false;
     private int comboAmount = 0;
@@ -70,13 +64,7 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
 
     private static final DataParameter<Boolean> GUARDED = EntityDataManager.createKey(EntityEverchosen.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> PERFORMING_COMBO = EntityDataManager.createKey(EntityEverchosen.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_ONE = EntityDataManager.createKey(EntityEverchosen.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_TWO = EntityDataManager.createKey(EntityEverchosen.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_ULTIMATE = EntityDataManager.createKey(EntityEverchosen.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_SLASH = EntityDataManager.createKey(EntityEverchosen.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> PARRY = EntityDataManager.createKey(EntityEverchosen.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> THRUST_SWORD = EntityDataManager.createKey(EntityEverchosen.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> CAST_PROJECTILES = EntityDataManager.createKey(EntityEverchosen.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> PARRY = EntityDataManager.createKey(EntityEverchosen.class, DataSerializers.BOOLEAN);;
     private static final DataParameter<Boolean> DISABLED_SHIELD = EntityDataManager.createKey(EntityEverchosen.class, DataSerializers.BOOLEAN);
 
     public boolean isPerformingCombo() {
@@ -97,47 +85,11 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
     private void setDisabledShield(boolean value) {
         this.dataManager.set(DISABLED_SHIELD, Boolean.valueOf(value));
     }
-    public boolean isSwingOne() {
-        return this.dataManager.get(SWING_ONE);
-    }
-    private void setSwingOne(boolean value) {
-        this.dataManager.set(SWING_ONE, Boolean.valueOf(value));
-    }
-    public boolean isSwingTwo() {
-        return this.dataManager.get(SWING_TWO);
-    }
-    private void setSwingTwo(boolean value) {
-        this.dataManager.set(SWING_TWO, Boolean.valueOf(value));
-    }
-    public boolean isSwingUltimate() {
-        return this.dataManager.get(SWING_ULTIMATE);
-    }
-    private void setSwingUltimate(boolean value) {
-        this.dataManager.set(SWING_ULTIMATE, Boolean.valueOf(value));
-    }
-    public boolean isSwingSlash() {
-        return this.dataManager.get(SWING_SLASH);
-    }
-    private void setSwingSlash(boolean value) {
-        this.dataManager.set(SWING_SLASH, Boolean.valueOf(value));
-    }
     public boolean isParryMove() {
         return this.dataManager.get(PARRY);
     }
     private void setParryMove(boolean value) {
         this.dataManager.set(PARRY, Boolean.valueOf(value));
-    }
-    public boolean isThrustSword() {
-        return this.dataManager.get(THRUST_SWORD);
-    }
-    private void setThrustSword(boolean value) {
-        this.dataManager.set(THRUST_SWORD, Boolean.valueOf(value));
-    }
-    public boolean isCastProjectiles() {
-        return this.dataManager.get(CAST_PROJECTILES);
-    }
-    private void setCastProjectiles(boolean value) {
-        this.dataManager.set(CAST_PROJECTILES, Boolean.valueOf(value));
     }
 
     public EntityEverchosen(World worldIn, float x, float y, float z) {
@@ -148,6 +100,7 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
         this.setSize(0.7F, 2.2F);
         this.falter_resistance = 1.9F;
         this.hemorrhage_resistance = 0.9F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityEverchosen(World worldIn) {
@@ -158,33 +111,22 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
         this.setSize(0.7F, 2.2F);
         this.falter_resistance = 1.9F;
         this.hemorrhage_resistance = 0.9F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("Guarded", this.isGuarded());
-        nbt.setBoolean("Swing_One", this.isSwingOne());
-        nbt.setBoolean("Swing_Two", this.isSwingTwo());
-        nbt.setBoolean("Swing_Ultimate", this.isSwingUltimate());
-        nbt.setBoolean("Swing_Slash", this.isSwingSlash());
         nbt.setBoolean("Parry", this.isParryMove());
         nbt.setBoolean("Disabled_Shield", this.isDisabledShield());
-        nbt.setBoolean("Cast_Projectiles", this.isCastProjectiles());
-        nbt.setBoolean("Thrust_Sword", this.isThrustSword());
         nbt.setBoolean("Performing_Combo", this.isPerformingCombo());
         super.writeEntityToNBT(nbt);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
-        this.setSwingOne(nbt.getBoolean("Swing_One"));
-        this.setSwingTwo(nbt.getBoolean("Swing_Two"));
-        this.setSwingUltimate(nbt.getBoolean("Swing_Ultimate"));
-        this.setSwingSlash(nbt.getBoolean("Swing_Slash"));
         this.setParryMove(nbt.getBoolean("Parry"));
         this.setGuarded(nbt.getBoolean("Guarded"));
-        this.setThrustSword(nbt.getBoolean("Thrust_Sword"));
-        this.setCastProjectiles(nbt.getBoolean("Cast_Projectile"));
         this.setDisabledShield(nbt.getBoolean("Disabled_Shield"));
         this.setPerformingCombo(nbt.getBoolean("Performing_Combo"));
         super.readEntityFromNBT(nbt);
@@ -195,13 +137,7 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
         super.entityInit();
         this.dataManager.register(PERFORMING_COMBO, Boolean.valueOf(false));
         this.dataManager.register(GUARDED, Boolean.valueOf(false));
-        this.dataManager.register(SWING_ONE, Boolean.valueOf(false));
-        this.dataManager.register(SWING_TWO, Boolean.valueOf(false));
-        this.dataManager.register(SWING_ULTIMATE, Boolean.valueOf(false));
-        this.dataManager.register(SWING_SLASH, Boolean.valueOf(false));
         this.dataManager.register(DISABLED_SHIELD, Boolean.valueOf(false));
-        this.dataManager.register(CAST_PROJECTILES, Boolean.valueOf(false));
-        this.dataManager.register(THRUST_SWORD, Boolean.valueOf(false));
         this.dataManager.register(PARRY, Boolean.valueOf(false));
     }
 
@@ -234,6 +170,7 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
         if(!world.isRemote) {
 
             if (this.isDisabledShield()) {
@@ -286,7 +223,7 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
     }
 
     private final Consumer<EntityLivingBase> cast_projectiles = (target) -> {
-      this.setCastProjectiles(true);
+      animator.performAttack(ANIM_CAST_PROJECTILES);
       this.setFightMode(true);
       this.hasShieldLowered = true;
       this.isRandomGetAway = true;
@@ -306,7 +243,6 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
       addEvent(()-> {
           this.isRandomGetAway = false;
           this.hasShieldLowered = false;
-        this.setCastProjectiles(false);
         this.setFightMode(false);
       }, 35);
     };
@@ -314,7 +250,7 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
     Supplier<Projectile> ground_projectiles = () -> new ProjectileRedLightningGround(world, this, (float) this.getAttack() * 0.75F, null);
 
     private final Consumer<EntityLivingBase> thrust_sword = (target) -> {
-      this.setThrustSword(true);
+      animator.performAttack(ANIM_THRUST_SWORD);
       this.setImmovable(true);
       this.setFullBodyUsage(true);
       this.setFightMode(true);
@@ -328,7 +264,6 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
       addEvent(()-> this.lockLook = false, 37);
       addEvent(()-> {
           this.hasShieldLowered = false;
-        this.setThrustSword(false);
         this.setImmovable(false);
         this.setFullBodyUsage(false);
         this.setFightMode(false);
@@ -337,7 +272,11 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
 
     private final Consumer<EntityLivingBase> sword_slash = (target) -> {
       this.setFightMode(true);
-      this.setSwingSlash(true);
+      if(this.isPerformingCombo()) {
+          animator.performCombo(ANIM_SWORD_SLASH, 5, 5);
+      } else {
+          animator.performAttack(ANIM_SWORD_SLASH);
+      }
 
       addEvent(()-> {
         this.lockLook = true;
@@ -358,13 +297,16 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
 
       addEvent(()-> {
             this.setFightMode(false);
-            this.setSwingSlash(false);
       }, 40);
     };
 
     private final Consumer<EntityLivingBase> swing_sword_two = (target) -> {
       this.setFightMode(true);
-      this.setSwingTwo(true);
+      if(this.isPerformingCombo()) {
+           animator.performCombo(ANIM_SWING_SWORD_TWO, 5, 5);
+      } else {
+          animator.performAttack(ANIM_SWING_SWORD_TWO);
+      }
       this.hasShieldLowered = true;
 
         addEvent(()-> {
@@ -392,12 +334,10 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
       addEvent(()-> {
           if(ModRand.percentageOf(60 - (comboAmount * 10))) {
               this.selectComboFollowUp(target);
-              this.setSwingTwo(false);
           } else {
               addEvent(()-> {
                   this.hasShieldLowered = false;
                   this.setFightMode(false);
-                  this.setSwingTwo(false);
               }, 5);
           }
       }, 30);
@@ -405,7 +345,11 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
 
     private final Consumer<EntityLivingBase> swing_sword = (target) -> {
       this.setFightMode(true);
-      this.setSwingOne(true);
+      if(this.isPerformingCombo()) {
+          animator.performCombo(ANIM_SWING_SWORD, 5, 5);
+      } else {
+          animator.performAttack(ANIM_SWING_SWORD);
+      }
       this.hasShieldLowered = true;
 
         addEvent(()-> {
@@ -433,19 +377,21 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
       addEvent(()-> {
           if(ModRand.percentageOf(60 - (comboAmount * 10))) {
               this.selectComboFollowUp(target);
-              this.setSwingOne(false);
           } else {
               addEvent(()-> {
                   this.hasShieldLowered = false;
                   this.setFightMode(false);
-                  this.setSwingOne(false);
               }, 5);
           }
       }, 30);
     };
 
     private final Consumer<EntityLivingBase> sword_swing_ultimate = (target) -> {
-      this.setSwingUltimate(true);
+      if(this.isPerformingCombo()) {
+        animator.performCombo(ANIM_SWING_SWORD_ULTIMATE, 5, 5);
+      } else {
+          animator.performAttack(ANIM_SWING_SWORD_ULTIMATE);
+      }
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setImmovable(true);
@@ -478,7 +424,6 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
 
       addEvent(()-> {
           this.hasShieldLowered = false;
-            this.setSwingUltimate(false);
             this.setFullBodyUsage(false);
             this.setFightMode(false);
             this.setImmovable(false);
@@ -521,72 +466,26 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "fight_controller", 3, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isSwingOne()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING_SWORD + (this.isPerformingCombo() ? "t" : "")));
+    public void updateAnimations() {
+        if(!this.isFullBodyUsage()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            if(isMovingOnGround) {
+                if(!this.isFightMode()) {
+                    if(this.isGuarded() && !this.isDisabledShield()) {
+                        animator.setCustomUpperWalk(ANIM_WALK_UPPER_GUARDED);
+                    } else {
+                        animator.setCustomUpperWalk(ANIM_WALK_UPPER);
+                    }
+                    animator.setCustomLowerWalk(ANIM_WALK_LOWER);
+                }
+            } else if(!this.isFightMode()) {
+                if(this.isGuarded() && !this.isDisabledShield()) {
+                    animator.setCustomUpperIdle(ANIM_IDLE_UPPER_GUARDED);
+                } else {
+                    animator.setCustomUpperIdle(ANIM_IDLE_UPPER);
+                }
             }
-            if(this.isSwingTwo()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING_SWORD_TWO + (this.isPerformingCombo() ? "t" : "")));
-            }
-            if(this.isSwingUltimate()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING_SWORD_ULTIMATE + (this.isPerformingCombo() ? "t" : "")));
-            }
-            if(this.isSwingSlash()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWORD_SLASH + (this.isPerformingCombo() ? "t" : "")));
-            }
-            if(this.isParryMove()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PARRY));
-            }
-            if(this.isThrustSword()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_THRUST_SWORD));
-            }
-            if(this.isCastProjectiles()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_CAST_PROJECTILES));
-            }
-            return PlayState.CONTINUE;
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode()) {
-            if(this.isGuarded() && !this.isDisabledShield()) {
-                event.getController().setAnimation(new AnimationBuilder().loop(ANIM_IDLE_UPPER_GUARDED));
-            } else {
-                event.getController().setAnimation(new AnimationBuilder().loop(ANIM_IDLE_UPPER));
-            }
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().loop(ANIM_WALK_LOWER));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode()) {
-            if(this.isGuarded() && !this.isDisabledShield()) {
-                event.getController().setAnimation(new AnimationBuilder().loop(ANIM_WALK_UPPER_GUARDED));
-            } else {
-                event.getController().setAnimation(new AnimationBuilder().loop(ANIM_WALK_UPPER));
-            }
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
     }
 
     @Override
@@ -636,20 +535,5 @@ public class EntityEverchosen extends EntityDarkBase implements IAnimatable, IAn
         }
 
         return false;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

@@ -15,8 +15,6 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureStart;
 import net.minecraftforge.common.BiomeDictionary;
-import org.lwjgl.Sys;
-import software.bernie.shadowed.fasterxml.jackson.databind.ObjectReader;
 
 import java.util.List;
 import java.util.Random;

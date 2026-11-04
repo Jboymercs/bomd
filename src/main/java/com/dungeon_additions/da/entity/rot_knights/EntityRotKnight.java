@@ -1,16 +1,16 @@
 package com.dungeon_additions.da.entity.rot_knights;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.EntityAIAttackRotKnight;
 import com.dungeon_additions.da.entity.ai.IAttack;
-import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -38,22 +38,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
-import javax.xml.bind.ValidationEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAttack {
+public class EntityRotKnight extends EntityRotBase implements IAttack {
 
     private final String ANIM_IDLE = "idle";
     private final String ANIM_IDLE_SHIELD = "idle_shield";
@@ -70,74 +62,40 @@ public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAtta
     private final String ANIM_SWING_NS = "swing_ns";
     private final String ANIM_SWING_HEAVY = "swing_heavy";
     private final String ANIM_THROW_TRIDENT = "throw_trident";
-    private final String ANIM_THROW_TRIDENT_SHIELD = "throw_trident_shield";
 
-    private static final DataParameter<Boolean> PIERCE = EntityDataManager.createKey(EntityRotKnight.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING = EntityDataManager.createKey(EntityRotKnight.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_COMBO = EntityDataManager.createKey(EntityRotKnight.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHIELDED = EntityDataManager.createKey(EntityRotKnight.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SHIELD_DASH = EntityDataManager.createKey(EntityRotKnight.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IDLE_MODE = EntityDataManager.createKey(EntityRotKnight.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DISABLED_SHIELD = EntityDataManager.createKey(EntityRotKnight.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_NS = EntityDataManager.createKey(EntityRotKnight.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HEAVY_SWING = EntityDataManager.createKey(EntityRotKnight.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> THROW_TRIDENT = EntityDataManager.createKey(EntityRotKnight.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityRotKnight.class, DataSerializers.VARINT);
-    private boolean isPierce() {return this.dataManager.get(PIERCE);}
     private boolean isDisabledShield() {return this.dataManager.get(DISABLED_SHIELD);}
-    private boolean isSwingNS() {return this.dataManager.get(SWING_NS);}
-    private boolean isHeavySwing() {return this.dataManager.get(HEAVY_SWING);}
-    private boolean isThrowTrident() {return this.dataManager.get(THROW_TRIDENT);}
-    private boolean isSwing() {return this.dataManager.get(SWING);}
-    private boolean isSwingCombo() {return this.dataManager.get(SWING_COMBO);}
     public boolean isShielded() {return this.dataManager.get(SHIELDED);}
-    private boolean isShieldDash() {return this.dataManager.get(SHIELD_DASH);}
     public boolean isIdleMode() {return this.dataManager.get(IDLE_MODE);}
-    private void setPierce(boolean value) {this.dataManager.set(PIERCE, Boolean.valueOf(value));}
     private void setDisabledShield(boolean value) {this.dataManager.set(DISABLED_SHIELD, Boolean.valueOf(value));}
-    private void setSwingNS(boolean value) {this.dataManager.set(SWING_NS, Boolean.valueOf(value));}
-    private void setHeavySwing(boolean value) {this.dataManager.set(HEAVY_SWING, Boolean.valueOf(value));}
-    private void setThrowTrident(boolean value) {this.dataManager.set(THROW_TRIDENT, Boolean.valueOf(value));}
-    private void setSwing(boolean value) {this.dataManager.set(SWING, Boolean.valueOf(value));}
-    private void setSwingCombo(boolean value) {this.dataManager.set(SWING_COMBO, Boolean.valueOf(value));}
     public void setShielded(boolean value) {this.dataManager.set(SHIELDED, Boolean.valueOf(value));}
-    private void setShieldDash(boolean value) {this.dataManager.set(SHIELD_DASH, Boolean.valueOf(value));}
     public void setIdleMode(boolean value) {this.dataManager.set(IDLE_MODE, Boolean.valueOf(value));}
     public void setSkin(int skinType)
     {
         this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
     }
-
     public int getSkin()
     {
         return this.dataManager.get(SKIN_TYPE).intValue();
     }
+
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, true);
+    private final MoveAnalysis moveAnalysis;
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
-        nbt.setBoolean("Pierce", this.isPierce());
         nbt.setBoolean("Disabled_Shield", this.isDisabledShield());
-        nbt.setBoolean("Swing_NS", this.isSwingNS());
-        nbt.setBoolean("Heavy_Swing", this.isHeavySwing());
-        nbt.setBoolean("Throw_Trident", this.isThrowTrident());
-        nbt.setBoolean("Swing", this.isSwing());
-        nbt.setBoolean("Swing_Combo", this.isSwingCombo());
         nbt.setBoolean("Shielded", this.isShielded());
-        nbt.setBoolean("Shield_Dash", this.isShieldDash());
         nbt.setBoolean("Idle_State", this.isIdleMode());
         super.writeEntityToNBT(nbt);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
-        this.setPierce(nbt.getBoolean("Pierce"));
         this.setDisabledShield(nbt.getBoolean("Disabled_Shield"));
-        this.setSwingNS(nbt.getBoolean("Swing_NS"));
-        this.setHeavySwing(nbt.getBoolean("Heavy_Swing"));
-        this.setThrowTrident(nbt.getBoolean("Throw_Trident"));
-        this.setSwing(nbt.getBoolean("Swing"));
-        this.setSwingCombo(nbt.getBoolean("Swing_Combo"));
         this.setShielded(nbt.getBoolean("Shielded"));
-        this.setShieldDash(nbt.getBoolean("Shield_Dash"));
         this.setIdleMode(nbt.getBoolean("Idle_State"));
         super.readEntityFromNBT(nbt);
     }
@@ -146,18 +104,10 @@ public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAtta
     public void entityInit() {
         super.entityInit();
         this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
-        this.dataManager.register(PIERCE, Boolean.valueOf(false));
         this.dataManager.register(DISABLED_SHIELD, Boolean.valueOf(false));
-        this.dataManager.register(SWING_NS, Boolean.valueOf(false));
-        this.dataManager.register(HEAVY_SWING, Boolean.valueOf(false));
-        this.dataManager.register(THROW_TRIDENT, Boolean.valueOf(false));
         this.dataManager.register(SHIELDED, Boolean.valueOf(false));
-        this.dataManager.register(SHIELD_DASH, Boolean.valueOf(false));
-        this.dataManager.register(SWING, Boolean.valueOf(false));
-        this.dataManager.register(SWING_COMBO, Boolean.valueOf(false));
         this.dataManager.register(IDLE_MODE, Boolean.valueOf(false));
     }
-    private final AnimationFactory factory = new AnimationFactory(this);
     private boolean shieldLowered = false;
     //To avoid weird movements of the shield
     public int standbyTimer = 40;
@@ -170,6 +120,7 @@ public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAtta
         this.setSize(0.75F, 1.95F);
         selectAnimationTooPlay();
         this.setIdleMode(true);
+        this.moveAnalysis = new MoveAnalysis(this);
         this.setSkin(rand.nextInt(5));
         this.hemorrhage_resistance = 0.5F;
     }
@@ -179,6 +130,7 @@ public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAtta
         this.setSize(0.75F, 1.95F);
         selectAnimationTooPlay();
         this.setIdleMode(true);
+        this.moveAnalysis = new MoveAnalysis(this);
         this.setSkin(rand.nextInt(5));
         this.hemorrhage_resistance = 0.5F;
     }
@@ -229,6 +181,7 @@ public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAtta
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
         if(this.isIdleMode() && !hasEndedState && !world.isRemote) {
             this.rotationYaw = randomTurn;
             this.rotationYawHead = randomTurn;
@@ -351,10 +304,10 @@ public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAtta
     }
 
     private final Consumer<EntityLivingBase> heavy_swing = (target) -> {
-        this.setHeavySwing(true);
         this.setFullBodyUsage(true);
         this.setFightMode(true);
         this.setImmovable(true);
+        animator.performAttack(ANIM_SWING_HEAVY);
 
         addEvent(()-> {
             Vec3d targetSaved = target.getPositionVector();
@@ -384,15 +337,14 @@ public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAtta
 
         addEvent(()-> {
             this.setImmovable(false);
-            this.setHeavySwing(false);
             this.setFightMode(false);
             this.setFullBodyUsage(false);
         }, 45);
     };
 
     private final Consumer<EntityLivingBase> throw_trident = (target) -> {
-        this.setThrowTrident(true);
         this.setFightMode(true);
+        animator.performAttack(ANIM_THROW_TRIDENT);
 
         addEvent(()-> {
             this.setImmovable(true);
@@ -425,13 +377,12 @@ public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAtta
         }, 35);
 
         addEvent(()-> {
-            this.setThrowTrident(false);
             this.setFightMode(false);
         }, 50);
     };
     private final Consumer<EntityLivingBase> swing_no_shield = (target) -> {
-        this.setSwingNS(true);
         this.setFightMode(true);
+        animator.performAttack(ANIM_SWING_NS);
 
         addEvent(()-> {
             Vec3d targetSaved = target.getPositionVector();
@@ -458,7 +409,6 @@ public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAtta
 
         addEvent(()-> {
             this.setImmovable(false);
-            this.setSwingNS(false);
             this.setFightMode(false);
         }, 35);
     };
@@ -471,8 +421,8 @@ public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAtta
     private final Consumer<EntityLivingBase> shieldDash = (target) -> {
       this.setFightMode(true);
       this.setFullBodyUsage(true);
-      this.setShieldDash(true);
       this.setImmovable(true);
+      animator.performAttack(ANIM_SHIELD_DASH);
 
       addEvent(()-> {
           Main.proxy.spawnParticle(18,world, this.posX, this.posY, this.posZ, 0, 0, 0);
@@ -503,17 +453,16 @@ public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAtta
           this.setImmovable(false);
         this.setFullBodyUsage(false);
         this.setFightMode(false);
-        this.setShieldDash(false);
         this.shieldLowered = false;
         this.lockLook = false;
       }, 50);
     };
 
     private final Consumer<EntityLivingBase> swing_basic = (target) -> {
-      this.setSwing(true);
       this.setFightMode(true);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
+      animator.performAttack(ANIM_SWING_ATTACK);
 
       addEvent(()-> {
           Vec3d targetSaved = target.getPositionVector();
@@ -540,7 +489,6 @@ public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAtta
       addEvent(()-> this.shieldLowered = false, 40);
       addEvent(()-> {
           this.setImmovable(false);
-        this.setSwing(false);
         this.setFightMode(false);
         this.setFullBodyUsage(false);
       }, 44);
@@ -549,8 +497,8 @@ public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAtta
     private final Consumer<EntityLivingBase> swing_combo = (target) -> {
       this.setFullBodyUsage(true);
       this.setFightMode(true);
-      this.setSwingCombo(true);
         this.setImmovable(true);
+        animator.performAttack(ANIM_SWING_COMBO);
 
         addEvent(()-> {
             Vec3d targetSaved = target.getPositionVector();
@@ -599,14 +547,13 @@ public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAtta
           this.lockLook = false;
         this.setFullBodyUsage(false);
         this.setFightMode(false);
-        this.setSwingCombo(false);
         this.shieldLowered = false;
       }, 70);
     };
 
     private final Consumer<EntityLivingBase> pierce_attack = (target) -> {
       this.setFightMode(true);
-      this.setPierce(true);
+      animator.performAttack(ANIM_PIERCE_ATTACK);
 
     addEvent(()-> this.lockLook = true, 10);
 
@@ -624,90 +571,39 @@ public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAtta
 
       addEvent(()-> {
         this.setFightMode(false);
-        this.setPierce(false);
         this.shieldLowered = false;
       }, 36);
     };
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "statue_controller", 0, this::predicateIdleStatues));
-    }
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if (!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode() && !this.isIdleMode()) {
-            if(this.isShielded() && !this.isDisabledShield()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER_SHIELD, true));
-            } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER, true));
-            }
-            return PlayState.CONTINUE;
-        }
-
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdleStatues(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(this.isIdleMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SELECTION_STRING, true));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_SELECTION_STRING, true);
         }
-        return PlayState.STOP;
-    }
 
-    private <E extends IAnimatable>PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage() && !this.isIdleMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_LOWER, true));
-            return PlayState.CONTINUE;
+        //Due to this mob having a shield we have to create our own states for walking and idle
+        if(!this.isIdleMode() && !this.isFullBodyUsage()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            if(isMovingOnGround) {
+
+                    animator.setCustomLowerWalk(ANIM_WALK_LOWER);
+
+                if(!this.isFightMode()) {
+                    if(this.isShielded() && !this.isDisabledShield()) {
+                        animator.setCustomUpperWalk(ANIM_WALK_UPPER_SHIELD);
+                    } else {
+                        animator.setCustomUpperWalk(ANIM_WALK_UPPER);
+                    }
+                }
+            } else if (!this.isFightMode()){
+
+                if(this.isShielded() && !this.isDisabledShield()) {
+                    animator.setCustomUpperIdle(ANIM_IDLE_SHIELD);
+                } else {
+                    animator.setCustomUpperIdle(ANIM_IDLE);
+                }
+            }
         }
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode() && !this.isIdleMode()) {
-            if(this.isShielded() && !this.isDisabledShield()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_SHIELD, true));
-            } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            }
-
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode() && !this.isIdleMode()) {
-            if(this.isPierce()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PIERCE_ATTACK));
-            }
-            if(this.isSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING_ATTACK));
-            }
-            if(this.isSwingCombo()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING_COMBO));
-            }
-            if(this.isShieldDash()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SHIELD_DASH));
-            }
-            if(this.isSwingNS()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING_NS));
-            }
-            if(this.isHeavySwing()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING_HEAVY));
-            }
-            if(this.isThrowTrident()) {
-                    event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_THROW_TRIDENT));
-            }
-            return PlayState.CONTINUE;
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
     }
 
     @Override
@@ -793,10 +689,5 @@ public class EntityRotKnight extends EntityRotBase implements IAnimatable, IAtta
     @Override
     protected boolean canDropLoot() {
         return true;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 }

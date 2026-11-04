@@ -17,6 +17,7 @@ import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -42,14 +43,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -59,7 +52,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IAnimatable, IAttack, IAnimationTickable, IEntitySound {
+public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IAttack, IEntitySound {
 
     //Abilities to Add
     // Parry Attack - Warlord will parry the player if they attack with a melee weapon
@@ -70,7 +63,6 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
     // Fly Swing - Warlord flys in the air then shoots a barrage of projectiles at the player
     // Quick Circle Swing - Warlord dashes to the player and upon doing the attack a wave of 4 yellow waves spawn
 
-    private final AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttack;
     public boolean isBeingPushed = false;
     private int spamAttackCounter = 0;
@@ -142,6 +134,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
     private void setPhaseAnim(boolean value) {this.dataManager.set(PHASE_ANIM, Boolean.valueOf(value));}
 
     Supplier<Projectile> yellow_wave_projectiles = () -> new ProjectileYellowWave(world, this, (float) this.getAttack(), null);
+    private final MoveAnalysis moveAnalysis;
 
     public EntityAegyptianWarlord(World world, int timesUsed, BlockPos pos) {
         super(world);
@@ -155,6 +148,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.falter_resistance = 1.0F;
         this.hemorrhage_resistance = 0.75F;
         this.doBossReSummonScaling();
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityAegyptianWarlord(World worldIn, float x, float y, float z) {
@@ -166,6 +160,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.experienceValue = 225;
         this.falter_resistance = 1.6F;
         this.hemorrhage_resistance = 0.75F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityAegyptianWarlord(World worldIn) {
@@ -177,11 +172,13 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.experienceValue = 225;
         this.falter_resistance = 1.6F;
         this.hemorrhage_resistance = 0.75F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
 
     private void startSummonSetUp() {
         this.setSummon(true);
+        animator.setStateAnim(ANIM_SUMMON);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
         addEvent(()-> {
@@ -316,7 +313,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
     @Override
     public void onUpdate() {
         super.onUpdate();
-
+        this.moveAnalysis.update();
         this.parryCooldown--;
         if(!world.isRemote) {
 
@@ -369,6 +366,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
 
     private void doPhaseTransition() {
         this.setPhaseAnim(true);
+        animator.setStateAnim(ANIM_PHASE_TRANSITION);
         this.setFullBodyUsage(true);
         this.setFightMode(true);
         this.setImmovable(true);
@@ -427,6 +425,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
       this.setImmovable(true);
       this.setFightMode(true);
       this.setFullBodyUsage(true);
+      animator.performAttack(ANIM_FLY_SWING);
 
       addEvent(()-> this.playSound(SoundsHandler.DESERT_BOSS_TELEPORT, 1.4f, 0.7f / (rand.nextFloat() * 0.6f + 0.2f)), 15);
         addEvent(()-> this.playSound(SoundsHandler.DESERT_BOSS_TELEPORT, 1.4f, 0.7f / (rand.nextFloat() * 0.2f + 0.2f)), 33);
@@ -482,6 +481,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setImmovable(true);
+      animator.performAttack(ANIM_THOUSAND_SLICES_JUMP);
 
       addEvent(()-> {
           this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.3f, 0.7f / (rand.nextFloat() * 0.1f + 0.2f));
@@ -536,6 +536,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setImmovable(true);
+      animator.performAttack(ANIM_THOUSAND_SLICES);
 
       addEvent(()-> {
             this.lockLook = true;
@@ -569,6 +570,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setImmovable(true);
+      animator.performAttack(ANIM_CIRCLE_SWING);
 
       addEvent(()-> {
           this.setImmovable(true);
@@ -611,7 +613,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
     private final Consumer<EntityLivingBase> dash_attack = (target) -> {
       this.setFullBodyUsage(true);
       this.setFightMode(true);
-      this.setDashAttack(true);
+      animator.performAttack(ANIM_DASH);
 
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -655,7 +657,6 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
           this.setImmovable(false);
         this.setFullBodyUsage(false);
         this.setFightMode(false);
-        this.setDashAttack(false);
       }, 60);
     };
 
@@ -663,7 +664,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
         this.setFightMode(true);
         this.setImmovable(true);
         this.setFullBodyUsage(true);
-        this.setJumpAway(true);
+        animator.performAttack(ANIM_JUMP);
 
         addEvent(()-> {
             this.setImmovable(false);
@@ -681,13 +682,12 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
             this.setImmovable(false);
             this.setFightMode(false);
             this.setFullBodyUsage(false);
-            this.setJumpAway(false);
         }, 35);
     };
 
     private final Consumer<EntityLivingBase> summon_storm = (target) -> {
       this.setFightMode(true);
-      this.setSummonStorm(true);
+      animator.performAttack(ANIM_SUMMON_STORM);
 
       addEvent(()-> {
           this.lockLook = true;
@@ -710,13 +710,12 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
 
       addEvent(()-> {
             this.setFightMode(false);
-            this.setSummonStorm(false);
       }, 50);
     };
 
     private final Consumer<EntityLivingBase> double_swing = (target) -> {
       this.setFightMode(true);
-      this.setDoubleSwing(true);
+      animator.performAttack(ANIM_DOUBLE_SWING);
 
         addEvent(()-> {
             this.lockLook = true;
@@ -769,7 +768,6 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
 
         addEvent(()-> {
             this.setFightMode(false);
-            this.setDoubleSwing(false);
         }, 50);
     };
 
@@ -783,8 +781,8 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
 
     private EntityAegyptianColossus setOtherBossFromFinding() {
         List<EntityAegyptianColossus> nearbyBoss = this.world.getEntitiesWithinAABB(EntityAegyptianColossus.class, this.getEntityBoundingBox().grow(50D), e -> !e.getIsInvulnerable());
-        if(!nearbyBoss.isEmpty()) {
-            for(EntityAegyptianColossus boss : nearbyBoss) {
+        if (!nearbyBoss.isEmpty()) {
+            for (EntityAegyptianColossus boss : nearbyBoss) {
                 return boss;
             }
         }
@@ -792,132 +790,22 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-        data.addAnimationController(new AnimationController(this, "arms_controller_idle", 0, this::predicateArmsIdle));
-        data.addAnimationController(new AnimationController(this, "tail_controller", 0, this::predicateIdleTail));
-        data.addAnimationController(new AnimationController(this, "attacks_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "states_controller", 0, this::predicateStates));
-        data.addAnimationController(new AnimationController(this, "shielded_controller", 0, this::predicateShielded));
-    }
-
-    private <E extends IAnimatable> PlayState predicateShielded(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(this.isShielded()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SHIELDED, true));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_SHIELDED, true);
         }
-        return PlayState.STOP;
-    }
+        boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+        if(!this.isSummon() && !this.isShielded() && !this.isPhaseAnim()) {
+            animator.handleIdleStates(isMovingOnGround);
+        }
 
-    private<E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isDoubleSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_DOUBLE_SWING));
-                return PlayState.CONTINUE;
-            }
-            if(this.isDashAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_DASH));
-                return PlayState.CONTINUE;
-            }
-            if(this.isJumpAway()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_JUMP));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSummonStorm()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SUMMON_STORM));
-                return PlayState.CONTINUE;
-            }
-            if(this.isParry()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PARRY));
-                return PlayState.CONTINUE;
-            }
-            if(this.isFlySwing()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_FLY_SWING));
-                return PlayState.CONTINUE;
-            }
-            if(this.isThousandJump()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_THOUSAND_SLICES_JUMP));
-                return PlayState.CONTINUE;
-            }
-            if(this.isThousandSlices()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_THOUSAND_SLICES));
-                return PlayState.CONTINUE;
-            }
-            if(this.isCircleSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_CIRCLE_SWING));
-                return PlayState.CONTINUE;
-            }
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateStates(AnimationEvent<E> event) {
-        if(this.isSummon()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SUMMON));
-            return PlayState.CONTINUE;
-        }
-        if(this.isStartShielded()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SET_SHIELDED));
-            return PlayState.CONTINUE;
-        }
-        if(this.isEndShielded()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_END_SHIELDED));
-            return PlayState.CONTINUE;
-        }
-        if(this.isPhaseAnim()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PHASE_TRANSITION));
-            return PlayState.CONTINUE;
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-
-    private<E extends IAnimatable> PlayState predicateIdleTail(AnimationEvent<E> event) {
-        if(!this.isTailUsage() && !this.isShielded() && !this.isThousandSlices() && !this.isThousandJump() && !this.isFlySwing() && !this.isPhaseAnim())  {
-            if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F)) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_TAIL_WALK, true));
+        if(!this.isTailUsage() && !this.isShielded() && !this.isThousandJump() && !this.isThousandSlices() && !this.isFlySwing() && !this.isPhaseAnim() && !this.isSummon()) {
+            if(isMovingOnGround) {
+                animator.setStateAnim(ANIM_TAIL_WALK, true);
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_TAIL_IDLE, true));
+                animator.setStateAnim(ANIM_TAIL_IDLE, true);
             }
-            return PlayState.CONTINUE;
         }
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_LOWER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArmsIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode() && !this.isSummon() && !this.isShielded() && !this.isPhaseAnim()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_LOWER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode() && !this.isSummon() && !this.isShielded() && !this.isPhaseAnim()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
     }
 
     @Override
@@ -936,21 +824,6 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
     public void removeTrackingPlayer(@Nonnull EntityPlayerMP player) {
         super.removeTrackingPlayer(player);
         this.bossInfo.removePlayer(player);
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override
@@ -989,6 +862,7 @@ public class EntityAegyptianWarlord extends EntitySharedDesertBoss implements IA
 
     private void doParryAttack(EntityLivingBase target) {
         this.setParry(true);
+        animator.performAttack(ANIM_PARRY);
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);

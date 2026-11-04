@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.night_lich;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
@@ -14,7 +15,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -22,27 +22,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.storage.AnvilChunkLoader;
-import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.lang.ref.WeakReference;
-import java.util.AbstractSequentialList;
 import java.util.Objects;
 
-public class EntityLichSpawn extends EntityAbstractBase implements IAnimatable, IAnimationTickable {
+public class EntityLichSpawn extends EntityAbstractBase {
 
-    private AnimationFactory factory = new AnimationFactory(this);
+
 
     private final String ANIM_IDLE = "idle";
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+
     public EntityLichSpawn(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
         this.setSize(0.8F, 0.8F);
@@ -217,29 +208,8 @@ public class EntityLichSpawn extends EntityAbstractBase implements IAnimatable, 
         return false;
     }
 
-
     @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
-    }
-
-    @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, false));
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
+    public void updateAnimations() {
+        animator.setStateAnim(ANIM_IDLE);
     }
 }

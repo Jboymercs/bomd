@@ -1,75 +1,123 @@
 package com.dungeon_additions.da.entity.render.layer;
 
-import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
 import com.dungeon_additions.da.entity.void_dungeon.EntityObsidilith;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.glowLayer.EmissiveLighting;
+import mod.azure.azurelib.cache.texture.AutoGlowingTexture;
+import mod.azure.azurelib.model.AzBakedModel;
+import mod.azure.azurelib.model.AzBone;
+import mod.azure.azurelib.render.AzRendererConfig;
+import mod.azure.azurelib.render.AzRendererPipeline;
+import mod.azure.azurelib.render.AzRendererPipelineContext;
+import mod.azure.azurelib.render.layer.AzRenderLayer;
+import mod.azure.azurelib.render.vertex.RenderType;
+import mod.azure.azurelib.render.vertex.VertexConsumer;
+import mod.azure.azurelib.util.client.ClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import software.bernie.geckolib3.core.util.Color;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-import java.util.function.Function;
+import java.util.UUID;
 
-public class LayerObsidilithShield extends RenderAbstractLayer<EntityObsidilith>{
+public class LayerObsidilithShield implements AzRenderLayer<UUID, EntityObsidilith> {
 
     private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/entity/obsidilith/geo.obsidilith.json");
     private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/obsidilith.png");
 
     private static final ResourceLocation TEXTURE_INNER_ORB = new ResourceLocation(ModReference.MOD_ID, "textures/entity/obsidilith_shield.png");
 
-    public LayerObsidilithShield(GeoEntityRenderer<EntityObsidilith> renderer, Function<EntityObsidilith, ResourceLocation> funcGetCurrentTexture, Function<EntityObsidilith, ResourceLocation> funcGetCurrentModel) {
-        super(renderer, funcGetCurrentTexture, funcGetCurrentModel);
+    public LayerObsidilithShield() {
+
     }
 
+    @Override
+    public void preRender(AzRendererPipelineContext<UUID, EntityObsidilith> azRendererPipelineContext) {
+
+    }
 
     @Override
-    public void render(EntityObsidilith entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, Color renderColor) {
-        if(entitylivingbaseIn.isShielded()) {
-            RenderManager manager = Minecraft.getMinecraft().getRenderManager();
+    public void render(AzRendererPipelineContext<UUID, EntityObsidilith> azRendererPipelineContext) {
+        if(azRendererPipelineContext.animatable() != null) {
+            renderLayer(azRendererPipelineContext);
+        }
+    }
 
+    @Override
+    public void renderForBone(AzRendererPipelineContext<UUID, EntityObsidilith> azRendererPipelineContext, AzBone azBone) {
+
+    }
+
+    public void renderLayer(AzRendererPipelineContext<UUID, EntityObsidilith> context) {
+        AzRendererPipeline<UUID, EntityObsidilith> renderPipeline = context.rendererPipeline();
+        RenderType prevRenderType = context.renderType();
+        VertexConsumer prevVertexConsumer = context.vertexConsumer();
+        RenderType renderType = this.determineRenderType(context);
+        int prevPackedLight = context.packedLight();
+        float prevRed = context.red();
+        float prevGreen = context.green();
+        float prevBlue = context.blue();
+        float prevAlpha = context.alpha();
+
+        if(renderType != null) {
             EmissiveLighting.preEmissiveTextureRendering();
-            GlStateManager.pushMatrix();
-            Minecraft.getMinecraft().getRenderManager().renderEngine.bindTexture(TEXTURE);
-            // GlStateManager.rotate(0.0F - manager.playerViewY, 0.0F, 1.0F, 0.0F);
-            entityRenderer.render(entityRenderer.getGeoModelProvider().getModel(MODEL_RESLOC), entitylivingbaseIn, partialTicks, (float) renderColor.getRed() / 255f, (float) renderColor.getBlue() / 255f,
-                    (float) renderColor.getGreen() / 255f, (float) renderColor.getAlpha() / 255);
-            GlStateManager.popMatrix();
-
-          //  GlStateManager.pushMatrix();
             Minecraft.getMinecraft().getRenderManager().renderEngine.bindTexture(TEXTURE_INNER_ORB);
             GlStateManager.matrixMode(5890);
             GlStateManager.loadIdentity();
-            float f = (float)entitylivingbaseIn.ticksExisted + partialTicks;
-            GlStateManager.translate(f * 0.02F, 0.0F, 0.0F);
+            //
+            float f = (float) context.animatable().ticksExisted + context.partialTick();
+            GlStateManager.translate(f * 0.02F, -0.005F, 0.0F);
             GlStateManager.matrixMode(5888);
             GlStateManager.enableBlend();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 0.75F);
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             GlStateManager.disableCull();
-        Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
-            entityRenderer.render(entityRenderer.getGeoModelProvider().getModel(MODEL_RESLOC), entitylivingbaseIn, partialTicks, (float) renderColor.getRed() / 255f, (float) renderColor.getBlue() / 255f,
-                    (float) renderColor.getGreen() / 255f, (float) renderColor.getAlpha() / 255);
-        this.reRenderCurrentModelInRenderer(entitylivingbaseIn, partialTicks, renderColor);
-        Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
-        GlStateManager.matrixMode(5890);
-        GlStateManager.loadIdentity();
-        GlStateManager.matrixMode(5888);
-        GlStateManager.enableCull();
-        GlStateManager.enableLighting();
-        GlStateManager.disableBlend();
-        //    GlStateManager.popMatrix();
-
+            Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
+            //
+            context.setRenderType(renderType);
+            context.setPackedLight(240);
+            context.setVertexConsumer(context.multiBufferSource().getBuffer(renderType));
+            Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
+            GlStateManager.matrixMode(5890);
+            GlStateManager.loadIdentity();
+            GlStateManager.matrixMode(5888);
+            GlStateManager.enableCull();
+            GlStateManager.enableLighting();
+            GlStateManager.disableBlend();
             EmissiveLighting.postEmissiveTextureRendering();
+        }
 
+        context.setRenderType(prevRenderType);
+        context.setVertexConsumer(prevVertexConsumer);
+        context.setPackedLight(prevPackedLight);
+        context.setRed(prevRed);
+        context.setGreen(prevGreen);
+        context.setBlue(prevBlue);
+        context.setAlpha(prevAlpha);
+    }
+
+    protected RenderType determineRenderType(AzRendererPipelineContext<UUID, EntityObsidilith> context) {
+        AzRendererConfig<UUID, EntityObsidilith> config = context.rendererPipeline().config();
+        ResourceLocation textureLocation = config.textureLocation(context.currentEntity(), context.animatable());
+        {
+            Entity entity = (Entity) context.animatable();
+            boolean isInvisible = entity.isInvisible();
+            boolean appearsGlowing = entity.isGlowing();
+            boolean isPlayerInvisible = entity.isInvisibleToPlayer(ClientUtils.getClientPlayer());
+            if (isInvisible) {
+                if (!isPlayerInvisible) {
+                    return RenderType.itemEntityTranslucentCull(AutoGlowingTexture.getEmissiveResource(textureLocation));
+                } else {
+                    return appearsGlowing ? RenderType.outline(AutoGlowingTexture.getEmissiveResource(textureLocation)) : null;
+                }
+            } else {
+                return appearsGlowing ? AutoGlowingTexture.getOutlineRenderType(textureLocation) : AutoGlowingTexture.getRenderType(textureLocation);
+            }
         }
     }
 
-
     @Override
-    public boolean shouldCombineTextures() {
-        return false;
+    public void reRenderWithBakedModel(AzRendererPipelineContext<UUID, EntityObsidilith> context, AzBakedModel model) {
+        AzRenderLayer.super.reRenderWithBakedModel(context, model);
     }
 }

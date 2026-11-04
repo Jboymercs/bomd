@@ -1,8 +1,8 @@
 package com.dungeon_additions.da.entity.gaelon_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.blossom.EntityGenericWave;
 import com.dungeon_additions.da.entity.blossom.EntityVoidBlossom;
 import com.dungeon_additions.da.entity.blossom.EntityVoidSpike;
@@ -17,20 +17,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class EntityApathyrSpear extends EntityGaelonBase implements IAnimatable, IAnimationTickable {
+public class EntityApathyrSpear extends EntityGaelonBase {
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     private final String ANIM_SHOOT = "summon";
 
     private final String ANIM_SHOOT_2 = "summon2";
@@ -152,14 +144,9 @@ public class EntityApathyrSpear extends EntityGaelonBase implements IAnimatable,
     }
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "spike_controller", 0, this::predicateIdle));
+    public void updateAnimations() {
+        animator.setStateAnim(ANIM_SELECTION_STRING);
     }
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SELECTION_STRING, false));
-        return PlayState.CONTINUE;
-    }
-
 
     @Override
     public final boolean attackEntityFrom(DamageSource source, float amount) {
@@ -170,18 +157,5 @@ public class EntityApathyrSpear extends EntityGaelonBase implements IAnimatable,
     public boolean canBeCollidedWith() {
         return false;
     }
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
 
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
-    }
 }

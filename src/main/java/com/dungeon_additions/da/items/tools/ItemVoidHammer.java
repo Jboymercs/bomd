@@ -3,10 +3,8 @@ package com.dungeon_additions.da.items.tools;
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.entity.player.ActionPlayerShootBloodSpray;
 import com.dungeon_additions.da.entity.player.ActionVoidFlay;
 import com.dungeon_additions.da.entity.void_dungeon.EntityVoidBlackHole;
-import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.util.ISweepAttackOverride;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.IHasModel;
@@ -24,7 +22,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -34,16 +31,12 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemVoidHammer extends ToolSword implements IAnimatable, IHasModel, ISweepAttackOverride {
+public class ItemVoidHammer extends ToolSword implements IHasModel, ISweepAttackOverride {
 
-    public AnimationFactory factory = new AnimationFactory(this);
 
     private String info_loc;
 
@@ -103,11 +96,6 @@ public class ItemVoidHammer extends ToolSword implements IAnimatable, IHasModel,
         }}
 
     @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
         if (attacker.world.isRemote) return false;
@@ -150,12 +138,6 @@ public class ItemVoidHammer extends ToolSword implements IAnimatable, IHasModel,
     @Override
     public float getAttackDamage() {
         return super.getAttackDamage();
-    }
-
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 
     @Override

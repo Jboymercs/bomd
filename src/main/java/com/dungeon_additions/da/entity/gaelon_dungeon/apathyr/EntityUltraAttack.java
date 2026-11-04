@@ -1,21 +1,17 @@
 package com.dungeon_additions.da.entity.gaelon_dungeon.apathyr;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.entity.blossom.EntityGenericWave;
-import com.dungeon_additions.da.entity.blossom.EntityVoidSpike;
 import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
 import com.dungeon_additions.da.entity.gaelon_dungeon.EntityGaelonBase;
 import com.dungeon_additions.da.entity.gaelon_dungeon.ProjectileGhost;
-import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
-import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.EntityDragonAOE;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -23,22 +19,14 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityUltraAttack extends EntityGaelonBase implements IAnimatable, IAnimationTickable {
+public class EntityUltraAttack extends EntityGaelonBase {
     private static final DataParameter<Boolean> SUMMON_STATE = EntityDataManager.createKey(EntityUltraAttack.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DEATH_STATE = EntityDataManager.createKey(EntityUltraAttack.class, DataSerializers.BOOLEAN);
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     private Consumer<EntityLivingBase> prevAttack;
 
     private final String ANIM_IDLE = "idle";
@@ -88,6 +76,7 @@ public class EntityUltraAttack extends EntityGaelonBase implements IAnimatable, 
 
     private void doSummon() {
         this.setSummonState(true);
+        animator.setStateAnim(ANIM_SUMMON);
         addEvent(()-> {
                 this.setSummonState(false);
         }, 20);
@@ -95,6 +84,7 @@ public class EntityUltraAttack extends EntityGaelonBase implements IAnimatable, 
 
     private void doDeath() {
         this.setDeathState(true);
+        animator.setStateAnim(ANIM_DEATH);
         addEvent(()-> {
             this.setDeathState(false);
         }, 20);
@@ -241,29 +231,10 @@ public class EntityUltraAttack extends EntityGaelonBase implements IAnimatable, 
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "states_controller", 0, this::predicateStates));
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-    }
-
-    private <E extends IAnimatable> PlayState predicateStates(AnimationEvent<E> event) {
-        if(this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DEATH, false));
-            return PlayState.CONTINUE;
-        }
-        if(this.isSummonState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON, false));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(!this.isSummonState() && !this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_IDLE, true);
         }
-        return PlayState.STOP;
     }
 
     @Override
@@ -281,22 +252,7 @@ public class EntityUltraAttack extends EntityGaelonBase implements IAnimatable, 
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
         return false;
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

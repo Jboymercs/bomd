@@ -1,25 +1,19 @@
 package com.dungeon_additions.da.entity.dark_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.blocks.boss.BlockEnumBossSummonState;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.entity.ai.EntityDraugrMeleeAI;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IPitch;
 import com.dungeon_additions.da.entity.ai.dark_dungeon.EntityDauntlessAttackAI;
 import com.dungeon_additions.da.entity.ai.flying.FlyingMoveHelper;
 import com.dungeon_additions.da.entity.ai.flying.TimedAttackInitiator;
-import com.dungeon_additions.da.entity.ai.void_dungeon.EntityVoidclysmAttackAI;
-import com.dungeon_additions.da.entity.blossom.EntityAbstractVoidBlossom;
-import com.dungeon_additions.da.entity.dark_dungeon.boss.EntityDarkdriftDevil;
 import com.dungeon_additions.da.entity.dark_dungeon.dark_void.EntityDarkVoid;
 import com.dungeon_additions.da.entity.dark_dungeon.dauntless.*;
-import com.dungeon_additions.da.entity.night_lich.ProjectileMagicMissile;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
 import com.dungeon_additions.da.entity.util.IEntitySound;
-import com.dungeon_additions.da.entity.void_dungeon.EntityEndBase;
-import com.dungeon_additions.da.entity.void_dungeon.EntityVoidiclysm;
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.init.ModPotions;
 import com.dungeon_additions.da.util.*;
@@ -31,10 +25,8 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -43,7 +35,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigateFlying;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -52,20 +43,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
-import org.lwjgl.Sys;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -74,7 +54,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAnimationTickable, IPitch, IAttack, IEntitySound {
+public class EntityDauntless extends EntityDarkBase implements IPitch, IAttack, IEntitySound {
 
     private final String ANIM_SWING_ONE = "swing";
     private final String ANIM_SWING_TWO = "swing_two";
@@ -119,31 +99,16 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     protected static final DataParameter<Float> LOOK = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.FLOAT);
     protected static final DataParameter<Integer> SWORD_CHARGE = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_ONE= EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_TWO = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_THREE = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> GROUND_STRIKE = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWORD_SLASH = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SUMMON_PROJECTILES = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SELF_AOE = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> USE_SWORD = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DASH_SWEEP = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> PIERCE_START = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> PIERCE_FAIL = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> PIERCE_FINISH = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> RANGED_MODE = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> TELEPORT_ATTACK = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> THROW_SWORD = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> CIRCLE_SWING = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> CIRCLE_SWING_CONTINUE = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> ENRAGEMENT_MODE = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> ENTER_RAGE = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> END_RAGE = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> PUNCH = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BITE = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SMASH = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> RAGE_LOOP = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> CHARGE_FIST = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> FIST_BARRAGE = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SPAWNED_NATURALLY = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BOOLEAN);
     public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntityDauntless.class, DataSerializers.BLOCK_POS);
@@ -161,50 +126,20 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     }
     public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
     public boolean isShaking() {return this.dataManager.get(SHAKING);}
-    public void setSwingOne(boolean value) {this.dataManager.set(SWING_ONE, Boolean.valueOf(value));}
     public boolean isEnterRage() {return this.dataManager.get(ENTER_RAGE);}
     public void setEnterRage(boolean value) {this.dataManager.set(ENTER_RAGE, Boolean.valueOf(value));}
-    public boolean isBiteAttack() {return this.dataManager.get(BITE);}
-    public void setBiteAttack(boolean value) {this.dataManager.set(BITE, Boolean.valueOf(value));}
-    public boolean isSmashAttack() {return this.dataManager.get(SMASH);}
-    public void setSmashAttack(boolean value) {this.dataManager.set(SMASH, Boolean.valueOf(value));}
-    public boolean isChargeFist() {return this.dataManager.get(CHARGE_FIST);}
-    public void setChargeFist(boolean value) {this.dataManager.set(CHARGE_FIST, Boolean.valueOf(value));}
     public boolean isFistBarrage() {return this.dataManager.get(FIST_BARRAGE);}
     public void setFistBarrage(boolean value) {this.dataManager.set(FIST_BARRAGE, Boolean.valueOf(value));}
     public boolean isEndRage() {return this.dataManager.get(END_RAGE);}
     public void setEndRage(boolean value) {this.dataManager.set(END_RAGE, Boolean.valueOf(value));}
-    public boolean isPunch() {return this.dataManager.get(PUNCH);}
-    public void setPunch(boolean value) {this.dataManager.set(PUNCH, Boolean.valueOf(value));}
     public boolean isRageLoop() {return this.dataManager.get(RAGE_LOOP);}
     public void setRageLoop(boolean value) {this.dataManager.set(RAGE_LOOP, Boolean.valueOf(value));}
-    public boolean isCircleSwing() {return this.dataManager.get(CIRCLE_SWING);}
-    public void setCircleSwing(boolean value) {this.dataManager.set(CIRCLE_SWING, Boolean.valueOf(value));}
-    public boolean isCircleSwingContinue() {return this.dataManager.get(CIRCLE_SWING_CONTINUE);}
-    public void setCircleSwingContinue(boolean value) {this.dataManager.set(CIRCLE_SWING_CONTINUE, Boolean.valueOf(value));}
     public boolean isEnragementMode() {return this.dataManager.get(ENRAGEMENT_MODE);}
     public void setEnragementMode(boolean value) {this.dataManager.set(ENRAGEMENT_MODE, Boolean.valueOf(value));}
-    public boolean isSwingOne() {return this.dataManager.get(SWING_ONE);}
-    public void setSwingTwo(boolean value) {this.dataManager.set(SWING_TWO, Boolean.valueOf(value));}
-    public boolean isSwingTwo() {return this.dataManager.get(SWING_TWO);}
-    public void setSwingThree(boolean value) {this.dataManager.set(SWING_THREE, Boolean.valueOf(value));}
-    public boolean isSwingThree() {return this.dataManager.get(SWING_THREE);}
     public void setGroundStrike(boolean value) {this.dataManager.set(GROUND_STRIKE, Boolean.valueOf(value));}
     public boolean isGroundStrike() {return this.dataManager.get(GROUND_STRIKE);}
-    public void setSwordSlash(boolean value) {this.dataManager.set(SWORD_SLASH, Boolean.valueOf(value));}
-    public boolean isSwordSlash() {return this.dataManager.get(SWORD_SLASH);}
     public void setSummonProjectiles(boolean value) {this.dataManager.set(SUMMON_PROJECTILES, Boolean.valueOf(value));}
     public boolean isSummonProjectiles() {return this.dataManager.get(SUMMON_PROJECTILES);}
-    public void setSelfAoe(boolean value) {this.dataManager.set(SELF_AOE, Boolean.valueOf(value));}
-    public boolean isSelfAoe() {return this.dataManager.get(SELF_AOE);}
-    public void setUseSword(boolean value) {this.dataManager.set(USE_SWORD, Boolean.valueOf(value));}
-    public boolean isUseSword() {return this.dataManager.get(USE_SWORD);}
-    public void setDashSweep(boolean value) {this.dataManager.set(DASH_SWEEP, Boolean.valueOf(value));}
-    public boolean isDashSweep() {return this.dataManager.get(DASH_SWEEP);}
-    public void setPierceStart(boolean value) {this.dataManager.set(PIERCE_START, Boolean.valueOf(value));}
-    public boolean isPierceStart() {return this.dataManager.get(PIERCE_START);}
-    public void setPierceFail(boolean value) {this.dataManager.set(PIERCE_FAIL, Boolean.valueOf(value));}
-    public boolean isPierceFail() {return this.dataManager.get(PIERCE_FAIL);}
     public void setPierceFinish(boolean value) {this.dataManager.set(PIERCE_FINISH, Boolean.valueOf(value));}
     public boolean isPierceFinish() {return this.dataManager.get(PIERCE_FINISH);}
     public void setRangedMode(boolean value) {this.dataManager.set(RANGED_MODE, Boolean.valueOf(value));}
@@ -230,7 +165,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     public boolean isHadPreviousTarget() {return this.dataManager.get(HAD_PREVIOUS_TARGET);}
     public void setHadPreviousTarget(boolean value) {this.dataManager.set(HAD_PREVIOUS_TARGET, Boolean.valueOf(value));}
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
 
     private final String ANIM_IDLE = "idle";
     private int rage_loop_count = 0;
@@ -301,29 +236,14 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setFloat("Look", this.getPitch());
         nbt.setInteger("Sword_Charge", this.getSwordCharge());
-        nbt.setBoolean("Swing_One", this.isSwingOne());
-        nbt.setBoolean("Swing_Two", this.isSwingTwo());
-        nbt.setBoolean("Swing_Three", this.isSwingThree());
         nbt.setBoolean("Ground_Strike", this.isGroundStrike());
-        nbt.setBoolean("Sword_Slash", this.isSwordSlash());
         nbt.setBoolean("Summon_Projectiles", this.isSummonProjectiles());
-        nbt.setBoolean("Self_Aoe", this.isSelfAoe());
-        nbt.setBoolean("Use_Sword", this.isUseSword());
-        nbt.setBoolean("Dash_Sweep", this.isDashSweep());
-        nbt.setBoolean("Pierce_Start", this.isPierceStart());
-        nbt.setBoolean("Pierce_Fail", this.isPierceFail());
         nbt.setBoolean("Pierce_Finish", this.isPierceFinish());
-        nbt.setBoolean("Circle_Swing", this.isCircleSwing());
-        nbt.setBoolean("Circle_Swing_Continue", this.isCircleSwingContinue());
         nbt.setBoolean("Enragement_Mode", this.isEnragementMode());
         nbt.setBoolean("Enter_Rage", this.isEnterRage());
         nbt.setBoolean("Rage_Loop", this.isRageLoop());
         nbt.setBoolean("End_Rage", this.isEndRage());
-        nbt.setBoolean("Punch", this.isPunch());
-        nbt.setBoolean("Smash", this.isSmashAttack());
-        nbt.setBoolean("Bite", this.isBiteAttack());
         nbt.setBoolean("Fist_Barrage", this.isFistBarrage());
-        nbt.setBoolean("Charge_Fist", this.isChargeFist());
         nbt.setBoolean("Shaking", this.isShaking());
         nbt.setBoolean("Ranged_Mode", this.isRangedMode());
         nbt.setBoolean("Teleport_Attack", this.isTeleportAttack());
@@ -344,28 +264,13 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
         }
         this.dataManager.set(LOOK, nbt.getFloat("Look"));
         this.setSwordCharge(nbt.getInteger("Sword_Charge"));
-        this.setSwingOne(nbt.getBoolean("Swing_One"));
-        this.setSwingTwo(nbt.getBoolean("Swing_Two"));
-        this.setSwingThree(nbt.getBoolean("Swing_Three"));
         this.setGroundStrike(nbt.getBoolean("Ground_Strike"));
-        this.setSwordSlash(nbt.getBoolean("Sword_Slash"));
         this.setSummonProjectiles(nbt.getBoolean("Summon_Projectiles"));
-        this.setSelfAoe(nbt.getBoolean("Self_Aoe"));
-        this.setCircleSwing(nbt.getBoolean("Circle_Swing"));
-        this.setCircleSwingContinue(nbt.getBoolean("Circle_Swing_Continue"));
         this.setEnragementMode(nbt.getBoolean("Enragement_Mode"));
         this.setEnterRage(nbt.getBoolean("Enter_Rage"));
         this.setEndRage(nbt.getBoolean("End_Rage"));
-        this.setPunch(nbt.getBoolean("Punch"));
         this.setRageLoop(nbt.getBoolean("Rage_Loop"));
-        this.setSmashAttack(nbt.getBoolean("Smash"));
-        this.setBiteAttack(nbt.getBoolean("Bite"));
         this.setFistBarrage(nbt.getBoolean("Fist_Barrage"));
-        this.setChargeFist(nbt.getBoolean("Charge_Fist"));
-        this.setUseSword(nbt.getBoolean("Use_Sword"));
-        this.setDashSweep(nbt.getBoolean("Dash_Sweep"));
-        this.setPierceStart(nbt.getBoolean("Pierce_Start"));
-        this.setPierceFail(nbt.getBoolean("Pierce_Fail"));
         this.setPierceFinish(nbt.getBoolean("Pierce_Finish"));
         this.setShaking(nbt.getBoolean("Shaking"));
         this.setRangedMode(nbt.getBoolean("Ranged_Mode"));
@@ -387,28 +292,13 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     public void entityInit() {
         this.dataManager.register(LOOK, 0f);
         this.dataManager.register(SWORD_CHARGE, 0);
-        this.dataManager.register(SWING_ONE, Boolean.valueOf(false));
-        this.dataManager.register(SWING_TWO, Boolean.valueOf(false));
-        this.dataManager.register(SWING_THREE, Boolean.valueOf(false));
         this.dataManager.register(GROUND_STRIKE, Boolean.valueOf(false));
-        this.dataManager.register(SWORD_SLASH, Boolean.valueOf(false));
         this.dataManager.register(SUMMON_PROJECTILES, Boolean.valueOf(false));
-        this.dataManager.register(CHARGE_FIST, Boolean.valueOf(false));
         this.dataManager.register(FIST_BARRAGE, Boolean.valueOf(false));
-        this.dataManager.register(BITE, Boolean.valueOf(false));
-        this.dataManager.register(SMASH, Boolean.valueOf(false));
-        this.dataManager.register(SELF_AOE, Boolean.valueOf(false));
-        this.dataManager.register(USE_SWORD, Boolean.valueOf(false));
-        this.dataManager.register(DASH_SWEEP, Boolean.valueOf(false));
-        this.dataManager.register(PIERCE_START, Boolean.valueOf(false));
-        this.dataManager.register(CIRCLE_SWING, Boolean.valueOf(false));
-        this.dataManager.register(CIRCLE_SWING_CONTINUE, Boolean.valueOf(false));
         this.dataManager.register(ENRAGEMENT_MODE, Boolean.valueOf(false));
         this.dataManager.register(ENTER_RAGE, Boolean.valueOf(false));
         this.dataManager.register(END_RAGE, Boolean.valueOf(false));
-        this.dataManager.register(PUNCH, Boolean.valueOf(false));
         this.dataManager.register(RAGE_LOOP, Boolean.valueOf(false));
-        this.dataManager.register(PIERCE_FAIL, Boolean.valueOf(false));
         this.dataManager.register(PIERCE_FINISH, Boolean.valueOf(false));
         this.dataManager.register(SHAKING, Boolean.valueOf(false));
         this.dataManager.register(RANGED_MODE, Boolean.valueOf(false));
@@ -643,6 +533,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     private void enterRage() {
         this.setEnterRage(true);
         this.setFightMode(true);
+        animator.performAttack(ANIM_ENTER_RAGE_MODE);
         this.setEnragementMode(true);
         addEvent(()-> {
             this.setImmovable(true);
@@ -667,6 +558,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
 
     private void exitRage() {
         this.setEndRage(true);
+        animator.performAttack(ANIM_END_RAGE_MODE);
         this.setFightMode(true);
         this.setRangedMode(true);
         this.setEnragementMode(false);
@@ -762,7 +654,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     };
 
     private final Consumer<EntityLivingBase> use_sword_ability = (target) -> {
-        this.setUseSword(true);
+        animator.performAttack(ANIM_USE_SWORD);
         this.setFightMode(true);
         this.setImmovable(true);
 
@@ -811,7 +703,6 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
         addEvent(()-> {
             this.general_use_sword_cooldown = 10 * 20;
             this.lockLook = false;
-            this.setUseSword(false);
             this.setFightMode(false);
             this.setImmovable(false);
             this.attack_cooldown = 10;
@@ -819,7 +710,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     };
 
     private final Consumer<EntityLivingBase> throw_sword = (target) -> {
-        this.setThrowSword(true);
+        animator.performAttack(ANIM_THROW_SWORD);
         this.setFightMode(true);
         this.playSound(SoundsHandler.DAUNTLESS_PREPARE_SPELL, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
 
@@ -827,7 +718,6 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
         addEvent(()-> this.playSound(SoundsHandler.DAUNTLESS_THROW_SWORD, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 30);
 
         addEvent(()-> {
-            this.setThrowSword(false);
             this.setFightMode(false);
             if(this.isRangedMode()) {
                 this.attack_differential += 2;
@@ -840,6 +730,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     };
 
     private final Consumer<EntityLivingBase> summon_projectiles = (target) -> {
+      animator.performAttack(ANIM_SUMMON_PROJECTILES);
       this.setSummonProjectiles(true);
       this.setFightMode(true);
         this.playSound(SoundsHandler.DAUNTLESS_PREPARE_SPELL, 1.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
@@ -852,8 +743,8 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
       }, 18);
 
       addEvent(()-> {
-        this.setSummonProjectiles(false);
         this.setFightMode(false);
+        this.setSummonProjectiles(false);
           if(this.isRangedMode()) {
               this.attack_differential += 1;
           } else {
@@ -863,7 +754,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     };
 
     private final Consumer<EntityLivingBase> sword_slash = (target) -> {
-      this.setSwordSlash(true);
+      animator.performAttack(ANIM_SWORD_SLASH);
       this.setFightMode(true);
         this.playSound(SoundsHandler.DAUNTLESS_PREPARE_SPELL, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       addEvent(()-> {
@@ -872,7 +763,6 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
       }, 30);
 
       addEvent(()-> {
-            this.setSwordSlash(false);
             this.setFightMode(false);
           if(this.isRangedMode()) {
               this.attack_differential += 1;
@@ -881,7 +771,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     };
 
     private final Consumer<EntityLivingBase> pierce_start = (target) -> {
-      this.setPierceStart(true);
+      animator.performAttack(ANIM_PIERCE_START);
       this.setFightMode(true);
       this.setImmovable(true);
 
@@ -911,15 +801,13 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
       addEvent(() -> {
             this.grabDetection = false;
             this.setImmovable(true);
-            this.setPierceStart(false);
             if(this.grabbedEntity != null) {
                 this.setGrabTooContinue(target);
             } else {
-                this.setPierceFail(true);
+                animator.performAttack(ANIM_PIERCE_FAIL);
 
                 addEvent(()-> this.lockLook = false, 5);
                 addEvent(()-> {
-                this.setPierceFail(false);
                 this.setFightMode(false);
                 this.setImmovable(false);
                 this.attack_differential += 1;
@@ -935,6 +823,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
 
     private final Consumer<EntityLivingBase> pierce_continue = (target) -> {
         this.setPierceFinish(true);
+        animator.performAttack(ANIM_PIERCE_FINISH);
         addEvent(()-> {
             this.setBossToFlyHigh = true;
             this.setImmovable(false);
@@ -973,7 +862,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
 
     private final Consumer<EntityLivingBase> self_aoe = (target) -> {
       this.setFightMode(true);
-      this.setSelfAoe(true);
+      animator.performAttack(ANIM_SELF_AOE);
       this.setImmovable(true);
 
       addEvent(()-> {
@@ -998,7 +887,6 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
 
       addEvent(()-> {
         this.setFightMode(false);
-        this.setSelfAoe(false);
         this.setImmovable(false);
         this.attack_differential += 2;
         this.attack_cooldown = 40;
@@ -1007,7 +895,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
 
     private final Consumer<EntityLivingBase> dash_sweep = (target) -> {
         this.setFightMode(true);
-        this.setDashSweep(true);
+        animator.performAttack(ANIM_DASH_SWEEP);
         this.setImmovable(true);
 
         addEvent(()-> {
@@ -1044,7 +932,6 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
         }, 55);
 
         addEvent(()-> {
-            this.setDashSweep(false);
             this.setFightMode(false);
             this.setImmovable(false);
             this.attack_cooldown = 10;
@@ -1106,7 +993,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     };
 
     private final Consumer<EntityLivingBase> charge_fist = (target) -> {
-        this.setChargeFist(true);
+        animator.performAttack(ANIM_CHARGE_FIST);
         this.setFightMode(true);
         this.setImmovable(true);
         this.playSound(SoundsHandler.WYRK_STAFF_CHARGE, 1f, 0.4f / (rand.nextFloat() * 0.4f + 0.6f));
@@ -1135,13 +1022,12 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
         }, 45);
 
         addEvent(()-> {
-            this.setChargeFist(false);
             this.setFightMode(false);
         }, 50);
     };
 
     private final Consumer<EntityLivingBase> smash_attack = (target) -> {
-        this.setSmashAttack(true);
+        animator.performAttack(ANIM_SMASH);
         this.setFightMode(true);
 
         addEvent(()-> {
@@ -1183,13 +1069,12 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
 
         addEvent(()-> {
             this.setImmovable(false);
-            this.setSmashAttack(false);
             this.setFightMode(false);
         }, 40);
     };
 
     private final Consumer<EntityLivingBase> bite_attack = (target) -> {
-      this.setBiteAttack(true);
+      animator.performAttack(ANIM_BITE);
       this.setFightMode(true);
 
       addEvent(()-> this.playSound(SoundsHandler.DAUNTLESS_YELL_SHORT, 1.3f, 1f / (rand.nextFloat() * 0.4f + 0.6f)), 5);
@@ -1218,13 +1103,12 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
 
       addEvent(()-> {
           this.setImmovable(false);
-        this.setBiteAttack(false);
         this.setFightMode(false);
       }, 45);
     };
 
     private final Consumer<EntityLivingBase> punch = (target) -> {
-        this.setPunch(true);
+        animator.performAttack(ANIM_PUNCH);
         this.setFightMode(true);
 
         addEvent(()-> {
@@ -1273,7 +1157,6 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
         addEvent(()-> this.lockLook = false, 45);
 
         addEvent(()-> {
-            this.setPunch(false);
             this.setFightMode(false);
         }, 50);
 
@@ -1287,7 +1170,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
 
       //double
       if(randB) {
-            this.setCircleSwingContinue(true);
+            animator.performAttack(ANIM_CICLE_SWING_CONTINUE);
 
           addEvent(()-> {
               this.lockLook = true;
@@ -1347,7 +1230,6 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
           }, 80);
 
           addEvent(()-> {
-              this.setCircleSwingContinue(false);
               this.setFightMode(false);
               this.setImmovable(false);
               this.attack_differential += 2;
@@ -1355,7 +1237,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
           }, 95);
 
       } else {
-          this.setCircleSwing(true);
+          animator.performAttack(ANIM_CIRCLE_SWING);
 
           addEvent(()-> {
               this.lockLook = true;
@@ -1389,7 +1271,6 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
           addEvent(()-> {
                 this.setFightMode(false);
                 this.setImmovable(false);
-                this.setCircleSwing(false);
                 this.attack_differential += 1;
                 this.attack_cooldown = 10;
           }, 55);
@@ -1399,6 +1280,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     private final Consumer<EntityLivingBase> rage_loop = (target) -> {
       this.setFightMode(true);
       this.setRageLoop(true);
+      animator.performAttack(ANIM_RAGE_LOOP);
       this.HoverTimeIncrease = 4;
         this.playSound(SoundsHandler.DAUNTLESS_YELL, 1.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.6f));
       addEvent(()-> {
@@ -1483,6 +1365,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     private final Consumer<EntityLivingBase> ground_strike = (target) -> {
       this.setFightMode(true);
       this.setGroundStrike(true);
+      animator.performAttack(ANIM_GROUND_STRIKE);
       this.HoverTimeIncrease = 3;
       //we basically want dauntless to glide up then track the player
         addEvent(()-> {
@@ -1530,8 +1413,8 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
 
       addEvent(()-> {
         this.setFightMode(false);
-        this.setGroundStrike(false);
         this.setImmovable(false);
+        this.setGroundStrike(false);
         this.attack_differential += 1;
         this.attack_cooldown = 20;
       }, 75);
@@ -1555,7 +1438,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
 
         //Swings sword once
         if(randB == 1) {
-            this.setSwingOne(true);
+            animator.performAttack(ANIM_SWING_ONE);
 
             addEvent(()-> {
                 this.lockLook = true;
@@ -1584,14 +1467,13 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
 
             addEvent(()-> {
                 this.setImmovable(false);
-                this.setSwingOne(false);
                 this.setFightMode(false);
                 this.attack_cooldown = 10;
             }, 60);
         }
         //swings sword Twice
         if(randB == 2) {
-            this.setSwingTwo(true);
+            animator.performAttack(ANIM_SWING_TWO);
 
             addEvent(()-> {
                 this.lockLook = true;
@@ -1646,7 +1528,6 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
 
             addEvent(()-> {
                 this.setImmovable(false);
-                this.setSwingTwo(false);
                 this.setFightMode(false);
                 this.attack_differential += 1;
                 this.attack_cooldown = 20;
@@ -1655,7 +1536,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
 
         //Swing sword three
         if(randB >= 3) {
-            this.setSwingThree(true);
+            animator.performAttack(ANIM_SWING_THREE);
 
             addEvent(()-> {
                 this.lockLook = true;
@@ -1746,7 +1627,6 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
             }, 110);
 
             addEvent(()-> {
-                this.setSwingThree(false);
                 this.setFightMode(false);
                 this.setImmovable(false);
                 this.attack_differential += 2;
@@ -1759,6 +1639,7 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
         if(needsAnimation) {
             this.setFightMode(true);
             this.setTeleportAttack(true);
+            animator.performAttack(ANIM_TELEPORT);
         }
         addEvent(()-> {
             if(!this.isRangedMode()) {
@@ -1835,131 +1716,13 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "fight_controller", 0, this::predicateFight));
-        data.addAnimationController(new AnimationController(this, "rage_controller", 0, this::predicateRage));
-    }
-
-    private <E extends IAnimatable> PlayState predicateRage(AnimationEvent<E> event) {
-        if(this.isEnterRage()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_ENTER_RAGE_MODE));
-            return PlayState.CONTINUE;
+    public void updateAnimations() {
+        if(this.isFistBarrage()) {
+            animator.performAttack(ANIM_FIST_BARRAGE, true);
         }
-        if(this.isEndRage()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_END_RAGE_MODE));
-            return PlayState.CONTINUE;
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateFight(AnimationEvent<E> event) {
-        if(this.isFightMode() && !this.isEndRage() && !this.isEnterRage()) {
-            if(this.isRageLoop()) {
-                event.getController().setAnimation(new AnimationBuilder().loop(ANIM_RAGE_LOOP));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingOne()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING_ONE));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingTwo()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING_TWO));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingThree()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING_THREE));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingOne()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING_ONE));
-                return PlayState.CONTINUE;
-            }
-            if(this.isGroundStrike()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_GROUND_STRIKE));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwordSlash()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWORD_SLASH));
-                return PlayState.CONTINUE;
-            }
-            if(this.isTeleportAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_TELEPORT));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSummonProjectiles()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SUMMON_PROJECTILES));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSelfAoe()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SELF_AOE));
-                return PlayState.CONTINUE;
-            }
-            if(this.isUseSword()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_USE_SWORD));
-                return PlayState.CONTINUE;
-            }
-            if(this.isDashSweep()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_DASH_SWEEP));
-                return PlayState.CONTINUE;
-            }
-            if(this.isThrowSword()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_THROW_SWORD));
-                return PlayState.CONTINUE;
-            }
-            if(this.isPierceStart()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PIERCE_START));
-                return PlayState.CONTINUE;
-            }
-            if(this.isPierceFail()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PIERCE_FAIL));
-                return PlayState.CONTINUE;
-            }
-            if(this.isPierceFinish()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PIERCE_FINISH));
-                return PlayState.CONTINUE;
-            }
-            if(this.isCircleSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_CIRCLE_SWING));
-                return PlayState.CONTINUE;
-            }
-            if(this.isCircleSwingContinue()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_CICLE_SWING_CONTINUE));
-                return PlayState.CONTINUE;
-            }
-            if(this.isBiteAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_BITE));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSmashAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SMASH));
-                return PlayState.CONTINUE;
-            }
-            if(this.isFistBarrage()) {
-                event.getController().setAnimation(new AnimationBuilder().loop(ANIM_FIST_BARRAGE));
-                return PlayState.CONTINUE;
-            }
-            if(this.isChargeFist()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_CHARGE_FIST));
-                return PlayState.CONTINUE;
-            }
-            if(this.isPunch()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PUNCH));
-                return PlayState.CONTINUE;
-            }
-        }
-
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
         if(!this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
+            animator.setCustomUpperIdle(ANIM_IDLE);
         }
-        return PlayState.STOP;
     }
 
     @Override
@@ -2025,21 +1788,6 @@ public class EntityDauntless extends EntityDarkBase implements IAnimatable, IAni
     @Override
     protected boolean canDropLoot() {
         return true;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override

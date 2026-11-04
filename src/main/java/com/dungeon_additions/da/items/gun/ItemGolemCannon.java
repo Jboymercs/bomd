@@ -4,7 +4,6 @@ import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.gaelon_dungeon.apathyr.ProjectileFastGhostCrystal;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.ItemBase;
-import com.dungeon_additions.da.items.ItemGoldenArrow;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
@@ -22,15 +21,11 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class ItemGolemCannon extends ItemBase implements IAnimatable {
+public class ItemGolemCannon extends ItemBase {
 
-    public AnimationFactory factory = new AnimationFactory(this);
     private String info_loc;
 
     public ItemGolemCannon(String name, CreativeTabs tab, String info_loc) {
@@ -130,15 +125,5 @@ public class ItemGolemCannon extends ItemBase implements IAnimatable {
     @Override
     public int getItemEnchantability() {
         return 20;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 }

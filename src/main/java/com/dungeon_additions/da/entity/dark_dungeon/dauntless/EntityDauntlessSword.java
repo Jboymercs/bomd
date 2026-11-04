@@ -1,11 +1,10 @@
 package com.dungeon_additions.da.entity.dark_dungeon.dauntless;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
-import com.dungeon_additions.da.entity.dark_dungeon.EntityDauntless;
 import com.dungeon_additions.da.init.ModPotions;
-import com.dungeon_additions.da.util.DauntlessUtils;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -18,16 +17,8 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntityDauntlessSword extends EntityDarkBase implements IAnimatable, IAnimationTickable, IScreenShake {
+public class EntityDauntlessSword extends EntityDarkBase implements IScreenShake {
 
     private static final DataParameter<Boolean> LARGE_SWORD = EntityDataManager.createKey(EntityDauntlessSword.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityDauntlessSword.class, DataSerializers.BOOLEAN);
@@ -37,7 +28,7 @@ public class EntityDauntlessSword extends EntityDarkBase implements IAnimatable,
     public boolean isShaking() {return this.dataManager.get(SHAKING);}
     private final String ANIM_IDLE = "sword_idle";
     private final String ANIM_IDLE_LARGE = "sword_idle_large";
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     private int shakeTime = 0;
 
     public EntityDauntlessSword(World worldIn, float x, float y, float z) {
@@ -172,22 +163,12 @@ public class EntityDauntlessSword extends EntityDarkBase implements IAnimatable,
     }
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "spike_controller", 0, this::predicateIdle));
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(this.isLargeSword()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_LARGE, true));
+            animator.setStateAnim(ANIM_IDLE_LARGE, true);
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
+            animator.setStateAnim(ANIM_IDLE, true);
         }
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 
     @Override
@@ -195,15 +176,6 @@ public class EntityDauntlessSword extends EntityDarkBase implements IAnimatable,
         return false;
     }
 
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
-    }
 
     @Override
     public float getShakeIntensity(Entity viewer, float partialTicks) {

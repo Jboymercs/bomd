@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.void_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
@@ -20,24 +21,17 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class EntityVoidBlackHole extends EntityEndBase implements IAnimatable, IScreenShake {
+public class EntityVoidBlackHole extends EntityEndBase implements IScreenShake {
 
     private int shakeTime = 0;
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityVoidBlackHole.class, DataSerializers.BOOLEAN);
 
     public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
     public boolean isShaking() {return this.dataManager.get(SHAKING);}
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     private final String ANIM_SHOOT = "shoot";
 
 
@@ -286,20 +280,9 @@ public class EntityVoidBlackHole extends EntityEndBase implements IAnimatable, I
         }
     }
 
-
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "spike_controller", 0, this::predicateIdle));
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SHOOT, false));
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
+    public void updateAnimations() {
+        animator.setStateAnim(ANIM_SHOOT);
     }
 
     @Override

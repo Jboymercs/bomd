@@ -1,18 +1,16 @@
 package com.dungeon_additions.da.entity.frost_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.entity.ai.EntityAIBlossom;
 import com.dungeon_additions.da.entity.ai.EntityGreatWyrkAttackAI;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.dark_dungeon.dark_void.EntityDarkVoid;
 import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.*;
-import com.dungeon_additions.da.entity.night_lich.ProjectileMagicGround;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.util.IEntitySound;
-import com.dungeon_additions.da.init.ModPotions;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
@@ -20,6 +18,7 @@ import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -38,19 +37,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -59,10 +49,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimatable, IAnimationTickable, IAttack, IDirectionalRender, ITarget, IScreenShake, IEntitySound {
-
-    private final String ANIM_WALK = "walk";
-    private final String ANIM_IDLE = "idle";
+public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAttack, IDirectionalRender, ITarget, IScreenShake, IEntitySound {
 
     private final String ANIM_MEGA_STOMP = "mega_stomp";
     private final String ANIM_ROLL = "roll";
@@ -85,10 +72,10 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
     private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.NOTCHED_6));
 
     private int dropCounter = 0;
-    private final AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttacks;
-
     private int shakeTime = 0;
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
 
     public EntityGreatWyrk(World worldIn) {
         super(worldIn);
@@ -98,6 +85,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         onSummonBoss();
         this.hemorrhage_resistance = 0.95F;
         this.falter_resistance = 2.2F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityGreatWyrk(World worldIn, float x, float y, float z) {
@@ -111,6 +99,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         onSummonBoss();
         this.hemorrhage_resistance = 0.95F;
         this.falter_resistance = 2.2F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityGreatWyrk(World worldIn, int timesused, BlockPos pos) {
@@ -126,13 +115,14 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         onSummonBoss();
         this.hemorrhage_resistance = 0.95F;
         this.falter_resistance = 2.2F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public void onSummonBoss() {
         this.playSound(SoundsHandler.BIG_WYRK_SUMMON, 1.5f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f));
         this.setFightMode(true);
         this.setFullBodyUsage(true);
-        this.setSummonBoss(true);
+        animator.setStateAnim(ANIM_SUMMON_BOSS);
         this.setImmovable(true);
         this.lockLook = true;
         this.shakeTime = 80;
@@ -143,7 +133,6 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         addEvent(()-> {
             this.setFightMode(false);
             this.setFullBodyUsage(false);
-            this.setSummonBoss(false);
             this.setImmovable(false);
             this.lockLook = false;
         }, 100);
@@ -158,7 +147,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
     @Override
     public void onUpdate() {
         super.onUpdate();
-
+        this.moveAnalysis.update();
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
         if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features && MobConfig.ancient_wyrk_boss_music) {
             this.playMusic(this);
@@ -256,8 +245,8 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
 
     private Consumer<EntityLivingBase> summon_aid = (target) -> {
       this.setFightMode(true);
-      this.setSummonAid(true);
       this.setImmovable(true);
+      animator.performAttack(ANIM_SUMMON_AID);
 
       addEvent(()-> this.playSound(SoundsHandler.BIG_WYRK_SUMMON_FOOT, 1.5f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f)), 5);
       addEvent(()-> new ActionSummonWyrkFoot().performAction(this, target), 20);
@@ -266,7 +255,6 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
         addEvent(()-> new ActionSummonWyrkFoot().performAction(this, target), 45);
 
       addEvent(()-> {
-        this.setSummonAid(false);
         this.setFightMode(false);
         this.setImmovable(false);
       }, 60);
@@ -274,7 +262,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
 
     private Consumer<EntityLivingBase> lazer_action = (target) -> {
       this.setFightMode(true);
-      this.setLazerAttack(true);
+      animator.performAttack(ANIM_LAZER_SHOOT);
       this.setImmovable(true);
         this.playSound(SoundsHandler.BIG_WYRK_LAZER, 1.5f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
       addEvent(()-> {
@@ -288,13 +276,12 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
 
       addEvent(()-> {
         this.setFightMode(false);
-        this.setLazerAttack(false);
         this.setImmovable(false);
       }, 125);
     };
 
     private Consumer<EntityLivingBase> drop_attack = (target) -> {
-      this.setDropAttack(true);
+      animator.performAttack(ANIM_DROP);
       this.setFightMode(true);
       this.lockLook = true;
       this.setImmovable(true);
@@ -319,7 +306,6 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
 
       addEvent(()-> {
           this.lockLook = false;
-        this.setDropAttack(false);
         this.setImmovable(false);
         this.setFightMode(false);
       }, 90);
@@ -328,7 +314,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
     private Consumer<EntityLivingBase> small_stomps_attack = (target) -> {
       this.setFightMode(true);
       this.setImmovable(true);
-      this.setSmallStomps(true);
+      animator.performAttack(ANIM_SMALL_STOMPS);
         this.dropCounter++;
       addEvent(()-> {
         this.lockLook = true;
@@ -361,14 +347,13 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
       addEvent(()-> {
         this.setFightMode(false);
         this.setImmovable(false);
-        this.setSmallStomps(false);
       }, 90);
     };
 
     private Consumer<EntityLivingBase> shake_attack = (target) -> {
-      this.setShake(true);
       this.setFightMode(true);
       this.setImmovable(true);
+      animator.performAttack(ANIM_SHAKE);
       this.dropCounter++;
 
       addEvent(()-> {
@@ -376,15 +361,14 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
       }, 30);
 
       addEvent(()-> {
-        this.setShake(false);
         this.setFightMode(false);
         this.setImmovable(false);
       }, 130);
     };
     private Consumer<EntityLivingBase> melee_attack = (target) -> {
       this.setFightMode(true);
-      this.setMeleeStrike(true);
       this.setImmovable(true);
+      animator.performAttack(ANIM_MELEE_STRIKE);
         this.playSound(SoundsHandler.BIG_WYRK_STRIKE, 1.5f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
 
       addEvent(()-> {
@@ -423,7 +407,6 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
       addEvent(()-> {
         this.setFightMode(false);
         this.setImmovable(false);
-        this.setMeleeStrike(false);
       }, 70);
     };
 
@@ -432,6 +415,7 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
       this.setRoll(true);
       this.setImmovable(true);
       this.dropCounter = 0;
+      animator.performAttack(ANIM_ROLL);
 
       addEvent(()-> {
           this.playSound(SoundsHandler.BIG_WYRK_RISE, 1.5f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
@@ -530,8 +514,8 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
 
     private Consumer<EntityLivingBase> mega_stomp_action = (target) -> {
       this.setFightMode(true);
-      this.setMegaStomp(true);
       this.setImmovable(true);
+      animator.performAttack(ANIM_MEGA_STOMP);
         addEvent(()-> {
             this.playSound(SoundsHandler.BIG_WYRK_RISE, 1.5f, 1.0f / (rand.nextFloat() * 0.4F + 0.4f));
         }, 15);
@@ -570,75 +554,15 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
       addEvent(()-> this.lockLook = false, 80);
       addEvent(()-> {
         this.setFightMode(false);
-        this.setMegaStomp(false);
         this.setImmovable(false);
       },90 );
     };
 
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttacks));
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK, true));
-            return PlayState.CONTINUE;
+    public void updateAnimations() {
+        if(!this.isFightMode()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            animator.handleIdleStates(isMovingOnGround);
         }
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isSummonBoss()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON_BOSS, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isMegaStomp()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MEGA_STOMP, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isRoll()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_ROLL, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isMeleeStrike()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MELEE_STRIKE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isShake()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SHAKE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSmallStomps()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SMALL_STOMPS, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isDropAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DROP, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isLazerAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_LAZER_SHOOT, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSummonAid()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON_AID, false));
-                return PlayState.CONTINUE;
-            }
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
     }
 
 
@@ -684,22 +608,6 @@ public class EntityGreatWyrk extends EntityAbstractGreatWyrk implements IAnimata
             this.createTreasureBag(this.getPositionVector(), "great_wyrk");
         }
         super.onDeath(cause);
-    }
-
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     /**

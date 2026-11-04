@@ -395,6 +395,10 @@ public abstract class EntityAbstractBase extends EntityCreature {
         }
     }
 
+    public void updateAnimations() {
+
+    }
+
 
     public float getSizeVariation() {
         return this.sizeScaling;

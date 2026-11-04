@@ -1,6 +1,6 @@
 package com.dungeon_additions.da.entity.sky_dungeon.high_king;
 
-import com.dungeon_additions.da.blocks.faurm.BlockLightningKeyBlock;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
@@ -8,7 +8,6 @@ import com.dungeon_additions.da.entity.ai.IPitch;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.ai.flying.FlyingMoveHelper;
 import com.dungeon_additions.da.entity.ai.flying.TimedAttackInitiator;
-import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
 import com.dungeon_additions.da.entity.sky_dungeon.ProjectileLightRing;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.action.*;
@@ -16,11 +15,11 @@ import com.dungeon_additions.da.entity.sky_dungeon.high_king.drake.EntityHighKin
 import com.dungeon_additions.da.entity.sky_dungeon.high_king.king.EntityHighKing;
 import com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles.ProjectileStormWind;
 import com.dungeon_additions.da.entity.util.IEntitySound;
-import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
@@ -48,14 +47,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -65,7 +56,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatable, IAnimationTickable, IAttack, IPitch, IEntityMultiPart, IScreenShake, IEntitySound {
+public class EntityHighKingDrake extends EntityHighKingBoss implements IAttack, IPitch, IEntityMultiPart, IScreenShake, IEntitySound {
 
     private final String ANIM_FLY_BASE = "fly";
     private final String ANIM_FLY_DRAGON = "fly_dragon";
@@ -145,27 +136,17 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
     private static final DataParameter<Boolean> GROUNDED = EntityDataManager.createKey(EntityHighKingDrake.class, DataSerializers.BOOLEAN);
 
     //Flying Dragon Attacks
-    private static final DataParameter<Boolean> DRAGON_ROAR = EntityDataManager.createKey(EntityHighKingDrake.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DRAGON_STORM = EntityDataManager.createKey(EntityHighKingDrake.class, DataSerializers.BOOLEAN);
 
     //Ground Transition Attack
     private static final DataParameter<Boolean> GROUND_TRANSITION_ATTACK = EntityDataManager.createKey(EntityHighKingDrake.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> AIR_TRANSITION_ATTACK = EntityDataManager.createKey(EntityHighKingDrake.class, DataSerializers.BOOLEAN);
 
     //Ground Attacks
-    private static final DataParameter<Boolean> BITE_BEGIN = EntityDataManager.createKey(EntityHighKingDrake.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BITE_TAIL_SWING = EntityDataManager.createKey(EntityHighKingDrake.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BITE_CAST = EntityDataManager.createKey(EntityHighKingDrake.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BITE_END = EntityDataManager.createKey(EntityHighKingDrake.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> GROUND_ROAR = EntityDataManager.createKey(EntityHighKingDrake.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> GROUND_STOMP = EntityDataManager.createKey(EntityHighKingDrake.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BREATH_BEGIN = EntityDataManager.createKey(EntityHighKingDrake.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BREATH_END = EntityDataManager.createKey(EntityHighKingDrake.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BREATH_ATTACK = EntityDataManager.createKey(EntityHighKingDrake.class, DataSerializers.BOOLEAN);
 
     //Pitch
     protected static final DataParameter<Float> LOOK = EntityDataManager.createKey(EntityHighKingDrake.class, DataSerializers.FLOAT);
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
 
     private Consumer<EntityLivingBase> prevAttacks;
     private boolean isKingFightMode() {return this.dataManager.get(KING_FIGHT_MODE);}
@@ -173,31 +154,9 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
 
     public boolean isGrounded() {return this.dataManager.get(GROUNDED);}
     public void setGrounded(boolean value) {this.dataManager.set(GROUNDED, Boolean.valueOf(value));}
-    private boolean isDragonRoar() {return this.dataManager.get(DRAGON_ROAR);}
-    private void setDragonRoar(boolean value) {this.dataManager.set(DRAGON_ROAR, Boolean.valueOf(value));}
-    private boolean isDragonStorm() {return this.dataManager.get(DRAGON_STORM);}
-    private void setDragonStorm(boolean value) {this.dataManager.set(DRAGON_STORM, Boolean.valueOf(value));}
     public boolean isGroundTransitionAttack() {return this.dataManager.get(GROUND_TRANSITION_ATTACK);}
     private void setGroundTransitionAttack(Boolean value) {this.dataManager.set(GROUND_TRANSITION_ATTACK, Boolean.valueOf(value));}
 
-    private boolean isBiteBegin() {return this.dataManager.get(BITE_BEGIN);}
-    private void setBiteBegin(Boolean value) {this.dataManager.set(BITE_BEGIN, Boolean.valueOf(value));}
-    private boolean isBiteCast() {return this.dataManager.get(BITE_CAST);}
-    private void setBiteCast(Boolean value) {this.dataManager.set(BITE_CAST, Boolean.valueOf(value));}
-    private boolean isBiteTailSwipe() {return this.dataManager.get(BITE_TAIL_SWING);}
-    private void setBiteTailSwipe(boolean value) {this.dataManager.set(BITE_TAIL_SWING, Boolean.valueOf(value));}
-    private boolean isBiteEnd() {return this.dataManager.get(BITE_END);}
-    private void setBiteEnd(boolean value) {this.dataManager.set(BITE_END, Boolean.valueOf(value));}
-    private boolean isGroundStomp() {return this.dataManager.get(GROUND_STOMP);}
-    private void setGroundStomp(boolean value) {this.dataManager.set(GROUND_STOMP, Boolean.valueOf(value));}
-    private boolean isGroundRoar() {return this.dataManager.get(GROUND_ROAR);}
-    private void setGroundRoar(boolean value) {this.dataManager.set(GROUND_ROAR, Boolean.valueOf(value));}
-    private boolean isBreathBegin() {return this.dataManager.get(BREATH_BEGIN);}
-    private void setBreathBegin(boolean value) {this.dataManager.set(BREATH_BEGIN, Boolean.valueOf(value));}
-    private boolean isBreathEnd() {return this.dataManager.get(BREATH_END);}
-    private void setBreathEnd(boolean value) {this.dataManager.set(BREATH_END, Boolean.valueOf(value));}
-    private boolean isBreathAttack() {return this.dataManager.get(BREATH_ATTACK);}
-    private void setBreathAttack(boolean value) {this.dataManager.set(BREATH_ATTACK, Boolean.valueOf(value));}
     public boolean isAirTransitionAttack() {return this.dataManager.get(AIR_TRANSITION_ATTACK);}
     protected void setAirGroundTransitionAttack(boolean value) {this.dataManager.set(AIR_TRANSITION_ATTACK, Boolean.valueOf(value));}
 
@@ -230,6 +189,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
         this.setSpawnLocation(pos.add(0, -25, 0));
         this.setHasSpawn(true);
         this.playSound(SoundsHandler.HIGH_DRAKE_ROAR_AIR, 2.5f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f));
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityHighKingDrake(World worldIn) {
@@ -242,6 +202,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
         this.hemorrhage_resistance = 0.94F;
         this.hitboxParts = new MultiPartEntityPart[]{model, torso, neckPart1, neckPart2, headPart, tailPart1, legPartLeft, legPartRight, tailPart2, tailPart3, tailPart4, tailPart5};
         this.experienceValue = MobConfig.high_dragon_experience_value;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityHighKingDrake(World worldIn, int timesUsed, BlockPos pos) {
@@ -260,6 +221,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
         this.falter_immune = true;
         this.hemorrhage_resistance = 0.94F;
         this.playSound(SoundsHandler.HIGH_DRAKE_ROAR_AIR, 2.5f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f));
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
 
@@ -267,18 +229,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("King_Fight_Mode", this.isKingFightMode());
         nbt.setBoolean("Grounded", this.isGrounded());
-        nbt.setBoolean("Dragon_Roar", this.isDragonRoar());
-        nbt.setBoolean("Dragon_Storm", this.isDragonStorm());
         nbt.setBoolean("Ground_Transition", this.isGroundTransitionAttack());
-        nbt.setBoolean("Bite_Begin", this.isBiteBegin());
-        nbt.setBoolean("Bite_Cast", this.isBiteCast());
-        nbt.setBoolean("Bite_Tail_Swipe", this.isBiteTailSwipe());
-        nbt.setBoolean("Bite_End", this.isBiteEnd());
-        nbt.setBoolean("Ground_Roar", this.isGroundRoar());
-        nbt.setBoolean("Ground_Stomp", this.isGroundStomp());
-        nbt.setBoolean("Breath_Begin", this.isBreathBegin());
-        nbt.setBoolean("Breath_End", this.isBreathEnd());
-        nbt.setBoolean("Breath_Attack", this.isBreathAttack());
         nbt.setBoolean("Air_Transition", this.isAirTransitionAttack());
         nbt.setFloat("Look", this.getPitch());
         super.writeEntityToNBT(nbt);
@@ -288,18 +239,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.setKingFightMode(nbt.getBoolean("King_Fight_Mode"));
         this.setGrounded(nbt.getBoolean("Grounded"));
-        this.setDragonRoar(nbt.getBoolean("Dragon_Roar"));
-        this.setDragonStorm(nbt.getBoolean("Dragon_Storm"));
         this.setGroundTransitionAttack(nbt.getBoolean("Ground_Transition"));
-        this.setBiteBegin(nbt.getBoolean("Bite_Begin"));
-        this.setBiteCast(nbt.getBoolean("Bite_Cast"));
-        this.setBiteTailSwipe(nbt.getBoolean("Bite_Tail_Swipe"));
-        this.setBiteEnd(nbt.getBoolean("Bite_End"));
-        this.setGroundRoar(nbt.getBoolean("Ground_Roar"));
-        this.setGroundStomp(nbt.getBoolean("Ground_Stomp"));
-        this.setBreathAttack(nbt.getBoolean("Breath_Attack"));
-        this.setBreathBegin(nbt.getBoolean("Breath_Begin"));
-        this.setBreathEnd(nbt.getBoolean("Breath_End"));
         this.setAirGroundTransitionAttack(nbt.getBoolean("Air_Transition"));
         if (this.hasCustomName()) {
             this.bossInfo.setName(this.getDisplayName());
@@ -314,18 +254,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
         this.dataManager.register(LOOK, 0f);
         this.dataManager.register(KING_FIGHT_MODE, Boolean.valueOf(false));
         this.dataManager.register(GROUNDED,Boolean.valueOf(false));
-        this.dataManager.register(DRAGON_STORM, Boolean.valueOf(false));
-        this.dataManager.register(DRAGON_ROAR, Boolean.valueOf(false));
         this.dataManager.register(GROUND_TRANSITION_ATTACK, Boolean.valueOf(false));
-        this.dataManager.register(BITE_BEGIN, Boolean.valueOf(false));
-        this.dataManager.register(BITE_CAST, Boolean.valueOf(false));
-        this.dataManager.register(BITE_TAIL_SWING, Boolean.valueOf(false));
-        this.dataManager.register(BITE_END, Boolean.valueOf(false));
-        this.dataManager.register(GROUND_ROAR, Boolean.valueOf(false));
-        this.dataManager.register(GROUND_STOMP, Boolean.valueOf(false));
-        this.dataManager.register(BREATH_BEGIN, Boolean.valueOf(false));
-        this.dataManager.register(BREATH_ATTACK, Boolean.valueOf(false));
-        this.dataManager.register(BREATH_END, Boolean.valueOf(false));
         this.dataManager.register(AIR_TRANSITION_ATTACK, Boolean.valueOf(false));
     }
     @Override
@@ -396,6 +325,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
         this.bossInfo.setPercent(getHealth() / getMaxHealth());
 
         if(world.isRemote && ticksExisted == 1 && ModConfig.experimental_features && MobConfig.high_king_drake_boss_music) {
@@ -588,6 +518,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
 
     private final Consumer<EntityLivingBase> dragon_transition_to_air = (target) -> {
       this.setAirGroundTransitionAttack(true);
+      animator.performAttack(ANIM_DRAGON_AIR_TRANSITION);
       this.setImmovable(true);
       this.setFightMode(true);
       this.setFullBodyUsage(true);
@@ -628,6 +559,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
 
     private final Consumer<EntityLivingBase> dragon_transition_to_ground = (target) -> {
       this.setGroundTransitionAttack(true);
+      animator.performAttack(ANIM_DRAGON_GROUND_TRANSITION);
       this.setFightMode(true);
       this.setFullBodyUsage(true);
       addEvent(()-> this.setImmovable(true), 30);
@@ -670,7 +602,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
     };
 
     private final Consumer<EntityLivingBase> dragon_stomp_ground = (target) -> {
-      this.setGroundStomp(true);
+      animator.performAttack(ANIM_STOMP);
       this.setFightMode(true);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
@@ -700,7 +632,6 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
       }, 80);
 
       addEvent(()-> {
-          this.setGroundStomp(false);
           this.setFightMode(false);
           this.setFullBodyUsage(false);
           this.setImmovable(false);
@@ -708,7 +639,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
     };
 
     private final Consumer<EntityLivingBase> dragon_roar_ground = (target) -> {
-      this.setGroundRoar(true);
+      animator.performAttack(ANIM_GROUND_ROAR);
       this.setImmovable(true);
       this.setFightMode(true);
       this.setFullBodyUsage(true);
@@ -724,7 +655,6 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
 
       addEvent(()-> this.lockLook = false, 95);
       addEvent(()-> {
-          this.setGroundRoar(false);
           this.setImmovable(false);
           this.setFightMode(false);
           this.setFullBodyUsage(false);
@@ -734,7 +664,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
     };
 
     private final Consumer<EntityLivingBase> dragon_storm_breath_ground = (target) -> {
-      this.setBreathBegin(true);
+      animator.performAttack(ANIM_BREATH_BEGIN);
       this.setImmovable(true);
       this.setFightMode(true);
       this.setFullBodyUsage(true);
@@ -764,7 +694,6 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
       }, 35);
 
       addEvent(()-> {
-        this.setBreathBegin(false);
         Vec3d targetPos = target.getPositionVector();
           double distSq = this.getDistanceSq(targetPos.x, targetPos.y, targetPos.z);
           double distance = Math.sqrt(distSq);
@@ -772,7 +701,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
           if(distance <= 8) {
             setBreathTooStomp(target);
           } else {
-            this.setBreathEnd(true);
+            animator.performAttack(ANIM_BREATH_END);
 
               addEvent(()-> {
                   this.isDoingBreathAttack = false;
@@ -780,7 +709,6 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
               }, 35);
 
             addEvent(()-> {
-            this.setBreathEnd(false);
             this.setImmovable(false);
             this.setFightMode(false);
             this.setFullBodyUsage(false);
@@ -795,7 +723,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
     }
 
     private final Consumer<EntityLivingBase> breath_attack_stomp = (target) -> {
-      this.setBreathAttack(true);
+      animator.performAttack(ANIM_BREATH_ATTACK);
 
       addEvent(()-> {
         this.isDoingBreathAttack = false;
@@ -823,7 +751,6 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
       addEvent(()-> this.lockLook = false, 95);
 
       addEvent(()-> {
-        this.setBreathAttack(false);
           this.setImmovable(false);
           this.setFightMode(false);
           this.setFullBodyUsage(false);
@@ -832,7 +759,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
     };
     //Bite Attack
     private final Consumer<EntityLivingBase> dragon_bite_attack = (target) -> {
-      this.setBiteBegin(true);
+      animator.performAttack(ANIM_BITE_BEGIN);
       this.setFightMode(true);
       this.setImmovable(true);
       this.setFullBodyUsage(true);
@@ -845,7 +772,6 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
           DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
           float damage = this.getAttack();
           ModUtils.handleAreaImpact(3.0f, (e) -> damage, this, offset, source, 0.2f, 0, false, 0.7F);
-          this.setBiteBegin(false);
 
           int chanceTooFail = ModRand.range(1, 11);
 
@@ -868,7 +794,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
     }
 
     private final Consumer<EntityLivingBase> bite_tail_swipe = (target) -> {
-      this.setBiteTailSwipe(true);
+      animator.performAttack(ANIM_BITE_TAIL_SWIPE);
       this.lockLook = false;
         this.playSound(SoundsHandler.HIGH_DRAKE_BITE, 1.5f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f));
       addEvent(()-> {
@@ -896,7 +822,6 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
       addEvent(()-> this.lockLook = false, 90);
 
       addEvent(()-> {
-        this.setBiteTailSwipe(false);
           this.setFightMode(false);
           this.setFullBodyUsage(false);
           this.setImmovable(false);
@@ -908,14 +833,13 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
     }
 
     private final Consumer<EntityLivingBase> bite_end = (target) -> {
-      this.setBiteEnd(true);
+      animator.performAttack(ANIM_BITE_END);
 
       addEvent(()-> {
           this.lockLook = false;
       }, 5);
 
       addEvent(()-> {
-        this.setBiteEnd(false);
           this.setFightMode(false);
           this.setFullBodyUsage(false);
           this.setImmovable(false);
@@ -926,7 +850,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
         bite_continue_cast.accept(target);
     }
     private final Consumer<EntityLivingBase> bite_continue_cast = (target) -> {
-      this.setBiteCast(true);
+      animator.performCombo(ANIM_BITE_CAST);
       this.lockLook = false;
 
       addEvent(()-> this.lockLook = true, 17);
@@ -951,7 +875,6 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
       }, 80);
 
       addEvent(()-> {
-        this.setBiteCast(false);
         this.setFightMode(false);
         this.setFullBodyUsage(false);
         this.setImmovable(false);
@@ -959,7 +882,7 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
     };
 
     private final Consumer<EntityLivingBase> dragon_storm_breath = (target) -> {
-      this.setDragonStorm(true);
+      animator.performAttack(ANIM_DRAGON_STORM);
       this.setFightMode(true);
 
         addEvent(()-> this.playSound(SoundsHandler.HIGH_DRAKE_BREATH_AIR, 3.0f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f)), 15);
@@ -969,13 +892,12 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
       }, 25);
 
       addEvent(()-> {
-        this.setDragonStorm(false);
         this.setFightMode(false);
       }, 100);
     };
 
     private final Consumer<EntityLivingBase> dragon_roar_attack = (target) -> {
-      this.setDragonRoar(true);
+      animator.performAttack(ANIM_DRAGON_ROAR);
       this.setFightMode(true);
 
         addEvent(()-> this.playSound(SoundsHandler.HIGH_DRAKE_ROAR_AIR, 3.0f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f)), 70);
@@ -992,13 +914,12 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
       }, 120);
 
       addEvent(()-> {
-        this.setDragonRoar(false);
         this.setFightMode(false);
       }, 140);
     };
 
     private final Consumer<EntityLivingBase> king_summon_lightning = (target) -> {
-        this.setKingCastLightning(true);
+        animator.setStateAnim(ANIM_KING_CAST_LIGHTNING);
         this.setKingFightMode(true);
         this.switchAttacks = true;
 
@@ -1008,19 +929,17 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
         }, 50);
 
         addEvent(()-> {
-      this.setKingCastLightning(false);
       this.setKingFightMode(false);
         }, 95);
     };
 
     private final Consumer<EntityLivingBase> king_cast_magic = (target) -> {
-        this.setKingCast(true);
+        animator.setStateAnim(ANIM_KING_CAST_MAGIC);
         this.setKingFightMode(true);
         this.switchAttacks = false;
         addEvent(()-> new ActionKingCastMagic().performAction(this, target), 37);
 
         addEvent(()-> {
-        this.setKingCast(false);
         this.setKingFightMode(false);
         }, 95);
     };
@@ -1066,160 +985,29 @@ public class EntityHighKingDrake extends EntityHighKingBoss implements IAnimatab
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        //Ground Idle Controllers
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdleGround));
-        data.addAnimationController(new AnimationController(this, "walk_controller", 0, this::predicateWalkGround));
-        //Fly Idle Controllers
-        data.addAnimationController(new AnimationController(this, "fly_base_controller", 0, this::predicateIdleFlyBase));
-        data.addAnimationController(new AnimationController(this, "fly_king_controller", 0, this::predicateIdleFlyKing));
-        data.addAnimationController(new AnimationController(this, "fly_dragon_controller", 0, this::predicateIdleFlyDragon));
-        //Attack Handlers King
-        data.addAnimationController(new AnimationController(this, "king_attacks_controller", 0, this::predicateKingAttacks));
-        //Attack Handler Dragon + Grounded Attacks
-        data.addAnimationController(new AnimationController(this, "dragon_attacks_controller", 0, this::predicateDragonAttacks));
-        //Follow Up Attack Handler
-        data.addAnimationController(new AnimationController(this, "dragon_follow_up_controller", 0, this::predicateFollowUpAttacks));
-    }
+    public void updateAnimations() {
 
+        if(!this.isGrounded()) {
+            if(!this.isFightMode()) {
+                animator.setCustomUpperIdle(ANIM_FLY_DRAGON);
+            }
 
-    private <E extends IAnimatable> PlayState predicateFollowUpAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isBiteCast()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BITE_CAST, false));
-                return PlayState.CONTINUE;
+            if(!this.isFullBodyUsage()) {
+                if(!this.isKingFightMode()) {
+                    animator.setCustomLowerIdle(ANIM_FLY_KING);
+                }
+                animator.setCustomUpperWalk(ANIM_FLY_BASE);
             }
-            if(this.isBiteTailSwipe()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BITE_TAIL_SWIPE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isBiteEnd()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BITE_END, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isBreathEnd()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BREATH_END, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isBreathAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BREATH_ATTACK, false));
-                return PlayState.CONTINUE;
+        } else if (this.isGrounded()) {
+            if(!this.isFullBodyUsage()) {
+                boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+                if(isMovingOnGround) {
+                    animator.setCustomUpperWalk(ANIM_GROUND_WALK);
+                } else if(!this.isFightMode()) {
+                    animator.setCustomUpperIdle(ANIM_GROUND_IDLE);
+                }
             }
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-    private <E extends IAnimatable> PlayState predicateDragonAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isDragonRoar()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DRAGON_ROAR, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isDragonStorm()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DRAGON_STORM, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isGroundTransitionAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DRAGON_GROUND_TRANSITION, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isAirTransitionAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DRAGON_AIR_TRANSITION, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isBiteBegin()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BITE_BEGIN, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isGroundRoar()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_GROUND_ROAR, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isGroundStomp()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STOMP, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isBreathBegin()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BREATH_BEGIN, false));
-                return PlayState.CONTINUE;
-            }
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateKingAttacks(AnimationEvent<E> event) {
-        if(this.isKingFightMode()) {
-            if(this.isKingCast()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_KING_CAST_MAGIC, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isKingCastLightning()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_KING_CAST_LIGHTNING, false));
-                return PlayState.CONTINUE;
-            }
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdleGround(AnimationEvent<E> event) {
-            if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode() && this.isGrounded()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_GROUND_IDLE, true));
-                return PlayState.CONTINUE;
-            }
-
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateWalkGround(AnimationEvent<E> event) {
-
-            if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage() && this.isGrounded()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_GROUND_WALK, true));
-                return PlayState.CONTINUE;
-            }
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdleFlyBase(AnimationEvent<E> event) {
-        if(!this.isGrounded() && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_FLY_BASE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdleFlyKing(AnimationEvent<E> event) {
-        if(!this.isGrounded() && !this.isKingFightMode() && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_FLY_KING, true));
-            return PlayState.CONTINUE;
-        }
-
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdleFlyDragon(AnimationEvent<E> event) {
-        if(!this.isGrounded() && !this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_FLY_DRAGON, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override

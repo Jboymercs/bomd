@@ -31,15 +31,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemApathyrAxe extends ItemAbilityWeapon implements IAnimatable, IHasModel {
-    public AnimationFactory factory = new AnimationFactory(this);
+public class ItemApathyrAxe extends ItemAbilityWeapon implements IHasModel {
 
     private String info_loc;
 
@@ -313,11 +309,6 @@ public class ItemApathyrAxe extends ItemAbilityWeapon implements IAnimatable, IH
             Main.proxy.registerItemRenderer(this, 0, "inventory");
         }}
 
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
 
 
     /**
@@ -339,12 +330,6 @@ public class ItemApathyrAxe extends ItemAbilityWeapon implements IAnimatable, IH
     @Override
     public float getAttackDamage() {
         return super.getAttackDamage();
-    }
-
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 
     public double getAttackSpeed() {

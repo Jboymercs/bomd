@@ -58,41 +58,18 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
 
     protected static final DataParameter<Float> LOOK = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.FLOAT);
 
-    private static final DataParameter<Boolean> MEGA_STOMP = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> ROLL = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> MELEE_STRIKE = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SHAKE = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SMALL_STOMPS = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DROP_ATTACK = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> LAZER_ATTACK = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SUMMON_AID = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SUMMON_BOSS = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
 
     private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
-
     public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BLOCK_POS);
     public static DataParameter<Boolean> SET_SPAWN_LOC = EntityDataManager.createKey(EntityAbstractGreatWyrk.class, DataSerializers.BOOLEAN);
 
-    public void setMegaStomp(boolean value) {this.dataManager.set(MEGA_STOMP, Boolean.valueOf(value));}
     public void setRoll(boolean value) {this.dataManager.set(ROLL, Boolean.valueOf(value));}
-    public void setMeleeStrike(boolean value) {this.dataManager.set(MELEE_STRIKE, Boolean.valueOf(value));}
-    public void setShake(boolean value) {this.dataManager.set(SHAKE, Boolean.valueOf(value));}
-    public void setSmallStomps(boolean value) {this.dataManager.set(SMALL_STOMPS, Boolean.valueOf(value));}
-    public void setDropAttack(boolean value) {this.dataManager.set(DROP_ATTACK, Boolean.valueOf(value));}
-    public void setLazerAttack(boolean value) {this.dataManager.set(LAZER_ATTACK, Boolean.valueOf(value));}
-    public void setSummonAid(boolean value) {this.dataManager.set(SUMMON_AID, Boolean.valueOf(value));}
 
     public void setSummonBoss(boolean value) {this.dataManager.set(SUMMON_BOSS, Boolean.valueOf(value));}
     public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
-    public boolean isMegaStomp() {return this.dataManager.get(MEGA_STOMP);}
-    public boolean isRoll() {return this.dataManager.get(ROLL);}
-    public boolean isMeleeStrike() {return this.dataManager.get(MELEE_STRIKE);}
-    public boolean isShake() {return this.dataManager.get(SHAKE);}
-    public boolean isSmallStomps() {return this.dataManager.get(SMALL_STOMPS);}
-    public boolean isDropAttack() {return this.dataManager.get(DROP_ATTACK);}
-    public boolean isLazerAttack() {return this.dataManager.get(LAZER_ATTACK);}
-    public boolean isSummonAid() {return this.dataManager.get(SUMMON_AID);}
     public boolean isSummonBoss() {return this.dataManager.get(SUMMON_BOSS);}
     public boolean isShaking() {return this.dataManager.get(SHAKING);}
     public boolean isHadPreviousTarget() {return this.dataManager.get(HAD_PREVIOUS_TARGET);}
@@ -114,14 +91,6 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
-        nbt.setBoolean("Mega_Stomp", this.isMegaStomp());
-        nbt.setBoolean("Roll", this.isRoll());
-        nbt.setBoolean("Melee_Strike", this.isMeleeStrike());
-        nbt.setBoolean("Shake", this.isShake());
-        nbt.setBoolean("Small_Stomps", this.isSmallStomps());
-        nbt.setBoolean("Drop_Attack", this.isDropAttack());
-        nbt.setBoolean("Lazer_Attack", this.isLazerAttack());
-        nbt.setBoolean("Summon_Aid", this.isSummonAid());
         nbt.setBoolean("Summon_Boss", this.isSummonBoss());
         nbt.setBoolean("Shaking", this.isShaking());
         nbt.setBoolean("Had_Target", this.dataManager.get(HAD_PREVIOUS_TARGET));
@@ -135,14 +104,7 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
-        this.setMegaStomp(nbt.getBoolean("Mega_Stomp"));
         this.setRoll(nbt.getBoolean("Roll"));
-        this.setMeleeStrike(nbt.getBoolean("Melee_Strike"));
-        this.setShake(nbt.getBoolean("Shake"));
-        this.setSmallStomps(nbt.getBoolean("Small_Stomps"));
-        this.setDropAttack(nbt.getBoolean("Drop_Attack"));
-        this.setLazerAttack(nbt.getBoolean("Lazer_Attack"));
-        this.setSummonAid(nbt.getBoolean("Summon_Aid"));
         this.setSummonBoss(nbt.getBoolean("Summon_Boss"));
         this.setShaking(nbt.getBoolean("Shaking"));
         this.setHadPreviousTarget(nbt.getBoolean("Had_Target"));
@@ -249,14 +211,7 @@ public class EntityAbstractGreatWyrk extends EntityFrostBase implements IEntityM
     @Override
     public void entityInit() {
         this.dataManager.register(LOOK, 0f);
-        this.dataManager.register(MEGA_STOMP, Boolean.valueOf(false));
         this.dataManager.register(ROLL, Boolean.valueOf(false));
-        this.dataManager.register(MELEE_STRIKE, Boolean.valueOf(false));
-        this.dataManager.register(SHAKE, Boolean.valueOf(false));
-        this.dataManager.register(SMALL_STOMPS, Boolean.valueOf(false));
-        this.dataManager.register(DROP_ATTACK, Boolean.valueOf(false));
-        this.dataManager.register(LAZER_ATTACK, Boolean.valueOf(false));
-        this.dataManager.register(SUMMON_AID, Boolean.valueOf(false));
         this.dataManager.register(SUMMON_BOSS, Boolean.valueOf(false));
         this.dataManager.register(SHAKING, Boolean.valueOf(false));
         this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));

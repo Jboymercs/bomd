@@ -1,13 +1,9 @@
 package com.dungeon_additions.da.entity.frost_dungeon;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.EntityWyrkAttackAI;
 import com.dungeon_additions.da.entity.ai.IAttack;
-import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
-import com.dungeon_additions.da.entity.frost_dungeon.friendly_wyrk.EntityAIWyrkFollow;
-import com.dungeon_additions.da.entity.frost_dungeon.friendly_wyrk.EntityAIWyrkHurtByTarget;
-import com.dungeon_additions.da.entity.frost_dungeon.friendly_wyrk.EntityWyrkOwnerAttack;
 import com.dungeon_additions.da.entity.frost_dungeon.wyrk.ActionShootProjectileWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.wyrk.ActionSummonAOEWyrk;
 import com.dungeon_additions.da.entity.night_lich.EntityLichSpawn;
@@ -17,61 +13,42 @@ import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
-import com.google.common.base.Optional;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Consumer;
 
-public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimationTickable, IAttack {
+public class EntityWyrk extends EntityFrostBase implements IAttack {
 
     private final String ANIM_IDLE = "idle";
 
     private final String ANIM_WALK = "walk";
 
     private final String ANIM_ATTACK = "stomp";
-    private final AnimationFactory factory = new AnimationFactory(this);
 
     private boolean doSummonParticles = false;
     private Consumer<EntityLivingBase> prevAttack;
-    private static final DataParameter<Boolean> STOMP = EntityDataManager.createKey(EntityWyrk.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> SUMMON_COUNT = EntityDataManager.createKey(EntityWyrk.class, DataSerializers.VARINT);
-    private boolean isStomp() {return this.dataManager.get(STOMP);}
-
-    private void setStomp(boolean value) {this.dataManager.set(STOMP, Boolean.valueOf(value));}
 
     public int getSummonCount() {return this.dataManager.get(SUMMON_COUNT);}
 
     public void setSummonCount(int value) {this.dataManager.set(SUMMON_COUNT, value);}
 
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
 
     public EntityWyrk(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -79,6 +56,7 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
         this.experienceValue = 12;
         this.hemorrhage_resistance = 0.6F;
         this.falter_resistance = 0.7F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityWyrk(World worldIn) {
@@ -87,6 +65,7 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
         this.experienceValue = 12;
         this.hemorrhage_resistance = 0.6F;
         this.falter_resistance = 0.7F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityWyrk(World world, EntityPlayer player) {
@@ -95,20 +74,19 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
         this.experienceValue = 0;
         this.hemorrhage_resistance = 0.6F;
         this.falter_resistance = 0.7F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setInteger("Summon_Count", this.getSummonCount());
-        nbt.setBoolean("Stomp", this.isStomp());
         super.writeEntityToNBT(nbt);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.setSummonCount(nbt.getInteger("Summon_Count"));
-        this.setStomp(nbt.getBoolean("Stomp"));
         super.readEntityFromNBT(nbt);
     }
 
@@ -116,7 +94,6 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
     public void entityInit() {
         super.entityInit();
         this.dataManager.register(SUMMON_COUNT, MobConfig.wyrk_starter_souls);
-        this.dataManager.register(STOMP, Boolean.valueOf(false));
     }
 
     public int summonDraugrTimer = 200;
@@ -124,7 +101,7 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
     @Override
     public void onUpdate() {
         super.onUpdate();
-
+        this.moveAnalysis.update();
         EntityLivingBase target = this.getAttackTarget();
 
         if(!world.isRemote) {
@@ -224,8 +201,8 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
 
     private final Consumer<EntityLivingBase> stomp_attack = (target) -> {
         this.setFightMode(true);
-        this.setStomp(true);
         this.setImmovable(true);
+        animator.performAttack(ANIM_ATTACK);
 
         //causes icicles to fall
         addEvent(()-> {
@@ -242,7 +219,6 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
         addEvent(()-> {
             this.setImmovable(false);
         this.setFightMode(false);
-        this.setStomp(false);
         }, 60);
     };
 
@@ -277,42 +253,11 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttacks));
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK, true));
-            return PlayState.CONTINUE;
+    public void updateAnimations() {
+        if(!this.isFullBodyUsage()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            animator.handleIdleStates(isMovingOnGround);
         }
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFullBodyUsage()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isStomp()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_ATTACK, false));
-                return PlayState.CONTINUE;
-            }
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 
     /**
@@ -321,12 +266,6 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
     @Override
     public int getBrightnessForRender() {
         return Math.min(super.getBrightnessForRender() + 20, 150);
-    }
-
-
-    @Override
-    public void tick() {
-
     }
 
     @Override
@@ -348,11 +287,6 @@ public class EntityWyrk extends EntityFrostBase implements IAnimatable, IAnimati
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundsHandler.WYRK_STEP, 0.25F, 0.4f + ModRand.getFloat(0.3F));
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     private static final ResourceLocation LOOT = new ResourceLocation(ModReference.MOD_ID, "wyrk");

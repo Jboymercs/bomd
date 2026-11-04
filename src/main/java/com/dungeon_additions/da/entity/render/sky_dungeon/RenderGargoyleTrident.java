@@ -1,76 +1,73 @@
 package com.dungeon_additions.da.entity.render.sky_dungeon;
 
-import com.dungeon_additions.da.entity.model.sky_dungeon.ModelGargoyleTrident;
-import com.dungeon_additions.da.entity.model.sky_dungeon.ModelImperialHalberd;
-import com.dungeon_additions.da.entity.render.layer.GeoSpecificGlow;
-import com.dungeon_additions.da.entity.render.util.RenderGargoyleExtended;
-import com.dungeon_additions.da.entity.render.util.RenderGeoExtended;
-import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
-import com.dungeon_additions.da.entity.sky_dungeon.EntityImperialHalberd;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimator;
 import com.dungeon_additions.da.entity.sky_dungeon.EntityTridentGargoyle;
 import com.dungeon_additions.da.util.ModReference;
-import net.minecraft.block.state.IBlockState;
+import mod.azure.azurelib.model.AzBone;
+import mod.azure.azurelib.render.AzRendererPipelineContext;
+import mod.azure.azurelib.render.entity.AzEntityRenderer;
+import mod.azure.azurelib.render.entity.AzEntityRendererConfig;
+import mod.azure.azurelib.render.layer.AzAutoGlowingLayer;
+import mod.azure.azurelib.render.layer.AzBlockAndItemLayer;
+import mod.azure.azurelib.render.vertex.RenderType;
+import mod.azure.azurelib.util.math.Vector3f;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import java.util.UUID;
 
-import javax.annotation.Nullable;
-
-public class RenderGargoyleTrident extends RenderGargoyleExtended<EntityTridentGargoyle> {
+public class RenderGargoyleTrident extends AzEntityRenderer<EntityTridentGargoyle> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/trident_gargoyle.png");
     private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/entity/sky/geo.trident_gargoyle.json");
     public RenderGargoyleTrident(RenderManager renderManager) {
-        super(renderManager, new ModelGargoyleTrident(MODEL_RESLOC, TEXTURE, "trident_gargoyle"));
-        this.addLayer(new GeoSpecificGlow<>(this, this.TEXTURE_GETTER, this.MODEL_ID_GETTER));
-    }
+        super(AzEntityRendererConfig.<EntityTridentGargoyle>builder(MODEL_RESLOC, TEXTURE)
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE))
+                        .setRenderEntry(contextPipeline -> {
 
-    @Nullable
-    @Override
-    protected ItemStack getHeldItemForBone(String boneName, EntityTridentGargoyle currentEntity) {
-        ItemStack stackInhand = currentEntity.getItemFromGargoyleHand(EntityTridentGargoyle.GARGOYLE_HAND.getFromBoneName(boneName));
-        if(stackInhand != null) {
-            return stackInhand;
-        }
-        return null;
-    }
+                            contextPipeline.animatable().updateAnimations();
+                            return contextPipeline;
+                        })
 
-    @Override
-    protected ItemCameraTransforms.TransformType getCameraTransformForItemAtBone(ItemStack boneItem, String boneName) {
-        return null;
-    }
+                        .setAnimatorProvider(() -> new DaEntityAnimator<>("trident_gargoyle", false, true))
+                        .addRenderLayer(new AzAutoGlowingLayer<>())
+                        .addRenderLayer(new AzBlockAndItemLayer<UUID, EntityTridentGargoyle>() {
+                            @Override
+                            public ItemStack itemStackForBone(AzBone bone, EntityTridentGargoyle animatable) {
+                                if (bone.getName().equals("HoldPotion")) {
+                                    return animatable.getItemFromGargoyleHand(EntityTridentGargoyle.GARGOYLE_HAND.HAND);
+                                }
 
-    @Nullable
-    @Override
-    protected IBlockState getHeldBlockForBone(String boneName, EntityTridentGargoyle currentEntity) {
-        return null;
-    }
+                                return null;
+                            }
 
-    @Override
-    protected void preRenderItem(ItemStack item, String boneName, EntityTridentGargoyle currentEntity) {
+                            @Override
+                            protected ItemCameraTransforms.TransformType getTransformTypeForStack(
+                                    AzBone bone,
+                                    ItemStack stack,
+                                    EntityTridentGargoyle animatable
+                            ) {
+                                return ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND;
+                            }
 
-    }
-
-    @Override
-    protected void preRenderBlock(IBlockState block, String boneName, EntityTridentGargoyle currentEntity) {
-
-    }
-
-    @Override
-    protected void postRenderItem(ItemStack item, String boneName, EntityTridentGargoyle currentEntity) {
-
-    }
-
-    @Override
-    protected void postRenderBlock(IBlockState block, String boneName, EntityTridentGargoyle currentEntity) {
-
-    }
-
-    @Nullable
-    @Override
-    protected ResourceLocation getTextureForBone(String boneName, EntityTridentGargoyle currentEntity) {
-        return null;
+                            @Override
+                            protected void renderItemForBone(
+                                    AzRendererPipelineContext<UUID, EntityTridentGargoyle> context,
+                                    AzBone bone,
+                                    ItemStack itemStack,
+                                    EntityTridentGargoyle animatable
+                            ) {
+                                context.poseStack().mulPose(Vector3f.XP.rotationDegrees(90));
+                                context.poseStack().mulPose(Vector3f.YP.rotationDegrees(0));
+                                context.poseStack().mulPose(Vector3f.ZP.rotationDegrees(0f));
+                                context.poseStack().translate(0D, -0.1D, 0D);
+                                context.poseStack().scale(0.75f, 0.75f, 0.75f);
+                                super.renderItemForBone(context, bone, itemStack, animatable);
+                            }
+                        })
+                        .setShadowRadius(0.2F)
+                        .build()
+                , renderManager);
     }
 }

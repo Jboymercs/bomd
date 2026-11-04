@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.void_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
@@ -10,6 +11,7 @@ import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -29,14 +31,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import sun.misc.JavaNioAccess;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,9 +39,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
-public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimatable, IAnimationTickable, IAttack, IScreenShake {
+public class EntityEnderphriteGauntlet extends EntityEndBase implements IAttack, IScreenShake {
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
     private Consumer<EntityLivingBase> prevAttacks;
     private int teleport_cooldown = 100;
     private int shakeTime = 0;
@@ -60,10 +56,6 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
     private final String ANIM_SUMMON_SPIKES = "summon_spikes";
     private final String ANIM_SONIC_BOOM = "sonic_boom";
 
-    private static final DataParameter<Boolean> SWING = EntityDataManager.createKey(EntityEnderphriteGauntlet.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SONIC_BOOM = EntityDataManager.createKey(EntityEnderphriteGauntlet.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> JUMP_SLAM = EntityDataManager.createKey(EntityEnderphriteGauntlet.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SUMMON_SPIKES = EntityDataManager.createKey(EntityEnderphriteGauntlet.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> TELEPORT = EntityDataManager.createKey(EntityEnderphriteGauntlet.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityEnderphriteGauntlet.class, DataSerializers.BOOLEAN);
 
@@ -72,30 +64,6 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
     }
     private void setTeleportAttack(boolean value) {
         this.dataManager.set(TELEPORT, Boolean.valueOf(value));
-    }
-    public boolean isSwingAttacks() {
-        return this.dataManager.get(SWING);
-    }
-    private void setSwingAttack(boolean value) {
-        this.dataManager.set(SWING, Boolean.valueOf(value));
-    }
-    public boolean isSonicBoom() {
-        return this.dataManager.get(SONIC_BOOM);
-    }
-    private void setSonicBoom(boolean value) {
-        this.dataManager.set(SONIC_BOOM, Boolean.valueOf(value));
-    }
-    public boolean isJumpSlam() {
-        return this.dataManager.get(JUMP_SLAM);
-    }
-    private void setJumpSlam(boolean value) {
-        this.dataManager.set(JUMP_SLAM, Boolean.valueOf(value));
-    }
-    public boolean isSummonSpikes() {
-        return this.dataManager.get(SUMMON_SPIKES);
-    }
-    private void setSummonSpikes(boolean value) {
-        this.dataManager.set(SUMMON_SPIKES, Boolean.valueOf(value));
     }
     public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
     public boolean isShaking() {return this.dataManager.get(SHAKING);}
@@ -107,6 +75,7 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
         this.experienceValue = 38;
         this.falter_resistance = 1.6F;
         this.hemorrhage_resistance = 0.3F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityEnderphriteGauntlet(World worldIn) {
@@ -115,15 +84,12 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
         this.experienceValue = 38;
         this.falter_resistance = 1.6F;
         this.hemorrhage_resistance = 0.3F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("Teleport_Attack", this.isTeleportAttack());
-        nbt.setBoolean("Swing_Attack", this.isSwingAttacks());
-        nbt.setBoolean("Sonic_Boom", this.isSonicBoom());
-        nbt.setBoolean("Jump_Slam", this.isJumpSlam());
-        nbt.setBoolean("Summon_Spikes", this.isSummonSpikes());
         nbt.setBoolean("Shaking", this.isShaking());
         super.writeEntityToNBT(nbt);
     }
@@ -131,10 +97,6 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.setTeleportAttack(nbt.getBoolean("Teleport_Attack"));
-        this.setSwingAttack(nbt.getBoolean("Swing_Attack"));
-        this.setSonicBoom(nbt.getBoolean("Sonic_Boom"));
-        this.setJumpSlam(nbt.getBoolean("Jump_Slam"));
-        this.setSummonSpikes(nbt.getBoolean("Summon_Spikes"));
         this.setShaking(nbt.getBoolean("Shaking"));
         super.readEntityFromNBT(nbt);
     }
@@ -143,10 +105,6 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
     public void entityInit() {
         super.entityInit();
         this.dataManager.register(TELEPORT, Boolean.valueOf(false));
-        this.dataManager.register(SWING, Boolean.valueOf(false));
-        this.dataManager.register(SONIC_BOOM, Boolean.valueOf(false));
-        this.dataManager.register(SUMMON_SPIKES, Boolean.valueOf(false));
-        this.dataManager.register(JUMP_SLAM, Boolean.valueOf(false));
         this.dataManager.register(SHAKING, Boolean.valueOf(false));
     }
 
@@ -212,7 +170,7 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
     }
 
     private Consumer<EntityLivingBase> cast_spikes = target -> {
-      this.setSummonSpikes(true);
+      animator.performAttack(ANIM_SUMMON_SPIKES);
       this.setFightMode(true);
       this.setImmovable(true);
 
@@ -229,14 +187,13 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
       }, 24);
 
       addEvent(()-> {
-        this.setSummonSpikes(false);
         this.setFightMode(false);
         this.setImmovable(false);
       }, 40);
     };
 
     private Consumer<EntityLivingBase> jump_slam = target -> {
-      this.setJumpSlam(true);
+      animator.performAttack(ANIM_JUMP_SLAM);
       this.setFightMode(true);
       this.setImmovable(true);
       AtomicBoolean didDoAOE = new AtomicBoolean(false);
@@ -300,14 +257,13 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
         addEvent(()-> this.lockLook = false, 65);
 
       addEvent(()-> {
-        this.setJumpSlam(false);
         this.setFightMode(false);
         this.setImmovable(false);
       }, 70);
     };
 
     private Consumer<EntityLivingBase> sonic_boom = target -> {
-      this.setSonicBoom(true);
+      animator.performAttack(ANIM_SONIC_BOOM);
       this.setFightMode(true);
       this.setImmovable(true);
 
@@ -347,16 +303,15 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
         addEvent(()-> this.lockLook = false, 45);
 
       addEvent(()-> {
-        this.setSonicBoom(false);
         this.setFightMode(false);
         this.setImmovable(false);
       }, 55);
     };
 
     private Consumer<EntityLivingBase> swing = target -> {
-      this.setSwingAttack(true);
       this.setFightMode(true);
       this.setImmovable(true);
+      animator.performAttack(ANIM_SWING);
 
         addEvent(()-> {
             this.lockLook = true;
@@ -404,76 +359,21 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
         addEvent(()-> this.setImmovable(true), 50);
 
       addEvent(()-> {
-        this.setSwingAttack(false);
         this.setFightMode(false);
         this.setImmovable(false);
       }, 60);
     };
 
-
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "walk_controller", 0, this::predicateWalk));
-        data.addAnimationController(new AnimationController(this, "fight_controller", 0, this::predicateAttacks));
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isTeleportAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_TELEPORT));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingAttacks()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING));
-                return PlayState.CONTINUE;
-            }
-            if(this.isJumpSlam()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_JUMP_SLAM));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSonicBoom()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SONIC_BOOM));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSummonSpikes()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SUMMON_SPIKES));
-                return PlayState.CONTINUE;
+    public void updateAnimations() {
+        if(!this.isFightMode()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            if(isMovingOnGround) {
+                animator.setCustomUpperWalk(ANIM_WALK);
+            } else {
+                animator.setCustomUpperIdle(ANIM_IDLE);
             }
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateWalk(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override
@@ -491,6 +391,7 @@ public class EntityEnderphriteGauntlet extends EntityEndBase implements IAnimata
     private void doTeleportAction() {
         this.setFightMode(true);
         this.setTeleportAttack(true);
+        animator.performAttack(ANIM_TELEPORT);
         this.setImmovable(true);
         boolean backwards = rand.nextBoolean();
         world.setEntityState(this, ModUtils.PARTICLE_BYTE);

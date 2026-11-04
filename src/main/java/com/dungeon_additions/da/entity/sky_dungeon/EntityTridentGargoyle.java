@@ -1,20 +1,17 @@
 package com.dungeon_additions.da.entity.sky_dungeon;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.flying.EntityAIRandomFly;
 import com.dungeon_additions.da.entity.ai.flying.FlyingMoveHelper;
 import com.dungeon_additions.da.entity.ai.flying.TimedAttackInitiator;
 import com.dungeon_additions.da.entity.ai.sky_dungeon.EntityGargoyleTridentAI;
-import com.dungeon_additions.da.entity.ai.sky_dungeon.EntityImperialHalberdAI;
-import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
-import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
 import com.dungeon_additions.da.entity.sky_dungeon.gargoyle.ActionGargoyleShoot;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
-import com.dungeon_additions.da.util.ServerScaleUtil;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.Block;
@@ -22,7 +19,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.init.Items;
@@ -44,15 +40,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.lwjgl.Sys;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -61,9 +48,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable, IAttack, IAnimationTickable {
+public class EntityTridentGargoyle extends EntitySkyBase implements IAttack {
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     private Consumer<EntityLivingBase> prevAttacks;
 
     private int spikes_cooldown = 40;
@@ -271,7 +258,7 @@ public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable,
     }
 
     private final Consumer<EntityLivingBase> throw_potion_action = (target) -> {
-      this.setThrowPotion(true);
+      animator.performAttack(ANIM_THROW_POTION);
       this.setFightMode(true);
       this.setImmovable(true);
       this.clearCurrentVelocity = true;
@@ -306,7 +293,6 @@ public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable,
       }, 25);
 
       addEvent(()-> {
-        this.setThrowPotion(false);
         this.setFightMode(false);
         this.setImmovable(false);
         this.standbyOnVel = false;
@@ -314,7 +300,7 @@ public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable,
     };
     private final Consumer<EntityLivingBase> swing_alternative = (target) -> {
       this.setFightMode(true);
-      this.setSwingAlternative(true);
+      animator.performAttack(ANIM_STRIKE__ALT);
         addEvent(()-> this.playSound(SoundsHandler.GARGOYLE_MOVE, 0.7f, 0.9f / (rand.nextFloat() * 0.4F + 0.6f)), 2);
       addEvent(()-> {
           Vec3d targetpos = target.getPositionVector();
@@ -367,14 +353,13 @@ public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable,
           this.setImmovable(false);
           this.standbyOnVel = false;
         this.setFightMode(false);
-        this.setSwingAlternative(false);
       }, 90);
     };
 
     private final Consumer<EntityLivingBase> shoot_spikes = (target) -> {
       this.setFullBodyUsage(true);
       this.setFightMode(true);
-      this.setShootSpikes(true);
+      animator.performAttack(ANIM_SHOOT_SPIKES);
       this.setImmovable(true);
 
       addEvent(()-> {
@@ -387,12 +372,11 @@ public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable,
           this.setImmovable(false);
         this.setFullBodyUsage(false);
         this.setFightMode(false);
-        this.setShootSpikes(false);
         spikes_cooldown = 400;
       }, 50);
     };
     private final Consumer<EntityLivingBase> swing_regular = (target) -> {
-        this.setSwingMelee(true);
+        animator.performAttack(ANIM_SWING);
         this.setFightMode(true);
 
         addEvent(()-> this.playSound(SoundsHandler.GARGOYLE_MOVE, 0.7f, 0.9f / (rand.nextFloat() * 0.4F + 0.6f)), 5);
@@ -425,55 +409,18 @@ public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable,
 
         addEvent(()-> {
             this.setImmovable(false);
-            this.setSwingMelee(false);
             this.setFightMode(false);
         }, 50);
     };
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "idle_body_controller", 0, this::predicateIdleBody));
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isSwingMelee()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingAlternative()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STRIKE__ALT, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isShootSpikes()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SHOOT_SPIKES, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isThrowPotion()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_THROW_POTION, false));
-                return PlayState.CONTINUE;
-            }
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(!this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdleBody(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(!this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_BODY, true));
-            return PlayState.CONTINUE;
+            animator.setCustomUpperIdle(ANIM_IDLE_BODY);
         }
-        return PlayState.STOP;
+        if(!this.isFullBodyUsage()) {
+            animator.setCustomLowerIdle(ANIM_IDLE);
+        }
     }
 
     @Override
@@ -557,16 +504,6 @@ public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable,
         return null;
     }
 
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
     private static final ResourceLocation LOOT_MOB = new ResourceLocation(ModReference.MOD_ID, "gargoyle_mage");
 
     @Override
@@ -579,8 +516,4 @@ public class EntityTridentGargoyle extends EntitySkyBase implements IAnimatable,
         return true;
     }
 
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
-    }
 }

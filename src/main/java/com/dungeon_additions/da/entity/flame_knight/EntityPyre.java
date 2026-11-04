@@ -1,8 +1,8 @@
 package com.dungeon_additions.da.entity.flame_knight;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
-import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityEliteDraugr;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
@@ -19,18 +19,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntityPyre extends EntityAbstractBase implements IAnimatable, IAnimationTickable, IScreenShake {
-
-    private AnimationFactory factory = new AnimationFactory(this);
+public class EntityPyre extends EntityAbstractBase implements IScreenShake {
 
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityPyre.class, DataSerializers.BOOLEAN);
     public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
@@ -39,6 +29,7 @@ public class EntityPyre extends EntityAbstractBase implements IAnimatable, IAnim
 
     public boolean isParticleSet = false;
     private int shakeTime = 0;
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
 
     public EntityPyre(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -153,27 +144,12 @@ public class EntityPyre extends EntityAbstractBase implements IAnimatable, IAnim
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "start_controller", 0, this::predicateStart));
-    }
-
-    private<E extends IAnimatable>PlayState predicateIdle(AnimationEvent<E> event) {
-        if(!this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-
-    private<E extends IAnimatable>PlayState predicateStart(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("begin", false));
-            return PlayState.CONTINUE;
+            animator.setStateAnim("begin");
+        } else {
+            animator.setStateAnim("idle", true);
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
     }
 
     public void onEntityUpdate() {
@@ -201,16 +177,6 @@ public class EntityPyre extends EntityAbstractBase implements IAnimatable, IAnim
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
     public float getShakeIntensity(Entity viewer, float partialTicks) {
         if(this.isShaking()) {
             double dist = getDistance(viewer);
@@ -221,10 +187,5 @@ public class EntityPyre extends EntityAbstractBase implements IAnimatable, IAnim
             return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 1.75F * screamMult);
         }
         return 0;
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

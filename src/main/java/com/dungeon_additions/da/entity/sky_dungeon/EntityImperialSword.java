@@ -1,8 +1,8 @@
 package com.dungeon_additions.da.entity.sky_dungeon;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
-import com.dungeon_additions.da.entity.ai.sky_dungeon.EntityImperialHalberdAI;
 import com.dungeon_additions.da.entity.ai.sky_dungeon.EntityImperialSwordAI;
 import com.dungeon_additions.da.entity.sky_dungeon.city_knights.ActionSwordSpecial;
 import com.dungeon_additions.da.util.ModRand;
@@ -10,6 +10,7 @@ import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,8 +20,6 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -33,22 +32,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityImperialSword extends EntitySkyBase implements IAnimatable, IAnimationTickable, IAttack {
-    private final AnimationFactory factory = new AnimationFactory(this);
+public class EntityImperialSword extends EntitySkyBase implements IAttack {
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
     private Consumer<EntityLivingBase> prevAttacks;
 
     private final String ANIM_IDLE = "idle";
@@ -122,6 +114,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
         hasFallTpOverride = true;
         this.falter_resistance = 1.7F;
         this.hemorrhage_resistance = 0.7F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityImperialSword(World worldIn) {
@@ -131,6 +124,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
         hasFallTpOverride = true;
         this.falter_resistance = 1.7F;
         this.hemorrhage_resistance = 0.7F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     @Override
@@ -202,6 +196,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
 
         EntityLivingBase target = this.getAttackTarget();
         shield_switch_timer--;
@@ -256,6 +251,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
 
     private void beginRangedMode() {
         this.setBeginPlanted(true);
+        animator.performAttack(ANIM_PLANT_FEET);
         this.setPlanted(true);
         this.setFightMode(true);
         this.setFullBodyUsage(true);
@@ -271,6 +267,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
 
     private void endRangedMode() {
         this.setEndPlanted(true);
+        animator.performAttack(ANIM_REMOVE_PLANTED_FEET);
         this.setFightMode(true);
         this.setFullBodyUsage(true);
 
@@ -302,7 +299,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
 
     private final Consumer<EntityLivingBase> circle_attack = (target) -> {
       this.setFightMode(true);
-      this.setCircleStrike(true);
+      animator.performAttack(ANIM_CIRCLE_STRIKE);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
       if(exhaustionLevel <= 1) {
@@ -334,7 +331,6 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
 
       addEvent(()-> {
         this.setFightMode(false);
-        this.setCircleStrike(false);
         this.setFullBodyUsage(false);
         this.setImmovable(false);
       }, 75);
@@ -342,7 +338,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
 
     private final Consumer<EntityLivingBase> upper_strike = (target) -> {
       this.setFightMode(true);
-      this.setUpperStrike(true);
+      animator.performAttack(ANIM_UPPER_STRIKE);
         if(exhaustionLevel <= 1) {
             exhaustionLevel += 0.1 + ModRand.getFloat(0.1F);
         } else {
@@ -360,7 +356,6 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
 
       addEvent(()-> {
           this.setFightMode(false);
-          this.setUpperStrike(false);
       }, 70);
     };
 
@@ -374,7 +369,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
             exhaustionFlag = true;
         }
       if(storm_stomp_cooldown < 0) {
-          this.setStrikeCombo(true);
+          animator.performAttack(ANIM_STRIKE_COMBO);
           addEvent(()-> {
               Vec3d targetedPos = target.getPositionVector();
               addEvent(()-> {
@@ -428,14 +423,13 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
           addEvent(()-> this.lockLook = false, 115);
 
           addEvent(()-> {
-              this.setStrikeCombo(false);
               this.setFightMode(false);
               this.setFullBodyUsage(false);
               this.setImmovable(false);
               this.storm_stomp_cooldown = 250;
           }, 125);
       } else {
-          this.setStrike(true);
+          animator.performAttack(ANIM_STRIKE);
           addEvent(()-> {
               Vec3d targetedPos = target.getPositionVector();
               addEvent(()-> {
@@ -482,7 +476,6 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
           addEvent(()-> this.lockLook = false, 80);
 
           addEvent(()-> {
-            this.setStrike(false);
             this.setFightMode(false);
             this.setFullBodyUsage(false);
             this.setImmovable(false);
@@ -495,6 +488,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setShieldParry(true);
+        animator.performAttack(ANIM_SHIELD_PARRY);
         this.setImmovable(true);
         if(exhaustionLevel <= 1) {
             exhaustionLevel += 0.1 + ModRand.getFloat(0.2F);
@@ -540,6 +534,7 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
 
     private final Consumer<EntityLivingBase> shoot_arrow_action = (target) -> {
         this.setShootArrow(true);
+        animator.performAttack(ANIM_SHOOT_ARROW);
         this.setFightMode(true);
 
         addEvent(()-> {
@@ -563,121 +558,41 @@ public class EntityImperialSword extends EntitySkyBase implements IAnimatable, I
     };
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "state_side_controller", 0, this::predicateSideStates));
-    //    data.addAnimationController(new AnimationController(this, "planted_state_controller", 0, this::predicatePlantedState));
-    }
+    public void updateAnimations() {
+        //idle planted
+        if(this.isPlanted()) {
+            animator.setCustomUpperIdle(ANIM_IDLE_PLANTED);
+        }
 
-    private <E extends IAnimatable> PlayState predicateSideStates(AnimationEvent<E> event) {
+        //states
         if(!this.isFightMode()) {
             if(this.isPlanted()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_HIDE_SWORD, true));
+                animator.setStateAnim(ANIM_HIDE_SWORD, true);
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_HIDE_BOW, true));
-            }
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isBeginPlanted()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_PLANT_FEET, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isEndPlanted()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_REMOVE_PLANTED_FEET, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isShootArrow()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SHOOT_ARROW, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isShieldParry()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SHIELD_PARRY, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStrike()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STRIKE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStrikeCombo()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STRIKE_COMBO, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isCircleStrike()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_CIRCLE_STRIKE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isUpperStrike()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_UPPER_STRIKE, false));
-                return PlayState.CONTINUE;
+                animator.setStateAnim(ANIM_HIDE_BOW, true);
             }
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
 
-    private <E extends IAnimatable> PlayState predicatePlantedState(AnimationEvent<E> event) {
-        if(!this.isFightMode() && this.isPlanted()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_PLANTED, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode()) {
-            if(this.isPlanted()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_PLANTED, true));
-                return PlayState.CONTINUE;
+        if(!this.isFullBodyUsage() && !this.isPlanted()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            if(isMovingOnGround) {
+                if(!this.isFightMode()) {
+                    if(this.isShielded()) {
+                        animator.setCustomUpperWalk(ANIM_WALK_UPPER_SHIELD);
+                    } else {
+                        animator.setCustomUpperWalk(ANIM_WALK_UPPER);
+                    }
+                }
+                animator.setCustomLowerWalk(ANIM_WALK_LOWER);
+            } else if(!this.isFightMode()) {
+                if(this.isShielded()) {
+                    animator.setCustomUpperIdle(ANIM_IDLE_SHIELD);
+                } else {
+                    animator.setCustomUpperIdle(ANIM_IDLE);
+                }
+
             }
-            if(this.isShielded() && !this.isPlanted()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_SHIELD, true));
-            }  else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            }
-            return PlayState.CONTINUE;
         }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage() && !this.isPlanted()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_LOWER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode() && !this.isPlanted()) {
-            if (this.isShielded()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER_SHIELD, true));
-            } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER, true));
-            }
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override

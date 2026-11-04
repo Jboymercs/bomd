@@ -23,15 +23,11 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemColossusMace extends ToolSword implements IAnimatable {
-    public AnimationFactory factory = new AnimationFactory(this);
+public class ItemColossusMace extends ToolSword {
 
     private String info_loc;
 
@@ -105,12 +101,6 @@ public class ItemColossusMace extends ToolSword implements IAnimatable {
         return EnumRarity.EPIC;
     }
 
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
     @Override
     public boolean canDisableShield(ItemStack stack, ItemStack shield, EntityLivingBase entity, EntityLivingBase attacker)
     {
@@ -122,11 +112,6 @@ public class ItemColossusMace extends ToolSword implements IAnimatable {
         ModUtils.doSweepAttack(player, entity, (e) -> {
         }, 12, 3);
         super.doSweepAttack(player, entity);
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 
     @Override

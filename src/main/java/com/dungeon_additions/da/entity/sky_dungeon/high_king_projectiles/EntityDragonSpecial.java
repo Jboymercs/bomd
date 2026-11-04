@@ -1,7 +1,7 @@
 package com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
@@ -13,23 +13,15 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class EntityDragonSpecial extends EntitySkyBase implements IAnimatable, IAnimationTickable {
+public class EntityDragonSpecial extends EntitySkyBase {
 
     private final String ANIM_SUMMON = "summon";
 
     private boolean didDamage = false;
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     private EntityLivingBase targetedEntity;
     private EntityLivingBase summonerEntity;
 
@@ -162,20 +154,9 @@ public class EntityDragonSpecial extends EntitySkyBase implements IAnimatable, I
         return 0;
     }
 
-
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "spike_controller", 0, this::predicateIdle));
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON, false));
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
+    public void updateAnimations() {
+        animator.setStateAnim(ANIM_SUMMON);
     }
 
     @Override
@@ -192,15 +173,5 @@ public class EntityDragonSpecial extends EntitySkyBase implements IAnimatable, I
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
 
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

@@ -1,28 +1,25 @@
 package com.dungeon_additions.da.entity.flame_knight;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
-import com.dungeon_additions.da.entity.ai.flame_dungeon.EntityBareantAI;
 import com.dungeon_additions.da.entity.ai.flame_dungeon.EntityVolatileSpiritAI;
-import com.dungeon_additions.da.entity.ai.flying.TimedAttackInitiator;
 import com.dungeon_additions.da.entity.flame_knight.misc.ActionFlameSling;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
 import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileTrackingFlame;
 import com.dungeon_additions.da.entity.flame_knight.volatile_action.ActionFlameWave;
 import com.dungeon_additions.da.entity.flame_knight.volatile_action.ActionSecondFlameWave;
-import com.dungeon_additions.da.entity.frost_dungeon.EntityAbstractGreatWyrk;
-import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityEliteDraugr;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
-import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.ServerScaleUtil;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,16 +28,12 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -49,29 +42,18 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import scala.tools.nsc.backend.icode.Primitives;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ServiceLoader;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable, IAnimationTickable, IAttack, IScreenShake {
+public class EntityVolatileSpirit extends EntityFlameBase implements IAttack, IScreenShake {
 
     private Consumer<EntityLivingBase> prevAttacks;
 
     Supplier<Projectile> flame_sling_projectiles = () -> new ProjectileFlameSling(world, this, 13, null);
-    private AnimationFactory factory = new AnimationFactory(this);
 
     private final String ANIM_IDLE = "idle";
     private final String ANIM_BODY_IDLE = "body_idle";
@@ -100,21 +82,8 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
 
     private boolean isShieldActive = false;
 
-    private static final DataParameter<Boolean> SIMPLE_SWING = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_CONTINUE = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_FINISH = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DASH = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DASH_SWING = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DASH_STOMP = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> LEAP_BEGIN = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> LEAP_CONTINUE = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> LEAP_FINISH = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> FLAME_SPIT = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> MORTAR_FIRE = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> FLAME_WAVE = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BUFF_SELF = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BLOCK_ACTION = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> TRIPLE_STRIKE = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
+       private static final DataParameter<Boolean> BLOCK_ACTION = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
 
     private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
 
@@ -122,36 +91,10 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
     public static DataParameter<Boolean> SET_SPAWN_LOC = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityVolatileSpirit.class, DataSerializers.BOOLEAN);
 
-    public void setSimpleSwing(boolean value) {this.dataManager.set(SIMPLE_SWING, Boolean.valueOf(value));}
-    public void setSwingContinue(boolean value) {this.dataManager.set(SWING_CONTINUE, Boolean.valueOf(value));}
-    public void setSwingFinish(boolean value) {this.dataManager.set(SWING_FINISH, Boolean.valueOf(value));}
-    public void setDashBegin(boolean value) {this.dataManager.set(DASH, Boolean.valueOf(value));}
-    public void setDashSwing(boolean value) {this.dataManager.set(DASH_SWING, Boolean.valueOf(value));}
-    public void setDashStomp(boolean value) {this.dataManager.set(DASH_STOMP, Boolean.valueOf(value));}
-    public void setLeapBegin(boolean value) {this.dataManager.set(LEAP_BEGIN, Boolean.valueOf(value));}
-    public void setLeapContinue(boolean value) {this.dataManager.set(LEAP_CONTINUE, Boolean.valueOf(value));}
-    public void setLeapFinish(boolean value) {this.dataManager.set(LEAP_FINISH, Boolean.valueOf(value));}
     public void setFlameSpit(boolean value) {this.dataManager.set(FLAME_SPIT, Boolean.valueOf(value));}
-    public void setMortarFire(boolean value) {this.dataManager.set(MORTAR_FIRE, Boolean.valueOf(value));}
-    public void setFlameWave(boolean value) {this.dataManager.set(FLAME_WAVE, Boolean.valueOf(value));}
-    public void setBuffSelf(boolean value) {this.dataManager.set(BUFF_SELF, Boolean.valueOf(value));}
     public void setBlockAction(boolean value) {this.dataManager.set(BLOCK_ACTION, Boolean.valueOf(value));}
-    public void setTripleStrike(boolean value) {this.dataManager.set(TRIPLE_STRIKE, Boolean.valueOf(value));}
-    public boolean isSimpleSwing() {return this.dataManager.get(SIMPLE_SWING);}
-    private boolean isSwingContinue() {return this.dataManager.get(SWING_CONTINUE);}
-    private boolean isSwingFinish() {return this.dataManager.get(SWING_FINISH);}
-    private boolean isDashBegin() {return this.dataManager.get(DASH);}
-    private boolean isDashSwing() {return this.dataManager.get(DASH_SWING);}
-    private boolean isDashStomp() {return this.dataManager.get(DASH_STOMP);}
-    private boolean isLeapBegin() {return this.dataManager.get(LEAP_BEGIN);}
-    private boolean isLeapContinue() {return this.dataManager.get(LEAP_CONTINUE);}
-    private boolean isLeapFinish() {return this.dataManager.get(LEAP_FINISH);}
     private boolean isFlameSpit() {return this.dataManager.get(FLAME_SPIT);}
-    private boolean isMortarFire() {return this.dataManager.get(MORTAR_FIRE);}
-    private boolean isFlameWave() {return this.dataManager.get(FLAME_WAVE);}
-    private boolean isBuffSelf() {return this.dataManager.get(BUFF_SELF);}
     private boolean isBlockAction() {return this.dataManager.get(BLOCK_ACTION);}
-    private boolean isTripleStrike() {return this.dataManager.get(TRIPLE_STRIKE);}
 
     public boolean isHadPreviousTarget() {return this.dataManager.get(HAD_PREVIOUS_TARGET);}
     public void setHadPreviousTarget(boolean value) {this.dataManager.set(HAD_PREVIOUS_TARGET, Boolean.valueOf(value));}
@@ -174,6 +117,8 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
 
     private int blockCooldown = 80;
     private int shakeTime = 0;
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
 
     public EntityVolatileSpirit(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -184,6 +129,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         this.experienceValue = 95;
         this.falter_resistance = 1.7F;
         this.hemorrhage_resistance = 0.9F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityVolatileSpirit(World worldIn) {
@@ -195,6 +141,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         this.experienceValue = 95;
         this.falter_resistance = 1.7F;
         this.hemorrhage_resistance = 0.9F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public void onSummonBoss(double x, double y, double z) {
@@ -206,22 +153,9 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         super.writeEntityToNBT(nbt);
-        nbt.setBoolean("Simple_Swing", this.isSimpleSwing());
-        nbt.setBoolean("Swing_Continue", this.isSwingContinue());
-        nbt.setBoolean("Swing_Finish", this.isSwingFinish());
-        nbt.setBoolean("Dash_Begin", this.isDashBegin());
-        nbt.setBoolean("Dash_Stomp", this.isDashStomp());
-        nbt.setBoolean("Dash_Swing", this.isDashSwing());
-        nbt.setBoolean("Leap_Begin", this.isLeapBegin());
-        nbt.setBoolean("Leap_Continue", this.isLeapContinue());
-        nbt.setBoolean("Leap_Finish", this.isLeapFinish());
         nbt.setBoolean("Flame_Spit", this.isFlameSpit());
-        nbt.setBoolean("Mortar_Fire", this.isMortarFire());
-        nbt.setBoolean("Flame_Wave", this.isFlameWave());
-        nbt.setBoolean("Buff_Self", this.isBuffSelf());
         nbt.setBoolean("Block_Action", this.isBlockAction());
         nbt.setBoolean("Shaking", this.isShaking());
-        nbt.setBoolean("Triple_Strike", this.isTripleStrike());
         nbt.setBoolean("Had_Target", this.dataManager.get(HAD_PREVIOUS_TARGET));
         nbt.setInteger("Spawn_Loc_X", this.getSpawnLocation().getX());
         nbt.setInteger("Spawn_Loc_Y", this.getSpawnLocation().getY());
@@ -232,22 +166,9 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         super.readEntityFromNBT(nbt);
-        this.setSimpleSwing(nbt.getBoolean("Simple_Swing"));
-        this.setSwingContinue(nbt.getBoolean("Swing_Continue"));
-        this.setSwingFinish(nbt.getBoolean("Swing_Finish"));
-        this.setDashBegin(nbt.getBoolean("Dash_Begin"));
-        this.setDashStomp(nbt.getBoolean("Dash_Stomp"));
-        this.setDashSwing(nbt.getBoolean("Dash_Swing"));
-        this.setLeapBegin(nbt.getBoolean("Leap_Begin"));
-        this.setLeapContinue(nbt.getBoolean("Leap_Continue"));
-        this.setLeapFinish(nbt.getBoolean("Leap_Finish"));
         this.setFlameSpit(nbt.getBoolean("Flame_Spit"));
-        this.setMortarFire(nbt.getBoolean("Mortar_Fire"));
-        this.setFlameWave(nbt.getBoolean("Flame_Wave"));
-        this.setBuffSelf(nbt.getBoolean("Buff_Self"));
         this.setShaking(nbt.getBoolean("Shaking"));
         this.setBlockAction(nbt.getBoolean("Block_Action"));
-        this.setTripleStrike(nbt.getBoolean("Triple_Strike"));
         this.setHadPreviousTarget(nbt.getBoolean("Had_Target"));
         this.dataManager.set(SET_SPAWN_LOC, nbt.getBoolean("Set_Spawn_Loc"));
         this.setSpawnLocation(new BlockPos(nbt.getInteger("Spawn_Loc_X"), nbt.getInteger("Spawn_Loc_Y"), nbt.getInteger("Spawn_Loc_Z")));
@@ -256,22 +177,9 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(SIMPLE_SWING, Boolean.valueOf(false));
-        this.dataManager.register(SWING_FINISH, Boolean.valueOf(false));
-        this.dataManager.register(SWING_CONTINUE, Boolean.valueOf(false));
-        this.dataManager.register(DASH, Boolean.valueOf(false));
-        this.dataManager.register(DASH_STOMP, Boolean.valueOf(false));
-        this.dataManager.register(DASH_SWING, Boolean.valueOf(false));
-        this.dataManager.register(LEAP_BEGIN, Boolean.valueOf(false));
-        this.dataManager.register(LEAP_CONTINUE, Boolean.valueOf(false));
-        this.dataManager.register(LEAP_FINISH, Boolean.valueOf(false));
         this.dataManager.register(FLAME_SPIT, Boolean.valueOf(false));
-        this.dataManager.register(MORTAR_FIRE, Boolean.valueOf(false));
-        this.dataManager.register(FLAME_WAVE, Boolean.valueOf(false));
-        this.dataManager.register(BUFF_SELF, Boolean.valueOf(false));
         this.dataManager.register(BLOCK_ACTION, Boolean.valueOf(false));
         this.dataManager.register(SHAKING, Boolean.valueOf(false));
-        this.dataManager.register(TRIPLE_STRIKE, Boolean.valueOf(false));
         this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
         this.dataManager.register(SET_SPAWN_LOC, Boolean.valueOf(false));
         //
@@ -310,6 +218,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
         this.shakeTime--;
         if(!world.isRemote) {
             EntityLivingBase target = this.getAttackTarget();
@@ -432,7 +341,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
     }
 
     private final Consumer<EntityLivingBase> triple_strike = (target) -> {
-      this.setTripleStrike(true);
+      animator.performAttack(ANIM_TRIPLE_STRIKE);
       this.setFightMode(true);
 
         addEvent(()-> {
@@ -501,14 +410,13 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
 
       addEvent(()-> {
           this.setImmovable(false);
-        this.setTripleStrike(false);
         this.setFightMode(false);
       }, 140);
     };
 
     private final Consumer<EntityLivingBase> self_buff = (target) -> {
-      this.setBuffSelf(true);
       this.setFightMode(true);
+      animator.performAttack(ANIM_BUFF_SELF);
 
       addEvent(()-> this.playSound(SoundsHandler.VOLACTILE_CAST, 1.5f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f)), 10);
       addEvent(()-> {
@@ -519,12 +427,11 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
       }, 20);
 
       addEvent(()-> {
-        this.setBuffSelf(false);
         this.setFightMode(false);
       }, 50);
     };
     private final Consumer<EntityLivingBase> leap_attack = (target) -> {
-      this.setLeapBegin(true);
+      animator.performAttack(ANIM_LEAP);
       this.setFightMode(true);
       this.setImmovable(true);
 
@@ -558,16 +465,15 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         }, 75);
 
       addEvent(()-> {
-        this.setLeapBegin(false);
+
         int randI = ModRand.range(1, 11);
         if(!this.isMeleeViable && randI > 5 || randI > 8) {
             this.setLeapTooContinue(target);
         } else {
             this.lockLook= false;
-            this.setLeapFinish(true);
+            animator.performAttack(ANIM_LEAP_FINISH);
             addEvent(()-> {
             this.setImmovable(false);
-            this.setLeapFinish(false);
             this.setFightMode(false);
             }, 25);
         }
@@ -579,7 +485,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
     }
 
     private final Consumer<EntityLivingBase> leap_continue = (target) -> {
-      this.setLeapContinue(true);
+      animator.performAttack(ANIM_LEAP_CONTINUE);
       this.lockLook = false;
 
         addEvent(()-> {
@@ -616,15 +522,14 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         }, 60);
 
       addEvent(() -> {
-        this.setLeapContinue(false);
         this.setFightMode(false);
         this.setImmovable(false);
       }, 70);
     };
 
     private final Consumer<EntityLivingBase> flame_wave = (target) -> {
-      this.setFlameWave(true);
       this.setFightMode(true);
+      animator.performAttack(ANIM_FLAME_WAVE);
 
       addEvent(()-> {
           this.setImmovable(true);
@@ -654,14 +559,13 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
       }, 60);
 
       addEvent(() -> {
-        this.setFlameWave(false);
         this.setFightMode(false);
       }, 85);
     };
 
     private final Consumer<EntityLivingBase> mortar_fire = (target) -> {
-        this.setMortarFire(true);
         this.setFightMode(true);
+        animator.performAttack(ANIM_MORTAR_FIRE);
 
         addEvent(()-> {
             ProjectileTrackingFlame newFlame = new ProjectileTrackingFlame(world, this, 18, target, false);
@@ -689,13 +593,12 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         }, 57);
 
         addEvent(()-> {
-            this.setMortarFire(false);
             this.setFightMode(false);
         }, 85);
     };
     private final Consumer<EntityLivingBase> flame_spit = (target) -> {
-       this.setFlameSpit(true);
        this.setFightMode(true);
+       animator.performAttack(ANIM_FLAME_SPIT);
 
         addEvent(()-> this.playSound(SoundsHandler.VOLACTILE_SHIELD_USE, 1.0f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f)), 13);
 
@@ -719,16 +622,15 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
        addEvent(()-> this.isShieldActive = false, 100);
 
        addEvent(()-> {
-        this.setFlameSpit(false);
         this.setFightMode(false);
        }, 115);
     };
 
 
     private final Consumer<EntityLivingBase> dash_begin = (target) -> {
-      this.setDashBegin(true);
       this.setFightMode(true);
       this.setImmovable(true);
+      animator.performAttack(ANIM_DASH);
 
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -766,12 +668,11 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
 
       addEvent(()-> {
           this.setImmovable(true);
-          this.setDashBegin(false);
 
           if(this.isMeleeViable) {
               this.setDashTooContinue(target);
           } else {
-              this.setDashStomp(true);
+              animator.performAttack(ANIM_DASH_STOMP);
 
               addEvent(()-> {
                   this.playSound(SoundsHandler.VOLACTILE_SMASH, 1.0f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
@@ -790,7 +691,6 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
 
               addEvent(()-> {
                 this.setImmovable(false);
-                this.setDashStomp(false);
                 this.setFightMode(false);
               }, 60);
           }
@@ -802,7 +702,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
     }
 
     private final Consumer<EntityLivingBase> dash_swing_continue = (target) -> {
-      this.setDashSwing(true);
+      animator.performAttack(ANIM_DASH_SWING);
       this.lockLook = false;
 
         addEvent(()-> {
@@ -861,13 +761,12 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         addEvent(()-> {
             this.setImmovable(false);
             this.setFightMode(false);
-            this.setDashSwing(false);
         }, 95);
     };
 
     private final Consumer<EntityLivingBase> simple_swing = (target) -> {
-      this.setSimpleSwing(true);
       this.setFightMode(true);
+      animator.performAttack(ANIM_SWING_BEGIN);
 
       addEvent(()-> {
           Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -889,18 +788,16 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
 
       addEvent(()-> {
           this.setImmovable(false);
-        this.setSimpleSwing(false);
         int randI = ModRand.range(1, 11);
 
         if(isMeleeViable && randI > 5 || randI > 8) {
             this.setSwingTooContinue(target);
         } else {
-            this.setSwingFinish(true);
+            animator.performAttack(ANIM_SWING_FINISH);
             addEvent(()-> {
                 this.lockLook = false;
             }, 10);
             addEvent(()-> {
-                this.setSwingFinish(false);
                 this.setFightMode(false);
             }, 20);
         }
@@ -912,7 +809,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
     }
 
     private final Consumer<EntityLivingBase> swing_continue = (target) -> {
-      this.setSwingContinue(true);
+      animator.performAttack(ANIM_SWING_CONTINUE);
       addEvent(()-> {
           this.lockLook = false;
           this.setImmovable(true);
@@ -943,7 +840,6 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
         }, 50);
 
       addEvent(()-> {
-        this.setSwingContinue(false);
         this.setFightMode(false);
         this.setImmovable(false);
       }, 60);
@@ -966,124 +862,13 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "orb_idle_controller", 0, this::predicateOrbIdle));
-        data.addAnimationController(new AnimationController(this, "shield_idle_controller", 0, this::predicateShieldIdle));
-        data.addAnimationController(new AnimationController(this, "body_idle_controller", 0, this::predicateBodyIdle));
-        data.addAnimationController(new AnimationController(this, "fight_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "block_controller", 0, this::predicateBlock));
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-        return PlayState.CONTINUE;
-    }
-
-    private <E extends IAnimatable> PlayState predicateOrbIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_ORB_IDLE, true));
-        return PlayState.CONTINUE;
-    }
-
-    private <E extends IAnimatable> PlayState predicateShieldIdle(AnimationEvent<E> event) {
-        //add paramaters
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SHIELD_IDLE, true));
-        return PlayState.CONTINUE;
-    }
-
-    private <E extends IAnimatable> PlayState predicateBodyIdle(AnimationEvent<E> event) {
+    public void updateAnimations() {
+        animator.setCustomLowerIdle(ANIM_SHIELD_IDLE);
+        animator.setCustomUpperWalk(ANIM_ORB_IDLE);
+        animator.setCustomLowerWalk(ANIM_IDLE);
         if(!this.isFightMode() && !this.isBlockAction()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BODY_IDLE, true));
-            return PlayState.CONTINUE;
+            animator.setCustomUpperIdle(ANIM_BODY_IDLE);
         }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateBlock(AnimationEvent<E> event) {
-        if(this.isBlockAction()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BLOCK, false));
-            return PlayState.CONTINUE;
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode() && !this.isBlockAction()) {
-            if(this.isSimpleSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_BEGIN, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingContinue()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_CONTINUE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingFinish()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_FINISH, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isDashBegin()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DASH, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isDashStomp()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DASH_STOMP, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isDashSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DASH_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isLeapBegin()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_LEAP, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isLeapContinue()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_LEAP_CONTINUE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isLeapFinish()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_LEAP_FINISH, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isFlameSpit()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_FLAME_SPIT, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isMortarFire()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MORTAR_FIRE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isFlameWave()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_FLAME_WAVE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isBuffSelf()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BUFF_SELF, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isTripleStrike()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_TRIPLE_STRIKE, false));
-                return PlayState.CONTINUE;
-            }
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override
@@ -1195,6 +980,7 @@ public class EntityVolatileSpirit extends EntityFlameBase implements IAnimatable
 
     public void doBlockAction() {
         this.setBlockAction(true);
+        animator.setStateAnim(ANIM_BLOCK);
         addEvent(()-> {
             this.setBlockAction(false);
             this.blockCooldown = 80;

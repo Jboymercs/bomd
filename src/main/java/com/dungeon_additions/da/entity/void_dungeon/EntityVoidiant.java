@@ -1,17 +1,13 @@
 package com.dungeon_additions.da.entity.void_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IPitch;
-import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityScutterBeetleAI;
 import com.dungeon_additions.da.entity.ai.void_dungeon.EntityAIVoidiant;
-import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
-import com.dungeon_additions.da.entity.frost_dungeon.EntityAbstractGreatWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.IDirectionalRender;
-import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.ActionWyrkLazer;
 import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.IMultiAction;
-import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
 import com.dungeon_additions.da.entity.void_dungeon.voidiant_action.VoidiantFlameCircle;
 import com.dungeon_additions.da.entity.void_dungeon.voidiant_action.VoidiantLazerAction;
 import com.dungeon_additions.da.util.ModColors;
@@ -21,6 +17,7 @@ import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -29,7 +26,6 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -45,21 +41,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnimationTickable, IAttack, IDirectionalRender, IPitch {
+public class EntityVoidiant extends EntityEndBase implements IAttack, IDirectionalRender, IPitch {
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
     private Consumer<EntityLivingBase> prevAttacks;
 
     public Vec3d renderLazerPos;
@@ -81,8 +70,6 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
     private static final DataParameter<Boolean> IDLE_STATE = EntityDataManager.createKey(EntityVoidiant.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IDLE_SEND = EntityDataManager.createKey(EntityVoidiant.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IDLE_RETURN = EntityDataManager.createKey(EntityVoidiant.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> STOMP = EntityDataManager.createKey(EntityVoidiant.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SHOOT_LAZER = EntityDataManager.createKey(EntityVoidiant.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Float> LOOK = EntityDataManager.createKey(EntityVoidiant.class, DataSerializers.FLOAT);
 
     public boolean isIdleState() {
@@ -103,18 +90,6 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
     private void setIdleReturn(boolean value) {
         this.dataManager.set(IDLE_RETURN, Boolean.valueOf(value));
     }
-    public boolean isStompAttack() {
-        return this.dataManager.get(STOMP);
-    }
-    private void setStompAttack(boolean value) {
-        this.dataManager.set(STOMP, Boolean.valueOf(value));
-    }
-    public boolean isShootLazer() {
-        return this.dataManager.get(SHOOT_LAZER);
-    }
-    private void setShootLazer(boolean value) {
-        this.dataManager.set(SHOOT_LAZER, Boolean.valueOf(value));
-    }
 
 
     public EntityVoidiant(World worldIn, float x, float y, float z) {
@@ -123,6 +98,7 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
         this.experienceValue = 15;
         this.falter_resistance = 1F;
         this.hemorrhage_resistance = 0.25F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityVoidiant(World worldIn) {
@@ -131,6 +107,7 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
         this.experienceValue = 15;
         this.falter_resistance = 1F;
         this.hemorrhage_resistance = 025F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     private boolean sentIdleFlag;
@@ -142,6 +119,7 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
         flameCircleAttackCooldown--;
 
         if(!world.isRemote && this.isIdleState()) {
@@ -214,6 +192,7 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
         this.setFullBodyUsage(true);
         this.setImmovable(true);
         this.setIdleSend(true);
+        animator.setStateAnim(ANIM_IDLE_SHIELD);
         this.playSound(SoundsHandler.VOIDIANT_OPEN, 1.0f, 1.3f / (rand.nextFloat() * 0.4F + 0.4f));
 
 
@@ -228,6 +207,7 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
     private void sendAttackMode() {
         this.setIdleState(false);
         this.setIdleReturn(true);
+        animator.setStateAnim(ANIM_IDLE_AWAKE);
         this.setFullBodyUsage(true);
         this.playSound(SoundsHandler.VOIDIANT_OPEN, 1.0f, 1.3f / (rand.nextFloat() * 0.4F + 0.4f));
         addEvent(()-> {
@@ -243,8 +223,6 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
         nbt.setBoolean("Idle_State", this.isIdleState());
         nbt.setBoolean("Idle_Return", this.isIdleReturn());
         nbt.setBoolean("Idle_Send", this.isIdleSend());
-        nbt.setBoolean("Stomp", this.isStompAttack());
-        nbt.setBoolean("Shoot_Lazer", this.isShootLazer());
         nbt.setFloat("Look", this.getPitch());
         super.writeEntityToNBT(nbt);
     }
@@ -254,8 +232,6 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
         this.setIdleState(nbt.getBoolean("Idle_State"));
         this.setIdleReturn(nbt.getBoolean("Idle_Return"));
         this.setIdleSend(nbt.getBoolean("Idle_Send"));
-        this.setStompAttack(nbt.getBoolean("Stomp"));
-        this.setShootLazer(nbt.getBoolean("Shoot_Lazer"));
         this.dataManager.set(LOOK, nbt.getFloat("Look"));
         super.readEntityFromNBT(nbt);
     }
@@ -267,8 +243,6 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
         this.dataManager.register(IDLE_STATE, Boolean.valueOf(false));
         this.dataManager.register(IDLE_RETURN, Boolean.valueOf(false));
         this.dataManager.register(IDLE_SEND, Boolean.valueOf(false));
-        this.dataManager.register(STOMP, Boolean.valueOf(false));
-        this.dataManager.register(SHOOT_LAZER, Boolean.valueOf(false));
     }
 
 
@@ -318,7 +292,7 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
       addEvent(()-> {
           this.setImmovable(true);
           this.setFullBodyUsage(true);
-          this.setShootLazer(true);
+          animator.performAttack(ANIM_SHOOT_LAZER);
 
           addEvent(()-> {
               this.performLazerAttack = true;
@@ -339,7 +313,6 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
               this.setImmovable(false);
               this.setFightMode(false);
               this.setFullBodyUsage(false);
-              this.setShootLazer(false);
           }, 55);
       }, 30);
          };
@@ -379,7 +352,7 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
     this.setImmovable(true);
     this.setFightMode(true);
     this.setFullBodyUsage(true);
-    this.setStompAttack(true);
+    animator.performAttack(ANIM_STOMP);
 
     addEvent(()-> {
         this.playSound(SoundsHandler.VOIDIANT_JUMP, 1.0f, 1.3f / (rand.nextFloat() * 0.4F + 0.4f));
@@ -400,7 +373,6 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
         this.setImmovable(false);
         this.setFightMode(false);
         this.setFullBodyUsage(false);
-        this.setStompAttack(false);
     }, 55);
     };
 
@@ -472,67 +444,15 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
         return this.dataManager == null ? 0 : this.dataManager.get(LOOK);
     }
 
-
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "walk_controller", 0, this::predicateWalk));
-        data.addAnimationController(new AnimationController(this, "attacks_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "state_controller", 0, this::predicateStateChange));
-    }
-
-    private<E extends IAnimatable> PlayState predicateStateChange(AnimationEvent<E> event) {
-        if(this.isFullBodyUsage()) {
-            if(this.isIdleReturn()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_AWAKE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isIdleSend()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_SHIELD, false));
-                return PlayState.CONTINUE;
-            }
+    public void updateAnimations() {
+        if(this.isIdleState()) {
+            animator.setStateAnim(ANIM_IDLE_STATE, true);
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-    private<E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isStompAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STOMP, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isShootLazer()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SHOOT_LAZER, false));
-                return PlayState.CONTINUE;
-            }
+        if(!this.isFullBodyUsage() && !this.isIdleState()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            animator.handleIdleStates(isMovingOnGround);
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFullBodyUsage()) {
-            if(this.isIdleState()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_STATE, true));
-            } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            }
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateWalk(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage() && !this.isIdleState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK, true));
-            event.getController().setAnimationSpeed(1.0 + (0.004 * event.getLimbSwing()));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 
     @Override
@@ -630,15 +550,5 @@ public class EntityVoidiant extends EntityEndBase implements IAnimatable, IAnima
     @Override
     protected ResourceLocation getLootTable() {
         return LOOT_MOB;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

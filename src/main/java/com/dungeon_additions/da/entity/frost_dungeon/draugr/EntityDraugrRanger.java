@@ -1,12 +1,10 @@
 package com.dungeon_additions.da.entity.frost_dungeon.draugr;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.entity.ai.EntityDraugrMeleeAI;
 import com.dungeon_additions.da.entity.ai.EntityDraugrRangedAI;
 import com.dungeon_additions.da.entity.ai.IAttack;
-import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityFrostBase;
-import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
@@ -14,6 +12,7 @@ import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -34,7 +33,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -42,38 +40,26 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityDraugrRanger extends EntityFrostBase implements IAttack, IAnimatable, IAnimationTickable {
+public class EntityDraugrRanger extends EntityFrostBase implements IAttack {
 
     private static final DataParameter<ItemStack> ITEM_HAND = EntityDataManager.<ItemStack>createKey(EntityDraugrRanger.class, DataSerializers.ITEM_STACK);
     private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityDraugrRanger.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> RANGED_ATTACK = EntityDataManager.createKey(EntityDraugrRanger.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> THROW_BOMB = EntityDataManager.createKey(EntityDraugrRanger.class, DataSerializers.BOOLEAN);
 
     private final String ANIM_IDLE = "idle";
     private final String ANIM_MODEL_ADJUST = "model_adjustments";
     private final String ANIM_WALK = "walk";
     private final String ANIM_WALK_UPPER = "walk_upper";
     private final String ANIM_THROW_BOMB = "throw_bomb";
-    private final AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttack;
 
     public boolean isRangedAttack() {return this.dataManager.get(RANGED_ATTACK);}
     private void setRangedAttack(boolean value) {this.dataManager.set(RANGED_ATTACK, Boolean.valueOf(value));}
-    private boolean isThrowBomb() {return this.dataManager.get(THROW_BOMB);}
-    private void setThrowBomb(boolean value) {this.dataManager.set(THROW_BOMB, Boolean.valueOf(value));}
 
     public void setSkin(int skinType)
     {
@@ -84,6 +70,8 @@ public class EntityDraugrRanger extends EntityFrostBase implements IAttack, IAni
     {
         return this.dataManager.get(SKIN_TYPE).intValue();
     }
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, true);
+    private final MoveAnalysis moveAnalysis;
 
     public EntityDraugrRanger(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -94,6 +82,7 @@ public class EntityDraugrRanger extends EntityFrostBase implements IAttack, IAni
         this.setSkin(rand.nextInt(5));
         this.hemorrhage_resistance = 0.5F;
         this.falter_resistance = 0.8F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public  boolean draugrHasLoaded = false;
@@ -107,11 +96,11 @@ public class EntityDraugrRanger extends EntityFrostBase implements IAttack, IAni
         this.setSkin(rand.nextInt(5));
         this.hemorrhage_resistance = 0.5F;
         this.falter_resistance = 0.8F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
-        nbt.setBoolean("Throw_Bomb", this.isThrowBomb());
         nbt.setBoolean("Ranged_Attack", this.isRangedAttack());
         super.writeEntityToNBT(nbt);
     }
@@ -119,7 +108,6 @@ public class EntityDraugrRanger extends EntityFrostBase implements IAttack, IAni
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.setRangedAttack(nbt.getBoolean("Ranged_Attack"));
-        this.setThrowBomb(nbt.getBoolean("Throw_Bomb"));
         super.readEntityFromNBT(nbt);
     }
 
@@ -128,7 +116,6 @@ public class EntityDraugrRanger extends EntityFrostBase implements IAttack, IAni
         super.entityInit();
         this.dataManager.register(ITEM_HAND, ItemStack.EMPTY);
         this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
-        this.dataManager.register(THROW_BOMB, Boolean.valueOf(false));
         this.dataManager.register(RANGED_ATTACK, Boolean.valueOf(false));
     }
 
@@ -159,6 +146,12 @@ public class EntityDraugrRanger extends EntityFrostBase implements IAttack, IAni
         this.setSkin(rand.nextInt(5));
         this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
         return super.onInitialSpawn(difficulty, entityLivingData);
+    }
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        this.moveAnalysis.update();
     }
 
     @Override
@@ -206,7 +199,7 @@ public class EntityDraugrRanger extends EntityFrostBase implements IAttack, IAni
     };
 
     private final Consumer<EntityLivingBase> throw_bomb = (target) -> {
-      this.setThrowBomb(true);
+      animator.performAttack(ANIM_THROW_BOMB);
       this.setFightMode(true);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
@@ -235,34 +228,9 @@ public class EntityDraugrRanger extends EntityFrostBase implements IAttack, IAni
       addEvent(()-> {
           this.setImmovable(false);
           this.setFullBodyUsage(false);
-          this.setThrowBomb(false);
           this.setFightMode(false);
       }, 80);
     };
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "model_adjustments_from", 0, this::predicateModelAdjustments));
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
-    }
 
     @Override
     public void handleStatusUpdate(byte id) {
@@ -278,48 +246,22 @@ public class EntityDraugrRanger extends EntityFrostBase implements IAttack, IAni
         }
     }
 
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isThrowBomb()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_THROW_BOMB, false));
-                return PlayState.CONTINUE;
+    @Override
+    public void updateAnimations() {
+            if(!this.isFullBodyUsage()) {
+                boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+                if(isMovingOnGround) {
+                    if(!this.isFightMode()) {
+                        animator.setCustomUpperWalk(ANIM_WALK_UPPER);
+                    }
+                    animator.setCustomLowerWalk(ANIM_WALK);
+                } else {
+                    if(!this.isFightMode()) {
+                        animator.setCustomUpperIdle(ANIM_MODEL_ADJUST);
+                    }
+                    animator.setCustomLowerIdle(ANIM_IDLE);
+                }
             }
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateModelAdjustments(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MODEL_ADJUST, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
     }
 
     @Override

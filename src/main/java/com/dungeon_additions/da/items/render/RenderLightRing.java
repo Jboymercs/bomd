@@ -1,14 +1,23 @@
 package com.dungeon_additions.da.items.render;
 
-import com.dungeon_additions.da.items.model.ModelDraugrShield;
-import com.dungeon_additions.da.items.model.ModelLightRing;
-import com.dungeon_additions.da.items.projectile.ItemLightRing;
-import com.dungeon_additions.da.items.shield.ItemDraugrShield;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
+import com.dungeon_additions.da.animation.AzLib.DaItemAnimator;
+import com.dungeon_additions.da.util.ModReference;
+import mod.azure.azurelib.render.item.AzItemRenderer;
+import mod.azure.azurelib.render.item.AzItemRendererConfig;
+import mod.azure.azurelib.render.layer.AzAutoGlowingLayer;
+import net.minecraft.util.ResourceLocation;
 
-public class RenderLightRing extends GeoItemRenderer<ItemLightRing> {
+public class RenderLightRing extends AzItemRenderer {
+
+    private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/items/light_ring.png");
+    private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/item/geo.light_ring.json");
+
     public RenderLightRing() {
-        super(new ModelLightRing());
+        super(
+                AzItemRendererConfig.builder(itemStack -> MODEL_RESLOC, itemStack -> TEXTURE)
+                        .addRenderLayer(new AzAutoGlowingLayer<>())
+                        .setAnimatorProvider(() -> new DaItemAnimator("light_ring"))
+                        .build()
+        );
     }
 }

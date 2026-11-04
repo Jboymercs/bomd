@@ -1,9 +1,8 @@
 package com.dungeon_additions.da.entity.sky_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.frost_dungeon.IDirectionalRender;
-import com.dungeon_additions.da.entity.night_lich.EntityLichStaffAOE;
-import com.dungeon_additions.da.entity.night_lich.EntityNightLich;
 import com.dungeon_additions.da.packets.MessageDirectionForRender;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
@@ -13,21 +12,16 @@ import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimationTickable, IDirectionalRender {
+public class EntitySkyBolt extends EntitySkyBase implements IDirectionalRender {
     private Vec3d renderLazerPos;
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
 
     public EntitySkyBolt(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -197,26 +191,6 @@ public class EntitySkyBolt extends EntitySkyBase implements IAnimatable, IAnimat
     @Override
     public boolean canBeCollidedWith() {
         return false;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override

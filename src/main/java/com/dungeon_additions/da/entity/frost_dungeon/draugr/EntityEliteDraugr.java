@@ -1,22 +1,21 @@
 package com.dungeon_additions.da.entity.frost_dungeon.draugr;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.EntityDraugrEliteAttackAI;
-import com.dungeon_additions.da.entity.ai.EntityDraugrRangedAI;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
-import com.dungeon_additions.da.entity.frost_dungeon.EntityAbstractGreatWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityFrostBase;
 import com.dungeon_additions.da.entity.frost_dungeon.draugr.draugr_elite.*;
 import com.dungeon_additions.da.entity.night_lich.ProjectileMagicGround;
-import com.dungeon_additions.da.entity.night_lich.action.ActionLichTeleport;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.init.ModPotions;
 import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -30,7 +29,6 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -43,14 +41,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +48,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, IAttack, IAnimationTickable, IScreenShake {
+public class EntityEliteDraugr extends EntityFrostBase implements IAttack, IScreenShake {
 
     private final String ANIM_IDLE = "idle";
     private final String ANIM_IDLE_UPPER = "idle_upper";
@@ -75,42 +65,21 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
     private final String ANIM_ICE_WAVE = "spike_arise";
 
     private static final DataParameter<Boolean> DEATH_STATE = EntityDataManager.createKey(EntityEliteDraugr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING = EntityDataManager.createKey(EntityEliteDraugr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DOUBLE_SWING = EntityDataManager.createKey(EntityEliteDraugr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> STOMP = EntityDataManager.createKey(EntityEliteDraugr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DISTANCE_CLOSER = EntityDataManager.createKey(EntityEliteDraugr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> MAGIC_WAVE = EntityDataManager.createKey(EntityEliteDraugr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BEZERK = EntityDataManager.createKey(EntityEliteDraugr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> ICE_WAVE = EntityDataManager.createKey(EntityEliteDraugr.class, DataSerializers.BOOLEAN);
-
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityEliteDraugr.class, DataSerializers.BOOLEAN);
 
     protected int playersNearbyAmount = 0;
     public boolean isDeathState() {return this.dataManager.get(DEATH_STATE);}
     private void setDeathState(boolean value) {this.dataManager.set(DEATH_STATE, Boolean.valueOf(value));}
-    public boolean isSwingSimple() {return this.dataManager.get(SWING);}
-    private void setSwingSimple(boolean value) {this.dataManager.set(SWING, Boolean.valueOf(value));}
-    public boolean isDoubleSwing() {return this.dataManager.get(DOUBLE_SWING);}
-    private void setDoubleSwing(boolean value) {this.dataManager.set(DOUBLE_SWING, Boolean.valueOf(value));}
-    public boolean isStomp() {return this.dataManager.get(STOMP);}
-    private void setStomp(boolean value) {this.dataManager.set(STOMP, Boolean.valueOf(value));}
-    public boolean isDistanceCloser() {return this.dataManager.get(DISTANCE_CLOSER);}
-    private void setDistanceCloser(boolean value) {this.dataManager.set(DISTANCE_CLOSER, Boolean.valueOf(value));}
-    public boolean isMagicWave() {return this.dataManager.get(MAGIC_WAVE);}
-    private void setMagicWave(boolean value) {this.dataManager.set(MAGIC_WAVE, Boolean.valueOf(value));}
-    public boolean isBezerk() {return this.dataManager.get(BEZERK);}
-    private void setBezerk(boolean value) {this.dataManager.set(BEZERK, Boolean.valueOf(value));}
-    public boolean isIceWave() {return this.dataManager.get(ICE_WAVE);}
-    private void setIceWave(boolean value) {this.dataManager.set(ICE_WAVE, Boolean.valueOf(value));}
 
     public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
     public boolean isShaking() {return this.dataManager.get(SHAKING);}
-    private final AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttack;
     private int shakeTime = 0;
     Supplier<Projectile> ground_projectiles = () -> new ProjectileMagicGround(world, this, (float) 16, null);
 
     private boolean destroyCloseBlocks = false;
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, true);
+    private final MoveAnalysis moveAnalysis;
 
     public EntityEliteDraugr(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -119,6 +88,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
         this.experienceValue = 65;
         this.hemorrhage_resistance = 0.9F;
         this.falter_resistance = 1.7F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityEliteDraugr(World worldIn) {
@@ -128,6 +98,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
         this.experienceValue = 65;
         this.hemorrhage_resistance = 0.9F;
         this.falter_resistance = 1.7F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     private int longDistanceCooldown = 150;
@@ -188,13 +159,6 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("Death_State", this.isDeathState());
-        nbt.setBoolean("Swing", this.isSwingSimple());
-        nbt.setBoolean("Double_Swing", this.isDoubleSwing());
-        nbt.setBoolean("Stomp", this.isStomp());
-        nbt.setBoolean("Distance_Closer", this.isDistanceCloser());
-        nbt.setBoolean("Magic_Wave", this.isMagicWave());
-        nbt.setBoolean("Bezerk", this.isBezerk());
-        nbt.setBoolean("Ice_Wave", this.isIceWave());
         nbt.setBoolean("Shaking", this.isShaking());
         super.writeEntityToNBT(nbt);
     }
@@ -202,13 +166,6 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.setDeathState(nbt.getBoolean("Death_State"));
-        this.setSwingSimple(nbt.getBoolean("Swing"));
-        this.setDoubleSwing(nbt.getBoolean("Double_Swing"));
-        this.setStomp(nbt.getBoolean("Stomp"));
-        this.setDistanceCloser(nbt.getBoolean("Distance_Closer"));
-        this.setMagicWave(nbt.getBoolean("Magic_Wave"));
-        this.setBezerk(nbt.getBoolean("Bezerk"));
-        this.setIceWave(nbt.getBoolean("Ice_Wave"));
         this.setShaking(nbt.getBoolean("Shaking"));
         super.readEntityFromNBT(nbt);
     }
@@ -217,13 +174,6 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
     public void entityInit() {
         super.entityInit();
         this.dataManager.register(DEATH_STATE, Boolean.valueOf(false));
-        this.dataManager.register(SWING, Boolean.valueOf(false));
-        this.dataManager.register(DOUBLE_SWING, Boolean.valueOf(false));
-        this.dataManager.register(STOMP, Boolean.valueOf(false));
-        this.dataManager.register(DISTANCE_CLOSER, Boolean.valueOf(false));
-        this.dataManager.register(MAGIC_WAVE, Boolean.valueOf(false));
-        this.dataManager.register(BEZERK, Boolean.valueOf(false));
-        this.dataManager.register(ICE_WAVE, Boolean.valueOf(false));
         this.dataManager.register(SHAKING, Boolean.valueOf(false));
     }
 
@@ -273,9 +223,9 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
 
     private final Consumer<EntityLivingBase> bezerk_action = (target) -> {
         this.setFightMode(true);
-        this.setBezerk(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
+        animator.performAttack(ANIM_BEZERK);
 
         addEvent(() -> {
             this.setShaking(true);
@@ -383,14 +333,13 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
             this.setImmovable(false);
             this.setFullBodyUsage(false);
             this.setFightMode(false);
-            this.setBezerk(false);
         }, 170);
     };
     private final Consumer<EntityLivingBase> distance_closer = (target) -> {
-        this.setDistanceCloser(true);
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
+        animator.performAttack(ANIM_DISTANCE_CLOSER);
 
         addEvent(()-> this.lockLook = true, 25);
         addEvent(()-> {
@@ -455,16 +404,15 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
         addEvent(()-> this.lockLook = false, 100);
         addEvent(()-> {
         this.setImmovable(false);
-        this.setDistanceCloser(false);
         this.setFightMode(false);
         this.setFullBodyUsage(false);
         }, 120);
     };
     private final Consumer<EntityLivingBase> magic_wave = (target) -> {
-      this.setMagicWave(true);
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setImmovable(true);
+      animator.performAttack(ANIM_MAGIC_WAVE);
 
       addEvent(()-> this.lockLook = true, 25);
 
@@ -495,7 +443,6 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
 
       addEvent(()-> this.lockLook = false, 60);
       addEvent(()-> {
-        this.setMagicWave(false);
         this.setFullBodyUsage(false);
         this.setFightMode(false);
         this.setImmovable(false);
@@ -503,8 +450,8 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
     };
 
     private final Consumer<EntityLivingBase> spike_arise = (target) -> {
-      this.setIceWave(true);
       this.setFightMode(true);
+      animator.performAttack(ANIM_ICE_WAVE);
 
       addEvent(()-> {
         this.lockLook = true;
@@ -529,16 +476,15 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
       }, 70);
 
       addEvent(()-> {
-        this.setIceWave(false);
         this.setFightMode(false);
       }, 75);
     };
 
     private final Consumer<EntityLivingBase> stomp_action = (target) -> {
       this.setFightMode(true);
-      this.setStomp(true);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
+      animator.performAttack(ANIM_STOMP);
 
       addEvent(()-> {
           this.setShaking(true);
@@ -567,7 +513,6 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
 
       addEvent(()-> {
         this.setFightMode(false);
-        this.setStomp(false);
         this.setFullBodyUsage(false);
         this.setImmovable(false);
       }, 75);
@@ -578,7 +523,7 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
       double healthChange = this.getHealth() / this.getMaxHealth();
       if(randI >= 6) {
           //Double Swing
-          this.setDoubleSwing(true);
+          animator.performAttack(ANIM_DOUBLE_SWING);
           addEvent(()-> this.lockLook = true, 18);
           addEvent(()-> {
               if(!this.isDeathState()) {
@@ -611,11 +556,10 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
           addEvent(()-> this.lockLook = false, 80);
           addEvent(()-> {
             this.setFightMode(false);
-            this.setDoubleSwing(false);
           }, 90);
       } else {
           //Single Swing
-          this.setSwingSimple(true);
+          animator.performAttack(ANIM_SWING);
           addEvent(()-> this.lockLook = true, 18);
           addEvent(()-> {
               if(!this.isDeathState()) {
@@ -632,102 +576,32 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
 
           addEvent(()-> this.lockLook = false, 40);
           addEvent(()-> {
-            this.setSwingSimple(false);
             this.setFightMode(false);
           }, 60);
       }
     };
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "model_adjustments_from", 0, this::predicateModelAdjustments));
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-        data.addAnimationController(new AnimationController(this, "death_controller", 0, this::predicateDeathState));
-    }
-
-    private <E extends IAnimatable> PlayState predicateDeathState(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DEATH, false));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_DEATH);
         }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode() && !this.isDeathState()) {
-            if(this.isSwingSimple()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isDoubleSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DOUBLE_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStomp()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STOMP, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isDistanceCloser()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DISTANCE_CLOSER, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isMagicWave()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MAGIC_WAVE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isBezerk()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BEZERK, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isIceWave()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_ICE_WAVE, false));
-                return PlayState.CONTINUE;
+        if(!this.isFullBodyUsage() && !this.isDeathState()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            if(isMovingOnGround) {
+                 if(!this.isFightMode()) {
+                     animator.setCustomUpperWalk(ANIM_WALK_UPPER);
+                 }
+                 animator.setCustomLowerWalk(ANIM_WALK);
+            } else {
+                if(!this.isFightMode()) {
+                    animator.setCustomUpperIdle(ANIM_IDLE_UPPER);
+                }
+                animator.setCustomLowerIdle(ANIM_IDLE);
             }
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
     }
 
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFullBodyUsage() && !this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateModelAdjustments(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode() && !this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_UPPER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage() && !this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode() && !this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
@@ -803,16 +677,6 @@ public class EntityEliteDraugr extends EntityFrostBase implements IAnimatable, I
     @Override
     protected boolean canDropLoot() {
         return true;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override

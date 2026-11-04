@@ -30,7 +30,6 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 import java.util.function.Consumer;

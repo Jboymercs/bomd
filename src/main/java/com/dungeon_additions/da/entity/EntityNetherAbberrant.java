@@ -1,7 +1,7 @@
 package com.dungeon_additions.da.entity;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.EntityAiTimedAttack;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameBase;
@@ -11,6 +11,7 @@ import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -31,25 +32,16 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatable, IAttack, IAnimationTickable {
+public class EntityNetherAbberrant extends EntityFlameBase implements IAttack {
     /**
      * The Locals of the Nether Dungeon, A specialist of it's era.
      */
-    private AnimationFactory factory = new AnimationFactory(this);
 
     private final String MOVE_ANIM = "move";
     private final String IDLE_ANIM = "idle";
@@ -59,11 +51,7 @@ public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatabl
     private final String DASH_ANIM = "dashAway";
     private final String SPIN_ANIM = "spin";
 
-    private static DataParameter<Boolean> SIMPLE_STRIKE = EntityDataManager.createKey(EntityNetherAbberrant.class, DataSerializers.BOOLEAN);
     private static DataParameter<Boolean> RANGED = EntityDataManager.createKey(EntityNetherAbberrant.class, DataSerializers.BOOLEAN);
-
-    private static DataParameter<Boolean> DASH = EntityDataManager.createKey(EntityNetherAbberrant.class, DataSerializers.BOOLEAN);
-    private static DataParameter<Boolean> SPIN_ATTACK = EntityDataManager.createKey(EntityNetherAbberrant.class, DataSerializers.BOOLEAN);
 
 
     private Consumer<EntityLivingBase> prevAttacks;
@@ -71,7 +59,8 @@ public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatabl
     public boolean meleeMode;
     public boolean rangedMode;
 
-
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
 
 
     public EntityNetherAbberrant(World worldIn) {
@@ -84,61 +73,34 @@ public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatabl
         this.experienceValue = 12;
         this.falter_resistance = 0.8F;
         this.hemorrhage_resistance = 0.2F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     @Override
     public void entityInit() {
         super.entityInit();
-        this.dataManager.register(SIMPLE_STRIKE, Boolean.valueOf(false));
         this.dataManager.register(RANGED, Boolean.valueOf(false));
-        this.dataManager.register(DASH, Boolean.valueOf(false));
-        this.dataManager.register(SPIN_ATTACK, Boolean.valueOf(false));
-
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
-        nbt.setBoolean("Simple_Strike", this.isSimpleStrike());
         nbt.setBoolean("Ranged", this.isRanged());
-        nbt.setBoolean("Dash", this.isDash());
-        nbt.setBoolean("Spin_Attack", this.isSpinAttack());
         super.writeEntityToNBT(nbt);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
-        this.setSimpleStrike(nbt.getBoolean("Simple_Strike"));
         this.setRanged(nbt.getBoolean("Ranged"));
-        this.setDash(nbt.getBoolean("Dash"));
-        this.setSpinAttack(nbt.getBoolean("Spin_Attack"));
         super.readEntityFromNBT(nbt);
     }
 
 
-    public void setSimpleStrike(boolean value) {
-        this.dataManager.set(SIMPLE_STRIKE, Boolean.valueOf(value));
-    }
     public void setRanged(boolean value) {
         this.dataManager.set(RANGED, Boolean.valueOf(value));
     }
-    public void setDash(boolean value) {
-        this.dataManager.set(DASH, Boolean.valueOf(value));
-    }
-    public void setSpinAttack(boolean value) {
-        this.dataManager.set(SPIN_ATTACK, Boolean.valueOf(value));
-    }
 
-    public boolean isSimpleStrike() {
-        return this.dataManager.get(SIMPLE_STRIKE);
-    }
     public boolean isRanged() {
         return this.dataManager.get(RANGED);
-    }
-    public boolean isDash() {
-        return this.dataManager.get(DASH);
-    }
-    public boolean isSpinAttack() {
-        return this.dataManager.get(SPIN_ATTACK);
     }
 
     @Override
@@ -204,55 +166,18 @@ public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatabl
     }
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "ab_idle", 0, this::predicateIdle));
-        animationData.addAnimationController(new AnimationController(this, "ab_blink", 0, this::predicateBlink));
-        animationData.addAnimationController(new AnimationController(this, "ab_attacks", 0, this::predicateAttack));
-
+    public void updateAnimations() {
+        animator.setStateAnim(BLINK, true);
+        if(!this.isFightMode()) {
+            boolean isMovingOnGround = moveAnalysis.isMoving();
+            if(isMovingOnGround) {
+                animator.setCustomUpperWalk(MOVE_ANIM);
+            } else {
+                animator.setCustomUpperIdle(IDLE_ANIM);
+            }
+        }
     }
 
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(MOVE_ANIM, true));
-        } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(IDLE_ANIM, true));
-        }
-        return PlayState.CONTINUE;
-    }
-    private <E extends IAnimatable>PlayState predicateBlink(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(BLINK, true));
-        return PlayState.CONTINUE;
-    }
-
-    private <E extends IAnimatable>PlayState predicateAttack(AnimationEvent<E> event) {
-        //Simple Strike Anim
-        if(this.isSimpleStrike()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(STRIKE_ANIM, false ));
-            return PlayState.CONTINUE;
-        }
-        // Wand Ranged
-        if(this.isRanged()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(RANGED_ANIM, false));
-            return PlayState.CONTINUE;
-        }
-        // Dash
-        if(this.isDash()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(DASH_ANIM, false));
-            return PlayState.CONTINUE;
-        }
-        // Spin Attack
-        if(this.isSpinAttack()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(SPIN_ANIM, false));
-            return PlayState.CONTINUE;
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
 
     @Override
     public int startAttack(EntityLivingBase target, float distanceSq, boolean strafingBackwards) {
@@ -274,7 +199,7 @@ public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatabl
     // Simple Melee Strike
     private Consumer<EntityLivingBase> strikeMelee = (target) -> {
         this.setFightMode(true);
-        this.setSimpleStrike(true);
+        animator.performAttack(STRIKE_ANIM);
         addEvent(() -> {
             ModUtils.leapTowards(this, target.getPositionVector(), 0.5f, 0.2f);
         }, 10);
@@ -291,7 +216,6 @@ public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatabl
 
 
         addEvent(() -> {
-            this.setSimpleStrike(false);
             this.setFightMode(false);
         }, 22);
     };
@@ -345,6 +269,7 @@ public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatabl
     private Consumer<EntityLivingBase> RangedAttack = (target) -> {
         this.setRanged(true);
         this.setFightMode(true);
+        animator.performAttack(RANGED_ANIM);
 
         addEvent(() -> {
 
@@ -369,9 +294,8 @@ public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatabl
     };
 
     private Consumer<EntityLivingBase> dashAwayMove = (target) -> {
-        this.setDash(true);
         this.setFightMode(true);
-
+        animator.performAttack(DASH_ANIM);
         addEvent(()-> {
             Vec3d randomPoint = new Vec3d(ModRand.getFloat(10), ModRand.getFloat(1), ModRand.getFloat(10)).add(this.getPositionVector());
             Vec3d away = this.getPositionVector().subtract(randomPoint).normalize();
@@ -379,14 +303,13 @@ public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatabl
         }, 5);
 
         addEvent(() -> {
-            this.setDash(false);
             this.setFightMode(false);
         }, 20);
     };
     // Spin Attack
     private Consumer<EntityLivingBase> spinCircle = (target) -> {
-        this.setSpinAttack(true);
         this.setFightMode(true);
+        animator.performAttack(SPIN_ANIM);
 
         addEvent(()-> {
             for(int i = 0; i < 20; i += 5) {
@@ -417,7 +340,6 @@ public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatabl
         }, 50);
 
         addEvent(() -> {
-            this.setSpinAttack(false);
             this.setFightMode(false);
         }, 85);
 
@@ -434,15 +356,5 @@ public class EntityNetherAbberrant extends EntityFlameBase implements IAnimatabl
             return false;
         }
         return super.attackEntityFrom(source, amount);
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

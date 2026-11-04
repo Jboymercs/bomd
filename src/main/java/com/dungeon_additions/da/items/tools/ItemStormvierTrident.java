@@ -4,7 +4,6 @@ import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.rot_knights.ProjectileStormTrident;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
-import com.dungeon_additions.da.util.IHasModel;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
@@ -19,16 +18,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class ItemStormvierTrident extends ToolSword implements IAnimatable {
+public class ItemStormvierTrident extends ToolSword {
 
     private String info_loc;
-    public AnimationFactory factory = new AnimationFactory(this);
 
     public ItemStormvierTrident(String name, ToolMaterial material, String info_loc) {
         super(name, material);
@@ -122,16 +117,6 @@ public class ItemStormvierTrident extends ToolSword implements IAnimatable {
     @Override
     public double getAttackSpeed() {
         return -3.0000000953674316D;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 
 }

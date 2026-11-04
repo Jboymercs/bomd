@@ -1,16 +1,16 @@
 package com.dungeon_additions.da.entity.desert_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
-import com.dungeon_additions.da.entity.ai.dark_dungeon.EntityAIRoyalAttack;
 import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityScutterBeetleAI;
-import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkRoyal;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -20,9 +20,7 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.passive.EntityRabbit;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -33,24 +31,13 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable, IAttack, IAnimationTickable {
+public class EntityScutterBeetle extends EntityDesertBase implements IAttack {
 
-    private final AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttacks;
-    private final String ANIM_IDLE = "idle";
-    private final String ANIM_WALK = "walk";
 
     private final String ANIM_BITE = "bite";
     private final String ANIM_BEGIN_SCUTTLE = "begin_scuttle";
@@ -59,17 +46,10 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
 
     private boolean setHeadState;
 
-    private static final DataParameter<Boolean> BITE = EntityDataManager.createKey(EntityScutterBeetle.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> BEGIN_SCUTTLE = EntityDataManager.createKey(EntityScutterBeetle.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SCUTTLE = EntityDataManager.createKey(EntityScutterBeetle.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> END_SCUTTLE = EntityDataManager.createKey(EntityScutterBeetle.class, DataSerializers.BOOLEAN);
 
-    public boolean isBite() {
-        return this.dataManager.get(BITE);
-    }
-    private void setBite(boolean value) {
-        this.dataManager.set(BITE, Boolean.valueOf(value));
-    }
     public boolean isBeginScuttle() {
         return this.dataManager.get(BEGIN_SCUTTLE);
     }
@@ -88,6 +68,8 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
     private void setEndScuttle(boolean value) {
         this.dataManager.set(END_SCUTTLE, Boolean.valueOf(value));
     }
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
 
     public EntityScutterBeetle(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -97,6 +79,7 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
         this.setScuttle(false);
         this.falter_resistance = 0.4F;
         this.hemorrhage_resistance = 0.1F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityScutterBeetle(World worldIn) {
@@ -107,12 +90,12 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
         this.setScuttle(false);
         this.falter_resistance = 0.4F;
         this.hemorrhage_resistance = 0.1F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         super.writeEntityToNBT(nbt);
-        nbt.setBoolean("Bite", this.isBite());
         nbt.setBoolean("Begin_Scuttle", this.isBeginScuttle());
         nbt.setBoolean("Scuttle", this.isScuttle());
         nbt.setBoolean("End_Scuttle", this.isEndScuttle());
@@ -121,7 +104,6 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         super.readEntityFromNBT(nbt);
-        this.setBite(nbt.getBoolean("Bite"));
         this.setBeginScuttle(nbt.getBoolean("Begin_Scuttle"));
         this.setScuttle(nbt.getBoolean("Scuttle"));
         this.setEndScuttle(nbt.getBoolean("End_Scuttle"));
@@ -130,7 +112,6 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
     @Override
     public void entityInit() {
         super.entityInit();
-        this.dataManager.register(BITE, Boolean.valueOf(false));
         this.dataManager.register(BEGIN_SCUTTLE, Boolean.valueOf(false));
         this.dataManager.register(SCUTTLE, Boolean.valueOf(false));
         this.dataManager.register(END_SCUTTLE, Boolean.valueOf(false));
@@ -165,7 +146,7 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
     @Override
     public void onUpdate() {
         super.onUpdate();
-
+        this.moveAnalysis.update();
         if(this.setHeadState && !world.isRemote) {
             EntityLivingBase target = this.getAttackTarget();
             if(target != null) {
@@ -217,6 +198,7 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
       this.setHeadState = false;
       this.scuttleTimer = 40;
       this.lockLook =false;
+      animator.performAttack(ANIM_END_SCUTTLE);
 
       addEvent(()-> {
           this.setEndScuttle(false);
@@ -229,6 +211,7 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
         this.setFullBodyUsage(true);
         this.setBeginScuttle(true);
         this.setFightMode(true);
+        animator.performAttack(ANIM_BEGIN_SCUTTLE);
 
         addEvent(()-> {
             this.playSound(SoundsHandler.BEETLE_WAR_CRY, 1.0f, 0.6f / (rand.nextFloat() * 0.4f + 0.2f));
@@ -252,7 +235,7 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
 
     private final Consumer<EntityLivingBase> do_bite_attack = (target) -> {
         this.setFightMode(true);
-        this.setBite(true);
+        animator.performAttack(ANIM_BITE);
         this.setImmovable(true);
 
         addEvent(()-> {
@@ -280,7 +263,6 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
         }, 40);
 
         addEvent(()-> {
-        this.setBite(false);
         this.setImmovable(false);
         this.setFightMode(false);
         }, 50);
@@ -288,64 +270,14 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
     };
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "walk_controller", 0, this::predicateWalk));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttackStates));
-        data.addAnimationController(new AnimationController(this, "head_controller", 0, this::predicateHoldHead));
-    }
-
-    private <E extends IAnimatable> PlayState predicateHoldHead(AnimationEvent<E> event) {
-        if(this.isScuttle() && this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SCUTTLE, true));
-            return PlayState.CONTINUE;
+    public void updateAnimations() {
+        if(this.isScuttle()) {
+            animator.performAttack(ANIM_SCUTTLE, true);
         }
-        return PlayState.STOP;
-    }
-    private <E extends IAnimatable> PlayState predicateAttackStates(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isBite()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BITE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isBeginScuttle()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BEGIN_SCUTTLE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isEndScuttle()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_END_SCUTTLE, false));
-                return PlayState.CONTINUE;
-            }
+        if(!this.isFullBodyUsage()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            animator.handleIdleStates(isMovingOnGround);
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateWalk(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK, true));
-            event.getController().setAnimationSpeed(1.0 + (0.004 * event.getLimbSwing()));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
     }
 
     @Override
@@ -385,10 +317,5 @@ public class EntityScutterBeetle extends EntityDesertBase implements IAnimatable
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundsHandler.BEETLE_WALK, 0.3F, 0.8f + ModRand.getFloat(0.3F));
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

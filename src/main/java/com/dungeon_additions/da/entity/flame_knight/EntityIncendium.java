@@ -1,18 +1,16 @@
 package com.dungeon_additions.da.entity.flame_knight;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.entity.EntityAbstractBase;
-import com.dungeon_additions.da.entity.ai.EntityAiTimedAttack;
 import com.dungeon_additions.da.entity.ai.EntityTimedAttackIncendium;
 import com.dungeon_additions.da.entity.ai.IAttack;
-import com.dungeon_additions.da.entity.sky_dungeon.EntityImperialSword;
-import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -36,23 +34,14 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAnimationTickable, IAttack {
+public class EntityIncendium extends EntityFlameBase implements IAttack {
 
-    private AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttacks;
     private final String ANIM_IDLE = "idle";
     private final String ANIM_SHIELD_IDLE = "shield_idle";
@@ -73,12 +62,6 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
     private static final DataParameter<Boolean> DEFENSE_MODE = EntityDataManager.createKey(EntityIncendium.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> ENTER_DEFENSE = EntityDataManager.createKey(EntityIncendium.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> END_DEFENSE = EntityDataManager.createKey(EntityIncendium.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> MAGMA_STOMP = EntityDataManager.createKey(EntityIncendium.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_LEFT = EntityDataManager.createKey(EntityIncendium.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HEAVY_SWING = EntityDataManager.createKey(EntityIncendium.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_RIGHT = EntityDataManager.createKey(EntityIncendium.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_RIGHT_CONTINUE = EntityDataManager.createKey(EntityIncendium.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_RIGHT_FINISH = EntityDataManager.createKey(EntityIncendium.class, DataSerializers.BOOLEAN);
 
     public boolean isDefenseMode() {
         return this.dataManager.get(DEFENSE_MODE);
@@ -104,53 +87,8 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
         this.dataManager.set(END_DEFENSE, Boolean.valueOf(value));
     }
 
-    private boolean isMagmaStomp() {
-        return this.dataManager.get(MAGMA_STOMP);
-    }
-
-    private void setMagmaStomp(boolean value) {
-        this.dataManager.set(MAGMA_STOMP, Boolean.valueOf(value));
-    }
-
-    private boolean isSwingLeft() {
-        return this.dataManager.get(SWING_LEFT);
-    }
-
-    private void setSwingLeft(boolean value) {
-        this.dataManager.set(SWING_LEFT, Boolean.valueOf(value));
-    }
-
-    private boolean isHeavySwing() {
-        return this.dataManager.get(HEAVY_SWING);
-    }
-
-    private void setHeavySwing(boolean value) {
-        this.dataManager.set(HEAVY_SWING, Boolean.valueOf(value));
-    }
-
-    private boolean isSwingRight() {
-        return this.dataManager.get(SWING_RIGHT);
-    }
-
-    private void setSwingRight(boolean value) {
-        this.dataManager.set(SWING_RIGHT, Boolean.valueOf(value));
-    }
-
-    private boolean isSwingRightContinue() {
-        return this.dataManager.get(SWING_RIGHT_CONTINUE);
-    }
-
-    private void setSwingRightContinue(boolean value) {
-        this.dataManager.set(SWING_RIGHT_CONTINUE, Boolean.valueOf(value));
-    }
-
-    private boolean isSwingRightFinish() {
-        return this.dataManager.get(SWING_RIGHT_FINISH);
-    }
-
-    private void setSwingRightFinish(boolean value) {
-        this.dataManager.set(SWING_RIGHT_FINISH, Boolean.valueOf(value));
-    }
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
 
     public EntityIncendium(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -162,6 +100,7 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
         this.experienceValue = 25;
         this.falter_resistance = 1.0F;
         this.hemorrhage_resistance = 0.2F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityIncendium(World worldIn) {
@@ -174,6 +113,7 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
         this.experienceValue = 25;
         this.falter_resistance = 1.0F;
         this.hemorrhage_resistance = 0.2F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     @Override
@@ -182,12 +122,6 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
         this.dataManager.register(DEFENSE_MODE, Boolean.valueOf(false));
         this.dataManager.register(ENTER_DEFENSE, Boolean.valueOf(false));
         this.dataManager.register(END_DEFENSE, Boolean.valueOf(false));
-        this.dataManager.register(MAGMA_STOMP, Boolean.valueOf(false));
-        this.dataManager.register(SWING_LEFT, Boolean.valueOf(false));
-        this.dataManager.register(SWING_RIGHT, Boolean.valueOf(false));
-        this.dataManager.register(SWING_RIGHT_CONTINUE, Boolean.valueOf(false));
-        this.dataManager.register(SWING_RIGHT_FINISH, Boolean.valueOf(false));
-        this.dataManager.register(HEAVY_SWING, Boolean.valueOf(false));
     }
 
     @Override
@@ -195,12 +129,6 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
         nbt.setBoolean("Defense_Mode", this.isDefenseMode());
         nbt.setBoolean("Enter_Defense", this.isEnterDefense());
         nbt.setBoolean("End_Defense", this.isEndDefense());
-        nbt.setBoolean("Magma_Stomp", this.isMagmaStomp());
-        nbt.setBoolean("Swing_Left", this.isSwingLeft());
-        nbt.setBoolean("Swing_Right", this.isSwingRight());
-        nbt.setBoolean("Swing_Right_Continue", this.isSwingRightContinue());
-        nbt.setBoolean("Swing_Right_Finish", this.isSwingRightFinish());
-        nbt.setBoolean("Heavy_Swing", this.isHeavySwing());
         super.writeEntityToNBT(nbt);
     }
 
@@ -209,12 +137,6 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
         this.setDefenseMode(nbt.getBoolean("Defense_Mode"));
         this.setEnterDefense(nbt.getBoolean("Enter_Defense"));
         this.setEndDefense(nbt.getBoolean("End_Defense"));
-        this.setMagmaStomp(nbt.getBoolean("Magma_Stomp"));
-        this.setSwingLeft(nbt.getBoolean("Swing_Left"));
-        this.setSwingRight(nbt.getBoolean("Swing_Right"));
-        this.setSwingRightContinue(nbt.getBoolean("Swing_Right_Continue"));
-        this.setSwingRightFinish(nbt.getBoolean("Swing_Right_Finish"));
-        this.setHeavySwing(nbt.getBoolean("Heavy_Swing"));
         super.readEntityFromNBT(nbt);
     }
 
@@ -248,6 +170,7 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
     private void enterDefensiveMode() {
         this.setEnterDefense(true);
         this.setFightMode(true);
+        animator.performAttack(ANIM_ENTER_DEFENSE_MODE);
         this.setImmovable(true);
         this.setFullBodyUsage(true);
         this.setNoGravity(true);
@@ -265,6 +188,7 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
         this.setDefenseMode(false);
         this.setFightMode(true);
         this.setEndDefense(true);
+        animator.performAttack(ANIM_END_DEFENSE_MODE);
         this.setImmovable(true);
         this.setFullBodyUsage(true);
         this.setNoGravity(false);
@@ -306,7 +230,7 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
     @Override
     public void onUpdate() {
         super.onUpdate();
-
+        this.moveAnalysis.update();
         if (!world.isRemote) {
             EntityLivingBase target = this.getAttackTarget();
 
@@ -414,9 +338,9 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
     };
 
     private final Consumer<EntityLivingBase> heavy_Swing = (target) -> {
-        this.setHeavySwing(true);
         this.setFightMode(true);
         this.setImmovable(true);
+        animator.performAttack(ANIM_HEAVY_SWING);
         attackCounter--;
         if(attackCounter <= 0) {
             markForChange = true;
@@ -456,12 +380,11 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
         addEvent(()-> {
         this.setImmovable(false);
         this.setFightMode(false);
-        this.setHeavySwing(false);
         }, 64);
     };
 
     private final Consumer<EntityLivingBase> swing_Right = (target) -> {
-      this.setSwingRight(true);
+      animator.performAttack(ANIM_SWING_RIGHT);
       this.setFightMode(true);
         attackCounter--;
         if(attackCounter <= 0) {
@@ -485,17 +408,15 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
       }, 24);
 
       addEvent(()-> {
-        this.setSwingRight(false);
         this.lockLook = false;
           this.setImmovable(true);
         int randI = ModRand.range(1, 11);
         if(randI >= 6) {
             this.setSwingTooContinue(target);
         } else {
-            this.setSwingRightFinish(true);
+            animator.performAttack(ANIM_SWING_RIGHT_FINISH);
 
             addEvent(()-> {
-            this.setSwingRightFinish(false);
             this.setImmovable(false);
             this.setFightMode(false);
             }, 10);
@@ -508,8 +429,7 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
     }
 
     private final Consumer<EntityLivingBase> swing_right_Continue = (target) -> {
-        this.setSwingRightContinue(true);
-
+        animator.performAttack(ANIM_SWING_RIGHT_CONTINUE);
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
             Vec3d targetedPos = target.getPositionVector().add(posSet.scale(1));
@@ -535,15 +455,14 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
         this.lockLook = false;
         }, 28);
         addEvent(()-> {
-        this.setSwingRightContinue(false);
         this.setFightMode(false);
         this.setImmovable(false);
         }, 36);
     };
     private final Consumer<EntityLivingBase> swing_Left = (target) -> {
       this.setFightMode(true);
-      this.setSwingLeft(true);
       this.setImmovable(true);
+      animator.performAttack(ANIM_SWING_LEFT);
         attackCounter--;
         if(attackCounter <= 0) {
             markForChange = true;
@@ -574,14 +493,13 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
 
       addEvent(()-> {
         this.setImmovable(false);
-        this.setSwingLeft(false);
         this.setFightMode(false);
       }, 40);
     };
 
     private final Consumer<EntityLivingBase> magma_stomp_attack = (target) -> {
         this.setFightMode(true);
-        this.setMagmaStomp(true);
+        animator.performAttack(ANIM_MAGMA_STOMP);
         attackCounter--;
         if(attackCounter <= 0) {
             markForChange = true;
@@ -605,74 +523,19 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
 
         addEvent(()-> {
         this.setFightMode(false);
-        this.setMagmaStomp(false);
         }, 50);
     };
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "ab_idle", 0, this::predicateIdle));
-        animationData.addAnimationController(new AnimationController(this, "shield_idle_controller", 0, this::predicateShieldIdle));
-        animationData.addAnimationController(new AnimationController(this, "fight_controller", 0, this::predicateFightController));
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-
+    public void updateAnimations() {
+        animator.setCustomLowerIdle(ANIM_SHIELD_IDLE);
         if(!this.isFullBodyUsage()) {
-            if (this.isDefenseMode()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DEFENSE_IDLE, true));
-            } else if (!this.isFightMode()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            }
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateShieldIdle(AnimationEvent<E> event) {
-
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SHIELD_IDLE, true));
-
-        return PlayState.CONTINUE;
-    }
-
-    private <E extends IAnimatable> PlayState predicateFightController(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isEnterDefense()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_ENTER_DEFENSE_MODE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isEndDefense()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_END_DEFENSE_MODE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isHeavySwing()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_HEAVY_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingLeft()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_LEFT, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingRight()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_RIGHT, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingRightContinue()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_RIGHT_CONTINUE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingRightFinish()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_RIGHT_FINISH, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isMagmaStomp()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MAGMA_STOMP, false));
-                return PlayState.CONTINUE;
+            if(this.isDefenseMode()) {
+                animator.setCustomUpperIdle(ANIM_DEFENSE_IDLE);
+            } else {
+                animator.setCustomUpperIdle(ANIM_IDLE);
             }
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
     }
 
 
@@ -726,11 +589,6 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
     {
     }
 
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
 
     private static final ResourceLocation LOOT_MOB = new ResourceLocation(ModReference.MOD_ID, "incendium");
 
@@ -742,18 +600,6 @@ public class EntityIncendium extends EntityFlameBase implements IAnimatable, IAn
     @Override
     protected boolean canDropLoot() {
         return true;
-    }
-
-
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
 }

@@ -1,10 +1,9 @@
 package com.dungeon_additions.da.entity.mini_blossom;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
-import com.dungeon_additions.da.entity.ai.EntityAIBlossom;
 import com.dungeon_additions.da.entity.ai.EntityAiMiniBlossom;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.sky_dungeon.EntityFarumSpike;
@@ -32,21 +31,13 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable, IAttack, IAnimationTickable {
+public class EntityMiniBlossom extends EntityAbstractBase implements IAttack {
 
     private final String ANIM_IDLE = "idle";
     private final String ANIM_TRAVEL = "travel";
@@ -57,16 +48,15 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
     private final String ANIM_ATTACK = "attack";
     private final String ANIM_SHOOT_THORN = "shoot_thorn";
 
-    private static final DataParameter<Boolean> THORN_ATTACK = EntityDataManager.createKey(EntityMiniBlossom.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> MELEE_ATTACK = EntityDataManager.createKey(EntityMiniBlossom.class, DataSerializers.BOOLEAN);
-
     private static final DataParameter<Boolean> SPROUT = EntityDataManager.createKey(EntityMiniBlossom.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> BURROW = EntityDataManager.createKey(EntityMiniBlossom.class, DataSerializers.BOOLEAN);
 
     private static final DataParameter<Boolean> TRAVEL = EntityDataManager.createKey(EntityMiniBlossom.class, DataSerializers.BOOLEAN);
 
-    private final AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttacks;
+
+    private DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+
     public EntityMiniBlossom(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
         this.setSize(1.5f, 3.0f);
@@ -86,14 +76,10 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
     public boolean isCurrentlyTravelling = false;
     public boolean hasPlayedAnimation = false;
 
-    public boolean isThornAttack() {return this.dataManager.get(THORN_ATTACK);}
-    public boolean isMeleeAttack() {return this.dataManager.get(MELEE_ATTACK);}
     public boolean isSprout() {return this.dataManager.get(SPROUT);}
     public boolean isBurrow(){return this.dataManager.get(BURROW);}
     public boolean isTravel() {return this.dataManager.get(TRAVEL);}
 
-    public void setThornAttack(boolean value) {this.dataManager.set(THORN_ATTACK, Boolean.valueOf(value));}
-    public void setMeleeAttack(boolean value) {this.dataManager.set(MELEE_ATTACK, Boolean.valueOf(value));}
     public void setSprout(boolean value) {this.dataManager.set(SPROUT, Boolean.valueOf(value));}
     public void setBurrow(boolean value) {this.dataManager.set(BURROW, Boolean.valueOf(value));}
     public void setTravel(boolean value) {this.dataManager.set(TRAVEL, Boolean.valueOf(value));}
@@ -101,8 +87,6 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
     @Override
     public void entityInit() {
         super.entityInit();
-        this.dataManager.register(THORN_ATTACK, Boolean.valueOf(false));
-        this.dataManager.register(MELEE_ATTACK, Boolean.valueOf(false));
         this.dataManager.register(SPROUT, Boolean.valueOf(false));
         this.dataManager.register(BURROW, Boolean.valueOf(false));
         this.dataManager.register(TRAVEL, Boolean.valueOf(false));
@@ -113,8 +97,6 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
-        nbt.setBoolean("Thorn_Attack", this.isThornAttack());
-        nbt.setBoolean("Melee_Attack", this.isMeleeAttack());
         nbt.setBoolean("Sprout", this.isSprout());
         nbt.setBoolean("Burrow", this.isBurrow());
         nbt.setBoolean("Travel", this.isTravel());
@@ -123,8 +105,6 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
-        this.setThornAttack(nbt.getBoolean("Thorn_Attack"));
-        this.setMeleeAttack(nbt.getBoolean("Melee_Attack"));
         this.setSprout(nbt.getBoolean("Sprout"));
         this.setBurrow(nbt.getBoolean("Burrow"));
         this.setTravel(nbt.getBoolean("Travel"));
@@ -158,6 +138,7 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
     //Puts the Blossom into a stationary State
     public void playSproutAnimation() {
         this.setTravel(false);
+        animator.performAttack(ANIM_SPROUT);
         this.setImmovable(true);
         this.setSprout(true);
         addEvent(()-> {
@@ -171,6 +152,7 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
     //Puts the Mini-blossom into a movement State
     public void playBurrowAnimation() {
         this.setBurrow(true);
+        animator.performAttack(ANIM_BURROW);
         addEvent(()-> {
       this.setImmovable(false);
         this.setBurrow(false);
@@ -179,54 +161,16 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
         }, 35);
     }
 
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(!this.isSprout() && !this.isFightMode() && !this.isBurrow() && !this.isTravel()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-                return PlayState.CONTINUE;
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateTravel(AnimationEvent<E> event) {
-        if(this.isTravel() && !this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_TRAVEL, true));
-            return PlayState.CONTINUE;
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateSproutBurrow(AnimationEvent<E> event) {
+    @Override
+    public void updateAnimations() {
         if(!this.isFightMode()) {
-            if(this.isBurrow()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BURROW, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSprout()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SPROUT, false));
-                return PlayState.CONTINUE;
+            if(this.isTravel()) {
+                animator.setCustomUpperIdle(ANIM_TRAVEL);
+            } else {
+                animator.setCustomUpperIdle(ANIM_IDLE);
             }
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
     }
-
-    private<E extends IAnimatable> PlayState predicateAttack(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isThornAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SHOOT_THORN, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isMeleeAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_ATTACK, false));
-                return PlayState.CONTINUE;
-            }
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
 
 
     @Override
@@ -281,8 +225,8 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
 
 
     private Consumer<EntityLivingBase> meleeAttack = (target) -> {
-      this.setMeleeAttack(true);
       this.setFightMode(true);
+      animator.performAttack(ANIM_ATTACK);
       //This Attack will launch the player
 
       addEvent(()-> {
@@ -298,15 +242,13 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
 
       addEvent(()-> this.lockLook =false, 40);
       addEvent(()-> {
-        this.setMeleeAttack(false);
         this.setFightMode(false);
       }, 40);
     };
 
     private Consumer<EntityLivingBase> projectileAttack = (target)-> {
-      this.setThornAttack(true);
       this.setFightMode(true);
-
+      animator.performAttack(ANIM_SHOOT_THORN);
       //Thorn Attack
       addEvent(()-> {
 
@@ -325,17 +267,8 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
       }, 16);
       addEvent(()-> {
         this.setFightMode(false);
-        this.setThornAttack(false);
       }, 30);
     };
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "travel_controller", 0, this::predicateTravel));
-        data.addAnimationController(new AnimationController(this, "sp_bu_controller", 0, this::predicateSproutBurrow));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttack));
-    }
 
     @Override
     public final boolean attackEntityFrom(DamageSource source, float amount) {
@@ -348,20 +281,5 @@ public class EntityMiniBlossom extends EntityAbstractBase implements IAnimatable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return SoundsHandler.BLOSSOM_HURT ;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

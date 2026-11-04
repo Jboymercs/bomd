@@ -1,28 +1,35 @@
 package com.dungeon_additions.da.entity.render.void_dungeon;
 
-import com.dungeon_additions.da.entity.EntityNetherAbberrant;
-import com.dungeon_additions.da.entity.model.void_dungeon.ModelBlueWave;
-import com.dungeon_additions.da.entity.model.void_dungeon.ModelVoidBlackHole;
-import com.dungeon_additions.da.entity.render.RenderAbstractGeoEntity;
-import com.dungeon_additions.da.entity.void_dungeon.EntityBlueWave;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimator;
 import com.dungeon_additions.da.entity.void_dungeon.EntityVoidBlackHole;
-import net.minecraft.client.renderer.GlStateManager;
+import com.dungeon_additions.da.util.ModReference;
+import mod.azure.azurelib.render.entity.AzEntityRenderer;
+import mod.azure.azurelib.render.entity.AzEntityRendererConfig;
+import mod.azure.azurelib.render.layer.AzAutoGlowingLayer;
+import mod.azure.azurelib.render.vertex.RenderType;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.util.ResourceLocation;
 
-public class RenderVoidBlackHole extends RenderAbstractGeoEntity<EntityVoidBlackHole> {
+public class RenderVoidBlackHole extends AzEntityRenderer<EntityVoidBlackHole> {
+
+    private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/void_hole.png");
+    private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/entity/obsidilith/geo.void_hole.json");
+
 
     public RenderVoidBlackHole(RenderManager renderManager) {
-        super(renderManager, new ModelVoidBlackHole());
+        super(AzEntityRendererConfig.<EntityVoidBlackHole>builder(MODEL_RESLOC, TEXTURE)
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE))
+                        .setRenderEntry(contextPipeline -> {
+
+                            contextPipeline.animatable().updateAnimations();
+                            return contextPipeline;
+                        })
+
+                        .setAnimatorProvider(() -> new DaEntityAnimator<>("void_hole", true, false))
+                        .addRenderLayer(new AzAutoGlowingLayer<>())
+                        .setShadowRadius(0F)
+                        .build()
+                , renderManager);
     }
 
-    @Override
-    public void doRender(EntityVoidBlackHole entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        GlStateManager.enableNormalize();
-        GlStateManager.enableBlend();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 0.75F);
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        super.doRender(entity, x, y, z, entityYaw, partialTicks);
-        GlStateManager.disableBlend();
-        GlStateManager.disableNormalize();
-    }
 }

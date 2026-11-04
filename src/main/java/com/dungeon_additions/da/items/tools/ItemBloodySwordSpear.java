@@ -23,19 +23,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class ItemBloodySwordSpear extends ToolSword implements IAnimatable {
+public class ItemBloodySwordSpear extends ToolSword {
 
-    public AnimationFactory factory = new AnimationFactory(this);
     private String info_loc;
-
-    private String ANIM_STRIKE = "use_blade";
-    private String controllerName = "attack_controller";
     private boolean isDashing = false;
     private int dashSpawnBlood = 0;
     public ItemBloodySwordSpear(String name, ToolMaterial material, String info_loc) {
@@ -169,11 +162,6 @@ public class ItemBloodySwordSpear extends ToolSword implements IAnimatable {
         return EnumRarity.EPIC;
     }
 
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
     public double getAttackSpeed() {
         return -3D;
     }
@@ -182,10 +170,5 @@ public class ItemBloodySwordSpear extends ToolSword implements IAnimatable {
     public boolean canDisableShield(ItemStack stack, ItemStack shield, EntityLivingBase entity, EntityLivingBase attacker)
     {
         return true;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 }

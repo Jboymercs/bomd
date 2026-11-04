@@ -1,24 +1,19 @@
 package com.dungeon_additions.da.entity.blossom;
 
-import com.dungeon_additions.da.blocks.BlockBase;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.EntityAIBlossom;
-import com.dungeon_additions.da.entity.ai.EntityAiTimedAttack;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.blossom.action.*;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
-import com.dungeon_additions.da.entity.model.ModelVoidBlossom;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.util.IEntitySound;
-import com.dungeon_additions.da.entity.void_dungeon.EntityObsidilith;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -26,9 +21,6 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -37,15 +29,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.core.processor.IBone;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -56,7 +39,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAnimatable, IAttack, IAnimationTickable, IEntitySound {
+public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAttack, IEntitySound {
 
     //TODO
     //Finish Azeala's with Particle Effects
@@ -71,9 +54,8 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
     private final String ANIM_DEATH = "death";
     private final String ANIM_SUMMON = "spawn";
 
-    private final AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttacks;
-
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
 
     public EntityVoidBlossom(World worldIn) {
         super(worldIn);
@@ -101,14 +83,6 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
         this.setSetSpawnLoc(true);
     }
 
-
-    @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "blossom_idle_controller", 0, this::predicateIdle));
-        animationData.addAnimationController(new AnimationController(this, "blossom_attack", 0, this::predicateAttack));
-        animationData.addAnimationController(new AnimationController(this, "blossom_summon_death", 0, this::predicateDeath));
-    }
-
     @Override
     public void initEntityAI() {
         super.initEntityAI();
@@ -118,54 +92,21 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false));
     }
 
-    private<E extends IAnimatable>PlayState predicateDeath(AnimationEvent<E> event) {
+    @Override
+    public void updateAnimations() {
         if(this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DEATH, false));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_DEATH);
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
 
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(!this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_TARGET, true));
-            return PlayState.CONTINUE;
+        if(!this.isFightMode() && !this.isDeathState()) {
+            animator.setCustomUpperIdle(ANIM_IDLE_TARGET);
         }
-        return PlayState.STOP;
-    }
-    private <E extends IAnimatable> PlayState predicateAttack(AnimationEvent<E> event) {
-        if(!this.isDeathState()) {
-            if (this.isSpikeAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SPIKE_SMALL, false));
-                return PlayState.CONTINUE;
-            }
-            if (this.isSpikeWave()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SPIKE_AOE, false));
-                return PlayState.CONTINUE;
-            }
-            if (this.isLeafAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_LEAF_STRIKE, false));
-                return PlayState.CONTINUE;
-            }
-            if (this.isSporeAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_LAUNCH_SPORE, false));
-                return PlayState.CONTINUE;
-            }
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
     }
 
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return SoundsHandler.BLOSSOM_HURT ;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 
     @Override
@@ -235,8 +176,7 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
     //Spike Attack Simple
     private Consumer<EntityLivingBase> spikeAttack = (target)-> {
         this.setFightMode(true);
-        this.setSpikeAttack(true);
-
+        animator.performAttack(ANIM_SPIKE_SMALL);
             addEvent(()-> {
                 if(!world.isRemote) {
                     addEvent(()-> {
@@ -269,7 +209,6 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
             }, 21);
         addEvent(()-> {
             this.setFightMode(false);
-            this.setSpikeAttack(false);
         }, 120);
     };
 
@@ -284,14 +223,13 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
     //Spike Wave Initiator
     private Consumer<EntityLivingBase> spikeWave = (target)-> {
         this.setFightMode(true);
-        this.setSpikeWave(true);
+        animator.performAttack(ANIM_SPIKE_AOE);
         addEvent(()-> playSound(SoundsHandler.BLOSSOM_BURROW, 2.0f, 1.0f), 25);
         addEvent(()-> new ActionShortRangeWave().performAction(this, target), 30);
         addEvent(()-> new ActionMediumRangeWave().performAction(this, target), 60);
         addEvent(()-> new ActionLongRangeWave().performAction(this, target), 90);
         addEvent(()-> {
             this.setFightMode(false);
-            this.setSpikeWave(false);
         }, 104);
     };
 
@@ -300,20 +238,19 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
     //Leaf Attack
     private Consumer<EntityLivingBase> leafAttack = (target) -> {
         this.setFightMode(true);
-        this.setLeafAttack(true);
+        animator.performAttack(ANIM_LEAF_STRIKE);
 
         addEvent(()-> new ActionLeafAttack(leafProjectileSupplier, 0.8f).performAction(this, target), 28);
         addEvent(()-> new ActionLeafAttack(leafProjectileSupplier, 0.8f).performAction(this, target), 50);
         addEvent(()-> new ActionLeafAttack(leafProjectileSupplier, 0.8f).performAction(this, target), 74);
         addEvent(()-> {
             this.setFightMode(false);
-            this.setLeafAttack(false);
         }, 106);
     };
     //Spore bomb
     private Consumer<EntityLivingBase> sporeBomb = (target) -> {
         this.setFightMode(true);
-        this.setSporeAttack(true);
+        animator.performAttack(ANIM_LAUNCH_SPORE);
         addEvent(()-> playSound(SoundsHandler.SPORE_PREPARE, 1.0f, 1.0f), 30);
         addEvent(()-> {
             if(target.isEntityAlive()) {
@@ -330,7 +267,6 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
 
         addEvent(()-> {
             this.setFightMode(false);
-            this.setSporeAttack(false);
         }, 60);
     };
 
@@ -508,16 +444,6 @@ public class EntityVoidBlossom extends EntityAbstractVoidBlossom implements IAni
             this.setDead();
             }, 71);
         super.onDeath(cause);
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Nullable

@@ -2,8 +2,6 @@ package com.dungeon_additions.da.items.shield;
 
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.init.ModItems;
-import com.dungeon_additions.da.packets.MessageModParticles;
 import com.dungeon_additions.da.proxy.ClientProxy;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -14,7 +12,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.tileentity.TileEntityBanner;
 import net.minecraft.util.*;
@@ -25,16 +22,12 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemDraugrShield extends BOMDShieldItem implements IAnimatable {
+public class ItemDraugrShield extends BOMDShieldItem {
 
-    public AnimationFactory factory = new AnimationFactory(this);
     private String info_loc;
 
     private int dashTime = 0;
@@ -171,16 +164,5 @@ public class ItemDraugrShield extends BOMDShieldItem implements IAnimatable {
         }
         tooltip.add(TextFormatting.GOLD + I18n.translateToLocal("description.dungeon_additions.shield_pre.name") + TextFormatting.AQUA + I18n.translateToLocal(ClientProxy.SHIELD_ABILITY.getDisplayName()));
         ItemBanner.appendHoverTextFromTileEntityTag(stack, tooltip);
-    }
-
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 }

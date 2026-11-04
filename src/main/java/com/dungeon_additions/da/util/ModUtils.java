@@ -1650,4 +1650,23 @@ public class ModUtils {
         return list.stream().filter(isInstance).map(cast).collect(Collectors.toList());
     }
 
+    /*** Linearly interpolates an angle between the start between the start and end values given as degrees.
+     * Params:
+     * pDelta – A value between 0 and 1 that indicates the percentage of the lerp. (0 will give the start value and 1 will give the end value)
+     */
+    public static float rotLerp(float pDelta, float pStart, float pEnd) {
+        return pStart + pDelta * MathHelper.wrapDegrees(pEnd - pStart);
+    }
+
+    /**
+     * Method for linear interpolation of floats
+     * @param pDelta A value usually between 0 and 1 that indicates the percentage of the lerp. (0 will give the start
+     * value and 1 will give the end value)
+     * @param pStart Start value for the lerp
+     * @param pEnd End value for the lerp
+     */
+    public static float lerp(float pDelta, float pStart, float pEnd) {
+        return pStart + pDelta * (pEnd - pStart);
+    }
+
 }

@@ -1,20 +1,16 @@
 package com.dungeon_additions.da.entity.frost_dungeon.draugr;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.EntityDraugrMeleeAI;
-import com.dungeon_additions.da.entity.ai.EntityWyrkAttackAI;
 import com.dungeon_additions.da.entity.ai.IAttack;
-import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkRoyal;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityFrostBase;
-import com.dungeon_additions.da.entity.frost_dungeon.EntityWyrk;
-import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
-import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
-import com.sun.jna.platform.win32.WinBase;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -36,20 +32,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnimationTickable, IAttack {
+public class EntityDraugr extends EntityFrostBase implements IAttack {
 
     private final String ANIM_IDLE = "idle";
     private final String ANIM_WALK = "walk";
@@ -66,12 +54,8 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
     private final String ANIM_SHIELD_SWING = "swing_shield";
     private static final DataParameter<Boolean> HAS_SHIELD = EntityDataManager.createKey(EntityDraugr.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DISABLED_SHIELD = EntityDataManager.createKey(EntityDraugr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_MELEE = EntityDataManager.createKey(EntityDraugr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> PIERCE_MELEE = EntityDataManager.createKey(EntityDraugr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_SHIELD = EntityDataManager.createKey(EntityDraugr.class, DataSerializers.BOOLEAN);
 
     private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityDraugr.class, DataSerializers.VARINT);
-    private final AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttack;
     private boolean hasShieldLowered = false;
     private boolean isHasShield() {return this.dataManager.get(HAS_SHIELD);}
@@ -80,12 +64,6 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
     private void setDisabledShield(boolean value) {
         this.dataManager.set(DISABLED_SHIELD, Boolean.valueOf(value));
     }
-    private boolean isSwingMelee() {return this.dataManager.get(SWING_MELEE);}
-    private void setSwingMelee(boolean value) {this.dataManager.set(SWING_MELEE, Boolean.valueOf(value));}
-    private boolean isPierceMelee() {return this.dataManager.get(PIERCE_MELEE);}
-    private void setPierceMelee(boolean value) {this.dataManager.set(PIERCE_MELEE, Boolean.valueOf(value));}
-    private boolean isSwingShield() {return this.dataManager.get(SWING_SHIELD);}
-    private void setSwingShield(boolean value) {this.dataManager.set(SWING_SHIELD, Boolean.valueOf(value));}
 
     public void setSkin(int skinType)
     {
@@ -96,6 +74,9 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
     {
         return this.dataManager.get(SKIN_TYPE).intValue();
     }
+
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, true);
+    private final MoveAnalysis moveAnalysis;
 
     public EntityDraugr(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -110,6 +91,7 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
         }
         this.hemorrhage_resistance = 0.5F;
         this.falter_resistance = 0.9F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityDraugr(World worldIn) {
@@ -125,15 +107,13 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
         }
         this.hemorrhage_resistance = 0.5F;
         this.falter_resistance = 0.9F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("Has_Shield", this.isHasShield());
-        nbt.setBoolean("Swing_Melee", this.isSwingMelee());
-        nbt.setBoolean("Pierce_Melee", this.isPierceMelee());
-        nbt.setBoolean("Swing_Shield", this.isSwingShield());
         nbt.setBoolean("Disabled_Shield", this.isDisabledShield());
         super.writeEntityToNBT(nbt);
     }
@@ -141,9 +121,6 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.setHasShield(nbt.getBoolean("Has_Shield"));
-        this.setSwingMelee(nbt.getBoolean("Swing_Melee"));
-        this.setPierceMelee(nbt.getBoolean("Pierce_Melee"));
-        this.setSwingShield(nbt.getBoolean("Swing_Shield"));
         this.setDisabledShield(nbt.getBoolean("Disabled_Shield"));
         super.readEntityFromNBT(nbt);
     }
@@ -153,9 +130,6 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
         super.entityInit();
         this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
         this.dataManager.register(HAS_SHIELD, Boolean.valueOf(false));
-        this.dataManager.register(SWING_SHIELD, Boolean.valueOf(false));
-        this.dataManager.register(SWING_MELEE, Boolean.valueOf(false));
-        this.dataManager.register(PIERCE_MELEE, Boolean.valueOf(false));
         this.dataManager.register(DISABLED_SHIELD, Boolean.valueOf(false));
     }
 
@@ -164,7 +138,7 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
     @Override
     public void onUpdate() {
         super.onUpdate();
-
+        this.moveAnalysis.update();
         if(!world.isRemote) {
 
             if (this.isDisabledShield()) {
@@ -227,8 +201,8 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
     }
 
     private final Consumer<EntityLivingBase> swing_one = (target) -> {
-        this.setSwingMelee(true);
         this.setFightMode(true);
+        animator.performAttack(ANIM_SWING);
         this.hasShieldLowered = true;
         addEvent(()-> {
             this.setImmovable(true);
@@ -252,16 +226,15 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
         addEvent(()-> this.lockLook = false, 40);
 
         addEvent(()-> {
-            this.setSwingMelee(false);
             this.setFightMode(false);
             this.hasShieldLowered = false;
         }, 55);
     };
 
     private final Consumer<EntityLivingBase> swing_two = (target) -> {
-        this.setPierceMelee(true);
         this.setFightMode(true);
         this.hasShieldLowered = true;
+        animator.performAttack(ANIM_SWING_TWO);
 
         addEvent(()-> this.lockLook = true, 15);
 
@@ -281,15 +254,14 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
         }, 55);
 
         addEvent(()-> {
-            this.setPierceMelee(false);
             this.setFightMode(false);
             this.hasShieldLowered = false;
         }, 65);
     };
 
     private final Consumer<EntityLivingBase> swing_shield = (target) -> {
-        this.setSwingShield(true);
         this.setFightMode(true);
+        animator.performAttack(ANIM_SHIELD_SWING);
 
         addEvent(()-> {
             this.lockLook = true;
@@ -321,87 +293,39 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
         addEvent(()-> this.hasShieldLowered = false, 70);
 
         addEvent(()-> {
-            this.setSwingShield(false);
             this.setFightMode(false);
         }, 75);
     };
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "shield_controller", 0, this::predicateHideShield));
-        data.addAnimationController(new AnimationController(this, "model_adjustments_from", 0, this::predicateModelAdjustments));
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isSwingShield()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SHIELD_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isPierceMelee()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_TWO, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingMelee()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING, false));
-                return PlayState.CONTINUE;
-            }
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateHideShield(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(!this.isHasShield()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_HIDE_SHIELD, true));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_HIDE_SHIELD, true);
         }
-        return PlayState.STOP;
-    }
 
-    private <E extends IAnimatable> PlayState predicateModelAdjustments(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode()) {
-            if(this.isHasShield() && !this.isDisabledShield()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MODEL_ADJUST_SHIELD, true));
+        if(!this.isFullBodyUsage()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            if(isMovingOnGround) {
+                if(!this.isFightMode()) {
+                    if(this.isHasShield() && !this.isDisabledShield()) {
+                        animator.setCustomUpperWalk(ANIM_WALK_UPPER_SHIELD);
+                    } else {
+                        animator.setCustomUpperWalk(ANIM_WALK_UPPER);
+                    }
+                }
+                animator.setCustomLowerWalk(ANIM_WALK);
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MODEL_ADJUST, true));
+                animator.setCustomLowerIdle(ANIM_IDLE);
             }
-
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode()) {
-            if(this.isHasShield() && !this.isDisabledShield()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER_SHIELD, true));
-            } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER, true));
+            //Model Adjustment
+            if(!this.isFightMode()) {
+                if(this.isHasShield() && !this.isDisabledShield()) {
+                    animator.setCustomUpperIdle(ANIM_MODEL_ADJUST_SHIELD);
+                } else {
+                    animator.setCustomUpperIdle(ANIM_MODEL_ADJUST);
+                }
             }
-            return PlayState.CONTINUE;
         }
-        return PlayState.STOP;
     }
 
     @Override
@@ -498,20 +422,5 @@ public class EntityDraugr extends EntityFrostBase implements IAnimatable, IAnima
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundsHandler.DRAUGR_STEP, 0.5F, 0.4f + ModRand.getFloat(0.3F));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

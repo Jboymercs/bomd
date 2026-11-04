@@ -185,7 +185,6 @@ public class ModEntities {
         registerEntityWithID("everchosen_sword", EntityEverchosen.class, ENTITY_START_ID++, 80, everchosen_swordmaster);
         registerEntityWithID("everchosen_hammer", EntityEverchosenHammer.class, ENTITY_START_ID++, 80, everchosen_executioner);
         registerEntityWithID("darkdrift_devil", EntityDarkdriftDevil.class, ENTITY_START_ID++, 90, roh);
-        registerEntityWithID("test_model", EntityTestModel.class, ENTITY_START_ID++, 90, dark_sorcerer);
         //Traders
         registerEntityWithID("mysterious_trader", EntityMysteriousTrader.class, ENTITY_START_ID++, 50, mysterious_trader);
 

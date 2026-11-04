@@ -3,8 +3,6 @@ package com.dungeon_additions.da.items.tools;
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.init.ModItems;
-import com.dungeon_additions.da.items.ItemBase;
 import com.dungeon_additions.da.tab.DungeonAdditionsTab;
 import com.dungeon_additions.da.util.IHasModel;
 import com.dungeon_additions.da.util.ModUtils;
@@ -12,30 +10,21 @@ import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.*;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemChampionAxe extends ToolSword implements IAnimatable, IHasModel {
-
-    public AnimationFactory factory = new AnimationFactory(this);
+public class ItemChampionAxe extends ToolSword implements IHasModel {
 
     private String info_loc;
 
@@ -70,11 +59,6 @@ public class ItemChampionAxe extends ToolSword implements IAnimatable, IHasModel
         {
             Main.proxy.registerItemRenderer(this, 0, "inventory");
         }}
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
 
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
@@ -124,12 +108,6 @@ public class ItemChampionAxe extends ToolSword implements IAnimatable, IHasModel
     @Override
     public float getAttackDamage() {
         return super.getAttackDamage();
-    }
-
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 
     @Override

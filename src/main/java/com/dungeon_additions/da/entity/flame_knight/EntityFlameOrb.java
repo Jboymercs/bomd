@@ -1,12 +1,9 @@
 package com.dungeon_additions.da.entity.flame_knight;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimator;
 import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.entity.blossom.EntityGenericWave;
-import com.dungeon_additions.da.entity.blossom.EntityVoidBlossom;
-import com.dungeon_additions.da.entity.blossom.EntityVoidSpike;
-import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.util.ModColors;
-import com.dungeon_additions.da.util.ModParticle;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
@@ -20,22 +17,14 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class EntityFlameOrb extends EntityFlameBase implements IAnimatable, IAnimationTickable {
+public class EntityFlameOrb extends EntityFlameBase {
 
     private final String ANIM_IDLE = "idle";
     private final String ANIM_SUMMON = "summon";
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
 
     public EntityFlameOrb(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -170,23 +159,12 @@ public class EntityFlameOrb extends EntityFlameBase implements IAnimatable, IAni
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "spike_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "summon_controller", 0, this::predicateSummon));
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-        return PlayState.CONTINUE;
-    }
-
-    private <E extends IAnimatable> PlayState predicateSummon(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON, false));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_SUMMON);
+        } else {
+            animator.setStateAnim(ANIM_IDLE, true);
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
     }
 
     @Override
@@ -204,20 +182,5 @@ public class EntityFlameOrb extends EntityFlameBase implements IAnimatable, IAni
 
         // Edit this to restricting them not despawning in Dungeons
         return false;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

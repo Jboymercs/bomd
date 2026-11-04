@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.sky_dungeon;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -10,21 +11,12 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
-import java.util.function.Consumer;
 
-public class EntityGargoyleLazer extends EntitySkyBase implements IAnimatable, IAnimationTickable {
+public class EntityGargoyleLazer extends EntitySkyBase {
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
 
     private final String ANIM_IDLE = "summon";
     private EntityLivingBase target;
@@ -129,18 +121,8 @@ public class EntityGargoyleLazer extends EntitySkyBase implements IAnimatable, I
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
+    public void updateAnimations() {
+        animator.setStateAnim(ANIM_IDLE, true);
     }
 
     @Override
@@ -157,15 +139,5 @@ public class EntityGargoyleLazer extends EntitySkyBase implements IAnimatable, I
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
 
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

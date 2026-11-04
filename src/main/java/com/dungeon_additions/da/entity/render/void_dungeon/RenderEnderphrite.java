@@ -1,71 +1,33 @@
 package com.dungeon_additions.da.entity.render.void_dungeon;
 
-import com.dungeon_additions.da.entity.model.void_dungeon.ModelEnderphrite;
-import com.dungeon_additions.da.entity.model.void_dungeon.ModelVoidiant;
-import com.dungeon_additions.da.entity.render.layer.GeoSpecificGlow;
-import com.dungeon_additions.da.entity.render.util.RenderGeoExtended;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimator;
 import com.dungeon_additions.da.entity.void_dungeon.EntityEnderphrite;
-import com.dungeon_additions.da.entity.void_dungeon.EntityVoidiant;
 import com.dungeon_additions.da.util.ModReference;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import mod.azure.azurelib.render.entity.AzEntityRenderer;
+import mod.azure.azurelib.render.entity.AzEntityRendererConfig;
+import mod.azure.azurelib.render.layer.AzAutoGlowingLayer;
+import mod.azure.azurelib.render.vertex.RenderType;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-import javax.annotation.Nullable;
-
-public class RenderEnderphrite extends RenderGeoExtended<EntityEnderphrite> {
+public class RenderEnderphrite extends AzEntityRenderer<EntityEnderphrite> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/enderphrite_greatsword.png");
     private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/entity/obsidilith/geo.enderphrite.json");
 
     public RenderEnderphrite(RenderManager renderManager) {
-        super(renderManager, new ModelEnderphrite(MODEL_RESLOC, TEXTURE, "enderphrite"));
-        this.addLayer(new GeoSpecificGlow<>(this, this.TEXTURE_GETTER, this.MODEL_ID_GETTER));
-    }
+        super(AzEntityRendererConfig.<EntityEnderphrite>builder(MODEL_RESLOC, TEXTURE)
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE))
+                        .setRenderEntry(contextPipeline -> {
 
-    @Nullable
-    @Override
-    protected ItemStack getHeldItemForBone(String boneName, EntityEnderphrite currentEntity) {
-        return null;
-    }
+                            contextPipeline.animatable().updateAnimations();
+                            return contextPipeline;
+                        })
 
-    @Override
-    protected ItemCameraTransforms.TransformType getCameraTransformForItemAtBone(ItemStack boneItem, String boneName) {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    protected IBlockState getHeldBlockForBone(String boneName, EntityEnderphrite currentEntity) {
-        return null;
-    }
-
-    @Override
-    protected void preRenderItem(ItemStack item, String boneName, EntityEnderphrite currentEntity) {
-
-    }
-
-    @Override
-    protected void preRenderBlock(IBlockState block, String boneName, EntityEnderphrite currentEntity) {
-
-    }
-
-    @Override
-    protected void postRenderItem(ItemStack item, String boneName, EntityEnderphrite currentEntity) {
-
-    }
-
-    @Override
-    protected void postRenderBlock(IBlockState block, String boneName, EntityEnderphrite currentEntity) {
-
-    }
-
-    @Nullable
-    @Override
-    protected ResourceLocation getTextureForBone(String boneName, EntityEnderphrite currentEntity) {
-        return null;
+                        .setAnimatorProvider(() -> new DaEntityAnimator<>("enderphrite", false, true))
+                        .addRenderLayer(new AzAutoGlowingLayer<>())
+                        .setShadowRadius(0.3F)
+                        .build()
+                , renderManager);
     }
 }

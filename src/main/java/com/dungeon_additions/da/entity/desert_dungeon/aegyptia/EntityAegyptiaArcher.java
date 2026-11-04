@@ -22,16 +22,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.function.Consumer;
 
-public class EntityAegyptiaArcher extends EntityDesertBase implements IAnimatable, IAnimationTickable, IAttack {
+public class EntityAegyptiaArcher extends EntityDesertBase implements  IAttack {
 
-    private final AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttack;
 
     public EntityAegyptiaArcher(World worldIn, float x, float y, float z) {
@@ -94,26 +89,6 @@ public class EntityAegyptiaArcher extends EntityDesertBase implements IAnimatabl
     @Override
     public int startAttack(EntityLivingBase target, float distanceSq, boolean strafingBackwards) {
         return 0;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     private static final ResourceLocation LOOT_MOB = new ResourceLocation(ModReference.MOD_ID, "aegyptia_archer");

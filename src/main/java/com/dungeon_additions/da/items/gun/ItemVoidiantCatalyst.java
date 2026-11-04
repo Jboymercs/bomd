@@ -1,7 +1,6 @@
 package com.dungeon_additions.da.items.gun;
 
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.entity.player.EntityWyrkLazer;
 import com.dungeon_additions.da.entity.void_dungeon.EntityVoidiantLazer;
 import com.dungeon_additions.da.items.ItemBase;
 import com.dungeon_additions.da.util.ModUtils;
@@ -12,7 +11,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -27,15 +25,11 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class ItemVoidiantCatalyst extends ItemBase implements IAnimatable {
+public class ItemVoidiantCatalyst extends ItemBase {
 
-    public AnimationFactory factory = new AnimationFactory(this);
     private String info_loc;
 
     @Override
@@ -161,15 +155,5 @@ public class ItemVoidiantCatalyst extends ItemBase implements IAnimatable {
     @Override
     public int getItemEnchantability() {
         return 20;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 }

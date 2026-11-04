@@ -19,15 +19,10 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class ItemFlameBlade extends ToolSword implements IAnimatable, IHasModel {
-
-    public AnimationFactory factory = new AnimationFactory(this);
+public class ItemFlameBlade extends ToolSword implements IHasModel {
 
     String info_loc;
 
@@ -80,14 +75,4 @@ public class ItemFlameBlade extends ToolSword implements IAnimatable, IHasModel 
         {
             Main.proxy.registerItemRenderer(this, 0, "inventory");
         }}
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
 }

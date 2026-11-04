@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.night_lich;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
@@ -8,7 +9,6 @@ import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.ai.flying.EntityAIAerialAttack;
 import com.dungeon_additions.da.entity.ai.flying.FlyingMoveHelper;
 import com.dungeon_additions.da.entity.ai.flying.TimedAttackInitiator;
-import com.dungeon_additions.da.entity.flame_knight.misc.ProjectileFlameSling;
 import com.dungeon_additions.da.entity.night_lich.action.*;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.util.IEntitySound;
@@ -19,6 +19,7 @@ import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -35,7 +36,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigateFlying;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -45,14 +45,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -62,7 +54,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityNightLich extends EntityAbstractNightLich implements IAnimatable, IAttack, IAnimationTickable, IScreenShake, IEntitySound {
+public class EntityNightLich extends EntityAbstractNightLich implements IAttack, IScreenShake, IEntitySound {
 
 
     private Consumer<EntityLivingBase> prevAttack;
@@ -93,9 +85,6 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     private final String ANIM_DOUBLE_SWING = "double_swing";
     private final String ANIM_MELEE_COMBO = "melee_combo";
 
-
-    private AnimationFactory factory = new AnimationFactory(this);
-
     //it either equals 30 or 3
     public int wantedDistance;
     private boolean enableRedParticles = false;
@@ -104,6 +93,9 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     private boolean destroyCloseBlocks = false;
     public boolean doesBossSlowDown = false;
     private int shakeTime = 0;
+
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
 
     public EntityNightLich(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -118,6 +110,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         if(!world.isRemote) {
             initLichAI();
         }
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityNightLich(World worldIn) {
@@ -133,6 +126,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         }
         this.falter_resistance = 0.9F;
         this.hemorrhage_resistance = 0.9F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityNightLich(World worldIn, int timesUsed, BlockPos pos) {
@@ -152,6 +146,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         if(!world.isRemote) {
             initLichAI();
         }
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
 
@@ -368,7 +363,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
     private final Consumer<EntityLivingBase> melee_combo = (target) -> {
         this.setFightMode(true);
-        this.setMeleeCombo(true);
+        animator.performAttack(ANIM_MELEE_COMBO);
         this.animationLength = 145;
         this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
 
@@ -434,12 +429,11 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         addEvent(()-> {
         this.setImmovable(false);
         this.setFightMode(false);
-        this.setMeleeCombo(false);
         }, 145);
     };
     private final Consumer<EntityLivingBase> rage_mode_attack = (target) -> {
         double HealthCurr = this.getHealth() / this.getMaxHealth();
-      this.setRageMode(true);
+      animator.performAttack(ANIM_RAGE_MODE);
       this.hasRagedRecently = true;
       this.animationLength = 130;
       this.setFightMode(true);
@@ -465,7 +459,6 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         }, 10);
 
       addEvent(()-> {
-          this.setRageMode(false);
           this.setFightMode(false);
           if(HealthCurr <= 0.5 && HealthCurr >= 0.3) {
               rageModeTimer = 60;
@@ -476,7 +469,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     private final Consumer<EntityLivingBase> track_projectiles = (target) -> {
         this.animationLength = 60;
         this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
-      this.setComboTrackProjectiles(true);
+      animator.performAttack(ANIM_TRACK_PROJECTILES);
       this.setFightMode(true);
 
       addEvent(()-> this.setImmovable(true), 10);
@@ -485,13 +478,12 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
       addEvent(()-> this.setImmovable(false), 50);
 
       addEvent(()-> {
-        this.setComboTrackProjectiles(false);
         this.setFightMode(false);
       }, 60);
     };
 
     private final Consumer<EntityLivingBase> explosive_line_attack = (target) -> {
-      this.setExplosiveLine(true);
+      animator.performAttack(ANIM_EXPLOSIVE_LINE);
       this.setFightMode(true);
       this.animationLength = 115;
         this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
@@ -569,7 +561,6 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
         addEvent(()-> {
             this.explosiveLineAttackCooldown = 500;
-            this.setExplosiveLine(false);
             this.setFightMode(false);
         }, 115);
     };
@@ -577,7 +568,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     private final Consumer<EntityLivingBase> combo_aoe_dash = (target) -> {
         this.animationLength = 125;
         this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
-      this.setComboAoeAttack(true);
+      animator.performAttack(ANIM_COMBO_AOE);
       this.setFightMode(true);
 
         addEvent(()-> {
@@ -704,7 +695,6 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
       addEvent(()-> {
           this.setImmovable(false);
-        this.setComboAoeAttack(false);
         this.setFightMode(false);
         if(!this.isAngeredState()) {
             this.meleeCooldown = 400;
@@ -713,7 +703,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     };
     private final Consumer<EntityLivingBase> double_swing = (target) -> {
         this.animationLength = 95;
-      this.setDoubleSwing(true);
+      animator.performAttack(ANIM_DOUBLE_SWING);
       this.setFightMode(true);
 
         addEvent(()-> this.playSound(SoundsHandler.LICH_USE_SPEAR, 2.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 13);
@@ -767,13 +757,12 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
       addEvent(()-> {
           this.setImmovable(false);
-        this.setDoubleSwing(false);
         this.setFightMode(false);
       }, 95);
     };
     private final Consumer<EntityLivingBase> regular_swing = (target) -> {
         this.animationLength = 55;
-      this.setSwingAttack(true);
+      animator.performAttack(ANIM_SWING);
       this.setFightMode(true);
 
         addEvent(()-> this.playSound(SoundsHandler.LICH_USE_SPEAR, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f)), 15);
@@ -806,7 +795,6 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
       addEvent(()-> {
           this.setImmovable(false);
-        this.setSwingAttack(false);
         this.setFightMode(false);
       }, 55);
     };
@@ -818,6 +806,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             this.setStateChange = true;
         }
         this.animationLength = 90;
+      animator.performAttack(ANIM_GREEN);
       this.setGreenAttack(true);
       this.setFightMode(true);
 
@@ -897,8 +886,8 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
 
       addEvent(()-> {
-        this.setGreenAttack(false);
         this.setFightMode(false);
+        this.setGreenAttack(false);
       }, 90);
     };
     private final Consumer<EntityLivingBase> dash_attack_red = (target) -> {
@@ -909,6 +898,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
             this.setStateChange = true;
         }
       this.setFightMode(true);
+      animator.performAttack(ANIM_RED);
       this.setRedAttack(true);
 
       addEvent(()-> {
@@ -991,7 +981,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.animationLength = 110;
         this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       this.setFightMode(true);
-      this.setThrowStaff(true);
+      animator.performAttack(ANIM_THROW_STAFF);
 
       addEvent(()-> {
           doesBossSlowDown = true;
@@ -1017,7 +1007,6 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
       }, 100);
 
       addEvent(()-> {
-        this.setThrowStaff(false);
         this.setFightMode(false);
       }, 110);
     };
@@ -1026,7 +1015,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.doesBossSlowDown = true;
         this.playSound(SoundsHandler.LICH_PREPARE_COMBO, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       this.setFightMode(true);
-      this.setComboShootProjectiles(true);
+      animator.performAttack(ANIM_SHOOT_PATTERN);
 
       addEvent(()-> {
         //start combo event
@@ -1036,7 +1025,6 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
       addEvent(()-> {
           this.doesBossSlowDown = false;
         this.setFightMode(false);
-        this.setComboShootProjectiles(false);
       }, 105);
     };
     private final Consumer<EntityLivingBase> summon_mobs = (target) -> {
@@ -1045,7 +1033,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.doesBossSlowDown = true;
         this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       this.setFightMode(true);
-      this.setPurpleAttack(true);
+      animator.performAttack(ANIM_PURPLE);
 
         //Mob Summoning
         addEvent(()-> {
@@ -1054,7 +1042,6 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
       addEvent(()-> {
         this.setFightMode(false);
-        this.setPurpleAttack(false);
         this.doesBossSlowDown = false;
       }, 85);
     };
@@ -1062,7 +1049,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.animationLength = 85;
         this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
       this.setFightMode(true);
-      this.setYellowAttack(true);
+      animator.performAttack(ANIM_YELLOW);
 
       addEvent(()-> this.enableFireballParticles = true, 20);
       addEvent(()-> this.enableFireballParticles = false, 50);
@@ -1079,7 +1066,6 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
       addEvent(()-> {
           this.setFightMode(false);
-          this.setYellowAttack(false);
       }, 85);
     };
 
@@ -1087,7 +1073,7 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
         this.animationLength = 85;
         this.playSound(SoundsHandler.LICH_PREPARE_SPELL, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
         this.setFightMode(true);
-        this.setBlueAttack(true);
+        animator.performAttack(ANIM_BLUE);
 
         addEvent(()-> {
             this.playSound(SoundsHandler.LICH_PREPARE_MISSILE, 3.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
@@ -1096,7 +1082,6 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
         addEvent(()-> {
         this.setFightMode(false);
-        this.setBlueAttack(false);
         }, 85);
     };
 
@@ -1144,93 +1129,12 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "book_controller", 0, this::predicateIdleBook));
-        data.addAnimationController(new AnimationController(this, "model_idle", 0, this::predicateModelIdle));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttack));
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttack(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isGreenAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_GREEN, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isBlueAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BLUE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isRedAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_RED, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isYellowAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_YELLOW, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isPurpleAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_PURPLE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isDoubleSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DOUBLE_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isComboAOEAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_COMBO_AOE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isComboShootProjectiles()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SHOOT_PATTERN, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isComboTrackProjectiles()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_TRACK_PROJECTILES, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isThrowStaff()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_THROW_STAFF, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isRageMode()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_RAGE_MODE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isMeleeCombo()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MELEE_COMBO, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isExplosiveLine()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_EXPLOSIVE_LINE));
-                return PlayState.CONTINUE;
-            }
-
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-    private <E extends IAnimatable> PlayState predicateModelIdle(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(!this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MODEL_IDLE, true));
-            return PlayState.CONTINUE;
+            animator.setCustomUpperIdle(ANIM_MODEL_IDLE);
         }
-
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_FLY_IDLE, true));
-        return PlayState.CONTINUE;
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdleBook(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BOOK_IDLE, true));
-        return PlayState.CONTINUE;
+        animator.setCustomLowerIdle(ANIM_FLY_IDLE);
+        animator.setCustomUpperWalk(ANIM_BOOK_IDLE);
     }
 
     @Override
@@ -1246,21 +1150,6 @@ public class EntityNightLich extends EntityAbstractNightLich implements IAnimata
 
     @Override
     protected void updateFallState(double y, boolean onGroundIn, @Nonnull IBlockState state, @Nonnull BlockPos pos) {
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
 

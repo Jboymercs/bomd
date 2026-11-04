@@ -1,36 +1,39 @@
 package com.dungeon_additions.da.entity.render.void_dungeon;
 
-import com.dungeon_additions.da.entity.frost_dungeon.EntityGreatWyrk;
-import com.dungeon_additions.da.entity.model.void_dungeon.ModelObsidilith;
-import com.dungeon_additions.da.entity.model.void_dungeon.ModelVoidclysm;
-import com.dungeon_additions.da.entity.render.layer.GeoSpecificGlow;
-import com.dungeon_additions.da.entity.render.util.RenderGeoExtended;
-import com.dungeon_additions.da.entity.void_dungeon.EntityObsidilith;
+import com.dungeon_additions.da.animation.AzLib.animators.VoidclysmAnimator;
 import com.dungeon_additions.da.entity.void_dungeon.EntityVoidiclysm;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.RenderUtil;
-import net.minecraft.block.state.IBlockState;
+import mod.azure.azurelib.render.entity.AzEntityRenderer;
+import mod.azure.azurelib.render.entity.AzEntityRendererConfig;
+import mod.azure.azurelib.render.layer.AzAutoGlowingLayer;
+import mod.azure.azurelib.render.vertex.RenderType;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.entity.RenderDragon;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-import javax.annotation.Nullable;
-
-public class RenderVoidclysm extends RenderGeoExtended<EntityVoidiclysm> {
+public class RenderVoidclysm extends AzEntityRenderer<EntityVoidiclysm> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/voidclysm.png");
     private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/entity/obsidilith/geo.voidclysm.json");
 
     private static final ResourceLocation BEAM_TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/beam/voidclysm_beam.png");
     public RenderVoidclysm(RenderManager renderManager) {
-        super(renderManager, new ModelVoidclysm(MODEL_RESLOC, TEXTURE, "voidclysm"));
-        this.addLayer(new GeoSpecificGlow<>(this, this.TEXTURE_GETTER, this.MODEL_ID_GETTER));
+        super(AzEntityRendererConfig.<EntityVoidiclysm>builder(MODEL_RESLOC, TEXTURE)
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE))
+                        .setRenderEntry(contextPipeline -> {
+
+                            contextPipeline.animatable().updateAnimations();
+                            return contextPipeline;
+                        })
+
+                        .setAnimatorProvider(() -> new VoidclysmAnimator("voidclysm"))
+                        .addRenderLayer(new AzAutoGlowingLayer<>())
+                        .setShadowRadius(0.35F)
+                        .build()
+                , renderManager);
     }
 
     @Override
@@ -50,48 +53,5 @@ public class RenderVoidclysm extends RenderGeoExtended<EntityVoidiclysm> {
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
         GlStateManager.disableBlend();
         GlStateManager.disableNormalize();
-    }
-
-    @Nullable
-    @Override
-    protected ItemStack getHeldItemForBone(String boneName, EntityVoidiclysm currentEntity) {
-        return null;
-    }
-
-    @Override
-    protected ItemCameraTransforms.TransformType getCameraTransformForItemAtBone(ItemStack boneItem, String boneName) {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    protected IBlockState getHeldBlockForBone(String boneName, EntityVoidiclysm currentEntity) {
-        return null;
-    }
-
-    @Override
-    protected void preRenderItem(ItemStack item, String boneName, EntityVoidiclysm currentEntity) {
-
-    }
-
-    @Override
-    protected void preRenderBlock(IBlockState block, String boneName, EntityVoidiclysm currentEntity) {
-
-    }
-
-    @Override
-    protected void postRenderItem(ItemStack item, String boneName, EntityVoidiclysm currentEntity) {
-
-    }
-
-    @Override
-    protected void postRenderBlock(IBlockState block, String boneName, EntityVoidiclysm currentEntity) {
-
-    }
-
-    @Nullable
-    @Override
-    protected ResourceLocation getTextureForBone(String boneName, EntityVoidiclysm currentEntity) {
-        return null;
     }
 }

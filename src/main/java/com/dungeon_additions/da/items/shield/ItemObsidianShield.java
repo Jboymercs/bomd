@@ -2,14 +2,9 @@ package com.dungeon_additions.da.items.shield;
 
 import com.dungeon_additions.da.Main;
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.entity.flame_knight.misc.EntityMoveTile;
 import com.dungeon_additions.da.entity.void_dungeon.EntityBlueWave;
-import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.proxy.ClientProxy;
-import com.dungeon_additions.da.util.ModColors;
-import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
-import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.util.ITooltipFlag;
@@ -18,11 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.MultiPartEntityPart;
-import net.minecraft.entity.item.EntityArmorStand;
-import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.tileentity.TileEntityBanner;
 import net.minecraft.util.ResourceLocation;
@@ -35,17 +26,13 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class ItemObsidianShield extends BOMDShieldItem implements IAnimatable {
+public class ItemObsidianShield extends BOMDShieldItem {
 
-    public AnimationFactory factory = new AnimationFactory(this);
     private String info_loc;
     public ItemObsidianShield(String name, String info_loc, CreativeTabs tabs) {
         super(name);
@@ -308,13 +295,4 @@ public class ItemObsidianShield extends BOMDShieldItem implements IAnimatable {
         ItemBanner.appendHoverTextFromTileEntityTag(stack, tooltip);
     }
 
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
 }

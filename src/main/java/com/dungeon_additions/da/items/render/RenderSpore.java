@@ -1,11 +1,23 @@
 package com.dungeon_additions.da.items.render;
 
-import com.dungeon_additions.da.items.AnimatedSporeItem;
-import com.dungeon_additions.da.items.model.ModelSpore;
-import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
+import com.dungeon_additions.da.animation.AzLib.DaItemAnimator;
+import com.dungeon_additions.da.util.ModReference;
+import mod.azure.azurelib.render.item.AzItemRenderer;
+import mod.azure.azurelib.render.item.AzItemRendererConfig;
+import mod.azure.azurelib.render.layer.AzAutoGlowingLayer;
+import net.minecraft.util.ResourceLocation;
 
-public class RenderSpore extends GeoItemRenderer<AnimatedSporeItem> {
+public class RenderSpore extends AzItemRenderer {
+
+    private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/items/spore.png");
+    private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/item/spore.geo.json");
+
     public RenderSpore() {
-        super(new ModelSpore());
+        super(
+                AzItemRendererConfig.builder(itemStack -> MODEL_RESLOC, itemStack -> TEXTURE)
+                        .addRenderLayer(new AzAutoGlowingLayer<>())
+                        .setAnimatorProvider(() -> new DaItemAnimator("spore"))
+                        .build()
+        );
     }
 }

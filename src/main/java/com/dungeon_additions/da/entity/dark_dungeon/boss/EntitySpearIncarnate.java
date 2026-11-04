@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.dark_dungeon.boss;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
 import com.dungeon_additions.da.entity.dark_dungeon.boss.util.RohUtils;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
@@ -14,33 +15,19 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class EntitySpearIncarnate extends EntityDarkBase implements IAnimationTickable, IAnimatable {
+public class EntitySpearIncarnate extends EntityDarkBase {
 
     private final String ANIM_SUMMON = "shoot";
     private final String ANIM_HOLD = "hold";
     private final String ANIM_END = "end";
     private float damage = 10;
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     private static final DataParameter<Boolean> HAS_PLAYER = EntityDataManager.createKey(EntitySpearIncarnate.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SUMMON = EntityDataManager.createKey(EntitySpearIncarnate.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> END = EntityDataManager.createKey(EntitySpearIncarnate.class, DataSerializers.BOOLEAN);
     private void setHasPlayer(boolean value) {this.dataManager.set(HAS_PLAYER, Boolean.valueOf(value));}
     public boolean isHasPlayer() {return this.dataManager.get(HAS_PLAYER);}
-    private void setSummon(boolean value) {this.dataManager.set(SUMMON, Boolean.valueOf(value));}
-    public boolean isSummonAnim() {return this.dataManager.get(SUMMON);}
-    private void setEnd(boolean value) {this.dataManager.set(END, Boolean.valueOf(value));}
-    public boolean isEndAnim() {return this.dataManager.get(END);}
 
     public EntitySpearIncarnate(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -50,7 +37,6 @@ public class EntitySpearIncarnate extends EntityDarkBase implements IAnimationTi
         this.noClip = true;
         this.isImmuneToFire = true;
         this.setNoAI(true);
-        this.setSummon(true);
     }
 
     public EntitySpearIncarnate(World worldIn) {
@@ -61,7 +47,6 @@ public class EntitySpearIncarnate extends EntityDarkBase implements IAnimationTi
         this.noClip = true;
         this.isImmuneToFire = true;
         this.setNoAI(true);
-        this.setSummon(true);
     }
 
     public EntitySpearIncarnate(World worldIn, float damage) {
@@ -72,23 +57,18 @@ public class EntitySpearIncarnate extends EntityDarkBase implements IAnimationTi
         this.noClip = true;
         this.isImmuneToFire = true;
         this.setNoAI(true);
-        this.setSummon(true);
         this.damage = damage;
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("Has_Player", this.isHasPlayer());
-        nbt.setBoolean("Summon", this.isSummonAnim());
-        nbt.setBoolean("End", this.isEndAnim());
         super.writeEntityToNBT(nbt);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.setHasPlayer(nbt.getBoolean("Has_Player"));
-        this.setSummon(nbt.getBoolean("Summon"));
-        this.setEnd(nbt.getBoolean("End"));
         super.readEntityFromNBT(nbt);
     }
 
@@ -96,8 +76,6 @@ public class EntitySpearIncarnate extends EntityDarkBase implements IAnimationTi
     public void entityInit() {
         super.entityInit();
         this.dataManager.register(HAS_PLAYER, Boolean.valueOf(false));
-        this.dataManager.register(END, Boolean.valueOf(false));
-        this.dataManager.register(SUMMON, Boolean.valueOf(false));
     }
 
     private EntityLivingBase grabbedEntity;
@@ -117,7 +95,7 @@ public class EntitySpearIncarnate extends EntityDarkBase implements IAnimationTi
 
             if(ticksExisted == 1) {
                 this.playSound(SoundsHandler.ROH_CAST_GENERIC, 1.5f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f));
-                this.setSummon(true);
+                animator.setStateAnim(ANIM_SUMMON);
             }
 
             if(this.ticksExisted == 14) {
@@ -148,18 +126,17 @@ public class EntitySpearIncarnate extends EntityDarkBase implements IAnimationTi
             //either end it or continue
             if(ticksExisted == 20) {
                 this.grabDetection = false;
-                this.setSummon(false);
                 if(grabbedEntity != null) {
                     this.setHasPlayer(true);
+                    animator.setStateAnim(ANIM_HOLD);
                 } else {
-                    this.setEnd(true);
+                    animator.setStateAnim(ANIM_END);
                     this.playSound(SoundsHandler.VOIDCLYSM_IMPACT, 0.3f, 0.5f / (rand.nextFloat() * 0.4f + 0.2f));
                 }
             }
 
             //initial end it if not grabbed entity
             if(ticksExisted == 55 && !this.isHasPlayer()) {
-                this.setEnd(false);
                 this.setDead();
             }
 
@@ -179,13 +156,12 @@ public class EntitySpearIncarnate extends EntityDarkBase implements IAnimationTi
 
             if(this.ticksExisted == 80) {
                 this.setHasPlayer(false);
-                this.setEnd(true);
+                animator.setStateAnim(ANIM_END);
                 this.grabbedEntity = null;
                 this.playSound(SoundsHandler.VOIDCLYSM_IMPACT, 0.3f, 0.5f / (rand.nextFloat() * 0.4f + 0.2f));
             }
 
             if(this.ticksExisted == 115) {
-                this.setEnd(false);
                 this.setDead();
             }
         }
@@ -193,40 +169,8 @@ public class EntitySpearIncarnate extends EntityDarkBase implements IAnimationTi
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-    }
+    public void updateAnimations() {
 
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(this.isSummonAnim()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SUMMON));
-            return PlayState.CONTINUE;
-        }
-        if(this.isHasPlayer()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_HOLD));
-            return PlayState.CONTINUE;
-        }
-        if(this.isEndAnim()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_END));
-            return PlayState.CONTINUE;
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override

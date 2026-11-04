@@ -23,15 +23,11 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemDragonShield extends ItemShield implements IAnimatable {
-    public AnimationFactory factory = new AnimationFactory(this);
+public class ItemDragonShield extends ItemShield {
     private String info_loc;
 
     private final AttributeModifier maxHealthModifier;
@@ -131,15 +127,5 @@ public class ItemDragonShield extends ItemShield implements IAnimatable {
     public EnumAction getItemUseAction(ItemStack stack)
     {
         return EnumAction.BLOCK;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 }

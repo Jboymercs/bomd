@@ -1,10 +1,10 @@
 package com.dungeon_additions.da.entity.void_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.void_dungeon.EntityAIEnderphrite;
-import com.dungeon_additions.da.entity.ai.void_dungeon.EntityAIVoidiant;
 import com.dungeon_additions.da.entity.gaelon_dungeon.apathyr.ProjectileCrystalWave;
 import com.dungeon_additions.da.entity.void_dungeon.enderphrite_action.ActionEnderphriteSplay;
 import com.dungeon_additions.da.util.ModRand;
@@ -12,13 +12,13 @@ import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,23 +31,16 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAnimationTickable, IAttack {
+public class EntityEnderphrite extends EntityEndBase implements IAttack {
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
     private Consumer<EntityLivingBase> prevAttacks;
     private int teleport_cooldown = 100;
 
@@ -61,11 +54,6 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
     private final String ANIM_TELEPORT = "teleport";
     private final String ANIM_SIDE_STRIKE = "side_strike";
 
-    private static final DataParameter<Boolean> STRIKE = EntityDataManager.createKey(EntityEnderphrite.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> STRIKE_FINISH = EntityDataManager.createKey(EntityEnderphrite.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> STRIKE_CONTINUE = EntityDataManager.createKey(EntityEnderphrite.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> UPPER_STRIKE = EntityDataManager.createKey(EntityEnderphrite.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SIDE_STRIKE = EntityDataManager.createKey(EntityEnderphrite.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> TELEPORT = EntityDataManager.createKey(EntityEnderphrite.class, DataSerializers.BOOLEAN);
 
     public boolean isTeleportAttack() {
@@ -74,36 +62,6 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
     private void setTeleportAttack(boolean value) {
         this.dataManager.set(TELEPORT, Boolean.valueOf(value));
     }
-    public boolean isStrikeAttack() {
-        return this.dataManager.get(STRIKE);
-    }
-    private void setStrikeAttack(boolean value) {
-        this.dataManager.set(STRIKE, Boolean.valueOf(value));
-    }
-    public boolean isStrikeFinish() {
-        return this.dataManager.get(STRIKE_FINISH);
-    }
-    private void setStrikeFinish(boolean value) {
-        this.dataManager.set(STRIKE_FINISH, Boolean.valueOf(value));
-    }
-    public boolean isStrikeContinue() {
-        return this.dataManager.get(STRIKE_CONTINUE);
-    }
-    private void setStrikeContinue(boolean value) {
-        this.dataManager.set(STRIKE_CONTINUE, Boolean.valueOf(value));
-    }
-    public boolean isUpperStrike() {
-        return this.dataManager.get(UPPER_STRIKE);
-    }
-    private void setUpperStrike(boolean value) {
-        this.dataManager.set(UPPER_STRIKE, Boolean.valueOf(value));
-    }
-    public boolean isSideStrike() {
-        return this.dataManager.get(SIDE_STRIKE);
-    }
-    private void setSideStrike(boolean value) {
-        this.dataManager.set(SIDE_STRIKE, Boolean.valueOf(value));
-    }
 
     public EntityEnderphrite(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -111,6 +69,7 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
         this.experienceValue = 38;
         this.falter_resistance = 1.7F;
         this.hemorrhage_resistance = 0.3F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityEnderphrite(World worldIn) {
@@ -119,27 +78,18 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
         this.experienceValue = 38;
         this.falter_resistance = 1.7F;
         this.hemorrhage_resistance = 0.3F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("Teleport_Attack", this.isTeleportAttack());
-        nbt.setBoolean("Strike", this.isStrikeAttack());
-        nbt.setBoolean("Strike_Finish", this.isStrikeFinish());
-        nbt.setBoolean("Strike_Continue", this.isStrikeContinue());
-        nbt.setBoolean("Upper_Strike", this.isUpperStrike());
-        nbt.setBoolean("Side_Strike", this.isSideStrike());
         super.writeEntityToNBT(nbt);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.setTeleportAttack(nbt.getBoolean("Teleport_Attack"));
-        this.setStrikeAttack(nbt.getBoolean("Strike"));
-        this.setStrikeFinish(nbt.getBoolean("Strike_Finish"));
-        this.setStrikeContinue(nbt.getBoolean("Strike_Continue"));
-        this.setUpperStrike(nbt.getBoolean("Upper_Strike"));
-        this.setSideStrike(nbt.getBoolean("Side_Strike"));
         super.readEntityFromNBT(nbt);
     }
 
@@ -147,11 +97,6 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
     public void entityInit() {
         super.entityInit();
         this.dataManager.register(TELEPORT, Boolean.valueOf(false));
-        this.dataManager.register(STRIKE, Boolean.valueOf(false));
-        this.dataManager.register(STRIKE_CONTINUE, Boolean.valueOf(false));
-        this.dataManager.register(STRIKE_FINISH, Boolean.valueOf(false));
-        this.dataManager.register(UPPER_STRIKE, Boolean.valueOf(false));
-        this.dataManager.register(SIDE_STRIKE, Boolean.valueOf(false));
     }
 
     @Override
@@ -179,6 +124,7 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
         if(!world.isRemote) {
             if(teleport_cooldown >= 0) {
                 teleport_cooldown--;
@@ -215,7 +161,7 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
     }
 
     private Consumer<EntityLivingBase> side_strike = target -> {
-      this.setSideStrike(true);
+      animator.performAttack(ANIM_SIDE_STRIKE);
       this.setFightMode(true);
       this.setImmovable(true);
 
@@ -238,14 +184,13 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
       }, 45);
 
       addEvent(()-> {
-        this.setSideStrike(false);
         this.setFightMode(false);
         this.setImmovable(false);
       }, 60);
     };
 
     private Consumer<EntityLivingBase> upper_swing = target -> {
-      this.setUpperStrike(true);
+      animator.performAttack(ANIM_UPPER_STRIKE);
       this.setFightMode(true);
       this.setImmovable(true);
 
@@ -281,17 +226,15 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
         addEvent(()-> this.lockLook = false, 40);
 
       addEvent(()-> {
-          this.setUpperStrike(false);
           this.setFightMode(false);
           this.setImmovable(false);
       }, 50);
     };
 
     private Consumer<EntityLivingBase> strike_attack = target -> {
-        this.setStrikeAttack(true);
         this.setFightMode(true);
         this.setImmovable(true);
-
+        animator.performAttack(ANIM_STRIKE);
         addEvent(()-> this.playSound(SoundsHandler.ENDERPHRITE_SCREAM, 0.7f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
 
         addEvent(()-> {
@@ -342,14 +285,12 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
         }, 50);
 
         addEvent(()-> {
-            this.setStrikeAttack(false);
             if(this.getDistance(target) <= 8 && rand.nextBoolean()) {
                 this.setSTrikeTOOContinue(target);
             } else {
-                this.setStrikeFinish(true);
+                animator.performAttack(ANIM_STRIKE_FINISH);
 
                 addEvent(()-> {
-                this.setStrikeFinish(false);
                 this.setImmovable(false);
                 this.setFightMode(false);
                 }, 15);
@@ -362,8 +303,7 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
     }
 
     private Consumer<EntityLivingBase> strike_continue = target -> {
-        this.setStrikeContinue(true);
-
+        animator.performAttack(ANIM_STRIKE_CONTINUE);
         addEvent(()-> {
             this.lockLook = true;
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -394,80 +334,17 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
         }, 30);
 
         addEvent(()-> {
-            this.setStrikeContinue(false);
             this.setImmovable(false);
             this.setFightMode(false);
         }, 40);
     };
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "walk_controller", 0, this::predicateWalk));
-        data.addAnimationController(new AnimationController(this, "fight_controller", 0, this::predicateAttacks));
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isTeleportAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_TELEPORT));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStrikeAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_STRIKE));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStrikeContinue()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_STRIKE_CONTINUE));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStrikeFinish()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_STRIKE_FINISH));
-                return PlayState.CONTINUE;
-            }
-            if(this.isUpperStrike()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_UPPER_STRIKE));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSideStrike()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SIDE_STRIKE));
-                return PlayState.CONTINUE;
-            }
+    public void updateAnimations() {
+        if(!this.isFightMode()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            animator.handleIdleStates(isMovingOnGround);
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateWalk(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override
@@ -485,6 +362,7 @@ public class EntityEnderphrite extends EntityEndBase implements IAnimatable, IAn
     private void doTeleportAction() {
         this.setFightMode(true);
         this.setTeleportAttack(true);
+        animator.performAttack(ANIM_TELEPORT);
         this.setImmovable(true);
         boolean backwards = rand.nextBoolean();
         world.setEntityState(this, ModUtils.PARTICLE_BYTE);

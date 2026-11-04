@@ -1,11 +1,9 @@
 package com.dungeon_additions.da.animation;
 
 import com.dungeon_additions.da.Main;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.commons.lang3.ArrayUtils;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 
 
 public enum EZAnimationHandler {

@@ -1,26 +1,38 @@
 package com.dungeon_additions.da.entity.render;
 
-import com.dungeon_additions.da.entity.model.ModelRotKnight;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimator;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnight;
-import net.minecraft.client.renderer.GlStateManager;
+import com.dungeon_additions.da.util.ModReference;
+import mod.azure.azurelib.render.entity.AzEntityRenderer;
+import mod.azure.azurelib.render.entity.AzEntityRendererConfig;
+import mod.azure.azurelib.render.layer.AzAutoGlowingLayer;
+import mod.azure.azurelib.render.vertex.RenderType;
 import net.minecraft.client.renderer.entity.RenderManager;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import net.minecraft.util.ResourceLocation;
 
-public class RenderRotKnight extends GeoEntityRenderer<EntityRotKnight> {
-
+public class RenderRotKnight extends AzEntityRenderer<EntityRotKnight> {
+    private static final ResourceLocation TEXTURE_ONE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/shield_1.png");
+    private static final ResourceLocation TEXTURE_TWO = new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/shield_2.png");
+    private static final ResourceLocation TEXTURE_THREE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/shield_3.png");
+    private static final ResourceLocation TEXTURE_FOUR = new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/shield_4.png");
+    private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/entity/rotknight/geo.rotknight.json");
 
     public RenderRotKnight(RenderManager renderManager) {
-        super(renderManager, new ModelRotKnight());
-    }
+        super(AzEntityRendererConfig.<EntityRotKnight>builder($ -> MODEL_RESLOC, entity -> entity.getSkin() == 4 ? TEXTURE_FOUR :
+                entity.getSkin() == 3 ? TEXTURE_THREE : entity.getSkin() == 2 ? TEXTURE_TWO : TEXTURE_ONE)
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE_ONE))
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE_TWO))
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE_THREE))
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE_FOUR))
+                        .setRenderEntry(contextPipeline -> {
 
-    @Override
-    public void doRender(EntityRotKnight entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        GlStateManager.enableNormalize();
-        GlStateManager.enableBlend();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 0.75F);
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        super.doRender(entity, x, y, z, entityYaw, partialTicks);
-        GlStateManager.disableBlend();
-        GlStateManager.disableNormalize();
+                            contextPipeline.animatable().updateAnimations();
+                            return contextPipeline;
+                        })
+
+                        .setAnimatorProvider(() -> new DaEntityAnimator<>("rotknight", false, true))
+                        .setShadowRadius(0.3F)
+                        .build()
+                , renderManager);
     }
 }

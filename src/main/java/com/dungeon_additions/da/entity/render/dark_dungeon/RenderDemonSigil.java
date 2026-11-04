@@ -1,30 +1,26 @@
 package com.dungeon_additions.da.entity.render.dark_dungeon;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimator;
 import com.dungeon_additions.da.entity.dark_dungeon.boss.EntityDemonSigil;
-import com.dungeon_additions.da.entity.frost_dungeon.EntityGreatWyrk;
 import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.ITarget;
-import com.dungeon_additions.da.entity.model.dark_dungeon.ModelDemonSigil;
-import com.dungeon_additions.da.entity.render.layer.GeoSpecificGlow;
-import com.dungeon_additions.da.entity.render.util.RenderGeoExtended;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.RenderUtil;
-import net.minecraft.block.state.IBlockState;
+import mod.azure.azurelib.render.entity.AzEntityRenderer;
+import mod.azure.azurelib.render.entity.AzEntityRendererConfig;
+import mod.azure.azurelib.render.layer.AzAutoGlowingLayer;
+import mod.azure.azurelib.render.vertex.RenderType;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class RenderDemonSigil extends RenderGeoExtended<EntityDemonSigil> {
+public class RenderDemonSigil extends AzEntityRenderer<EntityDemonSigil> {
 
     public ResourceLocation beam_textures = new ResourceLocation(ModReference.MOD_ID, "textures/entity/beam/voidclysm_beam.png");
 
@@ -32,8 +28,19 @@ public class RenderDemonSigil extends RenderGeoExtended<EntityDemonSigil> {
     private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/entity/dark/geo.demon_sigil.json");
 
     public RenderDemonSigil(RenderManager renderManager) {
-        super(renderManager, new ModelDemonSigil(MODEL_RESLOC, TEXTURE, "demon_sigil"));
-        this.addLayer(new GeoSpecificGlow<>(this, this.TEXTURE_GETTER, this.MODEL_ID_GETTER));
+        super(AzEntityRendererConfig.<EntityDemonSigil>builder(MODEL_RESLOC, TEXTURE)
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE))
+                        .setRenderEntry(contextPipeline -> {
+
+                            contextPipeline.animatable().updateAnimations();
+                            return contextPipeline;
+                        })
+
+                        .setAnimatorProvider(() -> new DaEntityAnimator<>("demon_sigil", false, true))
+                        .addRenderLayer(new AzAutoGlowingLayer<>())
+                        .setShadowRadius(0F)
+                        .build()
+                , renderManager);
     }
 
     @Override
@@ -70,48 +77,5 @@ public class RenderDemonSigil extends RenderGeoExtended<EntityDemonSigil> {
         }
 
         return false;
-    }
-
-    @Nullable
-    @Override
-    protected ItemStack getHeldItemForBone(String boneName, EntityDemonSigil currentEntity) {
-        return null;
-    }
-
-    @Override
-    protected ItemCameraTransforms.TransformType getCameraTransformForItemAtBone(ItemStack boneItem, String boneName) {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    protected IBlockState getHeldBlockForBone(String boneName, EntityDemonSigil currentEntity) {
-        return null;
-    }
-
-    @Override
-    protected void preRenderItem(ItemStack item, String boneName, EntityDemonSigil currentEntity) {
-
-    }
-
-    @Override
-    protected void preRenderBlock(IBlockState block, String boneName, EntityDemonSigil currentEntity) {
-
-    }
-
-    @Override
-    protected void postRenderItem(ItemStack item, String boneName, EntityDemonSigil currentEntity) {
-
-    }
-
-    @Override
-    protected void postRenderBlock(IBlockState block, String boneName, EntityDemonSigil currentEntity) {
-
-    }
-
-    @Nullable
-    @Override
-    protected ResourceLocation getTextureForBone(String boneName, EntityDemonSigil currentEntity) {
-        return null;
     }
 }

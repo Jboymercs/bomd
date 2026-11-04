@@ -20,15 +20,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class ItemVoidStaff extends ToolSword implements IAnimatable {
+public class ItemVoidStaff extends ToolSword {
 
-    public AnimationFactory factory = new AnimationFactory(this);
     private String info_loc;
 
     public ItemVoidStaff(String name, String info_loc, ToolMaterial material) {
@@ -98,15 +94,5 @@ public class ItemVoidStaff extends ToolSword implements IAnimatable {
     @Override
     public double getAttackSpeed() {
         return -2.7000000953674316D;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 }

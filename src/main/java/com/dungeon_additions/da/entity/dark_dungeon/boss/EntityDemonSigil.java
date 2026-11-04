@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.dark_dungeon.boss;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
 import com.dungeon_additions.da.entity.dark_dungeon.ProjectileBloodSigil;
 import com.dungeon_additions.da.entity.dark_dungeon.boss.action.ActionDemonSigilLazer;
@@ -8,7 +9,6 @@ import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.IMultiAction;
 import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.ITarget;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -16,23 +16,15 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.Optional;
 
-public class EntityDemonSigil extends EntityDarkBase  implements IAnimationTickable, IAnimatable, ITarget, IDirectionalRender {
+public class EntityDemonSigil extends EntityDarkBase  implements ITarget, IDirectionalRender {
 
     private final String ANIM_STATIC = "static";
     private final String ANIM_ROTATING = "moving";
     private float damageIn;
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     private static final DataParameter<Boolean> ROTATING_SIGIL = EntityDataManager.createKey(EntityDemonSigil.class, DataSerializers.BOOLEAN);
     private void setRotatingSigil(boolean value) {this.dataManager.set(ROTATING_SIGIL, Boolean.valueOf(value));}
     public boolean isRotatingSigil() {return this.dataManager.get(ROTATING_SIGIL);}
@@ -182,32 +174,12 @@ public class EntityDemonSigil extends EntityDarkBase  implements IAnimationTicka
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(this.isRotatingSigil()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_ROTATING));
+            animator.setStateAnim(ANIM_ROTATING);
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STATIC));
+            animator.setStateAnim(ANIM_STATIC);
         }
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override

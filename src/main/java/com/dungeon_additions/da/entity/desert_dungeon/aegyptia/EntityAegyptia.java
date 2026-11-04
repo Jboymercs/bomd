@@ -1,21 +1,19 @@
 package com.dungeon_additions.da.entity.desert_dungeon.aegyptia;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityAegyptiaAttackAI;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityDesertBase;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
-import com.dungeon_additions.da.entity.desert_dungeon.miniboss.EntityEverator;
-import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
-import com.dungeon_additions.da.entity.player.EntityWyrkLazer;
-import com.dungeon_additions.da.entity.sky_dungeon.EntityTridentGargoyle;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
@@ -26,7 +24,6 @@ import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -35,7 +32,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.DamageSource;
@@ -47,14 +43,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -63,9 +51,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 
-public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAnimationTickable, IAttack {
-    private final AnimationFactory factory = new AnimationFactory(this);
+public class EntityAegyptia extends EntityDesertBase implements IAttack {
     private Consumer<EntityLivingBase> prevAttack;
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, true);
+    private final MoveAnalysis moveAnalysis;
 
     private final String ANIM_WALK_LOWER = "walk_lower";
     private final String ANIM_IDLE_LOWER = "idle_lower";
@@ -98,41 +87,11 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
     private static final DataParameter<Boolean> HAS_POTION = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
     private static final DataParameter<ItemStack> ITEM_HAND = EntityDataManager.<ItemStack>createKey(EntityAegyptia.class, DataSerializers.ITEM_STACK);
     private static final DataParameter<Boolean> MOVE_JAW = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_TWO = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> PIERCE = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> MEGA_PIERCE = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> THROW_POTION = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DOUBLE_SWING = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DOUBLE_SWING_CONT = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SIDE_SWING = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> JUMP_ATTACK = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> CIRCLE_SPIN = EntityDataManager.createKey(EntityAegyptia.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityAegyptia.class, DataSerializers.VARINT);
 
     public boolean isHasKopis() {return this.dataManager.get(HAS_KOPIS);}
     private void setHasKopis(boolean value) {this.dataManager.set(HAS_KOPIS, Boolean.valueOf(value));}
     private boolean isHasPotion() {return this.dataManager.get(HAS_POTION);}
-    private void setSwingAttack(boolean value) {this.dataManager.set(SWING, Boolean.valueOf(value));}
-    private boolean isSwingAttack() {return this.dataManager.get(SWING);}
-    private void setSwingTwo(boolean value) {this.dataManager.set(SWING_TWO, Boolean.valueOf(value));}
-    private boolean isSwingTwo() {return this.dataManager.get(SWING_TWO);}
-    private void setPierce(boolean value) {this.dataManager.set(PIERCE, Boolean.valueOf(value));}
-    private boolean isPierce() {return this.dataManager.get(PIERCE);}
-    private void setMegaPierce(boolean value) {this.dataManager.set(MEGA_PIERCE, Boolean.valueOf(value));}
-    private boolean isMegaPierce() {return this.dataManager.get(MEGA_PIERCE);}
-    private void setThrowPotion(boolean value) {this.dataManager.set(THROW_POTION, Boolean.valueOf(value));}
-    private boolean isThrowPotion() {return this.dataManager.get(THROW_POTION);}
-    private void setDoubleSwing(boolean value) {this.dataManager.set(DOUBLE_SWING, Boolean.valueOf(value));}
-    private boolean isDoubleSwing() {return this.dataManager.get(DOUBLE_SWING);}
-    private void setDoubleSwingCont(boolean value) {this.dataManager.set(DOUBLE_SWING_CONT, Boolean.valueOf(value));}
-    private boolean isDoubleSwingCont() {return this.dataManager.get(DOUBLE_SWING_CONT);}
-    private void setSideSwing(boolean value) {this.dataManager.set(SIDE_SWING, Boolean.valueOf(value));}
-    private boolean isSideSwing() {return this.dataManager.get(SIDE_SWING);}
-    private void setJumpAttack(boolean value) {this.dataManager.set(JUMP_ATTACK, Boolean.valueOf(value));}
-    private boolean isJumpAttack() {return this.dataManager.get(JUMP_ATTACK);}
-    private void setCircleSpin(boolean value) {this.dataManager.set(CIRCLE_SPIN, Boolean.valueOf(value));}
-    private boolean isCircleSpin() {return this.dataManager.get(CIRCLE_SPIN);}
     private void setMoveJaw(boolean value) {this.dataManager.set(MOVE_JAW, Boolean.valueOf(value));}
     private boolean isMoveJaw() {return this.dataManager.get(MOVE_JAW);}
     private void setHasPotion(boolean value) {this.dataManager.set(HAS_POTION, Boolean.valueOf(value));}
@@ -157,6 +116,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
         this.setMoveJaw(false);
         this.falter_resistance = 1F;
         this.hemorrhage_resistance = 0.25F;
+        this.moveAnalysis = new MoveAnalysis(this);
         if(randI >= 8) {
             this.setHasKopis(true);
         } else {
@@ -193,6 +153,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
         super(worldIn);
         this.setSize(0.7F, 2.45F);
         this.experienceValue = 12;
+        this.moveAnalysis = new MoveAnalysis(this);
         this.setSkin(rand.nextInt(4));
         int randI = ModRand.range(1, 11);
         this.setMoveJaw(false);
@@ -242,16 +203,6 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("Has_Kopis", this.isHasKopis());
         nbt.setBoolean("Has_Potion", this.isHasPotion());
-        nbt.setBoolean("Swing", this.isSwingAttack());
-        nbt.setBoolean("Swing_Two", this.isSwingTwo());
-        nbt.setBoolean("Piece", this.isPierce());
-        nbt.setBoolean("Mega_Pierce", this.isMegaPierce());
-        nbt.setBoolean("Throw_Potion", this.isThrowPotion());
-        nbt.setBoolean("Double_Swing", this.isDoubleSwing());
-        nbt.setBoolean("Double_Swing_Cont", this.isDoubleSwingCont());
-        nbt.setBoolean("Jump_Attack", this.isJumpAttack());
-        nbt.setBoolean("Circle_Spin", this.isCircleSpin());
-        nbt.setBoolean("Side_Swing", this.isSideSwing());
         nbt.setBoolean("Move_Jaw", this.isMoveJaw());
         super.writeEntityToNBT(nbt);
     }
@@ -260,16 +211,6 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.setHasKopis(nbt.getBoolean("Has_Kopis"));
         this.setHasPotion(nbt.getBoolean("Has_Potion"));
-        this.setSwingAttack(nbt.getBoolean("Swing"));
-        this.setSwingTwo(nbt.getBoolean("Swing_Two"));
-        this.setPierce(nbt.getBoolean("Pierce"));
-        this.setMegaPierce(nbt.getBoolean("Mega_Pierce"));
-        this.setThrowPotion(nbt.getBoolean("Throw_Potion"));
-        this.setDoubleSwing(nbt.getBoolean("Double_Swing"));
-        this.setDoubleSwingCont(nbt.getBoolean("Double_Swing_Cont"));
-        this.setSideSwing(nbt.getBoolean("Side_Swing"));
-        this.setJumpAttack(nbt.getBoolean("Jump_Attack"));
-        this.setCircleSpin(nbt.getBoolean("Circle_Spin"));
         this.setMoveJaw(nbt.getBoolean("Move_Jaw"));
         super.readEntityFromNBT(nbt);
     }
@@ -281,16 +222,6 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
         this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
         this.dataManager.register(HAS_KOPIS, Boolean.valueOf(false));
         this.dataManager.register(HAS_POTION, Boolean.valueOf(false));
-        this.dataManager.register(SWING, Boolean.valueOf(false));
-        this.dataManager.register(SWING_TWO, Boolean.valueOf(false));
-        this.dataManager.register(PIERCE, Boolean.valueOf(false));
-        this.dataManager.register(MEGA_PIERCE, Boolean.valueOf(false));
-        this.dataManager.register(THROW_POTION, Boolean.valueOf(false));
-        this.dataManager.register(SIDE_SWING, Boolean.valueOf(false));
-        this.dataManager.register(DOUBLE_SWING, Boolean.valueOf(false));
-        this.dataManager.register(DOUBLE_SWING_CONT, Boolean.valueOf(false));
-        this.dataManager.register(CIRCLE_SPIN, Boolean.valueOf(false));
-        this.dataManager.register(JUMP_ATTACK, Boolean.valueOf(false));
         this.dataManager.register(MOVE_JAW, Boolean.valueOf(false));
     }
 
@@ -322,7 +253,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
     @Override
     public void onUpdate() {
         super.onUpdate();
-
+        this.moveAnalysis.update();
         if(this.ticksExisted % 180 == 0 && !this.isMoveJaw()) {
             this.handleJawMovement();
         }
@@ -426,7 +357,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
 
     private final Consumer<EntityLivingBase> throw_potion_attack = (target) -> {
       this.setFightMode(true);
-      this.setThrowPotion(true);
+      animator.performAttack(ANIM_THROW_POTION);
 
       addEvent(()-> {
         this.setHasPotion(false);
@@ -456,14 +387,13 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
 
       addEvent(()-> {
         this.setFightMode(false);
-        this.setThrowPotion(false);
       }, 50);
     };
     private final Consumer<EntityLivingBase> do_jump_attack = (target) -> {
       this.setFullBodyUsage(true);
       this.setImmovable(true);
       this.setFightMode(true);
-      this.setJumpAttack(true);
+      animator.performAttack(ANIM_JUMP_ATTACK);
 
       addEvent(()-> {
           Vec3d targetOldPos = target.getPositionVector();
@@ -501,12 +431,11 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
         this.setFullBodyUsage(false);
         this.setImmovable(false);
         this.setFightMode(false);
-        this.setJumpAttack(false);
       }, 80);
     };
 
     private final Consumer<EntityLivingBase> do_side_swing = (target) -> {
-      this.setSideSwing(true);
+      animator.performAttack(ANIM_SIDE_SWING);
       this.setFightMode(true);
       this.byPassStrafing = true;
 
@@ -544,12 +473,11 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
       }, 55);
 
       addEvent(()-> {
-        this.setSideSwing(false);
         this.setFightMode(false);
       }, 70);
     };
     private final Consumer<EntityLivingBase> do_circle_spin = (target) -> {
-      this.setCircleSpin(true);
+      animator.performAttack(ANIM_CIRCLE_SWING);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
       this.setFightMode(true);
@@ -577,7 +505,6 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
 
       addEvent(()-> {
           this.lockLook = false;
-        this.setCircleSpin(false);
         this.setFullBodyUsage(false);
         this.setImmovable(false);
         this.setFightMode(false);
@@ -589,8 +516,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
         boolean randI = new Random().nextBoolean();
 
         if(randI) {
-            this.setDoubleSwingCont(true);
-
+            animator.performAttack(ANIM_DOUBLE_SWING_CONT);
             addEvent(()-> {
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
@@ -634,12 +560,10 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
             }, 100);
 
             addEvent(() -> {
-                this.setDoubleSwingCont(false);
                 this.setFightMode(false);
             }, 110);
         } else {
-            this.setDoubleSwing(true);
-
+            animator.performAttack(ANIM_DOUBLE_SWING);
             addEvent(()-> {
                 Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.1, 1.2, 0)));
                 DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).build();
@@ -661,7 +585,6 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
 
             addEvent(()-> {
                 this.setFightMode(false);
-                this.setDoubleSwing(false);
             }, 70);
         }
     };
@@ -669,7 +592,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
     private final Consumer<EntityLivingBase> do_mega_pierce = (target) -> {
       this.setFightMode(true);
       this.setFullBodyUsage(true);
-      this.setMegaPierce(true);
+      animator.performAttack(ANIM_MEGA_PIERCE);
       this.setImmovable(true);
         this.playSound(SoundsHandler.AEGYPTIA_PIERCE, 0.8f, 0.6f / (rand.nextFloat() * 0.4f + 0.2f));
 
@@ -731,14 +654,13 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
 
       addEvent(()-> {
         this.setImmovable(false);
-        this.setMegaPierce(false);
         this.setFullBodyUsage(false);
         this.setFightMode(false);
       }, 70);
     };
 
     private final Consumer<EntityLivingBase> do_pierce_attack = (target) -> {
-      this.setPierce(true);
+      animator.performAttack(ANIM_PIERCE);
       this.setFightMode(true);
       this.byPassStrafing = true;
 
@@ -758,7 +680,6 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
       }, 45);
 
       addEvent(()-> {
-          this.setPierce(false);
           this.setFightMode(false);
       }, 55);
     };
@@ -770,8 +691,7 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
 
         //two swings
         if(randI) {
-            this.setSwingTwo(true);
-
+            animator.performAttack(ANIM_SWING_TWO);
             addEvent(()-> {
                 this.lockLook = true;
             }, 16);
@@ -806,12 +726,11 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
             }, 95);
 
             addEvent(()-> {
-                this.setSwingTwo(false);
                 this.setFightMode(false);
             }, 110);
         } else {
             //one swing
-            this.setSwingAttack(true);
+            animator.performAttack(ANIM_SWING);
 
             addEvent(()-> {
             this.lockLook = true;
@@ -831,7 +750,6 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
             }, 38);
 
             addEvent(()-> {
-                this.setSwingAttack(false);
                 this.setFightMode(false);
             }, 55);
         }
@@ -862,131 +780,36 @@ public class EntityAegyptia extends EntityDesertBase implements IAnimatable, IAn
         }
     }
 
+
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-        data.addAnimationController(new AnimationController(this, "arms_controller_idle", 0, this::predicateArmsIdle));
-        data.addAnimationController(new AnimationController(this, "fight_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "jaw_movement_controller", 0, this::predicateMoveJaw));
-    }
+    public void updateAnimations() {
 
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_LOWER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateMoveJaw(AnimationEvent<E> event) {
         if(this.isMoveJaw()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_JAW_MOVEMENT, false));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_JAW_MOVEMENT);
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isSwingAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingTwo()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_TWO, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isPierce()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_PIERCE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isMegaPierce()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MEGA_PIERCE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isThrowPotion()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_THROW_POTION, false));
-                return PlayState.CONTINUE;
-            }
 
-            if(this.isHasKopis()) {
-                if(this.isSideSwing()) {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SIDE_SWING, false));
-                    return PlayState.CONTINUE;
+        if(!this.isFullBodyUsage()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            if(isMovingOnGround) {
+                if(!this.isFightMode()) {
+                    if(this.isHasKopis()) {
+                        animator.setCustomUpperWalk(ANIM_WALK_UPPER);
+                    } else {
+                        animator.setCustomUpperWalk(ANIM_WALK_UPPER_NK);
+                    }
                 }
-                if(this.isDoubleSwing()) {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DOUBLE_SWING, false));
-                    return PlayState.CONTINUE;
-                }
-                if(this.isDoubleSwingCont()) {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DOUBLE_SWING_CONT, false));
-                    return PlayState.CONTINUE;
-                }
-                if(this.isCircleSpin()) {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_CIRCLE_SWING, false));
-                    return PlayState.CONTINUE;
-                }
-                if(this.isJumpAttack()) {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_JUMP_ATTACK, false));
-                    return PlayState.CONTINUE;
-                }
-            }
-
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArmsIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode()) {
-            if(this.isHasKopis()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_UPPER, true));
+                animator.setCustomLowerWalk(ANIM_WALK_LOWER);
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_UPPER_NK, true));
+                if(!this.isFightMode()) {
+                    if(this.isHasKopis()) {
+                        animator.setCustomUpperIdle(ANIM_IDLE_UPPER);
+                    } else {
+                        animator.setCustomUpperIdle(ANIM_IDLE_UPPER_NK);
+                    }
+                }
+                animator.setCustomLowerIdle(ANIM_IDLE_LOWER);
             }
-            return PlayState.CONTINUE;
         }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_LOWER, true));
-            event.getController().setAnimationSpeed(1.0 + (0.003 * event.getLimbSwing()));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode()) {
-            if(this.isHasKopis()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER, true));
-                event.getController().setAnimationSpeed(1.0 + (0.003 * event.getLimbSwing()));
-            } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER_NK, true));
-                event.getController().setAnimationSpeed(1.0 + (0.003 * event.getLimbSwing()));
-            }
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override

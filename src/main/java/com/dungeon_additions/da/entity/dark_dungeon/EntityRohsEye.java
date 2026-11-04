@@ -1,12 +1,10 @@
 package com.dungeon_additions.da.entity.dark_dungeon;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.dark_dungeon.boss.EntityDarkdriftDevil;
-import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
-import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.init.ModItems;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -18,22 +16,14 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntityRohsEye extends EntityDarkBase implements IAnimatable, IAnimationTickable, IScreenShake {
+public class EntityRohsEye extends EntityDarkBase implements IScreenShake {
 
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityRohsEye.class, DataSerializers.BOOLEAN);
     public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
     public boolean isShaking() {return this.dataManager.get(SHAKING);}
     private int shakeTime = 0;
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     public EntityRohsEye(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
         this.setImmovable(true);
@@ -121,32 +111,12 @@ public class EntityRohsEye extends EntityDarkBase implements IAnimatable, IAnima
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "start_controller", 0, this::predicateStart));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(!this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().loop("idle"));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-
-    private<E extends IAnimatable>PlayState predicateStart(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce("summon"));
-            return PlayState.CONTINUE;
+            animator.setStateAnim("summon");
+        } else {
+            animator.setStateAnim("idle", true);
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
     }
 
     @Override
@@ -160,15 +130,5 @@ public class EntityRohsEye extends EntityDarkBase implements IAnimatable, IAnima
             return (float) ((Math.sin(((partialTicks)/this.shakeTime) * Math.PI) + 0.1F) * 1.75F * screamMult);
         }
         return 0;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

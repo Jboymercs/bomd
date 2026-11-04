@@ -1,13 +1,12 @@
 package com.dungeon_additions.da.entity.gaelon_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
-import com.dungeon_additions.da.entity.ai.gaelon_dungeon.EntityAICursedGolemAttack;
 import com.dungeon_additions.da.entity.ai.gaelon_dungeon.EntityFriendlyCursedGolemAttack;
-import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
 import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
 import com.dungeon_additions.da.entity.gaelon_dungeon.apathyr.ProjectileFastGhostCrystal;
 import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.EntityFriendlyCursedRevenant;
@@ -18,6 +17,7 @@ import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,7 +26,6 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -42,21 +41,13 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnimatable, IAnimationTickable, IAttack, IScreenShake {
+public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAttack, IScreenShake {
     private int shakeTime = 0;
     private final String ANIM_SWING = "swing";
     private final String ANIM_DOUBLE_SWING = "swing_two";
@@ -71,27 +62,12 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
     private final String ANIM_INANIMATE = "inanimate";
     private final String ANIM_AWAKEN = "awake";
 
-    private static final DataParameter<Boolean> SWING = EntityDataManager.createKey(EntityFriendlyCursedGolem.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_TWO = EntityDataManager.createKey(EntityFriendlyCursedGolem.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> OVERHEAD_SWING = EntityDataManager.createKey(EntityFriendlyCursedGolem.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SHOOT_CANNON = EntityDataManager.createKey(EntityFriendlyCursedGolem.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> MORTAR_FIRE = EntityDataManager.createKey(EntityFriendlyCursedGolem.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> AWAKE_STATE = EntityDataManager.createKey(EntityFriendlyCursedGolem.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> INANIMATE_STATE = EntityDataManager.createKey(EntityFriendlyCursedGolem.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityFriendlyCursedGolem.class, DataSerializers.BOOLEAN);
     public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntityFriendlyCursedGolem.class, DataSerializers.BLOCK_POS);
     public static DataParameter<Boolean> SET_SPAWN_LOC = EntityDataManager.createKey(EntityFriendlyCursedGolem.class, DataSerializers.BOOLEAN);
 
-    private void setSwingAttack(boolean value) {this.dataManager.set(SWING, Boolean.valueOf(value));}
-    private boolean isSwingAttack() {return this.dataManager.get(SWING);}
-    private void setSwingTwo(boolean value) {this.dataManager.set(SWING_TWO, Boolean.valueOf(value));}
-    private boolean isSwingTwo() {return this.dataManager.get(SWING_TWO);}
-    private void setOverheadSwing(boolean value) {this.dataManager.set(OVERHEAD_SWING, Boolean.valueOf(value));}
-    private boolean isOverheadSwing() {return this.dataManager.get(OVERHEAD_SWING);}
-    private void setShootCannon(boolean value) {this.dataManager.set(SHOOT_CANNON, Boolean.valueOf(value));}
-    private boolean isShootCannon() {return this.dataManager.get(SHOOT_CANNON);}
-    private void setMortarFire(boolean value) {this.dataManager.set(MORTAR_FIRE, Boolean.valueOf(value));}
-    private boolean isMortarFire() {return this.dataManager.get(MORTAR_FIRE);}
     private void setAwakeState(boolean value) {this.dataManager.set(AWAKE_STATE, Boolean.valueOf(value));}
     public boolean isAwakeState() {return this.dataManager.get(AWAKE_STATE);}
     private void setInanimateState(boolean value) {this.dataManager.set(INANIMATE_STATE, Boolean.valueOf(value));}
@@ -111,7 +87,8 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
     public BlockPos getSpawnLocation() {
         return this.dataManager.get(SPAWN_LOCATION);
     }
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, true);
+    private final MoveAnalysis moveAnalysis;
     private Consumer<EntityLivingBase> prevAttack;
     private float randomTurn = ModRand.range(1, 360);
 
@@ -124,6 +101,7 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
         this.isFriendlyCreature = true;
         this.hemorrhage_resistance = 0.8F;
         this.falter_resistance = 1.7F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityFriendlyCursedGolem(World worldIn) {
@@ -135,15 +113,11 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
         this.isFriendlyCreature = true;
         this.hemorrhage_resistance = 0.8F;
         this.falter_resistance = 1.7F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
-        nbt.setBoolean("Swing", this.isSwingAttack());
-        nbt.setBoolean("Swing_Two", this.isSwingTwo());
-        nbt.setBoolean("Overhead_Swing", this.isOverheadSwing());
-        nbt.setBoolean("Mortar_Fire", this.isMortarFire());
-        nbt.setBoolean("Shoot_Cannon", this.isShootCannon());
         nbt.setBoolean("Awake_State", this.isAwakeState());
         nbt.setBoolean("Inanimate_State",this.isInAnimateState());
         nbt.setBoolean("Shaking", this.isShaking());
@@ -156,11 +130,6 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
-        this.setSwingAttack(nbt.getBoolean("Swing"));
-        this.setSwingTwo(nbt.getBoolean("Swing_Two"));
-        this.setOverheadSwing(nbt.getBoolean("Overhead_Swing"));
-        this.setMortarFire(nbt.getBoolean("Mortar_Fire"));
-        this.setShootCannon(nbt.getBoolean("Shoot_Cannon"));
         this.setAwakeState(nbt.getBoolean("Awake_State"));
         this.setInanimateState(nbt.getBoolean("Inanimate_State"));
         this.setShaking(nbt.getBoolean("Shaking"));
@@ -171,11 +140,6 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
 
     @Override
     public void entityInit() {
-        this.dataManager.register(SWING, Boolean.valueOf(false));
-        this.dataManager.register(SWING_TWO, Boolean.valueOf(false));
-        this.dataManager.register(OVERHEAD_SWING, Boolean.valueOf(false));
-        this.dataManager.register(MORTAR_FIRE, Boolean.valueOf(false));
-        this.dataManager.register(SHOOT_CANNON, Boolean.valueOf(false));
         this.dataManager.register(AWAKE_STATE, Boolean.valueOf(false));
         this.dataManager.register(INANIMATE_STATE, Boolean.valueOf(false));
         this.dataManager.register(SHAKING, Boolean.valueOf(false));
@@ -210,6 +174,7 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
         this.shakeTime--;
         if(this.isInAnimateState()) {
             this.setImmovable(true);
@@ -244,6 +209,7 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
     private void setTooAwake() {
         this.setInanimateState(false);
         this.setAwakeState(true);
+        animator.setStateAnim(ANIM_AWAKEN);
         this.playSound(SoundsHandler.CURSED_SENTINEL_AWAKE, 1.5f, 1.0F);
 
         addEvent(()-> {
@@ -270,7 +236,7 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
     }
 
     private Consumer<EntityLivingBase> shoot_cannon = (target) -> {
-        this.setShootCannon(true);
+        animator.performAttack(ANIM_SHOOT_CANNON);
         this.setFightMode(true);
 
         addEvent(()-> this.lockLook = true, 15);
@@ -306,14 +272,13 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
         }, 40);
 
         addEvent(()-> {
-            this.setShootCannon(false);
             this.setFightMode(false);
         }, 50);
     };
 
     private Consumer<EntityLivingBase> mortar_fire = (target) -> {
         this.setFightMode(true);
-        this.setMortarFire(true);
+        animator.performAttack(ANIM_MORTAR_FIRE);
         this.setImmovable(true);
 
         addEvent(()-> {
@@ -361,13 +326,12 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
         addEvent(()-> {
             this.setImmovable(false);
             this.setFightMode(false);
-            this.setMortarFire(false);
         }, 80);
     };
 
     private Consumer<EntityLivingBase> overhead_swing = (target) -> {
         this.setFightMode(true);
-        this.setOverheadSwing(true);
+        animator.performAttack(ANIM_OVERHEAD_SWING);
         this.setImmovable(true);
 
         addEvent(()-> {
@@ -407,7 +371,6 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
         addEvent(()-> {
             this.setShaking(false);
             this.setImmovable(false);
-            this.setOverheadSwing(false);
             this.setFightMode(false);
         }, 65);
     };
@@ -417,7 +380,7 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
         boolean randB = rand.nextBoolean();
 
         if(randB) {
-            this.setSwingTwo(true);
+            animator.performAttack(ANIM_DOUBLE_SWING);
 
             addEvent(()-> {
                 this.lockLook = true;
@@ -469,13 +432,12 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
             }, 70);
 
             addEvent(()-> {
-                this.setSwingTwo(false);
                 this.setImmovable(false);
                 this.setFightMode(false);
             }, 85);
 
         } else {
-            this.setSwingAttack(true);
+            animator.performAttack(ANIM_SWING);
 
             addEvent(()-> {
                 this.lockLook = true;
@@ -500,21 +462,11 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
             }, 35);
 
             addEvent(()-> {
-                this.setSwingAttack(false);
                 this.setImmovable(false);
                 this.setFightMode(false);
             }, 50);
         }
     };
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-        data.addAnimationController(new AnimationController(this, "arms_controller_idle", 0, this::predicateArmsIdle));
-        data.addAnimationController(new AnimationController(this, "fight_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "orb_controller", 0, this::predicateOrbMode));
-    }
 
     private World getWorld() {
         return this.world;
@@ -544,84 +496,23 @@ public class EntityFriendlyCursedGolem extends EntityGaelonBase implements IAnim
         }
     }
 
-    private <E extends IAnimatable> PlayState predicateOrbMode(AnimationEvent<E> event) {
+    @Override
+    public void updateAnimations() {
         if(this.isInAnimateState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_INANIMATE, true));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_INANIMATE, true);
         }
-        if(this.isAwakeState()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_AWAKEN));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
+        if(!this.isInAnimateState() && !this.isAwakeState() && !this.isFullBodyUsage()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            if(isMovingOnGround) {
+                if(!this.isFightMode()) {
+                    animator.setCustomUpperWalk(ANIM_WALK_UPPER);
+                }
+                animator.setCustomLowerWalk(ANIM_WALK_LOWER);
+            } else if (!this.isFightMode()) {
+                animator.setCustomUpperIdle(ANIM_IDLE);
 
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()  && !this.isAwakeState() && !this.isInAnimateState()) {
-            if(this.isMortarFire()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_MORTAR_FIRE));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingTwo()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_DOUBLE_SWING));
-                return PlayState.CONTINUE;
-            }
-            if(this.isOverheadSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_OVERHEAD_SWING));
-                return PlayState.CONTINUE;
-            }
-            if(this.isShootCannon()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SHOOT_CANNON));
-                return PlayState.CONTINUE;
             }
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArmsIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode() && !this.isAwakeState() && !this.isInAnimateState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage()  && !this.isAwakeState() && !this.isInAnimateState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_LOWER, true));
-            event.getController().setAnimationSpeed(1.0 + (0.003 * event.getLimbSwing()));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode()  && !this.isAwakeState() && !this.isInAnimateState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER, true));
-            event.getController().setAnimationSpeed(1.0 + (0.003 * event.getLimbSwing()));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override

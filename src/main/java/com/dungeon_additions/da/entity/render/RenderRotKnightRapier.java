@@ -1,82 +1,80 @@
 package com.dungeon_additions.da.entity.render;
 
-import com.dungeon_additions.da.entity.model.ModelRotKnightRapier;
-import com.dungeon_additions.da.entity.render.util.RenderRotExtended;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimator;
 import com.dungeon_additions.da.entity.rot_knights.EntityRotKnightRapier;
 import com.dungeon_additions.da.util.ModReference;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.GlStateManager;
+import mod.azure.azurelib.model.AzBone;
+import mod.azure.azurelib.render.AzRendererPipelineContext;
+import mod.azure.azurelib.render.entity.AzEntityRenderer;
+import mod.azure.azurelib.render.entity.AzEntityRendererConfig;
+import mod.azure.azurelib.render.layer.AzAutoGlowingLayer;
+import mod.azure.azurelib.render.layer.AzBlockAndItemLayer;
+import mod.azure.azurelib.render.vertex.RenderType;
+import mod.azure.azurelib.util.math.Vector3f;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import java.util.UUID;
 
-import javax.annotation.Nullable;
-
-public class RenderRotKnightRapier extends RenderRotExtended<EntityRotKnightRapier> {
+public class RenderRotKnightRapier extends AzEntityRenderer<EntityRotKnightRapier> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/rapier_1.png");
+    private static final ResourceLocation TEXTURE_TWO = new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/rapier_2.png");
+    private static final ResourceLocation TEXTURE_THREE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/rapier_3.png");
+    private static final ResourceLocation TEXTURE_FOUR = new ResourceLocation(ModReference.MOD_ID, "textures/entity/rot_knight/rapier_4.png");
     private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/entity/rotknight/geo.rot_knight_r.json");
 
     public RenderRotKnightRapier(RenderManager renderManager) {
-        super(renderManager, new ModelRotKnightRapier(MODEL_RESLOC, TEXTURE, "ancient_knight_rapier"));
-    }
+        super(AzEntityRendererConfig.<EntityRotKnightRapier>builder($ -> MODEL_RESLOC, entity -> entity.getSkin() == 4 ? TEXTURE_FOUR :
+                                entity.getSkin() == 3 ? TEXTURE_THREE : entity.getSkin() == 2 ? TEXTURE_TWO : TEXTURE)
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE))
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE_TWO))
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE_THREE))
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE_FOUR))
+                .addRenderLayer(new AzBlockAndItemLayer< UUID, EntityRotKnightRapier>() {
+                    @Override
+                    public ItemStack itemStackForBone(AzBone bone, EntityRotKnightRapier animatable) {
+                        if (bone.getName().equals("HandEquip")) {
+                            return animatable.getItemFromKnightHand(EntityRotKnightRapier.ROT_KNIGHT_HAND.HAND);
+                        }
 
-    @Override
-    public void doRender(EntityRotKnightRapier entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        GlStateManager.enableNormalize();
-        GlStateManager.enableBlend();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 0.75F);
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        super.doRender(entity, x, y, z, entityYaw, partialTicks);
-        GlStateManager.disableBlend();
-        GlStateManager.disableNormalize();
-    }
+                        return null;
+                    }
 
-    @Nullable
-    @Override
-    protected ItemStack getHeldItemForBone(String boneName, EntityRotKnightRapier currentEntity) {
-        ItemStack stackInhand = currentEntity.getItemFromKnightHand(EntityRotKnightRapier.ROT_KNIGHT_HAND.getFromBoneName(boneName));
-        if(stackInhand != null) {
-            return stackInhand;
-        }
-        return null;
-    }
+                    @Override
+                    protected ItemCameraTransforms.TransformType getTransformTypeForStack(
+                            AzBone bone,
+                            ItemStack stack,
+                            EntityRotKnightRapier animatable
+                    ) {
+                        return ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND;
+                    }
 
-    @Override
-    protected ItemCameraTransforms.TransformType getCameraTransformForItemAtBone(ItemStack boneItem, String boneName) {
-        return null;
-    }
+                    @Override
+                    protected void renderItemForBone(
+                            AzRendererPipelineContext<UUID, EntityRotKnightRapier> context,
+                            AzBone bone,
+                            ItemStack itemStack,
+                            EntityRotKnightRapier animatable
+                    ) {
+                        context.poseStack().mulPose(Vector3f.XP.rotationDegrees(90));
+                        context.poseStack().mulPose(Vector3f.YP.rotationDegrees(0));
+                        context.poseStack().mulPose(Vector3f.ZP.rotationDegrees(0f));
+                        context.poseStack().translate(0D, -0.1D, 0D);
+                        context.poseStack().scale(0.75f, 0.75f, 0.75f);
+                        super.renderItemForBone(context, bone, itemStack, animatable);
+                    }
+                })
+                        .setRenderEntry(contextPipeline -> {
 
-    @Nullable
-    @Override
-    protected IBlockState getHeldBlockForBone(String boneName, EntityRotKnightRapier currentEntity) {
-        return null;
-    }
+                            contextPipeline.animatable().updateAnimations();
+                            return contextPipeline;
+                        })
 
-    @Override
-    protected void preRenderItem(ItemStack item, String boneName, EntityRotKnightRapier currentEntity) {
-
-    }
-
-    @Override
-    protected void preRenderBlock(IBlockState block, String boneName, EntityRotKnightRapier currentEntity) {
-
-    }
-
-    @Override
-    protected void postRenderItem(ItemStack item, String boneName, EntityRotKnightRapier currentEntity) {
-
-    }
-
-    @Override
-    protected void postRenderBlock(IBlockState block, String boneName, EntityRotKnightRapier currentEntity) {
-
-    }
-
-    @Nullable
-    @Override
-    protected ResourceLocation getTextureForBone(String boneName, EntityRotKnightRapier currentEntity) {
-        return null;
+                        .setAnimatorProvider(() -> new DaEntityAnimator<>("rot_knight_r", false, true))
+                        .setShadowRadius(0.3F)
+                        .build()
+                , renderManager);
     }
 }

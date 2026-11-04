@@ -1,18 +1,17 @@
 package com.dungeon_additions.da.entity.gaelon_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
-import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityAegyptiaAttackAI;
 import com.dungeon_additions.da.entity.ai.gaelon_dungeon.EntityReAnimateAttackAI;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
-import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,35 +21,23 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IAnimationTickable, IAttack {
+public class EntityReAnimate extends EntityGaelonBase implements IAttack {
 
     private final String ANIM_WALK_LOWER = "walk_lower";
     private final String ANIM_IDLE_LOWER = "idle_lower";
@@ -69,31 +56,21 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
 
 
 
-    private static final DataParameter<Boolean> SWING = EntityDataManager.createKey(EntityReAnimate.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_TWO = EntityDataManager.createKey(EntityReAnimate.class, DataSerializers.BOOLEAN);
+
     private static final DataParameter<Boolean> ORB_MODE = EntityDataManager.createKey(EntityReAnimate.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> USE_SHIELD = EntityDataManager.createKey(EntityReAnimate.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> CAST = EntityDataManager.createKey(EntityReAnimate.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> TELEPORT_PIERCE = EntityDataManager.createKey(EntityReAnimate.class, DataSerializers.BOOLEAN);
-    private final AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttack;
     public boolean byPassStrafing = false;
 
     private boolean usingShieldOff = false;
 
-    private void setSwingAttack(boolean value) {this.dataManager.set(SWING, Boolean.valueOf(value));}
-    private boolean isSwingAttack() {return this.dataManager.get(SWING);}
-    private void setSwingTwo(boolean value) {this.dataManager.set(SWING_TWO, Boolean.valueOf(value));}
-    private boolean isSwingTwo() {return this.dataManager.get(SWING_TWO);}
     private void setOrbMode(boolean value) {this.dataManager.set(ORB_MODE, Boolean.valueOf(value));}
     public boolean isOrbMode() {return this.dataManager.get(ORB_MODE);}
     private void setUseShield(boolean value) {this.dataManager.set(USE_SHIELD, Boolean.valueOf(value));}
     public boolean isUseShield() {return this.dataManager.get(USE_SHIELD);}
-    private void setCast(boolean value) {this.dataManager.set(CAST, Boolean.valueOf(value));}
-    private boolean isCast() {return this.dataManager.get(CAST);}
-    private void setTeleportPierce(boolean value) {this.dataManager.set(TELEPORT_PIERCE, Boolean.valueOf(value));}
-    private boolean isTeleportPierce() {return this.dataManager.get(TELEPORT_PIERCE);}
 
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, true);
+    private final MoveAnalysis moveAnalysis;
 
     public EntityReAnimate(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -102,6 +79,7 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
         this.setOrbMode(true);
         this.hemorrhage_resistance = 0.25F;
         this.falter_resistance = 1F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityReAnimate(World worldIn) {
@@ -111,6 +89,7 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
         this.setOrbMode(true);
         this.hemorrhage_resistance = 0.25F;
         this.falter_resistance = 1F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityReAnimate(World worldIn, boolean setImmediateChange) {
@@ -121,39 +100,28 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
         this.setOrbMode(true);
         this.hemorrhage_resistance = 0.25F;
         this.falter_resistance = 1F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
-        nbt.setBoolean("Swing", this.isSwingAttack());
-        nbt.setBoolean("Swing_Two", this.isSwingTwo());
         nbt.setBoolean("Orb_Mode", this.isOrbMode());
         nbt.setBoolean("Use_Shield", this.isUseShield());
-        nbt.setBoolean("Cast", this.isCast());
-        nbt.setBoolean("Teleport_Pierce", this.isTeleportPierce());
         super.writeEntityToNBT(nbt);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
-        this.setSwingAttack(nbt.getBoolean("Swing"));
-        this.setSwingTwo(nbt.getBoolean("Swing_Two"));
         this.setOrbMode(nbt.getBoolean("Orb_Mode"));
         this.setUseShield(nbt.getBoolean("Use_Shield"));
-        this.setCast(nbt.getBoolean("Cast"));
-        this.setTeleportPierce(nbt.getBoolean("Teleport_Pierce"));
         super.readEntityFromNBT(nbt);
     }
 
     @Override
     public void entityInit() {
         super.entityInit();
-        this.dataManager.register(SWING, Boolean.valueOf(false));
-        this.dataManager.register(SWING_TWO, Boolean.valueOf(false));
         this.dataManager.register(ORB_MODE, Boolean.valueOf(false));
         this.dataManager.register(USE_SHIELD, Boolean.valueOf(false));
-        this.dataManager.register(CAST, Boolean.valueOf(false));
-        this.dataManager.register(TELEPORT_PIERCE, Boolean.valueOf(false));
     }
 
     @Override
@@ -189,6 +157,7 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
         getAwayTime--;
         coolDownTime--;
         shieldCooldown--;
@@ -268,7 +237,7 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
     }
 
     private final Consumer<EntityLivingBase> teleportPierce = (target) -> {
-        this.setTeleportPierce(true);
+        animator.performAttack(ANIM_TELEPORT_PIERCE);
         this.setFightMode(true);
         this.setImmovable(true);
         this.setFullBodyUsage(true);
@@ -308,7 +277,6 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
                 this.coolDownTime = 30;
             }
             this.lockLook = false;
-            this.setTeleportPierce(false);
             this.setFightMode(false);
             this.setImmovable(false);
             this.setFullBodyUsage(false);
@@ -316,7 +284,7 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
     };
 
     private final Consumer<EntityLivingBase> cast_spell = (target) -> {
-        this.setCast(true);
+        animator.performAttack(ANIM_CAST);
         this.setFightMode(true);
 
         addEvent(()-> {
@@ -339,14 +307,13 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
         }, 30);
 
         addEvent(()-> {
-        this.setCast(false);
         this.setFightMode(false);
         this.coolDownTime = 45;
         }, 60);
     };
 
     private final Consumer<EntityLivingBase> double_swing_attack = (target) -> {
-      this.setSwingTwo(true);
+      animator.performAttack(ANIM_DOUBLE_SWING);
       this.setFightMode(true);
 
       addEvent(()-> {
@@ -398,13 +365,12 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
               this.coolDownTime = 30;
           }
         this.setFightMode(false);
-        this.setSwingTwo(false);
       }, 85);
     };
 
 
     private final Consumer<EntityLivingBase> swing_attack = (target) -> {
-        this.setSwingAttack(true);
+        animator.performAttack(ANIM_SWING);
         this.setFightMode(true);
         this.byPassStrafing = true;
 
@@ -432,7 +398,6 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
             if(rand.nextBoolean()) {
                 this.hurtCounter++;
             }
-        this.setSwingAttack(false);
         this.setFightMode(false);
         }, 45);
     };
@@ -449,92 +414,13 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-        data.addAnimationController(new AnimationController(this, "arms_controller_idle", 0, this::predicateArmsIdle));
-        data.addAnimationController(new AnimationController(this, "fight_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "orb_controller", 0, this::predicateOrbMode));
-    }
-
-    private <E extends IAnimatable> PlayState predicateOrbMode(AnimationEvent<E> event) {
-        if(this.isOrbMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_ORB_IDLE, true));
-            return PlayState.CONTINUE;
+    public void updateAnimations() {
+        if(!this.isOrbMode()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            animator.handleIdleStates(isMovingOnGround);
+        } else if (this.isOrbMode()) {
+            animator.setStateAnim(ANIM_ORB_IDLE, true);
         }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isSwingAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingTwo()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DOUBLE_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isCast()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_CAST, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isTeleportPierce()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_TELEPORT_PIERCE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isUseShield()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_USE_SHIELD, false));
-                return PlayState.CONTINUE;
-            }
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFullBodyUsage() && !this.isOrbMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_LOWER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArmsIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode() && !this.isOrbMode()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_UPPER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage() && !this.isOrbMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_LOWER, true));
-           // event.getController().setAnimationSpeed(1.0 + (0.003 * event.getLimbSwing()));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode() && !this.isOrbMode()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER, true));
-              //  event.getController().setAnimationSpeed(1.0 + (0.003 * event.getLimbSwing()));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
     }
 
     @Override
@@ -633,16 +519,12 @@ public class EntityReAnimate extends EntityGaelonBase implements IAnimatable, IA
     private void useShieldAction() {
         this.setFightMode(true);
         this.setUseShield(true);
+        animator.performAttack(ANIM_USE_SHIELD);
 
         addEvent(()-> {
         this.setFightMode(false);
         this.setUseShield(false);
         this.shieldCooldown = 60;
         }, 50);
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

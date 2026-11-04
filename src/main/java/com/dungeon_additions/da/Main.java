@@ -15,6 +15,7 @@ import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.dungeon_additions.da.util.handlers.StructureHandler;
 import com.dungeon_additions.da.world.ModWorldGen;
 import com.dungeon_additions.da.world.ore_gen.BOMDOreGen;
+import mod.azure.azurelib.AzureLib;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
@@ -25,7 +26,6 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import software.bernie.geckolib3.GeckoLib;
 
 @Mod(modid = ModReference.MOD_ID, name = ModReference.NAME, version = ModReference.VERSION)
 public class Main {
@@ -57,7 +57,7 @@ public class Main {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        GeckoLib.initialize();
+        AzureLib.initialize();
         SoundsHandler.registerSounds();
         proxy.init();
         ModEntities.registerEntities();

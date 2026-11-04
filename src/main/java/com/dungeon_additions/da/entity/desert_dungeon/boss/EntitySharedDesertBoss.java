@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.desert_dungeon.boss;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.blocks.boss.BlockEnumBossSummonState;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
@@ -43,7 +44,7 @@ public abstract class EntitySharedDesertBoss extends EntityDesertBase {
     public final String ANIM_SHIELDED = "shielded";
     public final String ANIM_END_SHIELDED = "end_shielded";
     public final String ANIM_PHASE_TRANSITION = "phase_transition";
-
+    protected final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, true);
     protected boolean inLowHealthState = false;
     protected int lowHealthTimer = MobConfig.desert_bosses_shield_time * 20;
 
@@ -327,6 +328,7 @@ public abstract class EntitySharedDesertBoss extends EntityDesertBase {
     protected void setLowHealthState() {
         this.clearEvents();
         this.setStartShielded(true);
+        animator.setStateAnim(ANIM_SET_SHIELDED);
         this.setFightMode(true);
         this.setImmovable(true);
         addEvent(()-> {
@@ -342,6 +344,7 @@ public abstract class EntitySharedDesertBoss extends EntityDesertBase {
     protected void setEndLowHealthState() {
         this.setShielded(false);
         this.setEndShielded(true);
+        animator.setStateAnim(ANIM_END_SHIELDED);
         this.setFightMode(true);
         //play sound for healing
         this.heal((float) (this.getMaxHealth() * MobConfig.desert_bosses_revive_health_bonus));

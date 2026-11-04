@@ -1,6 +1,6 @@
 package com.dungeon_additions.da.entity.dark_dungeon;
 
-import com.dungeon_additions.da.entity.frost_dungeon.EntityFrostBase;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
@@ -16,18 +16,10 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class EntityShadowHand extends EntityDarkBase implements IAnimatable, IAnimationTickable {
+public class EntityShadowHand extends EntityDarkBase {
 
     private final String ANIM_IDLE = "idle";
     private final String ANIM_HAND_STRIKE = "hand_attack";
@@ -45,7 +37,7 @@ public class EntityShadowHand extends EntityDarkBase implements IAnimatable, IAn
         this.dataManager.set(SWING_MELEE, Boolean.valueOf(value));
     }
     private boolean hasIniatedAttack = false;
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
 
     public EntityShadowHand(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -141,6 +133,7 @@ public class EntityShadowHand extends EntityDarkBase implements IAnimatable, IAn
 
     private void initiateAttack() {
         this.setSwingMelee(true);
+        animator.setStateAnim(ANIM_HAND_STRIKE);
         this.playSound(SoundsHandler.SHADOW_HAND_ATTACK, 1.0f, 0.9f / (rand.nextFloat() * 0.4F + 0.4f));
         addEvent(()-> {
             List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(1.5), e -> !e.getIsInvulnerable() && (!(e instanceof EntityDarkBase)));
@@ -169,37 +162,11 @@ public class EntityShadowHand extends EntityDarkBase implements IAnimatable, IAn
     }
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "spike_controller", 0, this::predicateIdle));
-        animationData.addAnimationController(new AnimationController(this, "hide_hand_controller", 0, this::predicateHand));
-        animationData.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttack));
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-        return PlayState.CONTINUE;
-    }
-
-    private <E extends IAnimatable> PlayState predicateHand(AnimationEvent<E> event) {
+    public void updateAnimations(){
+        animator.setSpellIdle(ANIM_IDLE);
         if(!this.isSwingMelee()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_HIDE_HAND, true));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_HIDE_HAND, true);
         }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttack(AnimationEvent<E> event) {
-        if(this.isSwingMelee()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_HAND_STRIKE, false));
-            return PlayState.CONTINUE;
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 
     @Override
@@ -210,16 +177,6 @@ public class EntityShadowHand extends EntityDarkBase implements IAnimatable, IAn
     @Override
     public boolean canBeCollidedWith() {
         return false;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     /**

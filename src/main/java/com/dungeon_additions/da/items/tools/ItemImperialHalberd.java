@@ -27,16 +27,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 import java.util.UUID;
 
-public class ItemImperialHalberd extends ToolSword implements IAnimatable, IHasModel {
+public class ItemImperialHalberd extends ToolSword implements IHasModel {
 
-    public AnimationFactory factory = new AnimationFactory(this);
     public static final UUID MOVEMENT_SPEED_MODIFIER = UUID.fromString("0483aa4a-af8d-36a2-8693-22bec9caa265");
     private final AttributeModifier knockbackResistance;
     private String info_loc;
@@ -83,16 +79,6 @@ public class ItemImperialHalberd extends ToolSword implements IAnimatable, IHasM
     @Override
     public void registerModels() {
         Main.proxy.registerItemRenderer(this, 0, "inventory");
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 
     /**

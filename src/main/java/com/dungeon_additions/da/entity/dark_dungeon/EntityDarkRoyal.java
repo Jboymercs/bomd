@@ -1,13 +1,11 @@
 package com.dungeon_additions.da.entity.dark_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.dark_dungeon.EntityAIRoyalAttack;
-import com.dungeon_additions.da.entity.ai.dark_dungeon.EntityAISorcererAttack;
 import com.dungeon_additions.da.entity.dark_dungeon.minion_action.RoyalShieldSmash;
-import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
-import com.dungeon_additions.da.entity.sky_dungeon.EntityTridentGargoyle;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
@@ -16,6 +14,7 @@ import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -46,14 +45,6 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -61,7 +52,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAnimationTickable, IAttack {
+public class EntityDarkRoyal extends EntityDarkBase implements IAttack {
 
     private final String ANIM_IDLE = "idle";
     private final String ANIM_MODEL_POSE = "default_pose";
@@ -87,17 +78,6 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
 
     private static final DataParameter<Boolean> HAS_SHIELD = EntityDataManager.createKey(EntityDarkRoyal.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DISABLED_SHIELD = EntityDataManager.createKey(EntityDarkRoyal.class, DataSerializers.BOOLEAN);
-
-    private static final DataParameter<Boolean> SWING_SHIELD = EntityDataManager.createKey(EntityDarkRoyal.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> THRUST = EntityDataManager.createKey(EntityDarkRoyal.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> THRUST_CONTINUE = EntityDataManager.createKey(EntityDarkRoyal.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> THRUST_FINISH = EntityDataManager.createKey(EntityDarkRoyal.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SHIELD_SMASH = EntityDataManager.createKey(EntityDarkRoyal.class, DataSerializers.BOOLEAN);
-
-    private static final DataParameter<Boolean> SWING_SPEAR = EntityDataManager.createKey(EntityDarkRoyal.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> PIERCE_SPEAR = EntityDataManager.createKey(EntityDarkRoyal.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DASH_SPEAR = EntityDataManager.createKey(EntityDarkRoyal.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> THROW_POTION = EntityDataManager.createKey(EntityDarkRoyal.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityDarkRoyal.class, DataSerializers.VARINT);
 
     private static final DataParameter<ItemStack> ITEM_HAND = EntityDataManager.<ItemStack>createKey(EntityDarkRoyal.class, DataSerializers.ITEM_STACK);
@@ -112,60 +92,6 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
     private void setDisabledShield(boolean value) {
         this.dataManager.set(DISABLED_SHIELD, Boolean.valueOf(value));
     }
-    private boolean isSwingShield() {
-        return this.dataManager.get(SWING_SHIELD);
-    }
-    private void setSwingShield(boolean value) {
-        this.dataManager.set(SWING_SHIELD, Boolean.valueOf(value));
-    }
-    private boolean isThrust() {
-        return this.dataManager.get(THRUST);
-    }
-    private void setThrust(boolean value) {
-        this.dataManager.set(THRUST, Boolean.valueOf(value));
-    }
-    private boolean isThrustContinue() {
-        return this.dataManager.get(THRUST_CONTINUE);
-    }
-    private void setThrustContinue(boolean value) {
-        this.dataManager.set(THRUST_CONTINUE, Boolean.valueOf(value));
-    }
-    private boolean isThrustFinish() {
-        return this.dataManager.get(THRUST_FINISH);
-    }
-    private void setThrustFinish(boolean value) {
-        this.dataManager.set(THRUST_FINISH, Boolean.valueOf(value));
-    }
-    private boolean isShieldSmash() {
-        return this.dataManager.get(SHIELD_SMASH);
-    }
-    private void setShieldSmash(boolean value) {
-        this.dataManager.set(SHIELD_SMASH, Boolean.valueOf(value));
-    }
-    private boolean isSwingSpear() {
-        return this.dataManager.get(SWING_SPEAR);
-    }
-    private void setSwingSpear(boolean value) {
-        this.dataManager.set(SWING_SPEAR, Boolean.valueOf(value));
-    }
-    private boolean isPierceSpear() {
-        return this.dataManager.get(PIERCE_SPEAR);
-    }
-    private void setPierceSpear(boolean value) {
-        this.dataManager.set(PIERCE_SPEAR, Boolean.valueOf(value));
-    }
-    private boolean isDashSpear() {
-        return this.dataManager.get(DASH_SPEAR);
-    }
-    private void setDashSpear(boolean value) {
-        this.dataManager.set(DASH_SPEAR, Boolean.valueOf(value));
-    }
-    private boolean isThrowPotion() {
-        return this.dataManager.get(THROW_POTION);
-    }
-    private void setThrowPotion(boolean value) {
-        this.dataManager.set(THROW_POTION, Boolean.valueOf(value));
-    }
 
     public void setSkin(int skinType)
     {
@@ -177,7 +103,8 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
         return this.dataManager.get(SKIN_TYPE).intValue();
     }
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
     private Consumer<EntityLivingBase> prevAttacks;
     private boolean hasShieldLowered = false;
     private int shieldDisableTime = 180;
@@ -191,6 +118,7 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
         this.setSize(0.7F, 2.2F);
         this.experienceValue = 12;
         this.isImmuneToFire = true;
+        this.moveAnalysis = new MoveAnalysis(this);
         int randI = ModRand.range(1, 10);
         this.setSkin(rand.nextInt(5));
         if(randI >= MobConfig.crypt_guard_shield_chance) {
@@ -233,6 +161,7 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
         this.experienceValue = 12;
         this.isImmuneToFire = true;
         int randI = ModRand.range(1, 10);
+        this.moveAnalysis = new MoveAnalysis(this);
         this.setSkin(rand.nextInt(5));
         if(randI >= MobConfig.crypt_guard_shield_chance) {
             this.setHasShield(true);
@@ -310,6 +239,7 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
         if(!world.isRemote) {
 
             if(this.isDisabledShield()) {
@@ -358,15 +288,6 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("Has_Shield", this.isHasShield());
         nbt.setBoolean("Disabled_Shield", this.isDisabledShield());
-        nbt.setBoolean("Swing_Shield", this.isSwingShield());
-        nbt.setBoolean("Thrust", this.isThrust());
-        nbt.setBoolean("Thrust_Continue", this.isThrustContinue());
-        nbt.setBoolean("Thrust_Finish", this.isThrustFinish());
-        nbt.setBoolean("Shield_Smash", this.isShieldSmash());
-        nbt.setBoolean("Swing_Spear", this.isSwingSpear());
-        nbt.setBoolean("Pierce_Spear", this.isPierceSpear());
-        nbt.setBoolean("Dash_Spear", this.isDashSpear());
-        nbt.setBoolean("Throw_Potion", this.isThrowPotion());
         super.writeEntityToNBT(nbt);
     }
 
@@ -374,15 +295,6 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.setHasShield(nbt.getBoolean("Has_Shield"));
         this.setDisabledShield(nbt.getBoolean("Disabled_Shield"));
-        this.setSwingShield(nbt.getBoolean("Swing_Shield"));
-        this.setThrust(nbt.getBoolean("Thrust"));
-        this.setThrustContinue(nbt.getBoolean("Thrust_Continue"));
-        this.setThrustFinish(nbt.getBoolean("Thrust_Finish"));
-        this.setShieldSmash(nbt.getBoolean("Shield_Smash"));
-        this.setSwingSpear(nbt.getBoolean("Swing_Spear"));
-        this.setPierceSpear(nbt.getBoolean("Pierce_Spear"));
-        this.setDashSpear(nbt.getBoolean("Dash_Spear"));
-        this.setThrowPotion(nbt.getBoolean("Throw_Potion"));
         super.readEntityFromNBT(nbt);
     }
 
@@ -393,15 +305,6 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
         this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
         this.dataManager.register(HAS_SHIELD, Boolean.valueOf(false));
         this.dataManager.register(DISABLED_SHIELD, Boolean.valueOf(false));
-        this.dataManager.register(SWING_SHIELD, Boolean.valueOf(false));
-        this.dataManager.register(THRUST, Boolean.valueOf(false));
-        this.dataManager.register(THRUST_CONTINUE, Boolean.valueOf(false));
-        this.dataManager.register(THRUST_FINISH, Boolean.valueOf(false));
-        this.dataManager.register(SHIELD_SMASH, Boolean.valueOf(false));
-        this.dataManager.register(SWING_SPEAR, Boolean.valueOf(false));
-        this.dataManager.register(PIERCE_SPEAR, Boolean.valueOf(false));
-        this.dataManager.register(DASH_SPEAR, Boolean.valueOf(false));
-        this.dataManager.register(THROW_POTION, Boolean.valueOf(false));
     }
 
     @Override
@@ -454,7 +357,7 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
 
     private final Consumer<EntityLivingBase> throw_potion = (target) -> {
       this.setFightMode(true);
-      this.setThrowPotion(true);
+      animator.performAttack(ANIM_THROW_POTION);
 
       addEvent(()-> {
           this.lockLook = true;
@@ -492,11 +395,10 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
       addEvent(()-> {
           this.setImmovable(false);
         this.setFightMode(false);
-        this.setThrowPotion(false);
       }, 45);
     };
     private final Consumer<EntityLivingBase> dash_with_spear = (target) -> {
-      this.setDashSpear(true);
+      animator.performAttack(ANIM_DASH_SPEAR);
       this.setFightMode(true);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
@@ -536,7 +438,6 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
         }, 45);
 
       addEvent(()-> {
-        this.setDashSpear(false);
         this.setFightMode(false);
         this.setFullBodyUsage(false);
         this.setImmovable(false);
@@ -544,7 +445,7 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
       }, 60);
     };
     private final Consumer<EntityLivingBase> pierce_with_spear = (target) -> {
-      this.setPierceSpear(true);
+      animator.performAttack(ANIM_PIERCE_SPEAR);
       this.setFightMode(true);
         this.hasShieldLowered = true;
 
@@ -571,13 +472,12 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
         }, 40);
 
       addEvent(()-> {
-        this.setPierceSpear(false);
         this.setFightMode(false);
           this.hasShieldLowered = false;
       }, 55);
     };
     private final Consumer<EntityLivingBase> swing_with_spear = (target) -> {
-      this.setSwingSpear(true);
+      animator.performAttack(ANIM_SWING_SPEAR);
       this.setFightMode(true);
         this.hasShieldLowered = true;
 
@@ -604,14 +504,13 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
         }, 40);
 
       addEvent(()-> {
-        this.setSwingSpear(false);
         this.setFightMode(false);
           this.hasShieldLowered = false;
       }, 55);
     };
 
     private final Consumer<EntityLivingBase> shield_smash = (target) -> {
-      this.setShieldSmash(true);
+      animator.performAttack(ANIM_SHIELD_SMASH);
       this.setFightMode(true);
 
       addEvent(()-> {
@@ -630,14 +529,13 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
       }, 45);
 
       addEvent(()-> {
-        this.setShieldSmash(false);
         this.setFightMode(false);
         this.setImmovable(false);
       }, 60);
     };
 
     private final Consumer<EntityLivingBase> thrust_begin = (target) -> {
-        this.setThrust(true);
+        animator.performAttack(ANIM_THRUST);
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
@@ -667,7 +565,6 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
         }, 35);
 
         addEvent(()-> {
-        this.setThrust(false);
         int randI = ModRand.range(1, 11);
 
         if(randI > 6) {
@@ -675,14 +572,13 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
             this.setThrustTooContinue(target);
         } else {
             //finish Thrust
-            this.setThrustFinish(true);
+            animator.performAttack(ANIM_THRUST_FINISH);
 
             addEvent(()-> {
                 this.hasShieldLowered = false;
             }, 10);
 
             addEvent(()-> {
-            this.setThrustFinish(false);
             this.setFightMode(false);
             this.setImmovable(false);
             this.setFullBodyUsage(false);
@@ -694,7 +590,7 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
     private void setThrustTooContinue(EntityLivingBase target) {thrust_continue.accept(target);}
 
     private final Consumer<EntityLivingBase> thrust_continue = (target) -> {
-      this.setThrustContinue(true);
+      animator.performAttack(ANIM_THRUST_CONTINUE);
 
         addEvent(()-> {
             this.lockLook = true;
@@ -726,7 +622,6 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
         }, 65);
 
       addEvent(()-> {
-        this.setThrustContinue(false);
         this.setFullBodyUsage(false);
         this.setFightMode(false);
         this.setImmovable(false);
@@ -734,7 +629,7 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
     };
 
     private final Consumer<EntityLivingBase> swing_with_shield = (target) -> {
-        this.setSwingShield(true);
+        animator.performAttack(ANIM_SWING_SHIELD);
         this.setFightMode(true);
 
         addEvent(()-> {
@@ -754,7 +649,6 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
         }, 40);
 
         addEvent(()-> {
-            this.setSwingShield(false);
             this.setFightMode(false);
         }, 50);
     };
@@ -781,105 +675,32 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "shield_controller", 0, this::predicateHideShield));
-        data.addAnimationController(new AnimationController(this, "model_adjustments_from", 0, this::predicateModelAdjustments));
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isSwingShield()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_SHIELD, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isThrust()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_THRUST, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isThrustContinue()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_THRUST_CONTINUE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isThrustFinish()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_THRUST_FINISH, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isShieldSmash()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SHIELD_SMASH, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingSpear()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_SPEAR, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isThrowPotion()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_THROW_POTION, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isPierceSpear()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_PIERCE_SPEAR, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isDashSpear()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DASH_SPEAR, false));
-                return PlayState.CONTINUE;
-            }
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateHideShield(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(!this.isHasShield()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_HIDE_SHIELD, true));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_HIDE_SHIELD, true);
         }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateModelAdjustments(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode()) {
-            if(this.isHasShield() && !this.isDisabledShield()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MODEL_POSE_SHIELDED, true));
+        if(!this.isFullBodyUsage()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            if(isMovingOnGround) {
+                if(!this.isFightMode()) {
+                    if(this.isHasShield() && !this.isDisabledShield()) {
+                        animator.setCustomUpperWalk(ANIM_WALK_ARMS_SHIELDED);
+                    } else {
+                        animator.setCustomUpperWalk(ANIM_WALK_ARMS);
+                    }
+                    animator.setCustomLowerWalk(ANIM_WALK_LOWER);
+                }
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MODEL_POSE, true));
+                if(!this.isFightMode()) {
+                    if(this.isHasShield() && !this.isDisabledShield()) {
+                        animator.setCustomUpperIdle(ANIM_MODEL_POSE_SHIELDED);
+                    } else {
+                        animator.setCustomUpperIdle(ANIM_MODEL_POSE);
+                    }
+                    animator.setCustomLowerIdle(ANIM_IDLE);
+                }
             }
-
-            return PlayState.CONTINUE;
         }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_LOWER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode()) {
-            if(this.isHasShield() && !this.isDisabledShield()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_ARMS_SHIELDED, true));
-            } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_ARMS, true));
-            }
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
     }
 
 
@@ -990,16 +811,6 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
         return null;
     }
 
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
     private static final ResourceLocation LOOT_MOB = new ResourceLocation(ModReference.MOD_ID, "dark_royal");
 
     @Override
@@ -1010,11 +821,6 @@ public class EntityDarkRoyal extends EntityDarkBase implements IAnimatable, IAni
     @Override
     protected boolean canDropLoot() {
         return true;
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override

@@ -1,12 +1,10 @@
 package com.dungeon_additions.da.entity.dark_dungeon;
 
 import com.dungeon_additions.da.Main;
-import com.dungeon_additions.da.animation.IAnimatedEntity;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.dark_dungeon.EntityAIAssassinAttack;
-import com.dungeon_additions.da.entity.ai.sky_dungeon.EntityAIMageGargoyle;
-import com.dungeon_additions.da.entity.sky_dungeon.EntityMageGargoyle;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
@@ -14,6 +12,7 @@ import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -21,19 +20,15 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -41,21 +36,13 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, IAnimationTickable, IAttack {
+public class EntityDarkAssassin extends EntityDarkBase implements IAttack {
 
     private static final DataParameter<Boolean> SWING_MELEE = EntityDataManager.createKey(EntityDarkAssassin.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SWING_MELEE_ALT = EntityDataManager.createKey(EntityDarkAssassin.class, DataSerializers.BOOLEAN);
@@ -78,7 +65,8 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
 
     private final String ANIM_HIDDEN = "hidden";
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
     private Consumer<EntityLivingBase> prevAttacks;
 
     private boolean firstStrike = true;
@@ -140,6 +128,7 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
         this.falter_resistance = 0.8F;
         this.isImmuneToFire = true;
         this.animation_attack_speed = MobConfig.assassin_animation_speed;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityDarkAssassin(World worldIn) {
@@ -150,6 +139,7 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
         this.falter_resistance = 0.8F;
         this.isImmuneToFire = true;
         this.animation_attack_speed = MobConfig.assassin_animation_speed;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     @Override
@@ -235,7 +225,7 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
     @Override
     public void onUpdate() {
         super.onUpdate();
-
+        this.moveAnalysis.update();
         if(!world.isRemote) {
             dodgeCooldown--;
             invisibilityCooldown--;
@@ -300,6 +290,7 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
 
     private final Consumer<EntityLivingBase> summon_ink = (target) -> {
       this.setSummonInk(true);
+      animator.performAttack(ANIM_SUMMON_INK, animation_attack_speed);
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setImmovable(true);
@@ -333,6 +324,7 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
 
     private final Consumer<EntityLivingBase> jump_strike = (target) -> {
       this.setJumpAttack(true);
+      animator.performAttack(ANIM_JUMP_ATTACK, animation_attack_speed);
       this.setFightMode(true);
       this.setFullBodyUsage(true);
       if(this.isHiddenFrom()) {
@@ -365,6 +357,7 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
 
     private final Consumer<EntityLivingBase> strike_alternative = (target) -> {
       this.setSwingMeleeAlt(true);
+      animator.performAttack(ANIM_ATTACK_ALTERNATIVE, animation_attack_speed);
       this.setFightMode(true);
         if(this.isHiddenFrom()) {
             this.setHiddenFrom(false);
@@ -397,6 +390,7 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
     };
     private final Consumer<EntityLivingBase> strike = (target) -> {
         this.setSwingMelee(true);
+        animator.performAttack(ANIM_ATTACK, animation_attack_speed);
         this.setFightMode(true);
         if(this.isHiddenFrom()) {
             this.setHiddenFrom(false);
@@ -429,97 +423,24 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
     };
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateIdleArms));
-        data.addAnimationController(new AnimationController(this, "arms_legs_controller", 0, this::predicateLegsUpper));
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "hidden_controller", 0, this::predicateHiddenTact));
-    }
-
-    private <E extends IAnimatable> PlayState predicateHiddenTact(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(this.isHiddenFrom()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_HIDDEN, true));
-            return PlayState.CONTINUE;
+            animator.setCustomUpperIdle(ANIM_HIDDEN);
         }
-        return PlayState.STOP;
-    }
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-                event.getController().setAnimationSpeed(this.animation_attack_speed);
-            if(this.isDodge()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DODGE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingMelee()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_ATTACK, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingMeleeAlt()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_ATTACK_ALTERNATIVE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isJumpAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_JUMP_ATTACK, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSummonInk()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON_INK, false));
-                return PlayState.CONTINUE;
+        if(!this.isHiddenFrom() && !this.isFullBodyUsage()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            if(isMovingOnGround) {
+                if(!this.isFightMode()) {
+                    animator.setCustomUpperWalk(ANIM_WALK_UPPER);
+                }
+                animator.setCustomLowerWalk(ANIM_WALK_LOWER);
+            } else {
+                if(!this.isFightMode()) {
+                    animator.setCustomUpperIdle(ANIM_IDLE_UPPER);
+                }
+                animator.setCustomLowerIdle(ANIM_IDLE_LOWER);
             }
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if (event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFullBodyUsage() && !this.isHiddenFrom()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_LOWER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdleArms(AnimationEvent<E> event) {
-        if (event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode() && !this.isHiddenFrom()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_UPPER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if (!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage() && !this.isHiddenFrom()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_LOWER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegsUpper(AnimationEvent<E> event) {
-        if (!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode() && !this.isHiddenFrom()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
 
@@ -613,6 +534,7 @@ public class EntityDarkAssassin extends EntityDarkBase implements IAnimatable, I
 
     private void DodgeAction (EntityLivingBase source) {
         this.setDodge(true);
+        animator.performAttack(ANIM_DODGE, animation_attack_speed);
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.playSound(SoundEvents.BLOCK_ANVIL_HIT, 0.5f, 1.6f / (rand.nextFloat() * 0.4F + 0.7f));

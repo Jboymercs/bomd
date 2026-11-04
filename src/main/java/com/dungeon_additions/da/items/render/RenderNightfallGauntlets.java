@@ -1,13 +1,23 @@
 package com.dungeon_additions.da.items.render;
 
-import com.dungeon_additions.da.items.model.ModelNightfallGauntlets;
-import com.dungeon_additions.da.items.tools.ItemNightfallGauntlets;
-import com.dungeon_additions.da.items.tools.ItemNightfallSword;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
+import com.dungeon_additions.da.animation.AzLib.DaItemAnimator;
+import com.dungeon_additions.da.util.ModReference;
+import mod.azure.azurelib.render.item.AzItemRenderer;
+import mod.azure.azurelib.render.item.AzItemRendererConfig;
+import mod.azure.azurelib.render.layer.AzAutoGlowingLayer;
+import net.minecraft.util.ResourceLocation;
 
-public class RenderNightfallGauntlets extends GeoItemRenderer<ItemNightfallGauntlets> {
+public class RenderNightfallGauntlets extends AzItemRenderer {
+
+    private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/items/nightfall/nightfall_gauntlets.png");
+    private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/item/geo.nightfall_gauntlets.json");
+
     public RenderNightfallGauntlets() {
-        super(new ModelNightfallGauntlets());
+        super(
+                AzItemRendererConfig.builder(itemStack -> MODEL_RESLOC, itemStack -> TEXTURE)
+                        .addRenderLayer(new AzAutoGlowingLayer<>())
+                        .setAnimatorProvider(() -> new DaItemAnimator(null))
+                        .build()
+        );
     }
 }

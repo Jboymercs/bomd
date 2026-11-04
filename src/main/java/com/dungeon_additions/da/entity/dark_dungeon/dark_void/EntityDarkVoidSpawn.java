@@ -1,14 +1,12 @@
 package com.dungeon_additions.da.entity.dark_dungeon.dark_void;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkAssassin;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
-import com.dungeon_additions.da.entity.dark_dungeon.dauntless.EntityDauntlessAOE;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
-import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,26 +17,17 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.lang.ref.WeakReference;
 import java.util.Objects;
 
-public class EntityDarkVoidSpawn extends EntityDarkBase implements IAnimatable, IAnimationTickable {
+public class EntityDarkVoidSpawn extends EntityDarkBase {
 
     protected static final DataParameter<Integer> TIME_ALIVE = EntityDataManager.createKey(EntityDarkVoidSpawn.class, DataSerializers.VARINT);
     private final String ANIM_IDLE = "idle";
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     public void setTimeAlive(int skinType)
     {
         this.dataManager.set(TIME_ALIVE, Integer.valueOf(skinType));
@@ -166,34 +155,16 @@ public class EntityDarkVoidSpawn extends EntityDarkBase implements IAnimatable, 
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }
 
-
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "spike_controller", 0, this::predicateIdle));
+    public void updateAnimations() {
+        animator.setStateAnim(ANIM_IDLE, true);
     }
 
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-        return PlayState.CONTINUE;
-    }
 
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
 
     @Override
     public final boolean attackEntityFrom(DamageSource source, float amount) {
         return false;
     }
 
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
-    }
 }

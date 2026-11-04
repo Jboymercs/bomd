@@ -4,7 +4,6 @@ import com.dungeon_additions.da.animation.example.EntityExample;
 import com.dungeon_additions.da.animation.example.ModelExample;
 import com.dungeon_additions.da.blocks.desert_dungeon.RenderPuzzleMirror;
 import com.dungeon_additions.da.entity.EntityNetherAbberrant;
-import com.dungeon_additions.da.entity.EntityTestModel;
 import com.dungeon_additions.da.entity.ProjectileEndlessEnderpearl;
 import com.dungeon_additions.da.entity.blossom.*;
 import com.dungeon_additions.da.entity.boss.EntityWreathKnight;
@@ -200,7 +199,7 @@ public class RenderHandler {
 
     public static void registerGeoEntityRenderers() {
         //Test Boss AI
-        RenderingRegistry.registerEntityRenderingHandler(EntityWreathKnight.class, RenderWreathKnight::new);
+      //  RenderingRegistry.registerEntityRenderingHandler(EntityWreathKnight.class, RenderWreathKnight::new);
         // Void Blossom - Lush Dimension
         RenderingRegistry.registerEntityRenderingHandler(EntityVoidBlossom.class, RenderVoidBlossom::new);
         //Void Spike
@@ -385,8 +384,6 @@ public class RenderHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityDarkVoidSpawn.class, RenderDarkVoidSpawn::new);
         //Chevalier
         RenderingRegistry.registerEntityRenderingHandler(EntityChevalier.class, RenderChevalier::new);
-        //Test Model
-        RenderingRegistry.registerEntityRenderingHandler(EntityTestModel.class, RenderTestModel::new);
         //Spear Incarnate
         RenderingRegistry.registerEntityRenderingHandler(EntitySpearIncarnate.class, RenderSpearIncarnate::new);
         //Rohs Eye

@@ -1,11 +1,10 @@
 package com.dungeon_additions.da.entity.desert_dungeon.boss;
 
 import com.dungeon_additions.da.Main;
-import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityDesertBase;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.colossus.ActionColossusMaceSlam;
-import com.dungeon_additions.da.entity.gaelon_dungeon.EntityGaelonBase;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
@@ -19,22 +18,14 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntitySummonedMace extends EntityDesertBase implements IAnimatable, IAnimationTickable {
+public class EntitySummonedMace extends EntityDesertBase {
 
-    private AnimationFactory factory = new AnimationFactory(this);
     private static final DataParameter<Boolean> MELEE_VARIATION = EntityDataManager.createKey(EntitySummonedMace.class, DataSerializers.BOOLEAN);
     private EntityPlayer player;
     private float damageIn;
     private EntityAbstractBase ownerIn;
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
 
     public void setMeleeVariation(boolean value) {this.dataManager.set(MELEE_VARIATION, Boolean.valueOf(value));}
     public boolean isMeleeVariation() {return this.dataManager.get(MELEE_VARIATION);}
@@ -68,6 +59,11 @@ public class EntitySummonedMace extends EntityDesertBase implements IAnimatable,
         this.noClip = true;
         this.setImmovable(true);
         this.setMeleeVariation(isMeleeVariant);
+        if(isMeleeVariant) {
+            animator.setStateAnim(ANIM_MACE_SWING);
+        } else {
+            animator.setStateAnim(ANIM_MACE_SLAM);
+        }
         this.setNoAI(true);
         this.damageIn = damageIn;
         this.ownerIn = ownerInIn;
@@ -81,6 +77,11 @@ public class EntitySummonedMace extends EntityDesertBase implements IAnimatable,
             this.setSize(1f, 4.5f);
         }
         this.setMeleeVariation(isMeleeVariant);
+        if(isMeleeVariant) {
+            animator.setStateAnim(ANIM_MACE_SWING);
+        } else {
+            animator.setStateAnim(ANIM_MACE_SLAM);
+        }
         this.noClip = true;
         this.setImmovable(true);
         this.setNoAI(true);
@@ -202,19 +203,6 @@ public class EntitySummonedMace extends EntityDesertBase implements IAnimatable,
     }
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "spike_controller", 0, this::predicateIdle));
-    }
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(this.isMeleeVariation()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MACE_SWING, false));
-        } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MACE_SLAM, false));
-        }
-        return PlayState.CONTINUE;
-    }
-
-    @Override
     public final boolean attackEntityFrom(DamageSource source, float amount) {
         return false;
     }
@@ -222,19 +210,5 @@ public class EntitySummonedMace extends EntityDesertBase implements IAnimatable,
     @Override
     public boolean canBeCollidedWith() {
         return false;
-    }
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

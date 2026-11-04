@@ -1,17 +1,16 @@
 package com.dungeon_additions.da.entity.sky_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
-import com.dungeon_additions.da.entity.ai.flying.EntityAIRandomFly;
-import com.dungeon_additions.da.entity.ai.flying.TimedAttackInitiator;
 import com.dungeon_additions.da.entity.ai.sky_dungeon.EntityAIMageGargoyle;
-import com.dungeon_additions.da.entity.ai.sky_dungeon.EntityGargoyleTridentAI;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -31,23 +30,16 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IAnimationTickable, IAttack {
+public class EntityMageGargoyle extends EntitySkyBase implements  IAttack {
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
     private Consumer<EntityLivingBase> prevAttacks;
 
     private int castSpecialCooldown = 50 + ModRand.range(100, 200);
@@ -60,20 +52,8 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
     private final String ANIM_CAST_BASIC = "cast_basic";
     private final String ANIM_CAST_SPECIAL = "cast_special";
 
-    private static final DataParameter<Boolean> SWING_MELEE = EntityDataManager.createKey(EntityMageGargoyle.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_MELEE_ALT = EntityDataManager.createKey(EntityMageGargoyle.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> CAST_BASIC = EntityDataManager.createKey(EntityMageGargoyle.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> CAST_SPECIAL = EntityDataManager.createKey(EntityMageGargoyle.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> HANGING = EntityDataManager.createKey(EntityMageGargoyle.class, DataSerializers.BOOLEAN);
 
-    private boolean isSwingMelee() {return this.dataManager.get(SWING_MELEE);}
-    private void setSwingMelee(boolean value) {this.dataManager.set(SWING_MELEE, Boolean.valueOf(value));}
-    private boolean isSwingMeleeAlt() {return this.dataManager.get(SWING_MELEE_ALT);}
-    private void setSwingMeleeAlt(boolean value) {this.dataManager.set(SWING_MELEE_ALT, Boolean.valueOf(value));}
-    private boolean isCastBasic() {return this.dataManager.get(CAST_BASIC);}
-    private void setCastBasic(boolean value) {this.dataManager.set(CAST_BASIC, Boolean.valueOf(value));}
-    private boolean isCastSpecial() {return this.dataManager.get(CAST_SPECIAL);}
-    private void setCastSpecial(boolean value) {this.dataManager.set(CAST_SPECIAL, Boolean.valueOf(value));}
     private boolean isHanging() {return this.dataManager.get(HANGING);}
     private void setHanging(boolean value) {this.dataManager.set(HANGING, Boolean.valueOf(value));}
 
@@ -84,6 +64,7 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
         hasFallTpOverride = true;
         this.falter_resistance = 0.8F;
         this.hemorrhage_resistance = 0.4F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityMageGargoyle(World worldIn) {
@@ -93,23 +74,16 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
         hasFallTpOverride = true;
         this.falter_resistance = 0.8F;
         this.hemorrhage_resistance = 0.4F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
-        nbt.setBoolean("Swing_Melee", this.isSwingMelee());
-        nbt.setBoolean("Swing_Melee_Alt", this.isSwingMeleeAlt());
-        nbt.setBoolean("Cast_Basic", this.isCastBasic());
-        nbt.setBoolean("Cast_Special", this.isCastSpecial());
         nbt.setBoolean("Hanging", this.isHanging());
         super.writeEntityToNBT(nbt);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
-        this.setSwingMelee(nbt.getBoolean("Swing_Melee"));
-        this.setSwingMeleeAlt(nbt.getBoolean("Swing_Melee_Alt"));
-        this.setCastBasic(nbt.getBoolean("Cast_Basic"));
-        this.setCastSpecial(nbt.getBoolean("Cast_Special"));
         this.setHanging(nbt.getBoolean("Hanging"));
         super.readEntityFromNBT(nbt);
     }
@@ -117,10 +91,6 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
     @Override
     public void entityInit() {
         super.entityInit();
-    this.dataManager.register(SWING_MELEE, Boolean.valueOf(false));
-    this.dataManager.register(SWING_MELEE_ALT, Boolean.valueOf(false));
-    this.dataManager.register(CAST_SPECIAL, Boolean.valueOf(false));
-    this.dataManager.register(CAST_BASIC, Boolean.valueOf(false));
     this.dataManager.register(HANGING, Boolean.valueOf(false));
     }
 
@@ -148,7 +118,7 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
     @Override
     public void onUpdate() {
         super.onUpdate();
-
+        this.moveAnalysis.update();
         if(!world.isRemote) {
             castSpecialCooldown--;
 
@@ -186,7 +156,7 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
     }
 
     private final Consumer<EntityLivingBase> cast_special = (target) -> {
-      this.setCastSpecial(true);
+      animator.performAttack(ANIM_CAST_SPECIAL);
       this.setFightMode(true);
       this.setImmovable(true);
       this.lockLook = true;
@@ -208,7 +178,6 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
       }, 75);
 
       addEvent(()-> {
-        this.setCastSpecial(false);
         this.setFightMode(false);
         this.setImmovable(false);
         castSpecialCooldown = 300;
@@ -216,7 +185,7 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
     };
 
     private final Consumer<EntityLivingBase> cast_basic = (target) -> {
-      this.setCastBasic(true);
+      animator.performAttack(ANIM_CAST_BASIC);
       this.setFightMode(true);
       this.setImmovable(true);
 
@@ -234,14 +203,13 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
       }, 35);
 
       addEvent(()-> {
-        this.setCastBasic(false);
         this.setFightMode(false);
         this.setImmovable(false);
       }, 65);
     };
 
     private final Consumer<EntityLivingBase> swing_regular = (target) -> {
-        this.setSwingMelee(true);
+        animator.performAttack(ANIM_SWING);
         this.setFightMode(true);
         this.setImmovable(true);
 
@@ -269,13 +237,12 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
         }, 30);
         addEvent(()-> {
             this.setImmovable(false);
-        this.setSwingMelee(false);
         this.setFightMode(false);
         }, 55);
     };
 
     private final Consumer<EntityLivingBase> swing_alternative = (target) -> {
-      this.setSwingMeleeAlt(true);
+      animator.performAttack(ANIM_SWING_ALT);
       this.setFightMode(true);
       this.setImmovable(true);
 
@@ -305,66 +272,19 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
 
       addEvent(()-> {
           this.setImmovable(false);
-        this.setSwingMeleeAlt(false);
         this.setFightMode(false);
       }, 55);
     };
+
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "hang_controlle", 40, this::predicateHanging));
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isSwingMelee()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingMeleeAlt()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_ALT, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isCastBasic()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_CAST_BASIC, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isCastSpecial()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_CAST_SPECIAL, false));
-                return PlayState.CONTINUE;
-            }
-        }
-
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateHanging(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(this.isHanging() && !this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_HANGING, true));
-            return PlayState.CONTINUE;
+            animator.setCustomLowerWalk(ANIM_HANGING);
         }
-        return PlayState.STOP;
-    }
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-
-            if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isHanging() && !this.isFightMode()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-                return PlayState.CONTINUE;
-            }
-
-
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode() && !this.isHanging()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK, true));
-            return PlayState.CONTINUE;
+        if(!this.isFightMode() && !this.isHanging()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            animator.handleIdleStates(isMovingOnGround);
         }
-        return PlayState.STOP;
     }
 
     @Override
@@ -388,15 +308,6 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
         this.playSound(SoundsHandler.GARGOYLE_STEP, 0.65F, 0.7f + ModRand.getFloat(0.3F));
     }
 
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
     private static final ResourceLocation LOOT_MOB = new ResourceLocation(ModReference.MOD_ID, "gargoyle_mage");
 
     @Override
@@ -407,10 +318,5 @@ public class EntityMageGargoyle extends EntitySkyBase implements IAnimatable, IA
     @Override
     protected boolean canDropLoot() {
         return true;
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

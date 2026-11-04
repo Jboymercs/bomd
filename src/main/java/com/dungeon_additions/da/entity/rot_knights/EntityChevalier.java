@@ -1,8 +1,7 @@
 package com.dungeon_additions.da.entity.rot_knights;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.entity.EntityAbstractBase;
-import com.dungeon_additions.da.entity.ai.EntityAIAttackRotKnight;
 import com.dungeon_additions.da.entity.ai.EntityAIChevalierAttack;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.rot_knights.actions.ActionChevCloud;
@@ -12,6 +11,7 @@ import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -35,21 +35,13 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatable, IAnimationTickable {
+public class EntityChevalier extends EntityRotBase implements IAttack {
     public boolean isRandomGetAway = false;
     private int swirlTime = 100;
     private float randomTurn = ModRand.range(1, 360);
@@ -79,60 +71,26 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
     private final String ANIM_FOCUS_LOOP = "focus_loop";
 
     private Consumer<EntityLivingBase> prevAttack;
-    private final AnimationFactory factory = new AnimationFactory(this);
 
-    private static final DataParameter<Boolean> STOMP = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_COMBO = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> PARRY = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HEAVY_SWING = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HEAVY_SWING_COMBO = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BEGIN_SWIRL = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SWIRL = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> END_SWIRL = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> ENTER_FOCUS = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> FOCUS_ATTACK = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SUMMON_PROJECTILE = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> END_FOCUS = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> HYPER_FOCUS_LOOP = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IDLE_POS = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> END_IDLE_POS = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DUNGEON_SPAWN = EntityDataManager.createKey(EntityChevalier.class, DataSerializers.BOOLEAN);
 
-    private boolean isStomp() {return this.dataManager.get(STOMP);}
-    private void setStomp(boolean value) {this.dataManager.set(STOMP, Boolean.valueOf(value));}
-    private boolean isSwing() {return this.dataManager.get(SWING);}
-    private void setSwing(boolean value) {this.dataManager.set(SWING, Boolean.valueOf(value));}
-    private boolean isSwingCombo() {return this.dataManager.get(SWING_COMBO);}
-    private void setSwingCombo(boolean value) {this.dataManager.set(SWING_COMBO, Boolean.valueOf(value));}
     private boolean isParry() {return this.dataManager.get(PARRY);}
     private void setParry(boolean value) {this.dataManager.set(PARRY, Boolean.valueOf(value));}
-    private boolean isHeavySwing() {return this.dataManager.get(HEAVY_SWING);}
-    private void setHeavySwing(boolean value) {this.dataManager.set(HEAVY_SWING, Boolean.valueOf(value));}
-    private boolean isHeavySwingCombo() {return this.dataManager.get(HEAVY_SWING_COMBO);}
-    private void setHeavySwingCombo(boolean value) {this.dataManager.set(HEAVY_SWING_COMBO, Boolean.valueOf(value));}
-    private boolean isBeginSwirl() {return this.dataManager.get(BEGIN_SWIRL);}
-    private void setBeginSwirl(boolean value) {this.dataManager.set(BEGIN_SWIRL, Boolean.valueOf(value));}
     private boolean isSwirl() {return this.dataManager.get(SWIRL);}
     private void setSwirl(boolean value) {this.dataManager.set(SWIRL, Boolean.valueOf(value));}
-    private boolean isEndSwirl() {return this.dataManager.get(END_SWIRL);}
-    private void setEndSwirl(boolean value) {this.dataManager.set(END_SWIRL, Boolean.valueOf(value));}
-    private boolean isEnterFocus() {return this.dataManager.get(ENTER_FOCUS);}
-    private void setEnterFocus(boolean value) {this.dataManager.set(ENTER_FOCUS, Boolean.valueOf(value));}
-    private boolean isFocusAttack() {return this.dataManager.get(FOCUS_ATTACK);}
-    private void setFocusAttack(boolean value) {this.dataManager.set(FOCUS_ATTACK, Boolean.valueOf(value));}
-    private boolean isSummonProjectile() {return this.dataManager.get(SUMMON_PROJECTILE);}
-    private void setSummonProjectile(boolean value) {this.dataManager.set(SUMMON_PROJECTILE, Boolean.valueOf(value));}
-    private boolean isEndFocus() {return this.dataManager.get(END_FOCUS);}
-    private void setEndFocus(boolean value) {this.dataManager.set(END_FOCUS, Boolean.valueOf(value));}
     private boolean isFocusLoop() {return this.dataManager.get(HYPER_FOCUS_LOOP);}
     private void setFocusLoop(boolean value) {this.dataManager.set(HYPER_FOCUS_LOOP, Boolean.valueOf(value));}
     private boolean isIdlePos() {return this.dataManager.get(IDLE_POS);}
     private void setIdlePos(boolean value) {this.dataManager.set(IDLE_POS, Boolean.valueOf(value));}
-    private boolean isEndIdlePos() {return this.dataManager.get(END_IDLE_POS);}
-    private void setEndIdlePos(boolean value) {this.dataManager.set(END_IDLE_POS, Boolean.valueOf(value));}
     private boolean isDungeonSpawn() {return this.dataManager.get(DUNGEON_SPAWN);}
     public void setDungeonSpawn(boolean value) {this.dataManager.set(DUNGEON_SPAWN, Boolean.valueOf(value));}
+
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, true);
+    private final MoveAnalysis moveAnalysis;
 
     public EntityChevalier(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -141,6 +99,7 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
         this.falter_resistance = 1.2F;
         this.setIdlePos(true);
         this.setImmovable(true);
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityChevalier(World worldIn) {
@@ -150,48 +109,25 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
         this.falter_resistance = 1.2F;
         this.setIdlePos(true);
         this.setImmovable(true);
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
-        nbt.setBoolean("Stomp", this.isStomp());
-        nbt.setBoolean("Swing", this.isSwing());
-        nbt.setBoolean("Swing_Combo", this.isSwingCombo());
         nbt.setBoolean("Parry", this.isParry());
-        nbt.setBoolean("Heavy_Swing", this.isHeavySwing());
-        nbt.setBoolean("Heavy_Swing_Combo", this.isHeavySwingCombo());
-        nbt.setBoolean("Begin_Swirl", this.isBeginSwirl());
         nbt.setBoolean("Swirl", this.isSwirl());
-        nbt.setBoolean("End_Swirl", this.isEndSwirl());
-        nbt.setBoolean("Enter_Focus", this.isEnterFocus());
-        nbt.setBoolean("End_Focus", this.isEndFocus());
-        nbt.setBoolean("Focus_Attack", this.isFocusAttack());
-        nbt.setBoolean("Summon_Projectile", this.isSummonProjectile());
         nbt.setBoolean("Hyper_Focus_Loop", this.isFocusLoop());
         nbt.setBoolean("Idle_Pos", this.isIdlePos());
-        nbt.setBoolean("End_Idle_Pos", this.isEndIdlePos());
         nbt.setBoolean("Dungeon_Spawn", this.isDungeonSpawn());
         super.writeEntityToNBT(nbt);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
-        this.setStomp(nbt.getBoolean("Stomp"));
-        this.setSwing(nbt.getBoolean("Swing"));
-        this.setSwingCombo(nbt.getBoolean("Swing_Combo"));
         this.setParry(nbt.getBoolean("Parry"));
-        this.setHeavySwing(nbt.getBoolean("Heavy_Swing"));
-        this.setHeavySwingCombo(nbt.getBoolean("Heavy_Swing_Combo"));
-        this.setBeginSwirl(nbt.getBoolean("Begin_Swirl"));
         this.setSwirl(nbt.getBoolean("Swirl"));
-        this.setEndSwirl(nbt.getBoolean("End_Swirl"));
-        this.setEnterFocus(nbt.getBoolean("Enter_Focus"));
-        this.setFocusAttack(nbt.getBoolean("Focus_Attack"));
-        this.setSummonProjectile(nbt.getBoolean("Summon_Projectile"));
-        this.setEndFocus(nbt.getBoolean("End_Focus"));
         this.setFocusLoop(nbt.getBoolean("Hyper_Focus_Loop"));
         this.setIdlePos(nbt.getBoolean("Idle_Pos"));
-        this.setEndIdlePos(nbt.getBoolean("End_Idle_Pos"));
         this.setDungeonSpawn(nbt.getBoolean("Dungeon_Spawn"));
         super.readEntityFromNBT(nbt);
     }
@@ -199,21 +135,9 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
     @Override
     public void entityInit() {
         super.entityInit();
-        this.dataManager.register(STOMP, Boolean.valueOf(false));
-        this.dataManager.register(SWING, Boolean.valueOf(false));
-        this.dataManager.register(SWING_COMBO, Boolean.valueOf(false));
         this.dataManager.register(PARRY, Boolean.valueOf(false));
-        this.dataManager.register(HEAVY_SWING, Boolean.valueOf(false));
-        this.dataManager.register(HEAVY_SWING_COMBO, Boolean.valueOf(false));
-        this.dataManager.register(BEGIN_SWIRL, Boolean.valueOf(false));
         this.dataManager.register(SWIRL, Boolean.valueOf(false));
-        this.dataManager.register(END_SWIRL, Boolean.valueOf(false));
-        this.dataManager.register(END_FOCUS, Boolean.valueOf(false));
-        this.dataManager.register(ENTER_FOCUS, Boolean.valueOf(false));
-        this.dataManager.register(FOCUS_ATTACK, Boolean.valueOf(false));
-        this.dataManager.register(SUMMON_PROJECTILE, Boolean.valueOf(false));
         this.dataManager.register(HYPER_FOCUS_LOOP, Boolean.valueOf(false));
-        this.dataManager.register(END_IDLE_POS, Boolean.valueOf(false));
         this.dataManager.register(IDLE_POS, Boolean.valueOf(false));
         this.dataManager.register(DUNGEON_SPAWN, Boolean.valueOf(false));
     }
@@ -232,6 +156,7 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
         this.blockTimer--;
         if(!world.isRemote) {
 
@@ -309,14 +234,13 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
 
     private void endIdleState() {
         this.setIdlePos(false);
-        this.setEndIdlePos(true);
+        animator.setStateAnim(ANIM_END_IDLE_POS);
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.lockLook = true;
 
         addEvent(()-> this.lockLook = false, 15);
         addEvent(()-> {
-            this.setEndIdlePos(false);
             this.setFightMode(false);
             this.setFullBodyUsage(false);
             this.setImmovable(false);
@@ -328,10 +252,9 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
         this.focusMode = false;
         this.setImmovable(true);
         this.setFocusLoop(false);
-        this.setEndFocus(true);
+        animator.performAttack(ANIM_END_FOCUS);
 
         addEvent(()-> {
-            this.setEndFocus(false);
             this.setFightMode(false);
             this.setFullBodyUsage(false);
             this.setImmovable(false);
@@ -340,8 +263,8 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
 
     private void endSwirlAttack() {
         this.setSwirl(false);
+        animator.performAttack(ANIM_END_SWIRL);
         this.setImmovable(true);
-        this.setEndSwirl(true);
 
         addEvent(() -> {
             this.lockLook = false;
@@ -350,7 +273,6 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
         addEvent(()-> {
             this.setFightMode(false);
             this.setFullBodyUsage(false);
-            this.setEndSwirl(false);
             this.setImmovable(false);
         }, 40);
     }
@@ -359,7 +281,7 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
         this.focusMode = false;
         this.focusTime = 0;
         this.setFocusLoop(false);
-        this.setFocusAttack(true);
+        animator.performAttack(ANIM_FOCUS_ATTACK);
         this.setImmovable(true);
         this.setFullBodyUsage(true);
 
@@ -391,7 +313,6 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
         }, 30);
 
         addEvent(()-> {
-            this.setFocusAttack(false);
             this.setFullBodyUsage(false);
             this.setFightMode(false);
             this.setImmovable(false);
@@ -432,12 +353,11 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
     }
 
     private final Consumer<EntityLivingBase> enter_focus = (target) -> {
-        this.setEnterFocus(true);
+        animator.performAttack(ANIM_ENTER_FOCUS);
         this.setFightMode(true);
         this.setImmovable(true);
         addEvent(()-> {
             this.setImmovable(false);
-            this.setEnterFocus(false);
             this.setFocusLoop(true);
             this.focusMode = true;
             this.focusTime = 40 + ModRand.range(30, 80);
@@ -445,9 +365,9 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
     };
 
     private final Consumer<EntityLivingBase> summon_projectiles = (target) -> {
-      this.setSummonProjectile(true);
       this.setFightMode(true);
       this.isRandomGetAway = true;
+      animator.performAttack(ANIM_SUMMON_PROJECTILE);
 
       addEvent(()-> {
         new ActionChevCloud().performAction(this, target);
@@ -456,15 +376,14 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
       addEvent(()-> {
           this.isRandomGetAway = false;
             this.setFightMode(false);
-            this.setSummonProjectile(false);
       }, 40);
     };
 
     private final Consumer<EntityLivingBase> begin_swirl = (target) -> {
-    this.setBeginSwirl(true);
     this.setFightMode(true);
     this.setFullBodyUsage(true);
     this.setImmovable(true);
+    animator.performAttack(ANIM_BEGIN_SWIRL);
 
     addEvent(()-> {
         Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(0, 0.5, 0)));
@@ -472,7 +391,6 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
         float damage = this.getAttack();
         ModUtils.handleAreaImpact(2f, (e) -> damage, this, offset, source, 0.4f, 0, false, 0.4F);
         this.playSound(SoundsHandler.SWING_HEAVY, 1.0f, 0.7f / (rand.nextFloat() * 0.4F + 0.4f));
-        this.setBeginSwirl(false);
         this.lockLook = true;
         //starts swirl attack
         Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -486,10 +404,10 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
 
 
     private final Consumer<EntityLivingBase> stomp = (target) -> {
-      this.setStomp(true);
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setImmovable(true);
+      animator.performAttack(ANIM_STOMP);
 
       addEvent(()-> this.lockLook = true, 10);
       addEvent(()-> {
@@ -503,7 +421,6 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
       }, 25);
 
       addEvent(()-> {
-            this.setStomp(false);
             this.setFullBodyUsage(false);
             this.setFightMode(false);
             this.setImmovable(false);
@@ -517,8 +434,7 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
         this.setFullBodyUsage(true);
 
         if(swingRand) {
-            this.setHeavySwing(true);
-
+            animator.performAttack(ANIM_HEAVY_SWING);
                 addEvent(()-> {
                     this.lockLook = true;
                     Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -546,11 +462,9 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
                 this.setImmovable(false);
                 this.setFullBodyUsage(false);
                 this.setFightMode(false);
-                this.setHeavySwing(false);
             }, 50);
         } else {
-            this.setHeavySwingCombo(true);
-
+            animator.performAttack(ANIM_HEAVY_SWING_COMBO);
             addEvent(()-> {
                 this.lockLook = true;
                 Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -600,7 +514,6 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
             }, 80);
 
             addEvent(()-> {
-                this.setHeavySwingCombo(false);
                 this.setFightMode(false);
                 this.setFullBodyUsage(false);
                 this.setImmovable(false);
@@ -616,8 +529,7 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
         this.setFullBodyUsage(true);
 
         if(swingRand) {
-            this.setSwing(true);
-
+            animator.performAttack(ANIM_SWING);
             addEvent(()-> {
                 this.lockLook = true;
                 Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -643,13 +555,12 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
             }, 30);
 
             addEvent(()-> {
-                this.setSwing(false);
                 this.setFightMode(false);
                 this.setFullBodyUsage(false);
                 this.setImmovable(false);
             }, 40);
         } else {
-            this.setSwingCombo(true);
+            animator.performAttack(ANIM_SWING_COMBO);
             addEvent(()-> {
                 this.lockLook = true;
                 Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -698,7 +609,6 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
             addEvent(()-> this.lockLook = false, 60);
             addEvent(()-> {
                     this.setImmovable(false);
-                    this.setSwingCombo(false);
                     this.setFightMode(false);
                     this.setFullBodyUsage(false);
             }, 70);
@@ -706,99 +616,28 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
     };
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "loops_controller", 0, this::predicateLoops));
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage() && !this.isIdlePos()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_LOWER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode() && !this.isIdlePos()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-            }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if (!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode() && !this.isIdlePos()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLoops(AnimationEvent<E> event) {
-        if(this.isFocusLoop() && this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().loop(ANIM_FOCUS_LOOP));
-            return PlayState.CONTINUE;
-        }
+    public void updateAnimations() {
         if(this.isIdlePos()) {
-            event.getController().setAnimation(new AnimationBuilder().loop(ANIM_IDLE_POS));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_IDLE_POS, true);
         }
-        return PlayState.STOP;
-    }
+        if(this.isFocusLoop()) {
+            animator.performAttack(ANIM_FOCUS_LOOP, true);
+        }
+        if(this.isSwirl()) {
+            animator.performAttack(ANIM_SWIRLD, true);
+        }
 
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode() && !this.isIdlePos()) {
-            if(this.isStomp()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_STOMP));
+        if(!this.isFullBodyUsage() && !this.isIdlePos()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            if(isMovingOnGround) {
+                if(!this.isFightMode()) {
+                    animator.setCustomUpperWalk(ANIM_WALK_UPPER);
+                }
+                animator.setCustomLowerWalk(ANIM_WALK_LOWER);
+            } else if(!this.isFightMode()) {
+                animator.setCustomUpperIdle(ANIM_IDLE);
             }
-            if(this.isSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING));
-            }
-            if(this.isSwingCombo()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING_COMBO));
-            }
-            if(this.isParry()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PARRY));
-            }
-            if(this.isHeavySwing()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_HEAVY_SWING));
-            }
-            if(this.isHeavySwingCombo()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_HEAVY_SWING_COMBO));
-            }
-            if(this.isBeginSwirl()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_BEGIN_SWIRL));
-            }
-            if(this.isSwirl()) {
-                event.getController().setAnimation(new AnimationBuilder().loop(ANIM_SWIRLD));
-            }
-            if(this.isEndSwirl()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_END_SWIRL));
-            }
-            if(this.isEnterFocus()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_ENTER_FOCUS));
-            }
-            if(this.isFocusAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_FOCUS_ATTACK));
-            }
-            if(this.isEndFocus()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_END_FOCUS));
-            }
-            if(this.isSummonProjectile()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SUMMON_PROJECTILE));
-            }
-            if(this.isEndIdlePos()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_END_IDLE_POS));
-            }
-            return PlayState.CONTINUE;
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
     }
 
     @Override
@@ -817,27 +656,10 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
         return SoundsHandler.ROT_KNIGHT_DEATH;
     }
 
-
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
-    }
-
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
 
-        if(source.getImmediateSource() instanceof EntityRotKnight || source.getImmediateSource() instanceof EntityRotKnightRapier || this.isIdlePos() || this.isEndIdlePos() || this.isParry()) {
+        if(source.getImmediateSource() instanceof EntityRotKnight || source.getImmediateSource() instanceof EntityRotKnightRapier || this.isIdlePos() || this.isParry()) {
             return false;
         }
 
@@ -879,6 +701,7 @@ public class EntityChevalier extends EntityRotBase implements IAttack, IAnimatab
 
     private void doBlockAction(Vec3d targetPos) {
         this.setParry(true);
+        animator.performCombo(ANIM_PARRY);
         this.setFightMode(true);
         this.setImmovable(true);
         this.blockTimer = 100;

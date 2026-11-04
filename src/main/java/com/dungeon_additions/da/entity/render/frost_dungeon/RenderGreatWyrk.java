@@ -1,38 +1,48 @@
 package com.dungeon_additions.da.entity.render.frost_dungeon;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimator;
 import com.dungeon_additions.da.entity.frost_dungeon.EntityGreatWyrk;
-import com.dungeon_additions.da.entity.frost_dungeon.draugr.EntityDraugr;
 import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.ITarget;
-import com.dungeon_additions.da.entity.model.frost_dungeon.ModelDraugr;
-import com.dungeon_additions.da.entity.model.frost_dungeon.ModelGreatWyrk;
-import com.dungeon_additions.da.entity.render.layer.GeoSpecificGlow;
-import com.dungeon_additions.da.entity.render.util.RenderGeoExtended;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.RenderUtil;
-import net.minecraft.block.state.IBlockState;
+import mod.azure.azurelib.render.entity.AzEntityRenderer;
+import mod.azure.azurelib.render.entity.AzEntityRendererConfig;
+import mod.azure.azurelib.render.layer.AzAutoGlowingLayer;
+import mod.azure.azurelib.render.vertex.RenderType;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.RenderDragon;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class RenderGreatWyrk extends RenderGeoExtended<EntityGreatWyrk> {
+public class RenderGreatWyrk extends AzEntityRenderer<EntityGreatWyrk> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/great_wyrk.png");
+    private static final ResourceLocation TEXTURE_TWO = new ResourceLocation(ModReference.MOD_ID, "textures/entity/great_wyrk_hurt.png");
     private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/entity/frost/geo.great_wyrk.json");
 
     public RenderGreatWyrk(RenderManager renderManager) {
-        super(renderManager, new ModelGreatWyrk(MODEL_RESLOC, TEXTURE, "great_wyrk"));
-        this.addLayer(new GeoSpecificGlow<>(this, this.TEXTURE_GETTER, this.MODEL_ID_GETTER));
+        super(AzEntityRendererConfig.<EntityGreatWyrk>builder($ -> MODEL_RESLOC, entity ->
+                entity.hurtTime > 0 || entity.isSummonBoss() ? TEXTURE_TWO :TEXTURE)
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE))
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE_TWO))
+                        .addRenderLayer(new AzAutoGlowingLayer<>())
+                        .setRenderEntry(contextPipeline -> {
+
+                            contextPipeline.animatable().updateAnimations();
+                            return contextPipeline;
+                        })
+
+                        .setAnimatorProvider(() -> new DaEntityAnimator<>("great_wyrk", false, false))
+                        .addRenderLayer(new AzAutoGlowingLayer<>())
+                        .setShadowRadius(0.4F)
+                        .build()
+                , renderManager);
     }
 
     @Override
@@ -69,48 +79,5 @@ public class RenderGreatWyrk extends RenderGeoExtended<EntityGreatWyrk> {
         }
 
         return false;
-    }
-
-    @Nullable
-    @Override
-    protected ItemStack getHeldItemForBone(String boneName, EntityGreatWyrk currentEntity) {
-        return null;
-    }
-
-    @Override
-    protected ItemCameraTransforms.TransformType getCameraTransformForItemAtBone(ItemStack boneItem, String boneName) {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    protected IBlockState getHeldBlockForBone(String boneName, EntityGreatWyrk currentEntity) {
-        return null;
-    }
-
-    @Override
-    protected void preRenderItem(ItemStack item, String boneName, EntityGreatWyrk currentEntity) {
-
-    }
-
-    @Override
-    protected void preRenderBlock(IBlockState block, String boneName, EntityGreatWyrk currentEntity) {
-
-    }
-
-    @Override
-    protected void postRenderItem(ItemStack item, String boneName, EntityGreatWyrk currentEntity) {
-
-    }
-
-    @Override
-    protected void postRenderBlock(IBlockState block, String boneName, EntityGreatWyrk currentEntity) {
-
-    }
-
-    @Nullable
-    @Override
-    protected ResourceLocation getTextureForBone(String boneName, EntityGreatWyrk currentEntity) {
-        return null;
     }
 }

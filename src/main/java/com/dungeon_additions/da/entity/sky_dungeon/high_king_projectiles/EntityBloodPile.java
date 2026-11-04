@@ -1,11 +1,9 @@
 package com.dungeon_additions.da.entity.sky_dungeon.high_king_projectiles;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.blossom.EntityGenericWave;
-import com.dungeon_additions.da.entity.blossom.EntityVoidBlossom;
 import com.dungeon_additions.da.entity.blossom.EntityVoidSpike;
-import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModColors;
@@ -22,19 +20,12 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class EntityBloodPile extends EntitySkyBase implements IAnimatable {
+public class EntityBloodPile extends EntitySkyBase {
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     private final String ANIM_SUMMON = "summon";
     private boolean playerProtection;
 
@@ -170,11 +161,6 @@ public class EntityBloodPile extends EntitySkyBase implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "wave_controller", 0, this::predicateIdle));
-    }
-
-    @Override
     public final boolean attackEntityFrom(DamageSource source, float amount) {
         return false;
     }
@@ -184,13 +170,8 @@ public class EntityBloodPile extends EntitySkyBase implements IAnimatable {
         return false;
     }
 
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON, false));
-        return PlayState.CONTINUE;
-    }
-
     @Override
-    public AnimationFactory getFactory() {
-        return factory;
+    public void updateAnimations() {
+        animator.setStateAnim(ANIM_SUMMON);
     }
 }

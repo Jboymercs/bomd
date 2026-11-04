@@ -1,11 +1,8 @@
 package com.dungeon_additions.da.entity.night_lich;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
-import com.dungeon_additions.da.entity.blossom.EntityGenericWave;
-import com.dungeon_additions.da.entity.blossom.EntityVoidBlossom;
-import com.dungeon_additions.da.entity.blossom.EntityVoidSpike;
-import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.entity.night_lich.action.ActionStaffAOE;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
@@ -20,20 +17,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatable, IAnimationTickable {
+public class EntityLichStaffAOE extends EntityAbstractBase{
 
-    private AnimationFactory factory = new AnimationFactory(this);
     private final String ANIM_BASE = "base";
     private final String ANIM_BASE_1 = "base_1";
     private final String ANIM_BASE_2 = "base_2";
@@ -43,7 +31,7 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
 
     protected int selection = ModRand.range(1, 6);
     private String ANIM_FROM_SELECTION;
-
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
 
     public EntityLichStaffAOE(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -249,12 +237,8 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
     }
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "staff_controller", 0, this::predicateIdle));
-    }
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_FROM_SELECTION, false));
-        return PlayState.CONTINUE;
+    public void updateAnimations() {
+            animator.setStateAnim(ANIM_FROM_SELECTION);
     }
 
 
@@ -268,18 +252,4 @@ public class EntityLichStaffAOE extends EntityAbstractBase implements IAnimatabl
         return false;
     }
 
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
-    }
 }

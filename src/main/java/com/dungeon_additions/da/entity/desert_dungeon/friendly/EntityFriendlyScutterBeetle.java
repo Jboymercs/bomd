@@ -1,27 +1,22 @@
 package com.dungeon_additions.da.entity.desert_dungeon.friendly;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.IAttack;
-import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityScutterBeetleAI;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityDesertBase;
-import com.dungeon_additions.da.entity.desert_dungeon.EntityScutterBeetle;
 import com.dungeon_additions.da.entity.desert_dungeon.friendly.ai.EntityAIBeetleHurtByTarget;
 import com.dungeon_additions.da.entity.desert_dungeon.friendly.ai.EntityAIBeetleOwnerAttack;
 import com.dungeon_additions.da.entity.desert_dungeon.friendly.ai.EntityAIFriendBeetleFollow;
 import com.dungeon_additions.da.entity.desert_dungeon.friendly.ai.EntityAIFriendlyBeetleAttack;
-import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.EntityFriendlyCursedRevenant;
-import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.ai.EntityAIRevenantFollow;
-import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.ai.EntityAIRevenantHurtByTarget;
-import com.dungeon_additions.da.entity.gaelon_dungeon.friendly.ai.EntityAIRevenantOwnerAttack;
 import com.dungeon_additions.da.util.ModRand;
-import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.google.common.base.Optional;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -36,21 +31,12 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -58,11 +44,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class EntityFriendlyScutterBeetle extends EntityDesertBase implements IAnimatable, IAttack, IAnimationTickable {
-    private final AnimationFactory factory = new AnimationFactory(this);
+public class EntityFriendlyScutterBeetle extends EntityDesertBase implements IAttack{
     private Consumer<EntityLivingBase> prevAttacks;
-    private final String ANIM_IDLE = "idle";
-    private final String ANIM_WALK = "walk";
 
     private final String ANIM_BITE = "bite";
     private final String ANIM_BEGIN_SCUTTLE = "begin_scuttle";
@@ -101,7 +84,8 @@ public class EntityFriendlyScutterBeetle extends EntityDesertBase implements IAn
     private void setEndScuttle(boolean value) {
         this.dataManager.set(END_SCUTTLE, Boolean.valueOf(value));
     }
-
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
     @Nullable
     public UUID getOwnerId()
     {
@@ -133,6 +117,7 @@ public class EntityFriendlyScutterBeetle extends EntityDesertBase implements IAn
         this.setHeadState = false;
         this.setScuttle(false);
         this.isFriendlyCreature = true;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityFriendlyScutterBeetle(World worldIn) {
@@ -142,6 +127,7 @@ public class EntityFriendlyScutterBeetle extends EntityDesertBase implements IAn
         this.setHeadState =false;
         this.setScuttle(false);
         this.isFriendlyCreature = true;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public void onSummonViaPlayer(BlockPos pos, EntityPlayer owner) {
@@ -232,7 +218,7 @@ public class EntityFriendlyScutterBeetle extends EntityDesertBase implements IAn
     @Override
     public void onUpdate() {
         super.onUpdate();
-
+        this.moveAnalysis.update();
         if(this.setHeadState && !world.isRemote) {
             EntityLivingBase target = this.getAttackTarget();
             if(target != null) {
@@ -281,6 +267,7 @@ public class EntityFriendlyScutterBeetle extends EntityDesertBase implements IAn
     private void endScuttleAttack() {
         this.setScuttle(false);
         this.setEndScuttle(true);
+        animator.performAttack(ANIM_END_SCUTTLE);
         this.setHeadState = false;
         this.scuttleTimer = 40;
         this.lockLook =false;
@@ -295,6 +282,7 @@ public class EntityFriendlyScutterBeetle extends EntityDesertBase implements IAn
         this.setImmovable(true);
         this.setFullBodyUsage(true);
         this.setBeginScuttle(true);
+        animator.performAttack(ANIM_BEGIN_SCUTTLE);
         this.setFightMode(true);
 
         addEvent(()-> {
@@ -319,7 +307,7 @@ public class EntityFriendlyScutterBeetle extends EntityDesertBase implements IAn
 
     private final Consumer<EntityLivingBase> do_bite_attack = (target) -> {
         this.setFightMode(true);
-        this.setBite(true);
+        animator.performAttack(ANIM_BITE);
         this.setImmovable(true);
 
         addEvent(()-> {
@@ -347,7 +335,6 @@ public class EntityFriendlyScutterBeetle extends EntityDesertBase implements IAn
         }, 40);
 
         addEvent(()-> {
-            this.setBite(false);
             this.setImmovable(false);
             this.setFightMode(false);
         }, 50);
@@ -355,65 +342,16 @@ public class EntityFriendlyScutterBeetle extends EntityDesertBase implements IAn
     };
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "walk_controller", 0, this::predicateWalk));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttackStates));
-        data.addAnimationController(new AnimationController(this, "head_controller", 0, this::predicateHoldHead));
-    }
-
-    private <E extends IAnimatable> PlayState predicateHoldHead(AnimationEvent<E> event) {
-        if(this.isScuttle() && this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SCUTTLE, true));
-            return PlayState.CONTINUE;
+    public void updateAnimations() {
+        if(this.isScuttle()) {
+            animator.performAttack(ANIM_SCUTTLE, true);
         }
-        return PlayState.STOP;
-    }
-    private <E extends IAnimatable> PlayState predicateAttackStates(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isBite()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BITE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isBeginScuttle()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BEGIN_SCUTTLE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isEndScuttle()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_END_SCUTTLE, false));
-                return PlayState.CONTINUE;
-            }
+        if(!this.isFullBodyUsage()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            animator.handleIdleStates(isMovingOnGround);
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
     }
 
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateWalk(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK, true));
-            event.getController().setAnimationSpeed(1.0 + (0.004 * event.getLimbSwing()));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
@@ -461,11 +399,6 @@ public class EntityFriendlyScutterBeetle extends EntityDesertBase implements IAn
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundsHandler.BEETLE_WALK, 0.3F, 0.8f + ModRand.getFloat(0.3F));
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     private boolean hasSentMessage = false;

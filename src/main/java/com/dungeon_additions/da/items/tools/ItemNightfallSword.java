@@ -12,7 +12,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -22,19 +21,14 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class ItemNightfallSword extends ToolSword implements IAnimatable {
+public class ItemNightfallSword extends ToolSword {
     private String info_loc;
-    public AnimationFactory factory = new AnimationFactory(this);
 
     public ItemNightfallSword(String name, String info_loc, ToolMaterial material) {
         super(name, material);
@@ -172,15 +166,5 @@ public class ItemNightfallSword extends ToolSword implements IAnimatable {
     @Override
     public double getAttackSpeed() {
         return -2.9000000953674316D;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 }

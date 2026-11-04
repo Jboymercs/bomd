@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.void_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.blocks.boss.BlockEnumBossSummonState;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
@@ -23,6 +24,7 @@ import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -57,14 +59,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -73,8 +67,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAnimationTickable, IPitch, IScreenShake, IAttack, IDirectionalRender, IEntitySound {
-    private AnimationFactory factory = new AnimationFactory(this);
+public class EntityVoidiclysm extends EntityEndBase implements IPitch, IScreenShake, IAttack, IDirectionalRender, IEntitySound {
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
     private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.NOTCHED_10));
     private Consumer<EntityLivingBase> prevAttack;
     private int shakeTime = 0;
@@ -106,64 +101,25 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
     private final String ANIM_SUMMON = "summon";
     private final String ANIM_DEATH = "death";
 
-    private static final DataParameter<Boolean> CAST_SPELL = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SCREAM_ATTACK = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> LAZER_TELEPORT = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> STRIKE_ONE = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> STRIKE_TWO = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> CLAP = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> RAISE_SPIKES = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> MELEE_MODE = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> GRAB_ATTACK = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> GRAB_CONTINUE = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> GRAB_FINISH = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> ATOMIC_ATTACK = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SUMMON_TRACK = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> MELEE_SLAM = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> PARRY = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DEFLECT = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SUMMON = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
-
     private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
-
     public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BLOCK_POS);
     public static DataParameter<Boolean> SET_SPAWN_LOC = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.BOOLEAN);
-
     protected static final DataParameter<Float> LOOK = EntityDataManager.createKey(EntityVoidiclysm.class, DataSerializers.FLOAT);
 
-    public void setCastSpell(boolean value) {this.dataManager.set(CAST_SPELL, Boolean.valueOf(value));}
-    public boolean isCastSpell() {return this.dataManager.get(CAST_SPELL);}
-    public void setScreamAttack(boolean value) {this.dataManager.set(SCREAM_ATTACK, Boolean.valueOf(value));}
-    public boolean isScreamAttack() {return this.dataManager.get(SCREAM_ATTACK);}
-    public void setLazerTeleport(boolean value) {this.dataManager.set(LAZER_TELEPORT, Boolean.valueOf(value));}
-    public boolean isLazerTeleport() {return this.dataManager.get(LAZER_TELEPORT);}
-    public void setStrikeOne(boolean value) {this.dataManager.set(STRIKE_ONE, Boolean.valueOf(value));}
-    public boolean isStrikeOne() {return this.dataManager.get(STRIKE_ONE);}
-    public void setStrikeTwo(boolean value) {this.dataManager.set(STRIKE_TWO, Boolean.valueOf(value));}
-    public boolean isStrikeTwo() {return this.dataManager.get(STRIKE_TWO);}
-    public void setClap(boolean value) {this.dataManager.set(CLAP, Boolean.valueOf(value));}
-    public boolean isClap() {return this.dataManager.get(CLAP);}
     public void setRaiseSpikes(boolean value) {this.dataManager.set(RAISE_SPIKES, Boolean.valueOf(value));}
     public boolean isRaiseSpikes() {return this.dataManager.get(RAISE_SPIKES);}
     public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
     public boolean isShaking() {return this.dataManager.get(SHAKING);}
     public boolean isMeleeMode() {return this.dataManager.get(MELEE_MODE);}
     public void setMeleeMode(boolean value) {this.dataManager.set(MELEE_MODE, Boolean.valueOf(value));}
-    public boolean isGrabAttack() {return this.dataManager.get(GRAB_ATTACK);}
-    public void setGrabAttack(boolean value) {this.dataManager.set(GRAB_ATTACK, Boolean.valueOf(value));}
-    public boolean isGrabContinue() {return this.dataManager.get(GRAB_CONTINUE);}
-    public void setGrabContinue(boolean value) {this.dataManager.set(GRAB_CONTINUE, Boolean.valueOf(value));}
     protected boolean isSummon() {return this.dataManager.get(SUMMON);}
     protected void setSummon(boolean value) {this.dataManager.set(SUMMON, Boolean.valueOf(value));}
-    public boolean isGrabFinish() {return this.dataManager.get(GRAB_FINISH);}
-    public void setGrabFinish(boolean value) {this.dataManager.set(GRAB_FINISH, Boolean.valueOf(value));}
-    public boolean isAtomicAttack() {return this.dataManager.get(ATOMIC_ATTACK);}
-    public void setAtomicAttack(boolean value) {this.dataManager.set(ATOMIC_ATTACK, Boolean.valueOf(value));}
-    public boolean isSummonTrack() {return this.dataManager.get(SUMMON_TRACK);}
-    public void setSummonTrack(boolean value) {this.dataManager.set(SUMMON_TRACK, Boolean.valueOf(value));}
-    public boolean isMeleeSlam() {return this.dataManager.get(MELEE_SLAM);}
-    public void setMeleeSlam(boolean value) {this.dataManager.set(MELEE_SLAM, Boolean.valueOf(value));}
     public boolean isParry() {return this.dataManager.get(PARRY);}
     public void setParry(boolean value) {this.dataManager.set(PARRY, Boolean.valueOf(value));}
     public boolean isDeflect() {return this.dataManager.get(DEFLECT);}
@@ -217,6 +173,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         this.onSummonBoss();
         this.falter_resistance = 1.1F;
         this.hemorrhage_resistance = 0.93F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityVoidiclysm(World world, int timesUsed, BlockPos pos) {
@@ -240,6 +197,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         this.onSummonBoss();
         this.falter_resistance = 1.1F;
         this.hemorrhage_resistance = 0.93F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityVoidiclysm(World worldIn) {
@@ -256,10 +214,12 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         this.onSummonBoss();
         this.falter_resistance = 1.1F;
         this.hemorrhage_resistance = 0.93F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     private void onSummonBoss() {
         this.setSummon(true);
+        animator.setStateAnim(ANIM_SUMMON);
         this.setFullBodyUsage(true);
         this.clearCurrentVelocity = true;
         this.setImmovable(true);
@@ -287,22 +247,10 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         super.writeEntityToNBT(nbt);
-        nbt.setBoolean("Cast_Spell", this.isCastSpell());
-        nbt.setBoolean("Scream_Attack", this.isScreamAttack());
-        nbt.setBoolean("Lazer_Attack", this.isLazerTeleport());
-        nbt.setBoolean("Strike_One", this.isStrikeOne());
-        nbt.setBoolean("Strike_Two", this.isStrikeTwo());
-        nbt.setBoolean("Clap", this.isClap());
         nbt.setBoolean("Raise_Spikes", this.isRaiseSpikes());
         nbt.setBoolean("Shaking", this.isShaking());
         nbt.setBoolean("Melee_Mode", this.isMeleeMode());
-        nbt.setBoolean("Grab_Attack", this.isGrabAttack());
-        nbt.setBoolean("Grab_Continue", this.isGrabContinue());
         nbt.setBoolean("Summon", this.isSummon());
-        nbt.setBoolean("Grab_Finish", this.isGrabFinish());
-        nbt.setBoolean("Atomic_Attack", this.isAtomicAttack());
-        nbt.setBoolean("Summon_Track", this.isSummonTrack());
-        nbt.setBoolean("Melee_Slam", this.isMeleeSlam());
         nbt.setBoolean("Deflect", this.isDeflect());
         nbt.setBoolean("Parry", this.isParry());
         nbt.setBoolean("Had_Target", this.dataManager.get(HAD_PREVIOUS_TARGET));
@@ -316,22 +264,10 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         super.readEntityFromNBT(nbt);
-        this.setCastSpell(nbt.getBoolean("Cast_Spell"));
-        this.setScreamAttack(nbt.getBoolean("Scream_Attack"));
-        this.setLazerTeleport(nbt.getBoolean("Lazer_Attack"));
-        this.setStrikeOne(nbt.getBoolean("Strike_One"));
-        this.setStrikeTwo(nbt.getBoolean("Strike_Two"));
-        this.setClap(nbt.getBoolean("Clap"));
         this.setRaiseSpikes(nbt.getBoolean("Raise_Spikes"));
         this.setShaking(nbt.getBoolean("Shaking"));
         this.setMeleeMode(nbt.getBoolean("Melee_Mode"));
-        this.setGrabAttack(nbt.getBoolean("Grab_Attack"));
-        this.setGrabContinue(nbt.getBoolean("Grab_Continue"));
         this.setSummon(nbt.getBoolean("Summon"));
-        this.setGrabFinish(nbt.getBoolean("Grab_Finish"));
-        this.setAtomicAttack(nbt.getBoolean("Atomic_Attack"));
-        this.setSummonTrack(nbt.getBoolean("Summon_Track"));
-        this.setMeleeSlam(nbt.getBoolean("Melee_Slam"));
         this.setDeflect(nbt.getBoolean("Deflect"));
         this.setParry(nbt.getBoolean("Parry"));
         if (this.hasCustomName()) {
@@ -374,22 +310,10 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
     protected void entityInit() {
         super.entityInit();
         this.dataManager.register(LOOK, 0f);
-        this.dataManager.register(CAST_SPELL, Boolean.valueOf(false));
-        this.dataManager.register(SCREAM_ATTACK, Boolean.valueOf(false));
-        this.dataManager.register(LAZER_TELEPORT, Boolean.valueOf(false));
-        this.dataManager.register(STRIKE_TWO, Boolean.valueOf(false));
-        this.dataManager.register(STRIKE_ONE, Boolean.valueOf(false));
-        this.dataManager.register(CLAP, Boolean.valueOf(false));
         this.dataManager.register(SHAKING, Boolean.valueOf(false));
         this.dataManager.register(RAISE_SPIKES, Boolean.valueOf(false));
         this.dataManager.register(MELEE_MODE, Boolean.valueOf(false));
-        this.dataManager.register(GRAB_ATTACK, Boolean.valueOf(false));
-        this.dataManager.register(GRAB_CONTINUE, Boolean.valueOf(false));
         this.dataManager.register(SUMMON, Boolean.valueOf(false));
-        this.dataManager.register(GRAB_FINISH, Boolean.valueOf(false));
-        this.dataManager.register(ATOMIC_ATTACK, Boolean.valueOf(false));
-        this.dataManager.register(SUMMON_TRACK, Boolean.valueOf(false));
-        this.dataManager.register(MELEE_SLAM, Boolean.valueOf(false));
         this.dataManager.register(PARRY, Boolean.valueOf(false));
         this.dataManager.register(DEFLECT, Boolean.valueOf(false));
         this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
@@ -602,7 +526,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
     private final Consumer<EntityLivingBase> summon_tracking_projectiles_attack = (target) -> {
       this.setFullBodyUsage(true);
       this.setFightMode(true);
-      this.setSummonTrack(true);
+      animator.performAttack(ANIM_SUMMON_TRACK_PROJECTILES);
 
 
         addEvent(()-> {
@@ -628,14 +552,13 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
           this.standByCooldown = base_cooldown;
           this.setFullBodyUsage(false);
           this.setFightMode(false);
-          this.setSummonTrack(false);
       }, 60);
     };
 
     private final Consumer<EntityLivingBase> atomic_attack = (target) -> {
       this.setFullBodyUsage(true);
       this.setFightMode(true);
-      this.setAtomicAttack(true);
+      animator.performAttack(ANIM_ATOMIC_ATTACK);
       this.hasDoneAtomic = true;
 
       addEvent(()-> {
@@ -677,12 +600,11 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
           this.attack_differential += 2;
           this.setFullBodyUsage(false);
           this.setFightMode(false);
-          this.setAtomicAttack(false);
       }, 210);
 
     };
     private final Consumer<EntityLivingBase> teleport_lazer = (target) -> {
-        this.setLazerTeleport(true);
+        animator.performAttack(ANIM_LAZER_TELEPORT);
         this.setFullBodyUsage(true);
         this.setFightMode(true);
         this.doesBossSlowDown = true;
@@ -715,15 +637,13 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         } else {
             this.standByCooldown = base_cooldown * 3;
         }
-
-        this.setLazerTeleport(false);
         this.setFightMode(false);
         this.setFullBodyUsage(false);
         }, 120);
     };
 
     private final Consumer<EntityLivingBase> scream_attack = (target) -> {
-        this.setScreamAttack(true);
+        animator.performAttack(ANIM_SCREAM);
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
@@ -757,7 +677,6 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
             } else {
                 this.standByCooldown = base_cooldown * 4;
             }
-        this.setScreamAttack(false);
         this.setFightMode(false);
         this.setFullBodyUsage(false);
         }, 75);
@@ -765,7 +684,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
 
 
     private final Consumer<EntityLivingBase> cast_projectiles = (target) -> {
-      this.setCastSpell(true);
+      animator.performAttack(ANIM_CAST_SPELL);
       this.setFullBodyUsage(true);
       this.setFightMode(true);
 
@@ -784,7 +703,6 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
 
       addEvent(()-> {
         this.attack_differential += 1;
-        this.setCastSpell(false);
         this.setFullBodyUsage(false);
         this.setFightMode(false);
       }, 60);
@@ -793,7 +711,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
     private final Consumer<EntityLivingBase> grab_attack = (target) -> {
         this.setFullBodyUsage(true);
         this.setFightMode(true);
-        this.setGrabAttack(true);
+        animator.performAttack(ANIM_GRAB_ATTACK);
         this.setImmovable(true);
         this.clearCurrentVelocity = true;
 
@@ -826,12 +744,11 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
 
         addEvent(()-> {
             this.grabDetection = false;
-            this.setGrabAttack(false);
             this.setImmovable(true);
             if(grabbedEntity != null) {
                 this.setGrabTooContinue(target);
             } else {
-                this.setGrabFinish(true);
+                animator.performAttack(ANIM_GRAB_END);
                 this.lockLook = false;
 
                 addEvent(()-> {
@@ -840,7 +757,6 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
                 addEvent(()-> {
                 this.standbyOnVel = false;
                 this.setImmovable(false);
-                this.setGrabFinish(false);
                 this.setFullBodyUsage(false);
                 this.setFightMode(false);
                 this.attack_differential += 1;
@@ -854,7 +770,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
     }
 
     private final Consumer<EntityLivingBase> grab_continue = (target) -> {
-      this.setGrabContinue(true);
+      animator.performAttack(ANIM_GRAB_CONTINUE);
         this.playSound(SoundsHandler.LICH_MAGIC_SWING, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.6f));
         Vec3d offset = this.getPositionVector().add(ModUtils.getRelativeOffset(this, new Vec3d(1.25, 1.0, 0)));
         DamageSource source = ModDamageSource.builder().type(ModDamageSource.MOB).directEntity(this).disablesShields().build();
@@ -886,7 +802,6 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
             this.setFightMode(false);
             this.standbyOnVel = false;
             this.setFullBodyUsage(false);
-            this.setGrabContinue(false);
             this.attack_differential += 3;
             this.standByCooldown = base_cooldown;
         }, 80);
@@ -895,7 +810,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
     private final Consumer<EntityLivingBase> summon_spike_magic = (target) -> {
       this.setFullBodyUsage(true);
       this.setFightMode(true);
-      this.setRaiseSpikes(true);
+      animator.performAttack(ANIM_RAISE_SPIKES);
       //strafe to right during this attack
 
         addEvent(()-> {
@@ -941,7 +856,6 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
             } else {
                 this.standByCooldown = base_cooldown * 3;
             }
-            this.setRaiseSpikes(false);
             this.setFightMode(false);
             this.setFullBodyUsage(false);
         }, 60);
@@ -949,7 +863,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
 
     private final Consumer<EntityLivingBase> clap_attack = (target) -> {
       this.setFightMode(true);
-      this.setClap(true);
+      animator.performAttack(ANIM_CLAP);
       this.setImmovable(true);
       this.clearCurrentVelocity = true;
       addEvent(()-> {
@@ -988,7 +902,6 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
           }
         this.attack_differential += 2;
         this.setFightMode(false);
-        this.setClap(false);
       }, 50);
     };
 
@@ -1000,7 +913,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
         addEvent(()-> this.playSound(SoundsHandler.VOIDCLYSM_EQUIP, 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
         //Two Strikes
         if(randI >= 4) {
-            this.setStrikeTwo(true);
+            animator.performAttack(ANIM_STRIKE_TWO);
 
             addEvent(()-> {
                 this.lockLook = true;
@@ -1058,14 +971,13 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
 
             addEvent(()-> {
                 this.attack_differential += 3;
-                this.setStrikeTwo(false);
                 this.setFullBodyUsage(false);
                 this.setFightMode(false);
                 this.setImmovable(false);
             }, 90);
             //One Strike
         } else {
-            this.setStrikeOne(true);
+            animator.performAttack(ANIM_STRIKE_ONE);
 
             addEvent(()-> {
                 this.lockLook = true;
@@ -1097,7 +1009,6 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
 
             addEvent(()-> {
             this.attack_differential += 1;
-            this.setStrikeOne(false);
             this.setFightMode(false);
             this.setFullBodyUsage(false);
             this.setImmovable(false);
@@ -1106,101 +1017,14 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
     };
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "idle_flaps__controller", 0, this::predicateIdleFlaps));
-        data.addAnimationController(new AnimationController(this, "attacks_controller", 0, this::predicateAttacks));
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(!this.isFightMode() && !this.isParry() && !this.isDeflect() && !this.isSummon()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MODEL_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdleFlaps(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(!this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_FLAPS_IDLE, true));
-            return PlayState.CONTINUE;
+            animator.setCustomLowerIdle(ANIM_FLAPS_IDLE);
         }
 
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isCastSpell()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_CAST_SPELL, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isClap()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_CLAP, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isLazerTeleport()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_LAZER_TELEPORT, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isScreamAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SCREAM, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStrikeTwo()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STRIKE_TWO, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStrikeOne()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STRIKE_ONE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isRaiseSpikes()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_RAISE_SPIKES, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isGrabAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_GRAB_ATTACK, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isGrabContinue()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_GRAB_CONTINUE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isGrabFinish()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_GRAB_END, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isMeleeSlam()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_MELEE_SLAM, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isAtomicAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_ATOMIC_ATTACK, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSummonTrack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON_TRACK_PROJECTILES, false));
-                return PlayState.CONTINUE;
-            }
+        if(!this.isFightMode() && !this.isParry() && !this.isDeflect() && !this.isSummon()) {
+            animator.setCustomUpperIdle(ANIM_MODEL_IDLE);
         }
-
-        if(this.isParry()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_PARRY, false));
-            return PlayState.CONTINUE;
-        }
-        if(this.isDeflect()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DEFLECT, false));
-            return PlayState.CONTINUE;
-        }
-        if(this.isSummon()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON, false));
-            return PlayState.CONTINUE;
-        }
-
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
     }
 
     @Override
@@ -1248,21 +1072,6 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
                 ParticleManager.spawnColoredSmoke(world, particlePos, ModColors.LIGHT_PURPLE, velocity);
             }
         }
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override
@@ -1539,6 +1348,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
 
     private void doBlockActionParry(EntityPlayer player) {
         this.setParry(true);
+        animator.performAttack(ANIM_PARRY);
         this.clearCurrentVelocity = true;
         this.setImmovable(true);
         this.parriedLastAttack = true;
@@ -1586,6 +1396,7 @@ public class EntityVoidiclysm extends EntityEndBase implements IAnimatable, IAni
 
     private void doBlockAction() {
         this.setDeflect(true);
+        animator.performAttack(ANIM_DEFLECT);
         addEvent(()-> {
             this.setDeflect(false);
             blockCooldown = MobConfig.voidclysm_block_cooldown * 20;

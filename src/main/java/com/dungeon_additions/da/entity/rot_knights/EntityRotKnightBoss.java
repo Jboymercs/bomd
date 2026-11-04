@@ -1,28 +1,22 @@
 package com.dungeon_additions.da.entity.rot_knights;
 
 import com.dungeon_additions.da.Main;
-import com.dungeon_additions.da.blocks.boss.BlockBossReSummon;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.blocks.boss.BlockEnumBossSummonState;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.entity.EntityAbstractBase;
-import com.dungeon_additions.da.entity.ai.EntityAIAttackRotKnight;
 import com.dungeon_additions.da.entity.ai.EntityAIFallenAttack;
 import com.dungeon_additions.da.entity.ai.IAttack;
-import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
 import com.dungeon_additions.da.entity.dark_dungeon.dauntless.ActionDauntlessImpact;
-import com.dungeon_additions.da.entity.frost_dungeon.EntityAbstractGreatWyrk;
 import com.dungeon_additions.da.entity.rot_knights.actions.*;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
 import com.dungeon_additions.da.entity.util.IEntitySound;
 import com.dungeon_additions.da.init.ModBlocks;
-import com.dungeon_additions.da.init.ModPotions;
 import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
-import com.dungeon_additions.da.world.ModStructureTemplate;
-import com.sun.jna.platform.win32.WinBase;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,9 +25,6 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.monster.EntityHusk;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -54,14 +45,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -70,7 +53,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, IAttack, IAnimationTickable, IEntitySound {
+public class EntityRotKnightBoss extends EntityRotBase implements IAttack, IEntitySound {
     private Consumer<EntityLivingBase> prevAttack;
     public boolean isRandomGetAway = false;
     public boolean currentlyJumping = false;
@@ -78,7 +61,6 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
     protected boolean hasDonePhaseTransition = false;
     private int blockTimer = 80;
     private boolean grabDetection = false;
-    private boolean setBossToFlyHigh = false;
     private EntityLivingBase grabbedEntity;
     private final String ANIM_WALK = "walk";
     private final String ANIM_WALK_UPPER = "walk_upper";
@@ -87,7 +69,8 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
     private final String ANIM_PHASE_TRANSITION = "phase";
     private final String ANIM_SUMMON = "summon";
     private final String ANIM_DEATH = "death";
-
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, true);
+    private final MoveAnalysis moveAnalysis;
 
     //remove
 
@@ -107,62 +90,30 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
     private final String ANIM_PARRY = "parry";
     private final String ANIM_ROTTEN_AMBITION = "rotten_ambition";
 
-    private final AnimationFactory factory = new AnimationFactory(this);
     private static final DataParameter<Boolean> PHASE_TRANSITION = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> PIERCE_BEGIN = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> PIERCE_CONTINUE = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> PIERCE_FINISH = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> COMBO_SWING = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> COMBO_SWING_ARMS = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
-    public static final DataParameter<Boolean> HIDE_ARM_STATE = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
-    public static final DataParameter<Boolean> AURA = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
-    public static final DataParameter<Boolean> CAST_LINE = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
-    public static final DataParameter<Boolean> SWING_JUMP = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
-    public static final DataParameter<Boolean> CAST_CLOUD = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
-    public static final DataParameter<Boolean> SLAM_ORB = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
-    public static final DataParameter<Boolean> PARRY = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> ROTTEN_AMBITION = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> PIERCE_CONTINUE = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
+    public static final DataParameter<Boolean> HIDE_ARM_STATE = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
+    public static final DataParameter<Boolean> PARRY = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SUMMON = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DEATH_STATE = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
-
     private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
-
     public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BLOCK_POS);
     public static DataParameter<Boolean> SET_SPAWN_LOC = EntityDataManager.createKey(EntityRotKnightBoss.class, DataSerializers.BOOLEAN);
+
     private boolean isPhaseTransition() {return this.dataManager.get(PHASE_TRANSITION);}
-    private boolean isSwingJump() {return this.dataManager.get(SWING_JUMP);}
     public boolean isRottenAmbition() {return this.dataManager.get(ROTTEN_AMBITION);}
     public boolean isDeathState() {return this.dataManager.get(DEATH_STATE);}
-    private boolean isCastCloud() {return this.dataManager.get(CAST_CLOUD);}
-    private boolean isSlamOrb() {return this.dataManager.get(SLAM_ORB);}
     private boolean isParry() {return this.dataManager.get(PARRY);}
-    private boolean isPierceBegin() {return this.dataManager.get(PIERCE_BEGIN);}
-    private boolean isSwing() {return this.dataManager.get(SWING);}
     private boolean isPierceContinue() {return this.dataManager.get(PIERCE_CONTINUE);}
-    private boolean isPierceFinish() {return this.dataManager.get(PIERCE_FINISH);}
-    private boolean isComboSwing() {return this.dataManager.get(COMBO_SWING);}
-    private boolean isComboSwingArms() {return this.dataManager.get(COMBO_SWING_ARMS);}
     public boolean isHideArms() {return this.dataManager.get(HIDE_ARM_STATE);}
-    public boolean isAura() {return this.dataManager.get(AURA);}
-    public boolean isCastLine() {return this.dataManager.get(CAST_LINE);}
     private boolean isSummon() {return this.dataManager.get(SUMMON);}
     private void setPhaseTransition(boolean value) {this.dataManager.set(PHASE_TRANSITION, Boolean.valueOf(value));}
-    private void setSwingJump(boolean value) {this.dataManager.set(SWING_JUMP, Boolean.valueOf(value));}
-    private void setRottenAmbition(boolean value) {this.dataManager.set(ROTTEN_AMBITION, Boolean.valueOf(value));}
+    private void setRottenAmbition(boolean val) {this.dataManager.set(ROTTEN_AMBITION, Boolean.valueOf(val));}
     private void setDeathState(boolean value) {this.dataManager.set(DEATH_STATE, Boolean.valueOf(value));}
-    private void setCastCloud(boolean value) {this.dataManager.set(CAST_CLOUD, Boolean.valueOf(value));}
-    private void setSlamOrb(boolean value) {this.dataManager.set(SLAM_ORB, Boolean.valueOf(value));}
     private void setParry(boolean value) {this.dataManager.set(PARRY, Boolean.valueOf(value));}
-    private void setPierceBegin(boolean value) {this.dataManager.set(PIERCE_BEGIN, Boolean.valueOf(value));}
     private void setPierceContinue(boolean value) {this.dataManager.set(PIERCE_CONTINUE, Boolean.valueOf(value));}
-    private void setPierceFinish(boolean value) {this.dataManager.set(PIERCE_FINISH, Boolean.valueOf(value));}
-    private void setSwing(boolean value) {this.dataManager.set(SWING, Boolean.valueOf(value));}
-    private void setComboSwing(boolean value) {this.dataManager.set(COMBO_SWING, Boolean.valueOf(value));}
-    private void setComboSwingArms(boolean value) {this.dataManager.set(COMBO_SWING_ARMS, Boolean.valueOf(value));}
     private void setHideArmState(boolean value) {this.dataManager.set(HIDE_ARM_STATE, Boolean.valueOf(value));}
-    private void setAura(boolean value) {this.dataManager.set(AURA, Boolean.valueOf(value));}
-    private void setCastLine(boolean value) {this.dataManager.set(CAST_LINE, Boolean.valueOf(value));}
     private void setSummon(boolean value) {this.dataManager.set(SUMMON, Boolean.valueOf(value));}
 
     public boolean isHadPreviousTarget() {return this.dataManager.get(HAD_PREVIOUS_TARGET);}
@@ -192,6 +143,7 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
         this.onSummonBoss();
         this.falter_resistance = 1.2F;
         this.hemorrhage_resistance = 0.8F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityRotKnightBoss(World worldIn) {
@@ -202,6 +154,7 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
         this.onSummonBoss();
         this.falter_resistance = 1.2F;
         this.hemorrhage_resistance = 0.8F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityRotKnightBoss(World world, int timesUsed, BlockPos pos) {
@@ -218,6 +171,7 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
         this.setSetSpawnLoc(true);
         this.falter_resistance = 1.2F;
         this.hemorrhage_resistance = 0.8F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public void onSummonBoss() {
@@ -236,21 +190,11 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("Phase", this.isPhaseTransition());
-        nbt.setBoolean("Swing_Jump", this.isSwingJump());
         nbt.setBoolean("Death_State", this.isDeathState());
-        nbt.setBoolean("Rotten_Ambition", this.isRottenAmbition());
-        nbt.setBoolean("Cast_Cloud", this.isCastCloud());
-        nbt.setBoolean("Slam_Orb", this.isSlamOrb());
         nbt.setBoolean("Parry", this.isParry());
-        nbt.setBoolean("Pierce_Begin", this.isPierceBegin());
         nbt.setBoolean("Pierce_Continue", this.isPierceContinue());
-        nbt.setBoolean("Pierce_Finish", this.isPierceFinish());
-        nbt.setBoolean("Swing", this.isSwing());
-        nbt.setBoolean("Combo_Swing", this.isComboSwing());
-        nbt.setBoolean("Combo_Swing_Arms", this.isComboSwingArms());
         nbt.setBoolean("Hide_Arms", this.isHideArms());
-        nbt.setBoolean("Aura", this.isAura());
-        nbt.setBoolean("Cast_Line", this.isCastLine());
+        nbt.setBoolean("Rotten_Ambition", this.isRottenAmbition());
         nbt.setBoolean("Summon", this.isSummon());
         nbt.setBoolean("Had_Target", this.dataManager.get(HAD_PREVIOUS_TARGET));
         nbt.setInteger("Spawn_Loc_X", this.getSpawnLocation().getX());
@@ -263,21 +207,11 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.setPhaseTransition(nbt.getBoolean("Phase"));
-        this.setSwingJump(nbt.getBoolean("Swing_Jump"));
         this.setDeathState(nbt.getBoolean("Death_State"));
-        this.setRottenAmbition(nbt.getBoolean("Rotten_Ambition"));
-        this.setCastCloud(nbt.getBoolean("Cast_Cloud"));
-        this.setSlamOrb(nbt.getBoolean("Slam_Orb"));
         this.setParry(nbt.getBoolean("Parry"));
-        this.setPierceBegin(nbt.getBoolean("Pierce_Begin"));
         this.setPierceContinue(nbt.getBoolean("Pierce_Continue"));
-        this.setPierceFinish(nbt.getBoolean("Pierce_Finish"));
-        this.setSwing(nbt.getBoolean("Swing"));
-        this.setComboSwing(nbt.getBoolean("Combo_Swing"));
-        this.setComboSwingArms(nbt.getBoolean("Combo_Swing_Arms"));
+        this.setRottenAmbition(nbt.getBoolean("Rotten_Ambition"));
         this.setHideArmState(nbt.getBoolean("Hide_Arms"));
-        this.setAura(nbt.getBoolean("Aura"));
-        this.setCastLine(nbt.getBoolean("Cast_Line"));
         this.setSummon(nbt.getBoolean("Summon"));
         this.setHadPreviousTarget(nbt.getBoolean("Had_Target"));
         this.dataManager.set(SET_SPAWN_LOC, nbt.getBoolean("Set_Spawn_Loc"));
@@ -292,21 +226,11 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
     public void entityInit() {
         super.entityInit();
         this.dataManager.register(PHASE_TRANSITION, Boolean.valueOf(false));
-        this.dataManager.register(SWING_JUMP, Boolean.valueOf(false));
         this.dataManager.register(DEATH_STATE, Boolean.valueOf(false));
-        this.dataManager.register(ROTTEN_AMBITION, Boolean.valueOf(false));
-        this.dataManager.register(CAST_CLOUD, Boolean.valueOf(false));
-        this.dataManager.register(SLAM_ORB, Boolean.valueOf(false));
         this.dataManager.register(PARRY, Boolean.valueOf(false));
-        this.dataManager.register(PIERCE_BEGIN, Boolean.valueOf(false));
+        this.dataManager.register(ROTTEN_AMBITION, Boolean.valueOf(false));
         this.dataManager.register(PIERCE_CONTINUE, Boolean.valueOf(false));
-        this.dataManager.register(PIERCE_FINISH, Boolean.valueOf(false));
-        this.dataManager.register(SWING, Boolean.valueOf(false));
-        this.dataManager.register(COMBO_SWING, Boolean.valueOf(false));
-        this.dataManager.register(COMBO_SWING_ARMS, Boolean.valueOf(false));
         this.dataManager.register(HIDE_ARM_STATE, Boolean.valueOf(false));
-        this.dataManager.register(CAST_LINE, Boolean.valueOf(false));
-        this.dataManager.register(AURA, Boolean.valueOf(false));
         this.dataManager.register(SUMMON, Boolean.valueOf(false));
         this.dataManager.register(HAD_PREVIOUS_TARGET, Boolean.valueOf(false));
         this.dataManager.register(SET_SPAWN_LOC, Boolean.valueOf(false));
@@ -334,6 +258,7 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
         this.blockTimer--;
         this.ultimateCooldown--;
 
@@ -550,10 +475,11 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
     private final Consumer<EntityLivingBase> rotten_ambition = (target) -> {
       this.setFullBodyUsage(true);
       this.setFightMode(true);
-      this.setRottenAmbition(true);
       this.setImmovable(true);
+      this.setRottenAmbition(true);
       this.lockLook = true;
       this.shownUltimate = true;
+      animator.performAttack(ANIM_ROTTEN_AMBITION);
 
       addEvent(()-> {
           this.setImmovable(false);
@@ -592,16 +518,16 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
       addEvent(()-> {
             this.setFullBodyUsage(false);
             this.setFightMode(false);
-            this.setRottenAmbition(false);
             this.setImmovable(false);
+            this.setRottenAmbition(false);
             this.ultimateCooldown = 600;
       }, 200);
     };
     private final Consumer<EntityLivingBase> cast_arm = (target) -> {
-      this.setCastCloud(true);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
       this.setFightMode(true);
+      animator.performAttack(ANIM_CAST_CLOUD);
 
       addEvent(()-> {
           this.lockLook = true;
@@ -611,7 +537,6 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
       addEvent(()-> this.lockLook = false, 55);
 
       addEvent(()-> {
-        this.setCastCloud(false);
         this.setFullBodyUsage(false);
         this.setFightMode(false);
         this.setImmovable(false);
@@ -619,11 +544,10 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
     };
 
     private final Consumer<EntityLivingBase> slam_orb = (target) -> {
-      this.setSlamOrb(true);
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setImmovable(true);
-
+      animator.performAttack(ANIM_SLAM_ORB);
       addEvent(()-> {
           this.setImmovable(false);
           this.setNoGravity(true);
@@ -669,7 +593,6 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
       }, 95);
 
       addEvent(()-> {
-        this.setSlamOrb(false);
         this.setFullBodyUsage(false);
         this.setFightMode(false);
         this.setImmovable(false);
@@ -677,9 +600,8 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
     };
 
     private final Consumer<EntityLivingBase> cast_line = (target) -> {
-      this.setCastLine(true);
       this.setFightMode(true);
-
+      animator.performAttack(ANIM_CAST_LINE_SWORD);
       addEvent(()-> {
           this.setImmovable(true);
       }, 15);
@@ -696,7 +618,6 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
             this.lockLook = false;
       }, 45);
       addEvent(()-> {
-        this.setCastLine(false);
         this.setFightMode(false);
       }, 30);
     };
@@ -706,7 +627,7 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
       this.setFightMode(true);
       this.setImmovable(true);
       this.setFullBodyUsage(true);
-      this.setAura(true);
+      animator.performAttack(ANIM_AURA);
       this.lockLook = true;
 
       addEvent(()-> setAuraParticle = true, 5);
@@ -732,14 +653,13 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
           this.setFightMode(false);
           this.setImmovable(false);
           this.setFullBodyUsage(false);
-          this.setAura(false);
       }, 45);
 
     };
 
     private final Consumer<EntityLivingBase> swing_jump = (target) -> {
         this.setFullBodyUsage(true);
-        this.setSwingJump(true);
+        animator.performAttack(ANIM_SWING_JUMP);
         this.setFightMode(true);
         this.setImmovable(true);
 
@@ -788,14 +708,12 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
             this.setImmovable(false);
             this.setFullBodyUsage(false);
             this.setFightMode(false);
-            this.setSwingJump(false);
         }, 75);
     };
 
     private final Consumer<EntityLivingBase> swing = (target) -> {
         this.setFightMode(true);
-        this.setSwing(true);
-
+        animator.performAttack(ANIM_SWING);
         addEvent(()-> this.lockLook = true, 10);
 
         addEvent(()-> {
@@ -820,7 +738,6 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
         addEvent(()-> this.lockLook = false, 25);
 
         addEvent(()-> {
-            this.setSwing(false);
             this.setFightMode(false);
         }, 30);
     };
@@ -832,8 +749,7 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
       this.setFullBodyUsage(true);
         this.setImmovable(true);
       if(this.hasDonePhaseTransition && !wasLastCombo) {
-          this.setComboSwingArms(true);
-
+          animator.performAttack(ANIM_COMBO_SWING_ARMS);
 
           addEvent(()-> {
               Vec3d targetedPos = target.getPositionVector();
@@ -905,12 +821,10 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
             this.setImmovable(false);
             this.setFullBodyUsage(false);
             this.setFightMode(false);
-            this.setComboSwingArms(false);
             this.wasLastCombo = true;
           }, 85);
       } else {
-          this.setComboSwing(true);
-
+          animator.performAttack(ANIM_COMBO_SWING);
           addEvent(()-> {
             Vec3d targetedPos = target.getPositionVector();
             this.lockLook = true;
@@ -956,7 +870,6 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
           }, 49);
           addEvent(()-> {
               this.setImmovable(false);
-              this.setComboSwing(false);
               this.setFightMode(false);
               this.setFullBodyUsage(false);
               this.wasLastCombo = false;
@@ -967,7 +880,7 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
     private final Consumer<EntityLivingBase> pierce = (target) -> {
         this.setFullBodyUsage(true);
         this.setFightMode(true);
-        this.setPierceBegin(true);
+        animator.performAttack(ANIM_PIERCE_BEGIN);
         this.setImmovable(true);
         //27
         addEvent(()-> {
@@ -987,18 +900,15 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
         addEvent(()-> {
             this.grabDetection = false;
             this.setImmovable(true);
-            this.setPierceBegin(false);
             //continue
             if(grabbedEntity != null) {
                 this.setPierceTooContinue(grabbedEntity);
             } else {
-                this.setPierceFinish(true);
-
+                animator.performAttack(ANIM_PIERCE_FINISH);
                 addEvent(()-> {
                     this.lockLook = false;
                 }, 10);
                 addEvent(()-> {
-                    this.setPierceFinish(false);
                     this.setImmovable(false);
                     this.setFullBodyUsage(false);
                     this.setFightMode(false);
@@ -1012,6 +922,7 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
     }
 
     private final Consumer<EntityLivingBase> pierce_continue = (target) -> {
+        animator.performAttack(ANIM_PIERCE_CONT);
         this.setPierceContinue(true);
         this.setAuraParticle = true;
         //do damage and effects
@@ -1038,117 +949,33 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
     };
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "phase_controller", 0, this::predicatePhaseChange));
-        data.addAnimationController(new AnimationController(this, "right_arm_controller", 0, this::predicateRightArm));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if (!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER, true));
-            return PlayState.CONTINUE;
-        }
-
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable>PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable>PlayState predicateRightArm(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(this.isHideArms()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_HIDE_ARMS, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode() && !this.isPhaseTransition() && !this.isDeathState()) {
-            if(this.isPierceBegin()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PIERCE_BEGIN));
-            }
-            if(this.isPierceContinue()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PIERCE_CONT));
-            }
-            if(this.isPierceFinish()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PIERCE_FINISH));
-            }
-            if(this.isComboSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_COMBO_SWING));
-            }
-            if(this.isComboSwingArms()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_COMBO_SWING_ARMS));
-            }
-            if(this.isSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING));
-            }
-            if(this.isCastLine()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_CAST_LINE_SWORD));
-            }
-            if(this.isAura()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_AURA));
-            }
-            if(this.isSwingJump()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING_JUMP));
-            }
-            if(this.isCastCloud()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_CAST_CLOUD));
-            }
-            if(this.isSlamOrb()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SLAM_ORB));
-            }
-            if(this.isParry()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PARRY));
-            }
-            if(this.isRottenAmbition()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_ROTTEN_AMBITION));
-            }
-            return PlayState.CONTINUE;
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicatePhaseChange(AnimationEvent<E> event) {
-        if(this.isPhaseTransition()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PHASE_TRANSITION));
-            return PlayState.CONTINUE;
+            animator.setCustomLowerIdle(ANIM_HIDE_ARMS);
         }
         if(this.isSummon()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SUMMON));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_SUMMON);
         }
         if(this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_DEATH));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_DEATH);
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
+        if(this.isPhaseTransition()) {
+            animator.setStateAnim(ANIM_PHASE_TRANSITION);
+        }
+
+        if(!this.isPhaseTransition() && !this.isDeathState() && !this.isSummon()) {
+            if(!this.isFullBodyUsage()) {
+                boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+                if(isMovingOnGround) {
+                    if(!this.isFightMode()) {
+                        animator.setCustomUpperWalk(ANIM_WALK_UPPER);
+                    }
+                    animator.setCustomLowerWalk(ANIM_WALK);
+                } else if (!this.isFightMode()) {
+                    animator.setCustomUpperIdle(ANIM_IDLE);
+                }
+            }
+        }
     }
 
     private static final ResourceLocation LOOT_MOB = new ResourceLocation(ModReference.MOD_ID, "rot_knight_boss");
@@ -1182,11 +1009,6 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
     public void removeTrackingPlayer(@Nonnull EntityPlayerMP player) {
         super.removeTrackingPlayer(player);
         this.bossInfo.removePlayer(player);
-    }
-
-    @Override
-    public void tick() {
-
     }
 
     @Override
@@ -1313,6 +1135,7 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
 
     private void doBlockAction() {
         this.setParry(true);
+        animator.performCombo(ANIM_PARRY);
         this.setFightMode(true);
         this.blockTimer = 60;
         this.isRandomGetAway = true;
@@ -1324,11 +1147,6 @@ public class EntityRotKnightBoss extends EntityRotBase implements IAnimatable, I
             this.setFightMode(false);
             this.isRandomGetAway = false;
         }, 20);
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     private void destroyBlocksInSwing(Vec3d offset, double size) {

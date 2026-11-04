@@ -1,9 +1,9 @@
 package com.dungeon_additions.da.entity.dark_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
-import com.dungeon_additions.da.entity.ai.dark_dungeon.EntityAIAssassinAttack;
 import com.dungeon_additions.da.entity.ai.dark_dungeon.EntityAISorcererAttack;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
@@ -11,6 +11,7 @@ import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.google.common.collect.Lists;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -37,16 +38,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -56,7 +48,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, IAttack, IAnimationTickable {
+public class EntityDarkSorcerer extends EntityDarkBase implements IAttack {
 
     private static final DataParameter<Boolean> SWING_MELEE = EntityDataManager.createKey(EntityDarkSorcerer.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SWING_FINISH = EntityDataManager.createKey(EntityDarkSorcerer.class, DataSerializers.BOOLEAN);
@@ -96,7 +88,8 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
     private final String ANIM_SUMMON = "summon";
     private final String ANIM_CAST = "cast";
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
     private Consumer<EntityLivingBase> prevAttacks;
 
     public List<WeakReference<Entity>> current_mobs = Lists.newArrayList();
@@ -108,6 +101,7 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
         this.setSize(0.6F, 1.95F);
         this.falter_resistance = 0.5F;
         this.hemorrhage_resistance = 0.9F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityDarkSorcerer(World worldIn) {
@@ -117,6 +111,7 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
         this.setSize(0.6F, 1.95F);
         this.falter_resistance = 0.5F;
         this.hemorrhage_resistance = 0.9F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     @Override
@@ -281,7 +276,7 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
     }
 
     private final Consumer<EntityLivingBase> swing_attack = (target) -> {
-      this.setSwingMelee(true);
+      animator.performAttack(ANIM_SWING);
       this.setFightMode(true);
 
       addEvent(()-> {
@@ -313,16 +308,14 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
 
       addEvent(()-> {
           int randI = ModRand.range(1, 11);
-          this.setSwingMelee(false);
           if(randI >= 6) {
               //continue Melee Attack
               this.setSwingTooContinue(target);
           } else {
               //finish
-              this.setSwingFinish(true);
+              animator.performAttack(ANIM_SWING_FINISH);
               addEvent(()-> {
                   this.setImmovable(false);
-                this.setSwingFinish(false);
                 this.setFightMode(false);
               }, 20);
           }
@@ -334,7 +327,7 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
     }
 
     private final Consumer<EntityLivingBase> swing_continue = (target) -> {
-      this.setSwingContinue(true);
+      animator.performAttack(ANIM_SWING_CONTINUE);
       this.setFightMode(true);
 
         addEvent(()-> {
@@ -370,6 +363,7 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
     private final Consumer<EntityLivingBase> dash_attack = (target) -> {
       this.setFightMode(true);
       this.setSwingDash(true);
+      animator.performAttack(ANIM_DASH_ATTACK);
       this.setImmovable(true);
       addEvent(()-> {
           Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -408,12 +402,11 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
 
       addEvent(()-> {
         this.setFightMode(false);
-        this.setSwingDash(false);
       }, 90);
     };
 
     private final Consumer<EntityLivingBase> exchange = (target) -> {
-      this.setExchange(true);
+      animator.performAttack(ANIM_EXCHANGE);
       this.setFightMode(true);
 
       addEvent(()-> {
@@ -441,13 +434,12 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
       }, 50);
 
       addEvent(()-> {
-        this.setExchange(false);
         this.setFightMode(false);
       }, 85);
     };
 
     private final Consumer<EntityLivingBase> cast_spell = (target) -> {
-      this.setCastSpell(true);
+      animator.performAttack(ANIM_CAST);
       this.setFightMode(true);
 
       addEvent(()-> {
@@ -492,13 +484,12 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
       }, 90);
 
       addEvent(()-> {
-        this.setCastSpell(false);
         this.setFightMode(false);
       }, 110);
     };
 
     private final Consumer<EntityLivingBase> summon_minion = (target) -> {
-        this.setSummonMinion(true);
+        animator.performAttack(ANIM_SUMMON);
         this.setFightMode(true);
 
         addEvent(()-> {
@@ -518,67 +509,17 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
 
         }, 45);
         addEvent(()-> {
-            this.setSummonMinion(false);
             this.setFightMode(false);
         }, 75);
     };
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "model_controller", 0, this::predicateModelLocks));
-        data.addAnimationController(new AnimationController(this, "fight_controller", 0, this::predicateAttacks));
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-        return PlayState.CONTINUE;
-    }
-
-    private <E extends IAnimatable> PlayState predicateModelLocks(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(!this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_BASE_MODEL, true));
-            return PlayState.CONTINUE;
+            animator.setCustomUpperIdle(ANIM_BASE_MODEL);
         }
-        return PlayState.STOP;
+        animator.setCustomLowerIdle(ANIM_IDLE);
     }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isSummonMinion()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isCastSpell()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_CAST, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isExchange()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_EXCHANGE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingDash()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DASH_ATTACK, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingMelee()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingContinue()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_CONTINUE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingFinish()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_FINISH, false));
-                return PlayState.CONTINUE;
-            }
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-
 
     @Override
     public void fall(float distance, float damageMultiplier) {
@@ -611,19 +552,4 @@ public class EntityDarkSorcerer extends EntityDarkBase implements IAnimatable, I
         return SoundsHandler.DARK_SORCERER_IDLE;
     }
 
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
-    }
 }

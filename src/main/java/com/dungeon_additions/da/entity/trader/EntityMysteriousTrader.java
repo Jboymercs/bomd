@@ -1,23 +1,17 @@
 package com.dungeon_additions.da.entity.trader;
 
-import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
-import com.dungeon_additions.da.entity.ai.gaelon_dungeon.EntityReAnimateAttackAI;
-import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
-import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkRoyal;
-import com.dungeon_additions.da.entity.gaelon_dungeon.EntityReAnimate;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
-import net.minecraft.block.BlockDispenser;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -31,25 +25,15 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
-public class EntityMysteriousTrader extends EntityAbstractBase implements IAnimatable, IAnimationTickable {
+public class EntityMysteriousTrader extends EntityAbstractBase {
 
     private static final String ANIM_IDLE = "idle";
     private static final String ANIM_WALK = "walk";
@@ -65,7 +49,8 @@ public class EntityMysteriousTrader extends EntityAbstractBase implements IAnima
     private void setThrowItemPlayer(boolean value) {this.dataManager.set(THROW_ITEM_PLAYER, Boolean.valueOf(value));}
     private boolean isThrowItemPlayer() {return this.dataManager.get(THROW_ITEM_PLAYER);}
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
 
     private long lootTableCopperSeed;
     private long lootTableSilverSeed;
@@ -75,12 +60,14 @@ public class EntityMysteriousTrader extends EntityAbstractBase implements IAnima
         super(worldIn, x, y, z);
         this.experienceValue = 0;
         this.setSize(0.6F, 1.95F);
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityMysteriousTrader(World worldIn) {
         super(worldIn);
         this.setSize(0.6F, 1.95F);
         this.experienceValue = 0;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     @Override
@@ -137,6 +124,7 @@ public class EntityMysteriousTrader extends EntityAbstractBase implements IAnima
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
         nodCooldown--;
         traderCooldown--;
         if(!world.isRemote) {
@@ -345,6 +333,7 @@ public class EntityMysteriousTrader extends EntityAbstractBase implements IAnima
     private void NodToPlayerNo() {
         this.setNodNo(true);
         this.nodCooldown = 140;
+        animator.setStateAnim(ANIM_NOD_NO);
 
         addEvent(()-> {
         this.setNodNo(false);
@@ -354,6 +343,7 @@ public class EntityMysteriousTrader extends EntityAbstractBase implements IAnima
     private void throwItemAfterTrade(ItemStack stack, EntityPlayer player) {
         this.setThrowItemPlayer(true);
         this.setFullBodyUsage(true);
+        animator.setStateAnim(ANIM_THROW_ITEM);
 
         addEvent(()-> {
             //throws item in hand too player
@@ -401,54 +391,11 @@ public class EntityMysteriousTrader extends EntityAbstractBase implements IAnima
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "other_controller", 0, this::predicateOther));
-    }
-
-    private <E extends IAnimatable> PlayState predicateOther(AnimationEvent<E> event) {
-        if(this.isNodNo()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_NOD_NO));
-            return PlayState.CONTINUE;
+    public void updateAnimations() {
+        if(!this.isFullBodyUsage()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            animator.handleIdleStates(isMovingOnGround);
         }
-        if(this.isThrowItemPlayer()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_THROW_ITEM));
-            return PlayState.CONTINUE;
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK, true));
-            event.getController().setAnimationSpeed(1.0 + (0.001 * event.getLimbSwing()));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     protected boolean canDespawn()

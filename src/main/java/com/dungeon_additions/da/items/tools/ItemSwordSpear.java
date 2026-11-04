@@ -23,15 +23,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class ItemSwordSpear extends ItemAbilityWeapon implements IAnimatable {
+public class ItemSwordSpear extends ItemAbilityWeapon {
 
-    public AnimationFactory factory = new AnimationFactory(this);
     private String info_loc;
 
     private String ANIM_STRIKE = "use_blade";
@@ -196,11 +192,6 @@ public class ItemSwordSpear extends ItemAbilityWeapon implements IAnimatable {
         return EnumRarity.EPIC;
     }
 
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
     public double getAttackSpeed() {
         return -3.1D;
     }
@@ -209,10 +200,5 @@ public class ItemSwordSpear extends ItemAbilityWeapon implements IAnimatable {
     public boolean canDisableShield(ItemStack stack, ItemStack shield, EntityLivingBase entity, EntityLivingBase attacker)
     {
         return true;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 }

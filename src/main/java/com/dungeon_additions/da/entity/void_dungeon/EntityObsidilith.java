@@ -1,23 +1,17 @@
 package com.dungeon_additions.da.entity.void_dungeon;
 
 import com.dungeon_additions.da.Main;
-import com.dungeon_additions.da.blocks.BlockBase;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.blocks.boss.BlockEnumBossSummonState;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
-import com.dungeon_additions.da.entity.ai.EntityAIBlossom;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.ai.void_dungeon.EntityAIObsidilith;
-import com.dungeon_additions.da.entity.blossom.EntityAbstractVoidBlossom;
-import com.dungeon_additions.da.entity.blossom.EntityVoidSpike;
 import com.dungeon_additions.da.entity.desert_dungeon.miniboss.ProjectileYellowWave;
-import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
-import com.dungeon_additions.da.entity.flame_knight.EntityPyre;
 import com.dungeon_additions.da.entity.generic.EntityDelayedExplosion;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.entity.tileEntity.TileEntityBossReSummon;
-import com.dungeon_additions.da.entity.tileEntity.TileEntityObsidilithRune;
 import com.dungeon_additions.da.entity.util.IEntitySound;
 import com.dungeon_additions.da.entity.void_dungeon.obsidilith_action.ActionFlameRing;
 import com.dungeon_additions.da.entity.void_dungeon.obsidilith_action.ActionRedWave;
@@ -25,17 +19,14 @@ import com.dungeon_additions.da.entity.void_dungeon.obsidilith_action.ActionYell
 import com.dungeon_additions.da.init.ModBlocks;
 import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
-import com.dungeon_additions.da.util.handlers.ParticleManager;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -57,15 +48,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -75,7 +57,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAnimationTickable, IAttack, IScreenShake, IEntitySound {
+public class EntityObsidilith extends EntityEndBase implements IAttack, IScreenShake, IEntitySound {
 
     private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.NOTCHED_6));
     private static final DataParameter<Boolean> SUMMON_STATE = EntityDataManager.createKey(EntityObsidilith.class, DataSerializers.BOOLEAN);
@@ -97,7 +79,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
     private final String ANIM_DEATH = "death";
 
     private int shakeTime = 0;
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     private Consumer<EntityLivingBase> prevAttacks;
     public boolean isSummonState() {return this.dataManager.get(SUMMON_STATE);}
     public void setSummonState(boolean value) {this.dataManager.set(SUMMON_STATE, Boolean.valueOf(value));}
@@ -187,6 +169,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
 
     public void onSummonBoss() {
         this.setSummonState(true);
+        animator.setStateAnim(ANIM_SUMMON);
         addEvent(()-> {
             this.setSummonState(false);
         }, 30);
@@ -868,13 +851,6 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
 
         return 0;
     }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "blossom_idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "state_controller", 0, this::predicateStates));
-    }
-
     /**
      * Add a bit of brightness to the entity for it's Arena
      */
@@ -883,30 +859,11 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         return Math.min(super.getBrightnessForRender() + 30, 200);
     }
 
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(!this.isSummonState() && !this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateStates(AnimationEvent<E> event) {
-        if(this.isSummonState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON, false));
-            return PlayState.CONTINUE;
-        }
-        if(this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DEATH, false));
-            return PlayState.CONTINUE;
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
     @Override
-    public AnimationFactory getFactory() {
-        return factory;
+    public void updateAnimations() {
+        if(!this.isSummonState() && !this.isDeathState()) {
+            animator.setCustomUpperIdle(ANIM_IDLE);
+        }
     }
 
     @Override
@@ -993,16 +950,6 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
         return super.attackEntityFrom(source, amount);
     }
 
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
-    }
-
     private boolean spawnedBoss = false;
 
     @Override
@@ -1012,6 +959,7 @@ public class EntityObsidilith extends EntityEndBase implements IAnimatable, IAni
             this.clearEvents();
         }
         this.setDeathState(true);
+        animator.setStateAnim(ANIM_DEATH);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
         this.setShaking(true);

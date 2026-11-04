@@ -1,14 +1,9 @@
 package com.dungeon_additions.da.entity.sky_dungeon.friendly;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.ai.IAttack;
-import com.dungeon_additions.da.entity.ai.sky_dungeon.EntityImperialHalberdAI;
-import com.dungeon_additions.da.entity.frost_dungeon.friendly_wyrk.EntityAIWyrkFollow;
-import com.dungeon_additions.da.entity.frost_dungeon.friendly_wyrk.EntityAIWyrkHurtByTarget;
-import com.dungeon_additions.da.entity.frost_dungeon.friendly_wyrk.EntityWyrkOwnerAttack;
-import com.dungeon_additions.da.entity.frost_dungeon.wyrk.EntityFriendWyrk;
-import com.dungeon_additions.da.entity.sky_dungeon.EntityImperialHalberd;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBolt;
 import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyTornado;
@@ -18,11 +13,11 @@ import com.dungeon_additions.da.entity.sky_dungeon.friendly.ai.EntityAIHalberdHu
 import com.dungeon_additions.da.entity.sky_dungeon.friendly.ai.EntityFriendlyImperialHalberd;
 import com.dungeon_additions.da.entity.sky_dungeon.friendly.ai.EntityHalberdOwnerAttack;
 import com.dungeon_additions.da.util.ModRand;
-import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.google.common.base.Optional;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -35,38 +30,22 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable, IAnimationTickable, IAttack {
-    private final AnimationFactory factory = new AnimationFactory(this);
+public class EntityFriendlyHalberd extends EntitySkyBase implements IAttack {
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
     private Consumer<EntityLivingBase> prevAttacks;
 
-    private static final DataParameter<Boolean> SWING_MELEE = EntityDataManager.createKey(EntityFriendlyHalberd.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> STORM_STOMP = EntityDataManager.createKey(EntityFriendlyHalberd.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> AOE_SWING = EntityDataManager.createKey(EntityFriendlyHalberd.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SUMMON_LIGHTNING = EntityDataManager.createKey(EntityFriendlyHalberd.class, DataSerializers.BOOLEAN);
-
-    private static final DataParameter<Boolean> PIERCE_SWING = EntityDataManager.createKey(EntityFriendlyHalberd.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> ROLL_AROUND = EntityDataManager.createKey(EntityFriendlyHalberd.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BLOCK_ACTION = EntityDataManager.createKey(EntityFriendlyHalberd.class, DataSerializers.BOOLEAN);
 
     protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.<Optional<UUID>>createKey(EntityFriendlyHalberd.class, DataSerializers.OPTIONAL_UNIQUE_ID);
 
@@ -76,24 +55,10 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
     private final String ANIM_SUMMON_LIGHTNING = "lightning_strike";
     private final String ANIM_PIERCE_SWING = "combo";
     private final String ANIM_ROLL_AROUND = "roll_around";
-    private final String ANIM_BLOCK = "block";
     private final String ANIM_IDLE = "idle";
     private final String ANIM_WALK_UPPER = "walk_upper";
     private final String ANIM_WALK_LOWER = "walk";
-    private boolean isSwingMelee() {return this.dataManager.get(SWING_MELEE);}
-    private void setSwingMelee(boolean value) {this.dataManager.set(SWING_MELEE, Boolean.valueOf(value));}
-    private boolean isStormStomp() {return this.dataManager.get(STORM_STOMP);}
-    private void setStormStomp(boolean value) {this.dataManager.set(STORM_STOMP, Boolean.valueOf(value));}
-    private boolean isAoeSwing() {return this.dataManager.get(AOE_SWING);}
-    private void setAoeSwing(boolean value) {this.dataManager.set(AOE_SWING, Boolean.valueOf(value));}
-    private boolean isSummonLightning() {return this.dataManager.get(SUMMON_LIGHTNING);}
-    private void setSummonLightning(boolean value) {this.dataManager.set(SUMMON_LIGHTNING, Boolean.valueOf(value));}
-    private boolean isPierceSwing() {return this.dataManager.get(PIERCE_SWING);}
-    private void setPierceSwing(boolean value) {this.dataManager.set(PIERCE_SWING, Boolean.valueOf(value));}
-    private boolean isRollAround() {return this.dataManager.get(ROLL_AROUND);}
-    private void setRollAround(boolean value) {this.dataManager.set(ROLL_AROUND, Boolean.valueOf(value));}
-    private boolean isBlock() {return this.dataManager.get(BLOCK_ACTION);}
-    private void setBlockAction(boolean value) {this.dataManager.set(BLOCK_ACTION, Boolean.valueOf(value));}
+
 
     @Nullable
     public UUID getOwnerId()
@@ -126,6 +91,7 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
         this.isFriendlyCreature = true;
         this.falter_resistance = 1.7F;
         this.hemorrhage_resistance = 0.5F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityFriendlyHalberd(World worldIn) {
@@ -135,6 +101,7 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
         this.isFriendlyCreature = true;
         this.falter_resistance = 1.7F;
         this.hemorrhage_resistance = 0.5F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public void onSummonViaPlayer(BlockPos pos, EntityPlayer owner) {
@@ -150,13 +117,6 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
-        nbt.setBoolean("Swing_Melee", this.isSwingMelee());
-        nbt.setBoolean("Storm_Stomp", this.isStormStomp());
-        nbt.setBoolean("Aoe_Swing", this.isAoeSwing());
-        nbt.setBoolean("Summon_Lightning", this.isSummonLightning());
-        nbt.setBoolean("Pierce_Swing", this.isPierceSwing());
-        nbt.setBoolean("Roll_Around", this.isRollAround());
-        nbt.setBoolean("Block_Action", this.isBlock());
         if (this.getOwnerId() == null)
         {
             nbt.setString("OwnerUUID", "");
@@ -170,13 +130,6 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
-        this.setSwingMelee(nbt.getBoolean("Swing_Melee"));
-        this.setStormStomp(nbt.getBoolean("Storm_Stomp"));
-        this.setAoeSwing(nbt.getBoolean("Aoe_Swing"));
-        this.setSummonLightning(nbt.getBoolean("Summon_Lightning"));
-        this.setPierceSwing(nbt.getBoolean("Pierce_Swing"));
-        this.setRollAround(nbt.getBoolean("Roll_Around"));
-        this.setBlockAction(nbt.getBoolean("Block_Action"));
         String s;
         if (nbt.hasKey("OwnerUUID", 8))
         {
@@ -199,13 +152,6 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
     public void entityInit() {
         super.entityInit();
         this.dataManager.register(OWNER_UNIQUE_ID, Optional.absent());
-        this.dataManager.register(SWING_MELEE, Boolean.valueOf(false));
-        this.dataManager.register(STORM_STOMP, Boolean.valueOf(false));
-        this.dataManager.register(AOE_SWING, Boolean.valueOf(false));
-        this.dataManager.register(SUMMON_LIGHTNING, Boolean.valueOf(false));
-        this.dataManager.register(PIERCE_SWING, Boolean.valueOf(false));
-        this.dataManager.register(ROLL_AROUND, Boolean.valueOf(false));
-        this.dataManager.register(BLOCK_ACTION, Boolean.valueOf(false));
     }
 
     @Override
@@ -234,6 +180,7 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
 
         storm_stomp_cooldown--;
         useLongRangeSpell--;
@@ -297,7 +244,7 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
     private final Consumer<EntityLivingBase> roll_around_action = (target) -> {
         this.setFullBodyUsage(true);
         this.setImmovable(true);
-        this.setRollAround(true);
+        animator.performAttack(ANIM_ROLL_AROUND);
         this.setFightMode(true);
 
         addEvent(()-> {
@@ -347,14 +294,13 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
             this.lockLook = false;
             this.setImmovable(false);
             this.setFightMode(false);
-            this.setRollAround(false);
             this.setFullBodyUsage(false);
         },   82);
     };
     private final Consumer<EntityLivingBase> pierce_swing = (target) -> {
         this.setFullBodyUsage(true);
         this.setImmovable(true);
-        this.setPierceSwing(true);
+        animator.performAttack(ANIM_PIERCE_SWING);
         this.setFightMode(true);
 
         addEvent(()-> {
@@ -407,11 +353,10 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
             this.setFightMode(false);
             this.setFullBodyUsage(false);
             this.setImmovable(false);
-            this.setPierceSwing(false);
         }, 75);
     };
     private final Consumer<EntityLivingBase> summon_lightning = (target) -> {
-        this.setSummonLightning(true);
+        animator.performAttack(ANIM_SUMMON_LIGHTNING);
         this.setFightMode(true);
         this.lockLook = true;
 
@@ -460,16 +405,15 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
         addEvent(()-> {
             this.setImmovable(false);
             this.lockLook = false;
-            this.setSummonLightning(false);
             this.setFightMode(false);
             this.checkTargetPosition = true;
         }, 40);
     };
 
     private final Consumer<EntityLivingBase> storm_stomp = (target) -> {
+        animator.performAttack(ANIM_STORM_STOMP);
         this.setFightMode(true);
         this.setFullBodyUsage(true);
-        this.setStormStomp(true);
         this.setImmovable(true);
 
         addEvent(() -> {
@@ -482,14 +426,13 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
         addEvent(()-> {
             this.setFightMode(false);
             this.setFullBodyUsage(false);
-            this.setStormStomp(false);
             this.setImmovable(false);
             this.storm_stomp_cooldown = 250;
         }, 50);
     };
 
     private final Consumer<EntityLivingBase> aoe_swing = (target) -> {
-        this.setAoeSwing(true);
+        animator.performAttack(ANIM_AOE_SWING);
         this.setImmovable(true);
         this.setFightMode(true);
         this.setFullBodyUsage(true);
@@ -508,7 +451,6 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
         addEvent(()-> this.lockLook = false, 50);
 
         addEvent(()-> {
-            this.setAoeSwing(false);
             this.setImmovable(false);
             this.setFightMode(false);
             this.setFullBodyUsage(false);
@@ -517,7 +459,7 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
     };
 
     private final Consumer<EntityLivingBase> regular_swing = (target) -> {
-        this.setSwingMelee(true);
+        animator.performAttack(ANIM_SWING_MELEE);
         this.setFightMode(true);
 
         addEvent(()-> {
@@ -546,72 +488,24 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
 
         addEvent(()-> {
             this.setImmovable(false);
-            this.setSwingMelee(false);
             this.setFightMode(false);
             this.checkTargetPosition = true;
         }, 40);
     };
+
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttacks));
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isSwingMelee()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_MELEE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStormStomp()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STORM_STOMP, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isAoeSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_AOE_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSummonLightning()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON_LIGHTNING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isRollAround()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_ROLL_AROUND, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isPierceSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_PIERCE_SWING, false));
-                return PlayState.CONTINUE;
+    public void updateAnimations() {
+        if(!this.isFullBodyUsage()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            if(isMovingOnGround) {
+                if(!this.isFightMode()) {
+                    animator.setCustomUpperWalk(ANIM_WALK_UPPER);
+                }
+                animator.setCustomLowerWalk(ANIM_WALK_LOWER);
+            } else if(!this.isFightMode()) {
+                animator.setCustomUpperIdle(ANIM_IDLE);
             }
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_LOWER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
     }
 
     @Override
@@ -649,16 +543,6 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
     protected SoundEvent getAmbientSound() {
         return SoundsHandler.IMPERIAL_IDLE;
     }
@@ -678,10 +562,5 @@ public class EntityFriendlyHalberd extends EntitySkyBase implements IAnimatable,
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundsHandler.DRAUGR_STEP, 0.6F, 0.9f + ModRand.getFloat(0.3F));
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

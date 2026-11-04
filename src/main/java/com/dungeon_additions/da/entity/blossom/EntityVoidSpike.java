@@ -1,7 +1,7 @@
 package com.dungeon_additions.da.entity.blossom;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
-import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.entity.mini_blossom.EntityMiniBlossom;
 import com.dungeon_additions.da.util.ModRand;
@@ -11,26 +11,12 @@ import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class EntityVoidSpike extends EntityAbstractBase implements IAnimatable {
-    private AnimationFactory factory = new AnimationFactory(this);
+public class EntityVoidSpike extends EntityAbstractBase {
     private final String ANIM_SHOOT = "shoot";
 
     private final String ANIM_SHOOT_2 = "shoot_2";
@@ -42,6 +28,7 @@ public class EntityVoidSpike extends EntityAbstractBase implements IAnimatable {
 
     private String ANIM_SELECTION_STRING;
 
+    private DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     public EntityVoidSpike(World worldIn) {
         super(worldIn);
         selectAnimationTooPlay();
@@ -152,12 +139,8 @@ public class EntityVoidSpike extends EntityAbstractBase implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "spike_controller", 0, this::predicateIdle));
-    }
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SELECTION_STRING, false));
-        return PlayState.CONTINUE;
+    public void updateAnimations() {
+        animator.setStateAnim(ANIM_SELECTION_STRING);
     }
 
 
@@ -169,9 +152,5 @@ public class EntityVoidSpike extends EntityAbstractBase implements IAnimatable {
     @Override
     public boolean canBeCollidedWith() {
         return false;
-    }
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 }

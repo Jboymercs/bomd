@@ -17,15 +17,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class ItemKingClaw extends ToolSword implements IAnimatable {
-
-    public AnimationFactory factory = new AnimationFactory(this);
+public class ItemKingClaw extends ToolSword {
 
     private String info_loc;
 
@@ -71,17 +66,5 @@ public class ItemKingClaw extends ToolSword implements IAnimatable {
     public EnumRarity getRarity(ItemStack stack)
     {
         return EnumRarity.EPIC;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 }

@@ -1,22 +1,17 @@
 package com.dungeon_additions.da.entity.dark_dungeon;
 
 import com.dungeon_additions.da.Main;
-import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IPitch;
-import com.dungeon_additions.da.entity.ai.dark_dungeon.EntityAIAssassinAttack;
 import com.dungeon_additions.da.entity.ai.dark_dungeon.EntityBrineCreepAttackAI;
 import com.dungeon_additions.da.entity.ai.flying.EntityAIRandomFlyBrine;
 import com.dungeon_additions.da.entity.ai.flying.FlyingMoveHelper;
 import com.dungeon_additions.da.entity.ai.flying.TimedAttackInitiator;
 import com.dungeon_additions.da.entity.dark_dungeon.boss.EntityGreatDeath;
-import com.dungeon_additions.da.entity.dark_dungeon.boss.EntitySpearIncarnate;
 import com.dungeon_additions.da.entity.dark_dungeon.minion_action.ActionCreepLaser;
-import com.dungeon_additions.da.entity.flame_knight.EntityBareant;
 import com.dungeon_additions.da.entity.frost_dungeon.IDirectionalRender;
 import com.dungeon_additions.da.entity.frost_dungeon.great_wyrk.IMultiAction;
-import com.dungeon_additions.da.entity.sky_dungeon.EntitySkyBase;
-import com.dungeon_additions.da.entity.void_dungeon.voidclysm_action.ActionLazerTeleport;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
@@ -27,7 +22,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -44,23 +38,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EntityBrineCreep extends EntityDarkBase implements IAnimatable, IAnimationTickable, IPitch, IAttack, IDirectionalRender {
+public class EntityBrineCreep extends EntityDarkBase implements IPitch, IAttack, IDirectionalRender {
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     private Consumer<EntityLivingBase> prevAttacks;
     private Vec3d chargePos;
     public Vec3d renderLazerPos;
@@ -68,10 +54,7 @@ public class EntityBrineCreep extends EntityDarkBase implements IAnimatable, IAn
     public IMultiAction lazerAttack =  new ActionCreepLaser(this, stopLazerByte, (vec3d) -> {});
     protected boolean performLazerAttack = false;
 
-    private static final DataParameter<Boolean> CAST_SPELL = EntityDataManager.createKey(EntityBrineCreep.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> PREPARE_BITE = EntityDataManager.createKey(EntityBrineCreep.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> BITE_CHARGE = EntityDataManager.createKey(EntityBrineCreep.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SHOOT_LASER = EntityDataManager.createKey(EntityBrineCreep.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Float> LOOK = EntityDataManager.createKey(EntityBrineCreep.class, DataSerializers.FLOAT);
     public static DataParameter<BlockPos> SPAWN_LOCATION = EntityDataManager.createKey(EntityBrineCreep.class, DataSerializers.BLOCK_POS);
     private static final DataParameter<Boolean> HAS_SPAWN = EntityDataManager.createKey(EntityBrineCreep.class, DataSerializers.BOOLEAN);
@@ -88,35 +71,17 @@ public class EntityBrineCreep extends EntityDarkBase implements IAnimatable, IAn
     public boolean facingTarget = false;
     protected static final byte stopLazerByte = 70;
 
-    private boolean isCastSpell() {
-        return this.dataManager.get(CAST_SPELL);
-    }
-    private void setCastSpell(boolean value) {
-        this.dataManager.set(CAST_SPELL, Boolean.valueOf(value));
-    }
     private boolean isHasSpawn() {
         return this.dataManager.get(HAS_SPAWN);
     }
     private void setHasSpawn(boolean value) {
         this.dataManager.set(HAS_SPAWN, Boolean.valueOf(value));
     }
-    private boolean isPrepareBite() {
-        return this.dataManager.get(PREPARE_BITE);
-    }
-    private void setPrepareBite(boolean value) {
-        this.dataManager.set(PREPARE_BITE, Boolean.valueOf(value));
-    }
     private boolean isBiteCharge() {
         return this.dataManager.get(BITE_CHARGE);
     }
     private void setBiteCharge(boolean value) {
         this.dataManager.set(BITE_CHARGE, Boolean.valueOf(value));
-    }
-    private boolean isShootLaser() {
-        return this.dataManager.get(SHOOT_LASER);
-    }
-    private void setShootLaser(boolean value) {
-        this.dataManager.set(SHOOT_LASER, Boolean.valueOf(value));
     }
     public BlockPos getSpawnLocation() {
         return this.dataManager.get(SPAWN_LOCATION);
@@ -155,11 +120,8 @@ public class EntityBrineCreep extends EntityDarkBase implements IAnimatable, IAn
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
-        nbt.setBoolean("Shoot_Laser", this.isShootLaser());
         nbt.setBoolean("Bite_Charge", this.isBiteCharge());
-        nbt.setBoolean("Prepare_Bite", this.isPrepareBite());
         nbt.setBoolean("Has_Spawn", this.isHasSpawn());
-        nbt.setBoolean("Cast_Spell", this.isCastSpell());
         nbt.setInteger("Spawn_Loc_X", this.getSpawnLocation().getX());
         nbt.setInteger("Spawn_Loc_Y", this.getSpawnLocation().getY());
         nbt.setInteger("Spawn_Loc_Z", this.getSpawnLocation().getZ());
@@ -169,11 +131,8 @@ public class EntityBrineCreep extends EntityDarkBase implements IAnimatable, IAn
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
-        this.setPrepareBite(nbt.getBoolean("Prepare_Bite"));
         this.setBiteCharge(nbt.getBoolean("Bite_Charge"));
         this.setHasSpawn(nbt.getBoolean("Has_Spawn"));
-        this.setShootLaser(nbt.getBoolean("Shoot_Laser"));
-        this.setCastSpell(nbt.getBoolean("Cast_Spell"));
         this.setSpawnLocation(new BlockPos(nbt.getInteger("Spawn_Loc_X"), nbt.getInteger("Spawn_Loc_Y"), nbt.getInteger("Spawn_Loc_Z")));
         this.dataManager.set(LOOK, nbt.getFloat("Look"));
         super.readEntityFromNBT(nbt);
@@ -184,10 +143,7 @@ public class EntityBrineCreep extends EntityDarkBase implements IAnimatable, IAn
         super.entityInit();
         this.dataManager.register(LOOK, 0f);
         this.dataManager.register(BITE_CHARGE, Boolean.valueOf(false));
-        this.dataManager.register(PREPARE_BITE, Boolean.valueOf(false));
-        this.dataManager.register(CAST_SPELL, Boolean.valueOf(false));
         this.dataManager.register(HAS_SPAWN, Boolean.valueOf(false));
-        this.dataManager.register(SHOOT_LASER, Boolean.valueOf(false));
         //
         this.dataManager.register(SPAWN_LOCATION, new BlockPos(this.getPositionVector().x, this.getPositionVector().y, this.getPositionVector().z));
     }
@@ -312,7 +268,7 @@ public class EntityBrineCreep extends EntityDarkBase implements IAnimatable, IAn
 
     private final Consumer<EntityLivingBase> shoot_laser = (target) -> {
       this.setFightMode(true);
-      this.setShootLaser(true);
+      animator.performAttack(ANIM_SHOOT_LASER);
       this.facingTarget = true;
       this.performLazerAttack = true;
       this.lazerAttack.doAction();
@@ -324,13 +280,12 @@ public class EntityBrineCreep extends EntityDarkBase implements IAnimatable, IAn
       }, 90);
       addEvent(()-> {
             this.setFightMode(false);
-            this.setShootLaser(false);
       }, 100);
     };
 
     private final Consumer<EntityLivingBase> cast_spell = (target) -> {
       this.setFightMode(true);
-      this.setCastSpell(true);
+      animator.performAttack(ANIM_CAST_SPELL);
       addEvent(()-> {
           world.setEntityState(this, ModUtils.SECOND_PARTICLE_BYTE);
           this.playSound(SoundsHandler.BLOSSOM_PETAL_WAVE, 1.5f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f));
@@ -349,13 +304,12 @@ public class EntityBrineCreep extends EntityDarkBase implements IAnimatable, IAn
 
       addEvent(()-> {
             this.setFightMode(false);
-            this.setCastSpell(false);
       }, 40);
     };
 
     private final Consumer<EntityLivingBase> prepare_bite_attack = (target) -> {
       this.facingTarget = true;
-      this.setPrepareBite(true);
+      animator.performAttack(ANIM_PREPARE_BITE);
       this.setFightMode(true);
 
       addEvent(()-> {
@@ -363,53 +317,22 @@ public class EntityBrineCreep extends EntityDarkBase implements IAnimatable, IAn
           this.lockLook = true;
           this.chargePos = target.getPositionVector();
           this.clearCurrentVelocity = true;
-        this.setPrepareBite(false);
         this.setBiteCharge(true);
           this.playSound(SoundsHandler.BRINE_CREEP_CHARGE, 2.0f, 0.8f / (rand.nextFloat() * 0.4F + 0.4f));
       }, 30);
     };
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "idle_controller_tail", 0, this::predicateIdleTail));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateAttacks));
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isCastSpell()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_CAST_SPELL));
-            }
-            if(this.isPrepareBite()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_PREPARE_BITE));
-            }
-            if(this.isBiteCharge()) {
-                event.getController().setAnimation(new AnimationBuilder().loop(ANIM_CHARGE_BITE));
-            }
-            if(this.isShootLaser()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SHOOT_LASER));
-            }
-            return PlayState.CONTINUE;
+    public void updateAnimations() {
+        if(this.isBiteCharge()) {
+            animator.performAttack(ANIM_CHARGE_BITE, true);
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if (!this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().loop(ANIM_IDLE));
-            return PlayState.CONTINUE;
+        if(!this.isFullBodyUsage()) {
+            animator.setCustomLowerIdle(ANIM_IDLE_TAIL);
+            if(!this.isFightMode()) {
+                animator.setCustomUpperIdle(ANIM_IDLE);
+            }
         }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdleTail(AnimationEvent<E> event) {
-        if (!this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().loop(ANIM_IDLE_TAIL));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
     }
 
     @Override
@@ -449,21 +372,6 @@ public class EntityBrineCreep extends EntityDarkBase implements IAnimatable, IAn
         }
 
         return 0;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override

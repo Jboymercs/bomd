@@ -20,16 +20,12 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemDarkSicle extends ToolSword implements IAnimatable, ISweepAttackOverride {
+public class ItemDarkSicle extends ToolSword implements ISweepAttackOverride {
 
-    public AnimationFactory factory = new AnimationFactory(this);
     private String info_loc;
 
     public ItemDarkSicle(String name, ToolMaterial material, String info_loc) {
@@ -87,16 +83,6 @@ public class ItemDarkSicle extends ToolSword implements IAnimatable, ISweepAttac
     public boolean canDisableShield(ItemStack stack, ItemStack shield, EntityLivingBase entity, EntityLivingBase attacker)
     {
         return true;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 
     @Override

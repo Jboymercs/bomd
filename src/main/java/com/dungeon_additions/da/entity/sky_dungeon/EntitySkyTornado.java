@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.entity.sky_dungeon;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.util.ModColors;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
@@ -16,19 +17,10 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.lwjgl.Sys;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class EntitySkyTornado extends EntitySkyBase implements IAnimatable, IAnimationTickable {
+public class EntitySkyTornado extends EntitySkyBase {
 
     private static final DataParameter<Boolean> IS_HOSTILE = EntityDataManager.createKey(EntitySkyTornado.class, DataSerializers.BOOLEAN);
 
@@ -38,7 +30,7 @@ public class EntitySkyTornado extends EntitySkyBase implements IAnimatable, IAni
     private boolean isHostileTornado() {return this.dataManager.get(IS_HOSTILE);}
     private void setHostileTornado(boolean value) {this.dataManager.set(IS_HOSTILE, Boolean.valueOf(value));}
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
 
     public EntitySkyTornado(World worldIn, float x, float y, float z) {
         super(worldIn, x, y, z);
@@ -186,27 +178,12 @@ public class EntitySkyTornado extends EntitySkyBase implements IAnimatable, IAni
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "attack_controller", 0, this::predicateATtack));
-    }
-
-    private <E extends IAnimatable>PlayState predicateATtack(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(this.isHostileTornado()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_ATTACK, false));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_ATTACK);
+        } else {
+            animator.setStateAnim(ANIM_IDLE, true);
         }
-
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(!this.isHostileTornado()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
     }
 
     @Override
@@ -215,21 +192,5 @@ public class EntitySkyTornado extends EntitySkyBase implements IAnimatable, IAni
             return SoundsHandler.IMPERIAL_STORM_LONG;
         }
         return null;
-    }
-
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 }

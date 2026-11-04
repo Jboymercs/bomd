@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.dark_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.ai.dark_dungeon.EntityAIAttackBasic;
@@ -11,6 +12,7 @@ import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -32,14 +34,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,8 +41,9 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatable, IAnimationTickable, IAttack, IScreenShake {
-    private final AnimationFactory factory = new AnimationFactory(this);
+public class EntityEverchosenHammer extends EntityDarkBase implements IAttack, IScreenShake {
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
+    private final MoveAnalysis moveAnalysis;
     private Consumer<EntityLivingBase> prevAttacks;
     private final String ANIM_WALK_UPPER = "walk_hammer_upper";
     private final String ANIM_WALK_LOWER = "walk_hammer_lower";
@@ -64,34 +59,16 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
     private final String ANIM_OVERHEAD_SWING = "overhead_swing";
     private int hammer_jump_amount = 0;
 
-    private static final DataParameter<Boolean> SWING_HAMMER = EntityDataManager.createKey(EntityEverchosenHammer.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HAMMER_JUMP = EntityDataManager.createKey(EntityEverchosenHammer.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> HAMMER_LOOP = EntityDataManager.createKey(EntityEverchosenHammer.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HAMMER_JUMP_END = EntityDataManager.createKey(EntityEverchosenHammer.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityEverchosenHammer.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_HAMMER_TWO = EntityDataManager.createKey(EntityEverchosenHammer.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> CAST_PROJECTILE = EntityDataManager.createKey(EntityEverchosenHammer.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HEAVY_SWING = EntityDataManager.createKey(EntityEverchosenHammer.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> OVERHEAD_SWING = EntityDataManager.createKey(EntityEverchosenHammer.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> PERFORMING_COMBO = EntityDataManager.createKey(EntityEverchosenHammer.class, DataSerializers.BOOLEAN);
 
-    public boolean isSwingHammer() {
-        return this.dataManager.get(SWING_HAMMER);
-    }
-    private void setSwingHammer(boolean value) {
-        this.dataManager.set(SWING_HAMMER, Boolean.valueOf(value));
-    }
     public boolean isPerformingCombo() {
         return this.dataManager.get(PERFORMING_COMBO);
     }
     private void setPerformingCombo(boolean value) {
         this.dataManager.set(PERFORMING_COMBO, Boolean.valueOf(value));
-    }
-    public boolean isSwingHammerTwo() {
-        return this.dataManager.get(SWING_HAMMER_TWO);
-    }
-    private void setSwingHammerTwo(boolean value) {
-        this.dataManager.set(SWING_HAMMER_TWO, Boolean.valueOf(value));
     }
     public boolean isCastProjectile() {
         return this.dataManager.get(CAST_PROJECTILE);
@@ -99,35 +76,11 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
     private void setCastProjectile(boolean value) {
         this.dataManager.set(CAST_PROJECTILE, Boolean.valueOf(value));
     }
-    public boolean isHeavySwing() {
-        return this.dataManager.get(HEAVY_SWING);
-    }
-    private void setHeavySwing(boolean value) {
-        this.dataManager.set(HEAVY_SWING, Boolean.valueOf(value));
-    }
-    public boolean isOverheadSwing() {
-        return this.dataManager.get(OVERHEAD_SWING);
-    }
-    private void setOverheadSwing(boolean value) {
-        this.dataManager.set(OVERHEAD_SWING, Boolean.valueOf(value));
-    }
-    public boolean isHammerJump() {
-        return this.dataManager.get(HAMMER_JUMP);
-    }
-    private void setHammerJump(boolean value) {
-        this.dataManager.set(HAMMER_JUMP, Boolean.valueOf(value));
-    }
     public boolean isHammerLoop() {
         return this.dataManager.get(HAMMER_LOOP);
     }
     private void setHammerLoop(boolean value) {
         this.dataManager.set(HAMMER_LOOP, Boolean.valueOf(value));
-    }
-    public boolean isHammerJumpEnd() {
-        return this.dataManager.get(HAMMER_JUMP_END);
-    }
-    private void setHammerJumpEnd(boolean value) {
-        this.dataManager.set(HAMMER_JUMP_END, Boolean.valueOf(value));
     }
     public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
     public boolean isShaking() {return this.dataManager.get(SHAKING);}
@@ -143,6 +96,7 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
         this.setSize(0.7F, 2.2F);
         this.falter_resistance = 1.9F;
         this.hemorrhage_resistance = 0.9F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityEverchosenHammer(World worldIn) {
@@ -153,18 +107,13 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
         this.setSize(0.7F, 2.2F);
         this.falter_resistance = 1.9F;
         this.hemorrhage_resistance = 0.9F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
-        nbt.setBoolean("Hammer_Swing", this.isSwingHammer());
-        nbt.setBoolean("Hammer_Jump", this.isHammerJump());
         nbt.setBoolean("Hammer_Loop", this.isHammerLoop());
-        nbt.setBoolean("Hammer_Jump_End", this.isHammerJumpEnd());
         nbt.setBoolean("Shaking", this.isShaking());
-        nbt.setBoolean("Overhead_Swing", this.isOverheadSwing());
-        nbt.setBoolean("Heavy_Swing", this.isHeavySwing());
-        nbt.setBoolean("Swing_Hammer_Two", this.isSwingHammerTwo());
         nbt.setBoolean("Cast_Projectile", this.isCastProjectile());
         nbt.setBoolean("Performing_Combo", this.isPerformingCombo());
         super.writeEntityToNBT(nbt);
@@ -172,15 +121,9 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
-        this.setHammerJump(nbt.getBoolean("Hammer_Jump"));
-        this.setHammerJumpEnd(nbt.getBoolean("Hammer_Jump_End"));
         this.setHammerLoop(nbt.getBoolean("Hammer_Loop"));
-        this.setSwingHammer(nbt.getBoolean("Hammer_Swing"));
         this.setShaking(nbt.getBoolean("Shaking"));
-        this.setSwingHammerTwo(nbt.getBoolean("Swing_Hammer_Two"));
-        this.setHeavySwing(nbt.getBoolean("Heavy_Swing"));
         this.setCastProjectile(nbt.getBoolean("Cast_Projectile"));
-        this.setOverheadSwing(nbt.getBoolean("Overhead_Swing"));
         this.setPerformingCombo(nbt.getBoolean("Performing_Combo"));
         super.readEntityFromNBT(nbt);
     }
@@ -188,15 +131,9 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
     @Override
     public void entityInit() {
         super.entityInit();
-        this.dataManager.register(HAMMER_JUMP, Boolean.valueOf(false));
         this.dataManager.register(HAMMER_LOOP, Boolean.valueOf(false));
-        this.dataManager.register(SWING_HAMMER, Boolean.valueOf(false));
-        this.dataManager.register(HAMMER_JUMP_END, Boolean.valueOf(false));
         this.dataManager.register(SHAKING, Boolean.valueOf(false));
-        this.dataManager.register(OVERHEAD_SWING, Boolean.valueOf(false));
-        this.dataManager.register(SWING_HAMMER_TWO, Boolean.valueOf(false));
         this.dataManager.register(CAST_PROJECTILE, Boolean.valueOf(false));
-        this.dataManager.register(HEAVY_SWING, Boolean.valueOf(false));
         this.dataManager.register(PERFORMING_COMBO, Boolean.valueOf(false));
     }
 
@@ -260,7 +197,7 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
     }
 
     private final Consumer<EntityLivingBase> hammer_jump_start = (target) -> {
-      this.setHammerJump(true);
+      animator.performAttack(ANIM_HAMMER_JUMP);
       this.setImmovable(true);
       this.setFullBodyUsage(true);
       this.setFightMode(true);
@@ -296,15 +233,13 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
       }, 43);
 
       addEvent(()-> {
-          this.setHammerJump(false);
           //continue the jumping!
           if(this.getDistance(target) > 3 && ModRand.percentageOf(80 - (hammer_jump_amount * 10))) {
             this.setHammerJumpContinue(target);
           } else {
               this.lockLook = false;
-              this.setHammerJumpEnd(true);
+              animator.performAttack(ANIM_HAMMER_JUMP_END);
               addEvent(()-> {
-                  this.setHammerJumpEnd(false);
                   this.setFightMode(false);
                   this.setFullBodyUsage(false);
                   this.setImmovable(false);
@@ -358,9 +293,8 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
               this.setHammerJumpContinue(target);
           } else {
               this.lockLook = false;
-              this.setHammerJumpEnd(true);
+              animator.performAttack(ANIM_HAMMER_JUMP_END);
               addEvent(()-> {
-                  this.setHammerJumpEnd(false);
                   this.setFightMode(false);
                   this.setFullBodyUsage(false);
                   this.setImmovable(false);
@@ -373,7 +307,11 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
 
     private final Consumer<EntityLivingBase> swing_hammer = (target) -> {
         this.setFightMode(true);
-        this.setSwingHammer(true);
+        if(this.isPerformingCombo()) {
+            animator.performCombo(ANIM_SWING_HAMMER, 5 ,5);
+        } else {
+            animator.performAttack(ANIM_SWING_HAMMER);
+        }
 
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -400,10 +338,8 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
         addEvent(()-> {
             if(ModRand.percentageOf(60 - (comboAmount * 10))) {
                 this.selectComboFollowUp(target);
-                this.setSwingHammer(false);
             } else {
                 addEvent(()-> {
-                    this.setSwingHammer(false);
                     this.setFightMode(false);
                 }, 5);
             }
@@ -412,7 +348,11 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
 
     private final Consumer<EntityLivingBase> swing_hammer_two = (target) -> {
       this.setFightMode(true);
-      this.setSwingHammerTwo(true);
+      if(this.isPerformingCombo()) {
+           animator.performCombo(ANIM_SWING_HAMMER_TWO, 5, 5);
+      } else {
+          animator.performAttack(ANIM_SWING_HAMMER_TWO);
+      }
 
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -439,10 +379,8 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
       addEvent(()-> {
           if(ModRand.percentageOf(60 - (comboAmount * 10))) {
               this.selectComboFollowUp(target);
-              this.setSwingHammerTwo(false);
           } else {
               addEvent(()-> {
-                  this.setSwingHammerTwo(false);
                   this.setFightMode(false);
               }, 5);
           }
@@ -451,7 +389,11 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
 
     private final Consumer<EntityLivingBase> heavy_swing = (target) -> {
       this.setFightMode(true);
-      this.setHeavySwing(true);
+      if(this.isPerformingCombo()) {
+          animator.performCombo(ANIM_HEAVY_SWING, 5, 5);
+      } else {
+          animator.performAttack(ANIM_HEAVY_SWING);
+      }
       this.setFullBodyUsage(true);
       this.setImmovable(true);
 
@@ -483,7 +425,6 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
 
       addEvent(()-> {
         this.setFightMode(false);
-        this.setHeavySwing(false);
         this.setFullBodyUsage(false);
         this.setImmovable(false);
       }, 50);
@@ -493,7 +434,11 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
 
     private final Consumer<EntityLivingBase> overhead_swing = (target) -> {
       this.setFightMode(true);
-      this.setOverheadSwing(true);
+      if(this.isPerformingCombo()) {
+          animator.performCombo(ANIM_OVERHEAD_SWING, 5, 5);
+      } else {
+          animator.performAttack(ANIM_OVERHEAD_SWING);
+      }
 
       addEvent(()-> {
           this.lockLook = true;
@@ -513,12 +458,15 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
 
       addEvent(()-> {
             this.setFightMode(false);
-            this.setOverheadSwing(false);
       }, 50);
     };
 
     private final Consumer<EntityLivingBase> cast_projectile = (target) -> {
-      this.setCastProjectile(true);
+      if(this.isPerformingCombo()) {
+       animator.performCombo(ANIM_CAST_PROJECTILE, 5, 5);
+      } else {
+          animator.performAttack(ANIM_CAST_PROJECTILE);
+      }
       this.setFightMode(true);
 
       addEvent(()-> {
@@ -531,7 +479,6 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
       addEvent(()-> this.setImmovable(false), 45);
 
       addEvent(()-> {
-          this.setCastProjectile(false);
           this.setFightMode(false);
       }, 55);
     };
@@ -577,82 +524,21 @@ public class EntityEverchosenHammer extends EntityDarkBase implements IAnimatabl
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-        data.addAnimationController(new AnimationController(this, "fight_controller", 3, this::predicateAttacks));
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-           if(this.isSwingHammer()) {
-                event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING_HAMMER + (this.isPerformingCombo() ? "t" : "")));
-           }
-           if(this.isHammerJump()) {
-               event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_HAMMER_JUMP));
-           }
-           if(this.isHammerLoop()) {
-               event.getController().setAnimation(new AnimationBuilder().loop(ANIM_HAMMER_JUMP_LOOP));
-           }
-           if(this.isHammerJumpEnd()) {
-               event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_HAMMER_JUMP_END));
-           }
-           if(this.isHeavySwing()) {
-               event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_HEAVY_SWING + (this.isPerformingCombo() ? "t" : "")));
-           }
-           if(this.isCastProjectile()) {
-               event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_CAST_PROJECTILE + (this.isPerformingCombo() ? "t" : "")));
-           }
-           if(this.isOverheadSwing()) {
-               event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_OVERHEAD_SWING + (this.isPerformingCombo() ? "t" : "")));
-           }
-           if(this.isSwingHammerTwo()) {
-               event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SWING_HAMMER_TWO + (this.isPerformingCombo() ? "t" : "")));
-           }
-           return PlayState.CONTINUE;
+    public void updateAnimations() {
+        if(this.isHammerLoop()) {
+            animator.performAttack(ANIM_HAMMER_JUMP_LOOP);
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().loop(ANIM_IDLE_UPPER));
-            return PlayState.CONTINUE;
+        if(!this.isFullBodyUsage()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            if(isMovingOnGround) {
+                if(!this.isFightMode()) {
+                    animator.setCustomUpperWalk(ANIM_WALK_UPPER);
+                }
+                animator.setCustomLowerWalk(ANIM_WALK_LOWER);
+            } else if(!this.isFightMode()) {
+                animator.setCustomUpperIdle(ANIM_IDLE_UPPER);
+            }
         }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage()) {
-            event.getController().setAnimation(new AnimationBuilder().loop(ANIM_WALK_LOWER));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode()) {
-            event.getController().setAnimation(new AnimationBuilder().loop(ANIM_WALK_UPPER));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override

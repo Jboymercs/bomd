@@ -1,18 +1,14 @@
 package com.dungeon_additions.da.entity;
 
 import com.dungeon_additions.da.entity.flame_knight.EntityFlameKnight;
-import net.minecraft.entity.EntityLivingBase;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class EntityFlameHat extends EntityAbstractBase implements IAnimatable, IAnimationTickable {
+public class EntityFlameHat extends EntityAbstractBase {
 
     private EntityFlameKnight owner;
     private UUID ownerUuid;
@@ -34,11 +30,6 @@ public class EntityFlameHat extends EntityAbstractBase implements IAnimatable, I
         this.setOwnerWithHead(owner);
         this.setNoGravity(true);
         this.setPosition(owner.posX, owner.posY + 2.2, owner.posZ);
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
     }
 
     public void onUpdate() {
@@ -75,24 +66,9 @@ public class EntityFlameHat extends EntityAbstractBase implements IAnimatable, I
 
     }
 
-
-    @Override
-    public AnimationFactory getFactory() {
-        return null;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
     @Override
     public boolean canRenderOnFire() {
         return false;
     }
 
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
-    }
 }

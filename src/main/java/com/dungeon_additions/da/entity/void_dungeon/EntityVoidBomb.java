@@ -1,6 +1,6 @@
 package com.dungeon_additions.da.entity.void_dungeon;
 
-import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.void_dungeon.voidclysm_action.ActionVoidBomb;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.block.state.IBlockState;
@@ -12,20 +12,12 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
 
-public class EntityVoidBomb extends EntityEndBase implements IAnimatable, IAnimationTickable {
+public class EntityVoidBomb extends EntityEndBase {
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     private static final DataParameter<Boolean> EXPLODE_BOMB = EntityDataManager.createKey(EntityVoidBomb.class, DataSerializers.BOOLEAN);
     public void setExplodeBomb(boolean value) {this.dataManager.set(EXPLODE_BOMB, Boolean.valueOf(value));}
     public boolean isExplodeBomb() {return this.dataManager.get(EXPLODE_BOMB);}
@@ -94,6 +86,7 @@ public class EntityVoidBomb extends EntityEndBase implements IAnimatable, IAnima
 
     private void explodeVoidBomb() {
         this.setExplodeBomb(true);
+        animator.setStateAnim(ANIM_EXPLODE);
         this.playSound(SoundsHandler.VOIDCLYSM_BOMB_EXPLODE, 0.75f, 1.0f);
         addEvent(()-> {
             new ActionVoidBomb().performAction(this, null);
@@ -104,51 +97,17 @@ public class EntityVoidBomb extends EntityEndBase implements IAnimatable, IAnima
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "explode_controller", 0, this::predicateExplode));
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(!this.isExplodeBomb()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_IDLE, true);
         }
-        return PlayState.STOP;
     }
-
-    private <E extends IAnimatable> PlayState predicateExplode(AnimationEvent<E> event) {
-        if(this.isExplodeBomb()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_EXPLODE, false));
-            return PlayState.CONTINUE;
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
     @Override
     public void fall(float distance, float damageMultiplier) {
     }
 
     @Override
     protected void updateFallState(double y, boolean onGroundIn, @Nonnull IBlockState state, @Nonnull BlockPos pos) {
-    }
-
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override

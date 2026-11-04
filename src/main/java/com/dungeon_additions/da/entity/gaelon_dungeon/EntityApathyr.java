@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.gaelon_dungeon;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.blocks.boss.BlockEnumBossSummonState;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
@@ -21,6 +22,7 @@ import com.dungeon_additions.da.util.*;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import com.google.common.collect.Lists;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -55,14 +57,6 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -71,12 +65,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAnimationTickable, IAttack, IScreenShake, IEntitySound {
+public class EntityApathyr extends EntityGaelonBase implements IAttack, IScreenShake, IEntitySound {
 
     private BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.NOTCHED_6));
     public IMultiAction superDashAttack =  new ActionSuperDash(this);
@@ -129,30 +122,21 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
     private final String ANIM_IDLE_AWAKE = "idle_awake";
     private final String ANIM_DEATH_ANIMATION = "death";
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, true);
+    private final MoveAnalysis moveAnalysis;
     private Consumer<EntityLivingBase> prevAttack;
     private boolean currentlyInIFrame = false;
     private int shakeTime = 0;
     public List<WeakReference<Entity>> current_mobs = Lists.newArrayList();
     public List<WeakReference<Entity>> current_mobs_golden = Lists.newArrayList();
-    private static final DataParameter<Boolean> SWING = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_CONNECT = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> JAB = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> PUSH = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> KICK = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> UPPER_SWING = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> GRAB_BEGIN = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> GRAB_CONTINUE = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> GRAB_FINISH = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> JUMP_ATTACK = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> JUMP_AWAY = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> CIRCLE_SWING = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SUPER_DASH = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> TELEPORT_GHOST = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> CRYSTAL_DOMAIN = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> CAST_FAST = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> CAST_SPELL = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> ARM_SWIPE = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SECONDARY = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> TERTIARY = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> TRANSITION_TICK = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
@@ -170,50 +154,31 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
     private static final DataParameter<Boolean> HAD_PREVIOUS_TARGET = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> PLAYED_MUSIC = EntityDataManager.createKey(EntityApathyr.class, DataSerializers.BOOLEAN);
 
-    private void setSwingAttack(boolean value) {this.dataManager.set(SWING, Boolean.valueOf(value));}
-    private boolean isSwingAttack() {return this.dataManager.get(SWING);}
-    private void setSwingConnect(boolean value) {this.dataManager.set(SWING_CONNECT, Boolean.valueOf(value));}
-    private boolean isSwingConnect() {return this.dataManager.get(SWING_CONNECT);}
+
     private void setJab(boolean value) {this.dataManager.set(JAB, Boolean.valueOf(value));}
     private boolean isJab() {return this.dataManager.get(JAB);}
     private void setPush(boolean value) {this.dataManager.set(PUSH, Boolean.valueOf(value));}
     private boolean isPush() {return this.dataManager.get(PUSH);}
     private void setKick(boolean value) {this.dataManager.set(KICK, Boolean.valueOf(value));}
     private boolean isKick() {return this.dataManager.get(KICK);}
-    private void setUpperSwing(boolean value) {this.dataManager.set(UPPER_SWING, Boolean.valueOf(value));}
-    private boolean isUpperSwing() {return this.dataManager.get(UPPER_SWING);}
     private void setSecondary(boolean value) {this.dataManager.set(SECONDARY, Boolean.valueOf(value));}
     private boolean isSecondary() {return this.dataManager.get(SECONDARY);}
     private void setTertiary(boolean value) {this.dataManager.set(TERTIARY, Boolean.valueOf(value));}
     private boolean isTertiary() {return this.dataManager.get(TERTIARY);}
     private void setTransitionTick(boolean value) {this.dataManager.set(TRANSITION_TICK, Boolean.valueOf(value));}
     private boolean isTransitionTick() {return this.dataManager.get(TRANSITION_TICK);}
-    private void setGrabBegin(boolean value) {this.dataManager.set(GRAB_BEGIN, Boolean.valueOf(value));}
-    private boolean isGrabBegin() {return this.dataManager.get(GRAB_BEGIN);}
-    private void setGrabContinue(boolean value) {this.dataManager.set(GRAB_CONTINUE, Boolean.valueOf(value));}
-    private boolean isGrabContinue() {return this.dataManager.get(GRAB_CONTINUE);}
-    private void setGrabFinish(boolean value) {this.dataManager.set(GRAB_FINISH, Boolean.valueOf(value));}
-    private boolean isGrabFinish() {return this.dataManager.get(GRAB_FINISH);}
     private void setJumpAttack(boolean value) {this.dataManager.set(JUMP_ATTACK, Boolean.valueOf(value));}
     private boolean isJumpAttack() {return this.dataManager.get(JUMP_ATTACK);}
     private void setJumpAway(boolean value) {this.dataManager.set(JUMP_AWAY, Boolean.valueOf(value));}
     public boolean isJumpAway() {return this.dataManager.get(JUMP_AWAY);}
     private void setCircleSwing(boolean value) {this.dataManager.set(CIRCLE_SWING, Boolean.valueOf(value));}
     private boolean isCircleSwing() {return this.dataManager.get(CIRCLE_SWING);}
-    private void setSuperDash(boolean value) {this.dataManager.set(SUPER_DASH, Boolean.valueOf(value));}
-    private boolean isSuperDash() {return this.dataManager.get(SUPER_DASH);}
     private void setTeleportGhost(boolean value) {this.dataManager.set(TELEPORT_GHOST, Boolean.valueOf(value));}
     private boolean isTeleportGhost() {return this.dataManager.get(TELEPORT_GHOST);}
     private void setCrystalDomain(boolean value) {this.dataManager.set(CRYSTAL_DOMAIN, Boolean.valueOf(value));}
     private boolean isCrystalDomain() {return this.dataManager.get(CRYSTAL_DOMAIN);}
-    private void setCastFast(boolean value) {this.dataManager.set(CAST_FAST, Boolean.valueOf(value));}
-    private boolean isCastFast() {return this.dataManager.get(CAST_FAST);}
-    private void setCastSpell(boolean value) {this.dataManager.set(CAST_SPELL, Boolean.valueOf(value));}
-    private boolean isCastSpell() {return this.dataManager.get(CAST_SPELL);}
     private void setDeathState(boolean value) {this.dataManager.set(DEATH_STATE, Boolean.valueOf(value));}
     public boolean isDeathState() {return this.dataManager.get(DEATH_STATE);}
-    private void setArmSwipe(boolean value) {this.dataManager.set(ARM_SWIPE, Boolean.valueOf(value));}
-    private boolean isArmSwipe() {return this.dataManager.get(ARM_SWIPE);}
     private void setShielded(boolean value) {this.dataManager.set(SHIELDED, Boolean.valueOf(value));}
     public boolean isShielded() {return this.dataManager.get(SHIELDED);}
     private void setUsedGoldenHeart(boolean value) {this.dataManager.set(USED_GOLDEN_HEART, Boolean.valueOf(value));}
@@ -265,6 +230,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         this.bossInfo.setVisible(false);
         this.hemorrhage_resistance = 0.91F;
         this.falter_resistance = 1.8F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityApathyr(World worldIn) {
@@ -276,6 +242,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         this.bossInfo.setVisible(false);
         this.hemorrhage_resistance = 0.91F;
         this.falter_resistance = 1.8F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityApathyr(World worldIn, int timesUsed, BlockPos pos) {
@@ -290,31 +257,22 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         this.bossInfo.setVisible(false);
         this.hemorrhage_resistance = 0.91F;
         this.falter_resistance = 1.8F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
-        nbt.setBoolean("Swing", this.isSwingAttack());
-        nbt.setBoolean("Swing_Connect", this.isSwingConnect());
         nbt.setBoolean("Jab", this.isJab());
         nbt.setBoolean("Push", this.isPush());
         nbt.setBoolean("Kick", this.isKick());
-        nbt.setBoolean("Upper_Swing", this.isUpperSwing());
         nbt.setBoolean("Secondary", this.isSecondary());
         nbt.setBoolean("Tertiary", this.isTertiary());
         nbt.setBoolean("Transition_Tick", this.isTransitionTick());
-        nbt.setBoolean("Grab_Begin", this.isGrabBegin());
-        nbt.setBoolean("Grab_Continue", this.isGrabContinue());
-        nbt.setBoolean("Grab_Finish", this.isGrabFinish());
         nbt.setBoolean("Circle_Swing", this.isCircleSwing());
         nbt.setBoolean("Jump_Away", this.isJumpAway());
         nbt.setBoolean("Jump_Attack", this.isJumpAttack());
-        nbt.setBoolean("Super_Dash", this.isSuperDash());
         nbt.setBoolean("Teleport_Ghost", this.isTeleportGhost());
         nbt.setBoolean("Crystal_Domain", this.isCrystalDomain());
-        nbt.setBoolean("Cast_Fast", this.isCastFast());
-        nbt.setBoolean("Cast_Spell", this.isCastSpell());
-        nbt.setBoolean("Arm_Swipe", this.isArmSwipe());
         nbt.setBoolean("Shielded", this.isShielded());
         nbt.setBoolean("Shaking", this.isShaking());
         nbt.setBoolean("Death_State", this.isDeathState());
@@ -335,30 +293,20 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
-        this.setSwingAttack(nbt.getBoolean("Swing"));
-        this.setSwingConnect(nbt.getBoolean("Swing_Connect"));
         this.setJab(nbt.getBoolean("Jab"));
         this.setPush(nbt.getBoolean("Push"));
         this.setKick(nbt.getBoolean("Kick"));
-        this.setUpperSwing(nbt.getBoolean("Upper_Swing"));
         this.setSecondary(nbt.getBoolean("Secondary"));
         this.setTertiary(nbt.getBoolean("Tertiary"));
         this.setTransitionTick(nbt.getBoolean("Transition_Tick"));
-        this.setGrabBegin(nbt.getBoolean("Grab_Begin"));
-        this.setGrabContinue(nbt.getBoolean("Grab_Continue"));
-        this.setGrabFinish(nbt.getBoolean("Grab_Finish"));
         this.setCircleSwing(nbt.getBoolean("Circle_Swing"));
         this.setJumpAway(nbt.getBoolean("Jump_Away"));
         this.setJumpAttack(nbt.getBoolean("Jump_Attack"));
-        this.setSuperDash(nbt.getBoolean("Super_Dash"));
         this.setUsedGoldenHeart(nbt.getBoolean("Used_Golden_Heart"));
         this.setDeathState(nbt.getBoolean("Death_State"));
         this.setTeleportGhost(nbt.getBoolean("Teleport_Ghost"));
         this.setCrystalDomain(nbt.getBoolean("Crystal_Domain"));
         this.setPlayedMusic(nbt.getBoolean("Played_Music"));
-        this.setCastFast(nbt.getBoolean("Cast_Fast"));
-        this.setCastSpell(nbt.getBoolean("Cast_Spell"));
-        this.setArmSwipe(nbt.getBoolean("Arm_Swipe"));
         this.setSpawningWaves(nbt.getBoolean("Spawning_Waves"));
         this.setShielded(nbt.getBoolean("Shielded"));
         this.setStepShake(nbt.getBoolean("Step_Shake"));
@@ -377,28 +325,18 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
 
     @Override
     public void entityInit() {
-        this.dataManager.register(SWING, Boolean.valueOf(false));
-        this.dataManager.register(SWING_CONNECT, Boolean.valueOf(false));
         this.dataManager.register(JAB, Boolean.valueOf(false));
         this.dataManager.register(PUSH, Boolean.valueOf(false));
         this.dataManager.register(KICK, Boolean.valueOf(false));
-        this.dataManager.register(UPPER_SWING, Boolean.valueOf(false));
         this.dataManager.register(SECONDARY, Boolean.valueOf(false));
         this.dataManager.register(TERTIARY, Boolean.valueOf(false));
         this.dataManager.register(TRANSITION_TICK, Boolean.valueOf(false));
-        this.dataManager.register(GRAB_BEGIN, Boolean.valueOf(false));
-        this.dataManager.register(GRAB_CONTINUE, Boolean.valueOf(false));
-        this.dataManager.register(GRAB_FINISH, Boolean.valueOf(false));
         this.dataManager.register(CIRCLE_SWING, Boolean.valueOf(false));
         this.dataManager.register(JUMP_AWAY, Boolean.valueOf(false));
         this.dataManager.register(JUMP_ATTACK, Boolean.valueOf(false));
-        this.dataManager.register(SUPER_DASH, Boolean.valueOf(false));
         this.dataManager.register(DEATH_STATE, Boolean.valueOf(false));
         this.dataManager.register(TELEPORT_GHOST, Boolean.valueOf(false));
         this.dataManager.register(CRYSTAL_DOMAIN, Boolean.valueOf(false));
-        this.dataManager.register(CAST_FAST, Boolean.valueOf(false));
-        this.dataManager.register(CAST_SPELL, Boolean.valueOf(false));
-        this.dataManager.register(ARM_SWIPE, Boolean.valueOf(false));
         this.dataManager.register(USED_GOLDEN_HEART, Boolean.valueOf(false));
         this.dataManager.register(SHIELDED, Boolean.valueOf(false));
         this.dataManager.register(SET_SPAWN_LOC, Boolean.valueOf(false));
@@ -530,6 +468,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
         double healthFac = this.getHealth() / this.getMaxHealth();
         if(this.bossInfo != null) {
             this.bossInfo.setPercent((float) healthFac);
@@ -969,6 +908,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         this.lockLook = true;
         this.setIdleState(false);
         this.setIdleAwake(true);
+        animator.setStateAnim(ANIM_IDLE_AWAKE);
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_AWAKEN, 1.5f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 10);
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_STEP, 0.8f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 30);
         addEvent(()-> this.playSound(SoundsHandler.OBSIDILITH_SHIELD, 0.7f, 0.4f / (rand.nextFloat() * 0.4f + 0.2f)), 100);
@@ -1023,7 +963,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
 
     private final Consumer<EntityLivingBase> cast_spike_spell = (target) -> {
       this.setFightMode(true);
-      this.setCastSpell(true);
+      animator.performAttack(ANIM_CAST_REGULAR);
 
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_CAST_SPIKES, 1.0f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 20);
       addEvent(()-> {
@@ -1059,7 +999,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
 
       addEvent(()-> {
         this.setFightMode(false);
-        this.setCastSpell(false);
       }, 55);
     };
 
@@ -1089,7 +1028,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
 
     private final Consumer<EntityLivingBase> cast_fast_projectile = (target) -> {
        this.setFightMode(true);
-       this.setCastFast(true);
+       animator.performAttack(ANIM_CAST_FAST_PROJECTILE);
 
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_CAST_HEAVY, 1.25f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 22);
        addEvent(()-> this.lockLook = true, 22);
@@ -1120,7 +1059,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
        addEvent(()-> this.lockLook = false, 35);
 
        addEvent(()-> {
-        this.setCastFast(false);
         this.setFightMode(false);
        }, 40);
     };
@@ -1130,6 +1068,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
       this.setFullBodyUsage(true);
       this.setImmovable(true);
       this.setCrystalDomain(true);
+      animator.performAttack(ANIM_CRYSTAL_DOMAIN);
       setTooDoDomain = false;
 
       //teleports boss to spawn location
@@ -1186,7 +1125,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setImmovable(true);
-      this.setSuperDash(true);
+      animator.performAttack(ANIM_SUPER_DASH);
       this.performSuperDash = true;
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_CHARGE_AXE, 2.0f, 0.6f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
       superDashAttack.doAction();
@@ -1223,7 +1162,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 this.selectFollowUp(target);
                 this.setFullBodyUsage(false);
                 this.setImmovable(false);
-                this.setSuperDash(false);
                 addEvent(()-> {
                     this.setTransitionTick(false);
                 }, 10);
@@ -1231,7 +1169,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 addEvent(()-> {
                     this.setFullBodyUsage(false);
                     this.setImmovable(false);
-                    this.setSuperDash(false);
                     this.setFightMode(false);
                     this.coolDownTime = 30;
                     this.attackExhaustion++;
@@ -1242,7 +1179,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
 
     private final Consumer<EntityLivingBase> cast_arm_swipe = (target) -> {
         this.setFightMode(true);
-        this.setArmSwipe(true);
+        animator.performAttack(ANIM_ARM_SWIPE);
 
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_CAST_MAGIC, 1.0f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 21);
         addEvent(()-> {
@@ -1252,7 +1189,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
 
         addEvent(() -> {
             this.setFightMode(false);
-            this.setArmSwipe(false);
         }, 45);
     };
 
@@ -1260,7 +1196,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         this.setFullBodyUsage(true);
         this.setFightMode(true);
         this.setImmovable(true);
-        this.setJumpAttack(true);
+        animator.performAttack(ANIM_JUMP_ATTACK);
 
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_SLIGHT_DASH, 1.0f, 0.4f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_JUMP, 1.0f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
@@ -1316,7 +1252,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 this.selectFollowUp(target);
                 this.setFullBodyUsage(false);
                 this.setImmovable(false);
-                this.setJumpAttack(false);
                 addEvent(()-> {
                     this.setTransitionTick(false);
                 }, 10);
@@ -1324,7 +1259,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 addEvent(()-> {
                     this.setFullBodyUsage(false);
                     this.setImmovable(false);
-                    this.setJumpAttack(false);
                     this.setFightMode(false);
                     this.coolDownTime = 30;
                     this.attackExhaustion++;
@@ -1337,7 +1271,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
       this.setFullBodyUsage(true);
       this.setImmovable(true);
       this.setFightMode(true);
-      this.setGrabBegin(true);
+      animator.performAttack(ANIM_GRAB_BEGIN);
 
         addEvent(()-> {
             Vec3d posSet = target.getPositionVector().subtract(this.getPositionVector()).normalize();
@@ -1357,13 +1291,12 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
 
         addEvent(()-> {
             this.grabDetection = false;
-            this.setGrabBegin(false);
             this.setImmovable(true);
 
             if(grabbedEntity != null) {
                 this.setGrabTooContinue(target);
             } else {
-                this.setGrabFinish(true);
+                animator.performAttack(ANIM_GRAB_FINISH);
 
                 addEvent(()-> {
                     this.setImmovable(false);
@@ -1371,7 +1304,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                     this.lockLook = false;
                     this.setTransitionTick(true);
                     this.selectFollowUp(target);
-                    this.setGrabFinish(false);
                     addEvent(()-> {
                         this.setTransitionTick(false);
                     }, 5);
@@ -1388,7 +1320,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
 
 
     private final Consumer<EntityLivingBase> grab_continue = (target) -> {
-        this.setGrabContinue(true);
+        animator.performAttack(ANIM_GRAB_CONTINUE);
         this.currentlyInIFrame = true;
 
         addEvent(()-> {
@@ -1411,7 +1343,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             this.setImmovable(false);
             this.setFullBodyUsage(false);
             this.setFightMode(false);
-            this.setGrabContinue(false);
             this.attackExhaustion++;
         }, 55);
     };
@@ -1419,7 +1350,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
     Supplier<Projectile> crystal_wave_projectiles = () -> new ProjectileCrystalWave(world, this, (float) this.getAttack(), null);
     private final Consumer<EntityLivingBase> upper_swing = (target) -> {
       this.setFightMode(true);
-      this.setUpperSwing(true);
+      animator.performAttack(ANIM_UPPER_SWING);
 
       addEvent(()-> this.playSound(SoundsHandler.APATHYR_ATTACK, 1.0f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 20);
       addEvent(()-> {
@@ -1459,7 +1390,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             }
             this.attackExhaustion++;
             this.setFightMode(false);
-            this.setUpperSwing(false);
         }, 60);
     };
 
@@ -1467,7 +1397,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
       this.setFightMode(true);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
-      this.setJab(true);
+      animator.performAttack(ANIM_JAB);
 
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_ATTACK, 1.0f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 16);
 
@@ -1507,7 +1437,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 this.selectFollowUp(target);
                 this.setFullBodyUsage(false);
                 this.setImmovable(false);
-                this.setJab(false);
                 addEvent(()-> {
                     this.setTransitionTick(false);
                 }, 10);
@@ -1515,7 +1444,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 addEvent(()-> {
                     this.setFullBodyUsage(false);
                     this.setImmovable(false);
-                    this.setJab(false);
                     this.setFightMode(false);
                     this.attackExhaustion++;
                     this.coolDownTime = 30;
@@ -1533,7 +1461,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
       this.setFightMode(true);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
-      this.setPush(true);
+      animator.performAttack(ANIM_PUSH);
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_ATTACK, 1.0f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 16);
         addEvent(()-> {
             this.faceEntity(target, 180, 30);
@@ -1572,7 +1500,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 this.setImmovable(false);
                 this.setTransitionTick(true);
                 this.selectFollowUp(target);
-                this.setPush(false);
                 addEvent(()-> {
                     this.setTransitionTick(false);
                 }, 10);
@@ -1580,7 +1507,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 addEvent(()-> {
                     this.setFullBodyUsage(false);
                     this.setImmovable(false);
-                    this.setPush(false);
                     this.setFightMode(false);
                     this.attackExhaustion++;
                     this.coolDownTime = 30;
@@ -1601,7 +1527,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         boolean randI = rand.nextBoolean();
 
         if(randI) {
-            this.setSwingConnect(true);
+            animator.performAttack(ANIM_SWING_CONNECT);
             addEvent(()-> this.playSound(SoundsHandler.APATHYR_ATTACK, 1.0f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
 
             addEvent(()-> this.faceEntity(target, 180, 30), 10);
@@ -1673,7 +1599,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                     this.setImmovable(false);
                     this.setTransitionTick(true);
                     this.selectFollowUp(target);
-                    this.setSwingConnect(false);
                     addEvent(()-> {
                         this.setTransitionTick(false);
                     }, 10);
@@ -1682,7 +1607,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                         this.setFullBodyUsage(false);
                         this.attackExhaustion++;
                         this.setImmovable(false);
-                        this.setSwingConnect(false);
                         this.setFightMode(false);
                         this.coolDownTime = 30;
                         if(this.isTertiary()) {
@@ -1693,7 +1617,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 }
             }, 75);
         } else {
-            this.setSwingAttack(true);
+            animator.performAttack(ANIM_SWING);
             addEvent(()-> this.playSound(SoundsHandler.APATHYR_ATTACK, 1.0f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
             addEvent(()-> this.faceEntity(target, 180, 30), 10);
             addEvent(()-> {
@@ -1732,7 +1656,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                     this.setImmovable(false);
                     this.setTransitionTick(true);
                     this.selectFollowUp(target);
-                    this.setSwingAttack(false);
                     addEvent(()-> {
                         this.setTransitionTick(false);
                     }, 10);
@@ -1741,7 +1664,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                     this.setFullBodyUsage(false);
                         this.attackExhaustion++;
                     this.setImmovable(false);
-                    this.setSwingAttack(false);
                     this.setFightMode(false);
                         this.coolDownTime = 30;
                         if(this.isTertiary()) {
@@ -1818,7 +1740,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
-        this.setCircleSwing(true);
+        animator.performAttack(ANIM_CIRCLE_ATTACK);
         addEvent(()-> this.faceEntity(target, 180, 30), 17);
         addEvent(()-> {
             this.lockLook = true;
@@ -1870,7 +1792,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 this.selectTertiary(target);
                 this.setFullBodyUsage(false);
                 this.setImmovable(false);
-                this.setCircleSwing(false);
                 addEvent(()-> {
                     this.setTransitionTick(false);
                 }, 10);
@@ -1879,7 +1800,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                     this.setImmovable(false);
                     this.setFightMode(false);
                     this.setFullBodyUsage(false);
-                    this.setCircleSwing(false);
                     this.setSecondary(false);
                 }, 10);
             }
@@ -1890,7 +1810,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
       this.setFullBodyUsage(true);
       this.setFightMode(true);
       this.setImmovable(true);
-      this.setJumpAway(true);
+      animator.performAttack(ANIM_JUMP_AWAY);
 
         addEvent(()-> {
             this.currentlyInIFrame = true;
@@ -1915,7 +1835,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 this.selectTertiary(target);
                 this.setFullBodyUsage(false);
                 this.setImmovable(false);
-                this.setJumpAway(false);
                 addEvent(()-> {
                     this.setTransitionTick(false);
                 }, 10);
@@ -1923,7 +1842,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 addEvent(()-> {
                     this.setFullBodyUsage(false);
                     this.setImmovable(false);
-                    this.setJumpAway(false);
                     this.setFightMode(false);
                     this.setSecondary(false);
                 }, 10);
@@ -1936,7 +1854,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         this.setFullBodyUsage(true);
         this.setFightMode(true);
         this.setImmovable(true);
-        this.setJumpAttack(true);
+        animator.performAttack(ANIM_JUMP_ATTACK);
 
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_SLIGHT_DASH, 1.0f, 0.4f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_JUMP, 1.0f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
@@ -1992,7 +1910,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 this.selectTertiary(target);
                 this.setFullBodyUsage(false);
                 this.setImmovable(false);
-                this.setJumpAttack(false);
                 addEvent(()-> {
                     this.setTransitionTick(false);
                 }, 10);
@@ -2000,7 +1917,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 addEvent(()-> {
                     this.setFullBodyUsage(false);
                     this.setImmovable(false);
-                    this.setJumpAttack(false);
                     this.setFightMode(false);
                     this.setSecondary(false);
                 }, 10);
@@ -2012,7 +1928,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
-        this.setJab(true);
+        animator.performAttack(ANIM_JAB);
 
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_ATTACK, 1.0f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 16);
         addEvent(()-> {
@@ -2052,7 +1968,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 this.setSecondary(false);
                 this.setTransitionTick(true);
                 this.selectTertiary(target);
-                this.setJab(false);
                 addEvent(()-> {
                     this.setTransitionTick(false);
                 }, 10);
@@ -2060,7 +1975,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 addEvent(()-> {
                     this.setFullBodyUsage(false);
                     this.setImmovable(false);
-                    this.setJab(false);
                     this.setFightMode(false);
                     this.setSecondary(false);
                 }, 10);
@@ -2072,7 +1986,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
-        this.setPush(true);
+        animator.performAttack(ANIM_PUSH);
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_ATTACK, 1.0f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 16);
         addEvent(()-> {
             this.faceEntity(this, 180, 30);
@@ -2112,7 +2026,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 this.setSecondary(false);
                 this.setTransitionTick(true);
                 this.selectTertiary(target);
-                this.setPush(false);
                 addEvent(()-> {
                     this.setTransitionTick(false);
                 }, 10);
@@ -2120,7 +2033,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 addEvent(()-> {
                     this.setFullBodyUsage(false);
                     this.setImmovable(false);
-                    this.setPush(false);
                     this.setFightMode(false);
                     this.setSecondary(false);
                 }, 10);
@@ -2133,7 +2045,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
-        this.setKick(true);
+        animator.performAttack(ANIM_KICK);
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_ATTACK, 1.0f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 18);
         addEvent(()-> this.faceEntity(target, 180, 30), 9);
         addEvent(()-> {
@@ -2166,7 +2078,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 this.setSecondary(false);
                 this.setTransitionTick(true);
                 this.selectTertiary(target);
-                this.setKick(false);
                 addEvent(()-> {
                     this.setTransitionTick(false);
                 }, 10);
@@ -2174,7 +2085,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                 addEvent(()-> {
                     this.setFullBodyUsage(false);
                     this.setImmovable(false);
-                    this.setKick(false);
                     this.setFightMode(false);
                     this.setSecondary(false);
                 }, 5);
@@ -2226,7 +2136,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
       this.setFightMode(true);
       this.setFullBodyUsage(true);
       this.setImmovable(true);
-      this.setCircleSwing(true);
+      animator.performAttack(ANIM_CIRCLE_ATTACK);
         addEvent(()-> this.faceEntity(target, 180, 30), 18);
         addEvent(()-> {
             this.lockLook = true;
@@ -2275,7 +2185,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
             this.setImmovable(false);
             this.setFightMode(false);
             this.setFullBodyUsage(false);
-            this.setCircleSwing(false);
             this.attackExhaustion++;
             this.apathyr_aggrivation-= 0.1;
             this.flagForStrafing = true;
@@ -2286,7 +2195,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         this.setFightMode(true);
         this.setFullBodyUsage(true);
         this.setImmovable(true);
-        this.setSwingAttack(true);
+        animator.performAttack(ANIM_SWING);
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_ATTACK, 1.0f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 15);
         addEvent(()-> this.faceEntity(target, 180, 30), 10);
             addEvent(()-> {
@@ -2322,7 +2231,6 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
                         this.setFullBodyUsage(false);
                         this.attackExhaustion++;
                         this.setImmovable(false);
-                        this.setSwingAttack(false);
                         this.setFightMode(false);
                         this.setTertiary(false);
                         this.apathyr_aggrivation-= 0.1;
@@ -2353,189 +2261,15 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         return this.getPositionVector();
     }
 
-
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-        data.addAnimationController(new AnimationController(this, "arms_controller_idle", 0, this::predicateArmsIdle));
-        data.addAnimationController(new AnimationController(this, "attacks_controller_main_hold", 0, this::predicateAttacksMain));
-        data.addAnimationController(new AnimationController(this, "idle_status_controller", 0, this::predicateIdleState));
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttacksMain(AnimationEvent<E> event) {
-        if(this.isFightMode() && !this.isIdleAwake() && !this.isIdleState() && !this.isTeleportGhost() && !this.isDeathState()) {
-            AnimationBuilder builder = new AnimationBuilder();
-
-            if(this.isTransitionTick()) {
-                event.getController().transitionLengthTicks = 3;
-                //System.out.println(event.getController().getAnimationState());
-            } else {
-                event.getController().transitionLengthTicks = 0;
-            }
-
-            //Secondary Attacks
-            if(this.isSecondary()) {
-                if(this.isJab()) {
-                    event.getController().setAnimation(builder.playOnce(ANIM_JAB_SECONDARY));
-                }
-                if(this.isKick()) {
-                    event.getController().setAnimation(builder.playOnce(ANIM_KICK_SECONDARY));
-                }
-                if(this.isPush()) {
-                    event.getController().setAnimation(builder.playOnce(ANIM_PUSH_SECONDARY));
-                }
-                //75%
-                if(this.isJumpAway()) {
-                    event.getController().setAnimation( builder.playOnce(ANIM_JUMP_AWAY));
-                }
-                if(this.isJumpAttack()) {
-                    event.getController().setAnimation( builder.playOnce(ANIM_JUMP_ATTACK_SECONDARY));
-                }
-                if(this.isCircleSwing()) {
-                    event.getController().setAnimation( builder.playOnce(ANIM_CIRCLE_ATTACK));
-                }
-
-                //Tertiary
-            } else if(this.isTertiary()) {
-                if(this.isSwingAttack()) {
-                    event.getController().setAnimation(builder.playOnce(ANIM_SWING_THREE));
-                }
-                if(this.isJab()) {
-                    event.getController().setAnimation(builder.playOnce(ANIM_JAB_THREE));
-                }
-                if(this.isUpperSwing()) {
-                    event.getController().setAnimation(builder.playOnce(ANIM_UPPER_SWING_THREE));
-                }
-                //75%
-                if(this.isJumpAway()) {
-                    event.getController().setAnimation( builder.playOnce(ANIM_JUMP_AWAY_THREE));
-                }
-                if(this.isCircleSwing()) {
-                    event.getController().setAnimation( builder.playOnce(ANIM_CIRCLE_ATTACK));
-                }
-                //50%
-            //    if(this.isTeleportGhost()) {
-            //        event.getController().setAnimation( builder.playOnce(ANIM_TELEPORT_GHOST_THREE));
-            //    }
-                //Primary
-            }  else {
-                if(this.isSwingAttack()) {
-                    event.getController().setAnimation(builder.playOnce(ANIM_SWING));
-                }
-                if(this.isSwingConnect()) {
-                    event.getController().setAnimation(builder.playOnce(ANIM_SWING_CONNECT));
-                }
-                if(this.isJab()) {
-                    event.getController().setAnimation(builder.playOnce(ANIM_JAB));
-                }
-                if(this.isKick()) {
-                    event.getController().setAnimation(builder.playOnce(ANIM_KICK));
-                }
-                if(this.isUpperSwing()) {
-                    event.getController().setAnimation(builder.playOnce(ANIM_UPPER_SWING));
-                }
-                if(this.isPush()) {
-                    event.getController().setAnimation( builder.playOnce(ANIM_PUSH));
-                }
-                if(this.isArmSwipe()) {
-                    event.getController().setAnimation(builder.playOnce(ANIM_ARM_SWIPE));
-                }
-                //75%
-                if(this.isGrabBegin()) {
-                    event.getController().setAnimation( builder.playOnce(ANIM_GRAB_BEGIN));
-                }
-                if(this.isGrabContinue()) {
-                    event.getController().setAnimation( builder.playOnce(ANIM_GRAB_CONTINUE));
-                }
-                if(this.isGrabFinish()) {
-                    event.getController().setAnimation( builder.playOnce(ANIM_GRAB_FINISH));
-                }
-                if(this.isJumpAttack()) {
-                    event.getController().setAnimation( builder.playOnce(ANIM_JUMP_ATTACK));
-                }
-                //50%
-                if(this.isSuperDash()) {
-                    event.getController().setAnimation( builder.playOnce(ANIM_SUPER_DASH));
-                }
-                if(this.isCrystalDomain()) {
-                    event.getController().setAnimation( builder.playOnce(ANIM_CRYSTAL_DOMAIN));
-                }
-                if(this.isCastFast()) {
-                    event.getController().setAnimation( builder.playOnce(ANIM_CAST_FAST_PROJECTILE));
-                }
-                if(this.isCastSpell()) {
-                    event.getController().setAnimation( builder.playOnce(ANIM_CAST_REGULAR));
-                }
-            }
-            return PlayState.CONTINUE;
-        }
-
-        return PlayState.STOP;
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFullBodyUsage() && !this.isIdleAwake() && !this.isIdleState() && !this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_LOWER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArmsIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode() && !this.isIdleAwake() && !this.isIdleState() && !this.isDeathState() || event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && this.isTeleportGhost() && !this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_UPPER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage() && !this.isIdleAwake() && !this.isIdleState() && !this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_LOWER, true));
-          //  event.getController().setAnimationSpeed(0.5 + (0.003 * event.getLimbSwing()));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode() && !this.isIdleAwake() && !this.isIdleState() && !this.isDeathState() || !(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && this.isTeleportGhost() && !this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER, true));
-          //  event.getController().setAnimationSpeed(0.5 + (0.003 * event.getLimbSwing()));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdleState(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(this.isIdleState() && !this.isIdleAwake()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_STATE, true));
-            return PlayState.CONTINUE;
-        } else if (this.isIdleAwake()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_AWAKE, false));
-            return PlayState.CONTINUE;
-        } else if (this.isDeathState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_DEATH_ANIMATION, false));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_IDLE_STATE, true);
         }
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
+        if(!this.isIdleAwake() && !this.isIdleState() && !this.isDeathState() && !this.isFullBodyUsage()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            animator.handleIdleStates(isMovingOnGround);
+        }
     }
 
     @Override
@@ -2663,6 +2397,7 @@ public class EntityApathyr extends EntityGaelonBase implements IAnimatable, IAni
         }
         this.setImmovable(true);
         this.setDeathState(true);
+        animator.setStateAnim(ANIM_DEATH_ANIMATION);
         this.lockLook = true;
         //death sound
         addEvent(()-> this.playSound(SoundsHandler.APATHYR_DEATH, 1.25f, 0.7f / (rand.nextFloat() * 0.4f + 0.2f)), 5);

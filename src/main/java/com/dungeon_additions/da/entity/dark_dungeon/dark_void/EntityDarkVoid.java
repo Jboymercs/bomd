@@ -1,12 +1,10 @@
 package com.dungeon_additions.da.entity.dark_dungeon.dark_void;
 
 import com.dungeon_additions.da.Main;
-import com.dungeon_additions.da.config.MobConfig;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDauntless;
-import com.dungeon_additions.da.entity.dark_dungeon.dauntless.EntityDauntlessAOE;
-import com.dungeon_additions.da.entity.night_lich.EntityAbstractNightLich;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.ServerScaleUtil;
@@ -26,21 +24,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class EntityDarkVoid extends EntityDarkBase implements IAnimatable, IAnimationTickable, IScreenShake {
+public class EntityDarkVoid extends EntityDarkBase implements IScreenShake {
 
     private final String ANIM_CUBE_IDLE = "idle_cube";
     private final String ANIM_PLANE_IDLE = "idle_plane";
@@ -49,7 +39,7 @@ public class EntityDarkVoid extends EntityDarkBase implements IAnimatable, IAnim
     private final String ANIM_KILL_OBJECT = "kill_object";
     private final String ANIM_HIDDEN = "hidden_idle";
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     public List<WeakReference<Entity>> current_mobs = Lists.newArrayList();
     private int HoverTimeIncrease = 0;
     private int difficulty = 14;
@@ -152,6 +142,7 @@ public class EntityDarkVoid extends EntityDarkBase implements IAnimatable, IAnim
 
     private void summonObject() {
         this.setSummonObject(true);
+        animator.setStateAnim(ANIM_SUMMON_OBJECT);
         this.setHiddenIdle(false);
         this.setShaking(true);
         this.shakeTime = 45;
@@ -163,6 +154,7 @@ public class EntityDarkVoid extends EntityDarkBase implements IAnimatable, IAnim
 
     private void killObject(boolean remove) {
         this.setKillObject(true);
+        animator.setStateAnim(ANIM_KILL_OBJECT);
         addEvent(()-> {
             this.setKillObject(false);
             if(remove) {
@@ -175,6 +167,7 @@ public class EntityDarkVoid extends EntityDarkBase implements IAnimatable, IAnim
 
     private void turnObjectTooPlane() {
         this.setCubeToPlane(true);
+        animator.setStateAnim(ANIM_CUBE_TO_PLANE);
         this.HoverTimeIncrease = 20;
         this.playSound(SoundsHandler.DAUNTLESS_PREPARE_SPELL, 2.0f, 1.0f);
         addEvent(()-> {
@@ -414,12 +407,6 @@ public class EntityDarkVoid extends EntityDarkBase implements IAnimatable, IAnim
         super.onLivingUpdate();
     }
 
-    @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "spike_controller", 0, this::predicateIdle));
-        animationData.addAnimationController(new AnimationController(this, "state_controller", 0, this::predicateStates));
-    }
-
     /**
      * This ensures that active mobs are still within a distance and are still alive to be accounted for
      */
@@ -427,35 +414,17 @@ public class EntityDarkVoid extends EntityDarkBase implements IAnimatable, IAnim
         current_mobs = current_mobs.stream().filter(ref -> ref.get() != null && ref.get().getDistance(this) <= 70 && ref.get().isEntityAlive()).collect(Collectors.toList());
     }
 
-    private <E extends IAnimatable> PlayState predicateStates(AnimationEvent<E> event) {
-        if(this.isKillObject()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_KILL_OBJECT));
-            return PlayState.CONTINUE;
-        }
-        if(this.isSummonObject()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_SUMMON_OBJECT));
-            return PlayState.CONTINUE;
-        }
-        if(this.isCubeToPlane()) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce(ANIM_CUBE_TO_PLANE));
-            return PlayState.CONTINUE;
-        }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(!this.isCubeToPlane()) {
-            if(this.isHiddenIdle()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_HIDDEN, true));
-            } else if(this.isCube()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_CUBE_IDLE, true));
-            } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_PLANE_IDLE, true));
+    @Override
+    public void updateAnimations() {
+            if(!this.isCubeToPlane()) {
+                if(this.isHiddenIdle()) {
+                    animator.setSpellIdle(ANIM_HIDDEN);
+                } else if (this.isCube()) {
+                    animator.setSpellIdle(ANIM_CUBE_IDLE);
+                } else {
+                    animator.setSpellIdle(ANIM_PLANE_IDLE);
+                }
             }
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
     }
 
     @Override
@@ -465,23 +434,8 @@ public class EntityDarkVoid extends EntityDarkBase implements IAnimatable, IAnim
 
 
     @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
     public final boolean attackEntityFrom(DamageSource source, float amount) {
         return false;
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override

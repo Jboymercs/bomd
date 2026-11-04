@@ -1,49 +1,70 @@
 package com.dungeon_additions.da.entity.render.dark_dungeon.layer;
 
 import com.dungeon_additions.da.entity.dark_dungeon.boss.EntityDarkdriftDevil;
-import com.dungeon_additions.da.entity.gaelon_dungeon.EntityApathyr;
-import com.dungeon_additions.da.entity.render.layer.RenderAbstractLayer;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.glowLayer.EmissiveLighting;
+import mod.azure.azurelib.cache.texture.AutoGlowingTexture;
+import mod.azure.azurelib.model.AzBone;
+import mod.azure.azurelib.render.AzRendererConfig;
+import mod.azure.azurelib.render.AzRendererPipeline;
+import mod.azure.azurelib.render.AzRendererPipelineContext;
+import mod.azure.azurelib.render.layer.AzRenderLayer;
+import mod.azure.azurelib.render.vertex.RenderType;
+import mod.azure.azurelib.render.vertex.VertexConsumer;
+import mod.azure.azurelib.util.client.ClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import software.bernie.geckolib3.core.util.Color;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-import java.util.function.Function;
+import java.util.UUID;
 
-public class RenderLayerDemonShield extends RenderAbstractLayer<EntityDarkdriftDevil> {
+public class RenderLayerDemonShield implements AzRenderLayer<UUID, EntityDarkdriftDevil> {
 
     private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/entity/dark/geo.darkdrift_devil.json");
     private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/darkdrift_devil.png");
 
     private static final ResourceLocation TEXTURE_INNER_ORB = new ResourceLocation(ModReference.MOD_ID, "textures/entity/demon_shield.png");
 
-    public RenderLayerDemonShield(GeoEntityRenderer<EntityDarkdriftDevil> renderer, Function<EntityDarkdriftDevil, ResourceLocation> funcGetCurrentTexture, Function<EntityDarkdriftDevil, ResourceLocation> funcGetCurrentModel) {
-        super(renderer, funcGetCurrentTexture, funcGetCurrentModel);
+    public RenderLayerDemonShield() {
+
     }
 
+    @Override
+    public void preRender(AzRendererPipelineContext<UUID, EntityDarkdriftDevil> azRendererPipelineContext) {
+
+    }
 
     @Override
-    public void render(EntityDarkdriftDevil entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, Color renderColor) {
-        if(entitylivingbaseIn.isMeditationLoop()) {
-            RenderManager manager = Minecraft.getMinecraft().getRenderManager();
+    public void render(AzRendererPipelineContext<UUID, EntityDarkdriftDevil> azRendererPipelineContext) {
+        if(azRendererPipelineContext.animatable() != null && azRendererPipelineContext.animatable().isMeditationLoop()) {
+            renderLayer(azRendererPipelineContext);
+        }
+    }
 
+    @Override
+    public void renderForBone(AzRendererPipelineContext<UUID, EntityDarkdriftDevil> azRendererPipelineContext, AzBone azBone) {
+
+    }
+
+    public void renderLayer(AzRendererPipelineContext<UUID, EntityDarkdriftDevil> context) {
+        AzRendererPipeline<UUID, EntityDarkdriftDevil> renderPipeline = context.rendererPipeline();
+        RenderType prevRenderType = context.renderType();
+        VertexConsumer prevVertexConsumer = context.vertexConsumer();
+        RenderType renderType = this.determineRenderType(context);
+        int prevPackedLight = context.packedLight();
+        float prevRed = context.red();
+        float prevGreen = context.green();
+        float prevBlue = context.blue();
+        float prevAlpha = context.alpha();
+
+        if(renderType != null) {
             EmissiveLighting.preEmissiveTextureRendering();
-            GlStateManager.pushMatrix();
-            Minecraft.getMinecraft().getRenderManager().renderEngine.bindTexture(TEXTURE);
-            // GlStateManager.rotate(0.0F - manager.playerViewY, 0.0F, 1.0F, 0.0F);
-            entityRenderer.render(entityRenderer.getGeoModelProvider().getModel(MODEL_RESLOC), entitylivingbaseIn, partialTicks, (float) renderColor.getRed() / 255f, (float) renderColor.getBlue() / 255f,
-                    (float) renderColor.getGreen() / 255f, (float) renderColor.getAlpha() / 255);
-            GlStateManager.popMatrix();
-
-            //  GlStateManager.pushMatrix();
             Minecraft.getMinecraft().getRenderManager().renderEngine.bindTexture(TEXTURE_INNER_ORB);
             GlStateManager.matrixMode(5890);
             GlStateManager.loadIdentity();
-            float f = (float)entitylivingbaseIn.ticksExisted + partialTicks;
+            //
+            float f = (float) context.animatable().ticksExisted + context.partialTick();
             GlStateManager.translate(f * 0.001F, f * 0.003F, 0.0F);
             GlStateManager.matrixMode(5888);
             GlStateManager.enableBlend();
@@ -51,9 +72,10 @@ public class RenderLayerDemonShield extends RenderAbstractLayer<EntityDarkdriftD
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             GlStateManager.disableCull();
             Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
-            entityRenderer.render(entityRenderer.getGeoModelProvider().getModel(MODEL_RESLOC), entitylivingbaseIn, partialTicks, (float) renderColor.getRed() / 255f, (float) renderColor.getBlue() / 255f,
-                    (float) renderColor.getGreen() / 255f, (float) renderColor.getAlpha() / 255);
-            this.reRenderCurrentModelInRenderer(entitylivingbaseIn, partialTicks, renderColor);
+            //
+            context.setRenderType(renderType);
+            context.setPackedLight(240);
+            context.setVertexConsumer(context.multiBufferSource().getBuffer(renderType));
             Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
             GlStateManager.matrixMode(5890);
             GlStateManager.loadIdentity();
@@ -61,16 +83,35 @@ public class RenderLayerDemonShield extends RenderAbstractLayer<EntityDarkdriftD
             GlStateManager.enableCull();
             GlStateManager.enableLighting();
             GlStateManager.disableBlend();
-            //    GlStateManager.popMatrix();
-
             EmissiveLighting.postEmissiveTextureRendering();
-
         }
+
+        context.setRenderType(prevRenderType);
+        context.setVertexConsumer(prevVertexConsumer);
+        context.setPackedLight(prevPackedLight);
+        context.setRed(prevRed);
+        context.setGreen(prevGreen);
+        context.setBlue(prevBlue);
+        context.setAlpha(prevAlpha);
     }
 
-
-    @Override
-    public boolean shouldCombineTextures() {
-        return false;
+    protected RenderType determineRenderType(AzRendererPipelineContext<UUID, EntityDarkdriftDevil> context) {
+        AzRendererConfig<UUID, EntityDarkdriftDevil> config = context.rendererPipeline().config();
+        ResourceLocation textureLocation = config.textureLocation(context.currentEntity(), context.animatable());
+        {
+            Entity entity = (Entity) context.animatable();
+            boolean isInvisible = entity.isInvisible();
+            boolean appearsGlowing = entity.isGlowing();
+            boolean isPlayerInvisible = entity.isInvisibleToPlayer(ClientUtils.getClientPlayer());
+            if (isInvisible) {
+                if (!isPlayerInvisible) {
+                    return RenderType.itemEntityTranslucentCull(AutoGlowingTexture.getEmissiveResource(textureLocation));
+                } else {
+                    return appearsGlowing ? RenderType.outline(AutoGlowingTexture.getEmissiveResource(textureLocation)) : null;
+                }
+            } else {
+                return appearsGlowing ? AutoGlowingTexture.getOutlineRenderType(textureLocation) : AutoGlowingTexture.getRenderType(textureLocation);
+            }
+        }
     }
 }

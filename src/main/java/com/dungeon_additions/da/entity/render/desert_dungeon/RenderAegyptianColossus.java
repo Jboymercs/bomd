@@ -1,73 +1,39 @@
 package com.dungeon_additions.da.entity.render.desert_dungeon;
 
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimator;
 import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianColossus;
-import com.dungeon_additions.da.entity.desert_dungeon.boss.EntityAegyptianWarlord;
-import com.dungeon_additions.da.entity.model.desert_dungeon.ModelAegyptiaColossus;
-import com.dungeon_additions.da.entity.model.desert_dungeon.ModelAegyptianWarlord;
-import com.dungeon_additions.da.entity.render.layer.GeoSpecificGlow;
-import com.dungeon_additions.da.entity.render.layer.LayerObsidilithShield;
-import com.dungeon_additions.da.entity.render.util.RenderGargoyleExtended;
 import com.dungeon_additions.da.util.ModReference;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import mod.azure.azurelib.render.entity.AzEntityRenderer;
+import mod.azure.azurelib.render.entity.AzEntityRendererConfig;
+import mod.azure.azurelib.render.layer.AzAutoGlowingLayer;
+import mod.azure.azurelib.render.vertex.RenderType;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-import javax.annotation.Nullable;
-
-public class RenderAegyptianColossus extends RenderGargoyleExtended<EntityAegyptianColossus> {
+public class RenderAegyptianColossus extends AzEntityRenderer<EntityAegyptianColossus> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/entity/aegyptia/aegyptian_colossus.png");
+    private static final ResourceLocation TEXTURE_TRANSITION = new ResourceLocation(ModReference.MOD_ID, "textures/entity/aegyptia/aegyptian_colossus_transition.png");
     private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/entity/desert/geo.aegyptian_colossus.json");
 
     public RenderAegyptianColossus(RenderManager renderManager) {
-        super(renderManager, new ModelAegyptiaColossus(MODEL_RESLOC, TEXTURE, "aegyptian_colossus"));
-        this.addLayer(new GeoSpecificGlow<>(this, this.TEXTURE_GETTER, this.MODEL_ID_GETTER));
-        this.addLayer(new LayerColossusShield(this, this.TEXTURE_GETTER, this.MODEL_ID_GETTER));
+        super(AzEntityRendererConfig.<EntityAegyptianColossus>builder($ -> MODEL_RESLOC, entity ->
+                                entity.isPhaseTransition() ? TEXTURE_TRANSITION : TEXTURE)
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE))
+                        .setRenderType(RenderType.entityTranslucent(TEXTURE_TRANSITION))
+                        .addRenderLayer(new AzAutoGlowingLayer<>())
+                        .setRenderEntry(contextPipeline -> {
+
+                            contextPipeline.animatable().updateAnimations();
+                            return contextPipeline;
+                        })
+
+                        .setAnimatorProvider(() -> new DaEntityAnimator<>("aegyptian_colossus", false, true))
+                        .addRenderLayer(new AzAutoGlowingLayer<>())
+                        .addRenderLayer(new LayerColossusShield())
+                        .setShadowRadius(0.8F)
+                        .build()
+                , renderManager);
     }
 
-    @Nullable
-    @Override
-    protected ItemStack getHeldItemForBone(String boneName, EntityAegyptianColossus currentEntity) {
-        return null;
-    }
-
-    @Override
-    protected ItemCameraTransforms.TransformType getCameraTransformForItemAtBone(ItemStack boneItem, String boneName) {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    protected IBlockState getHeldBlockForBone(String boneName, EntityAegyptianColossus currentEntity) {
-        return null;
-    }
-
-    @Override
-    protected void preRenderItem(ItemStack item, String boneName, EntityAegyptianColossus currentEntity) {
-
-    }
-
-    @Override
-    protected void preRenderBlock(IBlockState block, String boneName, EntityAegyptianColossus currentEntity) {
-
-    }
-
-    @Override
-    protected void postRenderItem(ItemStack item, String boneName, EntityAegyptianColossus currentEntity) {
-
-    }
-
-    @Override
-    protected void postRenderBlock(IBlockState block, String boneName, EntityAegyptianColossus currentEntity) {
-
-    }
-
-    @Nullable
-    @Override
-    protected ResourceLocation getTextureForBone(String boneName, EntityAegyptianColossus currentEntity) {
-        return null;
-    }
 }

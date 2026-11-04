@@ -3,17 +3,14 @@ package com.dungeon_additions.da.items.tools;
 import com.dungeon_additions.da.animation.item.EnumWeaponType;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.dark_dungeon.dauntless.ProjectileDauntlessFist;
-import com.dungeon_additions.da.entity.mini_blossom.EntityDart;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.init.ModPotions;
-import com.dungeon_additions.da.items.armor.ModIncendiumHelmet;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -25,15 +22,11 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class ItemNightfallGauntlets extends ToolSword implements IAnimatable {
+public class ItemNightfallGauntlets extends ToolSword {
     private String info_loc;
-    public AnimationFactory factory = new AnimationFactory(this);
 
     public ItemNightfallGauntlets(String name, String info_loc, ToolMaterial material) {
         super(name, material);
@@ -101,15 +94,5 @@ public class ItemNightfallGauntlets extends ToolSword implements IAnimatable {
     @Override
     public double getAttackSpeed() {
         return -2.1000000953674316D;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 }

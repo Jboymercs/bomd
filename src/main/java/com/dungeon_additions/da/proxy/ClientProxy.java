@@ -6,6 +6,7 @@ import com.dungeon_additions.da.entity.util.EntityMusicPlayer;
 import com.dungeon_additions.da.event.EventBossMusic;
 import com.dungeon_additions.da.init.ModItems;
 import com.dungeon_additions.da.items.model.*;
+import com.dungeon_additions.da.items.render.*;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.glowLayer.GlowingMetadataSection;
@@ -26,6 +27,8 @@ import com.dungeon_additions.da.util.particle.dauntless.ParticleDauntlessWeak;
 import com.dungeon_additions.da.util.particle.dauntless.ParticleRohsEye;
 import com.dungeon_additions.da.util.particle.impact.*;
 import com.dungeon_additions.da.util.particle.obsidilith.*;
+import mod.azure.azurelib.render.item.AzItemRenderer;
+import mod.azure.azurelib.render.item.AzItemRendererRegistry;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
@@ -96,6 +99,7 @@ public class ClientProxy extends CommonProxy{
         RenderHandler.registerProjectileRenderers();
         RenderHandler.registerGeoEntityRenderers();
         RenderHandler.registerEntityRenderers();
+        this.handleAzureLibItemRenders();
         // Add custom metadataserializers
         Minecraft mc = Minecraft.getMinecraft();
         mc.metadataSerializer.registerMetadataSectionType(new GlowingMetadataSectionSerializer(), GlowingMetadataSection.class);
@@ -375,5 +379,49 @@ public class ClientProxy extends CommonProxy{
     @Override
     public void stopMusic() {
         Minecraft.getMinecraft().getSoundHandler().stopSounds();
+    }
+
+    private void handleAzureLibItemRenders() {
+        AzItemRendererRegistry.register(ModItems.APATHYR_AXE, RenderApathyrAxe::new);
+        AzItemRendererRegistry.register(ModItems.BLOODY_SWORD_SPEAR, RenderBloodySwordSpear::new);
+        AzItemRendererRegistry.register(ModItems.CHAMPION_AXE, RenderChampionAxe::new);
+        AzItemRendererRegistry.register(ModItems.CRYSTAL_WAVE_PROJ, RenderCrystalWave::new);
+        AzItemRendererRegistry.register(ModItems.YELLOW_WAVE_PROJ, RenderYellowWave::new);
+        AzItemRendererRegistry.register(ModItems.DARK_METAL_SHIELD, RenderDarkShield::new);
+        AzItemRendererRegistry.register(ModItems.DARK_SICLE, RenderDarkSicle::new);
+        AzItemRendererRegistry.register(ModItems.DAUNTLESS_CRYSTAL, RenderDauntlessCrystal::new);
+        AzItemRendererRegistry.register(ModItems.DAUNTLESS_FIST, RenderDauntlessFist::new);
+        AzItemRendererRegistry.register(ModItems.DAUNTLESS_SPEAR, RenderDauntlessSpear::new);
+        AzItemRendererRegistry.register(ModItems.DESERT_STORM_PROJ, RenderDesertStorm::new);
+        AzItemRendererRegistry.register(ModItems.DRAGON_SHIELD, RenderDragonShield::new);
+        AzItemRendererRegistry.register(ModItems.DRAUGR_SHIELD, RenderDraugrShield::new);
+        AzItemRendererRegistry.register(ModItems.EVERATOR_SHIELD, RenderEveratorShield::new);
+        AzItemRendererRegistry.register(ModItems.FAST_CRYSTAL_PROJ, RenderFastCrystal::new);
+        AzItemRendererRegistry.register(ModItems.FLAME_BLADE, RenderFlameBlade::new);
+        AzItemRendererRegistry.register(ModItems.FLAME_BLADE_PROJ, RenderFlameBladeProj::new);
+        AzItemRendererRegistry.register(ModItems.FLAME_SPIT_SHIELD, RenderFlameShield::new);
+        AzItemRendererRegistry.register(ModItems.GHOST_BOLT_PROJ, RenderGhostProjectile::new);
+        AzItemRendererRegistry.register(ModItems.GOLEM_CANNON, RenderGolemCannon::new);
+        AzItemRendererRegistry.register(ModItems.HOLY_WAVE_PROJ, RenderHolyWave::new);
+        AzItemRendererRegistry.register(ModItems.IMPERIAL_HALBERD_ITEM, RenderImperialHalberdItem::new);
+        AzItemRendererRegistry.register(ModItems.KING_CLAW, RenderKingClaw::new);
+        AzItemRendererRegistry.register(ModItems.LIGHT_RING_PROJECTILE, RenderLightRing::new);
+        AzItemRendererRegistry.register(ModItems.MAGE_STAFF, RenderMageStaff::new);
+        AzItemRendererRegistry.register(ModItems.MAGIC_FIREBALL, RenderMagicFireball::new);
+        AzItemRendererRegistry.register(ModItems.NIGHTFALL_GAUNTLETS, RenderNightfallGauntlets::new);
+        AzItemRendererRegistry.register(ModItems.NIGHTFALL_SWORD, RenderNightFallSword::new);
+        AzItemRendererRegistry.register(ModItems.OBSIDIAN_SHIELD, RenderObsidianShield::new);
+        AzItemRendererRegistry.register(ModItems.BLOOD_METEOR, RenderProjectileBloodMeteor::new);
+        AzItemRendererRegistry.register(ModItems.SORCERY_DAGGER, RenderSorceryDagger::new);
+        AzItemRendererRegistry.register(ModItems.SPORE_BALL, RenderSpore::new);
+        AzItemRendererRegistry.register(ModItems.STORM_TORNADO_PROJECTILE, RenderStormTornado::new);
+        AzItemRendererRegistry.register(ModItems.ROT_TRIDENT, RenderStormvierTrident::new);
+        AzItemRendererRegistry.register(ModItems.SWORD_SPEAR, RenderSwordSpeear::new);
+        AzItemRendererRegistry.register(ModItems.STORMVIER_TRIDENT, RenderStormvierTrident::new);
+        AzItemRendererRegistry.register(ModItems.VOIDCLYSM_BOLT, RenderVoidclysmBolt::new);
+        AzItemRendererRegistry.register(ModItems.VOID_HAMMER, RenderVoidHammer::new);
+        AzItemRendererRegistry.register(ModItems.VOIDIANT_CATALYST, RenderVoidiantCatalyst::new);
+        AzItemRendererRegistry.register(ModItems.VOID_STAFF, RenderVoidStaff::new);
+
     }
 }

@@ -1,5 +1,6 @@
 package com.dungeon_additions.da.items.tools;
 
+import com.dungeon_additions.da.animation.AzLib.DaItemAnimDispatcher;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.generic.EntityDelayedExplosion;
 import com.dungeon_additions.da.entity.night_lich.ProjectileMagicMissile;
@@ -21,23 +22,13 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.AnimationState;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class ItemMageStaff extends ToolSword implements IAnimatable {
-    public AnimationFactory factory = new AnimationFactory(this);
+public class ItemMageStaff extends ToolSword {
+    public final DaItemAnimDispatcher animator;
     private final String ANIM_IDLE = "idle";
     private final String ANIM_FIGHT_MODE = "fight";
-    private String controllerName = "attack_controller";
     private String info_loc;
     public boolean isMeleeMode;
     private int ticksSaved;
@@ -48,6 +39,7 @@ public class ItemMageStaff extends ToolSword implements IAnimatable {
         this.setMaxDamage(936);
         this.falter_value = 0;
         this.swingRadius = 0.25F;
+        this.animator = new DaItemAnimDispatcher();
     }
 
     @Override
@@ -82,6 +74,14 @@ public class ItemMageStaff extends ToolSword implements IAnimatable {
     {
         ItemStack stack = player.getHeldItem(hand);
         int SwordCoolDown = 10 * 20;
+
+        if (!worldIn.isRemote)
+        {
+            if (stack.getItem() == this && !this.isMeleeMode) {
+                animator.performItemAnimation(player, stack, true, ANIM_IDLE);
+            }
+        }
+
         //melee mode
         if(!worldIn.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
             //explosion attack
@@ -97,11 +97,7 @@ public class ItemMageStaff extends ToolSword implements IAnimatable {
                 player.getCooldownTracker().setCooldown(this, (int) (SwordCoolDown * 0.75));
                 stack.damageItem(4, player);
             } else {
-                AnimationController<?> controller = GeckoLibUtil.getControllerForStack(this.factory, stack, controllerName);
-                if(controller.getAnimationState() == AnimationState.Stopped) {
-                    controller.markNeedsReload();
-                    controller.setAnimation(new AnimationBuilder().addAnimation(ANIM_FIGHT_MODE, false));
-                }
+                animator.performItemAnimation(player, stack, false, ANIM_FIGHT_MODE);
                 worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundsHandler.APATHYR_SLIGHT_DASH, SoundCategory.NEUTRAL, 1.0f, 0.7f / (worldIn.rand.nextFloat() * 0.4F + 0.4f));
                 this.isMeleeMode = true;
                 this.ticksSaved = player.ticksExisted;
@@ -156,32 +152,5 @@ public class ItemMageStaff extends ToolSword implements IAnimatable {
     @Override
     public double getAttackSpeed() {
         return -3.0000000953674316D;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        AnimationController<ItemMageStaff> controller = new AnimationController<ItemMageStaff>(this,
-                controllerName, 5, this::predicateAttack);
-
-        data.addAnimationController(controller);
-    }
-
-    private <E extends IAnimatable> PlayState predicateAttack(AnimationEvent<E> event) {
-        return PlayState.CONTINUE;
-    }
-
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(!this.isMeleeMode) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 }

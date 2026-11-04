@@ -1,38 +1,32 @@
 package com.dungeon_additions.da.items.projectile;
 
-import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaItemAnimDispatcher;
 import com.dungeon_additions.da.items.ItemBase;
-import com.dungeon_additions.da.util.IHasModel;
 import net.minecraft.creativetab.CreativeTabs;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
-public class ItemProjectileBloodMeteor extends ItemBase implements IAnimatable {
+public class ItemProjectileBloodMeteor extends ItemBase {
     private final String ANIM_IDLE = "idle";
-    public AnimationFactory factory = new AnimationFactory(this);
+    public final DaItemAnimDispatcher animator;
 
     public ItemProjectileBloodMeteor(String name) {
         super(name);
         this.setCreativeTab(CreativeTabs.SEARCH);
+        this.animator = new DaItemAnimDispatcher();
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
+    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
+    {
+        if (!worldIn.isRemote)
+        {
+            if (stack.getItem() == this) {
+                animator.performItemAnimation(entityIn, stack, true, ANIM_IDLE);
+            }
+        }
+        super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
     }
 
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE, true));
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
 }

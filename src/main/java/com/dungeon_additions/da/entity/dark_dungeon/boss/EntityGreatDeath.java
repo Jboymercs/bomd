@@ -1,10 +1,10 @@
 package com.dungeon_additions.da.entity.dark_dungeon.boss;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
 import com.dungeon_additions.da.entity.dark_dungeon.boss.util.RohUtils;
-import com.dungeon_additions.da.packets.MessageDirectionForRender;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
@@ -17,22 +17,14 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntityGreatDeath extends EntityDarkBase implements IAnimationTickable, IAnimatable, IScreenShake {
+public class EntityGreatDeath extends EntityDarkBase implements IScreenShake {
 
     private final String ANIM_SUMMON = "summon";
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityGreatDeath.class, DataSerializers.BOOLEAN);
     private void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
     public boolean isShaking() {return this.dataManager.get(SHAKING);}
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     private float damage = 10;
 
     public EntityGreatDeath(World worldIn, float x, float y, float z) {
@@ -143,28 +135,8 @@ public class EntityGreatDeath extends EntityDarkBase implements IAnimationTickab
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-    }
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON));
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
+    public void updateAnimations() {
+        animator.setStateAnim(ANIM_SUMMON);
     }
 
     @Override

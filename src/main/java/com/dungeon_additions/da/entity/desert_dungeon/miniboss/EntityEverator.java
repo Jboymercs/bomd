@@ -1,23 +1,22 @@
 package com.dungeon_additions.da.entity.desert_dungeon.miniboss;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.config.MobConfig;
 import com.dungeon_additions.da.config.ModConfig;
 import com.dungeon_additions.da.entity.ai.IAttack;
 import com.dungeon_additions.da.entity.ai.IScreenShake;
-import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityAegyptiaAttackAI;
 import com.dungeon_additions.da.entity.ai.desert_dungeon.EntityEveratorAttackAI;
 import com.dungeon_additions.da.entity.dark_dungeon.EntityDarkBase;
 import com.dungeon_additions.da.entity.desert_dungeon.EntityDesertBase;
 import com.dungeon_additions.da.entity.desert_dungeon.ProjectileDesertStorm;
-import com.dungeon_additions.da.entity.desert_dungeon.aegyptia.EntityAegyptia;
-import com.dungeon_additions.da.entity.night_lich.ProjectileMagicGround;
 import com.dungeon_additions.da.entity.projectiles.Projectile;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModReference;
 import com.dungeon_additions.da.util.ModUtils;
 import com.dungeon_additions.da.util.damage.ModDamageSource;
 import com.dungeon_additions.da.util.handlers.SoundsHandler;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,7 +28,6 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -42,14 +40,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,7 +47,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EntityEverator extends EntityDesertBase implements IAnimatable, IAnimationTickable, IAttack, IScreenShake {
+public class EntityEverator extends EntityDesertBase implements IAttack, IScreenShake {
 
     private final String ANIM_WALK_LOWER = "walk_lower";
     private final String ANIM_IDLE_LOWER = "idle_lower";
@@ -82,37 +72,12 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
     private final String ANIM_TRIBUTE = "tribute";
 
 
-    private static final DataParameter<Boolean> SWING_ONE = EntityDataManager.createKey(EntityEverator.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_TWO = EntityDataManager.createKey(EntityEverator.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SWING_THREE = EntityDataManager.createKey(EntityEverator.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SUMMON_STORMS = EntityDataManager.createKey(EntityEverator.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> STOMP = EntityDataManager.createKey(EntityEverator.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> OVERHEAD_SWING = EntityDataManager.createKey(EntityEverator.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> CIRCLE_SWING = EntityDataManager.createKey(EntityEverator.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> TRIBUTE = EntityDataManager.createKey(EntityEverator.class, DataSerializers.BOOLEAN);
-
     private static final DataParameter<Boolean> INACTIVE = EntityDataManager.createKey(EntityEverator.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> AWAKE = EntityDataManager.createKey(EntityEverator.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHAKING = EntityDataManager.createKey(EntityEverator.class, DataSerializers.BOOLEAN);
 
     public boolean byPassStrafing = false;
 
-    public boolean isSwingOne() {return this.dataManager.get(SWING_ONE);}
-    private void setSwingOne(boolean value) {this.dataManager.set(SWING_ONE, Boolean.valueOf(value));}
-    public boolean isSwingTwo() {return this.dataManager.get(SWING_TWO);}
-    private void setSwingTwo(boolean value) {this.dataManager.set(SWING_TWO, Boolean.valueOf(value));}
-    public boolean isSwingThree() {return this.dataManager.get(SWING_THREE);}
-    private void setSwingThree(boolean value) {this.dataManager.set(SWING_THREE, Boolean.valueOf(value));}
-    public boolean isSummonStorms() {return this.dataManager.get(SUMMON_STORMS);}
-    private void setSummonStorms(boolean value) {this.dataManager.set(SUMMON_STORMS, Boolean.valueOf(value));}
-    public boolean isStompAttack() {return this.dataManager.get(STOMP);}
-    private void setStompAttack(boolean value) {this.dataManager.set(STOMP, Boolean.valueOf(value));}
-    public boolean isOverheadSwing() {return this.dataManager.get(OVERHEAD_SWING);}
-    private void setOverheadSwing(boolean value) {this.dataManager.set(OVERHEAD_SWING, Boolean.valueOf(value));}
-    public boolean isCircleSwing() {return this.dataManager.get(CIRCLE_SWING);}
-    private void setCircleSwing(boolean value) {this.dataManager.set(CIRCLE_SWING, Boolean.valueOf(value));}
-    public boolean isTribute() {return this.dataManager.get(TRIBUTE);}
-    private void setTribute(boolean value) {this.dataManager.set(TRIBUTE, Boolean.valueOf(value));}
     public boolean isAwake() {return this.dataManager.get(AWAKE);}
     private void setAwake(boolean value) {this.dataManager.set(AWAKE, Boolean.valueOf(value));}
     public boolean isInactiveMode() {return this.dataManager.get(INACTIVE);}
@@ -120,8 +85,9 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
 
     public void setShaking(boolean value) {this.dataManager.set(SHAKING, Boolean.valueOf(value));}
     public boolean isShaking() {return this.dataManager.get(SHAKING);}
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, true);
+    private final MoveAnalysis moveAnalysis;
 
-    private final AnimationFactory factory = new AnimationFactory(this);
     private Consumer<EntityLivingBase> prevAttack;
     private int shakeTime = 0;
 
@@ -135,6 +101,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
         this.setImmovable(true);
         this.falter_resistance = 1.7F;
         this.hemorrhage_resistance = 0.8F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
     public EntityEverator(World worldIn) {
@@ -146,19 +113,12 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
         this.setInactive(true);
         this.falter_resistance = 1.7F;
         this.hemorrhage_resistance = 0.8F;
+        this.moveAnalysis = new MoveAnalysis(this);
     }
 
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
-        nbt.setBoolean("Swing_One", this.isSwingOne());
-        nbt.setBoolean("Swing_Two", this.isSwingTwo());
-        nbt.setBoolean("Swing_Three", this.isSwingThree());
-        nbt.setBoolean("Summon_Storms", this.isSummonStorms());
-        nbt.setBoolean("Stomp", this.isStompAttack());
-        nbt.setBoolean("Overhead_Swing", this.isOverheadSwing());
-        nbt.setBoolean("Circle_Swing", this.isCircleSwing());
-        nbt.setBoolean("Tribute", this.isTribute());
         nbt.setBoolean("Awake", this.isAwake());
         nbt.setBoolean("Inactive", this.isInactiveMode());
         nbt.setBoolean("Shaking", this.isShaking());
@@ -166,14 +126,6 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
     }
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
-        this.setSwingOne(nbt.getBoolean("Swing_One"));
-        this.setSwingTwo(nbt.getBoolean("Swing_Two"));
-        this.setSwingThree(nbt.getBoolean("Swing_Three"));
-        this.setSummonStorms(nbt.getBoolean("Summon_Storms"));
-        this.setStompAttack(nbt.getBoolean("Stomp"));
-        this.setOverheadSwing(nbt.getBoolean("Overhead_Swing"));
-        this.setCircleSwing(nbt.getBoolean("Circle_Swing"));
-        this.setTribute(nbt.getBoolean("Tribute"));
         this.setAwake(nbt.getBoolean("Awake"));
         this.setInactive(nbt.getBoolean("Inactive"));
         this.setShaking(nbt.getBoolean("Shaking"));
@@ -182,14 +134,6 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
 
     @Override
     public void entityInit() {
-        this.dataManager.register(SWING_ONE, Boolean.valueOf(false));
-        this.dataManager.register(SWING_TWO, Boolean.valueOf(false));
-        this.dataManager.register(SWING_THREE, Boolean.valueOf(false));
-        this.dataManager.register(SUMMON_STORMS, Boolean.valueOf(false));
-        this.dataManager.register(STOMP, Boolean.valueOf(false));
-        this.dataManager.register(OVERHEAD_SWING, Boolean.valueOf(false));
-        this.dataManager.register(CIRCLE_SWING, Boolean.valueOf(false));
-        this.dataManager.register(TRIBUTE, Boolean.valueOf(false));
         this.dataManager.register(INACTIVE, Boolean.valueOf(false));
         this.dataManager.register(AWAKE, Boolean.valueOf(false));
         this.dataManager.register(SHAKING, Boolean.valueOf(false));
@@ -230,6 +174,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
     @Override
     public void onUpdate() {
         super.onUpdate();
+        this.moveAnalysis.update();
         this.shakeTime--;
         this.attackCooldown--;
         if(this.isInactiveMode() || this.isAwake()) {
@@ -274,6 +219,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
     private void setActiveState() {
         this.setInactive(false);
         this.setAwake(true);
+        animator.performAttack(ANIM_AWAKE);
         this.setFightMode(true);
         this.setFullBodyUsage(true);
 
@@ -311,7 +257,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
 
     private final Consumer<EntityLivingBase> overhead_swing = (target) -> {
       this.setFightMode(true);
-      this.setOverheadSwing(true);
+      animator.performAttack(ANIM_OVERHEAD_SWING);
 
       addEvent(()-> {
             this.setImmovable(true);
@@ -347,14 +293,13 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
 
       addEvent(()-> {
         this.setFightMode(false);
-        this.setOverheadSwing(false);
       }, 65);
     };
 
     private final Consumer<EntityLivingBase> circleSwing = (target) -> {
       this.setFightMode(true);
       this.setFullBodyUsage(true);
-      this.setCircleSwing(true);
+      animator.performAttack(ANIM_CIRCLE_SWING);
       this.setImmovable(true);
 
       addEvent(()-> {
@@ -393,15 +338,14 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
       addEvent(()-> {
         this.setFightMode(false);
         this.setFullBodyUsage(false);
-        this.setCircleSwing(false);
         this.setImmovable(false);
         attackCooldown = 40;
       }, 90);
     };
 
     private final Consumer<EntityLivingBase> send_tribute = (target) -> {
-      this.setTribute(true);
       this.setFightMode(true);
+      animator.performAttack(ANIM_TRIBUTE);
 
       addEvent(()-> {
         this.setImmovable(true);
@@ -420,7 +364,6 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
       }, 50);
 
       addEvent(()-> {
-          this.setTribute(false);
           this.setFightMode(false);
       }, 55);
     };
@@ -428,7 +371,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
     private final Consumer<EntityLivingBase> stomp_attack = (target) -> {
       this.setFullBodyUsage(true);
       this.setFightMode(true);
-      this.setStompAttack(true);
+      animator.performAttack(ANIM_STOMP);
       this.setImmovable(true);
       addEvent(()-> {
         this.lockLook = true;
@@ -455,7 +398,6 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
       addEvent(()-> {
         this.setFullBodyUsage(false);
         this.setFightMode(false);
-        this.setStompAttack(false);
         this.setImmovable(false);
           attackCooldown = 40;
       }, 65);
@@ -465,7 +407,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
 
     private final Consumer<EntityLivingBase> summon_storms = (target) -> {
       this.setFightMode(true);
-      this.setSummonStorms(true);
+      animator.performAttack(ANIM_SUMMON_STORMS);
 
       addEvent(()-> {
             this.setImmovable(true);
@@ -485,7 +427,6 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
       }, 70);
 
       addEvent(()-> {
-          this.setSummonStorms(false);
           this.setFightMode(false);
           attackCooldown = 40;
       }, 80);
@@ -493,7 +434,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
 
     private final Consumer<EntityLivingBase> long_swing = (target) -> {
       this.setFightMode(true);
-      this.setSwingThree(true);
+      animator.performAttack(ANIM_SWING_THREE);
 
         addEvent(()-> {
             this.lockLook = true;
@@ -579,7 +520,6 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
 
         addEvent(()-> {
             this.setFightMode(false);
-            this.setSwingThree(false);
             attackCooldown = 30;
         }, 155);
     };
@@ -589,7 +529,7 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
       boolean randBoolean = rand.nextBoolean();
 
       if(randBoolean) {
-        this.setSwingTwo(true);
+        animator.performAttack(ANIM_SWING_TWO);
 
           addEvent(()-> {
               this.lockLook = true;
@@ -639,10 +579,9 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
 
           addEvent(()-> {
             this.setFightMode(false);
-            this.setSwingTwo(false);
           }, 95);
       } else {
-          this.setSwingOne(true);
+          animator.performAttack(ANIM_SWING_ONE);
 
           addEvent(()-> {
             this.lockLook = true;
@@ -668,7 +607,6 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
           }, 50);
 
           addEvent(()-> {
-            this.setSwingOne(false);
             this.setFightMode(false);
           }, 60);
       }
@@ -681,119 +619,20 @@ public class EntityEverator extends EntityDesertBase implements IAnimatable, IAn
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "idle_controller", 0, this::predicateIdle));
-        data.addAnimationController(new AnimationController(this, "legs_controller", 0, this::predicateLegs));
-        data.addAnimationController(new AnimationController(this, "arms_controller", 0, this::predicateArms));
-        data.addAnimationController(new AnimationController(this, "arms_controller_idle", 0, this::predicateArmsIdle));
-        data.addAnimationController(new AnimationController(this, "fight_controller", 0, this::predicateAttacks));
-        data.addAnimationController(new AnimationController(this, "inactive_controller", 0, this::predicateInactive));
-    }
-
-    private <E extends IAnimatable> PlayState predicateInactive(AnimationEvent<E> event) {
+    public void updateAnimations() {
         if(this.isInactiveMode() && !this.isAwake()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_INACTIVE, true));
-            return PlayState.CONTINUE;
+            animator.setStateAnim(ANIM_INACTIVE, true);
         }
-        return PlayState.STOP;
-    }
-    private <E extends IAnimatable> PlayState predicateAttacks(AnimationEvent<E> event) {
-        if(this.isFightMode()) {
-            if(this.isSwingOne()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_ONE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingTwo()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_TWO, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSwingThree()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SWING_THREE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isSummonStorms()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SUMMON_STORMS, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isCircleSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_CIRCLE_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isStompAttack()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_STOMP, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isTribute()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_TRIBUTE, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isOverheadSwing()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_OVERHEAD_SWING, false));
-                return PlayState.CONTINUE;
-            }
-            if(this.isAwake()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_AWAKE, false));
-                return PlayState.CONTINUE;
-            }
+        if(!this.isInactiveMode() && !this.isAwake()) {
+            boolean isMovingOnGround = moveAnalysis.isMovingHorizontally() && this.onGround;
+            animator.handleIdleStates(isMovingOnGround);
         }
-         event.getController().markNeedsReload();
-        return PlayState.STOP;
-        }
-
-
-    private<E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFullBodyUsage() && !this.isInactiveMode() && !this.isAwake()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_LOWER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArmsIdle(AnimationEvent<E> event) {
-        if(event.getLimbSwingAmount() >= -0.09F && event.getLimbSwingAmount() <= 0.09F && !this.isFightMode() && !this.isInactiveMode() && !this.isAwake()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_IDLE_UPPER, true));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateLegs(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFullBodyUsage() && !this.isInactiveMode() && !this.isAwake()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_LOWER, true));
-           // event.getController().setAnimationSpeed(1.0 + (0.003 * event.getLimbSwing()));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
-    }
-
-    private <E extends IAnimatable> PlayState predicateArms(AnimationEvent<E> event) {
-        if(!(event.getLimbSwingAmount() >= -0.10F && event.getLimbSwingAmount() <= 0.10F) && !this.isFightMode() && !this.isInactiveMode() && !this.isAwake()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_WALK_UPPER, true));
-                event.getController().setAnimationSpeed(1.0 + (0.003 * event.getLimbSwing()));
-            return PlayState.CONTINUE;
-        }
-        return PlayState.STOP;
     }
 
     @Override
     public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.UNDEAD;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.entity.generic;
 
 import com.dungeon_additions.da.Main;
+import com.dungeon_additions.da.animation.AzLib.DaEntityAnimDispatcher;
 import com.dungeon_additions.da.entity.EntityAbstractBase;
 import com.dungeon_additions.da.util.ModRand;
 import com.dungeon_additions.da.util.ModUtils;
@@ -9,7 +10,6 @@ import com.dungeon_additions.da.util.handlers.SoundsHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -18,19 +18,11 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class EntityDelayedExplosion extends EntityAbstractBase implements IAnimatable, IAnimationTickable {
-    private AnimationFactory factory = new AnimationFactory(this);
+public class EntityDelayedExplosion extends EntityAbstractBase {
+    private final DaEntityAnimDispatcher animator = new DaEntityAnimDispatcher(this, false);
     private final String ANIM_SHOOT = "explode";
 
     private EntityPlayer player;
@@ -218,12 +210,8 @@ public class EntityDelayedExplosion extends EntityAbstractBase implements IAnima
     }
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "spike_controller", 0, this::predicateIdle));
-    }
-    private <E extends IAnimatable> PlayState predicateIdle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIM_SHOOT, false));
-        return PlayState.CONTINUE;
+    public void updateAnimations() {
+        animator.setStateAnim(ANIM_SHOOT);
     }
 
     @Override
@@ -235,18 +223,5 @@ public class EntityDelayedExplosion extends EntityAbstractBase implements IAnima
     public boolean canBeCollidedWith() {
         return false;
     }
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
 
-    @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public int tickTimer() {
-        return this.ticksExisted;
-    }
 }

@@ -1,13 +1,23 @@
 package com.dungeon_additions.da.items.render;
 
-import com.dungeon_additions.da.items.model.ModelHolyWave;
-import com.dungeon_additions.da.items.projectile.ItemHolyWave;
-import com.dungeon_additions.da.items.projectile.ItemLightRing;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
+import com.dungeon_additions.da.animation.AzLib.DaItemAnimator;
+import com.dungeon_additions.da.util.ModReference;
+import mod.azure.azurelib.render.item.AzItemRenderer;
+import mod.azure.azurelib.render.item.AzItemRendererConfig;
+import mod.azure.azurelib.render.layer.AzAutoGlowingLayer;
+import net.minecraft.util.ResourceLocation;
 
-public class RenderHolyWave extends GeoItemRenderer<ItemHolyWave> {
+public class RenderHolyWave extends AzItemRenderer {
+
+    private static final ResourceLocation TEXTURE = new ResourceLocation(ModReference.MOD_ID, "textures/items/holy_wave.png");
+    private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(ModReference.MOD_ID, "geo/item/geo.holy_wave.json");
+
     public RenderHolyWave() {
-        super(new ModelHolyWave());
+        super(
+                AzItemRendererConfig.builder(itemStack -> MODEL_RESLOC, itemStack -> TEXTURE)
+                        .addRenderLayer(new AzAutoGlowingLayer<>())
+                        .setAnimatorProvider(() -> new DaItemAnimator("holy_wave"))
+                        .build()
+        );
     }
 }
