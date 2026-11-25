@@ -42,9 +42,10 @@ public class PacketFalterCapability implements IMessage {
         {
             Minecraft.getMinecraft().addScheduledTask(() ->
                     {
+                        if (Minecraft.getMinecraft().world == null) return;
                         Entity player = Minecraft.getMinecraft().world.getEntityByID(message.entityId);
 
-                        if(player.hasCapability(CapabilityPlayerFalter.PLAYER_FALTER_CAP, null))
+                        if(player != null && player.hasCapability(CapabilityPlayerFalter.PLAYER_FALTER_CAP, null))
                         {
                             player.getCapability(CapabilityPlayerFalter.PLAYER_FALTER_CAP, null).setFalterEnabled(message.enableGreed);
                         }

@@ -2,6 +2,7 @@ package com.dungeon_additions.da.packets;
 
 import com.dungeon_additions.da.entity.frost_dungeon.IDirectionalRender;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,15 +42,17 @@ public class MessageDirectionForRender implements IMessage {
     public static class Handler implements IMessageHandler<MessageDirectionForRender, IMessage> {
         @Override
         public IMessage onMessage(MessageDirectionForRender message, MessageContext ctx) {
-            if (PacketUtils.getPlayer() != null) {
+            Minecraft.getMinecraft().addScheduledTask(() -> {
                 EntityPlayer player = PacketUtils.getPlayer();
-                if (message.data.hasKey("entityId") && message.data.hasKey("posX") && message.data.hasKey("posY") && message.data.hasKey("posZ")) {
-                    Entity entity = player.world.getEntityByID(message.data.getInteger("entityId"));
-                    if (entity instanceof IDirectionalRender) {
-                        ((IDirectionalRender) entity).setRenderDirection(new Vec3d(message.data.getFloat("posX"), message.data.getFloat("posY"), message.data.getFloat("posZ")));
+                if (player != null && player.world != null && message.data != null) {
+                    if (message.data.hasKey("entityId") && message.data.hasKey("posX") && message.data.hasKey("posY") && message.data.hasKey("posZ")) {
+                        Entity entity = player.world.getEntityByID(message.data.getInteger("entityId"));
+                        if (entity instanceof IDirectionalRender) {
+                            ((IDirectionalRender) entity).setRenderDirection(new Vec3d(message.data.getFloat("posX"), message.data.getFloat("posY"), message.data.getFloat("posZ")));
+                        }
                     }
                 }
-            }
+            });
 
             // No response message
             return null;

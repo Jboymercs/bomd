@@ -47,9 +47,10 @@ public class PacketFalterProgress implements IMessage {
             if (ctx.side == Side.CLIENT) {
                 Minecraft.getMinecraft().addScheduledTask(() ->
                 {
+                    if (Minecraft.getMinecraft().world == null) return;
                     Entity player = Minecraft.getMinecraft().world.getEntityByID(message.entityId);
 
-                    if (player.hasCapability(CapabilityPlayerFalter.PLAYER_FALTER_CAP, null)) {
+                    if (player instanceof EntityPlayer && player.hasCapability(CapabilityPlayerFalter.PLAYER_FALTER_CAP, null)) {
                         PlayerFalterUtils.setPlayerFalterResistance((EntityPlayer) player, message.falterResistance);
                         PlayerFalterUtils.setPlayerGreedProgress((EntityPlayer) player, message.falterProg);
                     }

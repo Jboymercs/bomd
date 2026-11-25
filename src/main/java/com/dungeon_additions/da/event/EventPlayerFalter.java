@@ -90,8 +90,9 @@ public class EventPlayerFalter {
             PlayerFalterUtils.setPlayerFalterResistance(player, falter_cap);
 
             //sends a packet to the client to update the GUI
-
-            Main.network.sendToAll(new PacketFalterProgress(PlayerFalterUtils.getPlayerFalterProgress(player), falter_cap, player.getEntityId()));
+            if (player instanceof EntityPlayerMP) {
+                Main.network.sendTo(new PacketFalterProgress(PlayerFalterUtils.getPlayerFalterProgress(player), falter_cap, player.getEntityId()), (EntityPlayerMP) player);
+            }
 
             //staggers the player
             if(PlayerFalterUtils.getPlayerFalterProgress(player) > PlayerFalterUtils.getPlayerFalterResistance(player)) {

@@ -42,9 +42,10 @@ public class PacketPlayerSwingAll implements IMessage {
         {
             Minecraft.getMinecraft().addScheduledTask(() ->
             {
+                if (Minecraft.getMinecraft().world == null) return;
                 Entity player = Minecraft.getMinecraft().world.getEntityByID(message.entityId);
 
-                if(player.hasCapability(CapabilityPlayerSwing.PLAYER_SWING_CAP, null))
+                if(player != null && player.hasCapability(CapabilityPlayerSwing.PLAYER_SWING_CAP, null))
                 {
                     player.getCapability(CapabilityPlayerSwing.PLAYER_SWING_CAP, null).setSwingEnabled(message.cancelled);
                 }
