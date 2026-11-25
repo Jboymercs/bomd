@@ -42,9 +42,10 @@ public class PacketSwingItem implements IMessage {
         {
             Minecraft.getMinecraft().addScheduledTask(() ->
             {
+                if (Minecraft.getMinecraft().world == null) return;
                 Entity player = Minecraft.getMinecraft().world.getEntityByID(message.entityId);
 
-                if(player.hasCapability(CapabilityItemAnimations.ANIM_CAP, null))
+                if(player != null && player.hasCapability(CapabilityItemAnimations.ANIM_CAP, null))
                 {
                     CapabilityItemAnimations.ICapabilityItemAnimations riptide = player.getCapability(CapabilityItemAnimations.ANIM_CAP, null);
                     riptide.setCustomSwingStartTime(player.ticksExisted);

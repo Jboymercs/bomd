@@ -1,6 +1,7 @@
 package com.dungeon_additions.da.packets;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -149,11 +150,16 @@ public class MessageModParticles implements IMessage {
     public static class MessageHandler implements IMessageHandler<MessageModParticles, IMessage> {
         @Override
         public IMessage onMessage(MessageModParticles message, MessageContext ctx) {
-            if (message.particleType.equals(EnumModParticles.SWEEP_ATTACK)) {
+            Minecraft.getMinecraft().addScheduledTask(() -> {
+                if (PacketUtils.getWorld() == null || message.particleType == null) {
+                    return;
+                }
+                if (message.particleType.equals(EnumModParticles.SWEEP_ATTACK)) {
 
-            } else if (message.particleType.equals(EnumModParticles.EFFECT)) {
-                PacketUtils.spawnEffect(message);
-            }
+                } else if (message.particleType.equals(EnumModParticles.EFFECT)) {
+                    PacketUtils.spawnEffect(message);
+                }
+            });
             return null;
         }
     }
